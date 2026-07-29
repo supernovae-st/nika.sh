@@ -38,16 +38,16 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "plan",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/qwen2.5:14b",
         "permits": []
       },
       {
         "id": "execute",
         "verb": "agent",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/qwen2.5:14b",
         "permits": [
           "tool: nika:done",
-          "tool: nika:read"
+          "tool: nika:jq"
         ]
       },
       {
@@ -77,14 +77,6 @@ export const ANATOMY: Record<string, Anatomy> = {
     "workflow": "api-upload-and-create-template",
     "nodes": [
       {
-        "id": "upload",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
         "id": "create",
         "verb": "invoke",
         "tool": "nika:fetch",
@@ -93,10 +85,234 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       }
     ],
+    "edges": []
+  },
+  "bookmark-triage": {
+    "graph_format": 2,
+    "workflow": "bookmark-triage",
+    "nodes": [
+      {
+        "id": "pages",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "fan_out": {
+          "kind": "expression"
+        },
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "table",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "report",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/bookmarks.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
     "edges": [
       {
-        "from": "upload",
-        "to": "create",
+        "from": "pages",
+        "to": "table",
+        "kind": "value"
+      },
+      {
+        "from": "table",
+        "to": "report",
+        "kind": "value"
+      },
+      {
+        "from": "table",
+        "to": "report",
+        "kind": "value"
+      }
+    ]
+  },
+  "ceo-monday-brief": {
+    "graph_format": 2,
+    "workflow": "ceo-monday-brief",
+    "nodes": [
+      {
+        "id": "approve",
+        "verb": "invoke",
+        "tool": "nika:prompt",
+        "permits": [
+          "tool: nika:prompt"
+        ]
+      },
+      {
+        "id": "news",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "pulse",
+        "verb": "exec",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "exec: git"
+        ]
+      },
+      {
+        "id": "sheet",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "stamp",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "rows",
+        "verb": "invoke",
+        "tool": "nika:convert",
+        "when": "${{ with.csv != null }}",
+        "permits": [
+          "tool: nika:convert"
+        ]
+      },
+      {
+        "id": "revenue",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "when": "${{ with.rows != null }}",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "when": "${{ with.go == true }}",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:write"
+        ]
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "tool": "nika:notify",
+        "when": "${{ with.armed == true }}",
+        "permits": [
+          "tool: nika:notify"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "approve",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "news",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "pulse",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "sheet",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "stamp",
+        "kind": "value"
+      },
+      {
+        "from": "brief",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "news",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "pulse",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "revenue",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "rows",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "rows",
+        "to": "revenue",
+        "kind": "value"
+      },
+      {
+        "from": "save",
+        "to": "alert",
+        "kind": "control"
+      },
+      {
+        "from": "save",
+        "to": "alert",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "sheet",
+        "to": "rows",
+        "kind": "value"
+      },
+      {
+        "from": "stamp",
+        "to": "alert",
+        "kind": "value"
+      },
+      {
+        "from": "stamp",
+        "to": "save",
         "kind": "value"
       }
     ]
@@ -116,7 +332,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "think",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "permits": []
       },
       {
@@ -124,7 +340,6 @@ export const ANATOMY: Record<string, Anatomy> = {
         "verb": "invoke",
         "tool": "nika:write",
         "permits": [
-          "fs.write: ./output.md",
           "tool: nika:write"
         ]
       }
@@ -138,6 +353,487 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "think",
         "to": "persist",
+        "kind": "value"
+      }
+    ]
+  },
+  "competitor-radar": {
+    "graph_format": 2,
+    "workflow": "competitor-radar",
+    "nodes": [
+      {
+        "id": "now",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "map",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "cutoff",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "cutoff_day",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "recent",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "pages",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "fan_out": {
+          "kind": "expression"
+        },
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "readable",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "digest",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "when": "${{ size(with.readable) > 0 }}",
+        "permits": []
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "tool": "nika:emit",
+        "permits": [
+          "tool: nika:emit"
+        ]
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "when": "${{ with.digest != null }}",
+        "permits": [
+          "fs.write: ./radar/competitor-brief.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "cutoff",
+        "to": "cutoff_day",
+        "kind": "value"
+      },
+      {
+        "from": "cutoff_day",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "cutoff_day",
+        "to": "recent",
+        "kind": "value"
+      },
+      {
+        "from": "cutoff_day",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "digest",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "map",
+        "to": "recent",
+        "kind": "value"
+      },
+      {
+        "from": "now",
+        "to": "cutoff",
+        "kind": "value"
+      },
+      {
+        "from": "pages",
+        "to": "readable",
+        "kind": "value"
+      },
+      {
+        "from": "readable",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "readable",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "recent",
+        "to": "pages",
+        "kind": "value"
+      },
+      {
+        "from": "recent",
+        "to": "readable",
+        "kind": "value"
+      },
+      {
+        "from": "recent",
+        "to": "record",
+        "kind": "value"
+      }
+    ]
+  },
+  "config-drift-sentinel": {
+    "graph_format": 2,
+    "workflow": "config-drift-sentinel",
+    "nodes": [
+      {
+        "id": "live_raw",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "baseline_raw",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "fingerprint",
+        "verb": "invoke",
+        "tool": "nika:hash",
+        "permits": [
+          "tool: nika:hash"
+        ]
+      },
+      {
+        "id": "parsed",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "expected",
+        "verb": "invoke",
+        "tool": "nika:json_merge_patch",
+        "permits": [
+          "tool: nika:json_merge_patch"
+        ]
+      },
+      {
+        "id": "drift",
+        "verb": "invoke",
+        "tool": "nika:json_diff",
+        "permits": [
+          "tool: nika:json_diff"
+        ]
+      },
+      {
+        "id": "paging",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "explain",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "when": "${{ size(with.patch) > 0 }}",
+        "permits": []
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "tool": "nika:notify",
+        "when": "${{ size(with.paging) > 0 }}",
+        "permits": [
+          "tool: nika:notify"
+        ]
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "tool": "nika:emit",
+        "permits": [
+          "tool: nika:emit"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "baseline_raw",
+        "to": "parsed",
+        "kind": "value"
+      },
+      {
+        "from": "drift",
+        "to": "explain",
+        "kind": "value"
+      },
+      {
+        "from": "drift",
+        "to": "paging",
+        "kind": "value"
+      },
+      {
+        "from": "drift",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "expected",
+        "to": "drift",
+        "kind": "value"
+      },
+      {
+        "from": "explain",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "fingerprint",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "live_raw",
+        "to": "fingerprint",
+        "kind": "value"
+      },
+      {
+        "from": "live_raw",
+        "to": "parsed",
+        "kind": "value"
+      },
+      {
+        "from": "paging",
+        "to": "alert",
+        "kind": "value"
+      },
+      {
+        "from": "paging",
+        "to": "record",
+        "kind": "value"
+      },
+      {
+        "from": "parsed",
+        "to": "drift",
+        "kind": "value"
+      },
+      {
+        "from": "parsed",
+        "to": "expected",
+        "kind": "value"
+      }
+    ]
+  },
+  "contract-guard": {
+    "graph_format": 2,
+    "workflow": "contract-guard",
+    "nodes": [
+      {
+        "id": "contract",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "clauses",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "check",
+        "verb": "invoke",
+        "tool": "nika:validate",
+        "permits": [
+          "tool: nika:validate"
+        ]
+      },
+      {
+        "id": "gate",
+        "verb": "invoke",
+        "tool": "nika:assert",
+        "permits": [
+          "tool: nika:assert"
+        ]
+      },
+      {
+        "id": "memo",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/risk-memo.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "check",
+        "to": "gate",
+        "kind": "value"
+      },
+      {
+        "from": "clauses",
+        "to": "check",
+        "kind": "value"
+      },
+      {
+        "from": "clauses",
+        "to": "memo",
+        "kind": "value"
+      },
+      {
+        "from": "contract",
+        "to": "clauses",
+        "kind": "value"
+      },
+      {
+        "from": "gate",
+        "to": "memo",
+        "kind": "control"
+      },
+      {
+        "from": "memo",
+        "to": "save",
+        "kind": "value"
+      }
+    ]
+  },
+  "csv-chart-report": {
+    "graph_format": 2,
+    "workflow": "csv-chart-report",
+    "nodes": [
+      {
+        "id": "raw",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "rows",
+        "verb": "invoke",
+        "tool": "nika:convert",
+        "permits": [
+          "tool: nika:convert"
+        ]
+      },
+      {
+        "id": "by_region",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "chart",
+        "verb": "invoke",
+        "tool": "nika:chart",
+        "permits": [
+          "fs.write: out/revenue-by-region.svg",
+          "tool: nika:chart"
+        ]
+      },
+      {
+        "id": "rows_md",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "report",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/revenue-report.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "by_region",
+        "to": "chart",
+        "kind": "value"
+      },
+      {
+        "from": "by_region",
+        "to": "rows_md",
+        "kind": "value"
+      },
+      {
+        "from": "chart",
+        "to": "report",
+        "kind": "control"
+      },
+      {
+        "from": "raw",
+        "to": "rows",
+        "kind": "value"
+      },
+      {
+        "from": "rows",
+        "to": "by_region",
+        "kind": "value"
+      },
+      {
+        "from": "rows_md",
+        "to": "report",
         "kind": "value"
       }
     ]
@@ -234,6 +930,76 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
+  "deep-research-brief": {
+    "graph_format": 2,
+    "workflow": "deep-research-brief",
+    "nodes": [
+      {
+        "id": "slug",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "plan",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "investigate",
+        "verb": "agent",
+        "model": "ollama/qwen3.5:4b",
+        "permits": [
+          "tool: nika:done",
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "brief",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "investigate",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "investigate",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "plan",
+        "to": "investigate",
+        "kind": "value"
+      },
+      {
+        "from": "slug",
+        "to": "save",
+        "kind": "value"
+      }
+    ]
+  },
   "docker-report": {
     "graph_format": 2,
     "workflow": "docker-report-template",
@@ -255,7 +1021,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "diagnose",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "permits": []
       },
       {
@@ -303,7 +1069,6 @@ export const ANATOMY: Record<string, Anatomy> = {
         "verb": "invoke",
         "tool": "nika:read",
         "permits": [
-          "fs.read: ./data/incoming/orders.csv",
           "tool: nika:read"
         ]
       },
@@ -338,7 +1103,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:write",
         "when": "${{ with.valid == false }}",
         "permits": [
-          "fs.write: ./data/quarantine/rejected.json",
+          "fs.write: out/quarantine/orders-rejected.json",
           "tool: nika:write"
         ]
       },
@@ -348,7 +1113,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:write",
         "when": "${{ with.totals != null && size(with.totals) > 0 }}",
         "permits": [
-          "fs.write: ./data/daily-totals.json",
+          "fs.write: out/reports/daily-totals.json",
           "tool: nika:write"
         ]
       }
@@ -401,15 +1166,15 @@ export const ANATOMY: Record<string, Anatomy> = {
     "workflow": "etl-state-template",
     "nodes": [
       {
-        "id": "empty",
+        "id": "approve",
         "verb": "invoke",
-        "tool": "nika:jq",
+        "tool": "nika:prompt",
         "permits": [
-          "tool: nika:jq"
+          "tool: nika:prompt"
         ]
       },
       {
-        "id": "previous",
+        "id": "previous_raw",
         "verb": "invoke",
         "tool": "nika:read",
         "permits": [
@@ -420,8 +1185,26 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "fresh",
         "verb": "invoke",
         "tool": "nika:fetch",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "previous",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "save_state",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:write"
         ]
       },
       {
@@ -430,14 +1213,6 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:json_diff",
         "permits": [
           "tool: nika:json_diff"
-        ]
-      },
-      {
-        "id": "save_state",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
         ]
       },
       {
@@ -452,14 +1227,19 @@ export const ANATOMY: Record<string, Anatomy> = {
     ],
     "edges": [
       {
-        "from": "delta",
-        "to": "process",
+        "from": "approve",
+        "to": "fresh",
         "kind": "value"
       },
       {
-        "from": "empty",
-        "to": "previous",
-        "kind": "recovery"
+        "from": "approve",
+        "to": "save_state",
+        "kind": "value"
+      },
+      {
+        "from": "delta",
+        "to": "process",
+        "kind": "value"
       },
       {
         "from": "fresh",
@@ -474,6 +1254,11 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "from": "previous",
         "to": "delta",
+        "kind": "value"
+      },
+      {
+        "from": "previous_raw",
+        "to": "previous",
         "kind": "value"
       }
     ]
@@ -493,7 +1278,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "process",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "fan_out": {
           "kind": "expression"
         },
@@ -510,7 +1295,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "merge",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "permits": []
       }
     ],
@@ -646,338 +1431,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
-  "media-asset-pack": {
-    "graph_format": 2,
-    "workflow": "media-asset-pack-template",
-    "nodes": [
-      {
-        "id": "brief",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "render",
-        "verb": "invoke",
-        "tool": "nika:image_generate",
-        "permits": [
-          "tool: nika:image_generate"
-        ]
-      },
-      {
-        "id": "manifest",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "persist",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "brief",
-        "to": "manifest",
-        "kind": "value"
-      },
-      {
-        "from": "brief",
-        "to": "render",
-        "kind": "value"
-      },
-      {
-        "from": "manifest",
-        "to": "persist",
-        "kind": "value"
-      },
-      {
-        "from": "render",
-        "to": "manifest",
-        "kind": "value"
-      }
-    ]
-  },
-  "meeting-actions": {
-    "graph_format": 2,
-    "workflow": "meeting-actions",
-    "nodes": [
-      {
-        "id": "transcript",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "fs.read: ./transcript.txt",
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "extract",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./action-items.json",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "extract",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "transcript",
-        "to": "extract",
-        "kind": "value"
-      }
-    ]
-  },
-  "pr-risk-review": {
-    "graph_format": 2,
-    "workflow": "pr-risk-review",
-    "nodes": [
-      {
-        "id": "diff",
-        "verb": "exec",
-        "permits": [
-          "exec: git"
-        ]
-      },
-      {
-        "id": "risk",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "probe",
-        "verb": "agent",
-        "model": "ollama/llama3.2:3b",
-        "when": "${{ with.score >= 7 }}",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "report",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./review.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "diff",
-        "to": "risk",
-        "kind": "value"
-      },
-      {
-        "from": "risk",
-        "to": "probe",
-        "kind": "value"
-      },
-      {
-        "from": "risk",
-        "to": "probe",
-        "kind": "value"
-      },
-      {
-        "from": "risk",
-        "to": "report",
-        "kind": "value"
-      }
-    ]
-  },
-  "price-watch": {
-    "graph_format": 2,
-    "workflow": "price-watch",
-    "nodes": [
-      {
-        "id": "snapshot",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "fs.read: ./price.json",
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "price",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "alert",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "when": "${{ with.price < config.alert_below }}",
-        "permits": [
-          "fs.write: ./price-alert.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "price",
-        "to": "alert",
-        "kind": "value"
-      },
-      {
-        "from": "snapshot",
-        "to": "price",
-        "kind": "value"
-      }
-    ]
-  },
-  "social-repurpose": {
-    "graph_format": 2,
-    "workflow": "social-repurpose",
-    "nodes": [
-      {
-        "id": "post",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "fs.read: ./post.md",
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "thread",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "linkedin",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "newsletter",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "bundle",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./social-bundle.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "linkedin",
-        "to": "bundle",
-        "kind": "value"
-      },
-      {
-        "from": "newsletter",
-        "to": "bundle",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "linkedin",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "newsletter",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "thread",
-        "kind": "value"
-      },
-      {
-        "from": "thread",
-        "to": "bundle",
-        "kind": "value"
-      }
-    ]
-  },
-  "standup-digest": {
-    "graph_format": 2,
-    "workflow": "standup-digest",
-    "nodes": [
-      {
-        "id": "today",
-        "verb": "invoke",
-        "tool": "nika:date",
-        "permits": [
-          "tool: nika:date"
-        ]
-      },
-      {
-        "id": "history",
-        "verb": "exec",
-        "permits": [
-          "exec: git"
-        ]
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./standup-note.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "digest",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "history",
-        "to": "digest",
-        "kind": "value"
-      },
-      {
-        "from": "today",
-        "to": "digest",
-        "kind": "value"
-      }
-    ]
-  },
-  "t1-image-fx-batch": {
+  "image-fx-batch": {
     "graph_format": 2,
     "workflow": "image-fx-batch",
     "nodes": [
@@ -987,6 +1441,14 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:glob",
         "permits": [
           "tool: nika:glob"
+        ]
+      },
+      {
+        "id": "jobs",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
         ]
       },
       {
@@ -1003,322 +1465,81 @@ export const ANATOMY: Record<string, Anatomy> = {
     ],
     "edges": [
       {
-        "from": "shots",
+        "from": "jobs",
         "to": "stylize",
         "kind": "value"
-      }
-    ]
-  },
-  "t1-meeting-actions": {
-    "graph_format": 2,
-    "workflow": "meeting-actions",
-    "nodes": [
-      {
-        "id": "transcript",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
       },
       {
-        "id": "extract",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./action-items.json",
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "trace",
-        "verb": "invoke",
-        "tool": "nika:log",
-        "permits": [
-          "tool: nika:log"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "extract",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "extract",
-        "to": "trace",
-        "kind": "control"
-      },
-      {
-        "from": "transcript",
-        "to": "extract",
+        "from": "shots",
+        "to": "jobs",
         "kind": "value"
       }
     ]
   },
-  "t1-og-images": {
+  "incident-war-room": {
     "graph_format": 2,
-    "workflow": "og-images",
+    "workflow": "incident-war-room",
     "nodes": [
       {
-        "id": "hero",
+        "id": "approve",
         "verb": "invoke",
-        "tool": "nika:image_generate",
+        "tool": "nika:prompt",
         "permits": [
-          "fs.write: ./assets/og/**",
-          "tool: nika:image_generate"
-        ]
-      }
-    ],
-    "edges": []
-  },
-  "t1-price-watch": {
-    "graph_format": 2,
-    "workflow": "price-watch",
-    "nodes": [
-      {
-        "id": "check",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
+          "tool: nika:prompt"
         ]
       },
       {
-        "id": "alert",
-        "verb": "invoke",
-        "tool": "nika:notify",
-        "when": "${{ with.price < const.alert_below }}",
-        "permits": [
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "check",
-        "to": "alert",
-        "kind": "value"
-      },
-      {
-        "from": "check",
-        "to": "alert",
-        "kind": "value"
-      }
-    ]
-  },
-  "t1-social-repurpose": {
-    "graph_format": 2,
-    "workflow": "social-repurpose",
-    "nodes": [
-      {
-        "id": "post",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "thread",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "linkedin",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "newsletter",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "bundle",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./social-bundle.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "linkedin",
-        "to": "bundle",
-        "kind": "value"
-      },
-      {
-        "from": "newsletter",
-        "to": "bundle",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "linkedin",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "newsletter",
-        "kind": "value"
-      },
-      {
-        "from": "post",
-        "to": "thread",
-        "kind": "value"
-      },
-      {
-        "from": "thread",
-        "to": "bundle",
-        "kind": "value"
-      }
-    ]
-  },
-  "t1-standup-digest": {
-    "graph_format": 2,
-    "workflow": "standup-digest",
-    "nodes": [
-      {
-        "id": "today",
-        "verb": "invoke",
-        "tool": "nika:date",
-        "permits": [
-          "tool: nika:date"
-        ]
-      },
-      {
-        "id": "history",
+        "id": "deploys",
         "verb": "exec",
+        "when": "${{ with.go == true }}",
         "permits": [
           "exec: git"
         ]
       },
       {
-        "id": "digest",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./standup-note.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "digest",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "history",
-        "to": "digest",
-        "kind": "value"
-      },
-      {
-        "from": "today",
-        "to": "digest",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-bookmark-triage": {
-    "graph_format": 2,
-    "workflow": "bookmark-triage",
-    "nodes": [
-      {
-        "id": "pages",
+        "id": "status_history",
         "verb": "invoke",
         "tool": "nika:fetch",
-        "fan_out": {
-          "kind": "expression"
-        },
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:fetch"
         ]
       },
       {
-        "id": "table",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "report",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: out/bookmarks.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "pages",
-        "to": "table",
-        "kind": "value"
-      },
-      {
-        "from": "table",
-        "to": "report",
-        "kind": "value"
-      },
-      {
-        "from": "table",
-        "to": "report",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-contract-guard": {
-    "graph_format": 2,
-    "workflow": "contract-guard",
-    "nodes": [
-      {
-        "id": "contract",
+        "id": "runbook",
         "verb": "invoke",
         "tool": "nika:read",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:read"
         ]
       },
       {
-        "id": "clauses",
+        "id": "timeline",
         "verb": "infer",
         "model": "ollama/qwen3.5:4b",
+        "when": "${{ with.runbook != null }}",
         "permits": []
       },
       {
-        "id": "check",
+        "id": "settle",
         "verb": "invoke",
-        "tool": "nika:validate",
+        "tool": "nika:wait",
         "permits": [
-          "tool: nika:validate"
+          "tool: nika:wait"
         ]
       },
       {
-        "id": "gate",
+        "id": "recheck",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "confirmed",
         "verb": "invoke",
         "tool": "nika:assert",
         "permits": [
@@ -1326,7 +1547,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "memo",
+        "id": "postmortem",
         "verb": "infer",
         "model": "ollama/qwen3.5:4b",
         "permits": []
@@ -1336,242 +1557,98 @@ export const ANATOMY: Record<string, Anatomy> = {
         "verb": "invoke",
         "tool": "nika:write",
         "permits": [
-          "fs.write: ./legal/risk-memo.md",
           "tool: nika:write"
+        ]
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "tool": "nika:notify",
+        "when": "${{ with.armed == true }}",
+        "permits": [
+          "tool: nika:notify"
         ]
       }
     ],
     "edges": [
       {
-        "from": "check",
-        "to": "gate",
+        "from": "approve",
+        "to": "deploys",
         "kind": "value"
       },
       {
-        "from": "clauses",
-        "to": "check",
+        "from": "approve",
+        "to": "recheck",
         "kind": "value"
       },
       {
-        "from": "clauses",
-        "to": "memo",
+        "from": "approve",
+        "to": "runbook",
         "kind": "value"
       },
       {
-        "from": "contract",
-        "to": "clauses",
+        "from": "approve",
+        "to": "status_history",
         "kind": "value"
       },
       {
-        "from": "gate",
-        "to": "memo",
+        "from": "confirmed",
+        "to": "postmortem",
         "kind": "control"
       },
       {
-        "from": "memo",
+        "from": "deploys",
+        "to": "timeline",
+        "kind": "value"
+      },
+      {
+        "from": "postmortem",
         "to": "save",
         "kind": "value"
-      }
-    ]
-  },
-  "t2-csv-chart-report": {
-    "graph_format": 2,
-    "workflow": "csv-chart-report",
-    "nodes": [
-      {
-        "id": "raw",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
       },
       {
-        "id": "rows",
-        "verb": "invoke",
-        "tool": "nika:convert",
-        "permits": [
-          "tool: nika:convert"
-        ]
-      },
-      {
-        "id": "by_region",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "chart",
-        "verb": "invoke",
-        "tool": "nika:chart",
-        "permits": [
-          "fs.write: out/revenue-by-region.svg",
-          "tool: nika:chart"
-        ]
-      },
-      {
-        "id": "rows_md",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "report",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: out/revenue-report.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "by_region",
-        "to": "chart",
+        "from": "recheck",
+        "to": "confirmed",
         "kind": "value"
       },
       {
-        "from": "by_region",
-        "to": "rows_md",
+        "from": "runbook",
+        "to": "timeline",
         "kind": "value"
       },
       {
-        "from": "chart",
-        "to": "report",
+        "from": "save",
+        "to": "alert",
         "kind": "control"
       },
       {
-        "from": "raw",
-        "to": "rows",
+        "from": "save",
+        "to": "alert",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "settle",
+        "to": "recheck",
+        "kind": "control"
+      },
+      {
+        "from": "status_history",
+        "to": "timeline",
         "kind": "value"
       },
       {
-        "from": "rows",
-        "to": "by_region",
+        "from": "timeline",
+        "to": "postmortem",
         "kind": "value"
       },
       {
-        "from": "rows_md",
-        "to": "report",
-        "kind": "value"
+        "from": "timeline",
+        "to": "settle",
+        "kind": "control"
       }
     ]
   },
-  "t2-etl-quarantine": {
-    "graph_format": 2,
-    "workflow": "etl-quarantine",
-    "nodes": [
-      {
-        "id": "empty_batch",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "raw",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "rows",
-        "verb": "invoke",
-        "tool": "nika:convert",
-        "permits": [
-          "tool: nika:convert"
-        ]
-      },
-      {
-        "id": "check",
-        "verb": "invoke",
-        "tool": "nika:validate",
-        "permits": [
-          "tool: nika:validate"
-        ]
-      },
-      {
-        "id": "good",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "when": "${{ with.valid == true }}",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "quarantine",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "when": "${{ with.valid == false }}",
-        "permits": [
-          "fs.write: ./data/quarantine/orders-rejected.json",
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "report",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "when": "${{ with.totals != null && size(with.totals) > 0 }}",
-        "permits": [
-          "fs.write: ./data/reports/daily-totals.json",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "check",
-        "to": "good",
-        "kind": "value"
-      },
-      {
-        "from": "check",
-        "to": "quarantine",
-        "kind": "value"
-      },
-      {
-        "from": "check",
-        "to": "quarantine",
-        "kind": "value"
-      },
-      {
-        "from": "empty_batch",
-        "to": "rows",
-        "kind": "recovery"
-      },
-      {
-        "from": "good",
-        "to": "report",
-        "kind": "value"
-      },
-      {
-        "from": "raw",
-        "to": "rows",
-        "kind": "value"
-      },
-      {
-        "from": "rows",
-        "to": "check",
-        "kind": "value"
-      },
-      {
-        "from": "rows",
-        "to": "good",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-invoice-chaser": {
+  "invoice-chaser": {
     "graph_format": 2,
     "workflow": "invoice-chaser",
     "nodes": [
@@ -1621,7 +1698,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "tool": "nika:write",
         "when": "${{ with.drafts != null && with.approved == true }}",
         "permits": [
-          "fs.write: ./finance/reminders-to-send.md",
+          "fs.write: out/reminders-to-send.md",
           "tool: nika:write"
         ]
       }
@@ -1659,633 +1736,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
-  "t2-model-bench": {
-    "graph_format": 2,
-    "workflow": "model-bench",
-    "nodes": [
-      {
-        "id": "ask_incumbent",
-        "verb": "infer",
-        "model": "ollama/qwen2.5:14b",
-        "permits": []
-      },
-      {
-        "id": "ask_challenger",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "ask_tiny",
-        "verb": "infer",
-        "model": "ollama/qwen2.5:0.5b",
-        "permits": []
-      },
-      {
-        "id": "tabulate",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "persist",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./bench/model-bench.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "ask_challenger",
-        "to": "tabulate",
-        "kind": "terminal-observation"
-      },
-      {
-        "from": "ask_challenger",
-        "to": "tabulate",
-        "kind": "value"
-      },
-      {
-        "from": "ask_incumbent",
-        "to": "tabulate",
-        "kind": "terminal-observation"
-      },
-      {
-        "from": "ask_incumbent",
-        "to": "tabulate",
-        "kind": "value"
-      },
-      {
-        "from": "ask_tiny",
-        "to": "tabulate",
-        "kind": "terminal-observation"
-      },
-      {
-        "from": "ask_tiny",
-        "to": "tabulate",
-        "kind": "value"
-      },
-      {
-        "from": "tabulate",
-        "to": "persist",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-release-notes": {
-    "graph_format": 2,
-    "workflow": "release-notes",
-    "nodes": [
-      {
-        "id": "history",
-        "verb": "exec",
-        "permits": [
-          "exec: git"
-        ]
-      },
-      {
-        "id": "notes",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "changelog",
-        "verb": "invoke",
-        "tool": "nika:edit",
-        "permits": [
-          "fs.read: ./CHANGELOG.md",
-          "fs.write: ./CHANGELOG.md",
-          "tool: nika:edit"
-        ]
-      },
-      {
-        "id": "announce",
-        "verb": "invoke",
-        "tool": "nika:notify",
-        "permits": [
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "changelog",
-        "to": "announce",
-        "kind": "control"
-      },
-      {
-        "from": "history",
-        "to": "notes",
-        "kind": "value"
-      },
-      {
-        "from": "notes",
-        "to": "announce",
-        "kind": "value"
-      },
-      {
-        "from": "notes",
-        "to": "changelog",
-        "kind": "value"
-      },
-      {
-        "from": "notes",
-        "to": "changelog",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-release-radar": {
-    "graph_format": 2,
-    "workflow": "release-radar",
-    "nodes": [
-      {
-        "id": "no_state",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "previous",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "feed",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "fresh",
-        "verb": "invoke",
-        "tool": "nika:json_diff",
-        "permits": [
-          "tool: nika:json_diff"
-        ]
-      },
-      {
-        "id": "save_state",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "when": "${{ size(with.fresh) > 0 }}",
-        "permits": []
-      }
-    ],
-    "edges": [
-      {
-        "from": "feed",
-        "to": "digest",
-        "kind": "value"
-      },
-      {
-        "from": "feed",
-        "to": "fresh",
-        "kind": "value"
-      },
-      {
-        "from": "feed",
-        "to": "save_state",
-        "kind": "value"
-      },
-      {
-        "from": "fresh",
-        "to": "digest",
-        "kind": "value"
-      },
-      {
-        "from": "no_state",
-        "to": "previous",
-        "kind": "recovery"
-      },
-      {
-        "from": "previous",
-        "to": "fresh",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-seo-content-brief": {
-    "graph_format": 2,
-    "workflow": "seo-content-brief",
-    "nodes": [
-      {
-        "id": "map",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "top_page",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "brief",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "brief",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "map",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "map",
-        "to": "top_page",
-        "kind": "value"
-      },
-      {
-        "from": "top_page",
-        "to": "brief",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-support-triage": {
-    "graph_format": 2,
-    "workflow": "support-triage",
-    "nodes": [
-      {
-        "id": "batch",
-        "verb": "invoke",
-        "tool": "nika:uuid",
-        "permits": [
-          "tool: nika:uuid"
-        ]
-      },
-      {
-        "id": "queue",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "triage",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "urgent",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "board",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "escalate",
-        "verb": "invoke",
-        "tool": "nika:notify",
-        "when": "${{ size(with.urgent) > 0 }}",
-        "permits": [
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "batch",
-        "to": "board",
-        "kind": "value"
-      },
-      {
-        "from": "batch",
-        "to": "escalate",
-        "kind": "value"
-      },
-      {
-        "from": "queue",
-        "to": "triage",
-        "kind": "value"
-      },
-      {
-        "from": "triage",
-        "to": "board",
-        "kind": "value"
-      },
-      {
-        "from": "triage",
-        "to": "urgent",
-        "kind": "value"
-      },
-      {
-        "from": "urgent",
-        "to": "escalate",
-        "kind": "value"
-      }
-    ]
-  },
-  "t2-transcript-shownotes": {
-    "graph_format": 2,
-    "workflow": "transcript-shownotes",
-    "nodes": [
-      {
-        "id": "raw",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "notes",
-        "verb": "infer",
-        "model": "ollama/llama3.2:3b",
-        "permits": []
-      },
-      {
-        "id": "sections",
-        "verb": "invoke",
-        "tool": "nika:jq",
-        "permits": [
-          "tool: nika:jq"
-        ]
-      },
-      {
-        "id": "page",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: out/show-notes.md",
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "notes",
-        "to": "page",
-        "kind": "value"
-      },
-      {
-        "from": "notes",
-        "to": "sections",
-        "kind": "value"
-      },
-      {
-        "from": "raw",
-        "to": "notes",
-        "kind": "value"
-      },
-      {
-        "from": "sections",
-        "to": "page",
-        "kind": "value"
-      },
-      {
-        "from": "sections",
-        "to": "page",
-        "kind": "value"
-      }
-    ]
-  },
-  "t3-competitor-radar": {
-    "graph_format": 2,
-    "workflow": "competitor-radar",
-    "nodes": [
-      {
-        "id": "map",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "pages",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "fan_out": {
-          "kind": "expression"
-        },
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "fs.write: ./radar/competitor-brief.md",
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "ping",
-        "verb": "invoke",
-        "tool": "nika:notify",
-        "permits": [
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "digest",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "map",
-        "to": "pages",
-        "kind": "value"
-      },
-      {
-        "from": "pages",
-        "to": "digest",
-        "kind": "value"
-      },
-      {
-        "from": "save",
-        "to": "ping",
-        "kind": "control"
-      }
-    ]
-  },
-  "t3-config-drift-sentinel": {
-    "graph_format": 2,
-    "workflow": "config-drift-sentinel",
-    "nodes": [
-      {
-        "id": "live",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "baseline",
-        "verb": "invoke",
-        "tool": "nika:read",
-        "permits": [
-          "tool: nika:read"
-        ]
-      },
-      {
-        "id": "fingerprint",
-        "verb": "invoke",
-        "tool": "nika:hash",
-        "permits": [
-          "tool: nika:hash"
-        ]
-      },
-      {
-        "id": "expected",
-        "verb": "invoke",
-        "tool": "nika:json_merge_patch",
-        "permits": [
-          "tool: nika:json_merge_patch"
-        ]
-      },
-      {
-        "id": "drift",
-        "verb": "invoke",
-        "tool": "nika:json_diff",
-        "permits": [
-          "tool: nika:json_diff"
-        ]
-      },
-      {
-        "id": "explain",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "when": "${{ size(with.patch) > 0 }}",
-        "permits": []
-      },
-      {
-        "id": "record",
-        "verb": "invoke",
-        "tool": "nika:emit",
-        "permits": [
-          "tool: nika:emit"
-        ]
-      },
-      {
-        "id": "alert",
-        "verb": "invoke",
-        "tool": "nika:notify",
-        "when": "${{ size(with.patch) > 0 }}",
-        "permits": [
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "baseline",
-        "to": "expected",
-        "kind": "value"
-      },
-      {
-        "from": "drift",
-        "to": "alert",
-        "kind": "value"
-      },
-      {
-        "from": "drift",
-        "to": "explain",
-        "kind": "value"
-      },
-      {
-        "from": "drift",
-        "to": "record",
-        "kind": "value"
-      },
-      {
-        "from": "expected",
-        "to": "drift",
-        "kind": "value"
-      },
-      {
-        "from": "explain",
-        "to": "alert",
-        "kind": "value"
-      },
-      {
-        "from": "fingerprint",
-        "to": "alert",
-        "kind": "value"
-      },
-      {
-        "from": "fingerprint",
-        "to": "record",
-        "kind": "value"
-      },
-      {
-        "from": "live",
-        "to": "drift",
-        "kind": "value"
-      },
-      {
-        "from": "live",
-        "to": "fingerprint",
-        "kind": "value"
-      }
-    ]
-  },
-  "t3-localization-factory": {
+  "localization-factory": {
     "graph_format": 2,
     "workflow": "localization-factory",
     "nodes": [
@@ -2383,7 +1834,213 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
-  "t3-pr-review-fanout": {
+  "media-asset-pack": {
+    "graph_format": 2,
+    "workflow": "media-asset-pack-template",
+    "nodes": [
+      {
+        "id": "brief",
+        "verb": "infer",
+        "model": "ollama/qwen2.5:14b",
+        "permits": []
+      },
+      {
+        "id": "render",
+        "verb": "invoke",
+        "tool": "nika:image_generate",
+        "permits": [
+          "tool: nika:image_generate"
+        ]
+      },
+      {
+        "id": "manifest",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "persist",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "brief",
+        "to": "manifest",
+        "kind": "value"
+      },
+      {
+        "from": "brief",
+        "to": "render",
+        "kind": "value"
+      },
+      {
+        "from": "manifest",
+        "to": "persist",
+        "kind": "value"
+      },
+      {
+        "from": "render",
+        "to": "manifest",
+        "kind": "value"
+      }
+    ]
+  },
+  "meeting-actions": {
+    "graph_format": 2,
+    "workflow": "meeting-actions",
+    "nodes": [
+      {
+        "id": "transcript",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "extract",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/action-items.json",
+          "tool: nika:write"
+        ]
+      },
+      {
+        "id": "trace",
+        "verb": "invoke",
+        "tool": "nika:log",
+        "permits": [
+          "tool: nika:log"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "extract",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "extract",
+        "to": "trace",
+        "kind": "control"
+      },
+      {
+        "from": "transcript",
+        "to": "extract",
+        "kind": "value"
+      }
+    ]
+  },
+  "model-bench": {
+    "graph_format": 2,
+    "workflow": "model-bench",
+    "nodes": [
+      {
+        "id": "ask_incumbent",
+        "verb": "infer",
+        "model": "ollama/qwen2.5:14b",
+        "permits": []
+      },
+      {
+        "id": "ask_challenger",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "ask_tiny",
+        "verb": "infer",
+        "model": "ollama/qwen2.5:0.5b",
+        "permits": []
+      },
+      {
+        "id": "tabulate",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "persist",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/model-bench.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "ask_challenger",
+        "to": "tabulate",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_challenger",
+        "to": "tabulate",
+        "kind": "value"
+      },
+      {
+        "from": "ask_incumbent",
+        "to": "tabulate",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_incumbent",
+        "to": "tabulate",
+        "kind": "value"
+      },
+      {
+        "from": "ask_tiny",
+        "to": "tabulate",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "ask_tiny",
+        "to": "tabulate",
+        "kind": "value"
+      },
+      {
+        "from": "tabulate",
+        "to": "persist",
+        "kind": "value"
+      }
+    ]
+  },
+  "og-images": {
+    "graph_format": 2,
+    "workflow": "og-images",
+    "nodes": [
+      {
+        "id": "hero",
+        "verb": "invoke",
+        "tool": "nika:image_generate",
+        "permits": [
+          "fs.write: out/og/**",
+          "tool: nika:image_generate"
+        ]
+      }
+    ],
+    "edges": []
+  },
+  "pr-review-fanout": {
     "graph_format": 2,
     "workflow": "pr-review-fanout",
     "nodes": [
@@ -2480,7 +2137,503 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
-  "t3-resume-screener": {
+  "pr-risk-review": {
+    "graph_format": 2,
+    "workflow": "pr-risk-review",
+    "nodes": [
+      {
+        "id": "diff",
+        "verb": "exec",
+        "permits": [
+          "exec: git"
+        ]
+      },
+      {
+        "id": "risk",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "probe",
+        "verb": "agent",
+        "model": "ollama/llama3.2:3b",
+        "when": "${{ with.score >= 7 }}",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "report",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: ./review.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "diff",
+        "to": "risk",
+        "kind": "value"
+      },
+      {
+        "from": "risk",
+        "to": "probe",
+        "kind": "value"
+      },
+      {
+        "from": "risk",
+        "to": "probe",
+        "kind": "value"
+      },
+      {
+        "from": "risk",
+        "to": "report",
+        "kind": "value"
+      }
+    ]
+  },
+  "price-watch": {
+    "graph_format": 2,
+    "workflow": "price-watch",
+    "nodes": [
+      {
+        "id": "check",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "tool": "nika:notify",
+        "when": "${{ with.price < const.alert_below }}",
+        "permits": [
+          "tool: nika:notify"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "check",
+        "to": "alert",
+        "kind": "value"
+      },
+      {
+        "from": "check",
+        "to": "alert",
+        "kind": "value"
+      }
+    ]
+  },
+  "release-notes": {
+    "graph_format": 2,
+    "workflow": "release-notes",
+    "nodes": [
+      {
+        "id": "history",
+        "verb": "exec",
+        "permits": [
+          "exec: git"
+        ]
+      },
+      {
+        "id": "existing",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "notes",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "copy",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
+        ]
+      },
+      {
+        "id": "changelog",
+        "verb": "invoke",
+        "tool": "nika:edit",
+        "permits": [
+          "tool: nika:edit"
+        ]
+      },
+      {
+        "id": "announce",
+        "verb": "invoke",
+        "tool": "nika:notify",
+        "when": "${{ inputs.announce == true }}",
+        "permits": [
+          "tool: nika:notify"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "changelog",
+        "to": "announce",
+        "kind": "control"
+      },
+      {
+        "from": "copy",
+        "to": "changelog",
+        "kind": "control"
+      },
+      {
+        "from": "existing",
+        "to": "copy",
+        "kind": "value"
+      },
+      {
+        "from": "history",
+        "to": "notes",
+        "kind": "value"
+      },
+      {
+        "from": "notes",
+        "to": "announce",
+        "kind": "value"
+      },
+      {
+        "from": "notes",
+        "to": "changelog",
+        "kind": "value"
+      },
+      {
+        "from": "notes",
+        "to": "changelog",
+        "kind": "value"
+      }
+    ]
+  },
+  "release-radar": {
+    "graph_format": 2,
+    "workflow": "release-radar",
+    "nodes": [
+      {
+        "id": "no_state",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "previous",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "feed",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "permits": [
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "fresh",
+        "verb": "invoke",
+        "tool": "nika:json_diff",
+        "permits": [
+          "tool: nika:json_diff"
+        ]
+      },
+      {
+        "id": "save_state",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
+        ]
+      },
+      {
+        "id": "digest",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "when": "${{ size(with.fresh) > 0 }}",
+        "permits": []
+      }
+    ],
+    "edges": [
+      {
+        "from": "feed",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "feed",
+        "to": "fresh",
+        "kind": "value"
+      },
+      {
+        "from": "feed",
+        "to": "save_state",
+        "kind": "value"
+      },
+      {
+        "from": "fresh",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "no_state",
+        "to": "previous",
+        "kind": "recovery"
+      },
+      {
+        "from": "previous",
+        "to": "fresh",
+        "kind": "value"
+      }
+    ]
+  },
+  "release-train": {
+    "graph_format": 2,
+    "workflow": "release-train",
+    "nodes": [
+      {
+        "id": "t0",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "declared",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "fs.read: ./VERSION",
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "notes",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "fs.read: ./CHANGELOG.md",
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "schema",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "fs.read: ./schemas/workflow.schema.json",
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "board",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "gates_green",
+        "verb": "invoke",
+        "tool": "nika:assert",
+        "permits": [
+          "tool: nika:assert"
+        ]
+      },
+      {
+        "id": "t1",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "gate_time",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "conductor",
+        "verb": "invoke",
+        "tool": "nika:prompt",
+        "permits": [
+          "tool: nika:prompt"
+        ]
+      },
+      {
+        "id": "signed_at",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "when": "${{ with.signed == true }}",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "window",
+        "verb": "invoke",
+        "tool": "nika:date",
+        "when": "${{ with.at != null }}",
+        "permits": [
+          "tool: nika:date"
+        ]
+      },
+      {
+        "id": "hold",
+        "verb": "invoke",
+        "tool": "nika:wait",
+        "when": "${{ with.window != null }}",
+        "permits": [
+          "tool: nika:wait"
+        ]
+      },
+      {
+        "id": "ship",
+        "verb": "exec",
+        "when": "${{ with.depart == true }}",
+        "permits": [
+          "exec: ./scripts/release.sh"
+        ]
+      },
+      {
+        "id": "verify",
+        "verb": "invoke",
+        "tool": "nika:fetch",
+        "permits": [
+          "net.http: api.example.com",
+          "tool: nika:fetch"
+        ]
+      },
+      {
+        "id": "live",
+        "verb": "invoke",
+        "tool": "nika:assert",
+        "permits": [
+          "tool: nika:assert"
+        ]
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "tool": "nika:emit",
+        "permits": [
+          "tool: nika:emit"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "board",
+        "to": "conductor",
+        "kind": "value"
+      },
+      {
+        "from": "board",
+        "to": "gates_green",
+        "kind": "value"
+      },
+      {
+        "from": "conductor",
+        "to": "signed_at",
+        "kind": "value"
+      },
+      {
+        "from": "declared",
+        "to": "board",
+        "kind": "value"
+      },
+      {
+        "from": "gate_time",
+        "to": "conductor",
+        "kind": "value"
+      },
+      {
+        "from": "gates_green",
+        "to": "t1",
+        "kind": "control"
+      },
+      {
+        "from": "hold",
+        "to": "ship",
+        "kind": "control"
+      },
+      {
+        "from": "live",
+        "to": "record",
+        "kind": "control"
+      },
+      {
+        "from": "live",
+        "to": "record",
+        "kind": "terminal-observation"
+      },
+      {
+        "from": "notes",
+        "to": "board",
+        "kind": "value"
+      },
+      {
+        "from": "schema",
+        "to": "board",
+        "kind": "value"
+      },
+      {
+        "from": "ship",
+        "to": "verify",
+        "kind": "control"
+      },
+      {
+        "from": "signed_at",
+        "to": "window",
+        "kind": "value"
+      },
+      {
+        "from": "t0",
+        "to": "gate_time",
+        "kind": "value"
+      },
+      {
+        "from": "t1",
+        "to": "gate_time",
+        "kind": "value"
+      },
+      {
+        "from": "verify",
+        "to": "live",
+        "kind": "value"
+      },
+      {
+        "from": "window",
+        "to": "hold",
+        "kind": "value"
+      }
+    ]
+  },
+  "resume-screener": {
     "graph_format": 2,
     "workflow": "resume-screener",
     "nodes": [
@@ -2597,12 +2750,12 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
-  "t4-ceo-monday-brief": {
+  "seo-content-brief": {
     "graph_format": 2,
-    "workflow": "ceo-monday-brief",
+    "workflow": "seo-content-brief",
     "nodes": [
       {
-        "id": "news",
+        "id": "map",
         "verb": "invoke",
         "tool": "nika:fetch",
         "permits": [
@@ -2610,14 +2763,57 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "pulse",
-        "verb": "exec",
+        "id": "top_page",
+        "verb": "invoke",
+        "tool": "nika:fetch",
         "permits": [
-          "exec: git"
+          "tool: nika:fetch"
         ]
       },
       {
-        "id": "kpi_raw",
+        "id": "brief",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "brief",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "map",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "map",
+        "to": "top_page",
+        "kind": "value"
+      },
+      {
+        "from": "top_page",
+        "to": "brief",
+        "kind": "value"
+      }
+    ]
+  },
+  "social-repurpose": {
+    "graph_format": 2,
+    "workflow": "social-repurpose",
+    "nodes": [
+      {
+        "id": "post",
         "verb": "invoke",
         "tool": "nika:read",
         "permits": [
@@ -2625,7 +2821,72 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "stamp",
+        "id": "thread",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "linkedin",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "newsletter",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "bundle",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/social-bundle.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "linkedin",
+        "to": "bundle",
+        "kind": "value"
+      },
+      {
+        "from": "newsletter",
+        "to": "bundle",
+        "kind": "value"
+      },
+      {
+        "from": "post",
+        "to": "linkedin",
+        "kind": "value"
+      },
+      {
+        "from": "post",
+        "to": "newsletter",
+        "kind": "value"
+      },
+      {
+        "from": "post",
+        "to": "thread",
+        "kind": "value"
+      },
+      {
+        "from": "thread",
+        "to": "bundle",
+        "kind": "value"
+      }
+    ]
+  },
+  "standup-digest": {
+    "graph_format": 2,
+    "workflow": "standup-digest",
+    "nodes": [
+      {
+        "id": "today",
         "verb": "invoke",
         "tool": "nika:date",
         "permits": [
@@ -2633,15 +2894,74 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "kpis",
-        "verb": "invoke",
-        "tool": "nika:convert",
+        "id": "history",
+        "verb": "exec",
         "permits": [
-          "tool: nika:convert"
+          "exec: git"
         ]
       },
       {
-        "id": "revenue",
+        "id": "digest",
+        "verb": "infer",
+        "model": "ollama/qwen3.5:4b",
+        "permits": []
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "tool": "nika:write",
+        "permits": [
+          "fs.write: out/standup-note.md",
+          "tool: nika:write"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "from": "digest",
+        "to": "save",
+        "kind": "value"
+      },
+      {
+        "from": "history",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "today",
+        "to": "digest",
+        "kind": "value"
+      }
+    ]
+  },
+  "support-triage": {
+    "graph_format": 2,
+    "workflow": "support-triage",
+    "nodes": [
+      {
+        "id": "batch",
+        "verb": "invoke",
+        "tool": "nika:uuid",
+        "permits": [
+          "tool: nika:uuid"
+        ]
+      },
+      {
+        "id": "queue",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "triage",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "urgent",
         "verb": "invoke",
         "tool": "nika:jq",
         "permits": [
@@ -2649,13 +2969,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "brief",
-        "verb": "infer",
-        "model": "anthropic/claude-sonnet-4-6",
-        "permits": []
-      },
-      {
-        "id": "save",
+        "id": "board",
         "verb": "invoke",
         "tool": "nika:write",
         "permits": [
@@ -2663,160 +2977,54 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "bill",
-        "verb": "invoke",
-        "tool": "nika:inspect",
-        "permits": [
-          "tool: nika:inspect"
-        ]
-      },
-      {
-        "id": "ping",
+        "id": "escalate",
         "verb": "invoke",
         "tool": "nika:notify",
+        "when": "${{ size(with.urgent) > 0 }}",
         "permits": [
-          "tool: nika:emit",
           "tool: nika:notify"
         ]
       }
     ],
     "edges": [
       {
-        "from": "bill",
-        "to": "ping",
+        "from": "batch",
+        "to": "board",
         "kind": "value"
       },
       {
-        "from": "brief",
-        "to": "save",
+        "from": "batch",
+        "to": "escalate",
         "kind": "value"
       },
       {
-        "from": "kpi_raw",
-        "to": "kpis",
+        "from": "queue",
+        "to": "triage",
         "kind": "value"
       },
       {
-        "from": "kpis",
-        "to": "brief",
+        "from": "triage",
+        "to": "board",
         "kind": "value"
       },
       {
-        "from": "kpis",
-        "to": "revenue",
+        "from": "triage",
+        "to": "urgent",
         "kind": "value"
       },
       {
-        "from": "news",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "pulse",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "revenue",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "save",
-        "to": "bill",
-        "kind": "control"
-      },
-      {
-        "from": "stamp",
-        "to": "ping",
-        "kind": "value"
-      },
-      {
-        "from": "stamp",
-        "to": "save",
+        "from": "urgent",
+        "to": "escalate",
         "kind": "value"
       }
     ]
   },
-  "t4-deep-research-brief": {
+  "transcript-shownotes": {
     "graph_format": 2,
-    "workflow": "deep-research-brief",
+    "workflow": "transcript-shownotes",
     "nodes": [
       {
-        "id": "plan",
-        "verb": "infer",
-        "model": "anthropic/claude-haiku-4-5",
-        "permits": []
-      },
-      {
-        "id": "investigate",
-        "verb": "agent",
-        "model": "ollama/qwen3.5:4b",
-        "permits": [
-          "tool: nika:done",
-          "tool: nika:fetch",
-          "tool: nika:write"
-        ]
-      },
-      {
-        "id": "brief",
-        "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
-        "permits": []
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "tool": "nika:write",
-        "permits": [
-          "tool: nika:write"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "brief",
-        "to": "save",
-        "kind": "value"
-      },
-      {
-        "from": "investigate",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "investigate",
-        "to": "brief",
-        "kind": "value"
-      },
-      {
-        "from": "plan",
-        "to": "investigate",
-        "kind": "value"
-      }
-    ]
-  },
-  "t4-incident-war-room": {
-    "graph_format": 2,
-    "workflow": "incident-war-room",
-    "nodes": [
-      {
-        "id": "logs",
-        "verb": "exec",
-        "permits": [
-          "exec: journalctl"
-        ]
-      },
-      {
-        "id": "status_history",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "runbook",
+        "id": "raw",
         "verb": "invoke",
         "tool": "nika:read",
         "permits": [
@@ -2824,288 +3032,53 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
-        "id": "timeline",
+        "id": "notes",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "permits": []
       },
       {
-        "id": "settle",
+        "id": "sections",
         "verb": "invoke",
-        "tool": "nika:wait",
+        "tool": "nika:jq",
         "permits": [
-          "tool: nika:wait"
+          "tool: nika:jq"
         ]
       },
       {
-        "id": "recheck",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "confirmed",
-        "verb": "invoke",
-        "tool": "nika:assert",
-        "permits": [
-          "tool: nika:assert"
-        ]
-      },
-      {
-        "id": "postmortem",
-        "verb": "infer",
-        "model": "anthropic/claude-sonnet-4-6",
-        "permits": []
-      },
-      {
-        "id": "save",
+        "id": "page",
         "verb": "invoke",
         "tool": "nika:write",
         "permits": [
+          "fs.write: out/show-notes.md",
           "tool: nika:write"
         ]
-      },
-      {
-        "id": "ping",
-        "verb": "invoke",
-        "tool": "nika:emit",
-        "permits": [
-          "tool: nika:emit",
-          "tool: nika:notify"
-        ]
       }
     ],
     "edges": [
       {
-        "from": "confirmed",
-        "to": "postmortem",
-        "kind": "control"
-      },
-      {
-        "from": "logs",
-        "to": "timeline",
+        "from": "notes",
+        "to": "page",
         "kind": "value"
       },
       {
-        "from": "postmortem",
-        "to": "save",
+        "from": "notes",
+        "to": "sections",
         "kind": "value"
       },
       {
-        "from": "recheck",
-        "to": "confirmed",
+        "from": "raw",
+        "to": "notes",
         "kind": "value"
       },
       {
-        "from": "runbook",
-        "to": "timeline",
+        "from": "sections",
+        "to": "page",
         "kind": "value"
       },
       {
-        "from": "save",
-        "to": "ping",
-        "kind": "control"
-      },
-      {
-        "from": "save",
-        "to": "ping",
-        "kind": "terminal-observation"
-      },
-      {
-        "from": "settle",
-        "to": "recheck",
-        "kind": "control"
-      },
-      {
-        "from": "status_history",
-        "to": "timeline",
-        "kind": "value"
-      },
-      {
-        "from": "timeline",
-        "to": "postmortem",
-        "kind": "value"
-      },
-      {
-        "from": "timeline",
-        "to": "settle",
-        "kind": "control"
-      }
-    ]
-  },
-  "t4-release-train": {
-    "graph_format": 2,
-    "workflow": "release-train",
-    "nodes": [
-      {
-        "id": "t0",
-        "verb": "invoke",
-        "tool": "nika:date",
-        "permits": [
-          "tool: nika:date"
-        ]
-      },
-      {
-        "id": "tests",
-        "verb": "exec",
-        "permits": [
-          "exec: cargo"
-        ]
-      },
-      {
-        "id": "lint",
-        "verb": "exec",
-        "permits": [
-          "exec: cargo"
-        ]
-      },
-      {
-        "id": "audit",
-        "verb": "exec",
-        "permits": [
-          "exec: cargo"
-        ]
-      },
-      {
-        "id": "gates_green",
-        "verb": "invoke",
-        "tool": "nika:assert",
-        "permits": [
-          "tool: nika:assert"
-        ]
-      },
-      {
-        "id": "gate_time",
-        "verb": "invoke",
-        "tool": "nika:date",
-        "permits": [
-          "tool: nika:date"
-        ]
-      },
-      {
-        "id": "conductor",
-        "verb": "invoke",
-        "tool": "nika:prompt",
-        "permits": [
-          "tool: nika:prompt"
-        ]
-      },
-      {
-        "id": "approved",
-        "verb": "invoke",
-        "tool": "nika:assert",
-        "permits": [
-          "tool: nika:assert"
-        ]
-      },
-      {
-        "id": "hold",
-        "verb": "invoke",
-        "tool": "nika:wait",
-        "permits": [
-          "tool: nika:wait"
-        ]
-      },
-      {
-        "id": "ship",
-        "verb": "exec",
-        "permits": [
-          "exec: ./scripts/release.sh"
-        ]
-      },
-      {
-        "id": "verify",
-        "verb": "invoke",
-        "tool": "nika:fetch",
-        "permits": [
-          "net.http: api.example.com",
-          "tool: nika:fetch"
-        ]
-      },
-      {
-        "id": "live",
-        "verb": "invoke",
-        "tool": "nika:assert",
-        "permits": [
-          "tool: nika:assert"
-        ]
-      },
-      {
-        "id": "record",
-        "verb": "invoke",
-        "tool": "nika:emit",
-        "permits": [
-          "tool: nika:emit",
-          "tool: nika:notify"
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "from": "approved",
-        "to": "hold",
-        "kind": "control"
-      },
-      {
-        "from": "audit",
-        "to": "gates_green",
-        "kind": "value"
-      },
-      {
-        "from": "conductor",
-        "to": "approved",
-        "kind": "value"
-      },
-      {
-        "from": "gate_time",
-        "to": "conductor",
-        "kind": "value"
-      },
-      {
-        "from": "gates_green",
-        "to": "gate_time",
-        "kind": "control"
-      },
-      {
-        "from": "hold",
-        "to": "ship",
-        "kind": "control"
-      },
-      {
-        "from": "lint",
-        "to": "gates_green",
-        "kind": "value"
-      },
-      {
-        "from": "live",
-        "to": "record",
-        "kind": "control"
-      },
-      {
-        "from": "live",
-        "to": "record",
-        "kind": "terminal-observation"
-      },
-      {
-        "from": "ship",
-        "to": "verify",
-        "kind": "control"
-      },
-      {
-        "from": "t0",
-        "to": "gate_time",
-        "kind": "value"
-      },
-      {
-        "from": "tests",
-        "to": "gates_green",
-        "kind": "value"
-      },
-      {
-        "from": "verify",
-        "to": "live",
+        "from": "sections",
+        "to": "page",
         "kind": "value"
       }
     ]
@@ -3125,7 +3098,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "brief",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/qwen2.5:14b",
         "permits": []
       },
       {

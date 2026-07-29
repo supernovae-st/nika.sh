@@ -545,20 +545,20 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
-    "label": "t2-invoice-chaser",
-    "href": "/library/t2-invoice-chaser",
+    "label": "invoice-chaser",
+    "href": "/library/invoice-chaser",
     "hint": "the workflow library · a real file"
   },
   {
     "kind": "page",
-    "label": "t4-deep-research-brief",
-    "href": "/library/t4-deep-research-brief",
+    "label": "deep-research-brief",
+    "href": "/library/deep-research-brief",
     "hint": "the workflow library · a real file"
   },
   {
     "kind": "page",
-    "label": "t3-localization-factory",
-    "href": "/library/t3-localization-factory",
+    "label": "localization-factory",
+    "href": "/library/localization-factory",
     "hint": "the workflow library · a real file"
   },
   {
@@ -1447,7 +1447,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "template",
     "label": "api-upload-and-create",
     "href": "/templates/api-upload-and-create",
-    "hint": "call a product API: upload a file, then create from it"
+    "hint": "call a product API: upload a file and create from it"
   },
   {
     "kind": "template",
@@ -2309,158 +2309,158 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "usecase",
-    "label": "image fx batch",
-    "href": "/use-cases/t1-image-fx-batch",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "meeting actions",
-    "href": "/use-cases/t1-meeting-actions",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "og images",
-    "href": "/use-cases/t1-og-images",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "price watch",
-    "href": "/use-cases/t1-price-watch",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "social repurpose",
-    "href": "/use-cases/t1-social-repurpose",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "standup digest",
-    "href": "/use-cases/t1-standup-digest",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
     "label": "bookmark triage",
-    "href": "/use-cases/t2-bookmark-triage",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "contract guard",
-    "href": "/use-cases/t2-contract-guard",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "csv chart report",
-    "href": "/use-cases/t2-csv-chart-report",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "etl quarantine",
-    "href": "/use-cases/t2-etl-quarantine",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "invoice chaser",
-    "href": "/use-cases/t2-invoice-chaser",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "model bench",
-    "href": "/use-cases/t2-model-bench",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "release notes",
-    "href": "/use-cases/t2-release-notes",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "release radar",
-    "href": "/use-cases/t2-release-radar",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "seo content brief",
-    "href": "/use-cases/t2-seo-content-brief",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "support triage",
-    "href": "/use-cases/t2-support-triage",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "transcript shownotes",
-    "href": "/use-cases/t2-transcript-shownotes",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "competitor radar",
-    "href": "/use-cases/t3-competitor-radar",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "config drift sentinel",
-    "href": "/use-cases/t3-config-drift-sentinel",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "localization factory",
-    "href": "/use-cases/t3-localization-factory",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "pr review fanout",
-    "href": "/use-cases/t3-pr-review-fanout",
-    "hint": "a real workflow · the whole file, one room"
-  },
-  {
-    "kind": "usecase",
-    "label": "resume screener",
-    "href": "/use-cases/t3-resume-screener",
+    "href": "/use-cases/bookmark-triage",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "ceo monday brief",
-    "href": "/use-cases/t4-ceo-monday-brief",
+    "href": "/use-cases/ceo-monday-brief",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "competitor radar",
+    "href": "/use-cases/competitor-radar",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "config drift sentinel",
+    "href": "/use-cases/config-drift-sentinel",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "contract guard",
+    "href": "/use-cases/contract-guard",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "csv chart report",
+    "href": "/use-cases/csv-chart-report",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "deep research brief",
-    "href": "/use-cases/t4-deep-research-brief",
+    "href": "/use-cases/deep-research-brief",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "etl quarantine",
+    "href": "/use-cases/etl-quarantine",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "image fx batch",
+    "href": "/use-cases/image-fx-batch",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "incident war room",
-    "href": "/use-cases/t4-incident-war-room",
+    "href": "/use-cases/incident-war-room",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "invoice chaser",
+    "href": "/use-cases/invoice-chaser",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "localization factory",
+    "href": "/use-cases/localization-factory",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "meeting actions",
+    "href": "/use-cases/meeting-actions",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "model bench",
+    "href": "/use-cases/model-bench",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "og images",
+    "href": "/use-cases/og-images",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "pr review fanout",
+    "href": "/use-cases/pr-review-fanout",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "price watch",
+    "href": "/use-cases/price-watch",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "release notes",
+    "href": "/use-cases/release-notes",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "release radar",
+    "href": "/use-cases/release-radar",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "release train",
-    "href": "/use-cases/t4-release-train",
+    "href": "/use-cases/release-train",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "resume screener",
+    "href": "/use-cases/resume-screener",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "seo content brief",
+    "href": "/use-cases/seo-content-brief",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "social repurpose",
+    "href": "/use-cases/social-repurpose",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "standup digest",
+    "href": "/use-cases/standup-digest",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "support triage",
+    "href": "/use-cases/support-triage",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
+    "label": "transcript shownotes",
+    "href": "/use-cases/transcript-shownotes",
     "hint": "a real workflow · the whole file, one room"
   },
   {

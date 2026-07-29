@@ -276,6 +276,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "max_tokens": {
     "templates": [
+      "chain",
+      "fanout",
+      "agent-loop",
       "website-brief",
       "media-asset-pack",
       "docker-report"
@@ -305,7 +308,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "agent-loop",
       "website-brief",
       "media-asset-pack",
-      "api-upload-and-create",
       "docker-report"
     ],
     "codes": []
@@ -338,15 +340,21 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "on_codes": {
     "templates": [
+      "chain",
       "etl-state"
     ],
     "codes": []
   },
   "on_error": {
     "templates": [
+      "chain",
       "gate-and-act",
       "fanout",
-      "etl-state"
+      "etl-state",
+      "human-gated-ship",
+      "website-brief",
+      "api-upload-and-create",
+      "docker-report"
     ],
     "codes": [
       "NIKA-PARSE-012",
@@ -395,10 +403,14 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   "permits": {
     "templates": [
       "chain",
+      "gate-and-act",
       "fanout",
+      "etl-state",
       "agent-loop",
       "human-gated-ship",
+      "website-brief",
       "media-asset-pack",
+      "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
@@ -434,9 +446,14 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "recover": {
     "templates": [
+      "chain",
       "gate-and-act",
       "fanout",
-      "etl-state"
+      "etl-state",
+      "human-gated-ship",
+      "website-brief",
+      "api-upload-and-create",
+      "docker-report"
     ],
     "codes": [
       "NIKA-DAG-004",
@@ -464,7 +481,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ]
   },
   "run": {
-    "templates": [],
+    "templates": [
+      "fanout"
+    ],
     "codes": []
   },
   "schema": {
@@ -576,10 +595,14 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   "tools": {
     "templates": [
       "chain",
+      "gate-and-act",
       "fanout",
+      "etl-state",
       "agent-loop",
       "human-gated-ship",
+      "website-brief",
       "media-asset-pack",
+      "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
@@ -619,7 +642,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "human-gated-ship",
       "website-brief",
       "media-asset-pack",
-      "api-upload-and-create",
       "docker-report"
     ],
     "codes": [

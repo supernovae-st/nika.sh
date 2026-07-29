@@ -2374,7 +2374,7 @@
     },
     {
       "selector": "site.config.ts#page:269",
-      "path": "/library/t2-invoice-chaser",
+      "path": "/library/invoice-chaser",
       "route_selector": "src/routes.tsx#route:70",
       "component": "LibraryRoom",
       "feature": "registry.library",
@@ -2382,7 +2382,7 @@
     },
     {
       "selector": "site.config.ts#page:270",
-      "path": "/library/t4-deep-research-brief",
+      "path": "/library/deep-research-brief",
       "route_selector": "src/routes.tsx#route:70",
       "component": "LibraryRoom",
       "feature": "registry.library",
@@ -2390,7 +2390,7 @@
     },
     {
       "selector": "site.config.ts#page:271",
-      "path": "/library/t3-localization-factory",
+      "path": "/library/localization-factory",
       "route_selector": "src/routes.tsx#route:70",
       "component": "LibraryRoom",
       "feature": "registry.library",
@@ -3662,7 +3662,7 @@
     },
     {
       "selector": "site.config.ts#page:430",
-      "path": "/use-cases/t1-image-fx-batch",
+      "path": "/use-cases/bookmark-triage",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3670,7 +3670,7 @@
     },
     {
       "selector": "site.config.ts#page:431",
-      "path": "/use-cases/t1-meeting-actions",
+      "path": "/use-cases/ceo-monday-brief",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3678,7 +3678,7 @@
     },
     {
       "selector": "site.config.ts#page:432",
-      "path": "/use-cases/t1-og-images",
+      "path": "/use-cases/competitor-radar",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3686,7 +3686,7 @@
     },
     {
       "selector": "site.config.ts#page:433",
-      "path": "/use-cases/t1-price-watch",
+      "path": "/use-cases/config-drift-sentinel",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3694,7 +3694,7 @@
     },
     {
       "selector": "site.config.ts#page:434",
-      "path": "/use-cases/t1-social-repurpose",
+      "path": "/use-cases/contract-guard",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3702,7 +3702,7 @@
     },
     {
       "selector": "site.config.ts#page:435",
-      "path": "/use-cases/t1-standup-digest",
+      "path": "/use-cases/csv-chart-report",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3710,7 +3710,7 @@
     },
     {
       "selector": "site.config.ts#page:436",
-      "path": "/use-cases/t2-bookmark-triage",
+      "path": "/use-cases/deep-research-brief",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3718,7 +3718,7 @@
     },
     {
       "selector": "site.config.ts#page:437",
-      "path": "/use-cases/t2-contract-guard",
+      "path": "/use-cases/etl-quarantine",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3726,7 +3726,7 @@
     },
     {
       "selector": "site.config.ts#page:438",
-      "path": "/use-cases/t2-csv-chart-report",
+      "path": "/use-cases/image-fx-batch",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3734,7 +3734,7 @@
     },
     {
       "selector": "site.config.ts#page:439",
-      "path": "/use-cases/t2-etl-quarantine",
+      "path": "/use-cases/incident-war-room",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3742,7 +3742,7 @@
     },
     {
       "selector": "site.config.ts#page:440",
-      "path": "/use-cases/t2-invoice-chaser",
+      "path": "/use-cases/invoice-chaser",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3750,7 +3750,7 @@
     },
     {
       "selector": "site.config.ts#page:441",
-      "path": "/use-cases/t2-model-bench",
+      "path": "/use-cases/localization-factory",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3758,7 +3758,7 @@
     },
     {
       "selector": "site.config.ts#page:442",
-      "path": "/use-cases/t2-release-notes",
+      "path": "/use-cases/meeting-actions",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3766,7 +3766,7 @@
     },
     {
       "selector": "site.config.ts#page:443",
-      "path": "/use-cases/t2-release-radar",
+      "path": "/use-cases/model-bench",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3774,7 +3774,7 @@
     },
     {
       "selector": "site.config.ts#page:444",
-      "path": "/use-cases/t2-seo-content-brief",
+      "path": "/use-cases/og-images",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3782,7 +3782,7 @@
     },
     {
       "selector": "site.config.ts#page:445",
-      "path": "/use-cases/t2-support-triage",
+      "path": "/use-cases/pr-review-fanout",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3790,7 +3790,7 @@
     },
     {
       "selector": "site.config.ts#page:446",
-      "path": "/use-cases/t2-transcript-shownotes",
+      "path": "/use-cases/price-watch",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3798,7 +3798,7 @@
     },
     {
       "selector": "site.config.ts#page:447",
-      "path": "/use-cases/t3-competitor-radar",
+      "path": "/use-cases/release-notes",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3806,7 +3806,7 @@
     },
     {
       "selector": "site.config.ts#page:448",
-      "path": "/use-cases/t3-config-drift-sentinel",
+      "path": "/use-cases/release-radar",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3814,7 +3814,7 @@
     },
     {
       "selector": "site.config.ts#page:449",
-      "path": "/use-cases/t3-localization-factory",
+      "path": "/use-cases/release-train",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3822,7 +3822,7 @@
     },
     {
       "selector": "site.config.ts#page:450",
-      "path": "/use-cases/t3-pr-review-fanout",
+      "path": "/use-cases/resume-screener",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3830,7 +3830,7 @@
     },
     {
       "selector": "site.config.ts#page:451",
-      "path": "/use-cases/t3-resume-screener",
+      "path": "/use-cases/seo-content-brief",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3838,7 +3838,7 @@
     },
     {
       "selector": "site.config.ts#page:452",
-      "path": "/use-cases/t4-ceo-monday-brief",
+      "path": "/use-cases/social-repurpose",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3846,7 +3846,7 @@
     },
     {
       "selector": "site.config.ts#page:453",
-      "path": "/use-cases/t4-deep-research-brief",
+      "path": "/use-cases/standup-digest",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3854,7 +3854,7 @@
     },
     {
       "selector": "site.config.ts#page:454",
-      "path": "/use-cases/t4-incident-war-room",
+      "path": "/use-cases/support-triage",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",
@@ -3862,7 +3862,7 @@
     },
     {
       "selector": "site.config.ts#page:455",
-      "path": "/use-cases/t4-release-train",
+      "path": "/use-cases/transcript-shownotes",
       "route_selector": "src/routes.tsx#route:68",
       "component": "UseCaseRoom",
       "feature": "product.use_cases",

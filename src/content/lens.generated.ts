@@ -3491,367 +3491,367 @@ export const LENS_NODES: LensNode[] = [
     "page_exists": true
   },
   {
-    "id": "showcase:t1-image-fx-batch",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "image-fx-batch",
-    "url": "/use-cases/t1-image-fx-batch",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 2
-    }
-  },
-  {
-    "id": "showcase:t1-meeting-actions",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "meeting-actions",
-    "url": "/use-cases/t1-meeting-actions",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 3
-    }
-  },
-  {
-    "id": "showcase:t1-og-images",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "og-images",
-    "url": "/use-cases/t1-og-images",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 1
-    }
-  },
-  {
-    "id": "showcase:t1-price-watch",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "price-watch",
-    "url": "/use-cases/t1-price-watch",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 2
-    }
-  },
-  {
-    "id": "showcase:t1-social-repurpose",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "social-repurpose",
-    "url": "/use-cases/t1-social-repurpose",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 3
-    }
-  },
-  {
-    "id": "showcase:t1-standup-digest",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "standup-digest",
-    "url": "/use-cases/t1-standup-digest",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "1",
-      "waves": 3
-    }
-  },
-  {
-    "id": "showcase:t2-bookmark-triage",
+    "id": "showcase:bookmark-triage",
     "kind": "member",
     "set": "showcases",
     "layer": "proof",
     "title": "bookmark-triage",
-    "url": "/use-cases/t2-bookmark-triage",
+    "url": "/use-cases/bookmark-triage",
     "status": "ratified",
     "opener": null,
     "meta": {
-      "tier": "2",
+      "tier": null,
       "waves": 3
     }
   },
   {
-    "id": "showcase:t2-contract-guard",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "contract-guard",
-    "url": "/use-cases/t2-contract-guard",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 6
-    }
-  },
-  {
-    "id": "showcase:t2-csv-chart-report",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "csv-chart-report",
-    "url": "/use-cases/t2-csv-chart-report",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 5
-    }
-  },
-  {
-    "id": "showcase:t2-etl-quarantine",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "etl-quarantine",
-    "url": "/use-cases/t2-etl-quarantine",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 5
-    }
-  },
-  {
-    "id": "showcase:t2-invoice-chaser",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "invoice-chaser",
-    "url": "/use-cases/t2-invoice-chaser",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 6
-    }
-  },
-  {
-    "id": "showcase:t2-model-bench",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "model-bench",
-    "url": "/use-cases/t2-model-bench",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 3
-    }
-  },
-  {
-    "id": "showcase:t2-release-notes",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "release-notes",
-    "url": "/use-cases/t2-release-notes",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 4
-    }
-  },
-  {
-    "id": "showcase:t2-release-radar",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "release-radar",
-    "url": "/use-cases/t2-release-radar",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 3
-    }
-  },
-  {
-    "id": "showcase:t2-seo-content-brief",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "seo-content-brief",
-    "url": "/use-cases/t2-seo-content-brief",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 4
-    }
-  },
-  {
-    "id": "showcase:t2-support-triage",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "support-triage",
-    "url": "/use-cases/t2-support-triage",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 4
-    }
-  },
-  {
-    "id": "showcase:t2-transcript-shownotes",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "transcript-shownotes",
-    "url": "/use-cases/t2-transcript-shownotes",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "2",
-      "waves": 4
-    }
-  },
-  {
-    "id": "showcase:t3-competitor-radar",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "competitor-radar",
-    "url": "/use-cases/t3-competitor-radar",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "3",
-      "waves": 5
-    }
-  },
-  {
-    "id": "showcase:t3-config-drift-sentinel",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "config-drift-sentinel",
-    "url": "/use-cases/t3-config-drift-sentinel",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "3",
-      "waves": 5
-    }
-  },
-  {
-    "id": "showcase:t3-localization-factory",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "localization-factory",
-    "url": "/use-cases/t3-localization-factory",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "3",
-      "waves": 6
-    }
-  },
-  {
-    "id": "showcase:t3-pr-review-fanout",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "pr-review-fanout",
-    "url": "/use-cases/t3-pr-review-fanout",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "3",
-      "waves": 6
-    }
-  },
-  {
-    "id": "showcase:t3-resume-screener",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "resume-screener",
-    "url": "/use-cases/t3-resume-screener",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "3",
-      "waves": 8
-    }
-  },
-  {
-    "id": "showcase:t4-ceo-monday-brief",
+    "id": "showcase:ceo-monday-brief",
     "kind": "member",
     "set": "showcases",
     "layer": "proof",
     "title": "ceo-monday-brief",
-    "url": "/use-cases/t4-ceo-monday-brief",
+    "url": "/use-cases/ceo-monday-brief",
     "status": "ratified",
     "opener": null,
     "meta": {
-      "tier": "4",
+      "tier": null,
       "waves": 7
     }
   },
   {
-    "id": "showcase:t4-deep-research-brief",
+    "id": "showcase:competitor-radar",
     "kind": "member",
     "set": "showcases",
     "layer": "proof",
-    "title": "deep-research-brief",
-    "url": "/use-cases/t4-deep-research-brief",
+    "title": "competitor-radar",
+    "url": "/use-cases/competitor-radar",
     "status": "ratified",
     "opener": null,
     "meta": {
-      "tier": "4",
-      "waves": 4
-    }
-  },
-  {
-    "id": "showcase:t4-incident-war-room",
-    "kind": "member",
-    "set": "showcases",
-    "layer": "proof",
-    "title": "incident-war-room",
-    "url": "/use-cases/t4-incident-war-room",
-    "status": "ratified",
-    "opener": null,
-    "meta": {
-      "tier": "4",
+      "tier": null,
       "waves": 8
     }
   },
   {
-    "id": "showcase:t4-release-train",
+    "id": "showcase:config-drift-sentinel",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "config-drift-sentinel",
+    "url": "/use-cases/config-drift-sentinel",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 6
+    }
+  },
+  {
+    "id": "showcase:contract-guard",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "contract-guard",
+    "url": "/use-cases/contract-guard",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 6
+    }
+  },
+  {
+    "id": "showcase:csv-chart-report",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "csv-chart-report",
+    "url": "/use-cases/csv-chart-report",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 5
+    }
+  },
+  {
+    "id": "showcase:deep-research-brief",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "deep-research-brief",
+    "url": "/use-cases/deep-research-brief",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 4
+    }
+  },
+  {
+    "id": "showcase:etl-quarantine",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "etl-quarantine",
+    "url": "/use-cases/etl-quarantine",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 5
+    }
+  },
+  {
+    "id": "showcase:image-fx-batch",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "image-fx-batch",
+    "url": "/use-cases/image-fx-batch",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:incident-war-room",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "incident-war-room",
+    "url": "/use-cases/incident-war-room",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 9
+    }
+  },
+  {
+    "id": "showcase:invoice-chaser",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "invoice-chaser",
+    "url": "/use-cases/invoice-chaser",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 6
+    }
+  },
+  {
+    "id": "showcase:localization-factory",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "localization-factory",
+    "url": "/use-cases/localization-factory",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 6
+    }
+  },
+  {
+    "id": "showcase:meeting-actions",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "meeting-actions",
+    "url": "/use-cases/meeting-actions",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:model-bench",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "model-bench",
+    "url": "/use-cases/model-bench",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:og-images",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "og-images",
+    "url": "/use-cases/og-images",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 1
+    }
+  },
+  {
+    "id": "showcase:pr-review-fanout",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "pr-review-fanout",
+    "url": "/use-cases/pr-review-fanout",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 6
+    }
+  },
+  {
+    "id": "showcase:price-watch",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "price-watch",
+    "url": "/use-cases/price-watch",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 2
+    }
+  },
+  {
+    "id": "showcase:release-notes",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "release-notes",
+    "url": "/use-cases/release-notes",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 4
+    }
+  },
+  {
+    "id": "showcase:release-radar",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "release-radar",
+    "url": "/use-cases/release-radar",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:release-train",
     "kind": "member",
     "set": "showcases",
     "layer": "proof",
     "title": "release-train",
-    "url": "/use-cases/t4-release-train",
+    "url": "/use-cases/release-train",
     "status": "ratified",
     "opener": null,
     "meta": {
-      "tier": "4",
-      "waves": 10
+      "tier": null,
+      "waves": 13
+    }
+  },
+  {
+    "id": "showcase:resume-screener",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "resume-screener",
+    "url": "/use-cases/resume-screener",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 8
+    }
+  },
+  {
+    "id": "showcase:seo-content-brief",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "seo-content-brief",
+    "url": "/use-cases/seo-content-brief",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 4
+    }
+  },
+  {
+    "id": "showcase:social-repurpose",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "social-repurpose",
+    "url": "/use-cases/social-repurpose",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:standup-digest",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "standup-digest",
+    "url": "/use-cases/standup-digest",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 3
+    }
+  },
+  {
+    "id": "showcase:support-triage",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "support-triage",
+    "url": "/use-cases/support-triage",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 4
+    }
+  },
+  {
+    "id": "showcase:transcript-shownotes",
+    "kind": "member",
+    "set": "showcases",
+    "layer": "proof",
+    "title": "transcript-shownotes",
+    "url": "/use-cases/transcript-shownotes",
+    "status": "ratified",
+    "opener": null,
+    "meta": {
+      "tier": null,
+      "waves": 4
     }
   },
   {
@@ -3914,7 +3914,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
-      "sha256": "b9b45c252b029f97fb2769f4077b202654d31bc6b8efed67948f131987a2000c",
+      "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1",
       "file": "agent-loop.nika.yaml"
     }
   },
@@ -3926,9 +3926,9 @@ export const LENS_NODES: LensNode[] = [
     "title": "api-upload-and-create",
     "url": "/templates/api-upload-and-create",
     "status": "ratified",
-    "opener": "call a product API: upload a file, then create from it",
+    "opener": "call a product API: upload a file and create from it",
     "meta": {
-      "sha256": "0dae4b9b7a4f9fcd6b1038a5452f776148549468fd8ea1408fff224599709ea2",
+      "sha256": "530b432962bc3b52a262bd4e6208474fe5295ae6b353ba47d457a3d2b139e77b",
       "file": "api-upload-and-create.nika.yaml"
     }
   },
@@ -3942,7 +3942,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
-      "sha256": "fd8a0994a95c2b7f714659efa0b4ced3a6a655f1414446f90970ed68805a390d",
+      "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231",
       "file": "chain.nika.yaml"
     }
   },
@@ -3956,7 +3956,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "read a system's state (docker · kubectl · gh), explain it, keep the report",
     "meta": {
-      "sha256": "8f2281ce8c816fc508c608a8a7ef0b61645923f6d7be3d0640af68d4f5da1d44",
+      "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd",
       "file": "docker-report.nika.yaml"
     }
   },
@@ -3970,7 +3970,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "only what changed since last run · survive bad input",
     "meta": {
-      "sha256": "d131a9011228bdce981210dedc980b98d409aead1c1d297aa34530a97d5fd47c",
+      "sha256": "3172ef4be066dcf4d0b250e24c900626d5e30c3097c9456ad214a38d8e25f685",
       "file": "etl-state.nika.yaml"
     }
   },
@@ -3984,7 +3984,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
-      "sha256": "777ab461a3984b3618e8beb0b3493776e7a3e6219ee7262f565115a8d9c45743",
+      "sha256": "78c79d1bae091e1f117d0a1d2277b85316824d77022f73aa4707871e1eb802ef",
       "file": "fanout.nika.yaml"
     }
   },
@@ -3998,7 +3998,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "watch X, act when Y",
     "meta": {
-      "sha256": "33358d359b925aacd188df6012dcff68a03f3d4c393eb200620d1611a3e128ae",
+      "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6",
       "file": "gate-and-act.nika.yaml"
     }
   },
@@ -4012,7 +4012,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "anything irreversible (deploy · send · publish)",
     "meta": {
-      "sha256": "fde57f64917c0d1727557314043a4ba03f8920caef16e5250fc7fa3ddcf308e5",
+      "sha256": "a28beb3d1edf92dbc89c4c20a040c35b9a3cc21f7dea7aa01221844a8b9dcf96",
       "file": "human-gated-ship.nika.yaml"
     }
   },
@@ -4026,7 +4026,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
-      "sha256": "0a5213baa376e0f16bdd98e8c985aa692f3a5fe48b413fd328f6f40852bb1da7",
+      "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def",
       "file": "media-asset-pack.nika.yaml"
     }
   },
@@ -4040,7 +4040,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "understand a site (domain · theme · assets) from a URL",
     "meta": {
-      "sha256": "e272f97ca1e4186f1610c7299009025390412906196bc49cec375f2173022156",
+      "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845",
       "file": "website-brief.nika.yaml"
     }
   },
@@ -6969,6 +6969,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:agent-loop",
+    "to": "word:max_tokens",
+    "kind": "carries"
+  },
+  {
+    "from": "template:agent-loop",
     "to": "word:max_tokens_total",
     "kind": "carries"
   },
@@ -7064,17 +7069,27 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:api-upload-and-create",
-    "to": "word:model",
-    "kind": "carries"
-  },
-  {
-    "from": "template:api-upload-and-create",
     "to": "word:nika",
     "kind": "carries"
   },
   {
     "from": "template:api-upload-and-create",
+    "to": "word:on_error",
+    "kind": "carries"
+  },
+  {
+    "from": "template:api-upload-and-create",
     "to": "word:outputs",
+    "kind": "carries"
+  },
+  {
+    "from": "template:api-upload-and-create",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:api-upload-and-create",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -7094,7 +7109,7 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:api-upload-and-create",
-    "to": "word:with",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7134,12 +7149,27 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:chain",
+    "to": "word:max_tokens",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
     "to": "word:model",
     "kind": "carries"
   },
   {
     "from": "template:chain",
     "to": "word:nika",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
+    "to": "word:on_codes",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
+    "to": "word:on_error",
     "kind": "carries"
   },
   {
@@ -7155,6 +7185,11 @@ const LENS_EDGES_0: LensEdge[] = [
   {
     "from": "template:chain",
     "to": "word:prompt",
+    "kind": "carries"
+  },
+  {
+    "from": "template:chain",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -7234,6 +7269,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:docker-report",
+    "to": "word:on_error",
+    "kind": "carries"
+  },
+  {
+    "from": "template:docker-report",
     "to": "word:outputs",
     "kind": "carries"
   },
@@ -7245,6 +7285,11 @@ const LENS_EDGES_0: LensEdge[] = [
   {
     "from": "template:docker-report",
     "to": "word:prompt",
+    "kind": "carries"
+  },
+  {
+    "from": "template:docker-report",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -7324,6 +7369,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:etl-state",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:etl-state",
     "to": "word:recover",
     "kind": "carries"
   },
@@ -7335,6 +7385,11 @@ const LENS_EDGES_0: LensEdge[] = [
   {
     "from": "template:etl-state",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:etl-state",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7414,6 +7469,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:fanout",
+    "to": "word:max_tokens",
+    "kind": "carries"
+  },
+  {
+    "from": "template:fanout",
     "to": "word:model",
     "kind": "carries"
   },
@@ -7450,6 +7510,11 @@ const LENS_EDGES_0: LensEdge[] = [
   {
     "from": "template:fanout",
     "to": "word:retry",
+    "kind": "carries"
+  },
+  {
+    "from": "template:fanout",
+    "to": "word:run",
     "kind": "carries"
   },
   {
@@ -7529,6 +7594,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:gate-and-act",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:gate-and-act",
     "to": "word:recover",
     "kind": "carries"
   },
@@ -7545,6 +7615,11 @@ const LENS_EDGES_0: LensEdge[] = [
   {
     "from": "template:gate-and-act",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:gate-and-act",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7609,12 +7684,25 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:human-gated-ship",
+    "to": "word:on_error",
+    "kind": "carries"
+  },
+  {
+    "from": "template:human-gated-ship",
     "to": "word:outputs",
     "kind": "carries"
   },
   {
     "from": "template:human-gated-ship",
     "to": "word:permits",
+    "kind": "carries"
+  }
+]
+
+const LENS_EDGES_1: LensEdge[] = [
+  {
+    "from": "template:human-gated-ship",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -7696,10 +7784,7 @@ const LENS_EDGES_0: LensEdge[] = [
     "from": "template:media-asset-pack",
     "to": "word:nika",
     "kind": "carries"
-  }
-]
-
-const LENS_EDGES_1: LensEdge[] = [
+  },
   {
     "from": "template:media-asset-pack",
     "to": "word:outputs",
@@ -7792,12 +7877,27 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "template:website-brief",
+    "to": "word:on_error",
+    "kind": "carries"
+  },
+  {
+    "from": "template:website-brief",
     "to": "word:outputs",
     "kind": "carries"
   },
   {
     "from": "template:website-brief",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:website-brief",
     "to": "word:prompt",
+    "kind": "carries"
+  },
+  {
+    "from": "template:website-brief",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -7813,6 +7913,11 @@ const LENS_EDGES_1: LensEdge[] = [
   {
     "from": "template:website-brief",
     "to": "word:tool",
+    "kind": "carries"
+  },
+  {
+    "from": "template:website-brief",
+    "to": "word:tools",
     "kind": "carries"
   },
   {
@@ -7987,7 +8092,7 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "template:agent-loop",
-    "to": "tool:read",
+    "to": "tool:jq",
     "kind": "grants"
   },
   {
@@ -8023,6 +8128,11 @@ const LENS_EDGES_1: LensEdge[] = [
   {
     "from": "template:etl-state",
     "to": "tool:json_diff",
+    "kind": "grants"
+  },
+  {
+    "from": "template:etl-state",
+    "to": "tool:prompt",
     "kind": "grants"
   },
   {
@@ -9201,132 +9311,132 @@ const LENS_EDGES_1: LensEdge[] = [
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-image-fx-batch",
+    "from": "showcase:bookmark-triage",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-meeting-actions",
+    "from": "showcase:ceo-monday-brief",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-og-images",
+    "from": "showcase:competitor-radar",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-price-watch",
+    "from": "showcase:config-drift-sentinel",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-social-repurpose",
+    "from": "showcase:contract-guard",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t1-standup-digest",
+    "from": "showcase:csv-chart-report",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-bookmark-triage",
+    "from": "showcase:deep-research-brief",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-contract-guard",
+    "from": "showcase:etl-quarantine",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-csv-chart-report",
+    "from": "showcase:image-fx-batch",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-etl-quarantine",
+    "from": "showcase:incident-war-room",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-invoice-chaser",
+    "from": "showcase:invoice-chaser",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-model-bench",
+    "from": "showcase:localization-factory",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-release-notes",
+    "from": "showcase:meeting-actions",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-release-radar",
+    "from": "showcase:model-bench",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-seo-content-brief",
+    "from": "showcase:og-images",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-support-triage",
+    "from": "showcase:pr-review-fanout",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t2-transcript-shownotes",
+    "from": "showcase:price-watch",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t3-competitor-radar",
+    "from": "showcase:release-notes",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t3-config-drift-sentinel",
+    "from": "showcase:release-radar",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t3-localization-factory",
+    "from": "showcase:release-train",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t3-pr-review-fanout",
+    "from": "showcase:resume-screener",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t3-resume-screener",
+    "from": "showcase:seo-content-brief",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:social-repurpose",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t4-deep-research-brief",
+    "from": "showcase:standup-digest",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:support-triage",
     "to": "set:showcases",
     "kind": "member-of"
   },
   {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:transcript-shownotes",
     "to": "set:showcases",
     "kind": "member-of"
   },
@@ -9589,7 +9699,10 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "type:integer",
     "to": "set:types",
     "kind": "member-of"
-  },
+  }
+]
+
+const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "type:null",
     "to": "set:types",
@@ -9699,10 +9812,7 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "word:declassify",
     "to": "set:words",
     "kind": "member-of"
-  }
-]
-
-const LENS_EDGES_2: LensEdge[] = [
+  },
   {
     "from": "word:decode",
     "to": "set:words",
@@ -11074,745 +11184,795 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "projects-to"
   },
   {
-    "from": "showcase:t1-image-fx-batch",
-    "to": "tool:glob",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-image-fx-batch",
-    "to": "tool:image_fx",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-image-fx-batch",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-meeting-actions",
-    "to": "tool:log",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-meeting-actions",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-meeting-actions",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-meeting-actions",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-meeting-actions",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-og-images",
-    "to": "tool:image_generate",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-og-images",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-price-watch",
+    "from": "showcase:bookmark-triage",
     "to": "tool:fetch",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t1-price-watch",
-    "to": "tool:notify",
+    "from": "showcase:bookmark-triage",
+    "to": "tool:jq",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t1-price-watch",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-social-repurpose",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-social-repurpose",
+    "from": "showcase:bookmark-triage",
     "to": "tool:write",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t1-social-repurpose",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-social-repurpose",
+    "from": "showcase:bookmark-triage",
     "to": "verb:invoke",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t1-standup-digest",
+    "from": "showcase:ceo-monday-brief",
+    "to": "tool:convert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:date",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t1-standup-digest",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-standup-digest",
-    "to": "verb:exec",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-standup-digest",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t1-standup-digest",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-bookmark-triage",
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:fetch",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-bookmark-triage",
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:jq",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-bookmark-triage",
-    "to": "tool:write",
+    "from": "showcase:ceo-monday-brief",
+    "to": "tool:notify",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-bookmark-triage",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "tool:assert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "tool:validate",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-contract-guard",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "tool:chart",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "tool:convert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-csv-chart-report",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "tool:convert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "tool:validate",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-etl-quarantine",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-invoice-chaser",
-    "to": "tool:convert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-invoice-chaser",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-invoice-chaser",
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:prompt",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-invoice-chaser",
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:read",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-invoice-chaser",
+    "from": "showcase:ceo-monday-brief",
     "to": "tool:write",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-invoice-chaser",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-invoice-chaser",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-model-bench",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-model-bench",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-model-bench",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-model-bench",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-notes",
-    "to": "tool:edit",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-notes",
-    "to": "tool:notify",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-notes",
+    "from": "showcase:ceo-monday-brief",
     "to": "verb:exec",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-release-notes",
+    "from": "showcase:ceo-monday-brief",
     "to": "verb:infer",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-release-notes",
+    "from": "showcase:ceo-monday-brief",
     "to": "verb:invoke",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t2-release-radar",
-    "to": "tool:fetch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "tool:json_diff",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-release-radar",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-seo-content-brief",
-    "to": "tool:fetch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-seo-content-brief",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-seo-content-brief",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-seo-content-brief",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "tool:notify",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "tool:uuid",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-support-triage",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-transcript-shownotes",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-transcript-shownotes",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-transcript-shownotes",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-transcript-shownotes",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t2-transcript-shownotes",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-competitor-radar",
-    "to": "tool:fetch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-competitor-radar",
-    "to": "tool:notify",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-competitor-radar",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-competitor-radar",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-competitor-radar",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:emit",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:fetch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:hash",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:json_diff",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:json_merge_patch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:notify",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-config-drift-sentinel",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "tool:glob",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-localization-factory",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "tool:grep",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "verb:agent",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "verb:exec",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-pr-review-fanout",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "tool:glob",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "tool:jq",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t3-resume-screener",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-ceo-monday-brief",
-    "to": "tool:convert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:competitor-radar",
     "to": "tool:date",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:competitor-radar",
+    "to": "tool:emit",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:competitor-radar",
     "to": "tool:fetch",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
-    "to": "tool:inspect",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:competitor-radar",
     "to": "tool:jq",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
-    "to": "tool:notify",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-ceo-monday-brief",
-    "to": "tool:read",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:competitor-radar",
     "to": "tool:write",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:competitor-radar",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:competitor-radar",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:emit",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:fetch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:hash",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:json_diff",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:json_merge_patch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:notify",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:config-drift-sentinel",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "tool:assert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "tool:validate",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:contract-guard",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "tool:chart",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "tool:convert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:csv-chart-report",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:deep-research-brief",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:deep-research-brief",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:deep-research-brief",
+    "to": "verb:agent",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:deep-research-brief",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:deep-research-brief",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "tool:convert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "tool:validate",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:etl-quarantine",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:image-fx-batch",
+    "to": "tool:glob",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:image-fx-batch",
+    "to": "tool:image_fx",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:image-fx-batch",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:image-fx-batch",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:assert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:fetch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:notify",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:prompt",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:wait",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
     "to": "verb:exec",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-ceo-monday-brief",
+    "from": "showcase:incident-war-room",
     "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:incident-war-room",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "tool:convert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "tool:prompt",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:invoice-chaser",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "tool:glob",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:localization-factory",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:meeting-actions",
+    "to": "tool:log",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:meeting-actions",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:meeting-actions",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:meeting-actions",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:meeting-actions",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:model-bench",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:model-bench",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:model-bench",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:model-bench",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:og-images",
+    "to": "tool:image_generate",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:og-images",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "tool:grep",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "verb:agent",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "verb:exec",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:price-watch",
+    "to": "tool:fetch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:price-watch",
+    "to": "tool:notify",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:price-watch",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-notes",
+    "to": "tool:edit",
     "kind": "witnesses"
   }
 ]
 
 const LENS_EDGES_3: LensEdge[] = [
   {
-    "from": "showcase:t4-ceo-monday-brief",
-    "to": "verb:invoke",
+    "from": "showcase:release-notes",
+    "to": "tool:notify",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-deep-research-brief",
-    "to": "tool:write",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-deep-research-brief",
-    "to": "verb:agent",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-deep-research-brief",
-    "to": "verb:infer",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-deep-research-brief",
-    "to": "verb:invoke",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-incident-war-room",
-    "to": "tool:assert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-incident-war-room",
-    "to": "tool:emit",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-incident-war-room",
-    "to": "tool:fetch",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:release-notes",
     "to": "tool:read",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-incident-war-room",
-    "to": "tool:wait",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:release-notes",
     "to": "tool:write",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:release-notes",
     "to": "verb:exec",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:release-notes",
     "to": "verb:infer",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-incident-war-room",
+    "from": "showcase:release-notes",
     "to": "verb:invoke",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-release-train",
-    "to": "tool:assert",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-release-train",
-    "to": "tool:date",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-release-train",
-    "to": "tool:emit",
-    "kind": "witnesses"
-  },
-  {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:release-radar",
     "to": "tool:fetch",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:release-radar",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "tool:json_diff",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
+    "to": "tool:assert",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
+    "to": "tool:date",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
+    "to": "tool:emit",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
+    "to": "tool:fetch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
     "to": "tool:prompt",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:release-train",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-train",
     "to": "tool:wait",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:release-train",
     "to": "verb:exec",
     "kind": "witnesses"
   },
   {
-    "from": "showcase:t4-release-train",
+    "from": "showcase:release-train",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "tool:glob",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:resume-screener",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:seo-content-brief",
+    "to": "tool:fetch",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:seo-content-brief",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:seo-content-brief",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:seo-content-brief",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:social-repurpose",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:social-repurpose",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:social-repurpose",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:social-repurpose",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:standup-digest",
+    "to": "tool:date",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:standup-digest",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:standup-digest",
+    "to": "verb:exec",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:standup-digest",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:standup-digest",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "tool:notify",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "tool:uuid",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:support-triage",
+    "to": "verb:invoke",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:transcript-shownotes",
+    "to": "tool:jq",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:transcript-shownotes",
+    "to": "tool:read",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:transcript-shownotes",
+    "to": "tool:write",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:transcript-shownotes",
+    "to": "verb:infer",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:transcript-shownotes",
     "to": "verb:invoke",
     "kind": "witnesses"
   }

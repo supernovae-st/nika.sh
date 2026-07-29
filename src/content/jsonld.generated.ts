@@ -915,7 +915,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/templates/api-upload-and-create",
           "termCode": "api-upload-and-create",
           "name": "api-upload-and-create",
-          "description": "call a product API: upload a file, then create from it"
+          "description": "call a product API: upload a file and create from it"
         },
         {
           "@type": "DefinedTerm",
@@ -2343,159 +2343,159 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-image-fx-batch",
-          "termCode": "image-fx-batch",
-          "name": "image-fx-batch"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-meeting-actions",
-          "termCode": "meeting-actions",
-          "name": "meeting-actions"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-og-images",
-          "termCode": "og-images",
-          "name": "og-images"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-price-watch",
-          "termCode": "price-watch",
-          "name": "price-watch"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-social-repurpose",
-          "termCode": "social-repurpose",
-          "name": "social-repurpose"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t1-standup-digest",
-          "termCode": "standup-digest",
-          "name": "standup-digest"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-bookmark-triage",
+          "@id": "https://nika.sh/use-cases/bookmark-triage",
           "termCode": "bookmark-triage",
           "name": "bookmark-triage"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-contract-guard",
-          "termCode": "contract-guard",
-          "name": "contract-guard"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-csv-chart-report",
-          "termCode": "csv-chart-report",
-          "name": "csv-chart-report"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-etl-quarantine",
-          "termCode": "etl-quarantine",
-          "name": "etl-quarantine"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-invoice-chaser",
-          "termCode": "invoice-chaser",
-          "name": "invoice-chaser"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-model-bench",
-          "termCode": "model-bench",
-          "name": "model-bench"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-release-notes",
-          "termCode": "release-notes",
-          "name": "release-notes"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-release-radar",
-          "termCode": "release-radar",
-          "name": "release-radar"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-seo-content-brief",
-          "termCode": "seo-content-brief",
-          "name": "seo-content-brief"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-support-triage",
-          "termCode": "support-triage",
-          "name": "support-triage"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t2-transcript-shownotes",
-          "termCode": "transcript-shownotes",
-          "name": "transcript-shownotes"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t3-competitor-radar",
-          "termCode": "competitor-radar",
-          "name": "competitor-radar"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t3-config-drift-sentinel",
-          "termCode": "config-drift-sentinel",
-          "name": "config-drift-sentinel"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t3-localization-factory",
-          "termCode": "localization-factory",
-          "name": "localization-factory"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t3-pr-review-fanout",
-          "termCode": "pr-review-fanout",
-          "name": "pr-review-fanout"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t3-resume-screener",
-          "termCode": "resume-screener",
-          "name": "resume-screener"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t4-ceo-monday-brief",
+          "@id": "https://nika.sh/use-cases/ceo-monday-brief",
           "termCode": "ceo-monday-brief",
           "name": "ceo-monday-brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t4-deep-research-brief",
+          "@id": "https://nika.sh/use-cases/competitor-radar",
+          "termCode": "competitor-radar",
+          "name": "competitor-radar"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/config-drift-sentinel",
+          "termCode": "config-drift-sentinel",
+          "name": "config-drift-sentinel"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/contract-guard",
+          "termCode": "contract-guard",
+          "name": "contract-guard"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/csv-chart-report",
+          "termCode": "csv-chart-report",
+          "name": "csv-chart-report"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/deep-research-brief",
           "termCode": "deep-research-brief",
           "name": "deep-research-brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t4-incident-war-room",
+          "@id": "https://nika.sh/use-cases/etl-quarantine",
+          "termCode": "etl-quarantine",
+          "name": "etl-quarantine"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/image-fx-batch",
+          "termCode": "image-fx-batch",
+          "name": "image-fx-batch"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/incident-war-room",
           "termCode": "incident-war-room",
           "name": "incident-war-room"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/t4-release-train",
+          "@id": "https://nika.sh/use-cases/invoice-chaser",
+          "termCode": "invoice-chaser",
+          "name": "invoice-chaser"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/localization-factory",
+          "termCode": "localization-factory",
+          "name": "localization-factory"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/meeting-actions",
+          "termCode": "meeting-actions",
+          "name": "meeting-actions"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/model-bench",
+          "termCode": "model-bench",
+          "name": "model-bench"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/og-images",
+          "termCode": "og-images",
+          "name": "og-images"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/pr-review-fanout",
+          "termCode": "pr-review-fanout",
+          "name": "pr-review-fanout"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/price-watch",
+          "termCode": "price-watch",
+          "name": "price-watch"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/release-notes",
+          "termCode": "release-notes",
+          "name": "release-notes"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/release-radar",
+          "termCode": "release-radar",
+          "name": "release-radar"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/release-train",
           "termCode": "release-train",
           "name": "release-train"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/resume-screener",
+          "termCode": "resume-screener",
+          "name": "resume-screener"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/seo-content-brief",
+          "termCode": "seo-content-brief",
+          "name": "seo-content-brief"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/social-repurpose",
+          "termCode": "social-repurpose",
+          "name": "social-repurpose"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/standup-digest",
+          "termCode": "standup-digest",
+          "name": "standup-digest"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/support-triage",
+          "termCode": "support-triage",
+          "name": "support-triage"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/use-cases/transcript-shownotes",
+          "termCode": "transcript-shownotes",
+          "name": "transcript-shownotes"
         }
       ]
     }

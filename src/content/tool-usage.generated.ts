@@ -30,7 +30,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 54
+      "firstLine": 107
     },
     "templates": [
       "agent-loop",
@@ -102,12 +102,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "done": {
     "bare": "done",
-    "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # The done-contract belongs IN the prompt: the final message must\n      # carry the schema'd shape, so SAY so — a live model that is not\n      # told finishes in prose and fails NIKA-INFER-002 (proven on GPT).\n      system: \"Work the plan step by step. When finished, reply with ONLY your final result as an object carrying a `findings` array (one short string each), then call nika:done.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        - \"nika:read\"\n        - \"nika:done\"\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
+    "yaml": "  execute:\n    with:\n      steps: ${{ tasks.plan.output.steps }}\n    agent:\n      # Say what the JOB is. Do NOT describe the output shape.\n      #\n      # The engine binds `schema:` to the FINAL answer: a free-text answer\n      # that does not conform is RE-ASKED with the schema wired, bounded by a\n      # retry budget. Measured on ollama/qwen3.5:4b — this task, with zero\n      # shape instruction, returns a clean typed object.\n      #\n      # Hand-instructing \"reply with the object, then call nika:done\" is\n      # actively harmful: a `nika:done` carrying `result:` is validated\n      # DIRECTLY and is NEVER re-asked (nika-verb-agent/src/lib.rs · \"a miss\n      # is a verdict, never a re-ask\"), so a model that hands its JSON back\n      # as a *string* dies NIKA-INFER-002 with the budget already spent.\n      # Measured twice on that exact instruction. Let the engine own shape.\n      system: \"You are a careful analyst. Work the plan step by step and report what you actually found.\"   # SLOT\n      prompt: \"Plan · ${{ with.steps }}\"\n      tools:                        # SLOT: the MINIMUM grant for the job\n        # Pure compute — this pair needs no filesystem, so the skeleton runs\n        # anywhere. Granting the agent a tool here is only HALF a grant: every\n        # call still crosses the workflow boundary above. Adding `nika:read`\n        # to this list WITHOUT adding `permits.fs.read` fails at run with\n        # `NIKA-SEC-004 · agent tool \"nika:read\" refused by the security\n        # boundary` — measured, mid-loop, after the turns are paid for.\n        - \"nika:jq\"\n        - \"nika:done\"               # the early-exit sentinel · loop-owned\n      max_turns: 15                 # SLOT: the loop bound\n      max_tokens_total: 80000       # SLOT: the spend bound\n      schema:                       # SLOT: the typed final-message contract\n        type: object\n        additionalProperties: false\n        required: [findings]\n        properties:\n          findings: { type: array, items: { type: string } }",
     "source": {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 34
+      "firstLine": 70
     },
     "templates": [
       "agent-loop"
@@ -148,7 +148,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 27
+      "firstLine": 54
     },
     "templates": [
       "gate-and-act",
@@ -167,7 +167,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 25
+      "firstLine": 61
     },
     "templates": [
       "fanout"
@@ -219,7 +219,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 37
+      "firstLine": 66
     },
     "templates": [
       "media-asset-pack"
@@ -247,11 +247,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 47
+      "firstLine": 84
     },
     "templates": [
       "fanout",
       "etl-state",
+      "agent-loop",
       "media-asset-pack"
     ],
     "errorCodes": [
@@ -265,7 +266,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 43
+      "firstLine": 106
     },
     "templates": [
       "etl-state"
@@ -305,7 +306,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 41
+      "firstLine": 68
     },
     "templates": [
       "gate-and-act",
@@ -317,14 +318,15 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "prompt": {
     "bare": "prompt",
-    "yaml": "  human:\n    after:\n      gates: success              # state, no data · no question until the board is green\n    invoke:\n      # the prompt PAUSES the run (exit 4 · not a failure) — answer and resume:\n      #   nika run --resume <trace> --answer human=yes\n      tool: \"nika:prompt\"\n      args:\n        message: \"All gates GREEN. Proceed?\"   # SLOT: the decision, fully informed\n        default: false",
+    "yaml": "  # NEP-0002 · the Rule of Two, as a check. This run holds all three legs at\n  # once: it reads a private file, ingests UNTRUSTED network content, and\n  # persists that content into the very file the NEXT run reads as trusted\n  # state. One human decision has to dominate EVERY path to that write — so the\n  # gate sits before the first network touch, not next to the write (a gate the\n  # fetch can route around dominates nothing). Blocking on purpose: a `default:`\n  # here would disarm it, and the checker knows — measured, adding `default:`\n  # flips TRIFECTA to `✖ NIKA-SEC-009 lethal trifecta complete`.\n  approve:\n    invoke:\n      tool: \"nika:prompt\"\n      args:\n        message: \"Fetch ${{ const.source_url }} and persist it into ${{ const.state_path }}?\"",
     "source": {
       "kind": "template",
-      "template": "human-gated-ship",
-      "file": "human-gated-ship.nika.yaml",
-      "firstLine": 48
+      "template": "etl-state",
+      "file": "etl-state.nika.yaml",
+      "firstLine": 56
     },
     "templates": [
+      "etl-state",
       "human-gated-ship"
     ],
     "errorCodes": [
@@ -333,17 +335,16 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 25
+      "firstLine": 48
     },
     "templates": [
       "chain",
-      "etl-state",
-      "agent-loop"
+      "etl-state"
     ],
     "errorCodes": [
       "NIKA-BUILTIN-001"
@@ -399,12 +400,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "write": {
     "bare": "write",
-    "yaml": "  persist:\n    with:\n      think: ${{ tasks.think.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./output.md\"         # SLOT: destination\n        content: \"${{ with.think }}\"   # ALWAYS pass content · a write without it writes nothing",
+    "yaml": "  persist:\n    with:\n      think: ${{ tasks.think.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"${{ const.destination }}\"   # SLOT: destination · same path as permits.fs.write\n        content: \"${{ with.think }}\"       # ALWAYS pass content · a write without it writes nothing",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 38
+      "firstLine": 75
     },
     "templates": [
       "chain",

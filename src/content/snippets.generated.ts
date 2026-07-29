@@ -157,10 +157,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-image-fx-batch",
+    "id": "snip:showcase:bookmark-triage",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-image-fx-batch.nika.yaml",
+      "artifact": "examples/bookmark-triage.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -173,10 +173,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-meeting-actions",
+    "id": "snip:showcase:ceo-monday-brief",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-meeting-actions.nika.yaml",
+      "artifact": "examples/ceo-monday-brief.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -189,10 +189,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-og-images",
+    "id": "snip:showcase:competitor-radar",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-og-images.nika.yaml",
+      "artifact": "examples/competitor-radar.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -205,10 +205,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-price-watch",
+    "id": "snip:showcase:config-drift-sentinel",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-price-watch.nika.yaml",
+      "artifact": "examples/config-drift-sentinel.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -221,10 +221,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-social-repurpose",
+    "id": "snip:showcase:contract-guard",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-social-repurpose.nika.yaml",
+      "artifact": "examples/contract-guard.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -237,10 +237,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t1-standup-digest",
+    "id": "snip:showcase:csv-chart-report",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t1-standup-digest.nika.yaml",
+      "artifact": "examples/csv-chart-report.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -253,10 +253,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-bookmark-triage",
+    "id": "snip:showcase:deep-research-brief",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-bookmark-triage.nika.yaml",
+      "artifact": "examples/deep-research-brief.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -269,10 +269,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-contract-guard",
+    "id": "snip:showcase:etl-quarantine",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-contract-guard.nika.yaml",
+      "artifact": "examples/etl-quarantine.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -285,10 +285,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-csv-chart-report",
+    "id": "snip:showcase:image-fx-batch",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-csv-chart-report.nika.yaml",
+      "artifact": "examples/image-fx-batch.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -301,10 +301,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-etl-quarantine",
+    "id": "snip:showcase:incident-war-room",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-etl-quarantine.nika.yaml",
+      "artifact": "examples/incident-war-room.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -317,10 +317,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-invoice-chaser",
+    "id": "snip:showcase:invoice-chaser",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-invoice-chaser.nika.yaml",
+      "artifact": "examples/invoice-chaser.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -333,10 +333,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-model-bench",
+    "id": "snip:showcase:localization-factory",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-model-bench.nika.yaml",
+      "artifact": "examples/localization-factory.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -349,10 +349,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-release-notes",
+    "id": "snip:showcase:meeting-actions",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-release-notes.nika.yaml",
+      "artifact": "examples/meeting-actions.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -365,10 +365,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-release-radar",
+    "id": "snip:showcase:model-bench",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-release-radar.nika.yaml",
+      "artifact": "examples/model-bench.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -381,10 +381,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-seo-content-brief",
+    "id": "snip:showcase:og-images",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-seo-content-brief.nika.yaml",
+      "artifact": "examples/og-images.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -397,10 +397,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-support-triage",
+    "id": "snip:showcase:pr-review-fanout",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-support-triage.nika.yaml",
+      "artifact": "examples/pr-review-fanout.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -413,10 +413,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t2-transcript-shownotes",
+    "id": "snip:showcase:price-watch",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t2-transcript-shownotes.nika.yaml",
+      "artifact": "examples/price-watch.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -429,10 +429,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t3-competitor-radar",
+    "id": "snip:showcase:release-notes",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t3-competitor-radar.nika.yaml",
+      "artifact": "examples/release-notes.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -445,10 +445,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t3-config-drift-sentinel",
+    "id": "snip:showcase:release-radar",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t3-config-drift-sentinel.nika.yaml",
+      "artifact": "examples/release-radar.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -461,10 +461,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t3-localization-factory",
+    "id": "snip:showcase:release-train",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t3-localization-factory.nika.yaml",
+      "artifact": "examples/release-train.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -477,10 +477,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t3-pr-review-fanout",
+    "id": "snip:showcase:resume-screener",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t3-pr-review-fanout.nika.yaml",
+      "artifact": "examples/resume-screener.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -493,10 +493,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t3-resume-screener",
+    "id": "snip:showcase:seo-content-brief",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t3-resume-screener.nika.yaml",
+      "artifact": "examples/seo-content-brief.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -509,10 +509,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t4-ceo-monday-brief",
+    "id": "snip:showcase:social-repurpose",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t4-ceo-monday-brief.nika.yaml",
+      "artifact": "examples/social-repurpose.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -525,10 +525,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t4-deep-research-brief",
+    "id": "snip:showcase:standup-digest",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t4-deep-research-brief.nika.yaml",
+      "artifact": "examples/standup-digest.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -541,10 +541,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t4-incident-war-room",
+    "id": "snip:showcase:support-triage",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t4-incident-war-room.nika.yaml",
+      "artifact": "examples/support-triage.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -557,10 +557,10 @@ export const SNIPPETS: SnippetRef[] = [
     ]
   },
   {
-    "id": "snip:showcase:t4-release-train",
+    "id": "snip:showcase:transcript-shownotes",
     "source": {
       "kind": "spec-showcase",
-      "artifact": "examples/showcase/t4-release-train.nika.yaml",
+      "artifact": "examples/transcript-shownotes.nika.yaml",
       "pin": null
     },
     "gates": [
@@ -578,7 +578,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/agent-loop.nika.yaml",
       "pin": null,
-      "sha256": "b9b45c252b029f97fb2769f4077b202654d31bc6b8efed67948f131987a2000c"
+      "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -595,7 +595,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/api-upload-and-create.nika.yaml",
       "pin": null,
-      "sha256": "0dae4b9b7a4f9fcd6b1038a5452f776148549468fd8ea1408fff224599709ea2"
+      "sha256": "530b432962bc3b52a262bd4e6208474fe5295ae6b353ba47d457a3d2b139e77b"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -612,7 +612,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/chain.nika.yaml",
       "pin": null,
-      "sha256": "fd8a0994a95c2b7f714659efa0b4ced3a6a655f1414446f90970ed68805a390d"
+      "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -629,7 +629,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/docker-report.nika.yaml",
       "pin": null,
-      "sha256": "8f2281ce8c816fc508c608a8a7ef0b61645923f6d7be3d0640af68d4f5da1d44"
+      "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -646,7 +646,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/etl-state.nika.yaml",
       "pin": null,
-      "sha256": "d131a9011228bdce981210dedc980b98d409aead1c1d297aa34530a97d5fd47c"
+      "sha256": "3172ef4be066dcf4d0b250e24c900626d5e30c3097c9456ad214a38d8e25f685"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -663,7 +663,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/fanout.nika.yaml",
       "pin": null,
-      "sha256": "777ab461a3984b3618e8beb0b3493776e7a3e6219ee7262f565115a8d9c45743"
+      "sha256": "78c79d1bae091e1f117d0a1d2277b85316824d77022f73aa4707871e1eb802ef"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -680,7 +680,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/gate-and-act.nika.yaml",
       "pin": null,
-      "sha256": "33358d359b925aacd188df6012dcff68a03f3d4c393eb200620d1611a3e128ae"
+      "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -697,7 +697,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/human-gated-ship.nika.yaml",
       "pin": null,
-      "sha256": "fde57f64917c0d1727557314043a4ba03f8920caef16e5250fc7fa3ddcf308e5"
+      "sha256": "a28beb3d1edf92dbc89c4c20a040c35b9a3cc21f7dea7aa01221844a8b9dcf96"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -714,7 +714,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/media-asset-pack.nika.yaml",
       "pin": null,
-      "sha256": "0a5213baa376e0f16bdd98e8c985aa692f3a5fe48b413fd328f6f40852bb1da7"
+      "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",
@@ -731,7 +731,7 @@ export const SNIPPETS: SnippetRef[] = [
       "kind": "spec-template",
       "artifact": "templates/website-brief.nika.yaml",
       "pin": null,
-      "sha256": "e272f97ca1e4186f1610c7299009025390412906196bc49cec375f2173022156"
+      "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845"
     },
     "gates": [
       "templates catalog byte-diff (vitest)",

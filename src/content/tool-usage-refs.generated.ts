@@ -127,6 +127,7 @@ export const TOOL_USAGE_REFS: Record<string, ToolUsageRefs> = {
     "templates": [
       "fanout",
       "etl-state",
+      "agent-loop",
       "media-asset-pack"
     ],
     "errorCodes": [
@@ -164,6 +165,7 @@ export const TOOL_USAGE_REFS: Record<string, ToolUsageRefs> = {
   },
   "prompt": {
     "templates": [
+      "etl-state",
       "human-gated-ship"
     ],
     "errorCodes": [
@@ -173,8 +175,7 @@ export const TOOL_USAGE_REFS: Record<string, ToolUsageRefs> = {
   "read": {
     "templates": [
       "chain",
-      "etl-state",
-      "agent-loop"
+      "etl-state"
     ],
     "errorCodes": [
       "NIKA-BUILTIN-001"

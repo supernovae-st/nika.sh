@@ -23,285 +23,7 @@ export interface ShowcaseDag {
   waves: number
 }
 export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
-  "t1-image-fx-batch": {
-    "tasks": [
-      {
-        "id": "shots",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:glob`",
-        "flags": [],
-        "line0": 21,
-        "line1": 26
-      },
-      {
-        "id": "stylize",
-        "verb": "invoke",
-        "deps": [
-          "shots"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "for each item · call `nika:image_fx`",
-        "flags": [
-          "fan-out · ≤4 in flight"
-        ],
-        "line0": 27,
-        "line1": 40
-      }
-    ],
-    "outputs": [
-      "rendered"
-    ],
-    "waves": 2
-  },
-  "t1-meeting-actions": {
-    "tasks": [
-      {
-        "id": "transcript",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 17,
-        "line1": 20
-      },
-      {
-        "id": "extract",
-        "verb": "infer",
-        "deps": [
-          "transcript"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 22,
-        "line1": 41
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "extract"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 43,
-        "line1": 50
-      },
-      {
-        "id": "trace",
-        "verb": "invoke",
-        "deps": [
-          "extract"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:log`",
-        "flags": [],
-        "line0": 52,
-        "line1": 59
-      }
-    ],
-    "outputs": [
-      "actions"
-    ],
-    "waves": 3
-  },
-  "t1-og-images": {
-    "tasks": [
-      {
-        "id": "hero",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:image_generate`",
-        "flags": [],
-        "line0": 10,
-        "line1": 20
-      }
-    ],
-    "outputs": [
-      "paths",
-      "manifest"
-    ],
-    "waves": 1
-  },
-  "t1-price-watch": {
-    "tasks": [
-      {
-        "id": "check",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 20,
-        "line1": 33
-      },
-      {
-        "id": "alert",
-        "verb": "invoke",
-        "deps": [
-          "check"
-        ],
-        "wave": 1,
-        "gate": "when",
-        "gloss": "call `nika:notify` · only if its condition holds",
-        "flags": [
-          "conditional"
-        ],
-        "line0": 35,
-        "line1": 46
-      }
-    ],
-    "outputs": [
-      "price"
-    ],
-    "waves": 2
-  },
-  "t1-social-repurpose": {
-    "tasks": [
-      {
-        "id": "post",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 14,
-        "line1": 19
-      },
-      {
-        "id": "thread",
-        "verb": "infer",
-        "deps": [
-          "post"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 20,
-        "line1": 24
-      },
-      {
-        "id": "linkedin",
-        "verb": "infer",
-        "deps": [
-          "post"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 26,
-        "line1": 30
-      },
-      {
-        "id": "newsletter",
-        "verb": "infer",
-        "deps": [
-          "post"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 32,
-        "line1": 36
-      },
-      {
-        "id": "bundle",
-        "verb": "invoke",
-        "deps": [
-          "thread",
-          "linkedin",
-          "newsletter"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 38,
-        "line1": 57
-      }
-    ],
-    "outputs": [
-      "bundle_path"
-    ],
-    "waves": 3
-  },
-  "t1-standup-digest": {
-    "tasks": [
-      {
-        "id": "today",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:date`",
-        "flags": [],
-        "line0": 13,
-        "line1": 16
-      },
-      {
-        "id": "history",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `git`",
-        "flags": [],
-        "line0": 18,
-        "line1": 20
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "deps": [
-          "today",
-          "history"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 22,
-        "line1": 33
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "digest"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 35,
-        "line1": 42
-      }
-    ],
-    "outputs": [
-      "note"
-    ],
-    "waves": 3
-  },
-  "t2-bookmark-triage": {
+  "bookmark-triage": {
     "tasks": [
       {
         "id": "pages",
@@ -315,8 +37,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors",
           "retry"
         ],
-        "line0": 25,
-        "line1": 38
+        "line0": 33,
+        "line1": 46
       },
       {
         "id": "table",
@@ -328,8 +50,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 39,
-        "line1": 55
+        "line0": 47,
+        "line1": 63
       },
       {
         "id": "report",
@@ -341,8 +63,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 57,
-        "line1": 74
+        "line0": 65,
+        "line1": 82
       }
     ],
     "outputs": [
@@ -350,7 +72,466 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 3
   },
-  "t2-contract-guard": {
+  "ceo-monday-brief": {
+    "tasks": [
+      {
+        "id": "approve",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:prompt`",
+        "flags": [],
+        "line0": 62,
+        "line1": 83
+      },
+      {
+        "id": "news",
+        "verb": "invoke",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:fetch` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 84,
+        "line1": 100
+      },
+      {
+        "id": "pulse",
+        "verb": "exec",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "run `git` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 101,
+        "line1": 118
+      },
+      {
+        "id": "sheet",
+        "verb": "invoke",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:read` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 119,
+        "line1": 125
+      },
+      {
+        "id": "rows",
+        "verb": "invoke",
+        "deps": [
+          "sheet"
+        ],
+        "wave": 2,
+        "gate": "when",
+        "gloss": "call `nika:convert` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 127,
+        "line1": 142
+      },
+      {
+        "id": "revenue",
+        "verb": "invoke",
+        "deps": [
+          "rows"
+        ],
+        "wave": 3,
+        "gate": "when",
+        "gloss": "call `nika:jq` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 144,
+        "line1": 156
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "deps": [
+          "approve",
+          "news",
+          "pulse",
+          "rows",
+          "revenue"
+        ],
+        "wave": 4,
+        "gate": "when",
+        "gloss": "ask the model · thinking budget · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 157,
+        "line1": 185
+      },
+      {
+        "id": "stamp",
+        "verb": "invoke",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:date` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 187,
+        "line1": 195
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "approve",
+          "stamp",
+          "brief"
+        ],
+        "wave": 5,
+        "gate": "when",
+        "gloss": "call `nika:write` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 197,
+        "line1": 218
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "deps": [
+          "save",
+          "stamp"
+        ],
+        "wave": 6,
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 219,
+        "line1": 233
+      }
+    ],
+    "outputs": [
+      "brief",
+      "revenue"
+    ],
+    "waves": 7
+  },
+  "competitor-radar": {
+    "tasks": [
+      {
+        "id": "now",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 54,
+        "line1": 57
+      },
+      {
+        "id": "cutoff",
+        "verb": "invoke",
+        "deps": [
+          "now"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 59,
+        "line1": 67
+      },
+      {
+        "id": "cutoff_day",
+        "verb": "invoke",
+        "deps": [
+          "cutoff"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 69,
+        "line1": 79
+      },
+      {
+        "id": "map",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [],
+        "line0": 80,
+        "line1": 90
+      },
+      {
+        "id": "recent",
+        "verb": "invoke",
+        "deps": [
+          "map",
+          "cutoff_day"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 91,
+        "line1": 107
+      },
+      {
+        "id": "pages",
+        "verb": "invoke",
+        "deps": [
+          "recent"
+        ],
+        "wave": 4,
+        "gate": "default",
+        "gloss": "for each item · call `nika:fetch`",
+        "flags": [
+          "fan-out · ≤4 in flight",
+          "collects errors",
+          "retry",
+          "timeout 30s"
+        ],
+        "line0": 108,
+        "line1": 129
+      },
+      {
+        "id": "readable",
+        "verb": "invoke",
+        "deps": [
+          "recent",
+          "pages"
+        ],
+        "wave": 5,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 130,
+        "line1": 141
+      },
+      {
+        "id": "digest",
+        "verb": "infer",
+        "deps": [
+          "readable",
+          "cutoff_day"
+        ],
+        "wave": 6,
+        "gate": "when",
+        "gloss": "ask the model · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 143,
+        "line1": 155
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "digest"
+        ],
+        "wave": 7,
+        "gate": "when",
+        "gloss": "call `nika:write` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 157,
+        "line1": 171
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "deps": [
+          "recent",
+          "readable",
+          "cutoff_day"
+        ],
+        "wave": 6,
+        "gate": "default",
+        "gloss": "call `nika:emit`",
+        "flags": [],
+        "line0": 172,
+        "line1": 184
+      }
+    ],
+    "outputs": [
+      "since",
+      "pages",
+      "brief"
+    ],
+    "waves": 8
+  },
+  "config-drift-sentinel": {
+    "tasks": [
+      {
+        "id": "live_raw",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [
+          "retry"
+        ],
+        "line0": 74,
+        "line1": 86
+      },
+      {
+        "id": "baseline_raw",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 87,
+        "line1": 96
+      },
+      {
+        "id": "fingerprint",
+        "verb": "invoke",
+        "deps": [
+          "live_raw"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:hash`",
+        "flags": [],
+        "line0": 97,
+        "line1": 112
+      },
+      {
+        "id": "parsed",
+        "verb": "invoke",
+        "deps": [
+          "live_raw",
+          "baseline_raw"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 113,
+        "line1": 121
+      },
+      {
+        "id": "expected",
+        "verb": "invoke",
+        "deps": [
+          "parsed"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:json_merge_patch`",
+        "flags": [],
+        "line0": 123,
+        "line1": 132
+      },
+      {
+        "id": "drift",
+        "verb": "invoke",
+        "deps": [
+          "expected",
+          "parsed"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:json_diff`",
+        "flags": [],
+        "line0": 133,
+        "line1": 146
+      },
+      {
+        "id": "paging",
+        "verb": "invoke",
+        "deps": [
+          "drift"
+        ],
+        "wave": 4,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 147,
+        "line1": 157
+      },
+      {
+        "id": "explain",
+        "verb": "infer",
+        "deps": [
+          "drift"
+        ],
+        "wave": 4,
+        "gate": "when",
+        "gloss": "ask the model · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 159,
+        "line1": 181
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "deps": [
+          "paging"
+        ],
+        "wave": 5,
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 182,
+        "line1": 198
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "deps": [
+          "drift",
+          "paging",
+          "fingerprint",
+          "explain"
+        ],
+        "wave": 5,
+        "gate": "default",
+        "gloss": "call `nika:emit`",
+        "flags": [],
+        "line0": 199,
+        "line1": 213
+      }
+    ],
+    "outputs": [
+      "drift",
+      "paging",
+      "live_hash"
+    ],
+    "waves": 6
+  },
+  "contract-guard": {
     "tasks": [
       {
         "id": "contract",
@@ -360,8 +541,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 17,
-        "line1": 20
+        "line0": 26,
+        "line1": 29
       },
       {
         "id": "clauses",
@@ -375,8 +556,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 22,
-        "line1": 42
+        "line0": 31,
+        "line1": 54
       },
       {
         "id": "check",
@@ -388,8 +569,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:validate`",
         "flags": [],
-        "line0": 44,
-        "line1": 58
+        "line0": 56,
+        "line1": 70
       },
       {
         "id": "gate",
@@ -401,8 +582,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:assert`",
         "flags": [],
-        "line0": 60,
-        "line1": 67
+        "line0": 72,
+        "line1": 79
       },
       {
         "id": "memo",
@@ -415,8 +596,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 69,
-        "line1": 78
+        "line0": 81,
+        "line1": 91
       },
       {
         "id": "save",
@@ -428,8 +609,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 80,
-        "line1": 88
+        "line0": 93,
+        "line1": 101
       }
     ],
     "outputs": [
@@ -438,7 +619,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 6
   },
-  "t2-csv-chart-report": {
+  "csv-chart-report": {
     "tasks": [
       {
         "id": "raw",
@@ -448,8 +629,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 16,
-        "line1": 19
+        "line0": 21,
+        "line1": 24
       },
       {
         "id": "rows",
@@ -461,8 +642,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 21,
-        "line1": 32
+        "line0": 26,
+        "line1": 37
       },
       {
         "id": "by_region",
@@ -474,8 +655,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 33,
-        "line1": 42
+        "line0": 38,
+        "line1": 47
       },
       {
         "id": "chart",
@@ -487,8 +668,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:chart`",
         "flags": [],
-        "line0": 43,
-        "line1": 55
+        "line0": 48,
+        "line1": 60
       },
       {
         "id": "rows_md",
@@ -500,8 +681,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 56,
-        "line1": 67
+        "line0": 61,
+        "line1": 72
       },
       {
         "id": "report",
@@ -514,8 +695,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 68,
-        "line1": 86
+        "line0": 73,
+        "line1": 91
       }
     ],
     "outputs": [
@@ -523,7 +704,83 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 5
   },
-  "t2-etl-quarantine": {
+  "deep-research-brief": {
+    "tasks": [
+      {
+        "id": "slug",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 40,
+        "line1": 45
+      },
+      {
+        "id": "plan",
+        "verb": "infer",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "ask the model for typed JSON",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 47,
+        "line1": 62
+      },
+      {
+        "id": "investigate",
+        "verb": "agent",
+        "deps": [
+          "plan"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "run an agent loop · 2 tools granted",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 64,
+        "line1": 95
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "deps": [
+          "investigate"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "ask the model · thinking budget",
+        "flags": [],
+        "line0": 97,
+        "line1": 113
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "slug",
+          "brief"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 115,
+        "line1": 124
+      }
+    ],
+    "outputs": [
+      "brief",
+      "sources",
+      "slug"
+    ],
+    "waves": 4
+  },
+  "etl-quarantine": {
     "tasks": [
       {
         "id": "empty_batch",
@@ -533,8 +790,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 13,
-        "line1": 16
+        "line0": 18,
+        "line1": 21
       },
       {
         "id": "raw",
@@ -544,8 +801,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 18,
-        "line1": 21
+        "line0": 23,
+        "line1": 26
       },
       {
         "id": "rows",
@@ -557,8 +814,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 23,
-        "line1": 34
+        "line0": 28,
+        "line1": 39
       },
       {
         "id": "check",
@@ -570,8 +827,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:validate`",
         "flags": [],
-        "line0": 36,
-        "line1": 52
+        "line0": 41,
+        "line1": 57
       },
       {
         "id": "good",
@@ -586,8 +843,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 54,
-        "line1": 63
+        "line0": 59,
+        "line1": 68
       },
       {
         "id": "quarantine",
@@ -601,8 +858,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 65,
-        "line1": 75
+        "line0": 70,
+        "line1": 80
       },
       {
         "id": "report",
@@ -616,8 +873,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 77,
-        "line1": 86
+        "line0": 82,
+        "line1": 91
       }
     ],
     "outputs": [
@@ -625,7 +882,222 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 5
   },
-  "t2-invoice-chaser": {
+  "image-fx-batch": {
+    "tasks": [
+      {
+        "id": "shots",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:glob`",
+        "flags": [],
+        "line0": 32,
+        "line1": 37
+      },
+      {
+        "id": "jobs",
+        "verb": "invoke",
+        "deps": [
+          "shots"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 38,
+        "line1": 47
+      },
+      {
+        "id": "stylize",
+        "verb": "invoke",
+        "deps": [
+          "jobs"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "for each item · call `nika:image_fx`",
+        "flags": [
+          "fan-out · ≤4 in flight"
+        ],
+        "line0": 48,
+        "line1": 62
+      }
+    ],
+    "outputs": [
+      "rendered"
+    ],
+    "waves": 3
+  },
+  "incident-war-room": {
+    "tasks": [
+      {
+        "id": "approve",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:prompt`",
+        "flags": [],
+        "line0": 67,
+        "line1": 90
+      },
+      {
+        "id": "deploys",
+        "verb": "exec",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "run `git` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 91,
+        "line1": 101
+      },
+      {
+        "id": "status_history",
+        "verb": "invoke",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:fetch` · only if its condition holds",
+        "flags": [
+          "conditional",
+          "retry"
+        ],
+        "line0": 103,
+        "line1": 121
+      },
+      {
+        "id": "runbook",
+        "verb": "invoke",
+        "deps": [
+          "approve"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:read` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 123,
+        "line1": 131
+      },
+      {
+        "id": "timeline",
+        "verb": "infer",
+        "deps": [
+          "deploys",
+          "status_history",
+          "runbook"
+        ],
+        "wave": 2,
+        "gate": "when",
+        "gloss": "ask the model for typed JSON · only if its condition holds",
+        "flags": [
+          "conditional",
+          "typed output"
+        ],
+        "line0": 132,
+        "line1": 168
+      },
+      {
+        "id": "settle",
+        "verb": "invoke",
+        "deps": [
+          "timeline"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:wait`",
+        "flags": [],
+        "line0": 169,
+        "line1": 174
+      },
+      {
+        "id": "recheck",
+        "verb": "invoke",
+        "deps": [
+          "approve",
+          "settle"
+        ],
+        "wave": 4,
+        "gate": "when",
+        "gloss": "call `nika:fetch` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 176,
+        "line1": 193
+      },
+      {
+        "id": "confirmed",
+        "verb": "invoke",
+        "deps": [
+          "recheck"
+        ],
+        "wave": 5,
+        "gate": "default",
+        "gloss": "call `nika:assert`",
+        "flags": [],
+        "line0": 195,
+        "line1": 204
+      },
+      {
+        "id": "postmortem",
+        "verb": "infer",
+        "deps": [
+          "timeline",
+          "confirmed"
+        ],
+        "wave": 6,
+        "gate": "default",
+        "gloss": "ask the model · thinking budget",
+        "flags": [],
+        "line0": 205,
+        "line1": 220
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "postmortem"
+        ],
+        "wave": 7,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 222,
+        "line1": 240
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "deps": [
+          "save"
+        ],
+        "wave": 8,
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 241,
+        "line1": 254
+      }
+    ],
+    "outputs": [
+      "timeline",
+      "postmortem"
+    ],
+    "waves": 9
+  },
+  "invoice-chaser": {
     "tasks": [
       {
         "id": "ledger",
@@ -635,8 +1107,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 14,
-        "line1": 17
+        "line0": 19,
+        "line1": 22
       },
       {
         "id": "rows",
@@ -648,8 +1120,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:convert`",
         "flags": [],
-        "line0": 19,
-        "line1": 28
+        "line0": 24,
+        "line1": 33
       },
       {
         "id": "overdue",
@@ -661,8 +1133,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 30,
-        "line1": 37
+        "line0": 35,
+        "line1": 42
       },
       {
         "id": "drafts",
@@ -676,8 +1148,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 39,
-        "line1": 47
+        "line0": 44,
+        "line1": 53
       },
       {
         "id": "approve",
@@ -691,8 +1163,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 49,
-        "line1": 57
+        "line0": 55,
+        "line1": 63
       },
       {
         "id": "save",
@@ -707,8 +1179,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 59,
-        "line1": 68
+        "line0": 65,
+        "line1": 75
       }
     ],
     "outputs": [
@@ -716,624 +1188,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 6
   },
-  "t2-model-bench": {
-    "tasks": [
-      {
-        "id": "ask_incumbent",
-        "verb": "infer",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 16,
-        "line1": 20
-      },
-      {
-        "id": "ask_challenger",
-        "verb": "infer",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 22,
-        "line1": 26
-      },
-      {
-        "id": "ask_tiny",
-        "verb": "infer",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 28,
-        "line1": 32
-      },
-      {
-        "id": "tabulate",
-        "verb": "invoke",
-        "deps": [
-          "ask_incumbent",
-          "ask_challenger",
-          "ask_tiny"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:jq`",
-        "flags": [],
-        "line0": 34,
-        "line1": 61
-      },
-      {
-        "id": "persist",
-        "verb": "invoke",
-        "deps": [
-          "tabulate"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 63,
-        "line1": 77
-      }
-    ],
-    "outputs": [],
-    "waves": 3
-  },
-  "t2-release-notes": {
-    "tasks": [
-      {
-        "id": "history",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `git`",
-        "flags": [],
-        "line0": 23,
-        "line1": 25
-      },
-      {
-        "id": "notes",
-        "verb": "infer",
-        "deps": [
-          "history"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 27,
-        "line1": 41
-      },
-      {
-        "id": "changelog",
-        "verb": "invoke",
-        "deps": [
-          "notes"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:edit`",
-        "flags": [],
-        "line0": 43,
-        "line1": 57
-      },
-      {
-        "id": "announce",
-        "verb": "invoke",
-        "deps": [
-          "notes",
-          "changelog"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:notify`",
-        "flags": [],
-        "line0": 59,
-        "line1": 70
-      }
-    ],
-    "outputs": [
-      "headline",
-      "body"
-    ],
-    "waves": 4
-  },
-  "t2-release-radar": {
-    "tasks": [
-      {
-        "id": "no_state",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:jq`",
-        "flags": [],
-        "line0": 15,
-        "line1": 18
-      },
-      {
-        "id": "previous",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 20,
-        "line1": 26
-      },
-      {
-        "id": "feed",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 28,
-        "line1": 35
-      },
-      {
-        "id": "fresh",
-        "verb": "invoke",
-        "deps": [
-          "previous",
-          "feed"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:json_diff`",
-        "flags": [],
-        "line0": 37,
-        "line1": 45
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "deps": [
-          "fresh",
-          "feed"
-        ],
-        "wave": 2,
-        "gate": "when",
-        "gloss": "ask the model · only if its condition holds",
-        "flags": [
-          "conditional"
-        ],
-        "line0": 47,
-        "line1": 59
-      },
-      {
-        "id": "save_state",
-        "verb": "invoke",
-        "deps": [
-          "feed"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 61,
-        "line1": 70
-      }
-    ],
-    "outputs": [
-      "new_entries"
-    ],
-    "waves": 3
-  },
-  "t2-seo-content-brief": {
-    "tasks": [
-      {
-        "id": "map",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 18,
-        "line1": 25
-      },
-      {
-        "id": "top_page",
-        "verb": "invoke",
-        "deps": [
-          "map"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 27,
-        "line1": 34
-      },
-      {
-        "id": "brief",
-        "verb": "infer",
-        "deps": [
-          "map",
-          "top_page"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 36,
-        "line1": 56
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "brief"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 58,
-        "line1": 66
-      }
-    ],
-    "outputs": [
-      "brief"
-    ],
-    "waves": 4
-  },
-  "t2-support-triage": {
-    "tasks": [
-      {
-        "id": "batch",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:uuid`",
-        "flags": [],
-        "line0": 21,
-        "line1": 24
-      },
-      {
-        "id": "queue",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 26,
-        "line1": 29
-      },
-      {
-        "id": "triage",
-        "verb": "infer",
-        "deps": [
-          "queue"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 31,
-        "line1": 52
-      },
-      {
-        "id": "urgent",
-        "verb": "invoke",
-        "deps": [
-          "triage"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:jq`",
-        "flags": [],
-        "line0": 54,
-        "line1": 61
-      },
-      {
-        "id": "escalate",
-        "verb": "invoke",
-        "deps": [
-          "urgent",
-          "batch"
-        ],
-        "wave": 3,
-        "gate": "when",
-        "gloss": "call `nika:notify` · only if its condition holds",
-        "flags": [
-          "conditional"
-        ],
-        "line0": 63,
-        "line1": 74
-      },
-      {
-        "id": "board",
-        "verb": "invoke",
-        "deps": [
-          "triage",
-          "batch"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 76,
-        "line1": 84
-      }
-    ],
-    "outputs": [
-      "tickets"
-    ],
-    "waves": 4
-  },
-  "t2-transcript-shownotes": {
-    "tasks": [
-      {
-        "id": "raw",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 18,
-        "line1": 23
-      },
-      {
-        "id": "notes",
-        "verb": "infer",
-        "deps": [
-          "raw"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 24,
-        "line1": 54
-      },
-      {
-        "id": "sections",
-        "verb": "invoke",
-        "deps": [
-          "notes"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:jq`",
-        "flags": [],
-        "line0": 55,
-        "line1": 66
-      },
-      {
-        "id": "page",
-        "verb": "invoke",
-        "deps": [
-          "notes",
-          "sections"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 68,
-        "line1": 90
-      }
-    ],
-    "outputs": [
-      "notes"
-    ],
-    "waves": 4
-  },
-  "t3-competitor-radar": {
-    "tasks": [
-      {
-        "id": "map",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 22,
-        "line1": 29
-      },
-      {
-        "id": "pages",
-        "verb": "invoke",
-        "deps": [
-          "map"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "for each item · call `nika:fetch`",
-        "flags": [
-          "fan-out · ≤4 in flight",
-          "collects errors",
-          "retry",
-          "timeout 30s"
-        ],
-        "line0": 31,
-        "line1": 48
-      },
-      {
-        "id": "digest",
-        "verb": "infer",
-        "deps": [
-          "pages"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "ask the model",
-        "flags": [],
-        "line0": 50,
-        "line1": 58
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "digest"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 60,
-        "line1": 68
-      },
-      {
-        "id": "ping",
-        "verb": "invoke",
-        "deps": [
-          "save"
-        ],
-        "wave": 4,
-        "gate": "default",
-        "gloss": "call `nika:notify`",
-        "flags": [],
-        "line0": 70,
-        "line1": 79
-      }
-    ],
-    "outputs": [
-      "brief"
-    ],
-    "waves": 5
-  },
-  "t3-config-drift-sentinel": {
-    "tasks": [
-      {
-        "id": "live",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [
-          "retry"
-        ],
-        "line0": 26,
-        "line1": 35
-      },
-      {
-        "id": "baseline",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:read`",
-        "flags": [],
-        "line0": 37,
-        "line1": 40
-      },
-      {
-        "id": "expected",
-        "verb": "invoke",
-        "deps": [
-          "baseline"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:json_merge_patch`",
-        "flags": [],
-        "line0": 42,
-        "line1": 49
-      },
-      {
-        "id": "drift",
-        "verb": "invoke",
-        "deps": [
-          "expected",
-          "live"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:json_diff`",
-        "flags": [],
-        "line0": 51,
-        "line1": 59
-      },
-      {
-        "id": "fingerprint",
-        "verb": "invoke",
-        "deps": [
-          "live"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:hash`",
-        "flags": [],
-        "line0": 61,
-        "line1": 69
-      },
-      {
-        "id": "explain",
-        "verb": "infer",
-        "deps": [
-          "drift"
-        ],
-        "wave": 3,
-        "gate": "when",
-        "gloss": "ask the model · only if its condition holds",
-        "flags": [
-          "conditional"
-        ],
-        "line0": 71,
-        "line1": 81
-      },
-      {
-        "id": "alert",
-        "verb": "invoke",
-        "deps": [
-          "drift",
-          "explain",
-          "fingerprint"
-        ],
-        "wave": 4,
-        "gate": "when",
-        "gloss": "call `nika:notify` · only if its condition holds",
-        "flags": [
-          "conditional"
-        ],
-        "line0": 83,
-        "line1": 95
-      },
-      {
-        "id": "record",
-        "verb": "invoke",
-        "deps": [
-          "drift",
-          "fingerprint"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:emit`",
-        "flags": [],
-        "line0": 97,
-        "line1": 107
-      }
-    ],
-    "outputs": [
-      "drift"
-    ],
-    "waves": 5
-  },
-  "t3-localization-factory": {
+  "localization-factory": {
     "tasks": [
       {
         "id": "files",
@@ -1343,8 +1198,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:glob`",
         "flags": [],
-        "line0": 14,
-        "line1": 19
+        "line0": 31,
+        "line1": 38
       },
       {
         "id": "texts",
@@ -1358,8 +1213,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "fan-out · ≤8 in flight"
         ],
-        "line0": 21,
-        "line1": 28
+        "line0": 39,
+        "line1": 51
       },
       {
         "id": "pairs",
@@ -1372,8 +1227,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 30,
-        "line1": 38
+        "line0": 52,
+        "line1": 64
       },
       {
         "id": "translated",
@@ -1388,8 +1243,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "fan-out · ≤3 in flight",
           "collects errors"
         ],
-        "line0": 40,
-        "line1": 52
+        "line0": 65,
+        "line1": 84
       },
       {
         "id": "bundle",
@@ -1402,8 +1257,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 54,
-        "line1": 62
+        "line0": 85,
+        "line1": 98
       },
       {
         "id": "mirror",
@@ -1417,16 +1272,165 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "fan-out · ≤8 in flight"
         ],
-        "line0": 64,
-        "line1": 74
+        "line0": 99,
+        "line1": 109
       }
     ],
     "outputs": [
-      "files"
+      "translated"
     ],
     "waves": 6
   },
-  "t3-pr-review-fanout": {
+  "meeting-actions": {
+    "tasks": [
+      {
+        "id": "transcript",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 27,
+        "line1": 30
+      },
+      {
+        "id": "extract",
+        "verb": "infer",
+        "deps": [
+          "transcript"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model for typed JSON",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 32,
+        "line1": 56
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "extract"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 58,
+        "line1": 69
+      },
+      {
+        "id": "trace",
+        "verb": "invoke",
+        "deps": [
+          "extract"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:log`",
+        "flags": [],
+        "line0": 71,
+        "line1": 78
+      }
+    ],
+    "outputs": [
+      "actions"
+    ],
+    "waves": 3
+  },
+  "model-bench": {
+    "tasks": [
+      {
+        "id": "ask_incumbent",
+        "verb": "infer",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 21,
+        "line1": 25
+      },
+      {
+        "id": "ask_challenger",
+        "verb": "infer",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 27,
+        "line1": 31
+      },
+      {
+        "id": "ask_tiny",
+        "verb": "infer",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 33,
+        "line1": 37
+      },
+      {
+        "id": "tabulate",
+        "verb": "invoke",
+        "deps": [
+          "ask_incumbent",
+          "ask_challenger",
+          "ask_tiny"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 39,
+        "line1": 66
+      },
+      {
+        "id": "persist",
+        "verb": "invoke",
+        "deps": [
+          "tabulate"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 68,
+        "line1": 82
+      }
+    ],
+    "outputs": [
+      "table"
+    ],
+    "waves": 3
+  },
+  "og-images": {
+    "tasks": [
+      {
+        "id": "hero",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:image_generate`",
+        "flags": [],
+        "line0": 17,
+        "line1": 27
+      }
+    ],
+    "outputs": [
+      "paths",
+      "manifest"
+    ],
+    "waves": 1
+  },
+  "pr-review-fanout": {
     "tasks": [
       {
         "id": "changed",
@@ -1436,8 +1440,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 15,
-        "line1": 17
+        "line0": 41,
+        "line1": 43
       },
       {
         "id": "files",
@@ -1449,8 +1453,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 19,
-        "line1": 26
+        "line0": 45,
+        "line1": 58
       },
       {
         "id": "todo_sweep",
@@ -1460,8 +1464,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:grep`",
         "flags": [],
-        "line0": 28,
-        "line1": 33
+        "line0": 59,
+        "line1": 64
       },
       {
         "id": "reviews",
@@ -1477,8 +1481,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors",
           "typed output"
         ],
-        "line0": 35,
-        "line1": 64
+        "line0": 66,
+        "line1": 113
       },
       {
         "id": "merged",
@@ -1490,8 +1494,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 66,
-        "line1": 75
+        "line0": 114,
+        "line1": 125
       },
       {
         "id": "summary",
@@ -1504,8 +1508,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "ask the model",
         "flags": [],
-        "line0": 77,
-        "line1": 87
+        "line0": 127,
+        "line1": 138
       },
       {
         "id": "save",
@@ -1517,8 +1521,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 89,
-        "line1": 96
+        "line0": 140,
+        "line1": 147
       }
     ],
     "outputs": [
@@ -1527,7 +1531,439 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
     ],
     "waves": 6
   },
-  "t3-resume-screener": {
+  "price-watch": {
+    "tasks": [
+      {
+        "id": "check",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [],
+        "line0": 33,
+        "line1": 48
+      },
+      {
+        "id": "alert",
+        "verb": "invoke",
+        "deps": [
+          "check"
+        ],
+        "wave": 1,
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 50,
+        "line1": 61
+      }
+    ],
+    "outputs": [
+      "price"
+    ],
+    "waves": 2
+  },
+  "release-notes": {
+    "tasks": [
+      {
+        "id": "history",
+        "verb": "exec",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "run `git`",
+        "flags": [],
+        "line0": 49,
+        "line1": 58
+      },
+      {
+        "id": "notes",
+        "verb": "infer",
+        "deps": [
+          "history"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model for typed JSON",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 60,
+        "line1": 80
+      },
+      {
+        "id": "existing",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 81,
+        "line1": 84
+      },
+      {
+        "id": "copy",
+        "verb": "invoke",
+        "deps": [
+          "existing"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 86,
+        "line1": 95
+      },
+      {
+        "id": "changelog",
+        "verb": "invoke",
+        "deps": [
+          "notes",
+          "copy"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:edit`",
+        "flags": [],
+        "line0": 97,
+        "line1": 114
+      },
+      {
+        "id": "announce",
+        "verb": "invoke",
+        "deps": [
+          "notes",
+          "changelog"
+        ],
+        "wave": 3,
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 116,
+        "line1": 128
+      }
+    ],
+    "outputs": [
+      "headline",
+      "body"
+    ],
+    "waves": 4
+  },
+  "release-radar": {
+    "tasks": [
+      {
+        "id": "no_state",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 24,
+        "line1": 27
+      },
+      {
+        "id": "previous",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 29,
+        "line1": 35
+      },
+      {
+        "id": "feed",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [],
+        "line0": 37,
+        "line1": 54
+      },
+      {
+        "id": "fresh",
+        "verb": "invoke",
+        "deps": [
+          "previous",
+          "feed"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:json_diff`",
+        "flags": [],
+        "line0": 56,
+        "line1": 64
+      },
+      {
+        "id": "digest",
+        "verb": "infer",
+        "deps": [
+          "fresh",
+          "feed"
+        ],
+        "wave": 2,
+        "gate": "when",
+        "gloss": "ask the model · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 66,
+        "line1": 79
+      },
+      {
+        "id": "save_state",
+        "verb": "invoke",
+        "deps": [
+          "feed"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 81,
+        "line1": 90
+      }
+    ],
+    "outputs": [
+      "new_entries",
+      "briefing"
+    ],
+    "waves": 3
+  },
+  "release-train": {
+    "tasks": [
+      {
+        "id": "t0",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 46,
+        "line1": 51
+      },
+      {
+        "id": "declared",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 52,
+        "line1": 55
+      },
+      {
+        "id": "notes",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 57,
+        "line1": 60
+      },
+      {
+        "id": "schema",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 62,
+        "line1": 67
+      },
+      {
+        "id": "board",
+        "verb": "invoke",
+        "deps": [
+          "declared",
+          "notes",
+          "schema"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:jq`",
+        "flags": [],
+        "line0": 68,
+        "line1": 89
+      },
+      {
+        "id": "gates_green",
+        "verb": "invoke",
+        "deps": [
+          "board"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:assert`",
+        "flags": [],
+        "line0": 91,
+        "line1": 100
+      },
+      {
+        "id": "t1",
+        "verb": "invoke",
+        "deps": [
+          "gates_green"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 102,
+        "line1": 107
+      },
+      {
+        "id": "gate_time",
+        "verb": "invoke",
+        "deps": [
+          "t0",
+          "t1"
+        ],
+        "wave": 4,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 109,
+        "line1": 124
+      },
+      {
+        "id": "conductor",
+        "verb": "invoke",
+        "deps": [
+          "gate_time",
+          "board"
+        ],
+        "wave": 5,
+        "gate": "default",
+        "gloss": "call `nika:prompt`",
+        "flags": [],
+        "line0": 125,
+        "line1": 155
+      },
+      {
+        "id": "signed_at",
+        "verb": "invoke",
+        "deps": [
+          "conductor"
+        ],
+        "wave": 6,
+        "gate": "when",
+        "gloss": "call `nika:date` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 156,
+        "line1": 162
+      },
+      {
+        "id": "window",
+        "verb": "invoke",
+        "deps": [
+          "signed_at"
+        ],
+        "wave": 7,
+        "gate": "when",
+        "gloss": "call `nika:date` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 164,
+        "line1": 173
+      },
+      {
+        "id": "hold",
+        "verb": "invoke",
+        "deps": [
+          "window"
+        ],
+        "wave": 8,
+        "gate": "when",
+        "gloss": "call `nika:wait` · only if its condition holds",
+        "flags": [
+          "conditional"
+        ],
+        "line0": 175,
+        "line1": 190
+      },
+      {
+        "id": "ship",
+        "verb": "exec",
+        "deps": [
+          "hold"
+        ],
+        "wave": 9,
+        "gate": "when",
+        "gloss": "run `./scripts/release.sh` · only if its condition holds",
+        "flags": [
+          "conditional",
+          "timeout 30m"
+        ],
+        "line0": 191,
+        "line1": 208
+      },
+      {
+        "id": "verify",
+        "verb": "invoke",
+        "deps": [
+          "ship"
+        ],
+        "wave": 10,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [
+          "retry"
+        ],
+        "line0": 210,
+        "line1": 224
+      },
+      {
+        "id": "live",
+        "verb": "invoke",
+        "deps": [
+          "verify"
+        ],
+        "wave": 11,
+        "gate": "default",
+        "gloss": "call `nika:assert`",
+        "flags": [],
+        "line0": 226,
+        "line1": 250
+      },
+      {
+        "id": "record",
+        "verb": "invoke",
+        "deps": [
+          "live"
+        ],
+        "wave": 12,
+        "gate": "default",
+        "gloss": "call `nika:emit`",
+        "flags": [],
+        "line0": 251,
+        "line1": 266
+      }
+    ],
+    "outputs": [
+      "board",
+      "shipped"
+    ],
+    "waves": 13
+  },
+  "resume-screener": {
     "tasks": [
       {
         "id": "pool",
@@ -1537,8 +1973,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:glob`",
         "flags": [],
-        "line0": 19,
-        "line1": 22
+        "line0": 39,
+        "line1": 42
       },
       {
         "id": "cvs",
@@ -1553,8 +1989,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "fan-out · ≤8 in flight",
           "collects errors"
         ],
-        "line0": 24,
-        "line1": 34
+        "line0": 44,
+        "line1": 57
       },
       {
         "id": "pairs",
@@ -1567,8 +2003,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 36,
-        "line1": 44
+        "line0": 58,
+        "line1": 74
       },
       {
         "id": "screened",
@@ -1584,8 +2020,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
           "collects errors",
           "typed output"
         ],
-        "line0": 46,
-        "line1": 71
+        "line0": 75,
+        "line1": 111
       },
       {
         "id": "ranked",
@@ -1597,8 +2033,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 73,
-        "line1": 80
+        "line0": 112,
+        "line1": 122
       },
       {
         "id": "shortlist",
@@ -1610,8 +2046,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 82,
-        "line1": 89
+        "line0": 124,
+        "line1": 131
       },
       {
         "id": "brief",
@@ -1625,8 +2061,8 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 91,
-        "line1": 100
+        "line0": 133,
+        "line1": 143
       },
       {
         "id": "save",
@@ -1640,260 +2076,313 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "conditional"
         ],
-        "line0": 102,
-        "line1": 111
+        "line0": 145,
+        "line1": 154
       }
     ],
     "outputs": [
+      "ranked",
       "shortlist"
     ],
     "waves": 8
   },
-  "t4-ceo-monday-brief": {
+  "seo-content-brief": {
     "tasks": [
       {
-        "id": "news",
+        "id": "map",
         "verb": "invoke",
         "deps": [],
         "wave": 0,
         "gate": "default",
         "gloss": "call `nika:fetch`",
         "flags": [],
-        "line0": 24,
-        "line1": 32
+        "line0": 37,
+        "line1": 54
       },
       {
-        "id": "pulse",
+        "id": "top_page",
+        "verb": "invoke",
+        "deps": [
+          "map"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "call `nika:fetch`",
+        "flags": [],
+        "line0": 56,
+        "line1": 70
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "deps": [
+          "map",
+          "top_page"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "ask the model for typed JSON",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 72,
+        "line1": 94
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "brief"
+        ],
+        "wave": 3,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 96,
+        "line1": 105
+      }
+    ],
+    "outputs": [
+      "brief"
+    ],
+    "waves": 4
+  },
+  "social-repurpose": {
+    "tasks": [
+      {
+        "id": "post",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:read`",
+        "flags": [],
+        "line0": 19,
+        "line1": 24
+      },
+      {
+        "id": "thread",
+        "verb": "infer",
+        "deps": [
+          "post"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 25,
+        "line1": 30
+      },
+      {
+        "id": "linkedin",
+        "verb": "infer",
+        "deps": [
+          "post"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 32,
+        "line1": 37
+      },
+      {
+        "id": "newsletter",
+        "verb": "infer",
+        "deps": [
+          "post"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 39,
+        "line1": 44
+      },
+      {
+        "id": "bundle",
+        "verb": "invoke",
+        "deps": [
+          "thread",
+          "linkedin",
+          "newsletter"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 46,
+        "line1": 69
+      }
+    ],
+    "outputs": [
+      "bundle_path"
+    ],
+    "waves": 3
+  },
+  "standup-digest": {
+    "tasks": [
+      {
+        "id": "today",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:date`",
+        "flags": [],
+        "line0": 14,
+        "line1": 17
+      },
+      {
+        "id": "history",
         "verb": "exec",
         "deps": [],
         "wave": 0,
         "gate": "default",
         "gloss": "run `git`",
         "flags": [],
-        "line0": 33,
-        "line1": 37
+        "line0": 19,
+        "line1": 21
       },
       {
-        "id": "kpi_raw",
+        "id": "digest",
+        "verb": "infer",
+        "deps": [
+          "today",
+          "history"
+        ],
+        "wave": 1,
+        "gate": "default",
+        "gloss": "ask the model",
+        "flags": [],
+        "line0": 23,
+        "line1": 35
+      },
+      {
+        "id": "save",
+        "verb": "invoke",
+        "deps": [
+          "digest"
+        ],
+        "wave": 2,
+        "gate": "default",
+        "gloss": "call `nika:write`",
+        "flags": [],
+        "line0": 37,
+        "line1": 45
+      }
+    ],
+    "outputs": [
+      "note"
+    ],
+    "waves": 3
+  },
+  "support-triage": {
+    "tasks": [
+      {
+        "id": "batch",
+        "verb": "invoke",
+        "deps": [],
+        "wave": 0,
+        "gate": "default",
+        "gloss": "call `nika:uuid`",
+        "flags": [],
+        "line0": 36,
+        "line1": 39
+      },
+      {
+        "id": "queue",
         "verb": "invoke",
         "deps": [],
         "wave": 0,
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 38,
-        "line1": 41
+        "line0": 41,
+        "line1": 44
       },
       {
-        "id": "kpis",
-        "verb": "invoke",
+        "id": "triage",
+        "verb": "infer",
         "deps": [
-          "kpi_raw"
+          "queue"
         ],
         "wave": 1,
         "gate": "default",
-        "gloss": "call `nika:convert`",
-        "flags": [],
-        "line0": 43,
-        "line1": 52
+        "gloss": "ask the model for typed JSON",
+        "flags": [
+          "typed output"
+        ],
+        "line0": 46,
+        "line1": 70
       },
       {
-        "id": "revenue",
+        "id": "urgent",
         "verb": "invoke",
         "deps": [
-          "kpis"
+          "triage"
         ],
         "wave": 2,
         "gate": "default",
         "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 54,
-        "line1": 63
+        "line0": 72,
+        "line1": 79
       },
       {
-        "id": "brief",
-        "verb": "infer",
+        "id": "escalate",
+        "verb": "invoke",
         "deps": [
-          "news",
-          "pulse",
-          "kpis",
-          "revenue"
+          "urgent",
+          "batch"
         ],
         "wave": 3,
-        "gate": "default",
-        "gloss": "ask the model · thinking budget",
-        "flags": [],
-        "line0": 64,
-        "line1": 82
-      },
-      {
-        "id": "stamp",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:date`",
-        "flags": [],
-        "line0": 84,
-        "line1": 89
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "stamp",
-          "brief"
-        ],
-        "wave": 4,
-        "gate": "default",
-        "gloss": "call `nika:write`",
-        "flags": [],
-        "line0": 91,
-        "line1": 102
-      },
-      {
-        "id": "bill",
-        "verb": "invoke",
-        "deps": [
-          "save"
-        ],
-        "wave": 5,
-        "gate": "default",
-        "gloss": "call `nika:inspect`",
-        "flags": [],
-        "line0": 103,
-        "line1": 108
-      },
-      {
-        "id": "ping",
-        "verb": "invoke",
-        "deps": [
-          "stamp",
-          "bill"
-        ],
-        "wave": 6,
-        "gate": "default",
-        "gloss": "call `nika:notify`",
+        "gate": "when",
+        "gloss": "call `nika:notify` · only if its condition holds",
         "flags": [
-          "cleanup always runs"
+          "conditional"
         ],
-        "line0": 110,
-        "line1": 127
-      }
-    ],
-    "outputs": [
-      "brief",
-      "cost_usd"
-    ],
-    "waves": 7
-  },
-  "t4-deep-research-brief": {
-    "tasks": [
-      {
-        "id": "plan",
-        "verb": "infer",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "ask the model for typed JSON",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 16,
-        "line1": 26
+        "line0": 81,
+        "line1": 92
       },
       {
-        "id": "investigate",
-        "verb": "agent",
+        "id": "board",
+        "verb": "invoke",
         "deps": [
-          "plan"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "run an agent loop · 3 tools granted",
-        "flags": [
-          "typed output"
-        ],
-        "line0": 28,
-        "line1": 52
-      },
-      {
-        "id": "brief",
-        "verb": "infer",
-        "deps": [
-          "investigate"
+          "triage",
+          "batch"
         ],
         "wave": 2,
         "gate": "default",
-        "gloss": "ask the model · thinking budget",
-        "flags": [],
-        "line0": 54,
-        "line1": 66
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "brief"
-        ],
-        "wave": 3,
-        "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 68,
-        "line1": 76
+        "line0": 94,
+        "line1": 106
       }
     ],
     "outputs": [
-      "brief",
-      "sources"
+      "tickets"
     ],
     "waves": 4
   },
-  "t4-incident-war-room": {
+  "transcript-shownotes": {
     "tasks": [
       {
-        "id": "logs",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `journalctl`",
-        "flags": [],
-        "line0": 25,
-        "line1": 28
-      },
-      {
-        "id": "status_history",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [
-          "retry"
-        ],
-        "line0": 30,
-        "line1": 40
-      },
-      {
-        "id": "runbook",
+        "id": "raw",
         "verb": "invoke",
         "deps": [],
         "wave": 0,
         "gate": "default",
         "gloss": "call `nika:read`",
         "flags": [],
-        "line0": 42,
-        "line1": 47
+        "line0": 20,
+        "line1": 25
       },
       {
-        "id": "timeline",
+        "id": "notes",
         "verb": "infer",
         "deps": [
-          "logs",
-          "status_history",
-          "runbook"
+          "raw"
         ],
         "wave": 1,
         "gate": "default",
@@ -1901,280 +2390,40 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
         "flags": [
           "typed output"
         ],
-        "line0": 48,
-        "line1": 75
+        "line0": 26,
+        "line1": 56
       },
       {
-        "id": "settle",
+        "id": "sections",
         "verb": "invoke",
         "deps": [
-          "timeline"
+          "notes"
         ],
         "wave": 2,
         "gate": "default",
-        "gloss": "call `nika:wait`",
+        "gloss": "call `nika:jq`",
         "flags": [],
-        "line0": 76,
-        "line1": 81
+        "line0": 57,
+        "line1": 68
       },
       {
-        "id": "recheck",
+        "id": "page",
         "verb": "invoke",
         "deps": [
-          "settle"
+          "notes",
+          "sections"
         ],
         "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [],
-        "line0": 83,
-        "line1": 91
-      },
-      {
-        "id": "confirmed",
-        "verb": "invoke",
-        "deps": [
-          "recheck"
-        ],
-        "wave": 4,
-        "gate": "default",
-        "gloss": "call `nika:assert`",
-        "flags": [],
-        "line0": 93,
-        "line1": 102
-      },
-      {
-        "id": "postmortem",
-        "verb": "infer",
-        "deps": [
-          "timeline",
-          "confirmed"
-        ],
-        "wave": 5,
-        "gate": "default",
-        "gloss": "ask the model · thinking budget",
-        "flags": [],
-        "line0": 103,
-        "line1": 116
-      },
-      {
-        "id": "save",
-        "verb": "invoke",
-        "deps": [
-          "postmortem"
-        ],
-        "wave": 6,
         "gate": "default",
         "gloss": "call `nika:write`",
         "flags": [],
-        "line0": 118,
-        "line1": 131
-      },
-      {
-        "id": "ping",
-        "verb": "invoke",
-        "deps": [
-          "save"
-        ],
-        "wave": 7,
-        "gate": "default",
-        "gloss": "call `nika:emit`",
-        "flags": [
-          "cleanup always runs"
-        ],
-        "line0": 132,
-        "line1": 151
+        "line0": 70,
+        "line1": 92
       }
     ],
     "outputs": [
-      "events",
-      "postmortem"
+      "notes"
     ],
-    "waves": 8
-  },
-  "t4-release-train": {
-    "tasks": [
-      {
-        "id": "t0",
-        "verb": "invoke",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "call `nika:date`",
-        "flags": [],
-        "line0": 26,
-        "line1": 31
-      },
-      {
-        "id": "tests",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `cargo`",
-        "flags": [
-          "timeout 15m"
-        ],
-        "line0": 32,
-        "line1": 36
-      },
-      {
-        "id": "lint",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `cargo`",
-        "flags": [
-          "timeout 10m"
-        ],
-        "line0": 38,
-        "line1": 42
-      },
-      {
-        "id": "audit",
-        "verb": "exec",
-        "deps": [],
-        "wave": 0,
-        "gate": "default",
-        "gloss": "run `cargo`",
-        "flags": [
-          "retry",
-          "timeout 5m"
-        ],
-        "line0": 44,
-        "line1": 50
-      },
-      {
-        "id": "gates_green",
-        "verb": "invoke",
-        "deps": [
-          "tests",
-          "lint",
-          "audit"
-        ],
-        "wave": 1,
-        "gate": "default",
-        "gloss": "call `nika:assert`",
-        "flags": [],
-        "line0": 52,
-        "line1": 59
-      },
-      {
-        "id": "gate_time",
-        "verb": "invoke",
-        "deps": [
-          "t0",
-          "gates_green"
-        ],
-        "wave": 2,
-        "gate": "default",
-        "gloss": "call `nika:date`",
-        "flags": [],
-        "line0": 61,
-        "line1": 74
-      },
-      {
-        "id": "conductor",
-        "verb": "invoke",
-        "deps": [
-          "gate_time"
-        ],
-        "wave": 3,
-        "gate": "default",
-        "gloss": "call `nika:prompt`",
-        "flags": [],
-        "line0": 75,
-        "line1": 82
-      },
-      {
-        "id": "approved",
-        "verb": "invoke",
-        "deps": [
-          "conductor"
-        ],
-        "wave": 4,
-        "gate": "default",
-        "gloss": "call `nika:assert`",
-        "flags": [],
-        "line0": 84,
-        "line1": 93
-      },
-      {
-        "id": "hold",
-        "verb": "invoke",
-        "deps": [
-          "approved"
-        ],
-        "wave": 5,
-        "gate": "default",
-        "gloss": "call `nika:wait`",
-        "flags": [],
-        "line0": 94,
-        "line1": 101
-      },
-      {
-        "id": "ship",
-        "verb": "exec",
-        "deps": [
-          "hold"
-        ],
-        "wave": 6,
-        "gate": "default",
-        "gloss": "run `./scripts/release.sh`",
-        "flags": [
-          "timeout 30m"
-        ],
-        "line0": 103,
-        "line1": 109
-      },
-      {
-        "id": "verify",
-        "verb": "invoke",
-        "deps": [
-          "ship"
-        ],
-        "wave": 7,
-        "gate": "default",
-        "gloss": "call `nika:fetch`",
-        "flags": [
-          "retry"
-        ],
-        "line0": 111,
-        "line1": 123
-      },
-      {
-        "id": "live",
-        "verb": "invoke",
-        "deps": [
-          "verify"
-        ],
-        "wave": 8,
-        "gate": "default",
-        "gloss": "call `nika:assert`",
-        "flags": [],
-        "line0": 125,
-        "line1": 137
-      },
-      {
-        "id": "record",
-        "verb": "invoke",
-        "deps": [
-          "live"
-        ],
-        "wave": 9,
-        "gate": "default",
-        "gloss": "call `nika:emit`",
-        "flags": [
-          "cleanup always runs"
-        ],
-        "line0": 138,
-        "line1": 157
-      }
-    ],
-    "outputs": [
-      "shipped"
-    ],
-    "waves": 10
+    "waves": 4
   }
 }
