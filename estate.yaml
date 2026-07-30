@@ -591,7 +591,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 88bada7ba9ee058ff1764a86be9068a751e4ecfbeb11b6603849373ddf39b447
+  sha256: d5a5727b5d4999c1624431fdde2322928e06a06180aa73093d679a777248e35d
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
