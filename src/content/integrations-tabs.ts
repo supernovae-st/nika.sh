@@ -17,7 +17,7 @@ export const INTEGRATION_TABS: { id: string; name: string; kind: 'client' | 'sur
   { id: 'spec', name: 'the spec', kind: 'surface' },
   { id: 'registry', name: 'the registry', kind: 'surface' },
   { id: 'client-sdk', name: 'the TypeScript client', kind: 'surface' },
-  { id: 'audit-workflow', name: 'the site-audit flagship', kind: 'surface' },
+  { id: 'audit-workflow', name: 'the site-audit, archived', kind: 'surface' },
   { id: 'docs', name: 'the docs', kind: 'surface' },
   { id: 'homebrew', name: 'the tap', kind: 'surface' },
   { id: 'website', name: 'this site', kind: 'surface' },
