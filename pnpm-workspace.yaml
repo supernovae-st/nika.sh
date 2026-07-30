@@ -1,0 +1,2 @@
+patchedDependencies:
+  vite-plugin-react-ssg@0.2.0: patches/vite-plugin-react-ssg@0.2.0.patch

@@ -38,6 +38,29 @@ describe.skipIf(pages.length === 0)('ssg islands · no replacement pattern survi
     expect(pages.length).toBeGreaterThan(100)
   })
 
+  /* The general fingerprint, and the one that matters: the expansion pastes
+     the matched needle wherever the `$&` sat, which is NOT necessarily an
+     island. Three pages shipped a second app root in the middle of a
+     syntax-highlighted jq expression — `gsub("^-|-$"; "")` renders as `-$`
+     then `&quot;`, and `$&` fired there. The island-only cases below missed
+     it for a day; a duplicated root is also a guaranteed React #418, so the
+     e2e sweep and the integrity sweep went red together without either
+     naming the cause.
+
+     Since 2026-07-30 the plugin is patched to replace with a FUNCTION
+     (patches/vite-plugin-react-ssg@0.2.0.patch), which never interprets a
+     replacement pattern, so this case guards a class that can no longer
+     occur by construction. It stays because the patch is a dependency
+     override: an upgrade that drops it must fail here, loudly. */
+  it('no page carries the app root twice', () => {
+    const hit = pages.filter((p) => {
+      const m = readFileSync(p, 'utf8').match(/id="app"/g)
+      return (m?.length ?? 0) > 1
+    })
+    expect(hit.map((p) => p.slice(DIST.length)).slice(0, 6),
+      'the ssg replacement expanded a $ pattern — is the plugin patch still applied?').toEqual([])
+  })
+
   /* the injection's fingerprint: the app root appearing INSIDE an island,
      which can only happen when a `$&` expanded during assembly */
   it('no island payload contains the app root', () => {

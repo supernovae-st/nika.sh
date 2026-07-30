@@ -269,7 +269,7 @@ files:
   evidence: "hand-kept escrow list — its own header: list a code the day the canon mints it, DELETE the entry the day the resync pin advances past the mint"
 - path: "pnpm-lock.yaml"
   class: generated
-  sha256: b533faa6c7cd92e29d5ae03801ff784c74697e769fef2a989263a890d6db7f59
+  sha256: f32aef7f537351a6e083e29fa97ff127cf2524c00815df6265c9e445f0ee6750
   evidence: "pnpm lockfile — tool-maintained, never hand-edited"
   derivation:
     tool: "pnpm install (pnpm pinned via packageManager)"

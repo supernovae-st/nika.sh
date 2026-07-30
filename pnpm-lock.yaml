@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  vite-plugin-react-ssg@0.2.0:
+    hash: c7f7b664f5b0c3e4fb691a4066dec7b8c3d515d41d496e21ce046d389733276b
+    path: patches/vite-plugin-react-ssg@0.2.0.patch
+
 importers:
 
   .:
@@ -140,7 +145,7 @@ importers:
         version: 8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)
       vite-plugin-react-ssg:
         specifier: 0.2.0
-        version: 0.2.0(@unhead/react@3.1.4(lightningcss@1.32.0)(oxc-parser@0.135.0)(react@19.2.7)(rolldown@1.0.3)(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)))(react-dom@19.2.7(react@19.2.7))(react-router@7.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
+        version: 0.2.0(patch_hash=c7f7b664f5b0c3e4fb691a4066dec7b8c3d515d41d496e21ce046d389733276b)(@unhead/react@3.1.4(lightningcss@1.32.0)(oxc-parser@0.135.0)(react@19.2.7)(rolldown@1.0.3)(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)))(react-dom@19.2.7(react@19.2.7))(react-router@7.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@24.13.1)(jsdom@29.1.1)(lightningcss@1.32.0)
@@ -6566,7 +6571,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-react-ssg@0.2.0(@unhead/react@3.1.4(lightningcss@1.32.0)(oxc-parser@0.135.0)(react@19.2.7)(rolldown@1.0.3)(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)))(react-dom@19.2.7(react@19.2.7))(react-router@7.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)):
+  vite-plugin-react-ssg@0.2.0(patch_hash=c7f7b664f5b0c3e4fb691a4066dec7b8c3d515d41d496e21ce046d389733276b)(@unhead/react@3.1.4(lightningcss@1.32.0)(oxc-parser@0.135.0)(react@19.2.7)(rolldown@1.0.3)(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)))(react-dom@19.2.7(react@19.2.7))(react-router@7.18.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0)):
     dependencies:
       '@unhead/react': 3.1.4(lightningcss@1.32.0)(oxc-parser@0.135.0)(react@19.2.7)(rolldown@1.0.3)(typescript@6.0.3)(vite@8.0.16(@types/node@24.13.1)(jiti@2.7.0)(yaml@2.9.0))
       react: 19.2.7

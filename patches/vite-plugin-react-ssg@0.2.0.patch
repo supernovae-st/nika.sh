@@ -1,0 +1,17 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index e272f44c88eb0009f2b1153d41eb330ee85fcb66..5c304f48fd451e59c16d58a70aba300651a47817 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -314,10 +314,10 @@ var StaticQueryResponseError = class extends Error {
+ 	}
+ };
+ function injectAppHtml(template, appHtml) {
+-	return template.replace("<div id=\"app\"></div>", `<div id="app">${appHtml}</div>`);
++	return template.replace("<div id=\"app\"></div>", () => `<div id="app">${appHtml}</div>`);
+ }
+ function injectBodyScript(template, script) {
+-	return template.replace("</body>", `<script>${script}<\/script></body>`);
++	return template.replace("</body>", () => `<script>${script}<\/script></body>`);
+ }
+ function createRouteRequest(config, targetPath) {
+ 	const url = new URL(targetPath, config.origin ?? DEFAULT_PRERENDER_ORIGIN);
