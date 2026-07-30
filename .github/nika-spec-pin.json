@@ -7,5 +7,5 @@
  "channel": "stable",
  "release_closed": true,
  "release_attestation": "scripts/lens/contracts/release-attestation.v1.json",
- "release_attestation_sha256": "ea0e78ad1581dbd99204449dc43defc3dd9179ce1ceae81553b436f51cba7ad4"
+ "release_attestation_sha256": "defa36c10d7cb78cffc2921fc696e117e08f17360e3d33a90ed0cb7b34cbccee"
 }

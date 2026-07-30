@@ -1,10 +1,10 @@
 {
  "contract_version": 1,
  "attestation_type": "nika-release-closure",
- "release_id": "spec-8ab0b1e6e68923b58a9bb61b82ee0ed826b68c7e-stable",
+ "release_id": "spec-6ac29351a878e3dfab43c0f4f6599f9f8a46fe27-stable",
  "repository": "supernovae-st/nika-spec",
- "spec_commit": "8ab0b1e6e68923b58a9bb61b82ee0ed826b68c7e",
- "spec_tree": "6167f9ea122cf43ff702e0dacff395ade50958f0",
+ "spec_commit": "6ac29351a878e3dfab43c0f4f6599f9f8a46fe27",
+ "spec_tree": "5f7143362bc14595489f98cced96605ec0044ea8",
  "channel": "stable",
  "release_closed": true,
  "evidence": [

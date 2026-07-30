@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "8ab0b1e6e68923b58a9bb61b82ee0ed826b68c7e",
-  "tree": "6167f9ea122cf43ff702e0dacff395ade50958f0"
+  "commit": "6ac29351a878e3dfab43c0f4f6599f9f8a46fe27",
+  "tree": "5f7143362bc14595489f98cced96605ec0044ea8"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "cb74cb1389ea1a398a7a93c5bb8de710731671a3c474209dcad21a27c7da5851",
+   "sha256": "56eff8807917948f3c424b955ee9c87ad165b9a1516a018f9c7cedef37f5d406",
    "args": [
     "--write"
    ],
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "6b1480c169ddf47cb72e151b0aa0fd9934bccde0ee5733ec71571e6d634d670c",
+   "sha256": "524d793337a8c66d2818be81a6f3b38e3c8b22096088e504ea0071a12330bdf6",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "de83ae5bc8df77833b83af338253a0c484f7c809dab11c8eb259c42c8927ea03",
+   "sha256": "ab9b7d8b2de1ae89f08ecc0cfcfc12aea03fa25538993e8fb193906e6cd9b683",
    "args": [
     "--write"
    ],
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea",
+   "sha256": "11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,7 +276,7 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea",
+   "sha256": "11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
@@ -301,7 +301,7 @@
   },
   {
    "path": "src/canon.generated.ts",
-   "sha256": "a088af64672e212945a8c7f8979b7433615fbe0ab0d052e1086189f019181f87",
+   "sha256": "092b5a90646566db112adcf96ab278823e95b26c6b1e828286fc567e7c916dad",
    "consumers": [
     "src/pages/Verbs.tsx"
    ]

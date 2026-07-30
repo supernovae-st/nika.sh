@@ -11,7 +11,7 @@
   },
   {
    "path": ".github/nika-spec-pin.json",
-   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea"
+   "sha256": "11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329"
   },
   {
    "path": ".github/workflows/lens-gates.yml",
@@ -27,7 +27,7 @@
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "0cfea91b1f26bf2de3610c64bb81e1238d8aca72a20bae633c3bae599989bcea"
+   "sha256": "11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329"
   },
   {
    "path": "package.json",
@@ -87,7 +87,7 @@
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
-   "sha256": "ea0e78ad1581dbd99204449dc43defc3dd9179ce1ceae81553b436f51cba7ad4"
+   "sha256": "defa36c10d7cb78cffc2921fc696e117e08f17360e3d33a90ed0cb7b34cbccee"
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "495559c815f50ddc67b288fef1966cc13e20f7425d400e4b295ee4cc6e6c33a3"
+   "sha256": "58dd10fd782d73c8ad987a889ec2fe5e212104ab8c8f69f547fe145c8600c9b4"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
