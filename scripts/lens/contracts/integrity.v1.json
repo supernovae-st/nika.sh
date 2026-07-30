@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "6cfde2fcaa50892a9ef65fe8598e380a980b96abfffa3f7da46bdfddf851bae1"
+   "sha256": "495559c815f50ddc67b288fef1966cc13e20f7425d400e4b295ee4cc6e6c33a3"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
