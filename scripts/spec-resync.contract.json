@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "ab9b7d8b2de1ae89f08ecc0cfcfc12aea03fa25538993e8fb193906e6cd9b683",
+   "sha256": "de83ae5bc8df77833b83af338253a0c484f7c809dab11c8eb259c42c8927ea03",
    "args": [
     "--write"
    ],
