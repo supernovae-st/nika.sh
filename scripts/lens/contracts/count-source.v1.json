@@ -395,7 +395,7 @@
     {
       "selector": "src/content.ts#count:3",
       "path": "src/content.ts",
-      "line": 108,
+      "line": 109,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",

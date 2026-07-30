@@ -301,7 +301,7 @@
   },
   {
    "path": "src/canon.generated.ts",
-   "sha256": "a088af64672e212945a8c7f8979b7433615fbe0ab0d052e1086189f019181f87",
+   "sha256": "092b5a90646566db112adcf96ab278823e95b26c6b1e828286fc567e7c916dad",
    "consumers": [
     "src/pages/Verbs.tsx"
    ]
