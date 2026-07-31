@@ -45,7 +45,21 @@ while [ $# -gt 0 ]; do
       shift
       ;;
     -h|--help)
-      sed -n '3,14p' "$0" | sed 's/^# \{0,1\}//'
+      # A here-doc, never `sed "$0"`: under `curl | sh` $0 is `sh` and the
+      # usage read an absent file — silently empty, exit 0 masked by the pipe.
+      cat <<'EOF'
+Nika installer — https://nika.sh/install.sh
+
+Usage:
+  curl -LsSf https://nika.sh/install.sh | sh
+  curl -LsSf https://nika.sh/install.sh | sh -s -- --version 1.0.0
+
+Options:
+  --version X       install version X (default: latest)
+  --install-dir D   install into D (default: ~/.nika/bin)
+  --no-brew         skip the Homebrew path on macOS
+  -h, --help        show this help
+EOF
       exit 0
       ;;
     *)
@@ -206,12 +220,14 @@ EOF
 }
 
 installed_nika_cmd() {
-  if command -v nika >/dev/null 2>&1; then
-    command -v nika
-    return 0
-  fi
+  # The binary WE just installed wins: a PATH shadow (a stale Homebrew nika,
+  # another toolchain's nika) must never become the post-install probe target.
   if [ -x "$INSTALL_DIR/nika" ]; then
     printf '%s/nika\n' "$INSTALL_DIR"
+    return 0
+  fi
+  if command -v nika >/dev/null 2>&1; then
+    command -v nika
     return 0
   fi
   return 1
@@ -258,28 +274,60 @@ $wire_line
 EOF
 }
 
+# The receipt: the target WE installed must report the version we pinned.
+# The tarball's sha256 proves the download; this proves the install — a
+# mismatch (or a binary that cannot say its version) is blocking, and a
+# PATH shadow earns an explicit warning so the user knows which nika their
+# shell will actually run.
+verify_installed_version() {
+  local reported
+  reported=$("$INSTALL_DIR/nika" --version 2>/dev/null \
+    | grep -oE '[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?' | head -n 1) || true
+  [ -n "${reported:-}" ] \
+    || die "$INSTALL_DIR/nika did not report a version — refusing an unverifiable install"
+  [ "$reported" = "$VERSION_NUM" ] \
+    || die "version mismatch: pinned $VERSION_NUM but $INSTALL_DIR/nika reports $reported
+      refusing the install — the installed target is not the pinned binary"
+  say "receipt: $INSTALL_DIR/nika --version = $reported (pinned $VERSION_NUM)"
+  local resolved
+  resolved=$(command -v nika 2>/dev/null) || true
+  if [ -n "${resolved:-}" ] && [ "$resolved" != "$INSTALL_DIR/nika" ]; then
+    warn "PATH shadow: 'command -v nika' resolves to $resolved, not $INSTALL_DIR/nika"
+    warn "your shell runs the shadow until $INSTALL_DIR leads PATH"
+  fi
+}
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
-need curl
-need uname
-need tar
+main() {
+  need curl
+  need uname
+  need tar
 
-PLATFORM=$(detect_platform)
-say "platform: $PLATFORM"
+  PLATFORM=$(detect_platform)
+  say "platform: $PLATFORM"
 
-# macOS: prefer brew unless user opted out or version was pinned
-if [ "$USE_BREW" = '1' ] && [ "$VERSION" = "latest" ] \
-   && [ "${PLATFORM#macos-}" != "$PLATFORM" ] \
-   && have_brew; then
-  if try_brew_install; then
-    print_next_steps
-    exit 0
+  # macOS: prefer brew unless user opted out or version was pinned
+  if [ "$USE_BREW" = '1' ] && [ "$VERSION" = "latest" ] \
+     && [ "${PLATFORM#macos-}" != "$PLATFORM" ] \
+     && have_brew; then
+    if try_brew_install; then
+      print_next_steps
+      exit 0
+    fi
   fi
-fi
 
-resolve_version
-download_release "$PLATFORM"
-print_path_hint
-print_next_steps
+  resolve_version
+  download_release "$PLATFORM"
+  verify_installed_version
+  print_path_hint
+  print_next_steps
+}
+
+# The test harness sources this file with NIKA_INSTALL_LIB_ONLY=1 to probe
+# the helpers in isolation; `curl | sh` always runs main.
+if [ "${NIKA_INSTALL_LIB_ONLY:-0}" != "1" ]; then
+  main "$@"
+fi
