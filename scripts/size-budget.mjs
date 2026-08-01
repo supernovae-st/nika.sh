@@ -48,6 +48,12 @@
    (an eager import of the heavy module is a red test, not a budget
    surprise). Measured 409.6; margin ~0.4 KB keeps the bite-on-growth
    grammar ·
+   410→406 spec-nuke (2026-08-01 · operator: the 3D dies): TheSpecMachine +
+   spec-machine-three/model + the /spec voyage wiring (stage director ·
+   helm · finale · birth) left the entry — the 2D schematic was always the
+   fallback truth and is now the only one; the verb rooms swapped PartEgg
+   for the bare PartSchematic the same day. Measured 405.7; the ceiling
+   BITES DOWN with the payment (the death-clause grammar) ·
    348→350 w2-flip: the w1-to-w2 door pass rides the entry BY DESIGN — the
    browse island fallback and the SPA-nav chunk both hand the client RAW
    ratified bytes, and the served grammar must exist wherever raw bytes
@@ -210,7 +216,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 410
+const BUDGET_KB = 406
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

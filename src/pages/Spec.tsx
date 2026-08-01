@@ -1,8 +1,7 @@
-import { Suspense, lazy, memo, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
-import { usePlan3D } from '../scene/use-plan3d'
 import { ECOSYSTEM } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { CANON } from '../canon.generated'
@@ -24,8 +23,8 @@ import {
   nodeReadout,
   nsScope,
   type StratumKey,
+  STRATUM_HEX,
 } from '../scene/spec-machine-data'
-import { STRATA_ORDER, STRATUM_HEX } from '../scene/spec-machine-model'
 import { useSpecReading } from '../sections/spec/use-spec-reading'
 import { SpecSchematic } from '../sections/spec/SpecSchematic'
 import '../sections/v4-home.css'
@@ -50,18 +49,18 @@ function HudMarks() {
    the extract modes, the error namespaces, the license invariants. The GitHub
    nika-spec repo stays canonical; this page is the readable map that links OUT.
 
-   THE SPEC MACHINE (2026-07-10): the page is a split stage on desktop — the
-   reference ledger reads in a measured column while a sticky rail holds the
-   whole language as ONE machined instrument (the 2D schematic today, the W1
-   canvas over the same stage when the moment can afford it), in a HUD that
+   THE SPLIT STAGE: the reference ledger reads in a measured column while a
+   sticky rail holds the whole language as ONE 2D schematic, in a HUD that
    tracks the reading: each section crossed IGNITES its stratum for the visit
    (the manifesto drum's accrued-liberation mechanic), the TOC ticks fill, and
    the ASSEMBLED tally climbs until the whole contract stands lit. The DOM
-   column stays the complete truth (SEO + a11y + no-JS); the rail is decoration.
+   column stays the complete truth (SEO + a11y + no-JS); the rail is
+   decoration. (The GL chassis over the same stage died 2026-08-01 — the
+   drawing was always the fallback truth, now it is the only one.)
 
    Spec truth BY CONSTRUCTION: every count + list comes from canon.generated.ts
    (projected from nika-spec canon.yaml · the SSOT) via spec-machine-data.ts —
-   the strata graph the page, the schematic and the machine all share. The craft
+   the strata graph the page and the schematic share. The craft
    layer is glosses + grouping only; a canon entry that isn't glossed still
    renders (structural guards in the data module), so the lists can never
    under-render. No YAML is hand-typed: the worked fragment is sliced from a
@@ -148,21 +147,14 @@ const ssrSample = (): string | null => {
   return all[SAMPLE_SLUG] ?? Object.values(all)[0] ?? 'nika: v1\n'
 }
 
-/* W1 · THE SPEC MACHINE · the rail 3D layer (desktop ≥1024px + motion + WebGL
-   + rail-near, lazy chunk — three itself is already the shared vendor chunk).
-   It retires the 2D schematic only once actually mounted ([data-machine], set
-   by the layer itself — the drum-rings pattern), so the schematic stays the
-   mobile / reduced-motion / no-WebGL truth. */
-const TheSpecMachine = lazy(() => import('../scene/TheSpecMachine'))
-
 export function Component() {
   /* reveal the section once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
-  /* the reading assembles the machine · lit strata (monotonic) + the current
+  /* the reading assembles the drawing · lit strata (monotonic) + the current
      stratum under the reading line — drives the TOC ticks, the schematic and
-     the rail HUD (the W1 machine mirrors this with its own observer) */
+     the rail HUD */
   const { lit, current } = useSpecReading()
 
   /* the worked fragment's bytes (register diet · island recipe) */
@@ -239,113 +231,7 @@ export function Component() {
   const assembledMax = SPEC_SECTIONS.length - 1 /* license is the close whisper */
   const assembled = [...lit].filter((k) => k !== 'license').length
 
-  /* the machine's capability gate · the HERO is the near-trigger (the stage
-     itself now sits a runway below the fold — gating on it would mount the
-     chassis late, mid-scroll, with a layout jump); the stage ref stays the
-     [data-machine] handshake target */
   const heroRef = useRef<HTMLElement>(null)
-  const stageRef = useRef<HTMLDivElement>(null)
-  const machine = usePlan3D(heroRef)
-
-  /* THE HELM · the ship's view controls (explode toggle + spring-home) —
-     real DOM buttons outside the aria-hidden stage, keyboard-reachable */
-  const [explode, setExplode] = useState(false)
-  const [resetSignal, setResetSignal] = useState(0)
-
-  /* ── THE VOYAGE · hero (the whole vessel, turning, colours up, labels
-     quiet) → dock (the reading zooms deck by deck) → FINALE (the runway at
-     the BOTTOM hands the chassis the whole viewport: the assembled flyover)
-     → off (the footer's turn). The machine's frame loop reads flightRef —
-     no re-render churn. */
-  const finaleEl = useRef<HTMLDivElement>(null)
-  /* THE BIRTH's trigger · once the close crosses a third of the viewport
-     (live only — the hull has just lain down into its drawing above), the
-     section is stamped .is-borne and the one-shot birth plays: burst →
-     glyph bloom → the mark forms → creed + rail. Stamped once, forever. */
-  const closeRef = useRef<HTMLElement>(null)
-  useEffect(() => {
-    const el = closeRef.current
-    if (!machine || !el) return
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return
-        el.classList.add('is-borne')
-        io.disconnect()
-      },
-      /* the birth waits for its stage: at 0.3 it played while the 2D
-         drawing still held the screen above — the burst fired half out
-         of view. 0.6 = the close owns the viewport. */
-      { threshold: 0.6 },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [machine])
-  const [stage, setStage] = useState<'hero' | 'dock' | 'finale' | 'off'>('hero')
-  const flightRef = useRef({ state: 'hero', progress: 0 })
-  useEffect(() => {
-    if (!machine) return
-    let raf = 0
-    type Stage = 'hero' | 'dock' | 'finale' | 'off'
-    const tick = () => {
-      raf = 0
-      const vh = window.innerHeight
-      const first = document.querySelector('.spec-block[data-stratum]')?.getBoundingClientRect()
-      const fin = finaleEl.current?.getBoundingClientRect()
-      /* hysteresis: enter/exit thresholds differ so a small scroll near a
-         boundary can never thrash the chassis width */
-      const step = (prev: Stage): Stage => {
-        switch (prev) {
-          case 'hero':
-            return first && first.top <= vh * 0.6 ? 'dock' : 'hero'
-          case 'dock':
-            if (first && first.top > vh * 0.78) return 'hero'
-            return fin && fin.top <= vh * 0.55 ? 'finale' : 'dock'
-          case 'finale':
-            if (fin && fin.top > vh * 0.7) return 'dock'
-            return fin && fin.bottom < vh * 0.22 ? 'off' : 'finale'
-          case 'off':
-            return fin && fin.bottom >= vh * 0.38 ? 'finale' : 'off'
-        }
-      }
-      let s = flightRef.current.state as Stage
-      for (let i = 0; i < 3; i++) {
-        const next = step(s)
-        if (next === s) break
-        s = next
-      }
-      flightRef.current.state = s
-      /* the approach · progress is measured in the FLIP'S OWN coordinates:
-         p runs 0 → 1 exactly as the first block's top travels 1.0vh →
-         0.6vh (the dock threshold above) — the scroll-steered turn, dive
-         and carry all COMPLETE at the precise scroll position where the
-         dock takes over (no early plateau, no unfinished motion). */
-      if (s === 'hero')
-        flightRef.current.progress = first
-          ? Math.min(1, Math.max(0, (vh - first.top) / (vh * 0.4)))
-          : Math.min(1, Math.max(0, window.scrollY / (vh * 0.9)))
-      /* THE FLYOVER'S OWN COORDINATES · p runs 0 → 1 exactly as the runway
-         travels from its boarding threshold (top = 0.55vh) to the off
-         threshold (bottom = 0.22vh) — the assembled turn spends the head
-         of it, THE LAY-DOWN the tail (the machine splits at 0.62). */
-      else if (s === 'finale' && fin)
-        flightRef.current.progress = Math.min(
-          1,
-          Math.max(0, (vh * 0.55 - fin.top) / (fin.height + vh * 0.33)),
-        )
-      setStage((prev) => (prev === s ? prev : s))
-    }
-    const on = () => {
-      if (!raf) raf = requestAnimationFrame(tick)
-    }
-    window.addEventListener('scroll', on, { passive: true })
-    window.addEventListener('resize', on, { passive: true })
-    on()
-    return () => {
-      if (raf) cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', on)
-      window.removeEventListener('resize', on)
-    }
-  }, [machine])
 
   /* ── W2 · the hover bus — ONE id, both sides write: pointering a 3D node
      reports here (MR readout + the DOM twins light), and hover/focus on any
@@ -353,25 +239,13 @@ export function Component() {
      pulses the 3D node. Delegated: two listeners, zero per-chip wiring. */
   const [hoverNode, setHoverNode] = useState<string | null>(null)
   const hoverReadout = hoverNode ? nodeReadout(hoverNode) : null
-  /* THE LIVING LINK's DOM end · the hovered [data-node] ELEMENT rides a
-     ref into the machine's frame loop — the loop tends an ephemeral wire
-     from the word to ITS block on the hull (a canvas-side hover has no
-     DOM end: the ref stays null and no wire is drawn) */
-  const hoverElRef = useRef<HTMLElement | null>(null)
-  /* THE STATION PREVIEW · hovering an element whose data-node names a
-     whole STRATUM (index chips · transport ticks) spotlights that
-     station on the hull — navigation previewed before the click */
-  const hoverStratumRef = useRef(-1)
   useEffect(() => {
     const root = document.querySelector('.spec-page')
     if (!root) return
     const resolveEl = (t: EventTarget | null): HTMLElement | null =>
       ((t as Element | null)?.closest?.('[data-node]') as HTMLElement | null) ?? null
     const apply = (el: HTMLElement | null) => {
-      hoverElRef.current = el
-      const id = el?.getAttribute('data-node') ?? null
-      hoverStratumRef.current = id ? STRATA_ORDER.indexOf(id as (typeof STRATA_ORDER)[number]) : -1
-      setHoverNode(id)
+      setHoverNode(el?.getAttribute('data-node') ?? null)
     }
     const onOver = (e: Event) => apply(resolveEl(e.target))
     const onFocus = (e: Event) => {
@@ -390,30 +264,13 @@ export function Component() {
       root.removeEventListener('focusout', onBlur)
     }
   }, [])
-  /* the machine → DOM mirror · every twin of the hovered node lights.
-     THE SYMMETRY (arc 33): a CANVAS-side hover has no DOM end — if a twin
-     is on screen, it becomes one: the living link tends the same wire
-     back from the block to its word in the prose. Only adopted when the
-     page-side bus left the ref empty (a real DOM hover always wins). */
+  /* the DOM mirror · every twin of the hovered node lights (chips · stamp
+     legend · TOC · gates · ns rows read each other across the page) */
   useEffect(() => {
     if (!hoverNode) return
     const els = document.querySelectorAll(`[data-node="${hoverNode}"]`)
     els.forEach((el) => el.classList.add('is-node-hot'))
-    let adopted: HTMLElement | null = null
-    if (!hoverElRef.current) {
-      for (const el of els) {
-        const r = el.getBoundingClientRect()
-        if (r.bottom > 80 && r.top < window.innerHeight - 40 && r.width > 0) {
-          adopted = el as HTMLElement
-          break
-        }
-      }
-      hoverElRef.current = adopted
-    }
-    return () => {
-      els.forEach((el) => el.classList.remove('is-node-hot'))
-      if (adopted && hoverElRef.current === adopted) hoverElRef.current = null
-    }
+    return () => els.forEach((el) => el.classList.remove('is-node-hot'))
   }, [hoverNode])
 
   /* Shift+←/→ jumps sections (the /play chapter-keys precedent) · the hash
@@ -478,7 +335,7 @@ export function Component() {
      too made each flip invalidate style across the WHOLE page subtree — a
      one-frame ~50ms recalc bill at every boundary, for nothing */
   return (
-    <main className={`theme-dark spec-page${machine ? ' is-live' : ''}`}>
+    <main className="theme-dark spec-page">
       <Island id={SPEC_ISLAND_ID} payload={sampleYaml} />
       {/* v4-in is BAKED into the prerendered HTML: on a throttled connection
           every JS-side reveal (observer · watchdog · hydration) lands seconds
@@ -487,10 +344,8 @@ export function Component() {
           the text entrance stagger is traded away on this page only. */}
       <section ref={ref} aria-labelledby="spec-title" className="v4sec v4-in">
         <div className="v4sec-wrap spec-wrap">
-          {/* ── THE HERO · a poster: the title column and THE SHIP, nothing
-              else. When the machine is live the fixed chassis carries the
-              ship (52vw); the SSG elevation holds the same ground for the
-              fallback register (mobile · reduced · no-WebGL). */}
+          {/* ── THE HERO · a poster: the title column and THE SHIP (the SSG
+              elevation), nothing else. */}
           <header className="spec-hero" ref={heroRef}>
             <div className="spec-hero-copy">
           {/* the masthead */}
@@ -606,37 +461,14 @@ export function Component() {
                   instruments, never the page's heaviest tree */}
               <SpecReference sampleYaml={sampleYaml} />
 
-              {/* THE FINALE RUNWAY · past the last section the chassis takes
-                  the whole viewport for the assembled flyover — the voyage
-                  ends where it began, every stratum lit. Live only. */}
-              {machine ? <div className="spec-finale" ref={finaleEl} aria-hidden /> : null}
             </div>
 
-            {/* ── the machine rail · sticky. The STAGE is decoration (aria-hidden:
-                the TOC + the column are the truth — the elevation until the
-                canvas mounts, [data-machine] retires it); THE HELM below stays
-                exposed (real buttons, keyboard-reachable). */}
-            <aside
-              className={`spec-rail${machine ? ' is-live' : ''}`}
-              data-stage={stage}
-            >
-              <div className="spec-rail-stage" ref={stageRef} aria-hidden>
-                {machine ? (
-                  <Suspense fallback={null}>
-                    <TheSpecMachine
-                      stageRef={stageRef}
-                      lit={lit}
-                      current={current}
-                      highlight={hoverNode}
-                      hoverElRef={hoverElRef}
-                      hoverStratumRef={hoverStratumRef}
-                      explode={explode}
-                      resetSignal={resetSignal}
-                      flightRef={flightRef}
-                      onHover={setHoverNode}
-                    />
-                  </Suspense>
-                ) : null}
+            {/* ── the schematic rail · sticky, aria-hidden decoration: the TOC
+                and the column are the truth; the 2D drawing IS the stage
+                (the GL chassis died 2026-08-01 — the drawing was always the
+                fallback truth, now it is the only one). */}
+            <aside className="spec-rail">
+              <div className="spec-rail-stage" aria-hidden>
                 <SpecSchematic lit={lit} current={current} />
                 <span className="spec-rail-hud spec-rail-hud--bl">
                   ASSEMBLED·····{assembled}/{assembledMax}
@@ -645,7 +477,7 @@ export function Component() {
                   {SPEC_SECTIONS.map((s) => (
                     <i
                       key={s.fig}
-                      className={`${stage === 'finale' || lit.has(s.key) ? 'is-lit' : ''}${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                      className={`${lit.has(s.key) ? 'is-lit' : ''}${current === s.key ? ' is-cur' : ''}`}
                     />
                   ))}
                 </span>
@@ -677,28 +509,6 @@ export function Component() {
                   </span>
                 ) : null}
               </div>
-              {/* THE HELM · outside the aria-hidden stage (keyboard-reachable);
-                  CSS shows it only while the canvas holds the stage */}
-              <div className="spec-helm">
-                <button
-                  type="button"
-                  className="spec-helm-btn"
-                  aria-pressed={explode}
-                  onClick={() => setExplode((e) => !e)}
-                >
-                  EXPLODE
-                </button>
-                <button
-                  type="button"
-                  className="spec-helm-btn"
-                  onClick={() => {
-                    setExplode(false)
-                    setResetSignal((n) => n + 1)
-                  }}
-                >
-                  RESET
-                </button>
-              </div>
               {/* THE TRANSPORT · the spine gauge, made a helm: nine real
                   links OUTSIDE the aria-hidden stage (the display gauge is
                   its pointer-inert twin at the poster/finale) — click a
@@ -709,9 +519,9 @@ export function Component() {
                     key={s.fig}
                     href={s.anchor}
                     data-node={s.key}
-                    className={`spec-transport-tick${
-                      stage === 'finale' || lit.has(s.key) ? ' is-lit' : ''
-                    }${current === s.key && stage !== 'finale' ? ' is-cur' : ''}`}
+                    className={`spec-transport-tick${lit.has(s.key) ? ' is-lit' : ''}${
+                      current === s.key ? ' is-cur' : ''
+                    }`}
                     aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
                     title={`${s.fig} · ${s.title}`}
                   >
@@ -724,27 +534,10 @@ export function Component() {
 
         </div>
 
-        {/* THE CLOSE · the voyage's last beat, every register: the mark, the
-            one-line creed, the ecosystem in one rail (sources registry — the
-            live finale's LAY-DOWN dissolves the hull into its own drawing
-            just above this). Real DOM, real links; the footer follows.
-            THE BIRTH (live only): the butterfly glyph blooms out of a
-            supernova burst and the mark forms — machine-gated JSX +
-            .is-live-scoped CSS, so the fallback register (and the goldens)
-            keeps this section verbatim. */}
-        <section
-          ref={closeRef}
-          className={`spec-close${machine ? ' is-live' : ''}`}
-          aria-labelledby="spec-close-mark"
-        >
-          {machine ? (
-            <span className="spec-close-nova" aria-hidden>
-              <i className="spec-close-burst" />
-              <i className="spec-close-ring" />
-              <i className="spec-close-ring spec-close-ring--far" />
-              <img src="/nika.svg" alt="" className="spec-close-glyph" />
-            </span>
-          ) : null}
+        {/* THE CLOSE · the last beat, every register: the mark, the
+            one-line creed, the ecosystem in one rail. Real DOM, real links;
+            the footer follows. */}
+        <section className="spec-close" aria-labelledby="spec-close-mark">
           <p id="spec-close-mark" className="spec-close-mark">
             nika
           </p>

@@ -459,46 +459,6 @@ await check('drum · /tools → GL painted or gracefully absent', () =>
   ),
 )
 
-/* 3-lay · THE LAY-DOWN handshake: parked at the page end the finale must
-   have dissolved the hull INTO its drawing — [data-laydown] stamped, the
-   canvas faded, the schematic returned — and the close must carry the mark.
-   (On this belt window the machine mounts: swiftshader GL. If the gate ever
-   said no, [data-machine] is absent and the check passes on the fallback
-   truth.) Park is behavior:'instant' — the smooth-hijack law. */
-await send('Page.navigate', { url: `${BASE}/spec` })
-await settle()
-await check('spec · the lay-down dissolves the hull into its drawing', () =>
-  until(
-    () =>
-      evaluate(`(async () => {
-        const close = document.querySelector('.spec-close')
-        if (!close) return { err: 'no close section' }
-        /* park INSIDE the lay-down window: the runway's bottom at 0.3vh
-           keeps the stage in 'finale' with p≈0.96 (past the 0.8 dissolve
-           threshold) — parking AT the close lands in 'off', where the rail
-           itself fades (the pin's own first catch) */
-        const fin = document.querySelector('.spec-finale')
-        if (!fin) return true /* fallback register — no live finale */
-        const r = fin.getBoundingClientRect()
-        window.scrollBy({ top: r.bottom - innerHeight * 0.3, behavior: 'instant' })
-        await new Promise((r2) => setTimeout(r2, 400))
-        const stage = document.querySelector('.spec-rail-stage')
-        const mark = document.querySelector('.spec-close-mark')
-        if (!mark || mark.textContent.trim() !== 'nika') return { err: 'no mark' }
-        if (!stage || !stage.dataset.machine) return true /* fallback register truth */
-        const canvas = stage.querySelector('canvas')
-        const faded = !canvas || parseFloat(getComputedStyle(canvas).opacity) < 0.5
-        const drawing = stage.querySelector('.spec-schematic')
-        const drawn = drawing && getComputedStyle(drawing).display !== 'none'
-        return stage.dataset.laydown === '1' && faded && drawn
-          ? true
-          : { laydown: stage.dataset.laydown, faded, drawn: Boolean(drawn) }
-      })()`),
-    30,
-    500,
-  ),
-)
-
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })
 await settle()
@@ -922,24 +882,11 @@ await check('manifesto · the language rail navigates (EN → FR)', async () => 
   )
 })
 
-/* 3d · THE SPEC MACHINE (/spec) · the voyage's own belt: the canvas takes
-   the stage (desktop + GL — this runner qualifies), the reading assembles
-   the ship (the DOM ticks and the machine can never disagree — assert the
-   DOM side), the helm answers (trusted clicks), the chapter keys sail. */
+/* 3d · THE SPEC READING (/spec · 2D) · the drawing's own belt: the reading
+   assembles the schematic (DOM ticks + tally) and the chapter keys sail.
+   (The GL chassis died 2026-08-01 — the drawing is the only truth.) */
 await send('Page.navigate', { url: `${BASE}/spec` })
 await settle()
-await check('spec · the machine takes the stage ([data-machine] + canvas)', async () =>
-  until(
-    () =>
-      evaluate(`(() => {
-        const stage = document.querySelector('.spec-rail-stage')
-        const live = !!stage?.dataset.machine
-        const canvas = !!stage?.querySelector('.smw canvas')
-        return (live && canvas) || { live, canvas }
-      })()`),
-    20,
-    600,
-  ))
 await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', async () => {
   /* sail the reading: jump each block past the ignition line (the hook's
      rAF sweep catches instant jumps — its own documented law), then poll
@@ -976,152 +923,15 @@ await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', asy
     500,
   )
 })
-await check('spec · the helm answers (EXPLODE aria-pressed round-trip)', async () => {
-  /* the helm lives at the DOCK (hidden on the poster + finale) — park the
-     reading mid-ship first. Trusted CDP clicks (React 19 ignores synthetic
-     clicks — the /play trusted-click law). THE MOVING-TARGET TRAP (lived,
-     run 2): arriving from the page bottom the chassis flips finale → dock
-     and its 0.7s width transition TRAVELS the helm across the screen — a
-     click aimed mid-flight lands on empty space ({pressed:false}). Two
-     rect reads 300ms apart must agree before a press spends; the whole
-     press → assert round retries ×4. */
-  const rect = () =>
-    evaluate(`(() => {
-      const b = [...document.querySelectorAll('.spec-helm-btn')].find((x) => x.textContent === 'EXPLODE')
-      if (!b) return null
-      const r = b.getBoundingClientRect()
-      const vis = r.width > 0 && r.top > 0 && r.bottom < innerHeight
-      return vis ? { x: +(r.left + r.width / 2).toFixed(1), y: +(r.top + r.height / 2).toFixed(1) } : null
-    })()`)
-  const press = async (r) => {
-    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: r.x, y: r.y, button: 'left', buttons: 1, clickCount: 1 })
-    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: r.x, y: r.y, button: 'left', buttons: 0, clickCount: 1 })
-  }
-  const aria = (want) =>
-    until(
-      () =>
-        evaluate(
-          `[...document.querySelectorAll('.spec-helm-btn')].find((x) => x.textContent === 'EXPLODE')?.getAttribute('aria-pressed') === ${JSON.stringify(want)} || false`,
-        ),
-      6,
-      400,
-    )
-  let last = null
-  for (let attempt = 0; attempt < 4; attempt++) {
-    /* RE-ANCHOR PER ATTEMPT (the belt's law — lived here too: anchored
-       once outside the loop, a stage stuck in its finale→dock transition
-       kept the helm display:none through every retry, r1:null ×4): park
-       the reading on S.3, then REQUIRE the dock before spending a press */
-    await evaluate(`(() => {
-      const el = document.querySelector('#permits')
-      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
-    })()`)
-    const staged = await until(
-      () => evaluate(`document.querySelector('.spec-rail')?.dataset.stage === 'dock' || document.querySelector('.spec-rail')?.dataset.stage`),
-      6,
-      300,
-    )
-    if (staged !== true) {
-      last = { attempt, staged }
-      continue
-    }
-    const r1 = await rect()
-    await sleep(300)
-    const r2 = await rect()
-    if (!r1 || !r2 || Math.abs(r1.x - r2.x) > 1 || Math.abs(r1.y - r2.y) > 1) {
-      last = { attempt, r1, r2, stage: await evaluate(`document.querySelector('.spec-rail')?.dataset.stage`) }
-      continue
-    }
-    await press(r2)
-    const on = await aria('true')
-    if (on !== true) {
-      last = { attempt, pressed: on }
-      continue
-    }
-    const r3 = await rect() /* toggle back — leave the stage as found */
-    if (r3) await press(r3)
-    return aria('false')
-  }
-  return last
-})
 await check('spec · Shift+← sails to the previous station (the chapter keys)', async () => {
-  /* the reading sits at S.3 (parked above) — the chapter key must land a
-     REAL hash (the handler owns window keydown; synthetic keys reach it,
-     the eggs' own precedent; re-type per attempt) */
+  /* the reading just swept every block (the tally check above) — the
+     chapter key must land a REAL hash (the handler owns window keydown;
+     synthetic keys reach it, the eggs' own precedent; re-type per attempt) */
   let last = null
   for (let attempt = 0; attempt < 3; attempt++) {
     await evaluate(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true }))`)
     last = await until(() => evaluate(`location.hash.length > 1 || false`), 5, 300)
     if (last === true) return true
-  }
-  return last
-})
-await check('spec · the pick bus lands (click a node \u2192 its section hash)', async () => {
-  /* the LAST unbelted gesture: pointing the hull picks a node (screen-space
-     projection, no raycaster), clicking navigates to its section. Headless
-     we cannot know a node's pixel \u2014 but the machine TELLS us: the canvas
-     cursor flips to 'pointer' over a node (an inline style write in the
-     same pointermove handler as the pick). So: park a dock section, seed at
-     the umbilical dot (it rides the read stratum's projected anchor), walk
-     a coarse spiral of TRUSTED mouse moves until the cursor says 'pointer',
-     then click THERE (press+release, no travel \u2014 under the 4px slop an
-     orbit never starts) and assert a section hash lands. Every layer of
-     the path is real: projection \u2192 pick \u2192 cursor \u2192 click \u2192 hash. */
-  await evaluate(`history.replaceState(null, '', location.pathname)`) /* a prior check's hash must not vacuously pass this one */
-  let last = null
-  for (let attempt = 0; attempt < 3; attempt++) {
-    /* RE-ANCHOR PER ATTEMPT (the helm check's own lesson, relived here:
-       anchored once outside the loop, a slow hero→dock flip left every
-       attempt seeking a seed in stage:hero) */
-    await evaluate(`(() => {
-      const el = document.querySelector('#s3')
-      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
-    })()`)
-    const seed = await until(
-      () =>
-        evaluate(`(() => {
-          const stage = document.querySelector('.spec-rail')?.dataset.stage
-          if (stage !== 'dock') return { stage }
-          const dot = [...document.querySelectorAll('.smc-dot')].find((d) => Number(d.style.opacity || 0) > 0.3)
-          const cv = document.querySelector('.smw canvas')?.getBoundingClientRect()
-          if (!dot || !cv) return { dot: !!dot, cv: !!cv }
-          const x = Number(dot.getAttribute('cx')) + cv.left
-          const y = Number(dot.getAttribute('cy')) + cv.top
-          return x > cv.left && y > 0 ? { x, y, cvl: cv.left } : { x, y }
-        })()`),
-      8,
-      400,
-    )
-    if (typeof seed !== 'object' || !('x' in seed)) {
-      last = { attempt, seed }
-      continue
-    }
-    /* the spiral · trusted moves stepping out from the anchor; the pick
-       reach is 26px so 24px steps cannot jump the basin */
-    let hit = null
-    outer: for (let r = 0; r <= 168; r += 24) {
-      const steps = r === 0 ? 1 : Math.max(6, Math.round((2 * Math.PI * r) / 24))
-      for (let k = 0; k < steps; k++) {
-        const a = (2 * Math.PI * k) / steps
-        const x = seed.x + Math.cos(a) * r
-        const y = seed.y + Math.sin(a) * r
-        if (x < seed.cvl + 8 || y < 60 || y > 960) continue
-        await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y, button: 'none', buttons: 0, pointerType: 'mouse' })
-        const cur = await evaluate(`document.querySelector('.smw canvas')?.style.cursor ?? ''`)
-        if (cur === 'pointer') {
-          hit = { x, y }
-          break outer
-        }
-      }
-    }
-    if (!hit) {
-      last = { attempt, spiral: 'no pointer cursor', seed: { x: Math.round(seed.x), y: Math.round(seed.y) } }
-      continue
-    }
-    await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: hit.x, y: hit.y, button: 'left', buttons: 1, clickCount: 1 })
-    await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: hit.x, y: hit.y, button: 'left', buttons: 0, clickCount: 1 })
-    last = await until(() => evaluate(`(location.hash.length > 1 && location.hash) || false`), 6, 300)
-    if (typeof last === 'string' && last.startsWith('#')) return true
   }
   return last
 })

@@ -1,7 +1,7 @@
 /* ─── drum-sphere-three · the GPU side of the manifesto drum sphere (wave I) ──
 
    ★ THEME DOCTRINE · THE THOLOS REGISTER ★
-   This scene and src/scene/spec-machine-three.ts (the /spec ship) speak
+   This scene speaks
    ONE shared geometric language, and future nika.sh 3D scenes reuse it
    rather than inventing a new one (the home's mid-scroll plan scene retired
    2026-07-11 — hero-contained scenes are the register's home):
