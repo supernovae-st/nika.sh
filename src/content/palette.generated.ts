@@ -503,66 +503,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
-    "label": "daily_brief",
-    "href": "/library/daily_brief",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "pr_risk_review",
-    "href": "/library/pr_risk_review",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "meeting_actions",
-    "href": "/library/meeting_actions",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "price_watch",
-    "href": "/library/price_watch",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "social_repurpose",
-    "href": "/library/social_repurpose",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "standup_digest",
-    "href": "/library/standup_digest",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "etl_quarantine",
-    "href": "/library/etl_quarantine",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "invoice-chaser",
-    "href": "/library/invoice-chaser",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "deep-research-brief",
-    "href": "/library/deep-research-brief",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
-    "label": "localization-factory",
-    "href": "/library/localization-factory",
-    "hint": "the workflow library · a real file"
-  },
-  {
-    "kind": "page",
     "label": "integration: claude-code",
     "href": "/integrations/claude-code",
     "hint": "get Nika into your stack"

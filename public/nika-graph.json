@@ -5509,15 +5509,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 769,
+     "authored": 778,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 290,
      "pinned-copy": 21,
      "testimonial": 44
     },
-    "classified_files": 1127,
-    "unverified": 1
+    "classified_files": 1136,
+    "unverified": 12
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",

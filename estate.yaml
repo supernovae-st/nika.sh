@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1127
+  classified_files: 1136
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 769
+    authored: 778
     authored-pin: 3
     generated: 290
     pinned-copy: 21
     testimonial: 44
     foreign: 0
-  unverified-default: 1
+  unverified-default: 12
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 7343ea7b641dcbafa1a2a4fb28fd1357d608e18937664dae5d80949cde0285da
+  sha256: e1fa12baaff065a808a71fa87cf11511d011d9e32c7f0cb2da77c74abc557753
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: bc75cc94972fbe3f0a914eee6eb63013c8c365fe380088f8aea7eb46b3c502f4
+  sha256: 7a12ff3224264aac19451d174c50ce99f99ac0b1368274d008479808928f641b
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -351,7 +351,7 @@ files:
     - "nika 0.107.0 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
-  sha256: 793f64aba7a69672fa74ed9dd741b56cc5730259a736957df5b2c5b6208af949
+  sha256: fad4a73a15d6c9aee5de2332938103961eb3bccbee750db31381eeb114da9089
   evidence: "written by build-lens.mjs:1736 (redirects_format shape) — the append-only redirect registry (a published URL never 404s)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: e7a6bbacc39942f8d69ead184f7d97ebf1f6323272d360143c00f9a5b8109c89
+  sha256: 07b54464e0cdeb49785b2e2998f46925bc37c6c8bce5c0800b9103945321e447
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 9e6ddd46cbe9f9f47e943474af115562462d6efe939a97448bbc2654ace05f21
+  sha256: 3d9addd75485bef689b0f82b5cf45ce0fb2b65a46d0d4b76a3858ae93c6fcdc9
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 925ee74ef1b3dacbf7fe763fffd4c843a6b16fd72156c3d9338ae32c8931e36f
+  sha256: 711b2a242f30f18fe8eeae45fad7abb1a9e1556eb41a16dd532e58fdbf827e9b
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -525,7 +525,7 @@ files:
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 4634390f31cfc05e0f43cf83f66ac35be501238bac6d9c55cf2dc7003607380f
+  sha256: ed83f64f9ab607921bf3ee7e50c32ff16199ece639b79965682bdb524fbc7405
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
@@ -620,7 +620,7 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
   class: generated
-  sha256: 7a2bfae5bfdd72dc01be591e4284bfdec6a1696d5f5d5ac5d2fa9bde36fcf97e
+  sha256: 914dda608c2512dd71e02f63b937fbadef3cc707da12ccffe696c51633c37cee
   evidence: "declared output of resync contract generator 'website-palette' (supernovae-st/nika.sh scripts/build-palette.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-palette.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 4f5fcd33a5d9b4f88ee217a32e4834b1ae4bf0acf19f0e88ab0382e34c0b67ce
+  aggregate_sha256: f7d936ce84949bb19ee8372dbc82cafea934caf2a35bc0e2eba64b57b16c631c
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 31
-  aggregate_sha256: 2c48284350096ce0c007df01820777d2403400d45f752cede66744722875b062
+  aggregate_sha256: 832b642f1efebb154531c2aedad35e839995a4adaef9fa6b812ba8f5071de460
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 410
-  aggregate_sha256: c152acf74408b1ad261ff21225e37ba87df60a548131f9094d17fa873325cdb4
+  match_count: 408
+  aggregate_sha256: 7970f6c6aeb183ec879ecbc4f4b03c266c294ecc0539cf158798c79bc135b66b
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: cf7209a1d4decbc8dc0053e1bc5cd6a69727b8e2a3fa3acf59bd803156fdf5f8
+  aggregate_sha256: fa46e44fde3b49f2768d795e8d2789d73b4cf5e53d4b29b68d08fdd7fcc66a23
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,9 +950,20 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 0
-  aggregate_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  match_count: 11
+  aggregate_sha256: 3ad4b8eed84e644449cfd4e5e221ec6a14d1e32b3e784d4fb55819be20acf008
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
+- "public/library/daily_brief/index.html"
+- "public/library/deep-research-brief/index.html"
+- "public/library/etl_quarantine/index.html"
+- "public/library/index.html"
+- "public/library/invoice-chaser/index.html"
+- "public/library/localization-factory/index.html"
+- "public/library/meeting_actions/index.html"
+- "public/library/pr_risk_review/index.html"
+- "public/library/price_watch/index.html"
+- "public/library/social_repurpose/index.html"
+- "public/library/standup_digest/index.html"
 - "public/ontology/design/index.html"

@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 60,
-    "block_count": 122
+    "carrier_count": 59,
+    "block_count": 121
   },
   "carriers": [
     {
@@ -879,18 +879,6 @@
           "kind": "jsx-codefile",
           "line": 403,
           "sha256": "2cf60368f39c72c789aea7ffc72d75b9b978a9bbd4afd45f0ff8a75c2c1ad045"
-        }
-      ]
-    },
-    {
-      "path": "src/pages/LibraryRoom.tsx",
-      "source_blob": "7f2646d38df492b9290e0e06c50a0e2d2df0c8ad",
-      "blocks": [
-        {
-          "selector": "src/pages/LibraryRoom.tsx#codefile:1",
-          "kind": "jsx-codefile",
-          "line": 207,
-          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },

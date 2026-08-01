@@ -107,6 +107,83 @@
       "applies": "provider-rooms-arc"
     },
     {
+      "from": "/library",
+      "to": "/use-cases",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/daily_brief",
+      "to": "/use-cases",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/deep-research-brief",
+      "to": "/use-cases/deep-research-brief",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/etl_quarantine",
+      "to": "/use-cases/etl-quarantine",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/invoice-chaser",
+      "to": "/use-cases/invoice-chaser",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/localization-factory",
+      "to": "/use-cases/localization-factory",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/meeting_actions",
+      "to": "/use-cases/meeting-actions",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/pr_risk_review",
+      "to": "/use-cases/pr-review-fanout",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/price_watch",
+      "to": "/use-cases/price-watch",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/social_repurpose",
+      "to": "/use-cases/social-repurpose",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
+      "from": "/library/standup_digest",
+      "to": "/use-cases/standup-digest",
+      "status": 301,
+      "live": true,
+      "applies": "library-fusion"
+    },
+    {
       "from": "/method",
       "to": "/timeline",
       "status": 301,

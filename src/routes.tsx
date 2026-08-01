@@ -36,8 +36,6 @@ import { Component as MemberRoom } from './pages/MemberRoom'
 import { Component as FamilyRoot } from './pages/FamilyRoot'
 import { Component as Templates } from './pages/Templates'
 import { Component as TemplatePage } from './pages/TemplatePage'
-import { Component as Library } from './pages/Library'
-import { Component as LibraryRoom } from './pages/LibraryRoom'
 import { Component as Integrations } from './pages/Integrations'
 import { Component as Catalog } from './pages/Catalog'
 import { Component as CatalogModels } from './pages/CatalogModels'
@@ -177,10 +175,6 @@ export const routes: RouteObject[] = [
       /* one room per conformance-gated showcase (§4.13 · rooms_exist flip:
          LENS_PATHS prerenders all 26 · the gallery keeps the browse) */
       { path: 'use-cases/:slug', Component: UseCaseRoom },
-      /* the workflow library · the hero's picking corpus as a register —
-         ten real files, one room each (the honesty contract on its face) */
-      { path: 'library', Component: Library },
-      { path: 'library/:id', Component: LibraryRoom },
       /* the integrations · get Nika into your stack: one room per client
          lane (Claude Code · Codex · Cursor · VS Code · Hermes · MCP) and
          per public repo — install rituals verbatim from the READMEs */

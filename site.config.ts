@@ -83,23 +83,6 @@ export const BLOG_TAG_PATHS = [
    re-derives the set from the posts' series field. */
 export const BLOG_SERIES_PATHS = ['/blog/series/trace-family']
 
-/* the workflow library — the hero's picking corpus as a register (one room
-   per file · the honesty contract on its face). Kept literal; the drift
-   gate (tag-library-paths.test.ts) pins these against the library tabs. */
-export const LIBRARY_PATHS = [
-  '/library',
-  '/library/daily_brief',
-  '/library/pr_risk_review',
-  '/library/meeting_actions',
-  '/library/price_watch',
-  '/library/social_repurpose',
-  '/library/standup_digest',
-  '/library/etl_quarantine',
-  '/library/invoice-chaser',
-  '/library/deep-research-brief',
-  '/library/localization-factory',
-]
-
 /* the integrations register — get Nika into your stack: one room per
    client lane (how people search: claude code · codex · cursor · vscode ·
    hermes · mcp) and per public repo. Kept literal; the drift gate
@@ -323,4 +306,4 @@ export const CATALOG_PATHS: string[] = [
   '/catalog/capabilities',
 ]
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...LENS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...LENS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

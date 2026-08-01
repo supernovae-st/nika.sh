@@ -1,5 +1,4 @@
 import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
-import { LIBRARY_TABS } from '../flagships/library'
 import { INTEGRATION_TABS } from './integrations-tabs'
 import { ERROR_CODES } from './errors.generated'
 import { TOOLS } from './tools.generated'
@@ -178,13 +177,7 @@ export const SITE_MAP: MapGroup[] = [
       })),
     ],
   },
-  {
-    kick: 'the library',
-    gloss: 'the files the home page picks from: recorded runs, honest reads',
-    links: [{ label: 'The shelf', href: '/library', hint: 'ten real files · one room each' }],
-    dense: LIBRARY_TABS.map((t) => ({ label: t.label, href: `/library/${t.id}` })),
-  },
-  {
+    {
     kick: 'the integrations',
     gloss: 'get Nika into your stack: your agent, your editor, your terminal',
     links: [

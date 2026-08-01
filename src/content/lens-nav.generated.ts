@@ -72,12 +72,6 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "to": "/use-cases"
       },
       {
-        "label": "The library",
-        "icon": "book",
-        "desc": "Real files, recorded runs",
-        "to": "/library"
-      },
-      {
         "label": "Manifesto",
         "icon": "butterfly",
         "desc": "The drum, in 8 languages",
@@ -367,10 +361,6 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
       {
         "label": "Install",
         "to": "/install"
-      },
-      {
-        "label": "The library",
-        "to": "/library"
       },
       {
         "label": "Docs",
