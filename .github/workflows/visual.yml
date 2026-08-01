@@ -97,6 +97,12 @@ jobs:
           git config user.email "nika@supernovae.studio"
           git add tests/visual/golden/linux
           git diff --cached --quiet && { echo "goldens unchanged"; exit 0; }
+          # E2 ceremony: goldens are TRACKED files — a commit that moves them
+          # without repinning estate.yaml turns main red on the next push
+          # (measured 2026-08-01: e09a3d73 baked goldens, the following push
+          # died 'estate drift'). The bake commit carries its own repin.
+          python3 scripts/estate.py --write
+          git add estate.yaml
           git commit -m "chore(visual): re-bake linux goldens
 
           Co-Authored-By: Nika 🦋 <nika@supernovae.studio>"
