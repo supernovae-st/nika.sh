@@ -704,18 +704,14 @@ nav:
         items:
           - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install", unit: tools }
           - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at", unit: providers }
+          # the catalog world (engine-release clock · D1) — ONE curated door,
+          # authored on purpose (its counts ride the engine pin, not the spec
+          # canon, so no `ref:` resolves it; the /catalog hub carries the
+          # register doors — models · pricing · energy · mcp — itself, and
+          # the panel stays inside its measured 3-column law · nav.css:942).
+          - { label: The catalog, to: /catalog, icon: tiles, desc: "What the released binary knows" }
           - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from", unit: files }
           - { label: The spec at a glance, to: /spec, icon: book, desc: "The contract, on one page" }
-      # the catalog world (engine-release clock · D1): what the RELEASED
-      # binary knows — authored rows on purpose (these counts ride the
-      # engine pin, not the spec canon, so no `ref:` resolves them; the
-      # pages derive every figure and the map gate covers every room).
-      - col: What it knows
-        items:
-          - { label: The catalog, to: /catalog, icon: tiles, desc: "What the released binary knows" }
-          - { label: Models, to: /catalog/models, icon: tiles, desc: "Seats, prices, measured energy" }
-          - { label: Pricing + energy, to: /catalog/pricing, icon: book, desc: "The ceiling, before you spend" }
-          - { label: MCP servers, to: /catalog/mcp, icon: tiles, desc: "Tools a workflow can wire" }
   footer:
     # columns 1-3 = the reference cols + these extras appended (the footer is
     # the COMPLETE card where the panel is the curated one) · 4-5 authored

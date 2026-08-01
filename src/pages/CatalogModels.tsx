@@ -39,6 +39,12 @@ export function Component() {
       crumb={{ to: '/catalog', label: 'The catalog' }}
     >
       <CatalogSection id="axis" title="The context axis">
+        {/* the axis and the register COUNT DIFFERENT FACETS on purpose — say
+            so, or the page reads as a contradiction (64 up top, 29 below) */}
+        <p className="pv-desc">
+          The axis draws the canonical catalog — the spec-named seats whose models declare a
+          window. The register below is the wider wire union; each count names its facet.
+        </p>
         <ModelAxis />
       </CatalogSection>
       <CatalogSection id="register" title="The register">

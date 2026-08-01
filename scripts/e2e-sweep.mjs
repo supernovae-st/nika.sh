@@ -59,11 +59,21 @@ if (!BASE) {
   BASE = `http://127.0.0.1:${PORT}`
 }
 
-/* ── routes · derived from the sitemap the build already emits ─────────────── */
+/* ── routes · derived from the sitemap the build already emits ──────────────
+   --match <prefix> scopes the sweep (the run-gates --only spirit): a NEW
+   world gets proven locally in minutes while the FULL sweep stays the CI
+   deep-belts job's (a 644-route local run is the load-fiction class). */
 const sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf8')
-const ROUTES = [...sitemap.matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)].map((m) => m[1] || '/')
-if (ROUTES.length < 10) {
+const MATCH = argv('match', '')
+const ROUTES = [...sitemap.matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)]
+  .map((m) => m[1] || '/')
+  .filter((r) => !MATCH || r.startsWith(MATCH))
+if (!MATCH && ROUTES.length < 10) {
   console.error(`suspiciously few routes from sitemap: ${ROUTES.length}`)
+  process.exit(1)
+}
+if (MATCH && ROUTES.length === 0) {
+  console.error(`--match ${MATCH} selected zero routes`)
   process.exit(1)
 }
 
