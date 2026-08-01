@@ -76,12 +76,12 @@ rest) carries the site's ONE dynamic signal: while a run replays, the
   truth, never a timer) → `runEnd(verdict)` — and `runStop()` on EVERY
   exit path, unmount included: the frame is site chrome and survives SPA
   navigation, a missed runStop is a lit ring forever (pinned by
-  deep-belts). Guard idle aborts (never runStop per keystroke).
+  e2e-belt). Guard idle aborts (never runStop per keystroke).
 - **JS owns the glow envelope** — never put a CSS transition on
   `--run-glow`/`--run-p`: the beat's attack must land in one frame, and
   an interpolating registered prop re-rasterizes the masked ring every
   compositor frame (free on real GPUs, a CI-margin eater on software GL
-  — it broke deep-belts three times before the law).
+  — it broke the e2e belt three times before the law).
 - **One ink, one danger**: the run ring's tail is the struck-blue
   `#4f86ff`; the danger ring's tail IS `--danger` `#ff5d5d` (the site's
   one danger red — verdict exit≠0, the denied row). The frame's css stays
@@ -154,7 +154,8 @@ said otherwise). Each script documents its flags in its own header.
   lists every post).
 - `e2e-sweep.mjs` — the deep integration belt (console/network clean ·
   link+anchor integrity · the interaction battery). Gates every PR in
-  CI (gate.yml `deep-belts`). Its law: on a slow environment every
+  CI (gate.yml `e2e-belt`; the a11y sweep is its own `a11y-belt` job —
+  they shared a 15-minute ceiling until the catalog world outgrew it). Its law: on a slow environment every
   one-shot read races a React commit — poll via its `until()` helper
   and re-trigger the ACTION per attempt (clicks/keys dispatched before
   hydration are swallowed whole); assert POSITIONS, not deltas.

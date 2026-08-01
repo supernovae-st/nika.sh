@@ -66,7 +66,7 @@ files:
   evidence: "hand-kept node version pin"
 - path: "AGENTS.md"
   class: authored
-  sha256: 8109b86fc6d2c3d609a945c3753564511b1002aa77f093c02104cba5a60d32a3
+  sha256: 79f0ea8700900a9043db39986e6033897182e5f0e65b8f7e3b22df86665299d8
   evidence: "hand-written agent entry per the AGENTS.md convention"
 - path: "BRAND.md"
   class: authored
@@ -910,7 +910,7 @@ patterns:
 - glob: ".github/workflows/*.yml"
   class: authored
   match_count: 8
-  aggregate_sha256: 23c13e7578c106e03de08230c788a35953b4ba7eb2a2968d517d98b5672f55f6
+  aggregate_sha256: cbf2cbd1008be6c2b0dd941e2ccabc23d478eda64873b1c5bc56fa1b12d6d26b
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
 - glob: "src/lib/check-wasm/pkg/**"
   class: pinned-copy
