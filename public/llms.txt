@@ -16,7 +16,7 @@ Four verbs, locked forever: `infer` (LLM call), `exec` (subprocess),
 a verb is a distinct native execution model.
 
 The language envelope is `nika: v1`, frozen forever. The engine versions
-independently on real semver toward a 1.0 launch; currently v0.106.1.
+independently on real semver toward a 1.0 launch; currently v0.107.0.
 
 Stdlib v0.1: 28 builtins · 17 providers (Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, Mistral, Hugging Face, OpenAI, xAI, Anthropic, Gemini,
@@ -112,10 +112,11 @@ data language (jq) · workflows are callable · mock-first.
 - The workflow library (the files the home page picks from: recorded runs replayed honestly, browse files to read and run · one room each): https://nika.sh/library
 - Integrations (get Nika into your stack · one room per client lane and per public repo, install commands verbatim from the READMEs): https://nika.sh/integrations · Claude Code: https://nika.sh/integrations/claude-code · Codex: https://nika.sh/integrations/codex · Cursor: https://nika.sh/integrations/cursor · VS Code: https://nika.sh/integrations/vscode · Hermes/skills.sh: https://nika.sh/integrations/hermes · the MCP server: https://nika.sh/integrations/mcp
 - Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/use-cases (the gallery lists all rooms; each room lives at its own slug under that path)
+- The catalog (what the RELEASED binary knows · vendored at the engine release pin, digest-verified · engine-release clock): https://nika.sh/catalog · models (one room each: serving seats, exact prices, measured energy): https://nika.sh/catalog/models · pricing (the rule table the audit reads · a local model is unpriced, never free): https://nika.sh/catalog/pricing · energy (measured Wh/Mtok with sources verbatim): https://nika.sh/catalog/energy · MCP servers (one room each: packages, env vars, the permit line): https://nika.sh/catalog/mcp · embeddings: https://nika.sh/catalog/embeddings · capability rules: https://nika.sh/catalog/capabilities · machine twin (the whole site as evidence-bearing JSON-LD triples): https://nika.sh/nika-graph.json
 
 ## Status
 
-Shipping in the open (v0.106.1, real semver toward 1.0). The engine is admitted crate by crate (the repo README carries the live count). Each passes
+Shipping in the open (v0.107.0, real semver toward 1.0). The engine is admitted crate by crate (the repo README carries the live count). Each passes
 a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
 Language v0.1 public spec is live; 1.0 is readiness-gated: the timeline carries the gates (conditions, never dates).
 Building in public.

@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-01',
+    tag: 'release',
+    title: 'v0.107.0 · the trust release',
+    body: 'An outside audit measured the experience instead of the feature list · five waves, seventy-two receipts, twenty-two P0s · and the arc closed every one: welcome gates its run CTA on the exact file’s verdict, a non-affirmative consent fires zero effects (NIKA-SEC-014, minted spec-first with its conformance fixtures), the hooks’ judge moved into the binary (nika guard, fail-visible, bypass matrix in test), autonomy is graded before it is colored, the data journey names sources, destinations and secrets before the run, and redaction works by provenance. The teaching grammar collapsed to three doors: nika try is the showroom (a slug runs the mock rehearsal offline by default), nika new takes one positional gesture (slug, plain words BM25-routed, or a filename that gets the wizard), nika init founds · the examples verb tree died and evidence/receipt moved under the run’s dossier. Around the core, one client matrix asserts the coverage of thirty-one hosts, nika wire previews and never rewrites unasked, and the host plane descended to nika-cli-host at the 15k wall (ADR-110). The catalog the site vendors grew its energy rows · sixteen, each carrying its ml.energy/arXiv provenance inline.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.107.0',
+  },
+  {
     date: '2026-07-28',
     tag: 'release',
     title: 'v0.106.1 · the checker reaches the browser',

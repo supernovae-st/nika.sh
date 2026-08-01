@@ -663,8 +663,8 @@ nav:
               desc: "One file, line by line" }
           - { label: Install, to: /install, icon: run,
               desc: "One binary · two minutes" }
-          - { label: Integrations, to: /integrations, icon: tiles,
-              desc: "Your agent, your editor, one kit" }
+          - { label: Wire your client, to: /integrations, icon: tiles,
+              desc: "Claude Code · Codex · Cursor · 31 doors, one kit" }
           - { label: Send a workflow, to: /convert, icon: tiles,
               desc: "Yours, converted to a file" }
     doctrine_line: { label: "Every claim on this site derives from the spec", to: /map }
@@ -704,6 +704,12 @@ nav:
         items:
           - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install", unit: tools }
           - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at", unit: providers }
+          # the catalog world (engine-release clock · D1) — ONE curated door,
+          # authored on purpose (its counts ride the engine pin, not the spec
+          # canon, so no `ref:` resolves it; the /catalog hub carries the
+          # register doors — models · pricing · energy · mcp — itself, and
+          # the panel stays inside its measured 3-column law · nav.css:942).
+          - { label: The catalog, to: /catalog, icon: tiles, desc: "What the released binary knows" }
           - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from", unit: files }
           - { label: The spec at a glance, to: /spec, icon: book, desc: "The contract, on one page" }
   footer:
@@ -714,12 +720,28 @@ nav:
       #  mirrors into The reach — a second /spec label was the same
       #  two-doors-one-path confusion the §4.11 ratchet now refuses)
       - { col: When it runs, item: { label: Changelog, to: /changelog } }
+      # the truth system's two doors (the footer is the COMPLETE card — the
+      # coverage gate found them holeless 2026-08-02)
+      - { col: When it runs, item: { label: Sources, to: /sources } }
+      - { col: When it runs, item: { label: The truth words, to: /truth } }
       - { col: What it can touch, item: { label: Use cases, to: /use-cases } }
       # the registry's on-site room landed with /integrations — the owed
       # surface is paid, the slot dies (§4.11: one door, one path)
       - { col: What it can touch, item: { label: Registry, to: /integrations/registry } }
       - { col: What it can touch, item: { label: Integrations, to: /integrations } }
     authored:
+      # the catalog world (engine-release clock · D1) — the complete card
+      # carries every register door; counts live on the pages, never here
+      - col: What it knows
+        items:
+          - { label: The catalog, to: /catalog }
+          - { label: Models, to: /catalog/models }
+          - { label: Pricing, to: /catalog/pricing }
+          - { label: Energy, to: /catalog/energy }
+          - { label: MCP servers, to: /catalog/mcp }
+          - { label: Embeddings, to: /catalog/embeddings }
+          - { label: Capability rules, to: /catalog/capabilities }
+          - { label: Wire your client, to: /integrations }
       - col: Learn · build
         items:
           - { label: Playground, to: /play }

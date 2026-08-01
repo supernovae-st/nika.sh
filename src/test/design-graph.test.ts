@@ -115,7 +115,7 @@ describe('design graph · cross-emission coherence (one resolution, three files)
        room-authority when the rooms joined the register grammar — the
        st-mark pairing is the invariant, the wrapper class is the page's) */
     for (const [file, cls] of [
-      ['src/shell/Inspector.tsx', 'insp-status st-mark'],
+      /* Inspector row retired 2026-08-02 (the panel died · a click is a page) */
       ['src/shell/HoverCard.tsx', 'hovercard-status st-mark'],
       ['src/pages/MemberRoom.tsx', 'room-authority st-mark'],
     ])
@@ -199,7 +199,7 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     const css = read('src/design.generated.css')
     for (const kind of Object.keys(KIND_HEX))
       expect(css).toContain(`.k-glyph[data-kind='${kind}'] { color: var(--kind-${kind}); }`)
-    for (const f of ['src/pages/MemberRoom.tsx', 'src/shell/HoverCard.tsx', 'src/shell/Inspector.tsx'])
+    for (const f of ['src/pages/MemberRoom.tsx', 'src/shell/HoverCard.tsx'])
       expect(read(f), `${f} lost the k-glyph voice`).toContain('k-glyph')
     const ts = read('src/content/design.generated.ts')
     expect(ts).toContain('KIND_OF_SET')

@@ -1,0 +1,6123 @@
+schema = "nika/model-pricing@1.3"
+
+[meta]
+source = "https://models.dev/api.json"
+as_of = "2026-07-28"
+source_sha256_16 = "d5aa8fd06062f49e"
+
+# ── GENERATED · do not hand-edit ────────────────────────────
+# Source: models.dev (MIT · anomalyco/models.dev) — see [meta].
+# Refresh: bash scripts/refresh-pricing.sh
+# Values: USD per 1M tokens. Lookup: exact match, then contains()
+# fallback (first hit wins — longest patterns emitted first).
+# Cache axes ride along when upstream discloses them; the cost
+# math prices cache subsets at these rates (input-rate fallback).
+# Token limits · open_weights · status are upstream's own words,
+# carried verbatim. An OMITTED field means upstream did not say —
+# read it as unknown, never as 0 / false.
+# Research facts (@1.3 · energy · tokenizer · determinism) are
+# vendored by the research lane with per-claim sources — this
+# refresh never writes them. An OMITTED research field means no
+# sourced fact exists yet — never a default.
+
+# ── anthropic (16 models) ──
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-sonnet-4-5-20250929"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 64000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-haiku-4-5-20251001"
+input_per_million = 1.0
+output_per_million = 5.0
+cache_read_per_million = 0.1
+cache_write_per_million = 1.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-1-20250805"
+input_per_million = 15.0
+output_per_million = 75.0
+cache_read_per_million = 1.5
+cache_write_per_million = 18.75
+max_output_tokens = 32000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-5-20251101"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-sonnet-4-5"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 64000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-sonnet-4-6"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+determinism = "none"
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-haiku-4-5"
+input_per_million = 1.0
+output_per_million = 5.0
+cache_read_per_million = 0.1
+cache_write_per_million = 1.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-1"
+input_per_million = 15.0
+output_per_million = 75.0
+cache_read_per_million = 1.5
+cache_write_per_million = 18.75
+max_output_tokens = 32000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-5"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-6"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+determinism = "none"
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-7"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-4-8"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-sonnet-4"
+input_per_million = 3.0
+output_per_million = 15.0
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-sonnet-5"
+input_per_million = 2.0
+output_per_million = 10.0
+cache_read_per_million = 0.2
+cache_write_per_million = 2.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-fable-5"
+input_per_million = 10.0
+output_per_million = 50.0
+cache_read_per_million = 1.0
+cache_write_per_million = 12.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "anthropic"
+model_pattern = "claude-opus-5"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+# ── deepseek (4 models) ──
+
+[[rules]]
+provider = "deepseek"
+model_pattern = "deepseek-reasoner"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.0028
+max_output_tokens = 384000
+context_window_tokens = 1000000
+open_weights = true
+determinism = "none"
+
+[[rules]]
+provider = "deepseek"
+model_pattern = "deepseek-v4-flash"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.0028
+max_output_tokens = 384000
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "deepseek"
+model_pattern = "deepseek-v4-pro"
+input_per_million = 0.435
+output_per_million = 0.87
+cache_read_per_million = 0.003625
+max_output_tokens = 384000
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "deepseek"
+model_pattern = "deepseek-chat"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.0028
+max_output_tokens = 384000
+context_window_tokens = 1000000
+open_weights = true
+
+# ── google (36 models) ──
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-computer-use-preview-10-2025"
+input_per_million = 1.25
+output_per_million = 10.0
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-pro-preview-customtools"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "deep-research-max-preview-04-2026"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.5-live-translate-preview"
+input_per_million = 3.5
+output_per_million = 21.0
+max_output_tokens = 32768
+context_window_tokens = 16384
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-image-preview"
+input_per_million = 0.5
+output_per_million = 60.0
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-robotics-er-1.6-preview"
+input_per_million = 1.0
+output_per_million = 5.0
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "deep-research-preview-04-2026"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-lite-preview"
+input_per_million = 0.25
+output_per_million = 1.5
+cache_read_per_million = 0.025
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-live-preview"
+input_per_million = 0.75
+output_per_million = 4.5
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-flash-preview-tts"
+input_per_million = 0.5
+output_per_million = 10.0
+max_output_tokens = 16384
+context_window_tokens = 8192
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-tts-preview"
+input_per_million = 1.0
+output_per_million = 20.0
+max_output_tokens = 16384
+context_window_tokens = 8192
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-lite-image"
+input_per_million = 0.25
+output_per_million = 30.0
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-pro-preview-tts"
+input_per_million = 1.0
+output_per_million = 20.0
+max_output_tokens = 16384
+context_window_tokens = 8192
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3-pro-image-preview"
+input_per_million = 2.0
+output_per_million = 120.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-omni-flash-preview"
+input_per_million = 1.5
+output_per_million = 17.5
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-flash-lite-latest"
+input_per_million = 0.25
+output_per_million = 1.5
+cache_read_per_million = 0.025
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-flash-image"
+input_per_million = 0.3
+output_per_million = 30.0
+cache_read_per_million = 0.075
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3-flash-preview"
+input_per_million = 0.5
+output_per_million = 3.0
+cache_read_per_million = 0.05
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-image"
+input_per_million = 0.5
+output_per_million = 60.0
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-pro-preview"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.0-flash-lite"
+input_per_million = 0.075
+output_per_million = 0.3
+max_output_tokens = 8192
+context_window_tokens = 1048576
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-flash-lite"
+input_per_million = 0.1
+output_per_million = 0.4
+cache_read_per_million = 0.01
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.1-flash-lite"
+input_per_million = 0.25
+output_per_million = 1.5
+cache_read_per_million = 0.025
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.5-flash-lite"
+input_per_million = 0.3
+output_per_million = 2.5
+cache_read_per_million = 0.03
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3-pro-preview"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-embedding-001"
+input_per_million = 0.15
+output_per_million = 0.0
+max_output_tokens = 1
+context_window_tokens = 2048
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "lyria-3-clip-preview"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-flash-latest"
+input_per_million = 1.5
+output_per_million = 9.0
+cache_read_per_million = 0.15
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "lyria-3-pro-preview"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3-pro-image"
+input_per_million = 2.0
+output_per_million = 120.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-embedding-2"
+input_per_million = 0.2
+output_per_million = 0.0
+max_output_tokens = 1
+context_window_tokens = 8192
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.0-flash"
+input_per_million = 0.1
+output_per_million = 0.4
+cache_read_per_million = 0.025
+max_output_tokens = 8192
+context_window_tokens = 1048576
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-flash"
+input_per_million = 0.3
+output_per_million = 2.5
+cache_read_per_million = 0.03
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.5-flash"
+input_per_million = 1.5
+output_per_million = 9.0
+cache_read_per_million = 0.15
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-3.6-flash"
+input_per_million = 1.5
+output_per_million = 7.5
+cache_read_per_million = 0.15
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "google"
+model_pattern = "gemini-2.5-pro"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+# ── groq (9 models) ──
+
+[[rules]]
+provider = "groq"
+model_pattern = "meta-llama/llama-4-scout-17b-16e-instruct"
+input_per_million = 0.11
+output_per_million = 0.34
+max_output_tokens = 8192
+context_window_tokens = 131072
+open_weights = true
+status = "beta"
+
+[[rules]]
+provider = "groq"
+model_pattern = "meta-llama/llama-prompt-guard-2-22m"
+input_per_million = 0.03
+output_per_million = 0.03
+max_output_tokens = 512
+context_window_tokens = 512
+open_weights = true
+status = "beta"
+
+[[rules]]
+provider = "groq"
+model_pattern = "meta-llama/llama-prompt-guard-2-86m"
+input_per_million = 0.04
+output_per_million = 0.04
+max_output_tokens = 512
+context_window_tokens = 512
+open_weights = true
+status = "beta"
+
+[[rules]]
+provider = "groq"
+model_pattern = "openai/gpt-oss-safeguard-20b"
+input_per_million = 0.075
+output_per_million = 0.3
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+status = "beta"
+
+[[rules]]
+provider = "groq"
+model_pattern = "llama-3.3-70b-versatile"
+input_per_million = 0.59
+output_per_million = 0.79
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "groq"
+model_pattern = "llama-3.1-8b-instant"
+input_per_million = 0.05
+output_per_million = 0.08
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "groq"
+model_pattern = "openai/gpt-oss-120b"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.075
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 11.0, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0397 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "groq"
+model_pattern = "openai/gpt-oss-20b"
+input_per_million = 0.075
+output_per_million = 0.3
+cache_read_per_million = 0.0375
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 7.9, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0284 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "groq"
+model_pattern = "qwen/qwen3-32b"
+input_per_million = 0.29
+output_per_million = 0.59
+max_output_tokens = 40960
+context_window_tokens = 131072
+open_weights = true
+status = "beta"
+determinism = "best-effort"
+energy = { wh_per_mtok_out = 86.6, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.3116 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+# ── huggingface (53 models) ──
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+input_per_million = 2.0
+output_per_million = 2.0
+max_output_tokens = 66536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-235B-A22B-Thinking-2507"
+input_per_million = 0.3
+output_per_million = 3.0
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = true
+energy = { wh_per_mtok_out = 176.0, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.6336 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+input_per_million = 0.07
+output_per_million = 0.26
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "meta-llama/Llama-3.3-70B-Instruct"
+input_per_million = 0.59
+output_per_million = 0.79
+max_output_tokens = 4096
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Next-80B-A3B-Instruct"
+input_per_million = 0.25
+output_per_million = 1.0
+max_output_tokens = 66536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Next-80B-A3B-Thinking"
+input_per_million = 0.3
+output_per_million = 2.0
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2-Instruct-0905"
+input_per_million = 1.0
+output_per_million = 3.0
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "deepseek-ai/DeepSeek-V4-Flash"
+input_per_million = 0.14
+output_per_million = 0.28
+max_output_tokens = 384000
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "deepseek-ai/DeepSeek-R1-0528"
+input_per_million = 3.0
+output_per_million = 5.0
+max_output_tokens = 163840
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "deepseek-ai/DeepSeek-V4-Pro"
+input_per_million = 0.435
+output_per_million = 0.87
+cache_read_per_million = 0.003625
+max_output_tokens = 393216
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2-Instruct"
+input_per_million = 1.0
+output_per_million = 3.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2-Thinking"
+input_per_million = 0.6
+output_per_million = 2.5
+cache_read_per_million = 0.15
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "deepseek-ai/DeepSeek-V3.2"
+input_per_million = 0.28
+output_per_million = 0.4
+max_output_tokens = 65536
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "google/gemma-4-26B-A4B-it"
+input_per_million = 0.13
+output_per_million = 0.4
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2.7-Code"
+input_per_million = 0.95
+output_per_million = 4.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "stepfun-ai/Step-3.5-Flash"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 256000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "stepfun-ai/Step-3.7-Flash"
+input_per_million = 0.2
+output_per_million = 1.15
+max_output_tokens = 256000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "XiaomiMiMo/MiMo-V2-Flash"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 4096
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "XiaomiMiMo/MiMo-V2.5-Pro"
+input_per_million = 1.0
+output_per_million = 3.0
+max_output_tokens = 131072
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Embedding-4B"
+input_per_million = 0.01
+output_per_million = 0.0
+max_output_tokens = 2048
+context_window_tokens = 32000
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Embedding-8B"
+input_per_million = 0.01
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 32000
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "deepseek-ai/DeepSeek-R1"
+input_per_million = 0.7
+output_per_million = 2.5
+max_output_tokens = 32768
+context_window_tokens = 64000
+open_weights = true
+energy = { wh_per_mtok_out = 660.1, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 2.3762 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "MiniMaxAI/MiniMax-M2.1"
+input_per_million = 0.3
+output_per_million = 1.2
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "MiniMaxAI/MiniMax-M2.5"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.03
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "MiniMaxAI/MiniMax-M2.7"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.06
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.5-122B-A10B"
+input_per_million = 0.4
+output_per_million = 3.2
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.5-397B-A17B"
+input_per_million = 0.6
+output_per_million = 3.6
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-Coder-Next"
+input_per_million = 0.2
+output_per_million = 1.5
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "google/gemma-4-31B-it"
+input_per_million = 0.14
+output_per_million = 0.4
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.7-Flash"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 128000
+context_window_tokens = 200000
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "MiniMaxAI/MiniMax-M2"
+input_per_million = 0.3
+output_per_million = 1.2
+max_output_tokens = 128000
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "MiniMaxAI/MiniMax-M3"
+input_per_million = 0.3
+output_per_million = 1.2
+max_output_tokens = 128000
+context_window_tokens = 524288
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-235B-A22B"
+input_per_million = 0.2
+output_per_million = 0.8
+max_output_tokens = 16384
+context_window_tokens = 40960
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.5-35B-A3B"
+input_per_million = 0.25
+output_per_million = 2.0
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.6-35B-A3B"
+input_per_million = 0.15
+output_per_million = 0.95
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "XiaomiMiMo/MiMo-V2.5"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2.5"
+input_per_million = 0.6
+output_per_million = 3.0
+cache_read_per_million = 0.1
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K2.6"
+input_per_million = 0.95
+output_per_million = 4.0
+cache_read_per_million = 0.16
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "openai/gpt-oss-120b"
+input_per_million = 0.25
+output_per_million = 0.69
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 11.0, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0397 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.5-Air"
+input_per_million = 0.13
+output_per_million = 0.85
+max_output_tokens = 98304
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "moonshotai/Kimi-K3"
+input_per_million = 3.0
+output_per_million = 15.0
+max_output_tokens = 131072
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "openai/gpt-oss-20b"
+input_per_million = 0.1
+output_per_million = 0.5
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 7.9, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0284 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.5-27B"
+input_per_million = 0.3
+output_per_million = 2.4
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.6-27B"
+input_per_million = 0.47
+output_per_million = 3.19
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.5V"
+input_per_million = 0.6
+output_per_million = 1.8
+max_output_tokens = 16384
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3.5-9B"
+input_per_million = 0.17
+output_per_million = 0.25
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.5"
+input_per_million = 0.6
+output_per_million = 2.2
+max_output_tokens = 98304
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.6"
+input_per_million = 0.55
+output_per_million = 2.2
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-4.7"
+input_per_million = 0.6
+output_per_million = 2.2
+cache_read_per_million = 0.11
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-5.1"
+input_per_million = 1.0
+output_per_million = 3.2
+cache_read_per_million = 0.2
+max_output_tokens = 131072
+context_window_tokens = 202752
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-5.2"
+input_per_million = 1.4
+output_per_million = 4.4
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "Qwen/Qwen3-32B"
+input_per_million = 0.29
+output_per_million = 0.59
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 86.6, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.3116 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "huggingface"
+model_pattern = "zai-org/GLM-5"
+input_per_million = 1.0
+output_per_million = 3.2
+cache_read_per_million = 0.2
+max_output_tokens = 131072
+context_window_tokens = 202752
+open_weights = true
+
+# ── mistral (30 models) ──
+
+[[rules]]
+provider = "mistral"
+model_pattern = "labs-devstral-small-2512"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "magistral-medium-latest"
+input_per_million = 2.0
+output_per_million = 5.0
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-medium-latest"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-medium-latest"
+input_per_million = 1.5
+output_per_million = 7.5
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+determinism = "best-effort"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-medium-2507"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-large-latest"
+input_per_million = 0.5
+output_per_million = 1.5
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-small-latest"
+input_per_million = 0.15
+output_per_million = 0.6
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "pixtral-large-latest"
+input_per_million = 2.0
+output_per_million = 6.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-small-2505"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-small-2507"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "ministral-3b-latest"
+input_per_million = 0.04
+output_per_million = 0.04
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "ministral-8b-latest"
+input_per_million = 0.1
+output_per_million = 0.1
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-medium-2505"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-medium-2508"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-medium-2604"
+input_per_million = 1.5
+output_per_million = 7.5
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-large-2411"
+input_per_million = 2.0
+output_per_million = 6.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-large-2512"
+input_per_million = 0.5
+output_per_million = 1.5
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-small-2506"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-small-2603"
+input_per_million = 0.15
+output_per_million = 0.6
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "open-mixtral-8x22b"
+input_per_million = 2.0
+output_per_million = 6.0
+max_output_tokens = 64000
+context_window_tokens = 64000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "open-mistral-nemo"
+input_per_million = 0.15
+output_per_million = 0.15
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "open-mixtral-8x7b"
+input_per_million = 0.7
+output_per_million = 0.7
+max_output_tokens = 32000
+context_window_tokens = 32000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "codestral-latest"
+input_per_million = 0.3
+output_per_million = 0.9
+max_output_tokens = 4096
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-latest"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "magistral-small"
+input_per_million = 0.5
+output_per_million = 1.5
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "open-mistral-7b"
+input_per_million = 0.25
+output_per_million = 0.25
+max_output_tokens = 8000
+context_window_tokens = 8000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "devstral-2512"
+input_per_million = 0.4
+output_per_million = 2.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-embed"
+input_per_million = 0.1
+output_per_million = 0.0
+max_output_tokens = 3072
+context_window_tokens = 8000
+open_weights = false
+
+[[rules]]
+provider = "mistral"
+model_pattern = "mistral-nemo"
+input_per_million = 0.15
+output_per_million = 0.15
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "mistral"
+model_pattern = "pixtral-12b"
+input_per_million = 0.15
+output_per_million = 0.15
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+# ── nvidia (98 models) ──
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-large-3-675b-instruct-2512"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.1-nemotron-safety-guard-8b-v3"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3_2-nemoretriever-300m-embed-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 2048
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-content-safety-reasoning-4b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "abacusai/dracarys-llama-3.1-70b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.3-nemotron-super-49b-v1.5"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-4-maverick-17b-128e-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.1-nemotron-nano-vl-8b-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.1-nemotron-ultra-253b-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.1-nemotron-70b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.3-nemotron-super-49b-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/riva-translate-4b-instruct-v1.1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/ministral-14b-instruct-2512"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-nemotron-rerank-vl-1b-v2"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "black-forest-labs/flux_1-kontext-dev"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 40960
+context_window_tokens = 40960
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-3.1-nemotron-nano-8b-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/llama-nemotron-embed-vl-1b-v2"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 2048
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "microsoft/phi-4-multimodal-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-medium-3-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-small-4-119b-2603"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen3-coder-480b-a35b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 66536
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.2-11b-vision-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.2-90b-vision-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-7b-instruct-v0.3"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "black-forest-labs/flux_2-klein-4b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 40960
+context_window_tokens = 40960
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-medium-3.5-128b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-3-super-120b-a12b"
+input_per_million = 0.2
+output_per_million = 0.8
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-3-ultra-550b-a55b"
+input_per_million = 0.5
+output_per_million = 2.5
+cache_read_per_million = 0.15
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nvidia-nemotron-nano-9b-v2"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 30.3, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · H100 · vLLM · problem-solving · 0.1089 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "black-forest-labs/flux_1-schnell"
+input_per_million = 0.0
+output_per_million = 0.0
+context_window_tokens = 77
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mixtral-8x22b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 13108
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "moonshotai/kimi-k2-instruct-0905"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-3-content-safety"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-mini-4b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen3-next-80b-a3b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "bytedance/seed-oss-36b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 262000
+context_window_tokens = 262000
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mixtral-8x7b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/active-speaker-detection"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/synthetic-video-detector"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen2.5-coder-32b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/magistral-small-2506"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-3-nano-30b-a3b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-nano-12b-v2-vl"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "deepseek-ai/deepseek-v4-flash"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.0028
+max_output_tokens = 393216
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "microsoft/phi-4-mini-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "black-forest-labs/flux.1-dev"
+input_per_million = 0.0
+output_per_million = 0.0
+context_window_tokens = 4096
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/cosmos-transfer2_5-2b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "upstage/solar-10.7b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "deepseek-ai/deepseek-v4-pro"
+input_per_million = 0.435
+output_per_million = 0.87
+cache_read_per_million = 0.003625
+max_output_tokens = 393216
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.1-70b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.3-70b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/rerank-qa-mistral-4b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.1-8b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 16000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.2-1b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-3.2-3b-instruct"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32000
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "mistralai/mistral-nemotron"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/cosmos-transfer1-7b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/magpie-tts-zeroshot"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/cosmos-predict1-5b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nemotron-voicechat"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nv-embedcode-7b-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 2048
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "stepfun-ai/step-3.5-flash"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "stepfun-ai/step-3.7-flash"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/cosmos-reason2-8b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "thinkingmachines/inkling"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/google-paligemma"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "openai/whisper-large-v3"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-3n-e2b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-3n-e4b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/llama-guard-4-12b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "minimaxai/minimax-m2.7"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "poolside/laguna-xs-2.1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen3.5-122b-a10b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen3.5-397b-a17b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-3-12b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-4-31b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-2-2b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "google/gemma-3-4b-it"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "minimaxai/minimax-m3"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 16384
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "moonshotai/kimi-k2.6"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen-image-edit"
+input_per_million = 0.0
+output_per_million = 0.0
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "openai/gpt-oss-120b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+energy = { wh_per_mtok_out = 11.0, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0397 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/nv-embed-v1"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 2048
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/sparsedrive"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/studiovoice"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/usdvalidate"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "openai/gpt-oss-20b"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 7.9, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0284 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/gliner-pii"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/streampetr"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "sarvamai/sarvam-m"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/bevformer"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "qwen/qwen-image"
+input_per_million = 0.0
+output_per_million = 0.0
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/esm2-650m"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "nvidia/usdcode"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "meta/esmfold"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "z-ai/glm-5.2"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 131072
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "nvidia"
+model_pattern = "baai/bge-m3"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 1024
+context_window_tokens = 8192
+open_weights = true
+
+# ── openai (43 models) ──
+
+[[rules]]
+provider = "openai"
+model_pattern = "text-embedding-3-large"
+input_per_million = 0.13
+output_per_million = 0.0
+max_output_tokens = 3072
+context_window_tokens = 8191
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "text-embedding-3-small"
+input_per_million = 0.02
+output_per_million = 0.0
+max_output_tokens = 1536
+context_window_tokens = 8191
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "text-embedding-ada-002"
+input_per_million = 0.1
+output_per_million = 0.0
+max_output_tokens = 1536
+context_window_tokens = 8192
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.2-chat-latest"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.3-chat-latest"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.3-codex-spark"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 32000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4o-2024-05-13"
+input_per_million = 5.0
+output_per_million = 15.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4o-2024-08-06"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4o-2024-11-20"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-realtime-2.1"
+input_per_million = 4.0
+output_per_million = 24.0
+cache_read_per_million = 0.4
+max_output_tokens = 32000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-3.5-turbo"
+input_per_million = 0.5
+output_per_million = 1.5
+cache_read_per_million = 0.0
+max_output_tokens = 4096
+context_window_tokens = 16385
+open_weights = false
+status = "deprecated"
+tokenizer = "cl100k_base"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.3-codex"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.6-terra"
+input_per_million = 2.5
+output_per_million = 15.0
+cache_read_per_million = 0.25
+cache_write_per_million = 3.125
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4.1-mini"
+input_per_million = 0.4
+output_per_million = 1.6
+cache_read_per_million = 0.1
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4.1-nano"
+input_per_million = 0.1
+output_per_million = 0.4
+cache_read_per_million = 0.025
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.4-mini"
+input_per_million = 0.75
+output_per_million = 4.5
+cache_read_per_million = 0.075
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.4-nano"
+input_per_million = 0.2
+output_per_million = 1.25
+cache_read_per_million = 0.02
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.6-luna"
+input_per_million = 1.0
+output_per_million = 6.0
+cache_read_per_million = 0.1
+cache_write_per_million = 1.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4-turbo"
+input_per_million = 10.0
+output_per_million = 30.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4o-mini"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.075
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.2-pro"
+input_per_million = 21.0
+output_per_million = 168.0
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.4-pro"
+input_per_million = 30.0
+output_per_million = 180.0
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.5-pro"
+input_per_million = 30.0
+output_per_million = 180.0
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.6-sol"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-image-2"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 1.25
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5-mini"
+input_per_million = 0.25
+output_per_million = 2.0
+cache_read_per_million = 0.025
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5-nano"
+input_per_million = 0.05
+output_per_million = 0.4
+cache_read_per_million = 0.005
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5-pro"
+input_per_million = 15.0
+output_per_million = 120.0
+max_output_tokens = 272000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4.1"
+input_per_million = 2.0
+output_per_million = 8.0
+cache_read_per_million = 0.5
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+tokenizer = "o200k_base"
+determinism = "best-effort"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.1"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.2"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.4"
+input_per_million = 2.5
+output_per_million = 15.0
+cache_read_per_million = 0.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.5"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5.6"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "o3-mini"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.55
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "o4-mini"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.275
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4o"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+tokenizer = "o200k_base"
+determinism = "best-effort"
+
+[[rules]]
+provider = "openai"
+model_pattern = "o1-pro"
+input_per_million = 150.0
+output_per_million = 600.0
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "o3-pro"
+input_per_million = 20.0
+output_per_million = 80.0
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-4"
+input_per_million = 30.0
+output_per_million = 60.0
+max_output_tokens = 8192
+context_window_tokens = 8192
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "gpt-5"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openai"
+model_pattern = "o1"
+input_per_million = 15.0
+output_per_million = 60.0
+cache_read_per_million = 7.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+status = "deprecated"
+
+[[rules]]
+provider = "openai"
+model_pattern = "o3"
+input_per_million = 2.0
+output_per_million = 8.0
+cache_read_per_million = 0.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+tokenizer = "o200k_base"
+
+# ── openrouter (336 models) ──
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cognitivecomputations/dolphin-mistral-24b-venice-edition"
+input_per_million = 0.2
+output_per_million = 0.9
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-pro-preview-customtools"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-small-24b-instruct-2501"
+input_per_million = 0.05
+output_per_million = 0.08
+max_output_tokens = 16384
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-small-3.1-24b-instruct"
+input_per_million = 0.351
+output_per_million = 0.555
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-small-3.2-24b-instruct"
+input_per_million = 0.1
+output_per_million = 0.3
+cache_read_per_million = 0.01
+max_output_tokens = 16384
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3.5-content-safety:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8192
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-r1-distill-llama-70b"
+input_per_million = 0.8
+output_per_million = 0.8
+max_output_tokens = 8192
+context_window_tokens = 8192
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-super-120b-a12b:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-ultra-550b-a55b:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-flash-image-preview"
+input_per_million = 0.5
+output_per_million = 3.0
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-flash-lite-preview"
+input_per_million = 0.25
+output_per_million = 1.5
+cache_read_per_million = 0.025
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nousresearch/hermes-3-llama-3.1-405b"
+input_per_million = 1.0
+output_per_million = 1.0
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-pro-preview-05-06"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+cache_write_per_million = 0.375
+max_output_tokens = 65535
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nousresearch/hermes-3-llama-3.1-70b"
+input_per_million = 0.7
+output_per_million = 0.7
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-nano-30b-a3b:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-nano-12b-v2-vl:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-flash-lite-image"
+input_per_million = 0.25
+output_per_million = 1.5
+max_output_tokens = 66000
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-plus-2025-07-28:thinking"
+input_per_million = 0.26
+output_per_million = 0.78
+cache_write_per_million = 0.325
+max_output_tokens = 32768
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-235b-a22b-thinking-2507"
+input_per_million = 0.3
+output_per_million = 3.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+energy = { wh_per_mtok_out = 176.0, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.6336 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3-pro-image-preview"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+cache_write_per_million = 0.375
+max_output_tokens = 32768
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-3.1-70b-instruct"
+input_per_million = 0.4
+output_per_million = 0.4
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-3.3-70b-instruct"
+input_per_million = 0.13
+output_per_million = 0.4
+max_output_tokens = 128000
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-super-120b-a12b"
+input_per_million = 0.085
+output_per_million = 0.4
+max_output_tokens = 16384
+context_window_tokens = 1000000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-ultra-550b-a55b"
+input_per_million = 0.6
+output_per_million = 3.6
+cache_read_per_million = 0.2
+max_output_tokens = 16384
+context_window_tokens = 512288
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-coder-30b-a3b-instruct"
+input_per_million = 0.07
+output_per_million = 0.27
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-3.1-8b-instruct"
+input_per_million = 0.05
+output_per_million = 0.08
+cache_read_per_million = 0.025
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-3.2-1b-instruct"
+input_per_million = 0.027
+output_per_million = 0.201
+max_output_tokens = 60000
+context_window_tokens = 60000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-3.2-3b-instruct"
+input_per_million = 0.05
+output_per_million = 0.33
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mixtral-8x22b-instruct"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/voxtral-small-24b-2507"
+input_per_million = 0.1
+output_per_million = 0.3
+cache_read_per_million = 0.01
+max_output_tokens = 32000
+context_window_tokens = 32000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-2.5-coder-32b-instruct"
+input_per_million = 0.66
+output_per_million = 1.0
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-30b-a3b-instruct-2507"
+input_per_million = 0.04815
+output_per_million = 0.19305
+max_output_tokens = 32000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-30b-a3b-thinking-2507"
+input_per_million = 0.13
+output_per_million = 1.56
+max_output_tokens = 32768
+context_window_tokens = 81920
+open_weights = true
+energy = { wh_per_mtok_out = 24.3, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.0876 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-next-80b-a3b-instruct"
+input_per_million = 0.1
+output_per_million = 1.1
+cache_read_per_million = 0.07
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-next-80b-a3b-thinking"
+input_per_million = 0.0975
+output_per_million = 0.78
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-235b-a22b-instruct"
+input_per_million = 0.21
+output_per_million = 1.9
+cache_read_per_million = 0.1
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-235b-a22b-thinking"
+input_per_million = 0.26
+output_per_million = 2.6
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "arcee-ai/trinity-large-thinking"
+input_per_million = 0.22
+output_per_million = 0.85
+cache_read_per_million = 0.06
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-v3.1-terminus"
+input_per_million = 0.27
+output_per_million = 1.0
+cache_read_per_million = 0.135
+max_output_tokens = 32768
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "ibm-granite/granite-4.0-h-micro"
+input_per_million = 0.017
+output_per_million = 0.112
+max_output_tokens = 131000
+context_window_tokens = 131000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "inclusionai/ling-3.0-flash:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-nano-9b-v2:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~anthropic/claude-sonnet-latest"
+input_per_million = 2.0
+output_per_million = 10.0
+cache_read_per_million = 0.2
+cache_write_per_million = 2.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "aion-labs/aion-rp-llama-3.1-8b"
+input_per_million = 0.8
+output_per_million = 1.6
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.7-fast"
+input_per_million = 30.0
+output_per_million = 150.0
+cache_read_per_million = 3.0
+cache_write_per_million = 37.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.8-fast"
+input_per_million = 10.0
+output_per_million = 50.0
+cache_read_per_million = 1.0
+cache_write_per_million = 12.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-chat-v3-0324"
+input_per_million = 0.27
+output_per_million = 1.12
+cache_read_per_million = 0.135
+max_output_tokens = 65536
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-4-26b-a4b-it:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nvidia/nemotron-3-nano-30b-a3b"
+input_per_million = 0.05
+output_per_million = 0.2
+max_output_tokens = 228000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perplexity/sonar-deep-research"
+input_per_million = 2.0
+output_per_million = 8.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perplexity/sonar-reasoning-pro"
+input_per_million = 2.0
+output_per_million = 8.0
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-30b-a3b-instruct"
+input_per_million = 0.15
+output_per_million = 0.6
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-30b-a3b-thinking"
+input_per_million = 0.13
+output_per_million = 1.56
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~anthropic/claude-fable-latest"
+input_per_million = 10.0
+output_per_million = 50.0
+cache_read_per_million = 1.0
+cache_write_per_million = 12.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~anthropic/claude-haiku-latest"
+input_per_million = 1.0
+output_per_million = 5.0
+cache_read_per_million = 0.1
+cache_write_per_million = 1.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "bytedance-seed/seed-1.6-flash"
+input_per_million = 0.075
+output_per_million = 0.3
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cohere/command-r-plus-08-2024"
+input_per_million = 2.5
+output_per_million = 10.0
+max_output_tokens = 4000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-flash-image"
+input_per_million = 0.3
+output_per_million = 2.5
+cache_read_per_million = 0.03
+cache_write_per_million = 0.083333
+max_output_tokens = 8192
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-pro-preview"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3-flash-preview"
+input_per_million = 0.5
+output_per_million = 3.0
+cache_read_per_million = 0.05
+cache_write_per_million = 0.083333
+max_output_tokens = 65535
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-flash-image"
+input_per_million = 0.5
+output_per_million = 3.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-pro-preview"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-3.5-turbo-instruct"
+input_per_million = 1.5
+output_per_million = 2.0
+max_output_tokens = 4096
+context_window_tokens = 4095
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o-mini-2024-07-18"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.075
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "tencent/hunyuan-a13b-instruct"
+input_per_million = 0.14
+output_per_million = 0.57
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~anthropic/claude-opus-latest"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthracite-org/magnum-v4-72b"
+input_per_million = 3.0
+output_per_million = 5.0
+max_output_tokens = 2048
+context_window_tokens = 16384
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-5-fast"
+input_per_million = 10.0
+output_per_million = 50.0
+cache_read_per_million = 1.0
+cache_write_per_million = 12.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "baidu/ernie-4.5-vl-424b-a47b"
+input_per_million = 0.42
+output_per_million = 1.25
+max_output_tokens = 16000
+context_window_tokens = 123000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "bytedance-seed/seed-2.0-lite"
+input_per_million = 0.25
+output_per_million = 2.0
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "bytedance-seed/seed-2.0-mini"
+input_per_million = 0.1
+output_per_million = 0.4
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-flash-lite"
+input_per_million = 0.1
+output_per_million = 0.4
+cache_read_per_million = 0.01
+cache_write_per_million = 0.083333
+max_output_tokens = 65535
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.1-flash-lite"
+input_per_million = 0.25
+output_per_million = 1.5
+cache_read_per_million = 0.025
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.5-flash-lite"
+input_per_million = 0.3
+output_per_million = 2.5
+cache_read_per_million = 0.03
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "kwaipilot/kat-coder-air-v2.5"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.03
+max_output_tokens = 80000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "kwaipilot/kat-coder-pro-v2.5"
+input_per_million = 0.74
+output_per_million = 2.96
+cache_read_per_million = 0.15
+max_output_tokens = 80000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-guard-4-12b"
+input_per_million = 0.18
+output_per_million = 0.18
+max_output_tokens = 16384
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/ministral-14b-2512"
+input_per_million = 0.2
+output_per_million = 0.2
+cache_read_per_million = 0.02
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-large-2407"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.2
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-large-2512"
+input_per_million = 0.5
+output_per_million = 1.5
+cache_read_per_million = 0.05
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-medium-3-5"
+input_per_million = 1.5
+output_per_million = 7.5
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-medium-3.1"
+input_per_million = 0.4
+output_per_million = 2.0
+cache_read_per_million = 0.04
+max_output_tokens = 262144
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-small-2603"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.015
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-oss-safeguard-20b"
+input_per_million = 0.075
+output_per_million = 0.3
+cache_read_per_million = 0.0375
+max_output_tokens = 65536
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o4-mini-deep-research"
+input_per_million = 2.0
+output_per_million = 8.0
+cache_read_per_million = 0.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen2.5-vl-72b-instruct"
+input_per_million = 0.8
+output_per_million = 1.0
+cache_read_per_million = 0.4
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-sonnet-4.5"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 64000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-sonnet-4.6"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cohere/north-mini-code:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 64000
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepcogito/cogito-v2.1-671b"
+input_per_million = 1.25
+output_per_million = 1.25
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-chat-v3.1"
+input_per_million = 0.25
+output_per_million = 0.95
+cache_read_per_million = 0.13
+max_output_tokens = 32768
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/lyria-3-clip-preview"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-4-maverick"
+input_per_million = 0.2
+output_per_million = 0.8
+max_output_tokens = 16384
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/ministral-3b-2512"
+input_per_million = 0.1
+output_per_million = 0.1
+cache_read_per_million = 0.01
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/ministral-8b-2512"
+input_per_million = 0.15
+output_per_million = 0.15
+cache_read_per_million = 0.015
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2-thinking"
+input_per_million = 0.6
+output_per_million = 2.5
+cache_read_per_million = 0.15
+max_output_tokens = 100352
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perplexity/sonar-pro-search"
+input_per_million = 3.0
+output_per_million = 15.0
+max_output_tokens = 8000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-xs-2.1:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "thedrummer/cydonia-24b-v4.1"
+input_per_million = 0.3
+output_per_million = 0.5
+cache_read_per_million = 0.15
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~google/gemini-flash-latest"
+input_per_million = 1.5
+output_per_million = 7.5
+cache_read_per_million = 0.15
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-haiku-4.5"
+input_per_million = 1.0
+output_per_million = 5.0
+cache_read_per_million = 0.1
+cache_write_per_million = 1.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cohere/command-r7b-12-2024"
+input_per_million = 0.0375
+output_per_million = 0.15
+max_output_tokens = 4000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-v3.2-exp"
+input_per_million = 0.27
+output_per_million = 0.41
+max_output_tokens = 65536
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-v4-flash"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.028
+max_output_tokens = 393216
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-4-31b-it:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/lyria-3-pro-preview"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "ibm-granite/granite-4.1-8b"
+input_per_million = 0.05
+output_per_million = 0.1
+cache_read_per_million = 0.05
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "inclusionai/ling-2.6-flash"
+input_per_million = 0.01
+output_per_million = 0.03
+cache_read_per_million = 0.002
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "kwaipilot/kat-coder-pro-v2"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.06
+max_output_tokens = 80000
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "microsoft/wizardlm-2-8x22b"
+input_per_million = 0.62
+output_per_million = 0.62
+max_output_tokens = 8000
+context_window_tokens = 65535
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-medium-3"
+input_per_million = 0.4
+output_per_million = 2.0
+cache_read_per_million = 0.04
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nousresearch/hermes-4-405b"
+input_per_million = 1.0
+output_per_million = 3.0
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4-turbo-preview"
+input_per_million = 10.0
+output_per_million = 30.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-s-2.1:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-2.5-72b-instruct"
+input_per_million = 0.36
+output_per_million = 0.4
+max_output_tokens = 16384
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-32b-instruct"
+input_per_million = 0.104
+output_per_million = 0.416
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-plus-20260420"
+input_per_million = 0.3
+output_per_million = 1.8
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "x-ai/grok-4.20-multi-agent"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 2000000
+context_window_tokens = 2000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.1"
+input_per_million = 15.0
+output_per_million = 75.0
+cache_read_per_million = 1.5
+cache_write_per_million = 18.75
+max_output_tokens = 32000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.5"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 64000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.6"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.7"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4.8"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-sonnet-4"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+cache_write_per_million = 3.75
+max_output_tokens = 64000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-sonnet-5"
+input_per_million = 2.0
+output_per_million = 10.0
+cache_read_per_million = 0.2
+cache_write_per_million = 2.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-r1-0528"
+input_per_million = 0.5
+output_per_million = 2.15
+cache_read_per_million = 0.35
+max_output_tokens = 32768
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3-pro-image"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+cache_write_per_million = 0.375
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-4-26b-a4b-it"
+input_per_million = 0.14
+output_per_million = 0.42
+cache_read_per_million = 0.05
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2.7-code"
+input_per_million = 0.73
+output_per_million = 3.5
+cache_read_per_million = 0.15
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nousresearch/hermes-4-70b"
+input_per_million = 0.13
+output_per_million = 0.4
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-3.5-turbo-0613"
+input_per_million = 1.0
+output_per_million = 2.0
+max_output_tokens = 4096
+context_window_tokens = 4095
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.1-codex-mini"
+input_per_million = 0.25
+output_per_million = 2.0
+cache_read_per_million = 0.03
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perceptron/perceptron-mk1"
+input_per_million = 0.15
+output_per_million = 1.5
+max_output_tokens = 8192
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-2.5-7b-instruct"
+input_per_million = 0.04
+output_per_million = 0.1
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-plus-2025-07-28"
+input_per_million = 0.26
+output_per_million = 0.78
+max_output_tokens = 32768
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-235b-a22b-2507"
+input_per_million = 0.09
+output_per_million = 0.55
+max_output_tokens = 16384
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-8b-instruct"
+input_per_million = 0.117
+output_per_million = 0.455
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-vl-8b-thinking"
+input_per_million = 0.117
+output_per_million = 1.365
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "thedrummer/skyfall-36b-v2"
+input_per_million = 0.55
+output_per_million = 0.8
+cache_read_per_million = 0.25
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "thedrummer/unslopnemo-12b"
+input_per_million = 0.4
+output_per_million = 0.4
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~google/gemini-pro-latest"
+input_per_million = 2.0
+output_per_million = 12.0
+cache_read_per_million = 0.2
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "allenai/olmo-3-32b-think"
+input_per_million = 0.15
+output_per_million = 0.5
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-3-haiku"
+input_per_million = 0.25
+output_per_million = 1.25
+cache_read_per_million = 0.03
+cache_write_per_million = 0.3
+max_output_tokens = 4096
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-fable-5"
+input_per_million = 10.0
+output_per_million = 50.0
+cache_read_per_million = 1.0
+cache_write_per_million = 12.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "bytedance/ui-tars-1.5-7b"
+input_per_million = 0.1
+output_per_million = 0.2
+cache_read_per_million = 0.1
+max_output_tokens = 2048
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cohere/command-r-08-2024"
+input_per_million = 0.15
+output_per_million = 0.6
+max_output_tokens = 4000
+context_window_tokens = 128000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-v4-pro"
+input_per_million = 0.435
+output_per_million = 0.87
+cache_read_per_million = 0.003625
+max_output_tokens = 384000
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta-llama/llama-4-scout"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 16384
+context_window_tokens = 1310720
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/codestral-2508"
+input_per_million = 0.3
+output_per_million = 0.9
+cache_read_per_million = 0.03
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-3.5-turbo-16k"
+input_per_million = 3.0
+output_per_million = 4.0
+max_output_tokens = 4096
+context_window_tokens = 16385
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o-2024-05-13"
+input_per_million = 5.0
+output_per_million = 15.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o-2024-08-06"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o-2024-11-20"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.1-codex-max"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-terra-pro"
+input_per_million = 1.25
+output_per_million = 7.5
+cache_read_per_million = 0.125
+cache_write_per_million = 1.5625
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-m.1:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-flash-02-23"
+input_per_million = 0.065
+output_per_million = 0.26
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.6-max-preview"
+input_per_million = 1.04
+output_per_million = 6.24
+cache_write_per_million = 1.3
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "thedrummer/rocinante-12b"
+input_per_million = 0.25
+output_per_million = 0.5
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "thinkingmachines/inkling"
+input_per_million = 1.0
+output_per_million = 4.05
+cache_read_per_million = 0.17
+max_output_tokens = 1048576
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "undi95/remm-slerp-l2-13b"
+input_per_million = 0.45
+output_per_million = 0.65
+max_output_tokens = 2048
+context_window_tokens = 6144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "aion-labs/aion-3.0-mini"
+input_per_million = 0.7
+output_per_million = 1.4
+cache_read_per_million = 0.18
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-4"
+input_per_million = 15.0
+output_per_million = 75.0
+cache_read_per_million = 1.5
+cache_write_per_million = 18.75
+max_output_tokens = 32000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "anthropic/claude-opus-5"
+input_per_million = 5.0
+output_per_million = 25.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "arcee-ai/virtuoso-large"
+input_per_million = 0.75
+output_per_million = 1.2
+max_output_tokens = 64000
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "bytedance-seed/seed-1.6"
+input_per_million = 0.25
+output_per_million = 2.0
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-flash"
+input_per_million = 0.3
+output_per_million = 2.5
+cache_read_per_million = 0.03
+cache_write_per_million = 0.083333
+max_output_tokens = 65535
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.5-flash"
+input_per_million = 1.5
+output_per_million = 9.0
+cache_read_per_million = 0.15
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-3.6-flash"
+input_per_million = 1.5
+output_per_million = 7.5
+cache_read_per_million = 0.15
+cache_write_per_million = 0.083333
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "inclusionai/ling-2.6-1t"
+input_per_million = 0.075
+output_per_million = 0.625
+cache_read_per_million = 0.015
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "inclusionai/ring-2.6-1t"
+input_per_million = 0.075
+output_per_million = 0.625
+cache_read_per_million = 0.015
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/devstral-2512"
+input_per_million = 0.4
+output_per_million = 2.0
+cache_read_per_million = 0.04
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+status = "deprecated"
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-large"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.2
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2-0905"
+input_per_million = 0.6
+output_per_million = 2.5
+max_output_tokens = 100352
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-image-mini"
+input_per_million = 2.5
+output_per_million = 2.0
+cache_read_per_million = 0.25
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-luna-pro"
+input_per_million = 0.5
+output_per_million = 3.0
+cache_read_per_million = 0.05
+cache_write_per_million = 0.625
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-oss-20b:free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o3-deep-research"
+input_per_million = 10.0
+output_per_million = 40.0
+cache_read_per_million = 2.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-max-thinking"
+input_per_million = 0.78
+output_per_million = 3.9
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-plus-02-15"
+input_per_million = 0.26
+output_per_million = 1.56
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "sao10k/l3.1-euryale-70b"
+input_per_million = 0.85
+output_per_million = 0.85
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "sao10k/l3.3-euryale-70b"
+input_per_million = 0.65
+output_per_million = 0.75
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~moonshotai/kimi-latest"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+max_output_tokens = 1048576
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~openai/gpt-mini-latest"
+input_per_million = 0.75
+output_per_million = 4.5
+cache_read_per_million = 0.075
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "amazon/nova-premier-v1"
+input_per_million = 2.5
+output_per_million = 12.5
+cache_read_per_million = 0.625
+max_output_tokens = 32000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-chat"
+input_per_million = 0.2002
+output_per_million = 0.8001
+max_output_tokens = 16000
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-v3.2"
+input_per_million = 0.269
+output_per_million = 0.4
+cache_read_per_million = 0.1345
+max_output_tokens = 65536
+context_window_tokens = 163840
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-3n-e4b-it"
+input_per_million = 0.06
+output_per_million = 0.12
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "gryphe/mythomax-l2-13b"
+input_per_million = 0.06
+output_per_million = 0.06
+max_output_tokens = 4096
+context_window_tokens = 8192
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m2-her"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.03
+max_output_tokens = 2048
+context_window_tokens = 65536
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-nemo"
+input_per_million = 0.019
+output_per_million = 0.03
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mistralai/mistral-saba"
+input_per_million = 0.2
+output_per_million = 0.6
+cache_read_per_million = 0.02
+max_output_tokens = 32768
+context_window_tokens = 32768
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.4-image-2"
+input_per_million = 8.0
+output_per_million = 15.0
+cache_read_per_million = 2.0
+max_output_tokens = 128000
+context_window_tokens = 272000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-sol-pro"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-chat-latest"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-xs-2.1"
+input_per_million = 0.06
+output_per_million = 0.12
+cache_read_per_million = 0.03
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-coder-flash"
+input_per_million = 0.195
+output_per_million = 0.975
+cache_read_per_million = 0.039
+cache_write_per_million = 0.24375
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-122b-a10b"
+input_per_million = 0.26
+output_per_million = 2.08
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-397b-a17b"
+input_per_million = 0.39
+output_per_million = 2.34
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "stepfun/step-3.5-flash"
+input_per_million = 0.1
+output_per_million = 0.3
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "stepfun/step-3.7-flash"
+input_per_million = 0.2
+output_per_million = 1.15
+cache_read_per_million = 0.04
+max_output_tokens = 256000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "amazon/nova-2-lite-v1"
+input_per_million = 0.3
+output_per_million = 2.5
+max_output_tokens = 65535
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemini-2.5-pro"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+cache_write_per_million = 0.375
+max_output_tokens = 65536
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-2-27b-it"
+input_per_million = 0.65
+output_per_million = 0.65
+max_output_tokens = 2048
+context_window_tokens = 8192
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-3-12b-it"
+input_per_million = 0.05
+output_per_million = 0.15
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-3-27b-it"
+input_per_million = 0.08
+output_per_million = 0.45
+cache_read_per_million = 0.04
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-4-31b-it"
+input_per_million = 0.14
+output_per_million = 0.4
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-audio-mini"
+input_per_million = 0.6
+output_per_million = 2.4
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-s-2.1"
+input_per_million = 0.1
+output_per_million = 0.2
+cache_read_per_million = 0.01
+max_output_tokens = 131072
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-coder-next"
+input_per_million = 0.11
+output_per_million = 0.8
+cache_read_per_million = 0.07
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-coder-plus"
+input_per_million = 0.65
+output_per_million = 3.25
+cache_read_per_million = 0.13
+cache_write_per_million = 0.8125
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "relace/relace-apply-3"
+input_per_million = 0.85
+output_per_million = 1.25
+max_output_tokens = 128000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "ai21/jamba-large-1.7"
+input_per_million = 2.0
+output_per_million = 8.0
+max_output_tokens = 4096
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "amazon/nova-micro-v1"
+input_per_million = 0.035
+output_per_million = 0.14
+max_output_tokens = 5120
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "deepseek/deepseek-r1"
+input_per_million = 0.7
+output_per_million = 2.5
+max_output_tokens = 16000
+context_window_tokens = 163840
+open_weights = true
+energy = { wh_per_mtok_out = 660.1, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 2.3762 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "google/gemma-3-4b-it"
+input_per_million = 0.05
+output_per_million = 0.1
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m2.1"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.03
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m2.5"
+input_per_million = 0.15
+output_per_million = 0.9
+cache_read_per_million = 0.05
+max_output_tokens = 196608
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m2.7"
+input_per_million = 0.25
+output_per_million = 1.0
+cache_read_per_million = 0.05
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2.5"
+input_per_million = 0.57
+output_per_million = 2.85
+cache_read_per_million = 0.095
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2.6"
+input_per_million = 0.646
+output_per_million = 2.72
+cache_read_per_million = 0.1088
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "morph/morph-v3-large"
+input_per_million = 0.9
+output_per_million = 1.9
+max_output_tokens = 131072
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-3.5-turbo"
+input_per_million = 0.5
+output_per_million = 1.5
+max_output_tokens = 4096
+context_window_tokens = 16385
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.1-codex"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.13
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.2-codex"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.3-codex"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-terra"
+input_per_million = 1.25
+output_per_million = 7.5
+cache_read_per_million = 0.125
+cache_write_per_million = 1.5625
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perplexity/sonar-pro"
+input_per_million = 3.0
+output_per_million = 15.0
+max_output_tokens = 8000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-235b-a22b"
+input_per_million = 0.455
+output_per_million = 1.82
+max_output_tokens = 8192
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-35b-a3b"
+input_per_million = 0.15
+output_per_million = 1.0
+cache_read_per_million = 0.05
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.6-35b-a3b"
+input_per_million = 0.14
+output_per_million = 1.0
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "relace/relace-search"
+input_per_million = 1.0
+output_per_million = 3.0
+max_output_tokens = 128000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "sao10k/l3-lunaris-8b"
+input_per_million = 0.04
+output_per_million = 0.05
+max_output_tokens = 16384
+context_window_tokens = 8192
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "xiaomi/mimo-v2.5-pro"
+input_per_million = 0.435
+output_per_million = 0.87
+cache_read_per_million = 0.0036
+max_output_tokens = 131072
+context_window_tokens = 1050000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "amazon/nova-lite-v1"
+input_per_million = 0.06
+output_per_million = 0.24
+max_output_tokens = 5120
+context_window_tokens = 300000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "inception/mercury-2"
+input_per_million = 0.25
+output_per_million = 0.75
+cache_read_per_million = 0.025
+max_output_tokens = 50000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meituan/longcat-2.0"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.006
+max_output_tokens = 262144
+context_window_tokens = 1048756
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "meta/muse-spark-1.1"
+input_per_million = 1.25
+output_per_million = 4.25
+cache_read_per_million = 0.15
+max_output_tokens = 1048576
+context_window_tokens = 1048576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "morph/morph-v3-fast"
+input_per_million = 0.8
+output_per_million = 1.2
+max_output_tokens = 38000
+context_window_tokens = 81920
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nex-agi/nex-n2-mini"
+input_per_million = 0.025
+output_per_million = 0.1
+cache_read_per_million = 0.0025
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4.1-mini"
+input_per_million = 0.4
+output_per_million = 1.6
+cache_read_per_million = 0.1
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4.1-nano"
+input_per_million = 0.1
+output_per_million = 0.4
+cache_read_per_million = 0.025
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.1-chat"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.13
+max_output_tokens = 32000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.2-chat"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.3-chat"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.4-mini"
+input_per_million = 0.75
+output_per_million = 4.5
+cache_read_per_million = 0.075
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.4-nano"
+input_per_million = 0.2
+output_per_million = 1.25
+cache_read_per_million = 0.02
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-luna"
+input_per_million = 0.5
+output_per_million = 3.0
+cache_read_per_million = 0.05
+cache_write_per_million = 0.625
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-oss-120b"
+input_per_million = 0.037
+output_per_million = 0.17
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o3-mini-high"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.55
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o4-mini-high"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.275
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "poolside/laguna-m.1"
+input_per_million = 0.2
+output_per_million = 0.4
+cache_read_per_million = 0.1
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "rekaai/reka-flash-3"
+input_per_million = 0.1
+output_per_million = 0.2
+max_output_tokens = 65536
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "tencent/hy3-preview"
+input_per_million = 0.063
+output_per_million = 0.21
+cache_read_per_million = 0.021
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "upstage/solar-pro-3"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.015
+max_output_tokens = 128000
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "x-ai/grok-build-0.1"
+input_per_million = 1.0
+output_per_million = 2.0
+cache_read_per_million = 0.2
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "aion-labs/aion-2.0"
+input_per_million = 0.8
+output_per_million = 1.6
+cache_read_per_million = 0.2
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "aion-labs/aion-3.0"
+input_per_million = 3.0
+output_per_million = 6.0
+cache_read_per_million = 0.75
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "amazon/nova-pro-v1"
+input_per_million = 0.8
+output_per_million = 3.2
+max_output_tokens = 5120
+context_window_tokens = 300000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-01"
+input_per_million = 0.2
+output_per_million = 1.1
+max_output_tokens = 1000192
+context_window_tokens = 1000192
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m1"
+input_per_million = 0.55
+output_per_million = 2.2
+max_output_tokens = 40000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m2"
+input_per_million = 0.255
+output_per_million = 1.02
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "minimax/minimax-m3"
+input_per_million = 0.3
+output_per_million = 1.2
+cache_read_per_million = 0.06
+max_output_tokens = 512000
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k2"
+input_per_million = 0.57
+output_per_million = 2.3
+max_output_tokens = 100352
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "moonshotai/kimi-k3"
+input_per_million = 3.0
+output_per_million = 15.0
+cache_read_per_million = 0.3
+max_output_tokens = 1048576
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "nex-agi/nex-n2-pro"
+input_per_million = 0.25
+output_per_million = 1.0
+cache_read_per_million = 0.025
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4-turbo"
+input_per_million = 10.0
+output_per_million = 30.0
+max_output_tokens = 4096
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o-mini"
+input_per_million = 0.15
+output_per_million = 0.6
+cache_read_per_million = 0.075
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-codex"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-image"
+input_per_million = 10.0
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.2-pro"
+input_per_million = 21.0
+output_per_million = 168.0
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.4-pro"
+input_per_million = 30.0
+output_per_million = 180.0
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.5-pro"
+input_per_million = 30.0
+output_per_million = 180.0
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.6-sol"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-oss-20b"
+input_per_million = 0.03
+output_per_million = 0.14
+max_output_tokens = 131072
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-30b-a3b"
+input_per_million = 0.12
+output_per_million = 0.5
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.6-flash"
+input_per_million = 0.1875
+output_per_million = 1.125
+cache_write_per_million = 0.234375
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.7-flash"
+input_per_million = 0.03
+output_per_million = 0.13
+cache_read_per_million = 0.006
+cache_write_per_million = 0.038
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.7-flash"
+input_per_million = 0.06
+output_per_million = 0.4
+cache_read_per_million = 0.01
+max_output_tokens = 16384
+context_window_tokens = 202752
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~openai/gpt-latest"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+cache_write_per_million = 6.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-mini"
+input_per_million = 0.25
+output_per_million = 2.0
+cache_read_per_million = 0.025
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-nano"
+input_per_million = 0.05
+output_per_million = 0.4
+cache_read_per_million = 0.005
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.6-plus"
+input_per_million = 0.325
+output_per_million = 1.95
+cache_write_per_million = 0.40625
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.7-plus"
+input_per_million = 0.32
+output_per_million = 1.28
+cache_read_per_million = 0.064
+cache_write_per_million = 0.4
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "sakana/fugu-ultra"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+max_output_tokens = 128000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "writer/palmyra-x5"
+input_per_million = 0.6
+output_per_million = 6.0
+max_output_tokens = 8192
+context_window_tokens = 1040000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-5v-turbo"
+input_per_million = 1.2
+output_per_million = 4.0
+cache_read_per_million = 0.24
+max_output_tokens = 131072
+context_window_tokens = 202752
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "~x-ai/grok-latest"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.3
+max_output_tokens = 1000000
+context_window_tokens = 500000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "cohere/command-a"
+input_per_million = 2.5
+output_per_million = 10.0
+max_output_tokens = 8192
+context_window_tokens = 256000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5-pro"
+input_per_million = 15.0
+output_per_million = 120.0
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-audio"
+input_per_million = 2.5
+output_per_million = 10.0
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "perplexity/sonar"
+input_per_million = 1.0
+output_per_million = 1.0
+max_output_tokens = 127072
+context_window_tokens = 127072
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-coder"
+input_per_million = 0.3
+output_per_million = 1.0
+cache_read_per_million = 0.1
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-27b"
+input_per_million = 0.195
+output_per_million = 1.56
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.6-27b"
+input_per_million = 0.3
+output_per_million = 2.0
+cache_read_per_million = 0.15
+max_output_tokens = 65536
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.7-max"
+input_per_million = 1.475
+output_per_million = 4.425
+cache_read_per_million = 0.295
+cache_write_per_million = 1.84375
+max_output_tokens = 65536
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "rekaai/reka-edge"
+input_per_million = 0.1
+output_per_million = 0.1
+max_output_tokens = 16384
+context_window_tokens = 16384
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "xiaomi/mimo-v2.5"
+input_per_million = 0.14
+output_per_million = 0.28
+cache_read_per_million = 0.0028
+max_output_tokens = 131072
+context_window_tokens = 1050000
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.5-air"
+input_per_million = 0.13
+output_per_million = 0.85
+cache_read_per_million = 0.025
+max_output_tokens = 98304
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-5-turbo"
+input_per_million = 1.2
+output_per_million = 4.0
+cache_read_per_million = 0.24
+max_output_tokens = 131072
+context_window_tokens = 202752
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "microsoft/phi-4"
+input_per_million = 0.07
+output_per_million = 0.14
+max_output_tokens = 16384
+context_window_tokens = 16384
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openrouter/free"
+input_per_million = 0.0
+output_per_million = 0.0
+max_output_tokens = 8000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3.5-9b"
+input_per_million = 0.1
+output_per_million = 0.15
+max_output_tokens = 262144
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4.1"
+input_per_million = 2.0
+output_per_million = 8.0
+cache_read_per_million = 0.5
+max_output_tokens = 32768
+context_window_tokens = 1047576
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.1"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.2"
+input_per_million = 1.75
+output_per_million = 14.0
+cache_read_per_million = 0.175
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.4"
+input_per_million = 2.5
+output_per_million = 15.0
+cache_read_per_million = 0.25
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5.5"
+input_per_million = 5.0
+output_per_million = 30.0
+cache_read_per_million = 0.5
+max_output_tokens = 128000
+context_window_tokens = 1050000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o3-mini"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.55
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o4-mini"
+input_per_million = 1.1
+output_per_million = 4.4
+cache_read_per_million = 0.275
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen-plus"
+input_per_million = 0.26
+output_per_million = 0.78
+cache_read_per_million = 0.052
+cache_write_per_million = 0.325
+max_output_tokens = 32768
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-14b"
+input_per_million = 0.2275
+output_per_million = 0.91
+max_output_tokens = 8192
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 50.7, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.1826 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-32b"
+input_per_million = 0.08
+output_per_million = 0.28
+max_output_tokens = 16384
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-max"
+input_per_million = 0.78
+output_per_million = 3.9
+cache_read_per_million = 0.156
+cache_write_per_million = 0.975
+max_output_tokens = 32768
+context_window_tokens = 262144
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "x-ai/grok-4.20"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 2000000
+context_window_tokens = 2000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "mancer/weaver"
+input_per_million = 0.5
+output_per_million = 0.75
+max_output_tokens = 2000
+context_window_tokens = 8000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4o"
+input_per_million = 2.5
+output_per_million = 10.0
+cache_read_per_million = 1.25
+max_output_tokens = 16384
+context_window_tokens = 128000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o1-pro"
+input_per_million = 150.0
+output_per_million = 600.0
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o3-pro"
+input_per_million = 20.0
+output_per_million = 80.0
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "qwen/qwen3-8b"
+input_per_million = 0.117
+output_per_million = 0.455
+max_output_tokens = 8192
+context_window_tokens = 131072
+open_weights = true
+energy = { wh_per_mtok_out = 48.1, provenance = "independent-measured", scope = "gpu", source = "ml.energy leaderboard Dec 2025 · B200 · vLLM · problem-solving · 0.1732 J/token (arXiv 2505.06371)", measured_at = "2025-12" }
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "x-ai/grok-4.3"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 1000000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "x-ai/grok-4.5"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.3
+max_output_tokens = 500000
+context_window_tokens = 500000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.5v"
+input_per_million = 0.6
+output_per_million = 1.8
+cache_read_per_million = 0.11
+max_output_tokens = 16384
+context_window_tokens = 65536
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.6v"
+input_per_million = 0.3
+output_per_million = 0.9
+cache_read_per_million = 0.055
+max_output_tokens = 32768
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-4"
+input_per_million = 30.0
+output_per_million = 60.0
+max_output_tokens = 4096
+context_window_tokens = 8191
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/gpt-5"
+input_per_million = 1.25
+output_per_million = 10.0
+cache_read_per_million = 0.125
+max_output_tokens = 128000
+context_window_tokens = 400000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.5"
+input_per_million = 0.6
+output_per_million = 2.2
+cache_read_per_million = 0.11
+max_output_tokens = 98304
+context_window_tokens = 131072
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.6"
+input_per_million = 0.5
+output_per_million = 2.0
+cache_read_per_million = 0.1
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-4.7"
+input_per_million = 0.4
+output_per_million = 1.75
+cache_read_per_million = 0.08
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-5.1"
+input_per_million = 0.966
+output_per_million = 3.036
+cache_read_per_million = 0.1794
+max_output_tokens = 128000
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-5.2"
+input_per_million = 0.7378
+output_per_million = 2.3188
+cache_read_per_million = 0.13702
+max_output_tokens = 131072
+context_window_tokens = 1048576
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "tencent/hy3"
+input_per_million = 0.132
+output_per_million = 0.528
+cache_read_per_million = 0.033
+max_output_tokens = 128000
+context_window_tokens = 262144
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "z-ai/glm-5"
+input_per_million = 0.95
+output_per_million = 2.55
+cache_read_per_million = 0.2
+max_output_tokens = 131072
+context_window_tokens = 204800
+open_weights = true
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o1"
+input_per_million = 15.0
+output_per_million = 60.0
+cache_read_per_million = 7.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+[[rules]]
+provider = "openrouter"
+model_pattern = "openai/o3"
+input_per_million = 2.0
+output_per_million = 8.0
+cache_read_per_million = 0.5
+max_output_tokens = 100000
+context_window_tokens = 200000
+open_weights = false
+
+# ── xai (8 models) ──
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-4.20-0309-non-reasoning"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 30000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-4.20-multi-agent-0309"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 30000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-4.20-0309-reasoning"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 30000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-3-mini-fast"
+input_per_million = 0.6
+output_per_million = 4.0
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-build-0.1"
+input_per_million = 1.0
+output_per_million = 2.0
+cache_read_per_million = 0.2
+max_output_tokens = 256000
+context_window_tokens = 256000
+open_weights = false
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-4.3"
+input_per_million = 1.25
+output_per_million = 2.5
+cache_read_per_million = 0.2
+max_output_tokens = 30000
+context_window_tokens = 1000000
+open_weights = false
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-4.5"
+input_per_million = 2.0
+output_per_million = 6.0
+cache_read_per_million = 0.3
+max_output_tokens = 500000
+context_window_tokens = 500000
+open_weights = false
+determinism = "best-effort"
+
+[[rules]]
+provider = "xai"
+model_pattern = "grok-3"
+input_per_million = 3.0
+output_per_million = 15.0

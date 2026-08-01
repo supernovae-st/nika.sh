@@ -35,6 +35,25 @@
    code growth. DEBT, named: SHOWCASE_DAG belongs on the island recipe the
    anatomy already rides (the register diet); paying it buys back ~8 KB
    and this ceiling comes back DOWN with it ·
+   403→410 catalog-world (2026-08-01 · D1): the /catalog world lands — 176
+   new sync-routed rooms (models · MCP · pricing · energy · embeddings ·
+   capabilities) + the doors matrix on /integrations. What rides the entry
+   BY DESIGN is the world's CHROME only (the /sources + rooms-universelles
+   precedents): 169 slugs + ids + the counts block (catalog-paths.generated
+   — the map's dense tails, PATHS and the hubs all first-render from it)
+   plus 8 page shells. The HEAVY catalog (64 joined models · 633 pricing
+   rules · 105 MCP entries · the 31-door client matrix) stayed on the
+   register diet from day one — ssrCatalog byte islands + ONE async chunk
+   (catalog-access) — and src/test/catalog.test.ts pins that structurally
+   (an eager import of the heavy module is a red test, not a budget
+   surprise). Measured 409.6; margin ~0.4 KB keeps the bite-on-growth
+   grammar ·
+   410→406 spec-nuke (2026-08-01 · operator: the 3D dies): TheSpecMachine +
+   spec-machine-three/model + the /spec voyage wiring (stage director ·
+   helm · finale · birth) left the entry — the 2D schematic was always the
+   fallback truth and is now the only one; the verb rooms swapped PartEgg
+   for the bare PartSchematic the same day. Measured 405.7; the ceiling
+   BITES DOWN with the payment (the death-clause grammar) ·
    348→350 w2-flip: the w1-to-w2 door pass rides the entry BY DESIGN — the
    browse island fallback and the SPA-nav chunk both hand the client RAW
    ratified bytes, and the served grammar must exist wherever raw bytes
@@ -197,7 +216,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 403
+const BUDGET_KB = 406
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

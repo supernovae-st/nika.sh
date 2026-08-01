@@ -31,11 +31,12 @@ const NavConstellation = lazy(() => import('./NavConstellation'))
    Behaviour
    - a FLOATING CAPSULE (wave-h): the nav detaches from the top edge on desktop
      (12px gutter · 72rem max · 12px radius · near-opaque floor + the seam kit).
-     Two orthogonal states drive it — `data-solid` (transparent riding the hero
-     field → capsule floor, via a 24px scroll sentinel + IntersectionObserver)
-     and `data-scrolled` (the capsule compresses 64→56px and its shadow
-     tightens once the page is in motion). Below 720px it is a full-width bar
-     with the same depth kit.
+     ONE state drives it — `data-scrolled` (the capsule compresses 64→56px
+     and its shadow tightens once the page is in motion). The floor is
+     ALWAYS-GLASS (2026-08-02 · the measured Raycast recipe): 16px detach ·
+     1204px max · radius 16 · diagonal gradient + inset lit edge — the
+     transparent-at-top mode died with FIELD_ROUTES. Below 720px it is a
+     full-width bar with the same depth kit.
    - the rail carries ONE shared hover pill — a single absolutely-positioned
      highlight that SLIDES between items on hover/keyboard-focus (transform +
      width · ~180ms), fades in on first entry and out on leave. rAF-batched
@@ -71,11 +72,7 @@ const NavConstellation = lazy(() => import('./NavConstellation'))
    event handlers. The fixed-position sentinel detection degrades gracefully —
    if the observer never fires (no hero on a page) the nav simply stays solid. */
 
-/* routes that ship the blue field behind the nav — ONLY these earn the
-   transparent-at-top nav (F5). Everywhere else the transparent nav's dark
-   legibility scrim reads as a gray smudge over a plain/light page top
-   (review P2-12), so field-less routes render SOLID from scroll 0. */
-const FIELD_ROUTES = new Set(['/', '/manifesto'])
+
 
 type MegaIconName = 'run' | 'verbs' | 'shield' | 'tiles' | 'terminal' | 'book' | 'butterfly'
 
@@ -479,10 +476,8 @@ function MegaDisclosure({
 
 export default function Nav() {
   const location = useLocation()
-  /* `scrolled` = the page is in motion (>24px) — drives the capsule COMPRESSION.
-     The FLOOR is the derived `solid` below: field-less routes prerender solid
-     from scroll 0 (no transparent flash · P2-12), field routes ride transparent
-     until the sentinel scrolls out. */
+  /* `scrolled` = the page is in motion (>24px) — drives the capsule
+     COMPRESSION only (the floor is always-glass). */
   const [scrolled, setScrolled] = useState(false)
   const [openPanel, setOpenPanel] = useState<null | 'product' | 'reference'>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -500,8 +495,11 @@ export default function Nav() {
   const sheetId = useId()
 
   /* ── the 24px scroll sentinel (see the header comment) ── */
-  const hasField = FIELD_ROUTES.has(location.pathname)
-  const solid = scrolled || !hasField
+  /* ALWAYS-GLASS (2026-08-02 · the Raycast law, operator mandate): the
+     capsule wears its floor from scroll 0 on every route — the
+     transparent-riding-the-hero mode died with FIELD_ROUTES (a flat bar
+     read as « no design » on every field page). `scrolled` keeps only
+     the compression. */
   useEffect(() => {
     const el = sentinelRef.current
     if (!el || typeof IntersectionObserver === 'undefined') {
@@ -590,7 +588,7 @@ export default function Nav() {
     <>
       <header
         className="v4nav"
-        data-solid={solid}
+        data-solid="true"
         data-scrolled={scrolled}
         data-mega={openPanel !== null}
       >

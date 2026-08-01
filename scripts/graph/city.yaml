@@ -1,0 +1,166 @@
+# scripts/graph/city.yaml — the city, as authored graph data (site voice).
+#
+# The 13 buildings are CANON (D-2026-07-29-N10 · the engine README city
+# fence carries the census; each repo's own README carries its `**Root**`
+# line). This file is the site's AUTHORED declaration of that public map —
+# every row cites what proves it; the lanes only exist where a law can be
+# named (a lane without a citable law does not enter the graph). The
+# archives are listed honestly: history does not get erased (H.3).
+#
+# Estate class: authored (site voice) — the ONE authored input the graph
+# compiler accepts, declared voice: true to the doctor's §J.1 typing gate.
+
+buildings:
+  - id: spec
+    repo: supernovae-st/nika-spec
+    root: language
+    role: "the language — spec chapters · canon.yaml SSOT · governance · conformance · the examples pack"
+    evidence: "engine README city fence (D-2026-07-29-N10) · its own README Root line: LANGUAGE / Apache-2.0"
+  - id: engine
+    repo: supernovae-st/nika
+    root: engine
+    role: "the reference engine — the binary every catalog fact derives from"
+    evidence: "engine README city fence (D-2026-07-29-N10) · its own README Root line: ENGINE / AGPL-3.0-or-later"
+  - id: website
+    repo: supernovae-st/nika.sh
+    root: neither
+    role: "this site — the visual map of the whole ecosystem (the belvédère)"
+    evidence: "engine README city fence (D-2026-07-29-N10) · the repo this graph is compiled in"
+  - id: docs
+    repo: supernovae-st/nika-docs
+    root: neither
+    role: "the documentation twin — projects the spec directly (the free twin)"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: client-sdk
+    repo: supernovae-st/nika-client
+    root: neither
+    role: "the TypeScript SDK — lockstepped to engine releases"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: vscode
+    repo: supernovae-st/nika-vscode
+    root: neither
+    role: "the editor extension (Marketplace + OpenVSX) — lockstepped to engine releases"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: agents
+    repo: supernovae-st/nika-agents
+    root: neither
+    role: "the agent-client marketplace kit (skills · MCP doors · subagents)"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: gh-nika
+    repo: supernovae-st/gh-nika
+    root: neither
+    role: "the gh CLI extension door"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: homebrew
+    repo: supernovae-st/homebrew-tap
+    root: neither
+    role: "the brew door — formula follows each release"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: action
+    repo: supernovae-st/nika-action
+    root: neither
+    role: "the CI district — run nika inside GitHub Actions"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: actions-starter
+    repo: supernovae-st/nika-actions-starter
+    root: neither
+    role: "the CI starter templates"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: registry
+    repo: supernovae-st/nika-registry
+    root: neither
+    role: "the artifact registry — every entry CI-re-proven (hash · oracle · engine cert)"
+    evidence: "engine README city fence (D-2026-07-29-N10)"
+  - id: estate
+    repo: supernovae-st/nika-estate
+    root: neither
+    role: "the land registry — the shared estate tool + the six-class law (SCHEMA.md)"
+    evidence: "engine README city fence (D-2026-07-29-N10) · this repo's ESTATE_PIN names its rev"
+
+archives:
+  - id: site-audit
+    repo: supernovae-st/nika-site-audit
+    role: "archived — the site-audit workflow era"
+    evidence: "the honest-archives law (H.3: l'histoire ne s'efface pas) · repo archived on the org"
+  - id: starter
+    repo: supernovae-st/nika-starter
+    role: "archived — the pre-actions starter era"
+    evidence: "the honest-archives law (H.3) · repo archived on the org"
+
+# Lanes — every row is an EDGE with a nameable law. from/to are building ids.
+lanes:
+  - from: spec
+    to: website
+    rel: projects-to
+    law: "pin + bot ONE-PR (LENS-011): the site resyncs against .github/nika-spec-pin.json — fetched BY SHA, commit+tree verified, one idempotent PR per pin"
+    evidence: ".github/nika-spec-pin.json + .github/workflows/spec-resync.yml (this repo)"
+  - from: spec
+    to: docs
+    rel: projects-to
+    law: "direct projection (the free twin — no pin yet; noted for a future train)"
+    evidence: "the two-projections asymmetry recorded in the total-map handoff §I.4-8"
+  - from: spec
+    to: engine
+    rel: vendors-to
+    law: "the pack: examples/manifest.yaml + spec chapters vendored into crates/nika-pack (the binary embeds the pack)"
+    evidence: "spec examples/manifest.yaml header: 'the reference engine embeds this pack'"
+  - from: engine
+    to: website
+    rel: vendors-to
+    law: "engine@release vendoring (D1): catalog data + ADR index fetched BY SHA at the release pin, digest-receipted"
+    evidence: ".github/nika-engine-pin.json + scripts/engine-resync.mjs + public/engine/PROVENANCE.json (this repo)"
+  - from: engine
+    to: website
+    rel: heals
+    law: "release-heal: the site's ENGINE_VERSION string follows engine releases by bot self-push"
+    evidence: ".github/workflows/release-heal.yml + scripts/sync-version.mjs (this repo)"
+  - from: estate
+    to: engine
+    rel: mirrors-to
+    law: "ESTATE_PIN mirror: scripts/estate.py byte-identical at the pinned rev, CI-blocked on divergence"
+    evidence: "engine .github/workflows/estate.yml mirror job + engine ESTATE_PIN"
+  - from: estate
+    to: spec
+    rel: mirrors-to
+    law: "ESTATE_PIN mirror: scripts/estate.py byte-identical at the pinned rev, CI-blocked on divergence"
+    evidence: "spec .github/workflows/conformance.yml mirror job + spec ESTATE_PIN"
+  - from: estate
+    to: docs
+    rel: mirrors-to
+    law: "ESTATE_PIN mirror: scripts/estate.py byte-identical at the pinned rev, CI-blocked on divergence"
+    evidence: "docs .github/workflows/gate.yml mirror job + docs ESTATE_PIN"
+  - from: estate
+    to: registry
+    rel: mirrors-to
+    law: "ESTATE_PIN mirror: the registry joined the four-repo closure (nika-registry a51c6ba)"
+    evidence: "nika-estate MIGRATION.md closure commits"
+  - from: estate
+    to: website
+    rel: mirrors-to
+    law: "ESTATE_PIN mirror: this repo joined the dance 2026-08-01 (E1) — the mirror job blocks on divergence"
+    evidence: "ESTATE_PIN + .github/workflows/estate.yml mirror job (this repo)"
+  - from: engine
+    to: vscode
+    rel: locksteps-with
+    law: "release-train lockstep: the extension version follows the engine minor"
+    evidence: "the 0.106 release train (engine · vscode Marketplace+OpenVSX published together)"
+  - from: engine
+    to: client-sdk
+    rel: locksteps-with
+    law: "release-train lockstep: the SDK version follows the engine minor"
+    evidence: "the 0.106 release train (engine · npm published together)"
+  - from: engine
+    to: homebrew
+    rel: vendors-to
+    law: "the brew door: the formula bumps to each release's digest-verified assets"
+    evidence: "homebrew-tap formula history following engine releases"
+  - from: engine
+    to: agents
+    rel: vendors-to
+    law: "the kit mirror: agent-client surfaces resynced from the engine repo (entries-pinned)"
+    evidence: "the agents mirror resync lane (agents scripts/update-mirrors.sh)"
+  - from: engine
+    to: registry
+    rel: certifies
+    law: "every registry entry is CI-re-proven against the released engine (hash + oracle + engine cert)"
+    evidence: "the registry model: entries re-proven by the runner (nika-registry CI)"

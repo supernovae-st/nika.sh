@@ -230,6 +230,17 @@ const COMPONENT_FEATURE = {
   /* the integrations register (client lanes + public repos, README-true) */
   Integrations: 'registry.integrations',
   IntegrationRoom: 'registry.integrations',
+  /* the catalog world (D1 · engine-release clock): what the released binary
+     knows — every page derives from the vendored engine surfaces at the pin */
+  Catalog: 'registry.catalog',
+  CatalogModels: 'registry.catalog',
+  CatalogModelRoom: 'registry.catalog',
+  CatalogPricing: 'registry.catalog',
+  CatalogEnergy: 'registry.catalog',
+  CatalogMcp: 'registry.catalog',
+  CatalogMcpRoom: 'registry.catalog',
+  CatalogEmbeddings: 'registry.catalog',
+  CatalogCapabilities: 'registry.catalog',
 }
 
 const FEATURE_EVIDENCE = {
@@ -260,6 +271,7 @@ const FEATURE_EVIDENCE = {
   'registry.library': 'src/flagships/library.ts',
   'registry.integrations': 'src/content/integrations.ts',
   'site.timeline': 'src/pages/Timeline.tsx',
+  'registry.catalog': 'src/content/catalog.generated.ts',
 }
 
 function featureContract() {

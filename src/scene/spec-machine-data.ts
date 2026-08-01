@@ -1,4 +1,5 @@
 import { CANON } from '../canon.generated'
+import { NIKA_VERB_HEX } from '../design-tokens.generated'
 import { SHOWCASE_DAG, type ShowcaseTask } from '../content/showcase-dag.generated'
 
 /* ─── spec-machine-data · the strata graph of THE SPEC MACHINE ────────────────
@@ -354,4 +355,19 @@ export function nodeReadout(id: string): string | null {
     case 'errns':
       return `${n.label}·····error namespace`
   }
+}
+
+/* ── the strata palette + order (migrated from spec-machine-model.ts when
+   the GL chassis died 2026-08-01 — the page and the schematic keep them) */
+export const STRATA_ORDER: StratumKey[] = SPEC_SECTIONS.map((s) => s.key)
+export const STRATUM_HEX: Record<StratumKey, string> = {
+  frame: '#8db4ff',
+  verbs: '#8db4ff',
+  plan: '#8db4ff',
+  permits: NIKA_VERB_HEX.exec,
+  stdlib: NIKA_VERB_HEX.invoke,
+  extract: NIKA_VERB_HEX.invoke,
+  providers: NIKA_VERB_HEX.infer,
+  errors: NIKA_VERB_HEX.agent,
+  license: '#8db4ff',
 }

@@ -426,18 +426,47 @@ function deriveErrorPaths(root, source) {
   ].sort()
 }
 
+/* CATALOG_PATHS derives like ERROR_PATHS does (the second-producer law: this
+   discovery re-derives from the SOURCES, never from site.config's arithmetic):
+   the hub + register literals ∪ one room per slug in catalog-paths.generated
+   (itself emitted from the vendored engine surfaces at the pin, drift-gated
+   by build-catalog --check in pnpm check + src/test/catalog.test.ts). */
+function deriveCatalogPaths(root) {
+  const gen = readFileSync(join(root, 'src/content/catalog-paths.generated.ts'), 'utf8')
+  const jsonArray = (name) => {
+    const m = gen.match(new RegExp(`export const ${name}: string\\[\\] = (\\[[\\s\\S]*?\\])`))
+    if (!m) throw new Error(`catalog slug array missing: ${name}`)
+    return JSON.parse(m[1])
+  }
+  const models = jsonArray('MODEL_SLUGS').map((s) => `/catalog/models/${s}`)
+  const mcp = jsonArray('MCP_SLUGS').map((s) => `/catalog/mcp/${s}`)
+  return [
+    '/catalog',
+    '/catalog/models',
+    ...models,
+    '/catalog/pricing',
+    '/catalog/energy',
+    '/catalog/mcp',
+    ...mcp,
+    '/catalog/embeddings',
+    '/catalog/capabilities',
+  ]
+}
+
 export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
   for (const name of [
     'BLOG_PATHS', 'BLOG_TAG_PATHS', 'BLOG_SERIES_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS', 'LIBRARY_PATHS', 'INTEGRATION_PATHS', 'FAMILY_ROOT_PATHS',
-    'LENS_PATHS',
+    'LENS_PATHS', 'CATALOG_PATHS',
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);
     // only arrays still declared join the map — an unknown SPREAD stays fatal.
-    // ERROR_PATHS is the one exception: derived from its two sources, by law.
+    // ERROR_PATHS + CATALOG_PATHS are the exceptions: derived from their
+    // sources, by law (never re-read from site.config's own arithmetic).
     if (name === 'ERROR_PATHS') arrays.set(name, deriveErrorPaths(root, source))
+    else if (name === 'CATALOG_PATHS') arrays.set(name, deriveCatalogPaths(root))
     else if (new RegExp(`export const ${name} = \\[`).test(source)) {
       arrays.set(name, literalArray(source, name))
     }

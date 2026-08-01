@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.106.1"
+export const TERMINAL_ENGINE = "0.107.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.106.1"
+        "text": "nika 0.107.0"
       }
     ]
   },
@@ -47,11 +47,11 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
-        "text": " ✔ COST     no inference tasks · $0.00"
+        "text": " ✔ COST     no infer/agent tasks · $0.00 · exec + mcp spend unpriced"
       },
       {
         "kind": "ok",
-        "text": " ✔ SECRETS  no information-flow escapes"
+        "text": " ✔ SECRETS  no declared secret reaches an effect · model echo untracked"
       },
       {
         "kind": "ok",
@@ -59,31 +59,39 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
-        "text": " ✔ TOOLS    every nika: tool names a canonical builtin"
+        "text": " ✔ TOOLS    every named nika: tool is canonical · globs + mcp: not checked"
       },
       {
         "kind": "ok",
-        "text": " ✔ ARGS     every invoke arg key is declared + every required arg is present"
+        "text": " ✔ ARGS     every builtin invoke arg key is declared + required args present"
       },
       {
         "kind": "ok",
-        "text": " ✔ SCHEMA   every authored schema: is satisfiable"
+        "text": " ✔ SCHEMA   no known-unsatisfiable form in an authored schema: · $ref opaque"
       },
       {
         "kind": "ok",
-        "text": " ✔ GATES    every task is statically reachable · status literals in vocabulary"
+        "text": " ✔ GATES    no task proven dead · status literals in vocabulary"
       },
       {
         "kind": "ok",
-        "text": " ✔ PERMITS  body fits the declared boundary"
+        "text": " ✔ WRITES   no two unordered tasks write the same static path · computed paths at run"
       },
       {
         "kind": "ok",
-        "text": " ✔ TRIFECTA no lethal trifecta without a dominating human gate"
+        "text": " ✔ PERMITS  literal + const: args fit the boundary · computed paths + symlinks are the RUN's verdict · exec outside the fs bounds"
       },
       {
         "kind": "ok",
-        "text": " ✔ audited · 1 task · 1 wave · permits declared · est ≤$0.0000 · 0 hints"
+        "text": " ✔ TRIFECTA no lethal trifecta over the declared permits: without a human gate"
+      },
+      {
+        "kind": "ok",
+        "text": " ✔ JOURNEY internal · 0 sources · 1 destination · 0 model endpoints · no secret reaches a cloud destination"
+      },
+      {
+        "kind": "ok",
+        "text": " ✔ audited · 1 task · 1 wave · permits declared · est out ≤$0.0000 · 0 hints · risk supervised"
       }
     ]
   },
@@ -93,7 +101,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "hello · 1 task · 1 wave · no inference tasks · $0.00"
+        "text": "hello · 1 task · 1 wave · no infer/agent tasks · $0.00 · exec + mcp spend unpriced"
       },
       {
         "kind": "dim",
@@ -162,7 +170,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "full docs: https://nika.sh/errors/NIKA-DAG-003 — retired codes keep their page; the successor code carries the live teaching."
+        "text": "full docs: https://nika.sh/errors/NIKA-VAR-021 — the successor code carries the live page; a retired code's own page is gone with its registry row."
       }
     ]
   }

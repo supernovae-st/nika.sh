@@ -36,11 +36,12 @@ const ALLOWED: Record<string, string> = {
     'a scene-local mount shell, one per scene file (drum sphere · part viewer · tool drum) — same role, different scene, never shared',
   hexRgb: 'three lines of pure colour splitting, local to two scene model files',
   mulberry32: 'a three-line seeded PRNG; sharing it would couple fx/ to fx/dotmatrix for nothing',
-  quatFromBasis: 'small pure quaternion math, local to two scene model files',
   inline:
     'a name collision, not a duplicate: blog-render interpolates markdown, i18n-inline interpolates locale copy',
   SectionHead:
     'a name collision, not a duplicate: components/SectionHead is the v4sec masthead, ToolPage has a local cl-year-head row',
+  fmtTokens:
+    'a façade, not a re-computation: catalog-lib DELEGATES to providers-shared (the one producer) and only supplies the honest-dot for absent values — the catalog rows render · where providers-shared returns undefined',
 }
 
 const files: string[] = []

@@ -2,7 +2,7 @@
    Extends the shared v4 blueprint register (.v4sec* / .v4belt* in
    sections/v4-home.css) with the page-level chrome for the language reference:
    a full-height theme-dark surface, a split stage (the measured ledger column +
-   the sticky machine rail), a lit contents rail, and a stack of FIG-numbered
+   the sticky schematic rail), a lit contents rail, and a stack of FIG-numbered
    spec blocks (envelope · verbs · task shape · stdlib · providers · extract ·
    errors · license). Monochrome blueprint — AMENDED 2026-07-10 (spec-machine):
    THE SPEC MACHINE is the page's ONE saturated field (the W7 law), speaking
@@ -16,7 +16,7 @@
 .spec-page {
   min-height: 100vh;
   /* the tholos ink · the drum-sphere shader family (drum-sphere-three.ts):
-     shadow wire blue → lit accent → struck bright — the machine's one hue */
+     shadow wire blue → lit accent → struck bright — the drawing's one hue */
   --sm-ink-shadow: #16307a;
   --sm-ink-lit: #4f86ff;
   --sm-ink-struck: #8db4ff;
@@ -1224,7 +1224,7 @@
    ledger column + the lit TOC stay the accessible, no-JS, SEO truth.
    ════════════════════════════════════════════════════════════════════════════ */
 
-/* ── the split stage · the ledger column + the machine rail (≥1024px) ───────── */
+/* ── the split stage · the ledger column + the schematic rail (≥1024px) ─────── */
 .spec-stage {
   margin-top: clamp(28px, 4vh, 44px);
 }
@@ -1251,17 +1251,6 @@
     grid-template-columns: minmax(0, 1fr) clamp(360px, 46vw, 700px);
     gap: clamp(28px, 3.2vw, 56px);
     align-items: start;
-  }
-  /* THE BERTH LAW (operator 2026-07-13 · the 3D overlapped the cards) ·
-     the phantom column said 46vw while the LIVE chassis berths at
-     min(50vw, 760px) — two formulas, drifting: at 1440px the prose sat at
-     0px from the canvas and the hull floated against the cards at
-     half-opacity (the seam mask only reaches solid ~100px in). Live, the
-     phantom column IS the berth — the flow always keeps the grid gap of
-     air before the canvas even begins. The fallback register keeps 46vw:
-     its schematic lives INSIDE the column, overlap is impossible there. */
-  .spec-page.is-live .spec-stage {
-    grid-template-columns: minmax(0, 1fr) min(50vw, 760px);
   }
   /* the column reads single-flow — the rail owns the right side, so the
      internal side-by-side splits stand down (the "lighter" half of the ask) */
@@ -1307,7 +1296,7 @@
   }
 }
 
-/* ── the machine rail · the sticky stage + the HUD whispers ─────────────────── */
+/* ── the schematic rail · the sticky stage + the HUD whispers ───────────────── */
 @media (min-width: 1024px) {
   .spec-rail {
     display: block;
@@ -1341,14 +1330,6 @@
   user-select: none;
   white-space: nowrap;
 }
-.spec-rail-hud--tl {
-  top: 3%;
-  left: 2%;
-}
-.spec-rail-hud--tr {
-  top: 3%;
-  right: 2%;
-}
 .spec-rail-hud--bl {
   bottom: 3%;
   left: 2%;
@@ -1358,7 +1339,7 @@
   right: 2%;
 }
 
-/* ── the 2D schematic · the machine's floor plan (SpecSchematic.tsx) ──────────
+/* ── the 2D schematic · the language's floor plan (SpecSchematic.tsx) ─────────
    Tholos ink only: unlit strata whisper in the shadow wire blue, an ignited
    stratum washes to the lit accent over ~a second (the drum's band wash), the
    current stratum reads the struck bright. Crisp hairlines at any size. */
@@ -1533,7 +1514,6 @@
   fill: var(--sm-ink-struck);
 }
 
-
 /* ── the disclosure folds · the optional rows stand behind a ledger row ─────── */
 .spec-fold {
   margin: 0;
@@ -1610,10 +1590,10 @@
   }
 }
 
-/* ════ W2 · the wiring — the hover bus lights both sides ══════════════════════
-   ONE hovered node id: the 3D node pulses (uHi in the machine) while every
-   DOM twin ([data-node]) lights, and the MR whisper reads the node out.
-   Keyboard: focus-visible on a twin (TOC · stamp legend) drives the same bus. */
+/* ════ W2 · the wiring — the hover bus lights the twins ═══════════════════════
+   ONE hovered node id: every DOM twin ([data-node]) lights, and the MR
+   whisper reads the node out. Keyboard: focus-visible on a twin (TOC ·
+   stamp legend) drives the same bus. */
 
 /* the hover readout · mid-right, clear of the four corner whispers */
 .spec-rail-hud--mr {
@@ -1645,50 +1625,6 @@
 /* the click's landing · the hash lights the section head (manifesto E1) */
 .spec-block:target .spec-head-fig {
   color: var(--sm-ink-lit);
-}
-
-/* ── THE HELM · the ship's view controls (real DOM · outside the aria-hidden
-   stage so the keyboard can reach them; shown only once the canvas holds
-   the stage — the elevation needs no helm) ─────────────────────────────────── */
-.spec-helm {
-  display: none;
-  position: absolute;
-  right: 3%;
-  bottom: 0;
-  gap: 8px;
-  z-index: 2;
-}
-.spec-rail:has(.spec-rail-stage[data-machine]) .spec-helm {
-  display: flex;
-}
-.spec-helm-btn {
-  min-height: 30px;
-  padding: 5px 12px;
-  border: 1px solid color-mix(in oklch, var(--sm-ink-lit) 32%, var(--v4-line));
-  border-radius: var(--v4-radius);
-  background: color-mix(in oklch, var(--v4-bg-raised) 62%, transparent);
-  /* glass instruments over the live hull · CONSTANT blur (fluid-glass law) —
-     live-only DOM (the reduced register never mounts the helm) */
-  -webkit-backdrop-filter: blur(8px) saturate(1.25);
-  backdrop-filter: blur(8px) saturate(1.25);
-  font-family: var(--mono);
-  font-size: var(--type-micro);
-  letter-spacing: 0.14em;
-  color: color-mix(in oklch, var(--sm-ink-lit) 72%, var(--v4-text-dim));
-  cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
-}
-.spec-helm-btn:active {
-  transform: translateY(1px); /* the machined dip */
-}
-.spec-helm-btn:hover {
-  color: var(--sm-ink-struck);
-  border-color: color-mix(in oklch, var(--sm-ink-lit) 60%, var(--v4-line));
-}
-.spec-helm-btn[aria-pressed='true'] {
-  color: var(--v4-bg);
-  background: var(--sm-ink-lit);
-  border-color: var(--sm-ink-lit);
 }
 
 /* ════ THE INSTRUMENT PLATE (v2) · the poster hero + the index band ═══════════
@@ -1742,7 +1678,6 @@
   background: var(--sm-ink-lit);
   box-shadow: 0 0 0 3px color-mix(in oklch, var(--sm-ink-lit) 18%, transparent);
 }
-
 
 /* THE INDEX · the S-chips band (9 cells · fig + count + title + gloss + tick) */
 .spec-index {
@@ -1882,11 +1817,10 @@
   }
 }
 
-
 /* ══ RESTORED (the #207 sweep's collateral · operator catch 2026-07-13) ══════
    The plate-removal regex («comment block → next header») ate five sibling
-   rule groups: the hero grid, the hero elevation (+ its is-live stand-down —
-   the 2D/3D doublon on every live desktop), the cue, and the display gauge.
+   rule groups: the hero grid, the hero elevation, the cue, and the display
+   gauge.
    Restored verbatim from f4b3d5f~1; the lesson lives in the memory note:
    surgical means ANCHORED ends, never [\s\S]*?-to-next-header. */
 .spec-hero {
@@ -1917,31 +1851,10 @@
     padding: 0 2vw;
   }
 }
-/* THE FIRST PAINT IS THE VESSEL (arc 33 · operator: « faut voir le 3D
-   direct ») · on desktop-with-motion the 2D elevation never shows at
-   all: it opens INVISIBLE from the very first CSS paint (before any
-   JS runs), and the hull fades in over that ground (uFade + the camera
-   dolly-in — the apparition IS the wow). The pure-CSS animation below
-   is the safety net: with no JS or no WebGL the drawing reveals itself
-   at 2.2s, so no register ever ends up shipless. is-live (stamped the
-   frame the gate says yes, long before 2.2s) cancels the net and pins
-   the elevation dark for the whole live session. Mobile and
-   reduced-motion never enter this media block: their drawing IS the
-   truth, painted from byte one (and the goldens with it). */
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-  .spec-hero-eleva {
-    opacity: 0;
-    animation: specElevaNet 0.8s ease 2.2s forwards;
-  }
-  .spec-page.is-live .spec-hero-eleva {
-    animation: none;
-    opacity: 0;
-    pointer-events: none;
-  }
-}
-@keyframes specElevaNet {
-  to { opacity: 1; }
-}
+/* THE FIRST PAINT IS THE VESSEL · the drawing paints from byte one on
+   every register (the GL hull that used to fade in over a dark ground
+   died 2026-08-01 — and with it the 2.2s no-JS safety net that would
+   have left a shipless hero on desktop). */
 .spec-hero-cue {
   margin-top: clamp(26px, 4vh, 44px);
   display: inline-flex;
@@ -1986,33 +1899,6 @@
    under the cue toward S.0, tying the poster to the reading it announces.
    (The leader lines to the hull are LIVE now — the callout rig pins each
    wire's near end to the copy's own [data-ship-term] links.) */
-.spec-hero-descent {
-  display: none;
-}
-@media (min-width: 1024px) {
-  .spec-page.is-live .spec-hero {
-    position: relative;
-  }
-  .spec-page.is-live .spec-hero-copy {
-    position: relative;
-    z-index: 1;
-  }
-  .spec-page.is-live .spec-hero-descent {
-    display: block;
-    position: absolute;
-    /* rides the reading indent — the hairline stays under the cue's tick */
-    left: calc(var(--spec-indent, 0px) + 13px);
-    bottom: calc(-1 * clamp(48px, 9vh, 110px));
-    width: 1px;
-    height: clamp(70px, 16vh, 170px);
-    background: linear-gradient(
-      to bottom,
-      color-mix(in oklch, var(--sm-ink-lit) 55%, transparent),
-      color-mix(in oklch, var(--sm-ink-lit) 8%, transparent)
-    );
-    pointer-events: none;
-  }
-}
 
 /* the wired terms · real links: quiet dotted hint at rest, ink-lit when the
    wire is loud (hover/focus) — the prose labels the vessel */
@@ -2034,23 +1920,10 @@
   border-radius: 2px;
 }
 
-@keyframes specCueBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
-}
 @media (prefers-reduced-motion: reduce) {
   .spec-hero-cue span[aria-hidden]:last-child {
     animation: none;
   }
-}
-
-/* THE FINALE RUNWAY · scroll room for the assembled flyover, past the last
-   section (live only — the fallback flow ends at S.8 untouched) */
-.spec-finale {
-  /* the flyover GRAND (head · p 0-0.5) + THE LAY-DOWN (0.5-0.82) + the
-     long dissolve into the drawing (0.78-0.92): the whole close gets its
-     time (operator 2026-07-13 · 170vh read as a cut, not a ceremony) */
-  height: 260vh;
 }
 
 /* THE CHASSIS · THE ONE STAGE (arc 28) · the live rail is ONE constant
@@ -2061,237 +1934,18 @@
    resizes: the compositor slides a clip along --berth (hit-test + hard
    bound), the shaders melt the hull out at the same seam (the dotmatrix
    language), and the camera carries the vessel into the berth. */
-@media (min-width: 1024px) {
-  .spec-rail.is-live {
-    position: fixed;
-    top: 0;
-    height: 100vh;
-    right: 0;
-    width: 100vw;
-    --berth: 0px;
-    z-index: 5;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  /* NO CLIP on the canvas (operator capture 2026-07-13): the sky is the
-     stage's background at every stage — the stars drift under the prose,
-     the shaders alone berth the HULL at the seam (a clip cut the feather
-     off and sliced the hull hard). The hit-test moves to .smw-hit — a
-     transparent overlay seated on the berth — so the full-screen canvas
-     never eats the prose's links. */
-  .spec-rail.is-live .smw {
-    pointer-events: none;
-  }
-  .spec-rail.is-live .smw-hit {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: var(--berth);
-    pointer-events: auto;
-    /* no z-index: DOM order stacks it over the canvas and UNDER the
-       callout layer — the plates stay clickable */
-  }
-  .spec-rail.is-live[data-stage='dock'] {
-    /* the berth's left edge · the complement of THE BERTH LAW's phantom
-       column (berth width = min(50vw, 760px) — one formula, both sides) */
-    --berth: max(50vw, calc(100vw - 760px));
-  }
-  .spec-rail.is-live .spec-rail-stage {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-  }
-  /* the boarding backdrop · while the ship owns the screen nothing bleeds
-     through: an opaque night field with a faint reactor halo (contrast is
-     what makes the hull crisp — the haze was the page under the canvas) */
-  .spec-rail.is-live::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(110% 85% at 50% 44%, #101a36 0%, #070a14 70%),
-      #070a14;
-    opacity: 0;
-    transition: opacity 0.55s ease;
-    pointer-events: none;
-  }
-  .spec-rail.is-live[data-stage='finale']::before {
-    opacity: 1;
-  }
-  .spec-rail.is-live .spec-helm {
-    pointer-events: auto;
-  }
-  /* the instruments clear the fixed nav + the viewport floor */
-  .spec-rail.is-live .spec-rail-hud--tl,
-  .spec-rail.is-live .spec-rail-hud--tr {
-    top: 96px;
-  }
-  .spec-rail.is-live .spec-rail-hud--bl,
-  .spec-rail.is-live .spec-rail-hud--br {
-    bottom: 26px;
-  }
-  /* the left instruments live in the BERTH (the stage is the whole screen
-     now — a bare left % would land them on the prose at the dock) */
-  .spec-rail.is-live .spec-rail-hud--tl,
-  .spec-rail.is-live .spec-rail-hud--bl {
-    left: calc(var(--berth) + 18px);
-  }
-  .spec-rail.is-live .spec-rail-gauge {
-    bottom: 26px; /* the instrument baseline */
-  }
-  /* the POSTER's gauge berths UNDER THE VESSEL (centre ≈64vw) — centred on
-     the viewport it floated in dead water left of the ship; the FINALE
-     keeps 50% (there the ship IS centred) */
-  .spec-rail.is-live[data-stage='hero'] .spec-rail-gauge {
-    left: 64%;
-  }
-  .spec-rail.is-live .spec-helm {
-    bottom: 58px;
-    right: 2%; /* one right edge with the hud below it */
-  }
-  .spec-rail.is-live[data-stage='hero'] {
-    /* THE FULL-BLEED POSTER (operator pass 2026-07-11) · the vessel rides
-       bigger and to the right (the sovereign hero framing carries it clear
-       of the copy), the copy floats above the canvas (z below + the copy
-       column's own z:1). The stage itself no longer changes size. */
-    z-index: 0;
-  }
-  /* the full-bleed hit surface must never eat the copy — no orbit at the
-     poster (the scroll steers the turn; the helm returns at the dock) */
-  .spec-rail.is-live[data-stage='hero'] .smw-hit {
-    pointer-events: none;
-  }
-  /* THE SEAM lives in the shaders now (spec-machine-three · uSeamX/uSeamW):
-     the hull melts toward the prose on the site's own dotmatrix door, eased
-     by the frame loop — a CSS mask cannot follow the berth without either
-     transitioning (the raster law) or popping at the flip. */
-  .spec-rail.is-live[data-stage='finale'] {
-    /* the fullscreen turn rides above the reading chrome (chips z-6),
-       below the site nav */
-    z-index: 30;
-  }
-  .spec-rail.is-live[data-stage='off'] {
-    /* NOT 0 · a fully transparent subtree gets dematerialised and the
-       return from the footer re-rasters every layer in one frame
-       (measured ~230ms). 0.8% of a dark render on the dark close is
-       below the eye; the layers stay warm, the return costs nothing. */
-    opacity: 0.008;
-    pointer-events: none;
-  }
-  .spec-rail.is-live[data-stage='off'] .smw-hit,
-  .spec-rail.is-live[data-stage='off'] .spec-helm {
-    pointer-events: none;
-  }
-}
 
 /* THE TRANSPORT · the spine gauge as a helm: nine real links (outside the
    aria-hidden stage), each a >=24px hit around a gauge-tick visual. Lives
    at the DOCK only (the display gauge keeps the poster + finale, where the
    reading hasn't started / is done); hidden with the fallback register. */
-.spec-transport {
-  display: none;
-}
 /* THE ARRIVAL (arc 30) · the dock's instruments fade up instead of popping
    (a display flip replays a one-shot animation) — live register only, and
    staggered: helm, then tally, then the transport */
-@media (min-width: 1024px) {
-  .spec-rail.is-live[data-stage='dock'] .spec-helm {
-    animation: specInstrUp 0.45s ease-out backwards;
-  }
-  .spec-rail.is-live[data-stage='dock'] .spec-rail-hud--bl {
-    animation: specInstrUp 0.45s ease-out 0.08s backwards;
-  }
-  .spec-page.is-live .spec-rail.is-live[data-stage='dock'] .spec-transport {
-    animation: specInstrUp 0.45s ease-out 0.16s backwards;
-  }
-  .spec-rail.is-live .spec-rail-hud--mr {
-    animation: specInstrUp 0.3s ease-out backwards;
-  }
-}
-@keyframes specInstrUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@media (min-width: 1024px) {
-  .spec-page.is-live .spec-rail.is-live .spec-transport {
-    display: flex;
-    position: absolute;
-    /* the ONE instrument baseline · tally (bl) · transport · frozen (br)
-       all sit on 26px — three different heights read as clutter. Centred
-       in the BERTH (the stage is the whole screen; a bare 50% sat the
-       transport on the seam). */
-    bottom: 26px;
-    left: calc(var(--berth) + (100vw - var(--berth)) / 2);
-    transform: translateX(-50%);
-    gap: 1px;
-    z-index: 2;
-  }
-  .spec-transport-tick {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 28px;
-  }
-  .spec-transport-tick i {
-    width: 16px;
-    height: 3px;
-    border-radius: 2px;
-    background: color-mix(in oklch, var(--sm-ink-struck) 30%, transparent);
-    transition: background var(--dur-ui) var(--ease-ui), height var(--dur-ui) var(--ease-ui);
-  }
-  .spec-transport-tick.is-lit i {
-    background: color-mix(in oklch, var(--sm-ink-lit) 72%, transparent);
-  }
-  .spec-transport-tick.is-cur i {
-    height: 7px;
-    background: var(--sm-ink-lit);
-  }
-  .spec-transport-tick:hover i,
-  .spec-transport-tick:focus-visible i {
-    background: var(--sm-ink-lit);
-  }
-  .spec-transport-tick:focus-visible {
-    outline: 2px solid var(--v4-focus-ring);
-    outline-offset: 2px;
-    border-radius: 3px;
-  }
-  /* the DOCK hands the spine to the transport — the display gauge yields
-     (it keeps the poster + the finale, pointer-inert) */
-  .spec-rail.is-live:not([data-stage='hero']):not([data-stage='finale']) .spec-rail-gauge {
-    display: none;
-  }
-  /* specificity note: the SHOW rule above carries .spec-page.is-live —
-     these hide rules must outweigh it (0-6-0 > 0-5-0) or the transport
-     leaks onto the poster (it did: the mystery dashes at 50vw) */
-  .spec-page.is-live .spec-rail.is-live[data-stage='hero'] .spec-transport,
-  .spec-page.is-live .spec-rail.is-live[data-stage='finale'] .spec-transport,
-  .spec-page.is-live .spec-rail.is-live[data-stage='off'] .spec-transport {
-    display: none;
-  }
-}
-
-/* the callout fig at the DOCK · the plate + the rail chip already carry
-   S.N — the label keeps only WHAT the station is (title · count); the
-   FINALE's labelled drawing restores the numbering */
-.spec-rail.is-live:not([data-stage='finale']) .smc-fig {
-  display: none;
-}
 
 /* the flight's quiet law · the inspection instruments belong to the DOCK:
    during the poster and the boarding only the plate + gauge + ship labels
    speak (the ASSEMBLED tally at 0/8 before reading was pure noise) */
-@media (min-width: 1024px) {
-  .spec-rail.is-live[data-stage='hero'] .spec-helm,
-  .spec-rail.is-live[data-stage='finale'] .spec-helm,
-  .spec-rail.is-live[data-stage='hero'] .spec-rail-hud--bl,
-  .spec-rail.is-live[data-stage='finale'] .spec-rail-hud--bl,
-  .spec-rail.is-live[data-stage='hero'] .spec-rail-hud--br {
-    display: none;
-  }
-}
-
 
 /* ════ the elevation breathes (mobile's ship idles on the drum beat) ══════════
    The hero elevation pulses stratum by stratum — a 2.4s wash sailing the
@@ -2326,29 +1980,6 @@
   box-shadow: 0 0 8px currentColor;
 }
 
-/* THE DRAWING WAKES (arc 32) · as the hull lies down into its elevation,
-   the drawing's strata LIGHT bow → stern — the ship's soul crossing into
-   its blueprint. One-shot, live-only ([data-laydown] never exists off the
-   machine), riding the same nth-child stagger as the hero breath. */
-@media (prefers-reduced-motion: no-preference) {
-  .spec-rail-stage[data-laydown] .sms-stratum {
-    animation: smsWake 1.1s ease-out backwards;
-  }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(2) { animation-delay: 0.1s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(3) { animation-delay: 0.2s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(4) { animation-delay: 0.3s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(5) { animation-delay: 0.4s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(6) { animation-delay: 0.5s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(7) { animation-delay: 0.6s; }
-  .spec-rail-stage[data-laydown] .sms-stratum:nth-child(8) { animation-delay: 0.7s; }
-}
-@keyframes smsWake {
-  0% { opacity: 0; }
-  55% { opacity: 1; }
-  75% { opacity: 0.85; }
-  100% { opacity: 1; }
-}
-
 /* the organ's own page — the head's trailing link (parts-catalog law) */
 .spec-head-register {
   margin-left: auto;
@@ -2365,7 +1996,6 @@
   color: var(--v4-text);
   border-bottom-color: var(--v4-text);
 }
-
 
 /* ── THE CLOSE · the voyage's last beat (every register) ──────────────────────
    The mark, the creed, the ecosystem rail — centred, quiet, enormous. The
@@ -2396,108 +2026,4 @@
 }
 .spec-close .td-chips {
   justify-content: center;
-}
-
-/* ── THE BIRTH · the close, live register only (arc 29) ──────────────────────
-   The hull has just melted into its own drawing above; the close answers:
-   the butterfly glyph BLOOMS out of a supernova burst, the mark forms
-   from letter-space, the creed and the rail follow. Every rule is
-   .is-live-scoped and every element below is machine-gated JSX — the
-   fallback register (mobile · reduced · no-GL · the goldens) keeps the
-   plain close verbatim. One-shot declarative animations on a class the
-   page stamps once (the raster law: nothing rides a rAF var). */
-.spec-close.is-live .spec-close-nova {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 108px;
-  height: 108px;
-  margin-bottom: -6px;
-}
-.spec-close.is-live .spec-close-glyph {
-  width: 64px;
-  height: 64px;
-  opacity: 0;
-  z-index: 1;
-}
-.spec-close.is-live .spec-close-burst,
-.spec-close.is-live .spec-close-ring {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-.spec-close.is-live .spec-close-burst {
-  background: radial-gradient(
-    circle,
-    rgb(201 219 255 / 0.9) 0%,
-    rgb(79 134 255 / 0.5) 30%,
-    rgb(79 134 255 / 0.12) 55%,
-    transparent 72%
-  );
-}
-.spec-close.is-live .spec-close-ring {
-  border: 1px solid rgb(141 180 255 / 0.75);
-}
-.spec-close.is-live .spec-close-mark,
-.spec-close.is-live .spec-close-tag,
-.spec-close.is-live .td-chips {
-  opacity: 0;
-}
-.spec-close.is-live.is-borne .spec-close-burst {
-  animation: specNovaBurst 1.15s cubic-bezier(0.16, 0.8, 0.3, 1) 0.1s;
-}
-.spec-close.is-live.is-borne .spec-close-ring {
-  animation: specNovaRing 1.35s cubic-bezier(0.16, 0.8, 0.3, 1) 0.16s;
-}
-/* the far shockwave · a second, wider ring gives the burst its scale —
-   it crosses most of the close before it dies */
-.spec-close.is-live .spec-close-ring--far {
-  border-color: rgb(141 180 255 / 0.4);
-}
-.spec-close.is-live.is-borne .spec-close-ring--far {
-  animation: specNovaRingFar 1.9s cubic-bezier(0.16, 0.8, 0.3, 1) 0.26s;
-}
-@keyframes specNovaRingFar {
-  0% { opacity: 0; transform: scale(0.3); }
-  18% { opacity: 0.65; }
-  100% { opacity: 0; transform: scale(8.5); }
-}
-.spec-close.is-live.is-borne .spec-close-glyph {
-  animation: specGlyphBloom 1.15s cubic-bezier(0.2, 0.9, 0.24, 1) 0.34s forwards;
-}
-.spec-close.is-live.is-borne .spec-close-mark {
-  animation: specMarkForm 1.15s cubic-bezier(0.2, 0.8, 0.2, 1) 0.62s forwards;
-}
-.spec-close.is-live.is-borne .spec-close-tag {
-  animation: specCloseUp 0.85s ease-out 1.15s forwards;
-}
-.spec-close.is-live.is-borne .td-chips {
-  animation: specCloseUp 0.85s ease-out 1.35s forwards;
-}
-@keyframes specNovaBurst {
-  0% { opacity: 0; transform: scale(0.12); }
-  18% { opacity: 1; }
-  100% { opacity: 0; transform: scale(2.6); }
-}
-@keyframes specNovaRing {
-  0% { opacity: 0; transform: scale(0.2); }
-  22% { opacity: 0.9; }
-  100% { opacity: 0; transform: scale(3.4); }
-}
-@keyframes specGlyphBloom {
-  0% { opacity: 0; transform: scale(0.4) rotate(-14deg); filter: drop-shadow(0 0 0 rgb(79 134 255 / 0)); }
-  55% { opacity: 1; transform: scale(1.12) rotate(2deg); filter: drop-shadow(0 0 22px rgb(79 134 255 / 0.85)); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgb(79 134 255 / 0.4)); }
-}
-@keyframes specMarkForm {
-  0% { opacity: 0; letter-spacing: 0.4em; transform: translateY(16px); filter: blur(6px); }
-  60% { opacity: 1; filter: blur(0); }
-  100% { opacity: 1; letter-spacing: -0.045em; transform: translateY(0); filter: blur(0); }
-}
-@keyframes specCloseUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
 }

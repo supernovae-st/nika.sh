@@ -6,9 +6,9 @@ import type { LanguageWord } from './language.generated'
    normative spec chapter, the served schema editors validate against, the
    machine catalogs, the docs, the MCP oracle agents load, the editor
    extension, the engine itself. This registry is the ONE map of those
-   surfaces; the rooms (word · verb · tool), the /spec reading and the 3D
-   berths all render slices of it — never their own copies (the CopyRow
-   law, applied to provenance).
+   surfaces; the rooms (word · verb · tool), the /spec reading and the
+   part emblems all render slices of it — never their own copies (the
+   CopyRow law, applied to provenance).
 
    EVERY LINK IS VERIFIED REALITY (2026-07-13 · gh api + HTTP 200):
    the spec chapter filenames are the repo's actual tree (00→08); the

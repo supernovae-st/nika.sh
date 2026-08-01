@@ -69,7 +69,7 @@
 .v4nav-capsule {
   pointer-events: auto;
   position: relative;
-  max-width: 72rem;
+  max-width: 1204px; /* the measured Raycast container (their shipped --container-width) */
   margin: 0 auto;
   /* transparent at the top of the hero field · the floor arrives with data-solid */
   background: transparent;
@@ -105,13 +105,16 @@
 }
 @media (min-width: 720px) {
   .v4nav-capsule {
-    border-radius: 12px;
+    border-radius: 16px; /* the measured capsule rounding (--rounding-lg) */
   }
 }
 .v4nav[data-solid='true'] .v4nav-capsule {
   /* the near-opaque floor · dark enough to occlude anything scrolling under,
-     translucent enough that the blur reads as machined glass, not paint */
-  background: rgb(10 13 18 / 0.92);
+     translucent enough that the blur reads as machined glass, not paint.
+     DIAGONAL GLASS (the Raycast recipe · 137deg gradient — measured from
+     their shipped CSS 2026-08-02) at house alphas: denser than theirs
+     (.75/.9) because the F6 occlusion law outranks the reference. */
+  background: linear-gradient(137deg, rgb(13 16 22 / 0.88) 5%, rgb(9 11 15 / 0.95) 76%);
   /* the section-tinted hairline + catch-light (arc 10g) · static fallback
      first — a parse failure degrades to the old seam kit, never currentColor */
   border-color: var(--seam-hairline);
@@ -122,6 +125,7 @@
     0 16px 40px -20px rgb(0 0 0 / 0.55);
   box-shadow:
     var(--nav-tint-catch),
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.12),
     0 1px 2px rgb(0 0 0 / 0.32),
     0 16px 40px -20px rgb(0 0 0 / 0.55);
 }
@@ -434,7 +438,7 @@
   width: 640px;
   max-width: calc(100vw - 40px);
   padding: 10px;
-  border-radius: 12px; /* matches the capsule, not the 4px structural radii */
+  border-radius: 14px; /* the measured Linear panel radius · one step under the capsule 16 */
   /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
      translucent+blur version let the field bleed through and muddied the
      type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
@@ -457,16 +461,41 @@
   /* entrance · a short, motion-safe drop-in (opacity + 4px settle + a whisper
      of scale growing from the top-left corner nearest the trigger · 160ms) */
   transform-origin: top left;
-  animation: v4mega-in 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: v4mega-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes v4mega-in {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.985);
+    transform: translateY(-4px) scale(0.98);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+/* the item CASCADE (Raycast) · cells rise 3px with a 22ms stagger, capped
+   at 4 steps so deep columns never read as a slog — motion-safe only */
+@media (prefers-reduced-motion: no-preference) {
+  .v4mega {
+    /* ONE stagger step token (the ms-ratchet law: cite a token, never a
+       scatter of literals) — steps derive by calc */
+    --mega-stagger: 22ms;
+  }
+  .v4mega .v4mega-cell {
+    animation: v4megaCell 0.22s var(--ease-ui) both;
+  }
+  .v4mega .v4mega-cell:nth-child(2) { animation-delay: var(--mega-stagger); }
+  .v4mega .v4mega-cell:nth-child(3) { animation-delay: calc(var(--mega-stagger) * 2); }
+  .v4mega .v4mega-cell:nth-child(n + 4) { animation-delay: calc(var(--mega-stagger) * 3); }
+}
+@keyframes v4megaCell {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 .v4mega-col {
@@ -494,7 +523,15 @@
   padding: 9px 10px;
   border-radius: var(--v4-radius);
   color: var(--v4-text);
-  transition: background-color var(--dur-ui) var(--ease-ui), transform 0.12s var(--ease-ui);
+  transition: background-color var(--dur-ui) var(--ease-ui), transform 0.14s var(--ease-ui);
+}
+/* the row SLIDES 2px on hover (the Raycast register gesture) — transform
+   only, paint-cheap; reduced-motion visitors keep the colour change alone */
+@media (prefers-reduced-motion: no-preference) {
+  .v4mega-item:hover,
+  .v4mega-item:focus-visible {
+    transform: translateX(2px);
+  }
 }
 /* the accent hairline · a 2px blue edge that scales in from the row's middle
    on hover (120ms) — the panel's one chromatic hover note beside the icon */
@@ -537,8 +574,20 @@
 .v4mega-item:hover .v4mega-icobox,
 .v4mega-item:focus-visible .v4mega-icobox {
   color: var(--v4-accent);
-  border-color: var(--v4-line-strong);
-  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+  border-color: color-mix(in oklch, var(--v4-accent) 45%, var(--v4-line));
+  background: color-mix(in oklch, var(--v4-accent) 9%, transparent);
+  box-shadow: 0 0 12px -6px var(--v4-accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4mega-icobox {
+    transition: color var(--dur-ui) var(--ease-ui), border-color var(--dur-ui) var(--ease-ui),
+      background-color var(--dur-ui) var(--ease-ui), transform 0.16s var(--ease-ui),
+      box-shadow 0.16s var(--ease-ui);
+  }
+  .v4mega-item:hover .v4mega-icobox,
+  .v4mega-item:focus-visible .v4mega-icobox {
+    transform: scale(1.06);
+  }
 }
 .v4mega-text {
   display: flex;

@@ -39,6 +39,15 @@ import { Component as TemplatePage } from './pages/TemplatePage'
 import { Component as Library } from './pages/Library'
 import { Component as LibraryRoom } from './pages/LibraryRoom'
 import { Component as Integrations } from './pages/Integrations'
+import { Component as Catalog } from './pages/Catalog'
+import { Component as CatalogModels } from './pages/CatalogModels'
+import { Component as CatalogModelRoom } from './pages/CatalogModelRoom'
+import { Component as CatalogPricing } from './pages/CatalogPricing'
+import { Component as CatalogEnergy } from './pages/CatalogEnergy'
+import { Component as CatalogMcp } from './pages/CatalogMcp'
+import { Component as CatalogMcpRoom } from './pages/CatalogMcpRoom'
+import { Component as CatalogEmbeddings } from './pages/CatalogEmbeddings'
+import { Component as CatalogCapabilities } from './pages/CatalogCapabilities'
 import { Component as IntegrationRoom } from './pages/IntegrationRoom'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
@@ -177,6 +186,20 @@ export const routes: RouteObject[] = [
          per public repo — install rituals verbatim from the READMEs */
       { path: 'integrations', Component: Integrations },
       { path: 'integrations/:id', Component: IntegrationRoom },
+      /* the catalog world (D1 · engine-release clock) — what the released
+         binary KNOWS: models, pricing, energy, MCP servers, embeddings,
+         capability rules. Every page derives from the vendored engine
+         surfaces at the pin (scripts/build-catalog.mjs); room routes ride
+         CATALOG_PATHS in site.config.ts. */
+      { path: 'catalog', Component: Catalog },
+      { path: 'catalog/models', Component: CatalogModels },
+      { path: 'catalog/models/:slug', Component: CatalogModelRoom },
+      { path: 'catalog/pricing', Component: CatalogPricing },
+      { path: 'catalog/energy', Component: CatalogEnergy },
+      { path: 'catalog/mcp', Component: CatalogMcp },
+      { path: 'catalog/mcp/:slug', Component: CatalogMcpRoom },
+      { path: 'catalog/embeddings', Component: CatalogEmbeddings },
+      { path: 'catalog/capabilities', Component: CatalogCapabilities },
       { path: 'spec', Component: Spec },
       { path: 'timeline', Component: Timeline },
       { path: 'install', Component: Install },

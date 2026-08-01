@@ -63,14 +63,17 @@ const files = [
 for (const f of files) copyFileSync(join(work, 'package', f), join(pkgDir, f))
 console.log(`✓ ${files.length} files → src/lib/check-wasm/pkg/`)
 
-// the release resolved its tag to an immutable sha once — reuse that fact
-const commit = execFileSync('gh', ['api', `repos/${repo}/git/ref/tags/${tag}`, '--jq', '.object.sha'])
-  .toString()
-  .trim()
-// annotated tags point at a tag object; dereference to the commit
-const commitSha = /^[0-9a-f]{40}$/.test(commit)
-  ? execFileSync('gh', ['api', `repos/${repo}/commits/${commit}`, '--jq', '.sha']).toString().trim()
-  : commit
+// the release resolved its tag to an immutable sha once — reuse that fact.
+// A lightweight tag's ref points at the commit; an ANNOTATED tag's ref
+// points at a tag OBJECT (v0.107.0 was the first — the commits/ endpoint
+// 422s on a tag-object sha), so peel via the git/tags endpoint instead.
+const ref = JSON.parse(execFileSync('gh', ['api', `repos/${repo}/git/ref/tags/${tag}`]).toString())
+const commitSha =
+  ref.object.type === 'tag'
+    ? execFileSync('gh', ['api', `repos/${repo}/git/tags/${ref.object.sha}`, '--jq', '.object.sha'])
+        .toString()
+        .trim()
+    : ref.object.sha
 
 const wasmSha16 = createHash('sha256')
   .update(readFileSync(join(pkgDir, 'nika_check_wasm_bg.wasm')))

@@ -268,20 +268,14 @@ export function Component() {
                               <span className="mp-soon">soon</span>
                             </span>
                           ) : (
-                            /* the Inspector door (round-1): on a fine desktop
-                               pointer the chip SELECTS (the readout opens, the
-                               page stays alive — the room door lives in the
-                               panel); mobile and modifier-clicks keep the
-                               straight navigation until the sheet lands */
+                            /* a click is a page (the Inspector died
+                               2026-08-02 · the room renders the same
+                               readout full-page) */
                             <Link
                               className="mp-set-chip"
                               to={s.url}
                               data-node-id={`set:${s.id}`}
-                              onClick={(e) => {
-                                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                                e.preventDefault()
-                                window.dispatchEvent(new CustomEvent('insp:open', { detail: { id: `set:${s.id}` } }))
-                              }}
+                              viewTransition
                             >
                               {s.title}
                               <CanonCount setId={s.id} className="mp-set-count" plain />
@@ -299,21 +293,6 @@ export function Component() {
               className="mp-figure"
               id="constellation"
               aria-label="The constellation drawing (a lens over the same list)"
-              onClick={(e) => {
-                /* the stars select too (round-1 step 3): the svg anchors are
-                   aria-hidden COURTESY doors — a plain click opens the
-                   readout (the Inspector resolves the href to its node);
-                   modifier-clicks keep the real navigation */
-                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-                const a = (e.target as Element).closest('a')
-                /* STARS only — the figcaption's real links and the +N
-                   aggregate doors keep their navigation (swarm finding [10]) */
-                if (!a || !a.closest('.cst-star')) return
-                const href = a.getAttribute('href')
-                if (!href || !href.startsWith('/')) return
-                e.preventDefault()
-                window.dispatchEvent(new CustomEvent('insp:open', { detail: { href } }))
-              }}
             >
               <div className="cl-year-head">
                 <h2 className="mp-sec-title">The constellation</h2>

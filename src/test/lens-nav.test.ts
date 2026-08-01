@@ -205,16 +205,16 @@ describe('lens-nav · the footer completes what the panel curates (§4.12)', () 
     }
   })
 
-  it('five columns in the 22-40 links law, machine row of five', () => {
-    /* §4.12 window widened 36→40 and the machine row 4→5 (2026-07-24):
-       the integrations register + the library joined the chrome — the
-       footer is the COMPLETE card, and the complete card grew with the
-       site (registry's owed slot paid on-site · timeline · sitemap.xml
-       joins the machine twins). Still one screen, still scannable. */
-    expect(FOOTER_COLS.length).toBe(5)
+  it('six columns in the 30-52 links law, machine row of five', () => {
+    /* §4.12 window re-anchored 2026-08-02 (the complete-card mandate): the
+       catalog world lands its own column (8 doors) and the truth system its
+       two extras — six columns, 30-52 links, still one screen. The FLOOR of
+       completeness is footer-coverage.test.ts (every world head has a
+       door); this law bounds the CEILING so the card stays scannable. */
+    expect(FOOTER_COLS.length).toBe(6)
     const total = FOOTER_COLS.reduce((n, c) => n + footerRows(c).length, 0)
-    expect(total).toBeGreaterThanOrEqual(22)
-    expect(total).toBeLessThanOrEqual(40)
+    expect(total).toBeGreaterThanOrEqual(30)
+    expect(total).toBeLessThanOrEqual(52)
     expect(FOOTER_MACHINE.length).toBe(5)
   })
 })

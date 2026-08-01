@@ -8,7 +8,8 @@ import { declProse } from '../lib/language-prose-access'
 import { useWordProse, proseIslandId } from '../lib/use-word-prose'
 import { Island } from '../lib/ssg-island'
 import { CHAPTERS } from '../sections/verbs-data'
-import { PartEgg } from '../scene/parts/PartEgg'
+import { PartSchematic } from '../scene/parts/PartSchematic'
+import '../scene/parts/part-stage.css'
 import { VERB_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { VERB_ACCEPTS, VERB_ERR_NS } from '../content/room-rails.generated'
@@ -406,11 +407,14 @@ export function Component() {
               </p>
               </div>
 
-              {/* THE EMBLEM · the verb's own machine, removed from the ship
-                  (parts catalog: infer=halo · exec=press · invoke=carousel ·
-                  agent=gimbal — every count a catalog count) */}
+              {/* THE EMBLEM · the verb's own part, drawn (infer=halo ·
+                  exec=press · invoke=carousel · agent=gimbal — every count a
+                  catalog count · the 2D schematic; the GL viewer died
+                  2026-08-01, the drawing was always the truth) */}
               <aside className="td-hero-berth" data-rise>
-                <PartEgg id={chapter.verb} />
+                <div className="ptd-stage" data-part-stage={chapter.verb} aria-hidden="true">
+                  <PartSchematic id={chapter.verb} />
+                </div>
                 <p className="tdrum-caption">{EMBLEM_CAPTION[chapter.verb]}</p>
                 {/* the emblem's provenance — the sources, right under the machine */}
                 <SourcesRail links={VERB_SOURCES.slice(0, 3)} dense />

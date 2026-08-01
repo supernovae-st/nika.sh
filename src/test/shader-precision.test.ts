@@ -79,7 +79,10 @@ const ALL = sources.flatMap(programsIn)
 
 describe('scene · a shared uniform agrees on precision across stages', () => {
   it('finds the scene programs at all (a gate over nothing is not a gate)', () => {
-    expect(ALL.length).toBeGreaterThanOrEqual(15)
+    /* floor re-anchored 2026-08-01 (the spec-machine nuke took its programs
+       with it) — 13 live wirings remain: drum-hud 5 · drum-sphere 3 ·
+       verb-glyphs 2 · parts 3. A drop below re-questions the census. */
+    expect(ALL.length).toBeGreaterThanOrEqual(12)
   })
 
   it('no fragment stage narrows a uniform the vertex stage declares', () => {
