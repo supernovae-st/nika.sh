@@ -1,0 +1,8 @@
+{
+ "nika_engine_pin_format": 1,
+ "$comment": "D1 (the catalog seam · 2026-08-01): the EXACT nika engine RELEASE identity the website's /catalog world derives from — the catalogue the site shows IS the catalogue of the downloadable binary, honest by construction. scripts/engine-resync.mjs --write fetches THIS commit by sha (never a tag ref, never HEAD), verifies HEAD == engine_commit AND HEAD^{tree} == engine_tree BEFORE vendoring a single byte into public/engine/, and records every vendored file's sha256 in public/engine/PROVENANCE.json (--check re-verifies those digests offline · exit 5 on drift). This pin advances ONLY at release trains, PR-only — the authored-pin law: a hand-meaningful pin a lane advances deliberately, never a moving ref.",
+ "repository": "supernovae-st/nika",
+ "release_tag": "v0.106.1",
+ "engine_commit": "54605ee6a7ce267c0bf8e7f0d2d1529a8501c584",
+ "engine_tree": "93e88c56f2a756b57fb35dd5c85f9d5908b077ea"
+}

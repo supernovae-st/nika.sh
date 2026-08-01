@@ -1,0 +1,40 @@
+{
+ "engine_resync_format": 1,
+ "law": "vendored from the pinned engine release — fetched BY SHA, commit+tree digest-verified before any copy; --check re-verifies these digests offline (exit 5 on drift)",
+ "source": "supernovae-st/nika@54605ee6a7ce267c0bf8e7f0d2d1529a8501c584",
+ "release_tag": "v0.106.1",
+ "engine_tree": "93e88c56f2a756b57fb35dd5c85f9d5908b077ea",
+ "tool": "scripts/engine-resync.mjs",
+ "files": [
+  {
+   "path": "adr/index.json",
+   "upstream": "docs/adr/index.json",
+   "sha256": "b5fd9b827642cef9f564a024c6e1c3a014c65839ebe65df102f605169a83ce0b"
+  },
+  {
+   "path": "catalog/embeddings.toml",
+   "upstream": "crates/nika-catalog/data/embeddings.toml",
+   "sha256": "efc4d73cc3ab124899f545e9c452e205ff6fff0a09c4da0c15a46b0188691404"
+  },
+  {
+   "path": "catalog/llm-providers.toml",
+   "upstream": "crates/nika-catalog/data/llm-providers.toml",
+   "sha256": "d0793737e1fd6811c418065187720d7fa06e8380984198bb4bbc1a32618322ba"
+  },
+  {
+   "path": "catalog/mcp-servers.toml",
+   "upstream": "crates/nika-catalog/data/mcp-servers.toml",
+   "sha256": "cd26ecd882e0ddd64edf4d6d9aa3b97cb3aaa96e4198f7638b30f8a518a3d962"
+  },
+  {
+   "path": "catalog/model-capabilities.toml",
+   "upstream": "crates/nika-catalog/data/model-capabilities.toml",
+   "sha256": "e37e6d0a5252dfbb0f243f08fae67a5dac556cb228802851e506a0c2b4616361"
+  },
+  {
+   "path": "catalog/model-pricing.toml",
+   "upstream": "crates/nika-catalog/data/model-pricing.toml",
+   "sha256": "99c08f2d17cf2cf8bdd15ed1c01ef121dee2e4477ca6200fc1accf5473f7bbd5"
+  }
+ ]
+}
