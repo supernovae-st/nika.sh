@@ -882,7 +882,7 @@ await check('manifesto · the language rail navigates (EN → FR)', async () => 
   )
 })
 
-/* 3d · THE SPEC READING (/spec · 2D) · the drawing's own belt: the reading
+/* 3e · THE SPEC READING (/spec · 2D) · the drawing's own belt: the reading
    assembles the schematic (DOM ticks + tally) and the chapter keys sail.
    (The GL chassis died 2026-08-01 — the drawing is the only truth.) */
 await send('Page.navigate', { url: `${BASE}/spec` })

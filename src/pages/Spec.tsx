@@ -403,7 +403,6 @@ export function Component() {
           {/* the descent · the cue's line keeps going: a hairline runs from
               under the cue toward S.0 (the reading it announces) — the
               poster is CONNECTED to the section that follows, not adrift */}
-          <span className="spec-hero-descent" aria-hidden />
             </div>
             {/* the fallback poster · the same vessel, drawn (SSG · goldens'
                 truth); the live chassis covers this ground when it mounts */}
@@ -509,26 +508,6 @@ export function Component() {
                   </span>
                 ) : null}
               </div>
-              {/* THE TRANSPORT · the spine gauge, made a helm: nine real
-                  links OUTSIDE the aria-hidden stage (the display gauge is
-                  its pointer-inert twin at the poster/finale) — click a
-                  tick, sail to that station's section. ≥24px hits. */}
-              <nav className="spec-transport" aria-label="Ship stations: jump to a section">
-                {SPEC_SECTIONS.map((s) => (
-                  <a
-                    key={s.fig}
-                    href={s.anchor}
-                    data-node={s.key}
-                    className={`spec-transport-tick${lit.has(s.key) ? ' is-lit' : ''}${
-                      current === s.key ? ' is-cur' : ''
-                    }`}
-                    aria-label={`${s.fig} · ${s.title} (${s.shipPart})`}
-                    title={`${s.fig} · ${s.title}`}
-                  >
-                    <i aria-hidden />
-                  </a>
-                ))}
-              </nav>
             </aside>
           </div>
 

@@ -1330,14 +1330,6 @@
   user-select: none;
   white-space: nowrap;
 }
-.spec-rail-hud--tl {
-  top: 3%;
-  left: 2%;
-}
-.spec-rail-hud--tr {
-  top: 3%;
-  right: 2%;
-}
 .spec-rail-hud--bl {
   bottom: 3%;
   left: 2%;
@@ -1907,9 +1899,6 @@
    under the cue toward S.0, tying the poster to the reading it announces.
    (The leader lines to the hull are LIVE now — the callout rig pins each
    wire's near end to the copy's own [data-ship-term] links.) */
-.spec-hero-descent {
-  display: none;
-}
 
 /* the wired terms · real links: quiet dotted hint at rest, ink-lit when the
    wire is loud (hover/focus) — the prose labels the vessel */
@@ -1931,10 +1920,6 @@
   border-radius: 2px;
 }
 
-@keyframes specCueBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
-}
 @media (prefers-reduced-motion: reduce) {
   .spec-hero-cue span[aria-hidden]:last-child {
     animation: none;
@@ -1949,62 +1934,18 @@
    resizes: the compositor slides a clip along --berth (hit-test + hard
    bound), the shaders melt the hull out at the same seam (the dotmatrix
    language), and the camera carries the vessel into the berth. */
-@media (min-width: 1024px) {
-}
 
 /* THE TRANSPORT · the spine gauge as a helm: nine real links (outside the
    aria-hidden stage), each a >=24px hit around a gauge-tick visual. Lives
    at the DOCK only (the display gauge keeps the poster + finale, where the
    reading hasn't started / is done); hidden with the fallback register. */
-.spec-transport {
-  display: none;
-}
 /* THE ARRIVAL (arc 30) · the dock's instruments fade up instead of popping
    (a display flip replays a one-shot animation) — live register only, and
    staggered: helm, then tally, then the transport */
-@media (min-width: 1024px) {
-}
-@keyframes specInstrUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@media (min-width: 1024px) {
-  .spec-transport-tick {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 28px;
-  }
-  .spec-transport-tick i {
-    width: 16px;
-    height: 3px;
-    border-radius: 2px;
-    background: color-mix(in oklch, var(--sm-ink-struck) 30%, transparent);
-    transition: background var(--dur-ui) var(--ease-ui), height var(--dur-ui) var(--ease-ui);
-  }
-  .spec-transport-tick.is-lit i {
-    background: color-mix(in oklch, var(--sm-ink-lit) 72%, transparent);
-  }
-  .spec-transport-tick.is-cur i {
-    height: 7px;
-    background: var(--sm-ink-lit);
-  }
-  .spec-transport-tick:hover i,
-  .spec-transport-tick:focus-visible i {
-    background: var(--sm-ink-lit);
-  }
-  .spec-transport-tick:focus-visible {
-    outline: 2px solid var(--v4-focus-ring);
-    outline-offset: 2px;
-    border-radius: 3px;
-  }
-}
 
 /* the flight's quiet law · the inspection instruments belong to the DOCK:
    during the poster and the boarding only the plate + gauge + ship labels
    speak (the ASSEMBLED tally at 0/8 before reading was pure noise) */
-@media (min-width: 1024px) {
-}
 
 /* ════ the elevation breathes (mobile's ship idles on the drum beat) ══════════
    The hero elevation pulses stratum by stratum — a 2.4s wash sailing the
@@ -2037,12 +1978,6 @@
   margin-right: 8px;
   vertical-align: middle;
   box-shadow: 0 0 8px currentColor;
-}
-@keyframes smsWake {
-  0% { opacity: 0; }
-  55% { opacity: 1; }
-  75% { opacity: 0.85; }
-  100% { opacity: 1; }
 }
 
 /* the organ's own page — the head's trailing link (parts-catalog law) */
@@ -2091,33 +2026,4 @@
 }
 .spec-close .td-chips {
   justify-content: center;
-}
-@keyframes specNovaRingFar {
-  0% { opacity: 0; transform: scale(0.3); }
-  18% { opacity: 0.65; }
-  100% { opacity: 0; transform: scale(8.5); }
-}
-@keyframes specNovaBurst {
-  0% { opacity: 0; transform: scale(0.12); }
-  18% { opacity: 1; }
-  100% { opacity: 0; transform: scale(2.6); }
-}
-@keyframes specNovaRing {
-  0% { opacity: 0; transform: scale(0.2); }
-  22% { opacity: 0.9; }
-  100% { opacity: 0; transform: scale(3.4); }
-}
-@keyframes specGlyphBloom {
-  0% { opacity: 0; transform: scale(0.4) rotate(-14deg); filter: drop-shadow(0 0 0 rgb(79 134 255 / 0)); }
-  55% { opacity: 1; transform: scale(1.12) rotate(2deg); filter: drop-shadow(0 0 22px rgb(79 134 255 / 0.85)); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgb(79 134 255 / 0.4)); }
-}
-@keyframes specMarkForm {
-  0% { opacity: 0; letter-spacing: 0.4em; transform: translateY(16px); filter: blur(6px); }
-  60% { opacity: 1; filter: blur(0); }
-  100% { opacity: 1; letter-spacing: -0.045em; transform: translateY(0); filter: blur(0); }
-}
-@keyframes specCloseUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
 }

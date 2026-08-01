@@ -1097,7 +1097,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:7",
       "path": "src/pages/Spec.tsx",
-      "line": 656,
+      "line": 635,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1109,7 +1109,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:8",
       "path": "src/pages/Spec.tsx",
-      "line": 661,
+      "line": 640,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1121,7 +1121,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:9",
       "path": "src/pages/Spec.tsx",
-      "line": 694,
+      "line": 673,
       "text": "1 verb",
       "source": "1",
       "field": "verbs",
@@ -1133,7 +1133,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:10",
       "path": "src/pages/Spec.tsx",
-      "line": 695,
+      "line": 674,
       "text": "one verb",
       "source": "one",
       "field": "verbs",
@@ -1145,7 +1145,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:11",
       "path": "src/pages/Spec.tsx",
-      "line": 891,
+      "line": 870,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -1158,7 +1158,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:12",
       "path": "src/pages/Spec.tsx",
-      "line": 1022,
+      "line": 1001,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1170,7 +1170,7 @@
     {
       "selector": "src/pages/Spec.tsx#count:13",
       "path": "src/pages/Spec.tsx",
-      "line": 1024,
+      "line": 1003,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",

@@ -360,7 +360,6 @@ export function nodeReadout(id: string): string | null {
 /* ── the strata palette + order (migrated from spec-machine-model.ts when
    the GL chassis died 2026-08-01 — the page and the schematic keep them) */
 export const STRATA_ORDER: StratumKey[] = SPEC_SECTIONS.map((s) => s.key)
-export const stratumIndex = (k: StratumKey): number => STRATA_ORDER.indexOf(k)
 export const STRATUM_HEX: Record<StratumKey, string> = {
   frame: '#8db4ff',
   verbs: '#8db4ff',
