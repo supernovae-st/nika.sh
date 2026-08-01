@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { PALETTE, type PaletteEntry } from '../content/palette.generated'
+import type { PaletteEntry } from '../content/palette.generated'
 import { KIND_GLYPH, KIND_HEX, type LensKind } from '../content/design.generated'
 import { PATHS, BLOG_PATHS } from '../../site.config'
 import { parseQuery, mergePageHits, type PageTextHit } from '../lib/palette-query'
@@ -124,6 +124,21 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
   )
   const actions = useMemo(() => actionEntries(ctx), [ctx])
 
+  /* the corpus rides its OWN chunk (the register-diet law applied to the
+     palette itself): 600+ entries — the catalog world included — load on
+     the palette's first OPEN, never in the main bundle. The type-only
+     import above erases; this dynamic one is the single value door. */
+  const [palette, setPalette] = useState<PaletteEntry[]>([])
+  useEffect(() => {
+    let live = true
+    import('../content/palette.generated').then((m) => {
+      if (live) setPalette(m.PALETTE)
+    })
+    return () => {
+      live = false
+    }
+  }, [])
+
   const hits = useMemo(() => {
     /* the prefix grammar (WO-12): `e:` scopes to error codes, `t:` to tools…
        — the corpus narrows BEFORE scoring; an unknown prefix stays a plain
@@ -140,8 +155,8 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
         .map((x) => x.e)
     }
     const corpus: (PaletteEntry | ActionEntry)[] = kind
-      ? PALETTE.filter((e) => e.kind === kind)
-      : [...PALETTE, ...actions]
+      ? palette.filter((e) => e.kind === kind)
+      : [...palette, ...actions]
     if (!needle.trim()) return corpus.filter((e) => e.kind !== 'action').slice(0, 9)
     return corpus.map((e) => ({
       e,
@@ -151,7 +166,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
       .sort((a, b) => b.s - a.s)
       .slice(0, 9)
       .map((x) => x.e)
-  }, [q, actions])
+  }, [q, actions, palette])
 
   /* stage 2 · « in pages »: past two characters the palette also asks the
      full-text index — rows land BELOW the registers, deduped by url. A
@@ -318,7 +333,7 @@ export default function CommandK({ onClose }: { onClose: () => void }) {
           )}
         </ul>
         <p className="ck-foot mono" aria-hidden>
-          {feedback ?? `↑↓ move · ↵ open · > actions · ${PALETTE.length} surfaces`}
+          {feedback ?? `↑↓ move · ↵ open · > actions · ${palette.length} surfaces`}
         </p>
         <p className="ck-sr" role="status">
           {feedback ?? ''}

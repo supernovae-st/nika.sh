@@ -156,6 +156,51 @@ export function compilePalette() {
       hint: p.description,
     })
 
+  /* the catalog world (engine-release clock · operator 2026-08-02 « il est
+     où le catalogue ? ») — the 7 hub pages plus one entry per MODEL and
+     MCP-SERVER room, so « qwen » or « fetch » typed into ⌘K opens the room.
+     Slugs and ids ride the CHROME-LEAN projection (catalog-paths.generated
+     · parallel arrays, same order) — read by regex like the language module
+     below, never an import (this script stays out of the app graph). */
+  const CATALOG_HUBS = [
+    ['Catalog', '/catalog', 'what the released binary knows'],
+    ['Catalog: models', '/catalog/models', 'one room per model · seats, prices, energy'],
+    ['Catalog: pricing', '/catalog/pricing', 'resolved the way the engine bills'],
+    ['Catalog: energy', '/catalog/energy', 'measured Wh · published verbatim'],
+    ['Catalog: MCP servers', '/catalog/mcp', 'one room each · the invoke block'],
+    ['Catalog: embeddings', '/catalog/embeddings', 'the recall seats'],
+    ['Catalog: capabilities', '/catalog/capabilities', 'what each seat may do, by rule'],
+  ]
+  for (const [label, href, hint] of CATALOG_HUBS) entries.push({ kind: 'page', label, href, hint })
+  const catPaths = readFileSync(join(ROOT, 'src/content/catalog-paths.generated.ts'), 'utf8')
+  const catArr = (name) => {
+    const m = catPaths.match(new RegExp(`export const ${name}: string\\[\\] = (\\[[\\s\\S]*?\\])`))
+    if (!m) throw new Error(`catalog-paths: ${name} not found`)
+    return JSON.parse(m[1])
+  }
+  const modelSlugs = catArr('MODEL_SLUGS')
+  const modelIds = catArr('MODEL_IDS')
+  const mcpSlugs = catArr('MCP_SLUGS')
+  const mcpIds = catArr('MCP_IDS')
+  if (modelSlugs.length !== modelIds.length || mcpSlugs.length !== mcpIds.length)
+    throw new Error('catalog-paths: slug/id arrays out of step')
+  modelSlugs.forEach((slug, i) =>
+    entries.push({
+      kind: 'member',
+      label: `model: ${modelIds[i]}`,
+      href: `/catalog/models/${slug}`,
+      hint: 'catalog room · seats, prices, measured energy',
+    }),
+  )
+  mcpSlugs.forEach((slug, i) =>
+    entries.push({
+      kind: 'member',
+      label: `mcp server: ${mcpIds[i]}`,
+      href: `/catalog/mcp/${slug}`,
+      hint: 'catalog room · the invoke block ready to paste',
+    }),
+  )
+
   /* the roomed register members (rooms universelles · « chaque élément a sa
      page ») — every member room the per-catalog loops above don't already
      carry joins the corpus from the ontology twin, so ⌘K can open any

@@ -620,7 +620,7 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
   class: generated
-  sha256: 914dda608c2512dd71e02f63b937fbadef3cc707da12ccffe696c51633c37cee
+  sha256: 790ed4bb95db5a801e194ead6ea20947fa9bea7d0d567e578e81d5d42a9128dc
   evidence: "declared output of resync contract generator 'website-palette' (supernovae-st/nika.sh scripts/build-palette.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-palette.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 409
-  aggregate_sha256: 683bb8633dc723ee985a5c3f4339955f482df93747df33abd0256d14f672f65b
+  aggregate_sha256: 5df9aeb895c0d22ad02357973808641af496f75d90ee78eb4d89b11149ebf11d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: a2f3ca7cea164670f5e866bca4a7d008a46516298df62d55e5e65096f0deb4b9
+  aggregate_sha256: aff3d1c775f99f5fa717811b27d88de048a7df0e095606868bd1bf1ec10ea4d9
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

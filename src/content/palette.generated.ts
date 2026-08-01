@@ -1499,6 +1499,1062 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "Catalog",
+    "href": "/catalog",
+    "hint": "what the released binary knows"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: models",
+    "href": "/catalog/models",
+    "hint": "one room per model · seats, prices, energy"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: pricing",
+    "href": "/catalog/pricing",
+    "hint": "resolved the way the engine bills"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: energy",
+    "href": "/catalog/energy",
+    "hint": "measured Wh · published verbatim"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: MCP servers",
+    "href": "/catalog/mcp",
+    "hint": "one room each · the invoke block"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: embeddings",
+    "href": "/catalog/embeddings",
+    "hint": "the recall seats"
+  },
+  {
+    "kind": "page",
+    "label": "Catalog: capabilities",
+    "href": "/catalog/capabilities",
+    "hint": "what each seat may do, by rule"
+  },
+  {
+    "kind": "member",
+    "label": "model: @cf/meta/llama-3.1-8b-instruct",
+    "href": "/catalog/models/cf-meta-llama-3-1-8b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: @cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "href": "/catalog/models/cf-meta-llama-3-3-70b-instruct-fp8-fast",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: Meta-Llama-3.1-8B-Instruct",
+    "href": "/catalog/models/meta-llama-3-1-8b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: Meta-Llama-3.3-70B-Instruct",
+    "href": "/catalog/models/meta-llama-3-3-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: MiniMax-M2",
+    "href": "/catalog/models/minimax-m2",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: MiniMax-VL-01",
+    "href": "/catalog/models/minimax-vl-01",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: Qwen/Qwen3-8B",
+    "href": "/catalog/models/qwen-qwen3-8b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: Qwen/Qwen3.5-397B-A17B:fastest",
+    "href": "/catalog/models/qwen-qwen3-5-397b-a17b-fastest",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: Qwen/Qwen3.5-9B:cheapest",
+    "href": "/catalog/models/qwen-qwen3-5-9b-cheapest",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: accounts/fireworks/models/llama-v3p1-8b-instruct",
+    "href": "/catalog/models/accounts-fireworks-models-llama-v3p1-8b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "href": "/catalog/models/accounts-fireworks-models-llama-v3p3-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: anthropic.claude-haiku-4-5-20251001-v1:0",
+    "href": "/catalog/models/anthropic-claude-haiku-4-5-20251001-v1-0",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: anthropic.claude-sonnet-4-20250514-v1:0",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514-v1-0",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: anthropic/claude-haiku-4-5-20251001",
+    "href": "/catalog/models/anthropic-claude-haiku-4-5-20251001",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: anthropic/claude-sonnet-4-20250514",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: claude-haiku-4-5-20251001",
+    "href": "/catalog/models/claude-haiku-4-5-20251001",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: claude-sonnet-4-20250514",
+    "href": "/catalog/models/claude-sonnet-4-20250514",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: command-r",
+    "href": "/catalog/models/command-r",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: command-r-plus",
+    "href": "/catalog/models/command-r-plus",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: databricks-meta-llama-3-1-70b-instruct",
+    "href": "/catalog/models/databricks-meta-llama-3-1-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: deepseek-chat",
+    "href": "/catalog/models/deepseek-chat",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: default",
+    "href": "/catalog/models/default",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gemini-2.0-flash",
+    "href": "/catalog/models/gemini-2-0-flash",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gemini-2.5-flash",
+    "href": "/catalog/models/gemini-2-5-flash",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: glm-4-flash",
+    "href": "/catalog/models/glm-4-flash",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: glm-4.5",
+    "href": "/catalog/models/glm-4-5",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gpt-4o",
+    "href": "/catalog/models/gpt-4o",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gpt-4o-mini",
+    "href": "/catalog/models/gpt-4o-mini",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gpt-5-mini",
+    "href": "/catalog/models/gpt-5-mini",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: gpt-5.2",
+    "href": "/catalog/models/gpt-5-2",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: grok-3",
+    "href": "/catalog/models/grok-3",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: grok-3-mini-fast",
+    "href": "/catalog/models/grok-3-mini-fast",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: jamba-1.5-large",
+    "href": "/catalog/models/jamba-1-5-large",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: jamba-1.5-mini",
+    "href": "/catalog/models/jamba-1-5-mini",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: kimi-k2",
+    "href": "/catalog/models/kimi-k2",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: kimi-k2.5",
+    "href": "/catalog/models/kimi-k2-5",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: llama-3.1-8b",
+    "href": "/catalog/models/llama-3-1-8b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: llama-3.1-8b-instant",
+    "href": "/catalog/models/llama-3-1-8b-instant",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: llama-3.3-70b",
+    "href": "/catalog/models/llama-3-3-70b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: llama-3.3-70b-versatile",
+    "href": "/catalog/models/llama-3-3-70b-versatile",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: llama3.2:3b",
+    "href": "/catalog/models/llama3-2-3b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta-llama/Llama-3.1-8B-Instruct-Turbo",
+    "href": "/catalog/models/meta-llama-llama-3-1-8b-instruct-turbo",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta-llama/Llama-3.3-70B-Instruct",
+    "href": "/catalog/models/meta-llama-llama-3-3-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "href": "/catalog/models/meta-llama-llama-3-3-70b-instruct-turbo",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "href": "/catalog/models/meta-llama-llama-4-maverick-17b-128e-instruct-fp8",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta-llama/Meta-Llama-3.1-8B-Instruct",
+    "href": "/catalog/models/meta-llama-meta-llama-3-1-8b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta/llama-3.1-70b-instruct",
+    "href": "/catalog/models/meta-llama-3-1-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta/meta-llama-3-70b-instruct",
+    "href": "/catalog/models/meta-meta-llama-3-70b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: meta/meta-llama-3-8b-instruct",
+    "href": "/catalog/models/meta-meta-llama-3-8b-instruct",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: mistral-large-latest",
+    "href": "/catalog/models/mistral-large-latest",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: mistral-small-latest",
+    "href": "/catalog/models/mistral-small-latest",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: mock-default",
+    "href": "/catalog/models/mock-default",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: nvidia/nemotron-3-nano-30b-a3b",
+    "href": "/catalog/models/nvidia-nemotron-3-nano-30b-a3b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: nvidia/nemotron-3-super-120b-a12b",
+    "href": "/catalog/models/nvidia-nemotron-3-super-120b-a12b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: palmyra-x-004",
+    "href": "/catalog/models/palmyra-x-004",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: qwen-max",
+    "href": "/catalog/models/qwen-max",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: qwen-turbo",
+    "href": "/catalog/models/qwen-turbo",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: qwen-vl-plus",
+    "href": "/catalog/models/qwen-vl-plus",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: qwen3.5-4b",
+    "href": "/catalog/models/qwen3-5-4b",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: qwen3.5:4b",
+    "href": "/catalog/models/qwen3-5-4b~2",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: sonar",
+    "href": "/catalog/models/sonar",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: sonar-pro",
+    "href": "/catalog/models/sonar-pro",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: voyage-3-large",
+    "href": "/catalog/models/voyage-3-large",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "model: voyage-3-lite",
+    "href": "/catalog/models/voyage-3-lite",
+    "hint": "catalog room · seats, prices, measured energy"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: 21st",
+    "href": "/catalog/mcp/21st",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: ahrefs",
+    "href": "/catalog/mcp/ahrefs",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: airtable",
+    "href": "/catalog/mcp/airtable",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: alpaca",
+    "href": "/catalog/mcp/alpaca",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: apify",
+    "href": "/catalog/mcp/apify",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: aws",
+    "href": "/catalog/mcp/aws",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: axiom",
+    "href": "/catalog/mcp/axiom",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: bitbucket",
+    "href": "/catalog/mcp/bitbucket",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: browserbase",
+    "href": "/catalog/mcp/browserbase",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: browserstack",
+    "href": "/catalog/mcp/browserstack",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: chrome-devtools",
+    "href": "/catalog/mcp/chrome-devtools",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: circleci",
+    "href": "/catalog/mcp/circleci",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: clickup",
+    "href": "/catalog/mcp/clickup",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: cloudflare",
+    "href": "/catalog/mcp/cloudflare",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: comfyui",
+    "href": "/catalog/mcp/comfyui",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: contentful",
+    "href": "/catalog/mcp/contentful",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: context7",
+    "href": "/catalog/mcp/context7",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: datadog",
+    "href": "/catalog/mcp/datadog",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: dataforseo",
+    "href": "/catalog/mcp/dataforseo",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: discord",
+    "href": "/catalog/mcp/discord",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: docker",
+    "href": "/catalog/mcp/docker",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: dynatrace",
+    "href": "/catalog/mcp/dynatrace",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: e2b",
+    "href": "/catalog/mcp/e2b",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: eslint",
+    "href": "/catalog/mcp/eslint",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: exa",
+    "href": "/catalog/mcp/exa",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: excel",
+    "href": "/catalog/mcp/excel",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: fal",
+    "href": "/catalog/mcp/fal",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: figma",
+    "href": "/catalog/mcp/figma",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: filesystem",
+    "href": "/catalog/mcp/filesystem",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: firecrawl",
+    "href": "/catalog/mcp/firecrawl",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: ghost",
+    "href": "/catalog/mcp/ghost",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: google-ads",
+    "href": "/catalog/mcp/google-ads",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: google-calendar",
+    "href": "/catalog/mcp/google-calendar",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: google-drive",
+    "href": "/catalog/mcp/google-drive",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: grafana",
+    "href": "/catalog/mcp/grafana",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: heroku",
+    "href": "/catalog/mcp/heroku",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: hubspot",
+    "href": "/catalog/mcp/hubspot",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: intercom",
+    "href": "/catalog/mcp/intercom",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: jira",
+    "href": "/catalog/mcp/jira",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: kubernetes",
+    "href": "/catalog/mcp/kubernetes",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: langchain",
+    "href": "/catalog/mcp/langchain",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: launchdarkly",
+    "href": "/catalog/mcp/launchdarkly",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: linear",
+    "href": "/catalog/mcp/linear",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: linkedin",
+    "href": "/catalog/mcp/linkedin",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: mailchimp",
+    "href": "/catalog/mcp/mailchimp",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: mapbox",
+    "href": "/catalog/mcp/mapbox",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: memory",
+    "href": "/catalog/mcp/memory",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: meta-ads",
+    "href": "/catalog/mcp/meta-ads",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: mixpanel",
+    "href": "/catalog/mcp/mixpanel",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: monday",
+    "href": "/catalog/mcp/monday",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: mongodb",
+    "href": "/catalog/mcp/mongodb",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: mysql",
+    "href": "/catalog/mcp/mysql",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: n8n",
+    "href": "/catalog/mcp/n8n",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: neo4j",
+    "href": "/catalog/mcp/neo4j",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: news-api",
+    "href": "/catalog/mcp/news-api",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: notion",
+    "href": "/catalog/mcp/notion",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: nx",
+    "href": "/catalog/mcp/nx",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: obsidian",
+    "href": "/catalog/mcp/obsidian",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: openweather",
+    "href": "/catalog/mcp/openweather",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: paypal",
+    "href": "/catalog/mcp/paypal",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: pdf",
+    "href": "/catalog/mcp/pdf",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: perplexity",
+    "href": "/catalog/mcp/perplexity",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: pinecone",
+    "href": "/catalog/mcp/pinecone",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: plausible",
+    "href": "/catalog/mcp/plausible",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: playwright",
+    "href": "/catalog/mcp/playwright",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: polygon",
+    "href": "/catalog/mcp/polygon",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: postman",
+    "href": "/catalog/mcp/postman",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: prometheus",
+    "href": "/catalog/mcp/prometheus",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: pulumi",
+    "href": "/catalog/mcp/pulumi",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: qdrant",
+    "href": "/catalog/mcp/qdrant",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: railway",
+    "href": "/catalog/mcp/railway",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: recipe",
+    "href": "/catalog/mcp/recipe",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: reddit",
+    "href": "/catalog/mcp/reddit",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: redis",
+    "href": "/catalog/mcp/redis",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: replicate",
+    "href": "/catalog/mcp/replicate",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: resend",
+    "href": "/catalog/mcp/resend",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: salesforce",
+    "href": "/catalog/mcp/salesforce",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: sanity",
+    "href": "/catalog/mcp/sanity",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: searchapi",
+    "href": "/catalog/mcp/searchapi",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: sendgrid",
+    "href": "/catalog/mcp/sendgrid",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: sentry",
+    "href": "/catalog/mcp/sentry",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: sequential-thinking",
+    "href": "/catalog/mcp/sequential-thinking",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: serper",
+    "href": "/catalog/mcp/serper",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: shopify",
+    "href": "/catalog/mcp/shopify",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: slack",
+    "href": "/catalog/mcp/slack",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: spotify",
+    "href": "/catalog/mcp/spotify",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: strapi",
+    "href": "/catalog/mcp/strapi",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: stripe",
+    "href": "/catalog/mcp/stripe",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: supabase",
+    "href": "/catalog/mcp/supabase",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: supadata",
+    "href": "/catalog/mcp/supadata",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: tavily",
+    "href": "/catalog/mcp/tavily",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: telegram",
+    "href": "/catalog/mcp/telegram",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: terraform",
+    "href": "/catalog/mcp/terraform",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: tiktok",
+    "href": "/catalog/mcp/tiktok",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: turbopuffer",
+    "href": "/catalog/mcp/turbopuffer",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: turso",
+    "href": "/catalog/mcp/turso",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: twilio",
+    "href": "/catalog/mcp/twilio",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: twitter",
+    "href": "/catalog/mcp/twitter",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: upstash",
+    "href": "/catalog/mcp/upstash",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: vercel",
+    "href": "/catalog/mcp/vercel",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: wolfram",
+    "href": "/catalog/mcp/wolfram",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: wordpress",
+    "href": "/catalog/mcp/wordpress",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: xcode",
+    "href": "/catalog/mcp/xcode",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: youtube",
+    "href": "/catalog/mcp/youtube",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "member",
+    "label": "mcp server: zendesk",
+    "href": "/catalog/mcp/zendesk",
+    "hint": "catalog room · the invoke block ready to paste"
+  },
+  {
+    "kind": "page",
     "label": "namespaces · the register root",
     "href": "/namespaces",
     "hint": "every member, one room each"

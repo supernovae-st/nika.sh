@@ -92,6 +92,20 @@ describe('catalog · the projection derives and every room is served', () => {
     for (const c of classA) expect(c.install, `${c.id}: class A without an install line`).toBeTruthy()
   })
 
+  it('every catalog room is findable in the palette (⌘K knows the register)', async () => {
+    // the operator's 2026-08-02 finding: 176 live rooms, zero palette entries
+    // — « qwen » typed into ⌘K found nothing. This pins the teach: every
+    // model and MCP-server room has a palette door, and the 7 hubs do too.
+    const { PALETTE } = await import('../content/palette.generated')
+    const hrefs = new Set(PALETTE.map((e) => e.href))
+    const missing = [
+      ...MODELS.map((m) => `/catalog/models/${m.slug}`),
+      ...MCP_SERVERS.map((s) => `/catalog/mcp/${s.slug}`),
+      ...CATALOG_PATHS.filter((p) => !p.split('/')[3]),
+    ].filter((p) => !hrefs.has(p))
+    expect(missing, `catalog rooms ⌘K cannot find:\n${missing.join('\n')}`).toEqual([])
+  })
+
   it('register-diet holds: only catalog-access (and this judge) import the heavy module', () => {
     // the size budget regressed once (2026-08-01: +25KB gz over) because the
     // heavy catalog rode the main bundle — this pins the law structurally:
