@@ -96,8 +96,8 @@ const FRAMES = [
   { name: 'spec-close', route: '/spec', p: 0.94 },
   /* the Inspector sheet (round-1 step 2) · born element-anchored (w12i law):
      the ?node deep-link opens the readout at load, 390px = the phone truth */
-  { name: 'map-inspector-peek', route: '/map?node=set:error-codes', width: 390, height: 844, anchor: '#anatomy', at: 0.05 },
-  { name: 'map-inspector-full', route: '/map?node=set:error-codes&insp=full', width: 390, height: 844, anchor: '#anatomy', at: 0.05 },
+  /* (the two map-inspector frames died 2026-08-02 with the Inspector —
+     ?node= navigates to the node's own room now, there is no panel) */
 ]
 
 /* ── static file server (no python dependency in CI) ─────────────────────── */

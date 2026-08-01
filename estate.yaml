@@ -18,7 +18,7 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1136
+  classified_files: 1132
   file_rows: 101
   pattern_rows: 29
   by_class:
@@ -26,7 +26,7 @@ summary:
     authored-pin: 3
     generated: 290
     pinned-copy: 21
-    testimonial: 44
+    testimonial: 40
     foreign: 0
   unverified-default: 12
 files:
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 7a12ff3224264aac19451d174c50ce99f99ac0b1368274d008479808928f641b
+  sha256: 16316b020745dd6d8857df2fc7623b5cf308caae7a2b00e7ff9bb45830bf4648
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -842,8 +842,8 @@ patterns:
     - "supernovae-st/nika@5d61b7e13f1f (v0.107.0) (the pinned release tree)"
 - glob: "tests/visual/golden/**"
   class: testimonial
-  match_count: 32
-  aggregate_sha256: c16663be72f1c848fd42cf47c92fabdb815ff330f11ea1b4abb3fe7c4d1720e5
+  match_count: 28
+  aggregate_sha256: 88862c76342af10f5319b1777f61ba440263d35eb153ce06e6795e4f88f8c70d
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -941,7 +941,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: fa46e44fde3b49f2768d795e8d2789d73b4cf5e53d4b29b68d08fdd7fcc66a23
+  aggregate_sha256: 0db8d4a89883ba4fb0a491a51c40a05077261eee97006a6fc029153bd83fe127
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
