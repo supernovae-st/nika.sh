@@ -5509,14 +5509,14 @@
   {
    "data": {
     "by_class": {
-     "authored": 781,
+     "authored": 784,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 290,
      "pinned-copy": 21,
      "testimonial": 40
     },
-    "classified_files": 1135,
+    "classified_files": 1138,
     "unverified": 13
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
