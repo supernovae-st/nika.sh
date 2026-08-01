@@ -176,6 +176,16 @@ _OVERRIDES = [
         },
     },
     {
+        "path": "public/engine/clients.registry.yaml",
+        "class": "pinned-copy",
+        "evidence": f"byte-copy of crates/nika-cli-host/data/clients.registry.yaml at the pinned engine release ({_release_ref}) — the client × component coverage matrix (31 doors · kit-native SSOT) the /integrations matrix derives from",
+        "derivation": {
+            "tool": "node scripts/engine-resync.mjs --write",
+            "gate": _ENGINE_RESYNC_GATE,
+            "inputs": [".github/nika-engine-pin.json", f"{_release_ref}:crates/nika-cli-host/data/clients.registry.yaml"],
+        },
+    },
+    {
         "path": "public/engine/adr/index.json",
         "class": "pinned-copy",
         "evidence": f"byte-copy of docs/adr/index.json at the pinned engine release ({_release_ref}) — the ADR machine index the /engineering world derives from",

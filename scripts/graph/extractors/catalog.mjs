@@ -11,9 +11,9 @@
 // first-match-wins in file order — that semantics belongs to the engine,
 // the graph does not re-implement it).
 
-import { byCp, edge, node, readTomlFile } from '../lib.mjs'
+import { byCp, edge, node, readTomlFile, slugRegistry } from '../lib.mjs'
 
-export function extract({ engineRef }) {
+export function extract({ census, engineRef }) {
   const nodes = []
   const edges = []
 
@@ -59,12 +59,18 @@ export function extract({ engineRef }) {
       )
     }
   }
+  // rooms live at /catalog/models/:slug — the SAME slug law as the site
+  // projection (lib.mjs slugRegistry · one implementation, urls never diverge)
+  const modelSlug = slugRegistry()
   for (const [model, servedBy] of [...modelSet.entries()].sort((a, b) => byCp(a[0], b[0]))) {
+    const url = `/catalog/models/${modelSlug(model)}`
     nodes.push(
       node({
         id: `model/${model}`,
         family: 'model',
         title: model,
+        url,
+        served: census.has(url),
         data: { served_by: [...servedBy].sort() },
         evidence: `derived set: the union of wire models (llm-providers.toml [[providers.models]])`,
         provenance: prov('llm-providers.toml'),
@@ -146,19 +152,22 @@ export function extract({ engineRef }) {
 
   // ── MCP servers ──────────────────────────────────────────────────────────
   const mcp = readTomlFile('public/engine/catalog/mcp-servers.toml')
-  for (const s of mcp.servers) {
+  const mcpSlug = slugRegistry()
+  for (const s of [...mcp.servers].sort((a, b) => byCp(a.id, b.id))) {
+    const url = `/catalog/mcp/${mcpSlug(s.id)}`
     nodes.push(
       node({
-        id: `mcp-server/${s.name ?? s.id}`,
+        id: `mcp-server/${s.id}`,
         family: 'mcp-server',
-        title: s.name ?? s.id,
+        title: s.title ?? s.id,
+        url,
+        served: census.has(url),
         data: {
           category: s.category ?? null,
           packages: (s.packages ?? []).length,
-          remotes: (s.remotes ?? []).length,
           env_vars: (s.env_vars ?? []).length,
         },
-        evidence: `mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)`,
+        evidence: `mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)`,
         provenance: prov('mcp-servers.toml'),
       }),
     )
@@ -217,13 +226,12 @@ export function extract({ engineRef }) {
     }
   }
 
-  const lands = 'casse-wave (train 0.107 · the /catalog world · D2)'
   const energyCount = nodes.filter((n) => n.family === 'energy-row').length
   return {
     families: [
-      { family: 'provider-market', count: wire.providers.length, rooms_exist: false, lands, source: 'public/engine/catalog/llm-providers.toml', clock: 'engine-release', note: 'the MARKET catalog — never conflate with the canonical set: each count names its facet' },
-      { family: 'model', count: modelSet.size, rooms_exist: false, lands, source: 'public/engine/catalog/llm-providers.toml', clock: 'engine-release', note: 'derived set — the union of wire models; reach/capability facets join at the casse' },
-      { family: 'mcp-server', count: mcp.servers.length, rooms_exist: false, lands, source: 'public/engine/catalog/mcp-servers.toml', clock: 'engine-release' },
+      { family: 'provider-market', count: wire.providers.length, rooms_exist: false, source: 'public/engine/catalog/llm-providers.toml', clock: 'engine-release', note: 'the MARKET catalog — never conflate with the canonical set: each count names its facet' },
+      { family: 'model', count: modelSet.size, rooms_exist: true, source: 'public/engine/catalog/llm-providers.toml', clock: 'engine-release', note: 'derived set — the union of wire models; reach/capability facets join at the casse' },
+      { family: 'mcp-server', count: mcp.servers.length, rooms_exist: true, source: 'public/engine/catalog/mcp-servers.toml', clock: 'engine-release' },
       { family: 'pricing-rule', count: pricing.rules.length, rooms_exist: false, source: 'public/engine/catalog/model-pricing.toml', clock: 'engine-release', note: `rules are EDGES + one table, never pages (§I.2-4) · upstream snapshot: ${meta.source ?? 'models.dev'} as_of ${meta.as_of ?? '?'} · stale-but-true beats fresh-but-false: this is the RELEASED binary's table` },
       // energy joins the moment the released catalog carries it (the energy
       // arc landed on engine main AFTER v0.106.1 — at this pin the honest
@@ -233,7 +241,7 @@ export function extract({ engineRef }) {
         ? [{ family: 'energy-row', count: energyCount, rooms_exist: false, source: 'public/engine/catalog/model-pricing.toml', clock: 'engine-release', note: 'provenance (ml.energy · arXiv · measured_at) carried verbatim from the TOML rows' }]
         : []),
       { family: 'capability-rule', count: caps.rules.length, rooms_exist: false, source: 'public/engine/catalog/model-capabilities.toml', clock: 'engine-release' },
-      { family: 'embedding', count: emb.embeddings.length, rooms_exist: false, lands, source: 'public/engine/catalog/embeddings.toml', clock: 'engine-release' },
+      { family: 'embedding', count: emb.embeddings.length, rooms_exist: false, source: 'public/engine/catalog/embeddings.toml', clock: 'engine-release' },
     ],
     nodes,
     edges,

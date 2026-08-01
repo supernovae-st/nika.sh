@@ -107,9 +107,9 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "to": "/install"
       },
       {
-        "label": "Integrations",
+        "label": "Wire your client",
         "icon": "tiles",
-        "desc": "Your agent, your editor, one kit",
+        "desc": "Claude Code · Codex · Cursor · 31 doors, one kit",
         "to": "/integrations"
       },
       {
@@ -251,6 +251,35 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "to": "/spec"
         }
       ]
+    },
+    {
+      "col": "What it knows",
+      "items": [
+        {
+          "label": "The catalog",
+          "icon": "tiles",
+          "desc": "What the released binary knows",
+          "to": "/catalog"
+        },
+        {
+          "label": "Models",
+          "icon": "tiles",
+          "desc": "Seats, prices, measured energy",
+          "to": "/catalog/models"
+        },
+        {
+          "label": "Pricing + energy",
+          "icon": "book",
+          "desc": "The ceiling, before you spend",
+          "to": "/catalog/pricing"
+        },
+        {
+          "label": "MCP servers",
+          "icon": "tiles",
+          "desc": "Tools a workflow can wire",
+          "to": "/catalog/mcp"
+        }
+      ]
     }
   ]
 }
@@ -301,6 +330,11 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
         "to": "/integrations"
       }
     ]
+  },
+  {
+    "kick": "What it knows",
+    "fromPanel": 3,
+    "items": []
   },
   {
     "kick": "Learn · build",

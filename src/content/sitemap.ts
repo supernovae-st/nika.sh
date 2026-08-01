@@ -9,6 +9,7 @@ import { PROVIDERS } from './providers.generated'
 import { TEMPLATES } from './templates.generated'
 import { UC_TABS } from '../sections/usecases-data'
 import { MEMBER_ROOM_FAMILIES } from './member-rooms.generated'
+import { MODEL_IDS, MODEL_SLUGS, MCP_IDS, MCP_SLUGS } from './catalog-paths.generated'
 import { DOCS, REPO, SPEC } from '../content'
 import { localizedPaths } from '../lib/i18n'
 import { PENDING_ERROR_CODES } from '../../pending-error-codes'
@@ -194,6 +195,23 @@ export const SITE_MAP: MapGroup[] = [
       },
     ],
     dense: INTEGRATION_TABS.map((e) => ({ label: e.name, href: `/integrations/${e.id}` })),
+  },
+  {
+    kick: 'the catalog',
+    gloss: 'what the released binary knows · vendored at the engine pin, digest-verified',
+    links: [
+      { label: 'The catalog', href: '/catalog', hint: 'models · pricing · energy · MCP · embeddings — every count derived' },
+      { label: 'Models', href: '/catalog/models', hint: 'one room per model: seats, price, energy' },
+      { label: 'Pricing', href: '/catalog/pricing', hint: 'the rule table the audit reads' },
+      { label: 'Energy', href: '/catalog/energy', hint: 'measured Wh/Mtok · provenance verbatim' },
+      { label: 'MCP servers', href: '/catalog/mcp', hint: 'the tool servers a workflow can wire' },
+      { label: 'Embeddings', href: '/catalog/embeddings', hint: 'dimensions · windows · metrics' },
+      { label: 'Capability rules', href: '/catalog/capabilities', hint: 'first match wins · the engine resolves' },
+    ],
+    dense: [
+      ...MODEL_SLUGS.map((slug, i) => ({ label: MODEL_IDS[i], href: `/catalog/models/${slug}` })),
+      ...MCP_SLUGS.map((slug, i) => ({ label: MCP_IDS[i], href: `/catalog/mcp/${slug}` })),
+    ],
   },
   {
     kick: 'machines',

@@ -35,6 +35,11 @@
    "path": "catalog/model-pricing.toml",
    "upstream": "crates/nika-catalog/data/model-pricing.toml",
    "sha256": "248c9f85b82bfac8072802cdaf36040db15046edc3621354a8c5751abd163372"
+  },
+  {
+   "path": "clients.registry.yaml",
+   "upstream": "crates/nika-cli-host/data/clients.registry.yaml",
+   "sha256": "427df0093db46c34187ed481cdac33ead665e530cd58fa704762311696040d5a"
   }
  ]
 }

@@ -14,6 +14,7 @@
 
 import { ERROR_CODES } from './src/content/errors.generated'
 import { PENDING_ERROR_CODES } from './pending-error-codes'
+import { MODEL_SLUGS, MCP_SLUGS } from './src/content/catalog-paths.generated'
 
 /* the pending list is AUTHORED in pending-error-codes.ts (a leaf — see its
    header for the bundle law) and re-exported here: consumers of the static
@@ -306,4 +307,20 @@ export const TEMPLATE_PATHS = [
 export const LENS_PATHS = ['/map', '/sources', '/flow', '/boundary', '/proof', '/conformance/core', '/conformance/runtime', '/conformance/stdlib', '/edges/control', '/edges/failure-observation', '/edges/finally', '/edges/recovery', '/edges/terminal-observation', '/edges/value', '/error-categories/budget_error', '/error-categories/cancelled', '/error-categories/internal_error', '/error-categories/network_error', '/error-categories/parse_error', '/error-categories/process_error', '/error-categories/provider_error', '/error-categories/security_error', '/error-categories/timeout_error', '/error-categories/tool_error', '/error-categories/validation_error', '/error-categories/variable_error', '/error-namespaces/NIKA-AGENT', '/error-namespaces/NIKA-ASSERT', '/error-namespaces/NIKA-AUTH', '/error-namespaces/NIKA-BUILTIN', '/error-namespaces/NIKA-CANCEL', '/error-namespaces/NIKA-COMP', '/error-namespaces/NIKA-DAG', '/error-namespaces/NIKA-DECIDE', '/error-namespaces/NIKA-DEFAULT', '/error-namespaces/NIKA-DRIFT', '/error-namespaces/NIKA-EXEC', '/error-namespaces/NIKA-IMPL', '/error-namespaces/NIKA-INFER', '/error-namespaces/NIKA-INVOKE', '/error-namespaces/NIKA-LOCK', '/error-namespaces/NIKA-MCP', '/error-namespaces/NIKA-PARSE', '/error-namespaces/NIKA-POLICY', '/error-namespaces/NIKA-PORT', '/error-namespaces/NIKA-PROVIDER', '/error-namespaces/NIKA-SEC', '/error-namespaces/NIKA-TIMEOUT', '/error-namespaces/NIKA-TYPE', '/error-namespaces/NIKA-VALUES', '/error-namespaces/NIKA-VAR', '/families/core', '/families/data', '/families/file', '/families/introspection', '/families/media', '/families/network', '/mcp/nika_canon', '/mcp/nika_catalog', '/mcp/nika_check', '/mcp/nika_examples', '/mcp/nika_explain', '/mcp/nika_inspect', '/mcp/nika_schema', '/mcp/nika_template', '/mcp/nika_tools', '/modes/article', '/modes/feed', '/modes/jq', '/modes/links', '/modes/markdown', '/modes/metadata', '/modes/selector', '/modes/sitemap', '/modes/text', '/namespaces/config', '/namespaces/const', '/namespaces/inputs', '/namespaces/secrets', '/namespaces/tasks', '/namespaces/with', '/permits/env', '/permits/exec', '/permits/fs', '/permits/net', '/permits/tools', '/predicates/failure', '/predicates/skipped', '/predicates/success', '/predicates/terminal', '/providers/anthropic', '/providers/deepseek', '/providers/gemini', '/providers/groq', '/providers/huggingface', '/providers/llamacpp', '/providers/lmstudio', '/providers/localai', '/providers/mistral', '/providers/mock', '/providers/moonshot', '/providers/nvidia', '/providers/ollama', '/providers/openai', '/providers/openrouter', '/providers/vllm', '/providers/xai', '/secrets/env', '/secrets/file', '/secrets/vault', '/truth/canon', '/truth/catalog', '/truth/lens', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/types/bool', '/types/bytes', '/types/duration', '/types/integer', '/types/null', '/types/number', '/types/path', '/types/string', '/types/timestamp', '/types/uri', '/use-cases/bookmark-triage', '/use-cases/ceo-monday-brief', '/use-cases/competitor-radar', '/use-cases/config-drift-sentinel', '/use-cases/contract-guard', '/use-cases/csv-chart-report', '/use-cases/deep-research-brief', '/use-cases/etl-quarantine', '/use-cases/image-fx-batch', '/use-cases/incident-war-room', '/use-cases/invoice-chaser', '/use-cases/localization-factory', '/use-cases/meeting-actions', '/use-cases/model-bench', '/use-cases/og-images', '/use-cases/pr-review-fanout', '/use-cases/price-watch', '/use-cases/release-notes', '/use-cases/release-radar', '/use-cases/release-train', '/use-cases/resume-screener', '/use-cases/seo-content-brief', '/use-cases/social-repurpose', '/use-cases/standup-digest', '/use-cases/support-triage', '/use-cases/transcript-shownotes']
 /* ── LENS PATHS END ── */
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...FAMILY_ROOT_PATHS, ...LENS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+/* the catalog world (D1 · engine-release clock) — hub + registers + one room
+   per model and per MCP server. Slugs derive from the vendored engine
+   surfaces (scripts/build-catalog.mjs → catalog-paths.generated); a model
+   enters by entering the released catalog, never by editing this list. */
+export const CATALOG_PATHS: string[] = [
+  '/catalog',
+  '/catalog/models',
+  ...MODEL_SLUGS.map((s) => `/catalog/models/${s}`),
+  '/catalog/pricing',
+  '/catalog/energy',
+  '/catalog/mcp',
+  ...MCP_SLUGS.map((s) => `/catalog/mcp/${s}`),
+  '/catalog/embeddings',
+  '/catalog/capabilities',
+]
+
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', '/templates', ...TEMPLATE_PATHS, ...LIBRARY_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...LENS_PATHS, '/use-cases', '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

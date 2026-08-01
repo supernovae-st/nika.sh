@@ -18,14 +18,14 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1116
-  file_rows: 100
+  classified_files: 1133
+  file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 761
+    authored: 775
     authored-pin: 3
-    generated: 288
-    pinned-copy: 20
+    generated: 290
+    pinned-copy: 21
     testimonial: 44
     foreign: 0
   unverified-default: 1
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 044b8a283a73261d0e135783e4caaa4bb0862b03d0adf1adbdfd8b6d2ddf7049
+  sha256: a4a9a03f9e392597fa22835ff7ec338c9c1134de07fd5cea59b75316b7d2ac4c
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -171,7 +171,7 @@ files:
   evidence: "hand-written courtesy redirect to docs.nika.sh — bespoke prose comment, NOT the lens stub template"
 - path: "public/engine/PROVENANCE.json"
   class: generated
-  sha256: 0e1596dd54dab725aa3debca47f4724a452c7efa63f020aa5542da2ecd89aed0
+  sha256: 9300254551d33257cf7d9228bbae7c60ea62c30057e27e97db0cd60a4eedd124
   evidence: "the vendoring receipt: source commit+tree from the engine pin + sha256 of every vendored surface (sorted · timestamp-free — same pins, same bytes)"
   derivation:
     tool: "node scripts/engine-resync.mjs --write (fetch BY SHA · verify commit+tree · vendor · receipt)"
@@ -189,6 +189,16 @@ files:
     inputs:
     - ".github/nika-engine-pin.json"
     - "supernovae-st/nika@5d61b7e13f1f (v0.107.0):docs/adr/index.json"
+- path: "public/engine/clients.registry.yaml"
+  class: pinned-copy
+  sha256: 427df0093db46c34187ed481cdac33ead665e530cd58fa704762311696040d5a
+  evidence: "byte-copy of crates/nika-cli-host/data/clients.registry.yaml at the pinned engine release (supernovae-st/nika@5d61b7e13f1f (v0.107.0)) — the client × component coverage matrix (31 doors · kit-native SSOT) the /integrations matrix derives from"
+  derivation:
+    tool: "node scripts/engine-resync.mjs --write"
+    gate: "pnpm check → node scripts/engine-resync.mjs --check (offline digest re-verify of every vendored byte against public/engine/PROVENANCE.json + the pin · exit 5 on drift)"
+    inputs:
+    - ".github/nika-engine-pin.json"
+    - "supernovae-st/nika@5d61b7e13f1f (v0.107.0):crates/nika-cli-host/data/clients.registry.yaml"
 - path: "public/errors/catalog.json"
   class: generated
   sha256: 6c8eec7da1981b6fb8ea3f3b87a99acb49f56d2958ba18537ee22439c559e136
@@ -267,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 979b7ef17f54e7326ab65bd6f2fda26e1023ffac44b73cac7ac5773f34198518
+  sha256: 7343ea7b641dcbafa1a2a4fb28fd1357d608e18937664dae5d80949cde0285da
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -298,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: f6249b54777db48c1947333c0889e9c93b90ba0613c02d8c93f47da5b1cccb71
+  sha256: bf76f6491a8310f7b0008dfad84b25744b386f15e84507769415c1b424317d50
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -460,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 078ad135d60e20c61b743c79fcc87854a1c16eb2aee782ff731c20e90fcbc6b0
+  sha256: db62bb3a8352bdc5978ef86fe25900eb7f5cfdece8861e532d1594240a404b82
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -469,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 28cbb2d9904b2441e5b1c149a6460bc68d125693bd6ad04605f72f6982906bff
+  sha256: e003af57f9b0b5a2444fe200fcf26a9ea8b7e1bf12a363fe8cc4b2dabe925ca2
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -515,7 +525,7 @@ files:
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 0540b128415155b22a41eb0a81a530b1116b4d4294c1123176f8dce04395527e
+  sha256: 4634390f31cfc05e0f43cf83f66ac35be501238bac6d9c55cf2dc7003607380f
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
@@ -860,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: d9844de46816ed29e910d21f069d55163f7286b6c7a782012f720ccd7c1a8ad2
+  aggregate_sha256: 1dfb78172e789f4fab8ec0772e512490e338a22c1e74e3a57e473a602a2a3426
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -915,8 +925,8 @@ patterns:
     - "the release asset supernovae-st-nika-check-wasm-<v>.tgz"
 - glob: "src/**.generated.*"
   class: generated
-  match_count: 29
-  aggregate_sha256: dba91a13ff5506a6cf3e866001d2c879b749b00dc4a1a1a0fd2baa13579cb032
+  match_count: 31
+  aggregate_sha256: 4efbe77bcccd9fb8d2196d56f36dac5382d9f9f938060f69bdc5f41d621c0d28
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -925,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 403
-  aggregate_sha256: 320fde9d33fab108a4dd66870e7621e929fe9a2546c733a70948ab154d3e68b0
+  match_count: 416
+  aggregate_sha256: ca8da7d70705541bd3b98550c0a5cbfe810cb794801922ca2a38d69290ca17a7
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 82
-  aggregate_sha256: 033a80f674422676286e7aaa25da1672cbe0dd556834a68bbe8fff7f2dcb9b52
+  match_count: 83
+  aggregate_sha256: f967d72bcfc56322c9ba87a4725f068eac6f9e159e76f996be52e4c8d451add4
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

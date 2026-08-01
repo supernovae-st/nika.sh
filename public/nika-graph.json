@@ -2718,7 +2718,6 @@
    "clock": "engine-release",
    "count": 13,
    "family": "embedding",
-   "lands": "casse-wave (train 0.107 · the /catalog world · D2)",
    "rooms_exist": false,
    "source": "public/engine/catalog/embeddings.toml"
   },
@@ -2749,17 +2748,15 @@
    "clock": "engine-release",
    "count": 105,
    "family": "mcp-server",
-   "lands": "casse-wave (train 0.107 · the /catalog world · D2)",
-   "rooms_exist": false,
+   "rooms_exist": true,
    "source": "public/engine/catalog/mcp-servers.toml"
   },
   {
    "clock": "engine-release",
    "count": 64,
    "family": "model",
-   "lands": "casse-wave (train 0.107 · the /catalog world · D2)",
    "note": "derived set — the union of wire models; reach/capability facets join at the casse",
-   "rooms_exist": false,
+   "rooms_exist": true,
    "source": "public/engine/catalog/llm-providers.toml"
   },
   {
@@ -2782,7 +2779,6 @@
    "clock": "engine-release",
    "count": 38,
    "family": "provider-market",
-   "lands": "casse-wave (train 0.107 · the /catalog world · D2)",
    "note": "the MARKET catalog — never conflate with the canonical set: each count names its facet",
    "rooms_exist": false,
    "source": "public/engine/catalog/llm-providers.toml"
@@ -5513,14 +5509,14 @@
   {
    "data": {
     "by_class": {
-     "authored": 761,
+     "authored": 775,
      "authored-pin": 3,
      "foreign": 0,
-     "generated": 288,
-     "pinned-copy": 20,
+     "generated": 290,
+     "pinned-copy": 21,
      "testimonial": 44
     },
-    "classified_files": 1116,
+    "classified_files": 1133,
     "unverified": 1
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
@@ -5534,1471 +5530,1471 @@
    "data": {
     "category": "ai",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/21st",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "21st",
-   "url": null
+   "served": true,
+   "title": "21st.dev Magic",
+   "url": "/catalog/mcp/21st"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/ahrefs",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "ahrefs",
-   "url": null
+   "served": true,
+   "title": "Ahrefs",
+   "url": "/catalog/mcp/ahrefs"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/airtable",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "airtable",
-   "url": null
+   "served": true,
+   "title": "Airtable",
+   "url": "/catalog/mcp/airtable"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/alpaca",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "alpaca",
-   "url": null
+   "served": true,
+   "title": "Alpaca",
+   "url": "/catalog/mcp/alpaca"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/apify",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "apify",
-   "url": null
+   "served": true,
+   "title": "Apify",
+   "url": "/catalog/mcp/apify"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/aws",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "aws",
-   "url": null
+   "served": true,
+   "title": "AWS",
+   "url": "/catalog/mcp/aws"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/axiom",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "axiom",
-   "url": null
+   "served": true,
+   "title": "Axiom",
+   "url": "/catalog/mcp/axiom"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/bitbucket",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "bitbucket",
-   "url": null
+   "served": true,
+   "title": "Bitbucket",
+   "url": "/catalog/mcp/bitbucket"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/browserbase",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "browserbase",
-   "url": null
+   "served": true,
+   "title": "Browserbase",
+   "url": "/catalog/mcp/browserbase"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/browserstack",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "browserstack",
-   "url": null
+   "served": true,
+   "title": "BrowserStack",
+   "url": "/catalog/mcp/browserstack"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/chrome-devtools",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "chrome-devtools",
-   "url": null
+   "served": true,
+   "title": "Chrome DevTools",
+   "url": "/catalog/mcp/chrome-devtools"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/circleci",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "circleci",
-   "url": null
+   "served": true,
+   "title": "CircleCI",
+   "url": "/catalog/mcp/circleci"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/clickup",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "clickup",
-   "url": null
+   "served": true,
+   "title": "ClickUp",
+   "url": "/catalog/mcp/clickup"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/cloudflare",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "cloudflare",
-   "url": null
+   "served": true,
+   "title": "Cloudflare",
+   "url": "/catalog/mcp/cloudflare"
   },
   {
    "data": {
     "category": "image",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/comfyui",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "comfyui",
-   "url": null
+   "served": true,
+   "title": "ComfyUI",
+   "url": "/catalog/mcp/comfyui"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/contentful",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "contentful",
-   "url": null
+   "served": true,
+   "title": "Contentful",
+   "url": "/catalog/mcp/contentful"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/context7",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "context7",
-   "url": null
+   "served": true,
+   "title": "Context7",
+   "url": "/catalog/mcp/context7"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/datadog",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "datadog",
-   "url": null
+   "served": true,
+   "title": "Datadog",
+   "url": "/catalog/mcp/datadog"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/dataforseo",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "dataforseo",
-   "url": null
+   "served": true,
+   "title": "DataForSEO",
+   "url": "/catalog/mcp/dataforseo"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/discord",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "discord",
-   "url": null
+   "served": true,
+   "title": "Discord",
+   "url": "/catalog/mcp/discord"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/docker",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "docker",
-   "url": null
+   "served": true,
+   "title": "Docker",
+   "url": "/catalog/mcp/docker"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/dynatrace",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "dynatrace",
-   "url": null
+   "served": true,
+   "title": "Dynatrace",
+   "url": "/catalog/mcp/dynatrace"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/e2b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "e2b",
-   "url": null
+   "served": true,
+   "title": "E2B",
+   "url": "/catalog/mcp/e2b"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/eslint",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "eslint",
-   "url": null
+   "served": true,
+   "title": "ESLint",
+   "url": "/catalog/mcp/eslint"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/exa",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "exa",
-   "url": null
+   "served": true,
+   "title": "Exa",
+   "url": "/catalog/mcp/exa"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/excel",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "excel",
-   "url": null
+   "served": true,
+   "title": "Excel",
+   "url": "/catalog/mcp/excel"
   },
   {
    "data": {
     "category": "image",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/fal",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "fal",
-   "url": null
+   "served": true,
+   "title": "Fal",
+   "url": "/catalog/mcp/fal"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/figma",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "figma",
-   "url": null
+   "served": true,
+   "title": "Figma",
+   "url": "/catalog/mcp/figma"
   },
   {
    "data": {
     "category": "anthropic",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/filesystem",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "filesystem",
-   "url": null
+   "served": true,
+   "title": "Filesystem",
+   "url": "/catalog/mcp/filesystem"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/firecrawl",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "firecrawl",
-   "url": null
+   "served": true,
+   "title": "Firecrawl",
+   "url": "/catalog/mcp/firecrawl"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/ghost",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "ghost",
-   "url": null
+   "served": true,
+   "title": "Ghost",
+   "url": "/catalog/mcp/ghost"
   },
   {
    "data": {
     "category": "marketing",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/google-ads",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "google-ads",
-   "url": null
+   "served": true,
+   "title": "Google Ads",
+   "url": "/catalog/mcp/google-ads"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/google-calendar",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "google-calendar",
-   "url": null
+   "served": true,
+   "title": "Google Calendar",
+   "url": "/catalog/mcp/google-calendar"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/google-drive",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "google-drive",
-   "url": null
+   "served": true,
+   "title": "Google Drive",
+   "url": "/catalog/mcp/google-drive"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/grafana",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "grafana",
-   "url": null
+   "served": true,
+   "title": "Grafana",
+   "url": "/catalog/mcp/grafana"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/heroku",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "heroku",
-   "url": null
+   "served": true,
+   "title": "Heroku",
+   "url": "/catalog/mcp/heroku"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/hubspot",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "hubspot",
-   "url": null
+   "served": true,
+   "title": "HubSpot",
+   "url": "/catalog/mcp/hubspot"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 0,
-    "packages": 0,
-    "remotes": 1
+    "packages": 0
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/intercom",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "intercom",
-   "url": null
+   "served": true,
+   "title": "Intercom",
+   "url": "/catalog/mcp/intercom"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/jira",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "jira",
-   "url": null
+   "served": true,
+   "title": "Jira",
+   "url": "/catalog/mcp/jira"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/kubernetes",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "kubernetes",
-   "url": null
+   "served": true,
+   "title": "Kubernetes",
+   "url": "/catalog/mcp/kubernetes"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/langchain",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "langchain",
-   "url": null
+   "served": true,
+   "title": "Langchain",
+   "url": "/catalog/mcp/langchain"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/launchdarkly",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "launchdarkly",
-   "url": null
+   "served": true,
+   "title": "LaunchDarkly",
+   "url": "/catalog/mcp/launchdarkly"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/linear",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "linear",
-   "url": null
+   "served": true,
+   "title": "Linear",
+   "url": "/catalog/mcp/linear"
   },
   {
    "data": {
     "category": "social",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/linkedin",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "linkedin",
-   "url": null
+   "served": true,
+   "title": "LinkedIn",
+   "url": "/catalog/mcp/linkedin"
   },
   {
    "data": {
     "category": "marketing",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/mailchimp",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "mailchimp",
-   "url": null
+   "served": true,
+   "title": "Mailchimp",
+   "url": "/catalog/mcp/mailchimp"
   },
   {
    "data": {
     "category": "maps",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/mapbox",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "mapbox",
-   "url": null
+   "served": true,
+   "title": "Mapbox",
+   "url": "/catalog/mcp/mapbox"
   },
   {
    "data": {
     "category": "anthropic",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/memory",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "memory",
-   "url": null
+   "served": true,
+   "title": "Memory",
+   "url": "/catalog/mcp/memory"
   },
   {
    "data": {
     "category": "marketing",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/meta-ads",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "meta-ads",
-   "url": null
+   "served": true,
+   "title": "Meta Ads",
+   "url": "/catalog/mcp/meta-ads"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/mixpanel",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "mixpanel",
-   "url": null
+   "served": true,
+   "title": "Mixpanel",
+   "url": "/catalog/mcp/mixpanel"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/monday",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "monday",
-   "url": null
+   "served": true,
+   "title": "Monday",
+   "url": "/catalog/mcp/monday"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/mongodb",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "mongodb",
-   "url": null
+   "served": true,
+   "title": "MongoDB",
+   "url": "/catalog/mcp/mongodb"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/mysql",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "mysql",
-   "url": null
+   "served": true,
+   "title": "MySQL",
+   "url": "/catalog/mcp/mysql"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/n8n",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
+   "served": true,
    "title": "n8n",
-   "url": null
+   "url": "/catalog/mcp/n8n"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/neo4j",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "neo4j",
-   "url": null
+   "served": true,
+   "title": "Neo4j",
+   "url": "/catalog/mcp/neo4j"
   },
   {
    "data": {
     "category": "lifestyle",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/news-api",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "news-api",
-   "url": null
+   "served": true,
+   "title": "NewsAPI",
+   "url": "/catalog/mcp/news-api"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/notion",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "notion",
-   "url": null
+   "served": true,
+   "title": "Notion",
+   "url": "/catalog/mcp/notion"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/nx",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "nx",
-   "url": null
+   "served": true,
+   "title": "Nx",
+   "url": "/catalog/mcp/nx"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/obsidian",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "obsidian",
-   "url": null
+   "served": true,
+   "title": "Obsidian",
+   "url": "/catalog/mcp/obsidian"
   },
   {
    "data": {
     "category": "lifestyle",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/openweather",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "openweather",
-   "url": null
+   "served": true,
+   "title": "OpenWeather",
+   "url": "/catalog/mcp/openweather"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/paypal",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "paypal",
-   "url": null
+   "served": true,
+   "title": "PayPal",
+   "url": "/catalog/mcp/paypal"
   },
   {
    "data": {
     "category": "anthropic",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/pdf",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "pdf",
-   "url": null
+   "served": true,
+   "title": "PDF",
+   "url": "/catalog/mcp/pdf"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/perplexity",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "perplexity",
-   "url": null
+   "served": true,
+   "title": "Perplexity",
+   "url": "/catalog/mcp/perplexity"
   },
   {
    "data": {
     "category": "vectordb",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/pinecone",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "pinecone",
-   "url": null
+   "served": true,
+   "title": "Pinecone",
+   "url": "/catalog/mcp/pinecone"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/plausible",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "plausible",
-   "url": null
+   "served": true,
+   "title": "Plausible",
+   "url": "/catalog/mcp/plausible"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/playwright",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "playwright",
-   "url": null
+   "served": true,
+   "title": "Playwright",
+   "url": "/catalog/mcp/playwright"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/polygon",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "polygon",
-   "url": null
+   "served": true,
+   "title": "Polygon",
+   "url": "/catalog/mcp/polygon"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/postman",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "postman",
-   "url": null
+   "served": true,
+   "title": "Postman",
+   "url": "/catalog/mcp/postman"
   },
   {
    "data": {
     "category": "analytics",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/prometheus",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "prometheus",
-   "url": null
+   "served": true,
+   "title": "Prometheus",
+   "url": "/catalog/mcp/prometheus"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/pulumi",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "pulumi",
-   "url": null
+   "served": true,
+   "title": "Pulumi",
+   "url": "/catalog/mcp/pulumi"
   },
   {
    "data": {
     "category": "vectordb",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/qdrant",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "qdrant",
-   "url": null
+   "served": true,
+   "title": "Qdrant",
+   "url": "/catalog/mcp/qdrant"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/railway",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "railway",
-   "url": null
+   "served": true,
+   "title": "Railway",
+   "url": "/catalog/mcp/railway"
   },
   {
    "data": {
     "category": "lifestyle",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/recipe",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "recipe",
-   "url": null
+   "served": true,
+   "title": "Recipe",
+   "url": "/catalog/mcp/recipe"
   },
   {
    "data": {
     "category": "social",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/reddit",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "reddit",
-   "url": null
+   "served": true,
+   "title": "Reddit",
+   "url": "/catalog/mcp/reddit"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/redis",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "redis",
-   "url": null
+   "served": true,
+   "title": "Redis",
+   "url": "/catalog/mcp/redis"
   },
   {
    "data": {
     "category": "image",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/replicate",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "replicate",
-   "url": null
+   "served": true,
+   "title": "Replicate",
+   "url": "/catalog/mcp/replicate"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/resend",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "resend",
-   "url": null
+   "served": true,
+   "title": "Resend",
+   "url": "/catalog/mcp/resend"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/salesforce",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "salesforce",
-   "url": null
+   "served": true,
+   "title": "Salesforce",
+   "url": "/catalog/mcp/salesforce"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/sanity",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "sanity",
-   "url": null
+   "served": true,
+   "title": "Sanity",
+   "url": "/catalog/mcp/sanity"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/searchapi",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "searchapi",
-   "url": null
+   "served": true,
+   "title": "Searchapi",
+   "url": "/catalog/mcp/searchapi"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/sendgrid",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "sendgrid",
-   "url": null
+   "served": true,
+   "title": "SendGrid",
+   "url": "/catalog/mcp/sendgrid"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/sentry",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "sentry",
-   "url": null
+   "served": true,
+   "title": "Sentry",
+   "url": "/catalog/mcp/sentry"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/sequential-thinking",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "sequential-thinking",
-   "url": null
+   "served": true,
+   "title": "Sequential Thinking",
+   "url": "/catalog/mcp/sequential-thinking"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/serper",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "serper",
-   "url": null
+   "served": true,
+   "title": "Serper",
+   "url": "/catalog/mcp/serper"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/shopify",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "shopify",
-   "url": null
+   "served": true,
+   "title": "Shopify",
+   "url": "/catalog/mcp/shopify"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/slack",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "slack",
-   "url": null
+   "served": true,
+   "title": "Slack",
+   "url": "/catalog/mcp/slack"
   },
   {
    "data": {
     "category": "lifestyle",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/spotify",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "spotify",
-   "url": null
+   "served": true,
+   "title": "Spotify",
+   "url": "/catalog/mcp/spotify"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/strapi",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "strapi",
-   "url": null
+   "served": true,
+   "title": "Strapi",
+   "url": "/catalog/mcp/strapi"
   },
   {
    "data": {
     "category": "ecommerce",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/stripe",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "stripe",
-   "url": null
+   "served": true,
+   "title": "Stripe",
+   "url": "/catalog/mcp/stripe"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/supabase",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "supabase",
-   "url": null
+   "served": true,
+   "title": "Supabase",
+   "url": "/catalog/mcp/supabase"
   },
   {
    "data": {
     "category": "ai",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/supadata",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "supadata",
-   "url": null
+   "served": true,
+   "title": "Supadata",
+   "url": "/catalog/mcp/supadata"
   },
   {
    "data": {
     "category": "search",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/tavily",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "tavily",
-   "url": null
+   "served": true,
+   "title": "Tavily",
+   "url": "/catalog/mcp/tavily"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/telegram",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "telegram",
-   "url": null
+   "served": true,
+   "title": "Telegram",
+   "url": "/catalog/mcp/telegram"
   },
   {
    "data": {
     "category": "devops",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/terraform",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "terraform",
-   "url": null
+   "served": true,
+   "title": "Terraform",
+   "url": "/catalog/mcp/terraform"
   },
   {
    "data": {
     "category": "social",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/tiktok",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "tiktok",
-   "url": null
+   "served": true,
+   "title": "TikTok",
+   "url": "/catalog/mcp/tiktok"
   },
   {
    "data": {
     "category": "vectordb",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/turbopuffer",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "turbopuffer",
-   "url": null
+   "served": true,
+   "title": "Turbopuffer",
+   "url": "/catalog/mcp/turbopuffer"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/turso",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "turso",
-   "url": null
+   "served": true,
+   "title": "Turso",
+   "url": "/catalog/mcp/turso"
   },
   {
    "data": {
     "category": "communication",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/twilio",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "twilio",
-   "url": null
+   "served": true,
+   "title": "Twilio",
+   "url": "/catalog/mcp/twilio"
   },
   {
    "data": {
     "category": "social",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/twitter",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "twitter",
-   "url": null
+   "served": true,
+   "title": "Twitter",
+   "url": "/catalog/mcp/twitter"
   },
   {
    "data": {
     "category": "databases",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/upstash",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "upstash",
-   "url": null
+   "served": true,
+   "title": "Upstash",
+   "url": "/catalog/mcp/upstash"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/vercel",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "vercel",
-   "url": null
+   "served": true,
+   "title": "Vercel",
+   "url": "/catalog/mcp/vercel"
   },
   {
    "data": {
     "category": "lifestyle",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/wolfram",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "wolfram",
-   "url": null
+   "served": true,
+   "title": "Wolfram",
+   "url": "/catalog/mcp/wolfram"
   },
   {
    "data": {
     "category": "cms",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/wordpress",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "wordpress",
-   "url": null
+   "served": true,
+   "title": "Wordpress",
+   "url": "/catalog/mcp/wordpress"
   },
   {
    "data": {
     "category": "developer",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/xcode",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "xcode",
-   "url": null
+   "served": true,
+   "title": "Xcode",
+   "url": "/catalog/mcp/xcode"
   },
   {
    "data": {
     "category": "social",
     "env_vars": 0,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/youtube",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "youtube",
-   "url": null
+   "served": true,
+   "title": "YouTube",
+   "url": "/catalog/mcp/youtube"
   },
   {
    "data": {
     "category": "productivity",
     "env_vars": 1,
-    "packages": 1,
-    "remotes": 0
+    "packages": 1
    },
-   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/remotes/env_vars counted from the row)",
+   "evidence": "mcp-servers.toml [[servers]] row (registry.modelcontextprotocol.io-aligned · packages/env_vars counted from the row)",
    "family": "mcp-server",
    "id": "mcp-server/zendesk",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/mcp-servers.toml",
-   "title": "zendesk",
-   "url": null
+   "served": true,
+   "title": "Zendesk",
+   "url": "/catalog/mcp/zendesk"
   },
   {
    "data": {
@@ -7010,8 +7006,9 @@
    "family": "model",
    "id": "model/@cf/meta/llama-3.1-8b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "@cf/meta/llama-3.1-8b-instruct",
-   "url": null
+   "url": "/catalog/models/cf-meta-llama-3.1-8b-instruct"
   },
   {
    "data": {
@@ -7023,8 +7020,9 @@
    "family": "model",
    "id": "model/@cf/meta/llama-3.3-70b-instruct-fp8-fast",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-   "url": null
+   "url": "/catalog/models/cf-meta-llama-3.3-70b-instruct-fp8-fast"
   },
   {
    "data": {
@@ -7036,8 +7034,9 @@
    "family": "model",
    "id": "model/Meta-Llama-3.1-8B-Instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "Meta-Llama-3.1-8B-Instruct",
-   "url": null
+   "url": "/catalog/models/meta-llama-3.1-8b-instruct"
   },
   {
    "data": {
@@ -7049,8 +7048,9 @@
    "family": "model",
    "id": "model/Meta-Llama-3.3-70B-Instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "Meta-Llama-3.3-70B-Instruct",
-   "url": null
+   "url": "/catalog/models/meta-llama-3.3-70b-instruct"
   },
   {
    "data": {
@@ -7062,8 +7062,9 @@
    "family": "model",
    "id": "model/MiniMax-M2",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "MiniMax-M2",
-   "url": null
+   "url": "/catalog/models/minimax-m2"
   },
   {
    "data": {
@@ -7075,8 +7076,9 @@
    "family": "model",
    "id": "model/MiniMax-VL-01",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "MiniMax-VL-01",
-   "url": null
+   "url": "/catalog/models/minimax-vl-01"
   },
   {
    "data": {
@@ -7089,8 +7091,9 @@
    "family": "model",
    "id": "model/Qwen/Qwen3-8B",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "Qwen/Qwen3-8B",
-   "url": null
+   "url": "/catalog/models/qwen-qwen3-8b"
   },
   {
    "data": {
@@ -7102,8 +7105,9 @@
    "family": "model",
    "id": "model/Qwen/Qwen3.5-397B-A17B:fastest",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "Qwen/Qwen3.5-397B-A17B:fastest",
-   "url": null
+   "url": "/catalog/models/qwen-qwen3.5-397b-a17b-fastest"
   },
   {
    "data": {
@@ -7115,8 +7119,9 @@
    "family": "model",
    "id": "model/Qwen/Qwen3.5-9B:cheapest",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "Qwen/Qwen3.5-9B:cheapest",
-   "url": null
+   "url": "/catalog/models/qwen-qwen3.5-9b-cheapest"
   },
   {
    "data": {
@@ -7128,8 +7133,9 @@
    "family": "model",
    "id": "model/accounts/fireworks/models/llama-v3p1-8b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "accounts/fireworks/models/llama-v3p1-8b-instruct",
-   "url": null
+   "url": "/catalog/models/accounts-fireworks-models-llama-v3p1-8b-instruct"
   },
   {
    "data": {
@@ -7141,8 +7147,9 @@
    "family": "model",
    "id": "model/accounts/fireworks/models/llama-v3p3-70b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-   "url": null
+   "url": "/catalog/models/accounts-fireworks-models-llama-v3p3-70b-instruct"
   },
   {
    "data": {
@@ -7154,8 +7161,9 @@
    "family": "model",
    "id": "model/anthropic.claude-haiku-4-5-20251001-v1:0",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "anthropic.claude-haiku-4-5-20251001-v1:0",
-   "url": null
+   "url": "/catalog/models/anthropic.claude-haiku-4-5-20251001-v1-0"
   },
   {
    "data": {
@@ -7167,8 +7175,9 @@
    "family": "model",
    "id": "model/anthropic.claude-sonnet-4-20250514-v1:0",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "anthropic.claude-sonnet-4-20250514-v1:0",
-   "url": null
+   "url": "/catalog/models/anthropic.claude-sonnet-4-20250514-v1-0"
   },
   {
    "data": {
@@ -7180,8 +7189,9 @@
    "family": "model",
    "id": "model/anthropic/claude-haiku-4-5-20251001",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "anthropic/claude-haiku-4-5-20251001",
-   "url": null
+   "url": "/catalog/models/anthropic-claude-haiku-4-5-20251001"
   },
   {
    "data": {
@@ -7193,8 +7203,9 @@
    "family": "model",
    "id": "model/anthropic/claude-sonnet-4-20250514",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "anthropic/claude-sonnet-4-20250514",
-   "url": null
+   "url": "/catalog/models/anthropic-claude-sonnet-4-20250514"
   },
   {
    "data": {
@@ -7206,8 +7217,9 @@
    "family": "model",
    "id": "model/claude-haiku-4-5-20251001",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "claude-haiku-4-5-20251001",
-   "url": null
+   "url": "/catalog/models/claude-haiku-4-5-20251001"
   },
   {
    "data": {
@@ -7219,8 +7231,9 @@
    "family": "model",
    "id": "model/claude-sonnet-4-20250514",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "claude-sonnet-4-20250514",
-   "url": null
+   "url": "/catalog/models/claude-sonnet-4-20250514"
   },
   {
    "data": {
@@ -7232,8 +7245,9 @@
    "family": "model",
    "id": "model/command-r",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "command-r",
-   "url": null
+   "url": "/catalog/models/command-r"
   },
   {
    "data": {
@@ -7245,8 +7259,9 @@
    "family": "model",
    "id": "model/command-r-plus",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "command-r-plus",
-   "url": null
+   "url": "/catalog/models/command-r-plus"
   },
   {
    "data": {
@@ -7258,8 +7273,9 @@
    "family": "model",
    "id": "model/databricks-meta-llama-3-1-70b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "databricks-meta-llama-3-1-70b-instruct",
-   "url": null
+   "url": "/catalog/models/databricks-meta-llama-3-1-70b-instruct"
   },
   {
    "data": {
@@ -7271,8 +7287,9 @@
    "family": "model",
    "id": "model/deepseek-chat",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "deepseek-chat",
-   "url": null
+   "url": "/catalog/models/deepseek-chat"
   },
   {
    "data": {
@@ -7285,8 +7302,9 @@
    "family": "model",
    "id": "model/default",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "default",
-   "url": null
+   "url": "/catalog/models/default"
   },
   {
    "data": {
@@ -7299,8 +7317,9 @@
    "family": "model",
    "id": "model/gemini-2.0-flash",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gemini-2.0-flash",
-   "url": null
+   "url": "/catalog/models/gemini-2.0-flash"
   },
   {
    "data": {
@@ -7313,8 +7332,9 @@
    "family": "model",
    "id": "model/gemini-2.5-flash",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gemini-2.5-flash",
-   "url": null
+   "url": "/catalog/models/gemini-2.5-flash"
   },
   {
    "data": {
@@ -7326,8 +7346,9 @@
    "family": "model",
    "id": "model/glm-4-flash",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "glm-4-flash",
-   "url": null
+   "url": "/catalog/models/glm-4-flash"
   },
   {
    "data": {
@@ -7339,8 +7360,9 @@
    "family": "model",
    "id": "model/glm-4.5",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "glm-4.5",
-   "url": null
+   "url": "/catalog/models/glm-4.5"
   },
   {
    "data": {
@@ -7352,8 +7374,9 @@
    "family": "model",
    "id": "model/gpt-4o",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gpt-4o",
-   "url": null
+   "url": "/catalog/models/gpt-4o"
   },
   {
    "data": {
@@ -7365,8 +7388,9 @@
    "family": "model",
    "id": "model/gpt-4o-mini",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gpt-4o-mini",
-   "url": null
+   "url": "/catalog/models/gpt-4o-mini"
   },
   {
    "data": {
@@ -7378,8 +7402,9 @@
    "family": "model",
    "id": "model/gpt-5-mini",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gpt-5-mini",
-   "url": null
+   "url": "/catalog/models/gpt-5-mini"
   },
   {
    "data": {
@@ -7391,8 +7416,9 @@
    "family": "model",
    "id": "model/gpt-5.2",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "gpt-5.2",
-   "url": null
+   "url": "/catalog/models/gpt-5.2"
   },
   {
    "data": {
@@ -7404,8 +7430,9 @@
    "family": "model",
    "id": "model/grok-3",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "grok-3",
-   "url": null
+   "url": "/catalog/models/grok-3"
   },
   {
    "data": {
@@ -7417,8 +7444,9 @@
    "family": "model",
    "id": "model/grok-3-mini-fast",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "grok-3-mini-fast",
-   "url": null
+   "url": "/catalog/models/grok-3-mini-fast"
   },
   {
    "data": {
@@ -7430,8 +7458,9 @@
    "family": "model",
    "id": "model/jamba-1.5-large",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "jamba-1.5-large",
-   "url": null
+   "url": "/catalog/models/jamba-1.5-large"
   },
   {
    "data": {
@@ -7443,8 +7472,9 @@
    "family": "model",
    "id": "model/jamba-1.5-mini",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "jamba-1.5-mini",
-   "url": null
+   "url": "/catalog/models/jamba-1.5-mini"
   },
   {
    "data": {
@@ -7456,8 +7486,9 @@
    "family": "model",
    "id": "model/kimi-k2",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "kimi-k2",
-   "url": null
+   "url": "/catalog/models/kimi-k2"
   },
   {
    "data": {
@@ -7469,8 +7500,9 @@
    "family": "model",
    "id": "model/kimi-k2.5",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "kimi-k2.5",
-   "url": null
+   "url": "/catalog/models/kimi-k2.5"
   },
   {
    "data": {
@@ -7482,8 +7514,9 @@
    "family": "model",
    "id": "model/llama-3.1-8b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "llama-3.1-8b",
-   "url": null
+   "url": "/catalog/models/llama-3.1-8b"
   },
   {
    "data": {
@@ -7495,8 +7528,9 @@
    "family": "model",
    "id": "model/llama-3.1-8b-instant",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "llama-3.1-8b-instant",
-   "url": null
+   "url": "/catalog/models/llama-3.1-8b-instant"
   },
   {
    "data": {
@@ -7508,8 +7542,9 @@
    "family": "model",
    "id": "model/llama-3.3-70b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "llama-3.3-70b",
-   "url": null
+   "url": "/catalog/models/llama-3.3-70b"
   },
   {
    "data": {
@@ -7521,8 +7556,9 @@
    "family": "model",
    "id": "model/llama-3.3-70b-versatile",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "llama-3.3-70b-versatile",
-   "url": null
+   "url": "/catalog/models/llama-3.3-70b-versatile"
   },
   {
    "data": {
@@ -7534,8 +7570,9 @@
    "family": "model",
    "id": "model/llama3.2:3b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "llama3.2:3b",
-   "url": null
+   "url": "/catalog/models/llama3.2-3b"
   },
   {
    "data": {
@@ -7547,8 +7584,9 @@
    "family": "model",
    "id": "model/meta-llama/Llama-3.1-8B-Instruct-Turbo",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta-llama/Llama-3.1-8B-Instruct-Turbo",
-   "url": null
+   "url": "/catalog/models/meta-llama-llama-3.1-8b-instruct-turbo"
   },
   {
    "data": {
@@ -7560,8 +7598,9 @@
    "family": "model",
    "id": "model/meta-llama/Llama-3.3-70B-Instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta-llama/Llama-3.3-70B-Instruct",
-   "url": null
+   "url": "/catalog/models/meta-llama-llama-3.3-70b-instruct"
   },
   {
    "data": {
@@ -7573,8 +7612,9 @@
    "family": "model",
    "id": "model/meta-llama/Llama-3.3-70B-Instruct-Turbo",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-   "url": null
+   "url": "/catalog/models/meta-llama-llama-3.3-70b-instruct-turbo"
   },
   {
    "data": {
@@ -7586,8 +7626,9 @@
    "family": "model",
    "id": "model/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-   "url": null
+   "url": "/catalog/models/meta-llama-llama-4-maverick-17b-128e-instruct-fp8"
   },
   {
    "data": {
@@ -7599,8 +7640,9 @@
    "family": "model",
    "id": "model/meta-llama/Meta-Llama-3.1-8B-Instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-   "url": null
+   "url": "/catalog/models/meta-llama-meta-llama-3.1-8b-instruct"
   },
   {
    "data": {
@@ -7612,8 +7654,9 @@
    "family": "model",
    "id": "model/meta/llama-3.1-70b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta/llama-3.1-70b-instruct",
-   "url": null
+   "url": "/catalog/models/meta-llama-3.1-70b-instruct"
   },
   {
    "data": {
@@ -7625,8 +7668,9 @@
    "family": "model",
    "id": "model/meta/meta-llama-3-70b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta/meta-llama-3-70b-instruct",
-   "url": null
+   "url": "/catalog/models/meta-meta-llama-3-70b-instruct"
   },
   {
    "data": {
@@ -7638,8 +7682,9 @@
    "family": "model",
    "id": "model/meta/meta-llama-3-8b-instruct",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "meta/meta-llama-3-8b-instruct",
-   "url": null
+   "url": "/catalog/models/meta-meta-llama-3-8b-instruct"
   },
   {
    "data": {
@@ -7651,8 +7696,9 @@
    "family": "model",
    "id": "model/mistral-large-latest",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "mistral-large-latest",
-   "url": null
+   "url": "/catalog/models/mistral-large-latest"
   },
   {
    "data": {
@@ -7664,8 +7710,9 @@
    "family": "model",
    "id": "model/mistral-small-latest",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "mistral-small-latest",
-   "url": null
+   "url": "/catalog/models/mistral-small-latest"
   },
   {
    "data": {
@@ -7677,8 +7724,9 @@
    "family": "model",
    "id": "model/mock-default",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "mock-default",
-   "url": null
+   "url": "/catalog/models/mock-default"
   },
   {
    "data": {
@@ -7690,8 +7738,9 @@
    "family": "model",
    "id": "model/nvidia/nemotron-3-nano-30b-a3b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "nvidia/nemotron-3-nano-30b-a3b",
-   "url": null
+   "url": "/catalog/models/nvidia-nemotron-3-nano-30b-a3b"
   },
   {
    "data": {
@@ -7703,8 +7752,9 @@
    "family": "model",
    "id": "model/nvidia/nemotron-3-super-120b-a12b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "nvidia/nemotron-3-super-120b-a12b",
-   "url": null
+   "url": "/catalog/models/nvidia-nemotron-3-super-120b-a12b"
   },
   {
    "data": {
@@ -7716,8 +7766,9 @@
    "family": "model",
    "id": "model/palmyra-x-004",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "palmyra-x-004",
-   "url": null
+   "url": "/catalog/models/palmyra-x-004"
   },
   {
    "data": {
@@ -7729,8 +7780,9 @@
    "family": "model",
    "id": "model/qwen-max",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "qwen-max",
-   "url": null
+   "url": "/catalog/models/qwen-max"
   },
   {
    "data": {
@@ -7742,8 +7794,9 @@
    "family": "model",
    "id": "model/qwen-turbo",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "qwen-turbo",
-   "url": null
+   "url": "/catalog/models/qwen-turbo"
   },
   {
    "data": {
@@ -7755,8 +7808,9 @@
    "family": "model",
    "id": "model/qwen-vl-plus",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "qwen-vl-plus",
-   "url": null
+   "url": "/catalog/models/qwen-vl-plus"
   },
   {
    "data": {
@@ -7768,8 +7822,9 @@
    "family": "model",
    "id": "model/qwen3.5-4b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "qwen3.5-4b",
-   "url": null
+   "url": "/catalog/models/qwen3.5-4b"
   },
   {
    "data": {
@@ -7781,8 +7836,9 @@
    "family": "model",
    "id": "model/qwen3.5:4b",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "qwen3.5:4b",
-   "url": null
+   "url": "/catalog/models/qwen3.5-4b~2"
   },
   {
    "data": {
@@ -7794,8 +7850,9 @@
    "family": "model",
    "id": "model/sonar",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "sonar",
-   "url": null
+   "url": "/catalog/models/sonar"
   },
   {
    "data": {
@@ -7807,8 +7864,9 @@
    "family": "model",
    "id": "model/sonar-pro",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "sonar-pro",
-   "url": null
+   "url": "/catalog/models/sonar-pro"
   },
   {
    "data": {
@@ -7820,8 +7878,9 @@
    "family": "model",
    "id": "model/voyage-3-large",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "voyage-3-large",
-   "url": null
+   "url": "/catalog/models/voyage-3-large"
   },
   {
    "data": {
@@ -7833,8 +7892,9 @@
    "family": "model",
    "id": "model/voyage-3-lite",
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
+   "served": true,
    "title": "voyage-3-lite",
-   "url": null
+   "url": "/catalog/models/voyage-3-lite"
   },
   {
    "data": {

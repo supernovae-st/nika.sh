@@ -8,11 +8,19 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrIntegrations, loadIntegrations } from '../lib/integrations-access'
 import { INTEGRATION_TABS } from '../content/integrations-tabs'
 import type { IntegrationEntry } from '../content/integrations'
+import { CATALOG_COUNTS, CATALOG_ENGINE } from '../content/catalog-paths.generated'
+import { useCatalogCargo } from './catalog-lib'
+import type { ClientDoor } from '../content/catalog.generated'
+
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './providers-page.css'
+
+/* the authored rooms that exist today — a matrix row links its room when one
+   is authored, and stays a plain row when not (never a dead link) */
+const INTEGRATION_ROOM_IDS = new Set(INTEGRATION_TABS.map((t) => t.id))
 
 /* ─── /integrations · get Nika into your stack (theme-dark) ───────────────────
    Named for how people actually search (Ahrefs 2026-07-24: « claude
@@ -41,6 +49,10 @@ export function Component() {
     },
   )
   const cargo = useMemo(() => (payload ? (JSON.parse(payload) as Cargo) : null), [payload])
+  /* the 31-door matrix rides its own island (register-diet law) */
+  const { payload: doorsPayload, data: doors } = useCatalogCargo<ClientDoor[]>('int-doors-cargo', (m) => [
+    ...m.CLIENTS,
+  ])
   const clients = cargo?.list.filter((e) => e.kind === 'client') ?? []
   const surfaces = cargo?.list.filter((e) => e.kind === 'surface') ?? []
   const clientCount = INTEGRATION_TABS.filter((t) => t.kind === 'client').length
@@ -86,6 +98,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="int-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <Island id="int-hub" payload={payload ?? ''} />
+          <Island id="int-doors-cargo" payload={doorsPayload} />
           <p className="v4sec-fig" data-rise>
             the integrations
           </p>
@@ -100,12 +113,62 @@ export function Component() {
 
           <StampStrip
             items={[
-              { n: clientCount, label: 'client lanes', sub: 'agent · editor · MCP' },
-              { n: surfaceCount, label: 'public repos', sub: 'the reference wing' },
+              { n: CATALOG_COUNTS.clients, label: 'client doors', sub: 'the coverage matrix' },
+              { n: CATALOG_COUNTS.clients_proven, label: 'proven live', sub: 'version pair + check line' },
               { n: 'v1', label: 'one envelope', sub: 'the same file everywhere' },
               { n: 'read-only', label: 'the oracle', sub: 'agents audit before they spend' },
             ]}
           />
+
+          {/* ── choose your client · the 31-door matrix (kit-native SSOT) ──
+              Derived from the engine's clients registry at the release pin —
+              statuses honest (proven > wired > recon), no silent caps: a
+              missing surface in the registry carries a reason there. */}
+          <div className="td-sec int-kit" data-rise style={{ ['--rise-delay' as string]: '150ms' }}>
+            <div className="cl-year-head">
+              <h2 id="int-doors" className="td-h2">
+                choose your client
+              </h2>
+              <span className="cl-year-rule" aria-hidden />
+              <span className="cl-year-count">
+                {CATALOG_COUNTS.clients} doors · one kit · vendored at {CATALOG_ENGINE.release_tag}
+              </span>
+            </div>
+            <p className="td-gloss">
+              The kit ships once; every client below loads it through its own door — a native
+              marketplace, the Claude layout unported, or <code>nika wire</code> writing the
+              client's real config. Proven means a live fiche: version pair plus a deterministic
+              check line, never a claim.
+            </p>
+            <ol className="tp-list">
+              {(doors ?? []).map((c) => {
+                const room = INTEGRATION_ROOM_IDS.has(c.id) ? `/integrations/${c.id}` : null
+                return (
+                  <li key={c.id} className="tp-row" id={`door-${c.id}`}>
+                    <div className="pv-row-head">
+                      {room ? (
+                        <Link className="pv-id" to={room}>
+                          {c.name}
+                        </Link>
+                      ) : (
+                        <span className="pv-id">{c.name}</span>
+                      )}
+                      <span className="tp-cat">
+                        {c.status}
+                        {c.wire ? ` · nika wire ${c.wire}` : ''}
+                        {c.class === 'A' ? ' · native plugin' : ''}
+                      </span>
+                    </div>
+                    {c.install && (
+                      <p className="pv-desc">
+                        <code>{c.install}</code>
+                      </p>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
 
           {/* ── the full kit · all three lanes in one sitting ── */}
           <div className="td-sec int-kit" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>

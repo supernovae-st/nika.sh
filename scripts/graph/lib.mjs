@@ -27,6 +27,26 @@ export const sha256 = (s) => createHash('sha256').update(s).digest('hex')
  *  LC_ALL=C.UTF-8 against — refuter finding 2026-08-01). */
 export const byCp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
 
+/** ONE slug law for catalog ids (models · MCP servers), shared by the graph
+ *  compiler AND the /catalog projection so their urls can never diverge:
+ *  lowercase · anything outside [a-z0-9.] folds to '-' · collapsed · trimmed
+ *  · collisions dedupe '~2','~3'… in the caller's (codepoint-sorted) order. */
+export function slugRegistry() {
+  const taken = new Set()
+  return (id) => {
+    let s = id.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
+    if (!s) s = 'x'
+    let out = s
+    let n = 1
+    while (taken.has(out)) {
+      n += 1
+      out = `${s}~${n}`
+    }
+    taken.add(out)
+    return out
+  }
+}
+
 /** Deterministic JSON: keys sorted at every depth, 1-space indent, LF. */
 export function stableStringify(value) {
   const sort = (v) => {
@@ -148,6 +168,13 @@ export function pathsCensus() {
   const pending = read('pending-error-codes.ts')
   const pm = pending.match(/PENDING_ERROR_CODES[^=]*=\s*(\[[^\]]*\])/)
   const PENDING_ERROR_CODES = pm ? Function(`return ${pm[1]}`)() : []
+  const cat = read('src/content/catalog-paths.generated.ts')
+  const slugBlock = (name) => {
+    const m = cat.match(new RegExp(`${name}: string\\[\\] = (\\[[^\\]]*\\])`, 's'))
+    return m ? JSON.parse(m[1]) : []
+  }
+  const MODEL_SLUGS = slugBlock('MODEL_SLUGS')
+  const MCP_SLUGS = slugBlock('MCP_SLUGS')
   const body = cfg
     .replace(/^import[^\n]*$/gm, '')
     .replace(/^export \{ PENDING_ERROR_CODES \}[^\n]*$/m, '')
@@ -156,7 +183,9 @@ export function pathsCensus() {
   const out = Function(
     'ERROR_CODES',
     'PENDING_ERROR_CODES',
+    'MODEL_SLUGS',
+    'MCP_SLUGS',
     `${body}; return PATHS;`,
-  )(ERROR_CODES, PENDING_ERROR_CODES)
+  )(ERROR_CODES, PENDING_ERROR_CODES, MODEL_SLUGS, MCP_SLUGS)
   return new Set(out)
 }

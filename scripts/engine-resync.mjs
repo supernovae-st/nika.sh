@@ -39,6 +39,7 @@ const SURFACES = [
   ['crates/nika-catalog/data/model-pricing.toml', 'catalog/model-pricing.toml'],
   ['crates/nika-catalog/data/model-capabilities.toml', 'catalog/model-capabilities.toml'],
   ['crates/nika-catalog/data/embeddings.toml', 'catalog/embeddings.toml'],
+  ['crates/nika-cli-host/data/clients.registry.yaml', 'clients.registry.yaml'],
   ['docs/adr/index.json', 'adr/index.json'],
 ]
 
