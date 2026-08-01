@@ -18,13 +18,13 @@ import './tools-page.css'
 import './tool-detail.css'
 import './providers-page.css'
 
-/* the authored rooms that exist today — a matrix row links its room when one
+/* the authored rooms that exist today · a matrix row links its room when one
    is authored, and stays a plain row when not (never a dead link) */
 const INTEGRATION_ROOM_IDS = new Set(INTEGRATION_TABS.map((t) => t.id))
 
 /* ─── /integrations · get Nika into your stack (theme-dark) ───────────────────
    Named for how people actually search (Ahrefs 2026-07-24: « claude
-   skills » · « mcp server » · « claude code plugins » — nobody types
+   skills » · « mcp server » · « claude code plugins » · nobody types
    « ecosystem »), organized for how people actually install: BY CLIENT
    first (Claude Code · Codex · Cursor · VS Code · Hermes · any MCP
    client), the full kit for someone with all three lanes, then the
@@ -94,7 +94,7 @@ export function Component() {
 
   return (
     <main className="theme-dark tp-page td-page">
-      {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
+      {/* v4-in baked in the prerendered HTML · the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="int-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <Island id="int-hub" payload={payload ?? ''} />
@@ -121,7 +121,7 @@ export function Component() {
           />
 
           {/* ── choose your client · the 31-door matrix (kit-native SSOT) ──
-              Derived from the engine's clients registry at the release pin —
+              Derived from the engine's clients registry at the release pin ·
               statuses honest (proven > wired > recon), no silent caps: a
               missing surface in the registry carries a reason there. */}
           <div className="td-sec int-kit" data-rise style={{ ['--rise-delay' as string]: '150ms' }}>
@@ -135,7 +135,7 @@ export function Component() {
               </span>
             </div>
             <p className="td-gloss">
-              The kit ships once; every client below loads it through its own door — a native
+              The kit ships once; every client below loads it through its own door · a native
               marketplace, the Claude layout unported, or <code>nika wire</code> writing the
               client's real config. Proven means a live fiche: version pair plus a deterministic
               check line, never a claim.

@@ -200,7 +200,7 @@ export const SITE_MAP: MapGroup[] = [
     kick: 'the catalog',
     gloss: 'what the released binary knows · vendored at the engine pin, digest-verified',
     links: [
-      { label: 'The catalog', href: '/catalog', hint: 'models · pricing · energy · MCP · embeddings — every count derived' },
+      { label: 'The catalog', href: '/catalog', hint: 'models · pricing · energy · MCP · embeddings · every count derived' },
       { label: 'Models', href: '/catalog/models', hint: 'one room per model: seats, price, energy' },
       { label: 'Pricing', href: '/catalog/pricing', hint: 'the rule table the audit reads' },
       { label: 'Energy', href: '/catalog/energy', hint: 'measured Wh/Mtok · provenance verbatim' },

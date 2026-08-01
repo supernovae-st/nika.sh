@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "3b69ab818f3444cee0620569c8a28725db6d21f6192343e4ac59457e07f3cbac"
+   "sha256": "e0c9ba79a6745fbc2c30100cfbf8f2ef1cafc109d02223b04f0da31fcf4db484"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",

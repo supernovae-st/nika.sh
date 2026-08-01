@@ -12,7 +12,7 @@ import { loadCatalog, ssrCatalog } from '../lib/catalog-access'
 type CatalogModule = typeof import('../content/catalog.generated')
 
 /** the page's slice of the heavy catalog, via the island (SSR bytes first,
-    the async chunk on the client) — pick must return JSON-serializable data */
+    the async chunk on the client) · pick must return JSON-serializable data */
 export function useCatalogCargo<T>(id: string, pick: (m: CatalogModule) => T): { payload: string; data: T | null } {
   const payload = useIslandPayload(
     id,
@@ -42,15 +42,15 @@ export function useCatalogHead(path: string, titleHead: string, description: str
   })
 }
 
-/** tokens → a compact human figure (128000 → 128k · 1048576 → 1m) */
+import { fmtTokens as fmtTokensBase } from './providers-shared'
+
+/** tokens → a compact figure, absent = '·' (ONE producer: providers-shared
+    computes; this façade only supplies the honest-dot for missing values) */
 export function fmtTokens(n: number | null | undefined): string {
-  if (n == null) return '·'
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 ? 1 : 0)}m`
-  if (n >= 1_000) return `${Math.round(n / 1_000)}k`
-  return String(n)
+  return fmtTokensBase(n ?? undefined) ?? '·'
 }
 
-/** USD per 1M tokens — the honest empty is a dot, never a zero */
+/** USD per 1M tokens · the honest empty is a dot, never a zero */
 export function fmtUsd(n: number | null | undefined): string {
   if (n == null) return '·'
   return `$${n}`

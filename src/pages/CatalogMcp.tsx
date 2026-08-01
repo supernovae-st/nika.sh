@@ -1,5 +1,5 @@
 /* ─── /catalog/mcp · the MCP server register (engine-release clock) ──────────
-   The tool servers the binary can wire — aligned to the upstream MCP
+   The tool servers the binary can wire · aligned to the upstream MCP
    registry, one room each. NOT the oracle: these are the third-party
    servers a workflow can invoke, not the site's own 9 tools. */
 import { Link } from 'react-router'
@@ -10,7 +10,7 @@ import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 
 type Row = { id: string; slug: string; category: string | null; pricing: string | null; env: number; desc: string | null }
 
-const DESC = `The ${CATALOG_COUNTS.mcp_servers} MCP servers the released binary's catalog names — registry-aligned, packages and env vars declared, one room each.`
+const DESC = `The ${CATALOG_COUNTS.mcp_servers} MCP servers the released binary's catalog names · registry-aligned, packages and env vars declared, one room each.`
 
 export function Component() {
   useCatalogHead('/catalog/mcp', 'MCP servers', DESC)
@@ -33,7 +33,7 @@ export function Component() {
         <>
           Registry-aligned MCP servers, vendored with the release: what each one does, how it
           installs, which env vars it takes. In a workflow they answer to{' '}
-          <code>invoke: "mcp:&lt;server&gt;.&lt;tool&gt;"</code> — the boundary still decides what
+          <code>invoke: "mcp:&lt;server&gt;.&lt;tool&gt;"</code> · the boundary still decides what
           runs.
         </>
       }

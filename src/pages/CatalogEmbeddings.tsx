@@ -1,6 +1,6 @@
 /* ─── /catalog/embeddings · vector compatibility as compile-time fact ────────
    The embedding models the released binary names: dimensions, windows,
-   similarity metric, price — the whole table on one honest page. */
+   similarity metric, price · the whole table on one honest page. */
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
@@ -14,7 +14,7 @@ type Row = {
   input_per_million: number | null
 }
 
-const DESC = `The ${CATALOG_COUNTS.embeddings} embedding models the released binary's catalog carries — dimensions, input windows, similarity metrics and price per million input tokens.`
+const DESC = `The ${CATALOG_COUNTS.embeddings} embedding models the released binary's catalog carries · dimensions, input windows, similarity metrics and price per million input tokens.`
 
 export function Component() {
   useCatalogHead('/catalog/embeddings', 'Embeddings', DESC)

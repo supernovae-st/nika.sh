@@ -41,6 +41,8 @@ const ALLOWED: Record<string, string> = {
     'a name collision, not a duplicate: blog-render interpolates markdown, i18n-inline interpolates locale copy',
   SectionHead:
     'a name collision, not a duplicate: components/SectionHead is the v4sec masthead, ToolPage has a local cl-year-head row',
+  fmtTokens:
+    'a façade, not a re-computation: catalog-lib DELEGATES to providers-shared (the one producer) and only supplies the honest-dot for absent values — the catalog rows render · where providers-shared returns undefined',
 }
 
 const files: string[] = []

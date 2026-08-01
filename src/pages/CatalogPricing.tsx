@@ -1,5 +1,5 @@
 /* ─── /catalog/pricing · the full rule table (engine-release clock) ──────────
-   All the rules, grouped by provider — the table `nika audit` prices against.
+   All the rules, grouped by provider · the table `nika audit` prices against.
    Rules are rows and edges, never pages (§I.2-4). Register-diet: the heavy
    table rides the byte island. */
 import { Island } from '../lib/ssg-island'
@@ -10,7 +10,7 @@ import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-li
 type Rule = import('../content/catalog.generated').PricingRule
 type Cargo = { meta: { source: string | null; as_of: string | null }; rules: Rule[] }
 
-const DESC = `The ${CATALOG_COUNTS.pricing_rules} pricing rules the released binary resolves — USD per million tokens, grouped by provider, snapshot carried inside the release.`
+const DESC = `The ${CATALOG_COUNTS.pricing_rules} pricing rules the released binary resolves · USD per million tokens, grouped by provider, snapshot carried inside the release.`
 
 export function Component() {
   useCatalogHead('/catalog/pricing', 'Pricing', DESC)
@@ -26,7 +26,7 @@ export function Component() {
       lede={
         <>
           The exact table the audit reads: first matching rule wins, the engine resolves patterns,
-          and a run prints its ceiling before a token moves. A local model is unpriced — which is
+          and a run prints its ceiling before a token moves. A local model is unpriced · which is
           not the same word as free. Snapshot {data?.meta.as_of ?? '·'} from{' '}
           {data?.meta.source ? new URL(data.meta.source).hostname : 'the vendored table'}, carried
           inside the release.

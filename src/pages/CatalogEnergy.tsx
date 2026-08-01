@@ -1,7 +1,7 @@
 /* ─── /catalog/energy · the measured rows, provenance verbatim ───────────────
    Born with v0.107.0: the catalog carries independently measured energy for
    the seats research has weighed. The provenance line ships EXACTLY as the
-   TOML carries it (ml.energy · arXiv · measured_at) — the site prints the
+   TOML carries it (ml.energy · arXiv · measured_at) · the site prints the
    receipt, it never rounds a claim. */
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
@@ -10,7 +10,7 @@ import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 
 type Row = import('../content/catalog.generated').EnergyRow
 
-const DESC = `The ${CATALOG_COUNTS.energy_rows} measured energy rows the released binary carries — watt-hours per million output tokens, each with its measurement source printed verbatim.`
+const DESC = `The ${CATALOG_COUNTS.energy_rows} measured energy rows the released binary carries · watt-hours per million output tokens, each with its measurement source printed verbatim.`
 
 export function Component() {
   useCatalogHead('/catalog/energy', 'Energy', DESC)
@@ -22,7 +22,7 @@ export function Component() {
       lede={
         <>
           Independently measured watt-hours per million output tokens, for the seats research has
-          actually weighed — no extrapolation, no fleet average. Every row prints its measurement
+          actually weighed · no extrapolation, no fleet average. Every row prints its measurement
           source verbatim. Absence is honest: a model without a row has not been measured, which is
           a fact, not a zero.
         </>

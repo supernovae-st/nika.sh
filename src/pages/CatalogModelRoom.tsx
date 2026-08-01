@@ -2,7 +2,7 @@
    Above the fold: what it is + the try-it + provenance. Below: the seats,
    the exact prices, the measured energy (source verbatim). The room never
    guesses: a pattern-priced model says so and points at the engine.
-   The island id carries the slug — SPA nav between two rooms must never
+   The island id carries the slug · SPA nav between two rooms must never
    read the previous room's bytes. */
 import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
@@ -82,7 +82,7 @@ export function Component() {
       <CatalogSection id="price" title="The price">
         {m && m.pricing.length === 0 ? (
           <p className="pv-desc">
-            No exact-match row at this pin — the engine resolves pattern rules at run time and{' '}
+            No exact-match row at this pin · the engine resolves pattern rules at run time and{' '}
             <code>nika audit</code> prints the real ceiling. A local seat is unpriced, never free.
           </p>
         ) : (

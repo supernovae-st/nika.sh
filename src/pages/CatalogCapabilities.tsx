@@ -1,7 +1,7 @@
 /* ─── /catalog/capabilities · how the engine knows what a model can do ───────
    The rule table behind model_capabilities(provider, model): first match
    wins, in file order. The page shows the rules; the RESOLUTION stays the
-   engine's — the site never re-implements it (the join-honesty law). */
+   engine's · the site never re-implements it (the join-honesty law). */
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
@@ -9,7 +9,7 @@ import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 
 type Rule = { name: string; match_kind: string | null; providers: string[]; api_dialect: string | null }
 
-const DESC = `The ${CATALOG_COUNTS.capability_rules} capability rules the released binary resolves models against — scope, match kind and order, first match wins.`
+const DESC = `The ${CATALOG_COUNTS.capability_rules} capability rules the released binary resolves models against · scope, match kind and order, first match wins.`
 
 export function Component() {
   useCatalogHead('/catalog/capabilities', 'Capability rules', DESC)
@@ -27,7 +27,7 @@ export function Component() {
       title="What a model can do, decided by rules."
       lede={
         <>
-          Vision, reasoning budgets, token-limit parameter names, JSON modes — the engine reads them
+          Vision, reasoning budgets, token-limit parameter names, JSON modes · the engine reads them
           from this ordered rule table, first match wins. The order is load-bearing and the
           resolution belongs to the engine: this page shows the rules, the binary applies them.
         </>

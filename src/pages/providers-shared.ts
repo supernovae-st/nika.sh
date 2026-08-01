@@ -16,5 +16,6 @@ export function fmtTokens(n?: number): string | undefined {
   if (typeof n !== 'number') {
     return undefined
   }
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 ? 1 : 0)}m`
   return n >= 1000 ? `${Math.round(n / 1000)}k` : String(n)
 }

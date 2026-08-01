@@ -1,6 +1,6 @@
 /* ─── /catalog/mcp/:slug · one MCP server, whole ─────────────────────────────
    The room contract: what it is + the try-it + provenance above the fold;
-   packages and env vars below. Secrets stay names — a room never teaches
+   packages and env vars below. Secrets stay names · a room never teaches
    pasting a key into a file. The island id carries the slug (SPA-nav law). */
 import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
@@ -54,7 +54,7 @@ export function Component() {
           <code>{`tasks:\n  work:\n    invoke: "mcp:${s?.id ?? slug}.<tool>"\npermits:\n  mcp: ["${s?.id ?? slug}"]`}</code>
         </pre>
         <p className="pv-desc">
-          The permit names the server — absent means the empty boundary, and the run refuses before
+          The permit names the server · absent means the empty boundary, and the run refuses before
           a call leaves.
         </p>
       </CatalogSection>
@@ -80,7 +80,7 @@ export function Component() {
               </li>
             ))}
           </ul>
-          <p className="pv-desc">Names only — secrets ride the environment, never a file.</p>
+          <p className="pv-desc">Names only · secrets ride the environment, never a file.</p>
         </CatalogSection>
       )}
       <Island id={`cat-mcp-${slug}`} payload={payload} />

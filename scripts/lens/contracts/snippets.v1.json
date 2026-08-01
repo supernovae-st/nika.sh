@@ -800,7 +800,7 @@
     },
     {
       "path": "src/pages/CatalogMcpRoom.tsx",
-      "source_blob": "a0050121fac0faeb8e7caeafa8044c67cd909638",
+      "source_blob": "61305583cbeaa7671eaea05528d97570a00d004a",
       "blocks": [
         {
           "selector": "src/pages/CatalogMcpRoom.tsx#pre:1",
@@ -812,7 +812,7 @@
     },
     {
       "path": "src/pages/CatalogModelRoom.tsx",
-      "source_blob": "a725bca03178056ebc760d7f30937a51cfb3dfb8",
+      "source_blob": "dc1ff7568eeccdbc1149b0f9084b2fdaa9069a03",
       "blocks": [
         {
           "selector": "src/pages/CatalogModelRoom.tsx#pre:1",

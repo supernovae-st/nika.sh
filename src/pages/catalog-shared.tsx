@@ -1,6 +1,6 @@
 /* ─── catalog-shared · the /catalog world's common grammar ───────────────────
    One room contract for every catalog page (the design-RAMS law): the same
-   page shell, the same section kit, ONE provenance line — every page says
+   page shell, the same section kit, ONE provenance line · every page says
    what it derives from (the engine pin · D1: the catalogue the site shows IS
    the catalogue of the downloadable binary). No new visual vocabulary: the
    classes here are the register grammar the rest of the site already speaks
@@ -10,7 +10,7 @@ import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { CATALOG_ENGINE } from '../content/catalog-paths.generated'
 
-/** the one provenance line — loi 2 (provenance-first) on every catalog page */
+/** the one provenance line · loi 2 (provenance-first) on every catalog page */
 export function EngineTruthLine() {
   return (
     <p className="truth-line">
@@ -32,7 +32,7 @@ export function CatalogShell({
   fig: string
   title: ReactNode
   lede: ReactNode
-  /** the way back up — every room knows its hub (design-RAMS: one pattern) */
+  /** the way back up · every room knows its hub (design-RAMS: one pattern) */
   crumb?: { to: string; label: string }
   children: ReactNode
 }) {
