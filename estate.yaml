@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 711b2a242f30f18fe8eeae45fad7abb1a9e1556eb41a16dd532e58fdbf827e9b
+  sha256: 45603dda13a98269d0f54a862ddaf02dc8d838dcb88aba8fefa820d5d9b91848
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
