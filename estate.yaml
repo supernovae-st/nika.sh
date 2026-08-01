@@ -18,13 +18,13 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1105
-  file_rows: 97
+  classified_files: 1116
+  file_rows: 99
   pattern_rows: 28
   by_class:
-    authored: 756
+    authored: 766
     authored-pin: 3
-    generated: 286
+    generated: 287
     pinned-copy: 16
     testimonial: 44
     foreign: 0
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 89511f514e8f86234a3e05ad7cc4223698bb0bcd8b2bb480e011259f779cf9d0
+  sha256: 40f1f7289ca07b6c0a4ae06fedcc82ae2866e1243e409513f7789a1f21ce80c0
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -114,7 +114,7 @@ files:
   evidence: "hand-kept escrow list — its own header: list a code the day the canon mints it, DELETE the entry the day the resync pin advances past the mint"
 - path: "pnpm-lock.yaml"
   class: generated
-  sha256: f32aef7f537351a6e083e29fa97ff127cf2524c00815df6265c9e445f0ee6750
+  sha256: ca5720fb889d2ca1e7d63663c2c9204ec9df573bb6293811800f018ca721bce0
   evidence: "pnpm lockfile — tool-maintained, never hand-edited"
   derivation:
     tool: "pnpm install (pnpm pinned via packageManager)"
@@ -296,6 +296,20 @@ files:
     - "scripts/lens/graph/sets.yaml"
     - "scripts/lens/graph/market-vocab.yaml"
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
+- path: "public/nika-graph.json"
+  class: generated
+  sha256: 0c70866698833cf46ee519d09972c5066c2d13106ff517f3ad1f6f45f16c8a5c
+  evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
+  derivation:
+    tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
+    gate: "pnpm check → node scripts/graph/doctor.mjs (typing §J.1 · inverses · evidence totality · exit 3/5) + src/test/graph-artifact.test.ts (determinism + the PATHS join) — pnpm test in .github/workflows/gate.yml"
+    inputs:
+    - ".github/nika-spec-pin.json"
+    - ".github/nika-engine-pin.json"
+    - "ESTATE_PIN"
+    - "public/engine/catalog/*.toml (pinned-copy at the engine release)"
+    - "public/{errors,tools,providers,templates}/catalog.json (the gated projections)"
+    - "estate.yaml + scripts/graph/city.yaml (site voice)"
 - path: "public/nika.svg"
   class: authored
   sha256: d5a50668b742e9178d7eb22c3a495c5a837bd30e5ae0e800d0f4744a9c2c9cb7
@@ -440,6 +454,10 @@ files:
     inputs:
     - "ESTATE_PIN"
     - "supernovae-st/nika-estate@<ESTATE_PIN>:scripts/estate.py"
+- path: "scripts/graph/city.yaml"
+  class: authored
+  sha256: 6f33a39f2f1444c2ef13bb60c4c2fcbaa6ef09b68d392c155772640db9ea5e36
+  evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
   sha256: fcd28a6e2ca9166f0cd50138f9b9999cec3b1fa5e253f5220cd10a0ce876caf3
@@ -887,13 +905,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 407
-  aggregate_sha256: d5f173b7ed533a993c6fd2d464de6fe213bf47bd5351d38fea400795f9d62a6f
+  match_count: 408
+  aggregate_sha256: 69aaed111d6afed66f8f920e5137f4bbc7bb1eca16cc489de01033c1bcd066f7
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 74
-  aggregate_sha256: 0c1f42afac0ec2ff9216ae930aad7fc49604f17403365b0c3ff96c1518e69d5b
+  match_count: 82
+  aggregate_sha256: 3ec430a94c807cb0b1c6c4767f2468573d9e290dc74a6abef32e037a2628e5ef
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

@@ -185,6 +185,25 @@ _OVERRIDES = [
             "inputs": [".github/nika-engine-pin.json", f"{_release_ref}:docs/adr/index.json"],
         },
     },
+    # ── the mégagraphe (the compiler's one authored input + its artifact) ──
+    _auth(
+        "scripts/graph/city.yaml",
+        "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it",
+    ),
+    _gen(
+        "public/nika-graph.json",
+        "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)",
+        "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)",
+        "pnpm check → node scripts/graph/doctor.mjs (typing §J.1 · inverses · evidence totality · exit 3/5) + src/test/graph-artifact.test.ts (determinism + the PATHS join) — pnpm test in " + _GATE_YML,
+        [
+            ".github/nika-spec-pin.json",
+            ".github/nika-engine-pin.json",
+            "ESTATE_PIN",
+            "public/engine/catalog/*.toml (pinned-copy at the engine release)",
+            "public/{errors,tools,providers,templates}/catalog.json (the gated projections)",
+            "estate.yaml + scripts/graph/city.yaml (site voice)",
+        ],
+    ),
     # ── prose · policy · agent context ─────────────────────────────────────
     _auth("README.md", "prose entry surface · no generation marker"),
     _auth("AGENTS.md", "hand-written agent entry per the AGENTS.md convention"),
