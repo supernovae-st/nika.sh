@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "a4a9a03f9e392597fa22835ff7ec338c9c1134de07fd5cea59b75316b7d2ac4c"
+   "sha256": "f5d2a4b89046f1273b554ef6ad432c6b7ad7696dff2d0540adc22faa5cc49403"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -55,7 +55,7 @@
   },
   {
    "path": "scripts/lens-gate.mjs",
-   "sha256": "858fb0150c464fad9d1b8fb5eee546161ef2238f60afca84f5d17ecc41b7869a"
+   "sha256": "6a56ea57e5e5303ff4a094afdfa91d01ccaa26bf7c69559d6c651a96ae398ea9"
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",

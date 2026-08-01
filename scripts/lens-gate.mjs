@@ -600,6 +600,51 @@ const handlers = new Map([
 
 const gate = process.argv[2]
 const fixtureMode = process.argv[3] === '--fixture' ? process.argv[4] : undefined
+
+/* `all` · every gate in one verdict (the 2026-08-02 ratchet). CI runs the
+   eight as eight jobs; locally there was NO surface that ran them, so three
+   pushes in one session landed red on main for the same class: a ship moved
+   a normative source or a pinned artifact and never replayed the baselines.
+   `pnpm check` now ends here — the whole set costs under a second.
+   Every gate runs (no early exit): one red must not hide the next. */
+if (gate === 'all') {
+  const red = []
+  for (const [name, handler] of handlers) {
+    try {
+      handler(undefined)
+      console.log(`  ok   ${name}`)
+    } catch (error) {
+      red.push(`${name}: ${error.message}`)
+      console.error(`  FAIL ${name}`)
+    }
+  }
+  /* the integrity baseline is a SEPARATE script, and leaving it out made
+     this verdict lie: a mutation test on integrity.v1.json passed `all`
+     green while CI died « bad digest » (measured while writing this gate).
+     A composite verdict must cover every contract it claims. */
+  try {
+    execFileSync(process.execPath, [join(ROOT, 'scripts/verify-lens-ci.mjs')], { stdio: 'pipe' })
+    console.log('  ok   lens-integrity')
+  } catch (error) {
+    const said = `${error.stdout ?? ''}${error.stderr ?? ''}`.trim().split('\n').slice(-2).join(' · ')
+    red.push(`lens-integrity: ${said || error.message}`)
+    console.error('  FAIL lens-integrity')
+  }
+  if (red.length) {
+    console.error(`\n${red.length} lens gate(s) red:\n${red.join('\n')}`)
+    console.error(
+      '\nthe repin ceremony, in dependency order:\n' +
+        '  node scripts/lens/repin-carrier-universe.mjs --write\n' +
+        '  node scripts/build-lens-semantic-contracts.mjs --write\n' +
+        '  node scripts/lens/repin-spec-resync-contract.mjs --write   # if a pinned generator moved\n' +
+        '  node scripts/lens/repin-integrity.mjs --write              # LAST, always',
+    )
+    process.exit(1)
+  }
+  console.log(`ok all ${handlers.size + 1} lens gates · semantic contracts verified`)
+  process.exit(0)
+}
+
 if (!handlers.has(gate)) {
   console.error(`unknown lens gate: ${gate}`)
   process.exit(2)
