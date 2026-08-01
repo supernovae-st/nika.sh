@@ -910,7 +910,7 @@ patterns:
 - glob: ".github/workflows/*.yml"
   class: authored
   match_count: 8
-  aggregate_sha256: cb8465cd376c2d0fa89bdea3d817743a4d516d635555647b99d880d4d3d456bc
+  aggregate_sha256: ab6673bb3f56a73755771339b2707533d835b0946843e595276bbcdeaa7787e0
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
 - glob: "src/lib/check-wasm/pkg/**"
   class: pinned-copy

@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: The estate matches the tree (E2 — drift blocks · fix: stage, then estate.py --write)
+      - name: "The estate matches the tree (E2 — drift blocks · fix: stage, then estate.py --write)"
         run: python3 scripts/estate.py --check
 
   mirror:
