@@ -15,7 +15,7 @@ export function extract({ engineRef }) {
   for (const b of city.buildings) {
     nodes.push(
       node({
-        id: `building:${b.id}`,
+        id: `building/${b.id}`,
         family: 'building',
         title: b.repo,
         lands: 'casse-wave (train 0.107 · /city/:building · D2)',
@@ -28,7 +28,7 @@ export function extract({ engineRef }) {
   for (const a of city.archives) {
     nodes.push(
       node({
-        id: `building:${a.id}`,
+        id: `building/${a.id}`,
         family: 'building',
         title: a.repo,
         data: { repo: a.repo, archived: true, role: a.role },
@@ -40,9 +40,9 @@ export function extract({ engineRef }) {
   for (const l of city.lanes) {
     edges.push(
       edge({
-        from: `building:${l.from}`,
+        from: `building/${l.from}`,
         rel: l.rel,
-        to: `building:${l.to}`,
+        to: `building/${l.to}`,
         data: { law: l.law },
         evidence: l.evidence,
         provenance: prov,

@@ -11,7 +11,7 @@
 // first-match-wins in file order — that semantics belongs to the engine,
 // the graph does not re-implement it).
 
-import { edge, node, readTomlFile } from '../lib.mjs'
+import { byCp, edge, node, readTomlFile } from '../lib.mjs'
 
 export function extract({ engineRef }) {
   const nodes = []
@@ -32,7 +32,7 @@ export function extract({ engineRef }) {
     if (p.data_policy) data.data_policy = p.data_policy
     nodes.push(
       node({
-        id: `provider-market:${p.id}`,
+        id: `provider-market/${p.id}`,
         family: 'provider-market',
         title: p.name,
         data,
@@ -45,9 +45,9 @@ export function extract({ engineRef }) {
       modelSet.get(m.model).add(p.id)
       edges.push(
         edge({
-          from: `provider-market:${p.id}`,
+          from: `provider-market/${p.id}`,
           rel: 'serves',
-          to: `model:${m.model}`,
+          to: `model/${m.model}`,
           data: {
             alias: m.id,
             context_window_tokens: m.context_window_tokens ?? null,
@@ -59,10 +59,10 @@ export function extract({ engineRef }) {
       )
     }
   }
-  for (const [model, servedBy] of [...modelSet.entries()].sort()) {
+  for (const [model, servedBy] of [...modelSet.entries()].sort((a, b) => byCp(a[0], b[0]))) {
     nodes.push(
       node({
-        id: `model:${model}`,
+        id: `model/${model}`,
         family: 'model',
         title: model,
         data: { served_by: [...servedBy].sort() },
@@ -79,10 +79,10 @@ export function extract({ engineRef }) {
   let ruleIndex = 0
   for (const r of pricing.rules) {
     ruleIndex += 1
-    let id = `pricing-rule:${r.provider}/${r.model_pattern}`
+    let id = `pricing-rule/${r.provider}/${r.model_pattern}`
     const n = (seen.get(id) ?? 0) + 1
     seen.set(id, n)
-    if (n > 1) id = `${id}#${n}`
+    if (n > 1) id = `${id}~${n}`
     const data = {}
     for (const k of [
       'provider',
@@ -110,7 +110,7 @@ export function extract({ engineRef }) {
     if (exactServed) {
       edges.push(
         edge({
-          from: `model:${r.model_pattern}`,
+          from: `model/${r.model_pattern}`,
           rel: 'priced-by',
           to: id,
           evidence: `exact model_pattern match to a model ${r.provider} serves (model-pricing.toml #${ruleIndex}) — pattern rules stay table-only`,
@@ -119,7 +119,7 @@ export function extract({ engineRef }) {
       )
     }
     if (r.energy) {
-      const eid = `energy-row:${r.provider}/${r.model_pattern}`
+      const eid = `energy-row/${r.provider}/${r.model_pattern}`
       nodes.push(
         node({
           id: eid,
@@ -133,7 +133,7 @@ export function extract({ engineRef }) {
       if (exactServed) {
         edges.push(
           edge({
-            from: `model:${r.model_pattern}`,
+            from: `model/${r.model_pattern}`,
             rel: 'costs-energy',
             to: eid,
             evidence: `exact model_pattern match (model-pricing.toml #${ruleIndex})`,
@@ -149,7 +149,7 @@ export function extract({ engineRef }) {
   for (const s of mcp.servers) {
     nodes.push(
       node({
-        id: `mcp-server:${s.name ?? s.id}`,
+        id: `mcp-server/${s.name ?? s.id}`,
         family: 'mcp-server',
         title: s.name ?? s.id,
         data: {
@@ -171,7 +171,7 @@ export function extract({ engineRef }) {
     capIndex += 1
     nodes.push(
       node({
-        id: `capability-rule:${r.name ?? `#${capIndex}`}`,
+        id: `capability-rule/${r.name ?? `rule-${capIndex}`}`,
         family: 'capability-rule',
         title: r.name ?? `rule #${capIndex}`,
         data: {
@@ -190,7 +190,7 @@ export function extract({ engineRef }) {
   for (const e of emb.embeddings) {
     nodes.push(
       node({
-        id: `embedding:${e.id}`,
+        id: `embedding/${e.id}`,
         family: 'embedding',
         title: e.id,
         data: {
@@ -207,9 +207,9 @@ export function extract({ engineRef }) {
     if (e.provider) {
       edges.push(
         edge({
-          from: `provider-market:${e.provider}`,
+          from: `provider-market/${e.provider}`,
           rel: 'serves',
-          to: `embedding:${e.id}`,
+          to: `embedding/${e.id}`,
           evidence: `embeddings.toml provider FK (${e.provider} → ${e.id}) — build.rs-enforced against llm-providers.toml`,
           provenance: prov('embeddings.toml'),
         }),

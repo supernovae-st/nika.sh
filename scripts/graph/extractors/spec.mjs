@@ -17,7 +17,7 @@ export function extract({ census, specRef, engineRef }) {
     const url = `/errors/${c.code}`
     nodes.push(
       node({
-        id: `error:${c.code}`,
+        id: `error/${c.code}`,
         family: 'error',
         title: c.code,
         url,
@@ -36,7 +36,7 @@ export function extract({ census, specRef, engineRef }) {
     const url = candidates.find((u) => census.has(u)) ?? null
     nodes.push(
       node({
-        id: `tool:${t.name}`,
+        id: `tool/${t.name}`,
         family: 'tool',
         title: t.name,
         url,
@@ -54,7 +54,7 @@ export function extract({ census, specRef, engineRef }) {
     const url = `/providers/${p.id}`
     nodes.push(
       node({
-        id: `provider-canonical:${p.id}`,
+        id: `provider-canonical/${p.id}`,
         family: 'provider-canonical',
         title: p.name,
         url,

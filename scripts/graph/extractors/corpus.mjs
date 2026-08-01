@@ -13,7 +13,7 @@ export function extract({ census, specRef }) {
     const url = `/templates/${t.name}`
     nodes.push(
       node({
-        id: `skeleton:${t.name}`,
+        id: `skeleton/${t.name}`,
         family: 'skeleton',
         title: t.name,
         url,

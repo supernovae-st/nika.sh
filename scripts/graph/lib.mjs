@@ -21,6 +21,12 @@ export const readYamlFile = (p) => parseYaml(read(p))
 export const readTomlFile = (p) => parseToml(read(p))
 export const sha256 = (s) => createHash('sha256').update(s).digest('hex')
 
+/** Codepoint comparator — NEVER localeCompare: ICU collation varies by
+ *  runtime/locale env, and "same pins ⇒ same bytes" must not depend on the
+ *  invoking machine's locale (the exact class the spec-resync lane pins
+ *  LC_ALL=C.UTF-8 against — refuter finding 2026-08-01). */
+export const byCp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
+
 /** Deterministic JSON: keys sorted at every depth, 1-space indent, LF. */
 export function stableStringify(value) {
   const sort = (v) => {
@@ -66,7 +72,7 @@ export const REL_INVERSE = {
 
 export function node({ id, family, title, url = null, served = undefined, lands = null, data = null, evidence, provenance }) {
   for (const [k, v] of Object.entries({ id, family, title, evidence, provenance }))
-    if (!v || typeof v !== 'string') throw new Error(`node ${id ?? '?'}: missing/invalid ${k}`)
+    if (!v || typeof v !== 'string' || !v.trim()) throw new Error(`node ${id ?? '?'}: missing/invalid ${k}`)
   const n = { id, family, title, url, evidence, provenance }
   if (served !== undefined) n.served = served
   if (lands) n.lands = lands
@@ -76,7 +82,7 @@ export function node({ id, family, title, url = null, served = undefined, lands 
 
 export function edge({ from, rel, to, data = null, evidence, provenance }) {
   for (const [k, v] of Object.entries({ from, rel, to, evidence, provenance }))
-    if (!v || typeof v !== 'string') throw new Error(`edge ${from ?? '?'}→${to ?? '?'}: missing/invalid ${k}`)
+    if (!v || typeof v !== 'string' || !v.trim()) throw new Error(`edge ${from ?? '?'}→${to ?? '?'}: missing/invalid ${k}`)
   if (!(rel in REL_INVERSE)) throw new Error(`edge ${from} -${rel}→ ${to}: predicate outside the closed vocabulary`)
   const e = { from, rel, to, evidence, provenance }
   if (data) e.data = data
@@ -111,17 +117,22 @@ export function estateGlobToRe(glob) {
 
 /** Resolve a path's estate class exactly like the tool does: files: rows
  *  first (exact path), then patterns: in order, first-match-wins.
- *  estate.yaml never lists itself — by the tool's own law it is `generated`. */
+ *  estate.yaml never lists itself — by the tool's own law it is `generated`.
+ *  Also exposes the classes: block AS DECLARED BY THE MANIFEST (which the
+ *  mirrored tool renders verbatim from nika-estate/SCHEMA.md) — consumers
+ *  IMPORT the law from there, never recopy it (§J.6 last row). */
 export function estateClassResolver() {
   const doc = parseYaml(read('estate.yaml'))
   const files = new Map((doc.files ?? []).map((r) => [r.path, r.class]))
   const patterns = (doc.patterns ?? []).map((r) => ({ re: estateGlobToRe(r.glob), cls: r.class }))
-  return (path) => {
+  const resolve = (path) => {
     if (path === 'estate.yaml') return 'generated'
     if (files.has(path)) return files.get(path)
     for (const p of patterns) if (p.re.test(path)) return p.cls
     return null
   }
+  resolve.classes = new Set(Object.keys(doc.classes ?? {}))
+  return resolve
 }
 
 /** The served-routes census: PATHS evaluated from site.config.ts exactly as

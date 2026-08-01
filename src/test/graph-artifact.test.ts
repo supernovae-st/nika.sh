@@ -50,8 +50,26 @@ describe('nika-graph · the artifact keeps its contract', () => {
     }
   })
 
-  it('the doctor exits 0 (typed §J.1 · inverted · evidenced)', () => {
+  it('the doctor exits 0 and its refusal ledger is monotone (§J.5-1 — checks never retreat)', () => {
+    // The ratchet is pinned HERE, not mirrored from the source: this list is
+    // APPEND-ONLY. Removing a doctor check makes this test red — a reviewable
+    // ratchet-break, never a quiet regression.
+    const PINNED_CHECKS = [
+      'artifact-parses',
+      'render-drift',
+      'pins-match',
+      'ids-unique',
+      'edge-endpoints-exist',
+      'edges-have-inverses',
+      'predicates-closed',
+      'evidence-total',
+      'inputs-typed',
+      'families-served',
+    ]
     const r = spawnSync(process.execPath, [join(ROOT, 'scripts/graph/doctor.mjs')], { encoding: 'utf8' })
     expect(r.status, `doctor said:\n${r.stdout}\n${r.stderr}`).toBe(0)
+    for (const name of PINNED_CHECKS) {
+      expect(r.stdout, `the doctor no longer runs the '${name}' check — the refusal ledger is append-only`).toContain(name)
+    }
   })
 })
