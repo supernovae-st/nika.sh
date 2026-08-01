@@ -69,7 +69,7 @@
 .v4nav-capsule {
   pointer-events: auto;
   position: relative;
-  max-width: 72rem;
+  max-width: 1204px; /* the measured Raycast container (their shipped --container-width) */
   margin: 0 auto;
   /* transparent at the top of the hero field · the floor arrives with data-solid */
   background: transparent;
@@ -105,7 +105,7 @@
 }
 @media (min-width: 720px) {
   .v4nav-capsule {
-    border-radius: 12px;
+    border-radius: 16px; /* the measured capsule rounding (--rounding-lg) */
   }
 }
 .v4nav[data-solid='true'] .v4nav-capsule {
@@ -125,6 +125,7 @@
     0 16px 40px -20px rgb(0 0 0 / 0.55);
   box-shadow:
     var(--nav-tint-catch),
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.12),
     0 1px 2px rgb(0 0 0 / 0.32),
     0 16px 40px -20px rgb(0 0 0 / 0.55);
 }
@@ -437,7 +438,7 @@
   width: 640px;
   max-width: calc(100vw - 40px);
   padding: 10px;
-  border-radius: 12px; /* matches the capsule, not the 4px structural radii */
+  border-radius: 14px; /* the measured Linear panel radius · one step under the capsule 16 */
   /* F6 · NEAR-OPAQUE floor — the panel fully occludes what's behind it (the
      translucent+blur version let the field bleed through and muddied the
      type). Seam kit: hairline + inner-top catch + ONE tight float shadow. */
