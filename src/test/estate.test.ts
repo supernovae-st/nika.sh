@@ -11,6 +11,7 @@
 // to edit the hex by hand — stage the change, then
 // `python3 scripts/estate.py --write` (the tool hashes the INDEX, so stage
 // first, generate second).
+import { spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -27,9 +28,14 @@ const patternRows = [
   ...text.matchAll(/- glob: "([^"]+)"\n {2}class: ([\w-]+)\n {2}match_count: (\d+)\n {2}aggregate_sha256: ([0-9a-f]{64})/g),
 ].map((m) => ({ glob: m[1], cls: m[2], count: Number(m[3]) }))
 
-// The six classes ARE the law (nika-estate/SCHEMA.md) — a repo that re-words
-// or drops one has forked the law without saying so.
-const LAW_CLASSES = ['authored', 'authored-pin', 'generated', 'pinned-copy', 'testimonial', 'foreign']
+// The class law is IMPORTED from the mirrored tool (scripts/estate.py is the
+// byte-identical copy of nika-estate at ESTATE_PIN — its CLASSES dict IS
+// nika-estate/SCHEMA.md), never recopied here (§J.6 last row): parse the
+// dict keys out of the tool itself and judge the manifest against THOSE.
+const toolSource = readFileSync(join(ROOT, 'scripts/estate.py'), 'utf8')
+const dictStart = toolSource.indexOf('CLASSES = {')
+const classesDict = toolSource.slice(dictStart, toolSource.indexOf('\n}\n', dictStart))
+const LAW_CLASSES = [...classesDict.matchAll(/^ {4}"([a-z-]+)":/gm)].map((m) => m[1])
 
 describe('estate · the manifest tells the truth about the tree', () => {
   it('registers a real population (the regex face of the file holds)', () => {
@@ -38,12 +44,21 @@ describe('estate · the manifest tells the truth about the tree', () => {
     expect(patternRows.length).toBeGreaterThan(15)
   })
 
-  it('carries the canonical schema and the six-class law verbatim', () => {
+  it('carries the canonical schema and the six-class law imported from the tool', () => {
+    expect(LAW_CLASSES.length, 'the CLASSES dict must parse out of scripts/estate.py').toBe(6)
     expect(text).toContain('estate_schema: 2')
     expect(text).toContain('repo: supernovae-st/nika.sh')
     for (const cls of LAW_CLASSES) {
       expect(text, `classes: block must declare '${cls}'`).toMatch(new RegExp(`^ {2}${cls}: `, 'm'))
     }
+  })
+
+  it('the whole manifest re-renders in sync (E2 — patterns included, 91% of the tree)', () => {
+    // the files: rows below are re-hashed by hand; the 28 pattern rows are
+    // judged only by the tool's own render+compare — spawn it, blocking.
+    // (--check reads the INDEX: a dirty-but-unstaged disk stays green here.)
+    const r = spawnSync('python3', [join(ROOT, 'scripts/estate.py'), '--check'], { encoding: 'utf8' })
+    expect(r.status, `estate.py --check said:\n${r.stdout}\n${r.stderr}`).toBe(0)
   })
 
   it('the dance is joined: ESTATE_PIN names a rev, the fork and its sha half are dead', () => {

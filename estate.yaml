@@ -298,7 +298,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 0c70866698833cf46ee519d09972c5066c2d13106ff517f3ad1f6f45f16c8a5c
+  sha256: c8e4c08aa800e89b44264fa66dc8c1e4c3aa8a44da14c5e82a78fd36b15d000c
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -460,7 +460,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: fcd28a6e2ca9166f0cd50138f9b9999cec3b1fa5e253f5220cd10a0ce876caf3
+  sha256: 078ad135d60e20c61b743c79fcc87854a1c16eb2aee782ff731c20e90fcbc6b0
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -469,7 +469,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: d5a5727b5d4999c1624431fdde2322928e06a06180aa73093d679a777248e35d
+  sha256: 7be0f9bcf03bd8b806d2615f8ea9f712cb1588969b6ae354b0c9ad98a3ecd2ed
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -851,7 +851,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 20bc8ace3566de88ffe7f7fe8fb43785116c9f41de3754b7a6e2d6888527e314
+  aggregate_sha256: edb9b898bf0afe0154415ff86f7642e1a9fe36eae792e0d2b75d55d3e1046c72
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -891,7 +891,7 @@ patterns:
 - glob: ".github/workflows/*.yml"
   class: authored
   match_count: 8
-  aggregate_sha256: 041527c8a7d4d4d5936b65422c0b20afd546afc72e1926808497e56ff0e2061d
+  aggregate_sha256: cb8465cd376c2d0fa89bdea3d817743a4d516d635555647b99d880d4d3d456bc
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
 - glob: "src/**.generated.*"
   class: generated
@@ -906,12 +906,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 408
-  aggregate_sha256: 69aaed111d6afed66f8f920e5137f4bbc7bb1eca16cc489de01033c1bcd066f7
+  aggregate_sha256: b9fe3cfb9afdcf686941493185efb51991ba472e5fd9d20bc89d1755db60bbe1
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 82
-  aggregate_sha256: 3ec430a94c807cb0b1c6c4767f2468573d9e290dc74a6abef32e037a2628e5ef
+  aggregate_sha256: 37741ed934033d8f5473463133aaa1bb7f1e16d83856f0cd3ac77a64ca9236a7
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
