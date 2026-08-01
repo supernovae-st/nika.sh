@@ -287,6 +287,14 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
       {
         "label": "Changelog",
         "to": "/changelog"
+      },
+      {
+        "label": "Sources",
+        "to": "/sources"
+      },
+      {
+        "label": "The truth words",
+        "to": "/truth"
       }
     ]
   },
@@ -304,6 +312,43 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
       },
       {
         "label": "Integrations",
+        "to": "/integrations"
+      }
+    ]
+  },
+  {
+    "kick": "What it knows",
+    "items": [
+      {
+        "label": "The catalog",
+        "to": "/catalog"
+      },
+      {
+        "label": "Models",
+        "to": "/catalog/models"
+      },
+      {
+        "label": "Pricing",
+        "to": "/catalog/pricing"
+      },
+      {
+        "label": "Energy",
+        "to": "/catalog/energy"
+      },
+      {
+        "label": "MCP servers",
+        "to": "/catalog/mcp"
+      },
+      {
+        "label": "Embeddings",
+        "to": "/catalog/embeddings"
+      },
+      {
+        "label": "Capability rules",
+        "to": "/catalog/capabilities"
+      },
+      {
+        "label": "Wire your client",
         "to": "/integrations"
       }
     ]

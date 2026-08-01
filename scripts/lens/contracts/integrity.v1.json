@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "6e780a2508d22fee3df6a6855768e61e5682310eb7dda71a422714ed3dc3b677"
+   "sha256": "e7a6bbacc39942f8d69ead184f7d97ebf1f6323272d360143c00f9a5b8109c89"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "3b1b39d132bbd0de31915fb2821b414ac2d2dc09c96d6361aa382cddda10a023"
+   "sha256": "3d71b2bad6ac3faf75b53fd98d9d3724c2a168c63853dcfb0c9d593fd99ea500"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

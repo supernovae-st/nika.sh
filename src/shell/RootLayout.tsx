@@ -1,8 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
 import ScrollRail from './ScrollRail'
 import { useHead } from '@unhead/react'
-import { useNavigate } from 'react-router'
 import { NAV_CHORDS } from '../lib/chords'
 import { AuroraProvider } from '../fx/EdgeAurora'
 import { REPO, SITE } from '../content'
@@ -10,6 +9,7 @@ import { track, type FunnelEvent } from '../lib/track'
 import Nav from './Nav'
 import SiteFooter from './SiteFooter'
 import { useHydrated } from '../lib/use-hydrated'
+import { loadLens } from '../lib/lens-access'
 import './skip-link.css'
 
 /* the palette is a lazy chunk — the initial bundle carries only the ⌘K
@@ -25,9 +25,6 @@ const LocaleSuggest = lazy(() => import('./LocaleSuggest'))
    keystroke — its TABLE is inline; only the CARD is a chunk) */
 const ShortcutsOverlay = lazy(() => import('./ShortcutsOverlay'))
 
-/* the Inspector · lazy like the palette (the graph rides its own chunk
-   through the lens-access door — nothing reaches the entry) */
-const Inspector = lazy(() => import('./Inspector'))
 
 /* the member hover card (round-3) · fine-pointer courtesy — the chunk
    loads at the first settled hover */
@@ -80,6 +77,7 @@ const SITE_JSONLD = {
 
 export default function RootLayout() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const showFooter = pathname !== '/'
   const hydrated = useHydrated()
 
@@ -152,54 +150,27 @@ export default function RootLayout() {
     }
   }, [])
 
-  /* the Inspector bus (round-1): surfaces dispatch insp:open with a node
-     id — zero prop drilling, the ck:open precedent · the chunk mounts at
-     the first selection */
-  /* deep-link read-side (§6 · the write-side lands at step 3): ?node=<id>
-     opens the Inspector on load — an SSR-safe lazy initializer, never an
-     effect write (the panel only exists client-side anyway) */
-  const [inspNode, setInspNode] = useState<string | null>(() =>
-    import.meta.env.SSR ? null : new URLSearchParams(window.location.search).get('node'),
-  )
+  /* the Inspector died 2026-08-02 (a click is a page — MemberRoom renders
+     the same readout full-page). ?node=<id> deep links stay honoured,
+     append-only: they NAVIGATE to the node's own room via the lens graph
+     (shared links from the panel era never 404). */
   useEffect(() => {
-    const onOpen = (e: Event) => {
-      const d = (e as CustomEvent<{ id?: string; href?: string }>).detail
-      const next = d?.id ?? d?.href
-      if (typeof next !== 'string' || !next) return
-      setInspNode(next)
-      /* §6 write-side: an explicit id-open pushes ONCE (?node=) so Back
-         closes the panel (popstate → close · the NN/g law); href
-         selections are courtesy doors and keep the URL clean */
-      if (d?.id) {
-        const url = new URL(window.location.href)
-        if (url.searchParams.get('node') !== d.id) {
-          url.searchParams.set('node', d.id)
-          /* clone the router's own state (usr/key/idx) — a bare object
-             here broke pop-back inside react-router (swarm finding [8]) */
-          window.history.pushState({ ...window.history.state, insp: d.id }, '', url)
-        }
-      }
-    }
-    const onPop = () => {
-      setInspNode(new URLSearchParams(window.location.search).get('node'))
-    }
-    window.addEventListener('insp:open', onOpen)
-    window.addEventListener('popstate', onPop)
+    const id = new URLSearchParams(window.location.search).get('node')
+    if (!id) return
+    let live = true
+    void loadLens().then((m) => {
+      if (!live) return
+      const url = m.LENS_NODES.find((n) => n.id === id)?.url
+      const clean = new URL(window.location.href)
+      clean.searchParams.delete('node')
+      window.history.replaceState({ ...window.history.state }, '', clean)
+      if (url) navigate(url)
+    })
     return () => {
-      window.removeEventListener('insp:open', onOpen)
-      window.removeEventListener('popstate', onPop)
+      live = false
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only: the legacy param reads once
   }, [])
-
-  /* closing cleans the URL (replace — closing is not a history moment) */
-  const closeInspector = () => {
-    setInspNode(null)
-    const url = new URL(window.location.href)
-    if (url.searchParams.has('node')) {
-      url.searchParams.delete('node')
-      window.history.replaceState({ ...window.history.state }, '', url)
-    }
-  }
 
   /* the hover cards (round-3 · the design's laws): fine-pointer only, no
      card without native anchor positioning (a missing courtesy is not a
@@ -263,7 +234,6 @@ export default function RootLayout() {
      g then a letter navigates; unknown = silent reset (a missed chord does
      not exist); modifiers or a field = abandon; 800ms window. */
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
-  const navigate = useNavigate()
   useEffect(() => {
     let armed = false
     let timer: ReturnType<typeof setTimeout> | undefined
@@ -335,11 +305,6 @@ export default function RootLayout() {
       {hydrated && hoverNode ? (
         <Suspense fallback={null}>
           <HoverCard nodeId={hoverNode} />
-        </Suspense>
-      ) : null}
-      {hydrated && inspNode ? (
-        <Suspense fallback={null}>
-          <Inspector nodeId={inspNode} onClose={closeInspector} />
         </Suspense>
       ) : null}
       {shortcutsOpen ? (

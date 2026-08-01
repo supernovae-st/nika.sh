@@ -19,24 +19,14 @@ export function MemberRows({ set }: { set: HubSet }) {
         <li key={m.id} className="hub-member" id={`${set.anchor_prefix}${m.id}`}>
           <span className="hub-member-id">
             {/* the member OWNS a page (rooms universelles) — its id is the
-                DOOR to the room; the hover card keeps the readout preview.
-                Anchor-only members keep the inspector-open behavior. */}
+                DOOR to the room; anchor-only members deep-link their row
+                (the Inspector died 2026-08-02 · a click is a page) */}
             {m.url ? (
               <Link to={m.url} data-node-id={`${set.node_prefix}:${m.id}`} title="open the member's page">
                 {m.id}
               </Link>
             ) : (
-              <a
-                href={`#${set.anchor_prefix}${m.id}`}
-                data-node-id={`${set.node_prefix}:${m.id}`}
-                onClick={(e) => {
-                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                  e.preventDefault()
-                  window.dispatchEvent(
-                    new CustomEvent('insp:open', { detail: { id: `${set.node_prefix}:${m.id}` } }),
-                  )
-                }}
-              >
+              <a href={`#${set.anchor_prefix}${m.id}`} data-node-id={`${set.node_prefix}:${m.id}`}>
                 {m.id}
               </a>
             )}

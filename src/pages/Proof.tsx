@@ -153,15 +153,6 @@ export function Component() {
                         className="pf-id"
                         href={`#${levels.anchor_prefix}${m.id}`}
                         data-node-id={`${levels.node_prefix}:${m.id}`}
-                        onClick={(e) => {
-                          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
-                          e.preventDefault()
-                          window.dispatchEvent(
-                            new CustomEvent('insp:open', {
-                              detail: { id: `${levels.node_prefix}:${m.id}` },
-                            }),
-                          )
-                        }}
                       >
                         {m.id}
                       </a>

@@ -1471,14 +1471,25 @@
   letter-spacing: 0.04em;
   color: var(--v4-text-faint);
 }
-.sitefoot-cols--five {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+.sitefoot-cols--five,
+.sitefoot-cols--six {
   margin-top: 0;
   border-top: none;
   padding-top: 18px;
 }
+.sitefoot-cols--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.sitefoot-cols--six {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+/* the registers strip · the machine-row grammar, its own hue seat */
+.sitefoot-registers {
+  margin-top: 10px;
+}
 @media (max-width: 980px) {
-  .sitefoot-cols--five {
+  .sitefoot-cols--five,
+  .sitefoot-cols--six {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

@@ -15,6 +15,10 @@ import {
   footerRows,
   type NavItem,
 } from '../content/lens-nav.generated'
+/* the registers strip DERIVES from the same generated registry the rooms
+   render — a new family lands its footer door with its descriptor flip,
+   never a hand edit (the complete-card law, mechanised) */
+import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import '../sections/v4-home.css'
 
 /* ─── SiteFooter · the ONE footer, every route (F7) ───────────────────────────
@@ -156,7 +160,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
 
         {/* THE COLUMNS · five, projected (the anatomy trio = the Reference
             panel's columns + extras · learn/build + project = authored) */}
-        <nav className="sitefoot-cols sitefoot-cols--five" aria-label="Site map">
+        <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map">
           {FOOTER_COLS.map((col) => (
             <div className="sitefoot-col" key={col.kick}>
               <p className="sitefoot-kick">{col.kick}</p>
@@ -170,6 +174,17 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             </div>
           ))}
         </nav>
+
+        {/* THE REGISTERS · every roomed family's root, derived — the strip a
+            new family joins by descriptor flip (the coverage gate's floor) */}
+        <p className="sitefoot-machines sitefoot-registers">
+          <span className="sitefoot-machines-kick">the registers</span>
+          {Object.keys(MEMBER_ROOM_FAMILIES).map((f) => (
+            <Link key={f} to={`/${f}`} className="sitefoot-machine-link">
+              {f}
+            </Link>
+          ))}
+        </p>
 
         {/* FOR MACHINES · the site names its own machine surfaces */}
         <p className="sitefoot-machines">
