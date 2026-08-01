@@ -551,9 +551,9 @@ sets:
     closed: false
     surface: anchors
     rooms_url: /truth   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /sources
+    anchor_page: /truth
     anchor_prefix: ""
-    defined_by: [site:/sources]   # the one site-defined set · it documents the machinery itself
+    defined_by: [site:/truth]   # the one site-defined set · it documents the machinery itself
     opener: >-
       The vocabulary of how this site tells the truth: spec, canon, schema,
       pack, pin, catalog, mirror, registry, manifest, lens. Each word has
@@ -585,10 +585,12 @@ surfaces:
       this map: seven layers, every set counted, every member accountable to
       the spec.
   - id: sources
-    url: /sources
-    exists: true   # landed 2026-07-17 (WO-7 · the epistemology page)
-    lens_route: true
-    title: Sources
+    url: /truth
+    exists: true   # fused INTO /truth 2026-08-02 (the casse §1.3 · the
+                   # triplication died: one truth surface, the hub absorbs
+                   # the epistemology) · not a lens_route — /truth is the
+                   # family root path already
+    title: The truth system
     role: "the public page of the truth system · the three clocks taught"
     opener: >-
       How this site tells the truth: every count, every code block and every
@@ -608,6 +610,8 @@ surfaces:
 # meta-refresh stub (dist has no server rules · the stub IS the 301).
 # These are NOT lens surfaces — no node, no graph edge, just the door.
 legacy_moves:
+  # ── the /sources fusion (the casse §1.3 · 2026-08-02) · one truth surface
+  - { from: /sources, to: /truth, applied: sources-truth-fusion }
   # ── the /library death (D6 · the casse §1.1 · 2026-08-02) · the page dies,
   #    the DATA lives (flagships/ stays the hero's picking corpus) · 8 rooms
   #    map to their use-case twins · 2 recorded-only ids heir to the gallery
@@ -631,7 +635,7 @@ legacy_moves:
   - { from: /concepts/context-engineering, to: /learn, applied: provider-rooms-arc }
   - { from: /concepts/dag-execution, to: /flow, applied: provider-rooms-arc }
   - { from: /concepts/declarative-intent, to: /manifesto, applied: provider-rooms-arc }
-  - { from: /concepts/epistemic-awareness, to: /sources, applied: provider-rooms-arc }
+  - { from: /concepts/epistemic-awareness, to: /truth, applied: provider-rooms-arc }
   - { from: /concepts/graceful-degradation, to: /flow, applied: provider-rooms-arc }
   - { from: /concepts/multi-provider, to: /providers, applied: provider-rooms-arc }
   - { from: /concepts/observability-driven, to: /proof, applied: provider-rooms-arc }
@@ -732,10 +736,8 @@ nav:
       #  mirrors into The reach — a second /spec label was the same
       #  two-doors-one-path confusion the §4.11 ratchet now refuses)
       - { col: When it runs, item: { label: Changelog, to: /changelog } }
-      # the truth system's two doors (the footer is the COMPLETE card — the
-      # coverage gate found them holeless 2026-08-02)
-      - { col: When it runs, item: { label: Sources, to: /sources } }
-      - { col: When it runs, item: { label: The truth words, to: /truth } }
+      # the truth system's ONE door (fused 2026-08-02 · the casse §1.3)
+      - { col: When it runs, item: { label: The truth system, to: /truth } }
       - { col: What it can touch, item: { label: Use cases, to: /use-cases } }
       # the registry's on-site room landed with /integrations — the owed
       # surface is paid, the slot dies (§4.11: one door, one path)

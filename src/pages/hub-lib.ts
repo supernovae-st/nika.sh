@@ -14,9 +14,9 @@ export const chapterHref = (ch: string) => `${SPEC}/blob/main/${ch}`
    hubs are sync routes and its 80K would ride the initial chunk). One truth
    held by gate, not by hand: lens.test pins this derivation toEqual the
    compiler's JSONLD_TERMSETS per hub page (the derived-inverses law). */
-/* the /sources termset, derived from the chrome-safe TRUTH_WORDS (same
+/* the /truth termset, derived from the chrome-safe TRUTH_WORDS (same
    derived-inverses law: lens.test pins this equal to the twin's
-   JSONLD_TERMSETS['/sources']) */
+   JSONLD_TERMSETS['/truth']) */
 export function sourcesJsonldSets(words: {
   title: string
   opener: string
@@ -25,7 +25,7 @@ export function sourcesJsonldSets(words: {
   return [
     {
       '@type': 'DefinedTermSet',
-      '@id': `${SITE}/sources#set-truth-words`,
+      '@id': `${SITE}/truth#set-truth-words`,
       name: `Nika ${words.title.toLowerCase()}`,
       description: words.opener,
       license: 'https://www.apache.org/licenses/LICENSE-2.0',
@@ -34,7 +34,7 @@ export function sourcesJsonldSets(words: {
         .sort((a, b) => a.id.localeCompare(b.id))
         .map((m) => ({
           '@type': 'DefinedTerm',
-          '@id': m.url ? `${SITE}${m.url}` : `${SITE}/sources#${m.id}`,
+          '@id': m.url ? `${SITE}${m.url}` : `${SITE}/truth#${m.id}`,
           termCode: m.id,
           name: m.id,
           description: m.one_liner,

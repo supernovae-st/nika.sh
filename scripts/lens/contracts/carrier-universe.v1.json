@@ -44,8 +44,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 582,
-  "set_sha256": "2b009f6fa1660610d269274af051db4ad607f9940b80fd8068b7e8bc55a6af9f",
+  "carrier_count": 583,
+  "set_sha256": "277e9d0e0cbec3323ad2aafe712342f0399fe06b191307d48b12cb1c5e7a5d75",
   "normative_source_count": 284,
   "normative_source_sha256": "ec5bb46b6820649dd7e631378835b22164124d92fddb721201d17c16a519b624",
   "normative_sources": [
@@ -515,6 +515,7 @@
     "public/redirects.json",
     "public/schema/workflow.json",
     "public/sitemap/index.html",
+    "public/sources/index.html",
     "public/spec/shipped/PROVENANCE.json",
     "public/spec/shipped/canon.yaml",
     "public/spec/shipped/workflow.schema.json",
@@ -853,6 +854,7 @@
     "public/rss.xml",
     "public/schema/workflow.json",
     "public/sitemap/index.html",
+    "public/sources/index.html",
     "public/spec/shipped/PROVENANCE.json",
     "public/spec/shipped/canon.yaml",
     "public/spec/shipped/workflow.schema.json",

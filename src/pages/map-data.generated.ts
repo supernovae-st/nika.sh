@@ -308,7 +308,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "truth-words",
         "title": "The truth words",
-        "url": "/sources",
+        "url": "/truth",
         "count": 10,
         "surface": "anchors",
         "slot": null,

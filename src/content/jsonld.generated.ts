@@ -2500,10 +2500,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/sources": [
+  "/truth": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/sources#set-truth-words",
+      "@id": "https://nika.sh/truth#set-truth-words",
       "name": "Nika the truth words",
       "description": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, lens. Each word has exactly one meaning · confusing two of them is a prose bug.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",

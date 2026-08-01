@@ -52,7 +52,7 @@
     },
     {
       "from": "/concepts/epistemic-awareness",
-      "to": "/sources",
+      "to": "/truth",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
@@ -196,6 +196,13 @@
       "status": 301,
       "live": true,
       "applies": "wo-3"
+    },
+    {
+      "from": "/sources",
+      "to": "/truth",
+      "status": 301,
+      "live": true,
+      "applies": "sources-truth-fusion"
     }
   ]
 }

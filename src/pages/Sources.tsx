@@ -59,9 +59,9 @@ export function Component() {
   const p = LENS_PROVENANCE
   useHead({
     title: TITLE,
-    link: routeHead('/sources').link,
+    link: routeHead('/truth').link,
     meta: [
-      ...routeHead('/sources').meta,
+      ...routeHead('/truth').meta,
       { name: 'description', content: DESCRIPTION },
       { property: 'og:title', content: TITLE },
       { property: 'og:description', content: DESCRIPTION },

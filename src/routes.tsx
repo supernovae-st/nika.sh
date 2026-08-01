@@ -139,7 +139,9 @@ export const routes: RouteObject[] = [
       { path: 'error-namespaces', Component: FamilyRoot },
       { path: 'error-categories', Component: FamilyRoot },
       { path: 'mcp', Component: FamilyRoot },
-      { path: 'truth', Component: FamilyRoot },
+      /* the truth hub IS the epistemology page (fused from /sources
+         2026-08-02 · §1.3) — its member rows render inside it */
+      { path: 'truth', Component: SourcesPage },
       { path: 'namespaces/:id', Component: MemberRoom },
       { path: 'types/:id', Component: MemberRoom },
       { path: 'edges/:id', Component: MemberRoom },
@@ -167,7 +169,6 @@ export const routes: RouteObject[] = [
       /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
-      { path: 'sources', Component: SourcesPage },
       { path: 'flow', Component: FlowPage },
       { path: 'boundary', Component: BoundaryPage },
       { path: 'proof', Component: ProofPage },

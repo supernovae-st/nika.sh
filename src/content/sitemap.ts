@@ -80,7 +80,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The flow', href: '/flow', hint: 'two doors, one graph · the gate matrix' },
       { label: 'The boundary', href: '/boundary', hint: 'permits · secrets · the always-on floor' },
       { label: 'The proof', href: '/proof', hint: 'run graph · conformance · machine surfaces' },
-      { label: 'Sources', href: '/sources', hint: 'how this site tells the truth · verify it yourself' },
+      { label: 'The truth system', href: '/truth', hint: 'how this site tells the truth · verify it yourself' },
       { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
       { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
@@ -147,9 +147,10 @@ export const SITE_MAP: MapGroup[] = [
          generic room renders, so the map can never drift from the rooms
          (providers included: the anchors became pages) */
       /* every family's ROOT joins its rooms (the /types 404 class) —
-         minus the dedicated registers already placed above (providers) */
+         minus the dedicated doors already placed above (providers · truth:
+         its root fused with the epistemology page, linked in product) */
       ...Object.keys(MEMBER_ROOM_FAMILIES)
-        .filter((f) => f !== 'providers')
+        .filter((f) => f !== 'providers' && f !== 'truth')
         .map((f) => ({
           label: `${f} · the root`,
           href: `/${f}`,

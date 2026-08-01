@@ -860,7 +860,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "truth": {
     "set": "truth-words",
     "title": "The truth words",
-    "hub": "/sources",
+    "hub": "/truth",
     "members": [
       {
         "id": "canon",

@@ -117,7 +117,7 @@ describe('lens · rooms and routes cover each other', () => {
   })
 
   it('every anchored member points at a page that exists or is landing', () => {
-    const landing = new Set(['/flow', '/boundary', '/proof', '/sources', '/map'])
+    const landing = new Set(['/flow', '/boundary', '/proof', '/truth', '/map'])
     for (const n of LENS_NODES) {
       if (n.kind !== 'member' || !n.anchor || !n.url) continue
       const page = n.url.split('#')[0]
@@ -257,8 +257,8 @@ describe('lens · jsonld and market vocab stay lawful', () => {
     }
   })
 
-  it('the /sources head derivation IS the twin (truth-words · derived-inverses law)', () => {
-    expect(sourcesJsonldSets(TRUTH_WORDS)).toEqual(JSONLD_TERMSETS['/sources'])
+  it('the /truth head derivation IS the twin (truth-words · derived-inverses law)', () => {
+    expect(sourcesJsonldSets(TRUTH_WORDS)).toEqual(JSONLD_TERMSETS['/truth'])
   })
 
 

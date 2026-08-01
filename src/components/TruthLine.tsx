@@ -26,7 +26,7 @@ export function TruthLine({ nodeId }: { nodeId?: string }) {
         this page as data <span aria-hidden>{'</>'}</span>
       </a>
       {SOURCES_LIVE && (
-        <a className="truth-line-link" href="/sources">
+        <a className="truth-line-link" href="/truth">
           about sources →
         </a>
       )}

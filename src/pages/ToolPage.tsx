@@ -279,7 +279,7 @@ export function Component() {
                   <strong>Ratified, not shipped.</strong> The spec ratifies{' '}
                   <code>{hit.name}</code> as one of {TOOLS.length} builtins; the engine catalog
                   does not carry it yet. The contract below is spec-derived, and{' '}
-                  <Link to="/sources">the two clocks</Link> disagree here on purpose: that gap is
+                  <Link to="/truth">the two clocks</Link> disagree here on purpose: that gap is
                   the register doing its job.
                 </p>
                 <ArgsContract bare={hit.bare} />

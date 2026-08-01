@@ -107,7 +107,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "truth-words": {
     "count": 10,
-    "url": "/sources",
+    "url": "/truth",
     "title": "The truth words"
   },
   "types": {

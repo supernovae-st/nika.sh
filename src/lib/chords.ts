@@ -18,7 +18,7 @@ export const NAV_CHORDS: NavChord[] = [
   { key: 'e', to: '/errors', label: 'the error register' },
   { key: 't', to: '/tools', label: 'the standard library' },
   { key: 'l', to: '/language', label: 'the language register' },
-  { key: 's', to: '/sources', label: 'the sources' },
+  { key: 's', to: '/truth', label: 'the truth system' },
   { key: 'r', to: '/timeline', label: 'the record' },
   { key: 'c', to: '/changelog', label: 'the ship log' },
 ]

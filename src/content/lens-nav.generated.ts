@@ -283,11 +283,7 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
         "to": "/changelog"
       },
       {
-        "label": "Sources",
-        "to": "/sources"
-      },
-      {
-        "label": "The truth words",
+        "label": "The truth system",
         "to": "/truth"
       }
     ]

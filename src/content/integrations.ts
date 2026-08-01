@@ -245,7 +245,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     doors: [
       { label: 'the spec at a glance', href: '/spec' },
       { label: 'every language word', href: '/language' },
-      { label: 'how the site tells the truth', href: '/sources' },
+      { label: 'how the site tells the truth', href: '/truth' },
     ],
   },
   {
@@ -341,7 +341,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     how: 'The lens compiles one graph of the whole language and the coverage gates hold the site to it: every citable element owns a room, every register links its rooms, the machine twins (catalogs · schema · ontology · llms.txt) serve the same facts the pages render. The page that teaches the machinery also names what it does not cover yet.',
     install: [{ text: 'You are here. Machines start at', code: 'https://nika.sh/llms.txt' }],
     doors: [
-      { label: 'how this site tells the truth', href: '/sources' },
+      { label: 'how this site tells the truth', href: '/truth' },
       { label: 'every page, one graph', href: '/map' },
     ],
   },
