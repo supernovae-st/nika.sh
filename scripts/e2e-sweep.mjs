@@ -60,9 +60,13 @@ if (!BASE) {
 }
 
 /* ── routes · derived from the sitemap the build already emits ──────────────
-   --match <prefix> scopes the sweep (the run-gates --only spirit): a NEW
-   world gets proven locally in minutes while the FULL sweep stays the CI
-   deep-belts job's (a 644-route local run is the load-fiction class). */
+   --match <prefix> scopes the ROUTE passes (console/network + link
+   integrity) to a new world — proven locally in minutes while the FULL
+   sweep stays the CI deep-belts job's (a 644-route local run is the
+   load-fiction class). HONESTY: a scoped run SKIPS the interaction
+   battery (it exercises fixed surfaces — the film, /spec, the palette,
+   the mobile sheet — none of them the matched world) and says so; the
+   battery's judges are the full sweep's. */
 const sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf8')
 const MATCH = argv('match', '')
 const ROUTES = [...sitemap.matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)]
@@ -328,6 +332,21 @@ for (const [href, froms] of links) {
 if (linkFails === 0) console.log(`  ✓ ${links.size} internal links resolve (anchors included)`)
 
 /* ── PASS 3 · the interaction battery ──────────────────────────────────────── */
+/* a SCOPED run stops here, honestly (refuter finding 2026-08-01): the
+   battery exercises FIXED surfaces (the film · /spec · the palette · the
+   mobile sheet) — none of them the matched world — and it is the sweep's
+   dominant wall-clock. Under --match the verdict covers routes + links
+   ONLY and says so; the battery's judges are the full sweep's (CI). */
+if (MATCH) {
+  console.log(`\ninteraction battery · skipped under --match ${MATCH} (fixed surfaces · the full sweep judges them)`)
+  console.log('')
+  if (failures.length) {
+    console.log(`E2E FAIL · ${failures.length} finding(s)`)
+    process.exit(1)
+  }
+  console.log(`E2E PASS (scoped ${MATCH}) · routes clean · links whole · battery not run`)
+  process.exit(0)
+}
 console.log('\ninteraction battery')
 const check = async (name, fn) => {
   try {

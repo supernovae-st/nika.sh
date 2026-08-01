@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 416
-  aggregate_sha256: 837b0621d11d4a5d592eede9acac1f98d0e812b66daf520a2e8e967c1d9177c7
+  aggregate_sha256: 94a13fcfc4d7b46606bea6a00c3acdf3fa59aecb0819d91461b2edb8831d549d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: a8722f47d8621ae73e30b65e54d7fbf5c60773cf1f7bafe72423620d0469325d
+  aggregate_sha256: 08c98f2a028a8781f12fa88ffa99394efb4d65cc2dc184c28a228ed3c94fa7f4
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

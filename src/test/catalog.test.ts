@@ -96,9 +96,13 @@ describe('catalog · the projection derives and every room is served', () => {
     // the size budget regressed once (2026-08-01: +25KB gz over) because the
     // heavy catalog rode the main bundle — this pins the law structurally:
     // src/** reaches catalog.generated ONLY through the async-chunk door.
+    // The needle is the MODULE BASENAME, never a relative prefix: a refuter
+    // proved '../content/catalog.generated' only matched importers exactly
+    // one level under src/ — './catalog.generated' from a sibling and
+    // '../../content/…' from a deeper page both escaped the judge.
     const out = spawnSync(
       'grep',
-      ['-rl', "from '../content/catalog.generated'", join(ROOT, 'src'), '--include=*.ts', '--include=*.tsx'],
+      ['-rl', "catalog.generated'", join(ROOT, 'src'), '--include=*.ts', '--include=*.tsx'],
       { encoding: 'utf8' },
     )
     const offenders = out.stdout
@@ -106,12 +110,20 @@ describe('catalog · the projection derives and every room is served', () => {
       .filter(Boolean)
       .map((p) => p.slice(ROOT.length + 1))
       .filter((p) => !['src/lib/catalog-access.ts', 'src/test/catalog.test.ts'].includes(p))
-    // type-only imports are fine (erased at build) — check the offenders' lines
     const real = offenders.filter((p) => {
       const src = readFileSync(join(ROOT, p), 'utf8')
-      return src
-        .split('\n')
-        .some((l) => l.includes("from '../content/catalog.generated'") && !/^\s*import type|^type .*= import/.test(l))
+      return src.split('\n').some((l) => {
+        if (!l.includes("catalog.generated'")) return false
+        // the CHROME-LEAN module is the one src/** may import eagerly
+        if (l.includes("catalog-paths.generated'")) return false
+        // type-only forms are erased at build: `import type {…}`,
+        // `type X = (typeof )import('…')`, and the inline `import { type A }`
+        // (every specifier type-prefixed — one value specifier keeps it real)
+        if (/^\s*import type\b|^\s*(?:export )?type .*= (?:typeof )?import\(/.test(l)) return false
+        const m = l.match(/import\s*\{([^}]*)\}/)
+        if (m && m[1].split(',').every((s) => /^\s*type\s/.test(s))) return false
+        return true
+      })
     })
     expect(real, `eager heavy-catalog imports (use catalog-access):\n${real.join('\n')}`).toEqual([])
   })
