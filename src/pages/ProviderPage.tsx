@@ -16,6 +16,7 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { ssrProviderRoom, loadProviderRoom, type ProviderRoomCargo } from '../lib/provider-room-access'
 import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA, type ProviderEntry } from '../content/providers.generated'
+import { useCatalogCargo } from './catalog-lib'
 import { fmtTokens } from './providers-shared'
 import { PROVIDER_SOURCES } from '../content/sources'
 import { SITE, routeHead } from '../content'
@@ -116,6 +117,20 @@ export function Component() {
   const kin = useMemo(
     () => (hit ? PROVIDERS.filter((p) => p.kind === hit.kind && p.id !== hit.id) : []),
     [hit],
+  )
+
+  /* the released catalog's answer (§2.2 · the implements edge rendered):
+     which wire models THIS spec-named provider serves at the engine pin —
+     each one a room. Rides the catalog cargo door (ssr island + async
+     chunk · register-diet); identity join, same law as the graph. */
+  const { payload: catPayload, data: catRooms } = useCatalogCargo<
+    { slug: string; id: string; aliases: string[] }[]
+  >(`prov-cat-${id}`, (mod) =>
+    mod.MODELS.filter((m) => m.served_by.some((s) => s.provider === id)).map((m) => ({
+      slug: m.slug,
+      id: m.id,
+      aliases: m.served_by.filter((s) => s.provider === id).map((s) => s.alias),
+    })),
   )
 
   const title = cargo
@@ -222,6 +237,7 @@ export function Component() {
           {hit && (
             <>
               <Island id={islandId(id)} payload={payload} />
+              <Island id={`prov-cat-${id}`} payload={catPayload} />
 
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 {cargo?.meta.angle ?? hit.description} One <code>provider/model</code> line moves a
@@ -363,6 +379,39 @@ export function Component() {
                   </p>
                 )}
               </div>
+
+              {/* ── in the released catalog · the implements edge, rendered ── */}
+              {catRooms != null && catRooms.length > 0 && (
+                <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '240ms' }}>
+                  <div className="cl-year-head">
+                    <h2 id="pvr-catalog" className="td-h2">
+                      in the released catalog
+                    </h2>
+                    <span className="cl-year-rule" aria-hidden />
+                    <span className="cl-year-count">
+                      {catRooms.length} {catRooms.length === 1 ? 'room' : 'rooms'}
+                    </span>
+                  </div>
+                  <p className="td-gloss">
+                    The wire models this provider serves in the released binary's catalog · each
+                    one is a room with its seats, exact prices and measured energy.
+                  </p>
+                  <ul className="pv-models">
+                    {catRooms.map((r) => (
+                      <li className="pv-model" key={r.slug}>
+                        <Link to={`/catalog/models/${r.slug}`} className="pv-model-id">
+                          {r.id}
+                        </Link>
+                        <span className="pv-model-caps">as {r.aliases.join(' · ')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="td-pin">
+                    the whole register: <Link to="/catalog/models">/catalog/models</Link> · what
+                    the released binary knows, vendored at the engine pin.
+                  </p>
+                </div>
+              )}
 
               {/* ── the provider in a real file · the crafted donor, audited ── */}
               <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '260ms' }}>

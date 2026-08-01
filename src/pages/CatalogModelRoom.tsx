@@ -7,10 +7,16 @@
 import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { MODEL_SLUGS } from '../content/catalog-paths.generated'
+import { PROVIDERS } from '../content/providers.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 
 type CatalogModel = import('../content/catalog.generated').CatalogModel
+
+/* the canonical⇄market join (the graph's implements edge · identity on the
+   id, verified 17/17): a seat whose provider is spec-named links its
+   dedicated room — a wire-only vendor stays a plain row, honestly */
+const CANONICAL_IDS = new Set(PROVIDERS.map((p) => p.id))
 
 export function Component() {
   const { pathname } = useLocation()
@@ -74,7 +80,15 @@ export function Component() {
                   {fmtTokens(s.context_window_tokens)} context · {fmtTokens(s.max_output_tokens)} out
                 </span>
               </div>
-              <p className="pv-desc">{s.provider_name}</p>
+              <p className="pv-desc">
+                {s.provider_name}
+                {CANONICAL_IDS.has(s.provider) && (
+                  <>
+                    {' · '}
+                    <Link to={`/providers/${s.provider}`}>the provider room</Link>
+                  </>
+                )}
+              </p>
             </li>
           ))}
         </ol>
