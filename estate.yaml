@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 1ddd8edaa20e1361f41c4ad4e61f0a8e06c9c746f94221fbf7e1d0a1523b8aad
+  sha256: 139546d311aa2eb9f976ab22eceea97e8e22fb515225c83f14a46f04abd5c63e
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: fdf82241cbc5067806128de16f40422d7d03d32ee49c99fd51050dfd1cefec5f
+  sha256: 6e785bf8fd266550f687a1622b9f569707403748227f148142c89493019ac81c
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: ffa55e5ef25bec70282f2f91e8577b17bed7cbd387d8c835e601d50b66c28ce3
+  aggregate_sha256: 42814e13ab0eee2886681ef963842395fce87a1dd317ba94940237b3b45d1cc5
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored

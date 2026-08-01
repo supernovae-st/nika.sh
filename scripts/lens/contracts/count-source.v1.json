@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 284,
-    "set_sha256": "ec5bb46b6820649dd7e631378835b22164124d92fddb721201d17c16a519b624",
-    "rendered_count": 583,
-    "rendered_set_sha256": "277e9d0e0cbec3323ad2aafe712342f0399fe06b191307d48b12cb1c5e7a5d75"
+    "count": 285,
+    "set_sha256": "6c61ecefe4417893888ae8f6f0710d1dfee3e87b9b6a21b24472884ddbb276de",
+    "rendered_count": 584,
+    "rendered_set_sha256": "97be7148d190de25c6d77dfa315e5d4559449ffa39e5bcf9196871ec08f9a840"
   },
   "claim_count": 140,
   "bindings": [
@@ -892,7 +892,7 @@
     {
       "selector": "src/pages/Home.tsx#count:1",
       "path": "src/pages/Home.tsx",
-      "line": 40,
+      "line": 41,
       "text": "05 verbs",
       "source": "05",
       "field": "verbs",
@@ -988,7 +988,7 @@
     {
       "selector": "src/pages/ProviderPage.tsx#count:1",
       "path": "src/pages/ProviderPage.tsx",
-      "line": 28,
+      "line": 29,
       "text": "one provider",
       "source": "one",
       "field": "providers",
