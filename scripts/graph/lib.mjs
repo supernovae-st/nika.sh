@@ -29,12 +29,15 @@ export const byCp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
 
 /** ONE slug law for catalog ids (models · MCP servers), shared by the graph
  *  compiler AND the /catalog projection so their urls can never diverge:
- *  lowercase · anything outside [a-z0-9.] folds to '-' · collapsed · trimmed
- *  · collisions dedupe '~2','~3'… in the caller's (codepoint-sorted) order. */
+ *  lowercase · anything outside [a-z0-9] folds to '-' (DOTS included — a
+ *  dotted tail reads as a file EXTENSION to static servers and CDNs; the
+ *  e2e harness crashed EISDIR on /catalog/models/qwen2.5 before this law)
+ *  · collapsed · trimmed · collisions dedupe '~2','~3'… in the caller's
+ *  (codepoint-sorted) order. */
 export function slugRegistry() {
   const taken = new Set()
   return (id) => {
-    let s = id.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
+    let s = id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
     if (!s) s = 'x'
     let out = s
     let n = 1

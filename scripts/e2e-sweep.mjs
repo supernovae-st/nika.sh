@@ -23,7 +23,7 @@
    Run: pnpm build && node scripts/e2e-sweep.mjs [--url http://127.0.0.1:4519]
    Serves dist itself when --url is absent. Exit 1 on any failure. */
 import { createServer } from 'node:http'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, statSync } from 'node:fs'
 import { join, extname, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFile } from 'node:child_process'
@@ -46,7 +46,9 @@ if (!BASE) {
     const url = new URL(req.url, 'http://x').pathname
     for (const t of [url, url.replace(/\/$/, '') + '/index.html', url + '/index.html']) {
       const p = join(DIST, t)
-      if (existsSync(p) && extname(t)) {
+      // isFile, never extname alone: a dotted DIRECTORY (a room slug with a
+      // version tail) read as a file was an EISDIR crash mid-sweep
+      if (existsSync(p) && extname(t) && statSync(p).isFile()) {
         res.writeHead(200, { 'content-type': MIME[extname(t)] ?? 'application/octet-stream' })
         return res.end(readFileSync(p))
       }

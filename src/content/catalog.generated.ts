@@ -24,7 +24,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "cf-meta-llama-3.1-8b-instruct",
+  "slug": "cf-meta-llama-3-1-8b-instruct",
   "pricing": [],
   "energy": []
  },
@@ -39,7 +39,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "cf-meta-llama-3.3-70b-instruct-fp8-fast",
+  "slug": "cf-meta-llama-3-3-70b-instruct-fp8-fast",
   "pricing": [],
   "energy": []
  },
@@ -54,7 +54,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-3.1-8b-instruct",
+  "slug": "meta-llama-3-1-8b-instruct",
   "pricing": [],
   "energy": []
  },
@@ -69,7 +69,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-3.3-70b-instruct",
+  "slug": "meta-llama-3-3-70b-instruct",
   "pricing": [],
   "energy": []
  },
@@ -136,7 +136,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 32768
    }
   ],
-  "slug": "qwen-qwen3.5-397b-a17b-fastest",
+  "slug": "qwen-qwen3-5-397b-a17b-fastest",
   "pricing": [],
   "energy": []
  },
@@ -151,7 +151,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 16384
    }
   ],
-  "slug": "qwen-qwen3.5-9b-cheapest",
+  "slug": "qwen-qwen3-5-9b-cheapest",
   "pricing": [],
   "energy": []
  },
@@ -196,7 +196,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "anthropic.claude-haiku-4-5-20251001-v1-0",
+  "slug": "anthropic-claude-haiku-4-5-20251001-v1-0",
   "pricing": [],
   "energy": []
  },
@@ -211,7 +211,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "anthropic.claude-sonnet-4-20250514-v1-0",
+  "slug": "anthropic-claude-sonnet-4-20250514-v1-0",
   "pricing": [],
   "energy": []
  },
@@ -397,7 +397,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "gemini-2.0-flash",
+  "slug": "gemini-2-0-flash",
   "pricing": [],
   "energy": []
  },
@@ -419,7 +419,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "gemini-2.5-flash",
+  "slug": "gemini-2-5-flash",
   "pricing": [],
   "energy": []
  },
@@ -449,7 +449,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "glm-4.5",
+  "slug": "glm-4-5",
   "pricing": [],
   "energy": []
  },
@@ -532,7 +532,7 @@ export const MODELS: CatalogModel[] = [
     "open_weights": false
    }
   ],
-  "slug": "gpt-5.2",
+  "slug": "gpt-5-2",
   "energy": []
  },
  {
@@ -598,7 +598,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "jamba-1.5-large",
+  "slug": "jamba-1-5-large",
   "pricing": [],
   "energy": []
  },
@@ -613,7 +613,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "jamba-1.5-mini",
+  "slug": "jamba-1-5-mini",
   "pricing": [],
   "energy": []
  },
@@ -643,7 +643,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "kimi-k2.5",
+  "slug": "kimi-k2-5",
   "pricing": [],
   "energy": []
  },
@@ -658,7 +658,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "llama-3.1-8b",
+  "slug": "llama-3-1-8b",
   "pricing": [],
   "energy": []
  },
@@ -685,7 +685,7 @@ export const MODELS: CatalogModel[] = [
     "open_weights": true
    }
   ],
-  "slug": "llama-3.1-8b-instant",
+  "slug": "llama-3-1-8b-instant",
   "energy": []
  },
  {
@@ -699,7 +699,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "llama-3.3-70b",
+  "slug": "llama-3-3-70b",
   "pricing": [],
   "energy": []
  },
@@ -726,7 +726,7 @@ export const MODELS: CatalogModel[] = [
     "open_weights": true
    }
   ],
-  "slug": "llama-3.3-70b-versatile",
+  "slug": "llama-3-3-70b-versatile",
   "energy": []
  },
  {
@@ -740,7 +740,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "llama3.2-3b",
+  "slug": "llama3-2-3b",
   "pricing": [],
   "energy": []
  },
@@ -755,7 +755,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-llama-3.1-8b-instruct-turbo",
+  "slug": "meta-llama-llama-3-1-8b-instruct-turbo",
   "pricing": [],
   "energy": []
  },
@@ -770,7 +770,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-llama-3.3-70b-instruct",
+  "slug": "meta-llama-llama-3-3-70b-instruct",
   "pricing": [],
   "energy": []
  },
@@ -785,7 +785,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-llama-3.3-70b-instruct-turbo",
+  "slug": "meta-llama-llama-3-3-70b-instruct-turbo",
   "pricing": [],
   "energy": []
  },
@@ -815,7 +815,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 4096
    }
   ],
-  "slug": "meta-llama-meta-llama-3.1-8b-instruct",
+  "slug": "meta-llama-meta-llama-3-1-8b-instruct",
   "pricing": [],
   "energy": []
  },
@@ -842,7 +842,7 @@ export const MODELS: CatalogModel[] = [
     "open_weights": true
    }
   ],
-  "slug": "meta-llama-3.1-70b-instruct",
+  "slug": "meta-llama-3-1-70b-instruct",
   "energy": []
  },
  {
@@ -1065,7 +1065,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "qwen3.5-4b",
+  "slug": "qwen3-5-4b",
   "pricing": [],
   "energy": []
  },
@@ -1080,7 +1080,7 @@ export const MODELS: CatalogModel[] = [
     "max_output_tokens": 8192
    }
   ],
-  "slug": "qwen3.5-4b~2",
+  "slug": "qwen3-5-4b~2",
   "pricing": [],
   "energy": []
  },

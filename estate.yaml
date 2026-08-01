@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: bf76f6491a8310f7b0008dfad84b25744b386f15e84507769415c1b424317d50
+  sha256: ccd88ed721758bbe21914d4846a733059a9db4de667d4911a30b460dc35680f9
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: e003af57f9b0b5a2444fe200fcf26a9ea8b7e1bf12a363fe8cc4b2dabe925ca2
+  sha256: c4ef651030a9c7deac302088fd7f5f66e6ea33f6455fd291a0da037709f2879d
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 1dfb78172e789f4fab8ec0772e512490e338a22c1e74e3a57e473a602a2a3426
+  aggregate_sha256: 7f28b3d421af96c1eacb881d2a7e5501460c0b2e7612f5f007248e9753c4a9da
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 31
-  aggregate_sha256: 4efbe77bcccd9fb8d2196d56f36dac5382d9f9f938060f69bdc5f41d621c0d28
+  aggregate_sha256: 27eb9ebdc447361d28b64edb08090b4a72e8a4d054cad2ce7f53f197d65292b7
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,7 +941,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: f967d72bcfc56322c9ba87a4725f068eac6f9e159e76f996be52e4c8d451add4
+  aggregate_sha256: 17e622707d1d281a33c46ca27a2c25c1c549cfb7461500aac0aae38e9735936a
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

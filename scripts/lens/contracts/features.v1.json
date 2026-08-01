@@ -2541,7 +2541,7 @@
     },
     {
       "selector": "site.config.ts#page:289",
-      "path": "/catalog/models/cf-meta-llama-3.1-8b-instruct",
+      "path": "/catalog/models/cf-meta-llama-3-1-8b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2549,7 +2549,7 @@
     },
     {
       "selector": "site.config.ts#page:290",
-      "path": "/catalog/models/cf-meta-llama-3.3-70b-instruct-fp8-fast",
+      "path": "/catalog/models/cf-meta-llama-3-3-70b-instruct-fp8-fast",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2557,7 +2557,7 @@
     },
     {
       "selector": "site.config.ts#page:291",
-      "path": "/catalog/models/meta-llama-3.1-8b-instruct",
+      "path": "/catalog/models/meta-llama-3-1-8b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2565,7 +2565,7 @@
     },
     {
       "selector": "site.config.ts#page:292",
-      "path": "/catalog/models/meta-llama-3.3-70b-instruct",
+      "path": "/catalog/models/meta-llama-3-3-70b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2597,7 +2597,7 @@
     },
     {
       "selector": "site.config.ts#page:296",
-      "path": "/catalog/models/qwen-qwen3.5-397b-a17b-fastest",
+      "path": "/catalog/models/qwen-qwen3-5-397b-a17b-fastest",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2605,7 +2605,7 @@
     },
     {
       "selector": "site.config.ts#page:297",
-      "path": "/catalog/models/qwen-qwen3.5-9b-cheapest",
+      "path": "/catalog/models/qwen-qwen3-5-9b-cheapest",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2629,7 +2629,7 @@
     },
     {
       "selector": "site.config.ts#page:300",
-      "path": "/catalog/models/anthropic.claude-haiku-4-5-20251001-v1-0",
+      "path": "/catalog/models/anthropic-claude-haiku-4-5-20251001-v1-0",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2637,7 +2637,7 @@
     },
     {
       "selector": "site.config.ts#page:301",
-      "path": "/catalog/models/anthropic.claude-sonnet-4-20250514-v1-0",
+      "path": "/catalog/models/anthropic-claude-sonnet-4-20250514-v1-0",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2717,7 +2717,7 @@
     },
     {
       "selector": "site.config.ts#page:311",
-      "path": "/catalog/models/gemini-2.0-flash",
+      "path": "/catalog/models/gemini-2-0-flash",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2725,7 +2725,7 @@
     },
     {
       "selector": "site.config.ts#page:312",
-      "path": "/catalog/models/gemini-2.5-flash",
+      "path": "/catalog/models/gemini-2-5-flash",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2741,7 +2741,7 @@
     },
     {
       "selector": "site.config.ts#page:314",
-      "path": "/catalog/models/glm-4.5",
+      "path": "/catalog/models/glm-4-5",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2773,7 +2773,7 @@
     },
     {
       "selector": "site.config.ts#page:318",
-      "path": "/catalog/models/gpt-5.2",
+      "path": "/catalog/models/gpt-5-2",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2797,7 +2797,7 @@
     },
     {
       "selector": "site.config.ts#page:321",
-      "path": "/catalog/models/jamba-1.5-large",
+      "path": "/catalog/models/jamba-1-5-large",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2805,7 +2805,7 @@
     },
     {
       "selector": "site.config.ts#page:322",
-      "path": "/catalog/models/jamba-1.5-mini",
+      "path": "/catalog/models/jamba-1-5-mini",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2821,7 +2821,7 @@
     },
     {
       "selector": "site.config.ts#page:324",
-      "path": "/catalog/models/kimi-k2.5",
+      "path": "/catalog/models/kimi-k2-5",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2829,7 +2829,7 @@
     },
     {
       "selector": "site.config.ts#page:325",
-      "path": "/catalog/models/llama-3.1-8b",
+      "path": "/catalog/models/llama-3-1-8b",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2837,7 +2837,7 @@
     },
     {
       "selector": "site.config.ts#page:326",
-      "path": "/catalog/models/llama-3.1-8b-instant",
+      "path": "/catalog/models/llama-3-1-8b-instant",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2845,7 +2845,7 @@
     },
     {
       "selector": "site.config.ts#page:327",
-      "path": "/catalog/models/llama-3.3-70b",
+      "path": "/catalog/models/llama-3-3-70b",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2853,7 +2853,7 @@
     },
     {
       "selector": "site.config.ts#page:328",
-      "path": "/catalog/models/llama-3.3-70b-versatile",
+      "path": "/catalog/models/llama-3-3-70b-versatile",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2861,7 +2861,7 @@
     },
     {
       "selector": "site.config.ts#page:329",
-      "path": "/catalog/models/llama3.2-3b",
+      "path": "/catalog/models/llama3-2-3b",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2869,7 +2869,7 @@
     },
     {
       "selector": "site.config.ts#page:330",
-      "path": "/catalog/models/meta-llama-llama-3.1-8b-instruct-turbo",
+      "path": "/catalog/models/meta-llama-llama-3-1-8b-instruct-turbo",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2877,7 +2877,7 @@
     },
     {
       "selector": "site.config.ts#page:331",
-      "path": "/catalog/models/meta-llama-llama-3.3-70b-instruct",
+      "path": "/catalog/models/meta-llama-llama-3-3-70b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2885,7 +2885,7 @@
     },
     {
       "selector": "site.config.ts#page:332",
-      "path": "/catalog/models/meta-llama-llama-3.3-70b-instruct-turbo",
+      "path": "/catalog/models/meta-llama-llama-3-3-70b-instruct-turbo",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2901,7 +2901,7 @@
     },
     {
       "selector": "site.config.ts#page:334",
-      "path": "/catalog/models/meta-llama-meta-llama-3.1-8b-instruct",
+      "path": "/catalog/models/meta-llama-meta-llama-3-1-8b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -2909,7 +2909,7 @@
     },
     {
       "selector": "site.config.ts#page:335",
-      "path": "/catalog/models/meta-llama-3.1-70b-instruct",
+      "path": "/catalog/models/meta-llama-3-1-70b-instruct",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -3005,7 +3005,7 @@
     },
     {
       "selector": "site.config.ts#page:347",
-      "path": "/catalog/models/qwen3.5-4b",
+      "path": "/catalog/models/qwen3-5-4b",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",
@@ -3013,7 +3013,7 @@
     },
     {
       "selector": "site.config.ts#page:348",
-      "path": "/catalog/models/qwen3.5-4b~2",
+      "path": "/catalog/models/qwen3-5-4b~2",
       "route_selector": "src/routes.tsx#route:75",
       "component": "CatalogModelRoom",
       "feature": "registry.catalog",

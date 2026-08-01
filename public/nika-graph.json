@@ -7008,7 +7008,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "@cf/meta/llama-3.1-8b-instruct",
-   "url": "/catalog/models/cf-meta-llama-3.1-8b-instruct"
+   "url": "/catalog/models/cf-meta-llama-3-1-8b-instruct"
   },
   {
    "data": {
@@ -7022,7 +7022,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-   "url": "/catalog/models/cf-meta-llama-3.3-70b-instruct-fp8-fast"
+   "url": "/catalog/models/cf-meta-llama-3-3-70b-instruct-fp8-fast"
   },
   {
    "data": {
@@ -7036,7 +7036,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "Meta-Llama-3.1-8B-Instruct",
-   "url": "/catalog/models/meta-llama-3.1-8b-instruct"
+   "url": "/catalog/models/meta-llama-3-1-8b-instruct"
   },
   {
    "data": {
@@ -7050,7 +7050,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "Meta-Llama-3.3-70B-Instruct",
-   "url": "/catalog/models/meta-llama-3.3-70b-instruct"
+   "url": "/catalog/models/meta-llama-3-3-70b-instruct"
   },
   {
    "data": {
@@ -7107,7 +7107,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "Qwen/Qwen3.5-397B-A17B:fastest",
-   "url": "/catalog/models/qwen-qwen3.5-397b-a17b-fastest"
+   "url": "/catalog/models/qwen-qwen3-5-397b-a17b-fastest"
   },
   {
    "data": {
@@ -7121,7 +7121,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "Qwen/Qwen3.5-9B:cheapest",
-   "url": "/catalog/models/qwen-qwen3.5-9b-cheapest"
+   "url": "/catalog/models/qwen-qwen3-5-9b-cheapest"
   },
   {
    "data": {
@@ -7163,7 +7163,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "anthropic.claude-haiku-4-5-20251001-v1:0",
-   "url": "/catalog/models/anthropic.claude-haiku-4-5-20251001-v1-0"
+   "url": "/catalog/models/anthropic-claude-haiku-4-5-20251001-v1-0"
   },
   {
    "data": {
@@ -7177,7 +7177,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "anthropic.claude-sonnet-4-20250514-v1:0",
-   "url": "/catalog/models/anthropic.claude-sonnet-4-20250514-v1-0"
+   "url": "/catalog/models/anthropic-claude-sonnet-4-20250514-v1-0"
   },
   {
    "data": {
@@ -7319,7 +7319,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "gemini-2.0-flash",
-   "url": "/catalog/models/gemini-2.0-flash"
+   "url": "/catalog/models/gemini-2-0-flash"
   },
   {
    "data": {
@@ -7334,7 +7334,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "gemini-2.5-flash",
-   "url": "/catalog/models/gemini-2.5-flash"
+   "url": "/catalog/models/gemini-2-5-flash"
   },
   {
    "data": {
@@ -7362,7 +7362,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "glm-4.5",
-   "url": "/catalog/models/glm-4.5"
+   "url": "/catalog/models/glm-4-5"
   },
   {
    "data": {
@@ -7418,7 +7418,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "gpt-5.2",
-   "url": "/catalog/models/gpt-5.2"
+   "url": "/catalog/models/gpt-5-2"
   },
   {
    "data": {
@@ -7460,7 +7460,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "jamba-1.5-large",
-   "url": "/catalog/models/jamba-1.5-large"
+   "url": "/catalog/models/jamba-1-5-large"
   },
   {
    "data": {
@@ -7474,7 +7474,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "jamba-1.5-mini",
-   "url": "/catalog/models/jamba-1.5-mini"
+   "url": "/catalog/models/jamba-1-5-mini"
   },
   {
    "data": {
@@ -7502,7 +7502,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "kimi-k2.5",
-   "url": "/catalog/models/kimi-k2.5"
+   "url": "/catalog/models/kimi-k2-5"
   },
   {
    "data": {
@@ -7516,7 +7516,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "llama-3.1-8b",
-   "url": "/catalog/models/llama-3.1-8b"
+   "url": "/catalog/models/llama-3-1-8b"
   },
   {
    "data": {
@@ -7530,7 +7530,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "llama-3.1-8b-instant",
-   "url": "/catalog/models/llama-3.1-8b-instant"
+   "url": "/catalog/models/llama-3-1-8b-instant"
   },
   {
    "data": {
@@ -7544,7 +7544,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "llama-3.3-70b",
-   "url": "/catalog/models/llama-3.3-70b"
+   "url": "/catalog/models/llama-3-3-70b"
   },
   {
    "data": {
@@ -7558,7 +7558,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "llama-3.3-70b-versatile",
-   "url": "/catalog/models/llama-3.3-70b-versatile"
+   "url": "/catalog/models/llama-3-3-70b-versatile"
   },
   {
    "data": {
@@ -7572,7 +7572,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "llama3.2:3b",
-   "url": "/catalog/models/llama3.2-3b"
+   "url": "/catalog/models/llama3-2-3b"
   },
   {
    "data": {
@@ -7586,7 +7586,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "meta-llama/Llama-3.1-8B-Instruct-Turbo",
-   "url": "/catalog/models/meta-llama-llama-3.1-8b-instruct-turbo"
+   "url": "/catalog/models/meta-llama-llama-3-1-8b-instruct-turbo"
   },
   {
    "data": {
@@ -7600,7 +7600,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "meta-llama/Llama-3.3-70B-Instruct",
-   "url": "/catalog/models/meta-llama-llama-3.3-70b-instruct"
+   "url": "/catalog/models/meta-llama-llama-3-3-70b-instruct"
   },
   {
    "data": {
@@ -7614,7 +7614,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-   "url": "/catalog/models/meta-llama-llama-3.3-70b-instruct-turbo"
+   "url": "/catalog/models/meta-llama-llama-3-3-70b-instruct-turbo"
   },
   {
    "data": {
@@ -7642,7 +7642,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-   "url": "/catalog/models/meta-llama-meta-llama-3.1-8b-instruct"
+   "url": "/catalog/models/meta-llama-meta-llama-3-1-8b-instruct"
   },
   {
    "data": {
@@ -7656,7 +7656,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "meta/llama-3.1-70b-instruct",
-   "url": "/catalog/models/meta-llama-3.1-70b-instruct"
+   "url": "/catalog/models/meta-llama-3-1-70b-instruct"
   },
   {
    "data": {
@@ -7824,7 +7824,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "qwen3.5-4b",
-   "url": "/catalog/models/qwen3.5-4b"
+   "url": "/catalog/models/qwen3-5-4b"
   },
   {
    "data": {
@@ -7838,7 +7838,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/engine/catalog/llm-providers.toml",
    "served": true,
    "title": "qwen3.5:4b",
-   "url": "/catalog/models/qwen3.5-4b~2"
+   "url": "/catalog/models/qwen3-5-4b~2"
   },
   {
    "data": {
