@@ -35,7 +35,12 @@ export const WIRE_CMD = 'nika wire cursor'
 /* first run · a real local model leads (F4 · operator: no mock/echo on the
    marketing surface — the zero-key stub path lives in the DOCS only) */
 export const OLLAMA_PULL_CMD = 'ollama pull llama3.2:3b'
-export const EXAMPLES_CMD = 'nika examples run 01-hello --model ollama/llama3.2:3b'
+/* V5 (0.107): the `examples` verb tree DIED — `nika try` is the showroom
+   (bare lists the shelf, a slug rehearses it). Measured on the shipped
+   binary: the old line exits rc=2 « unrecognized subcommand 'examples' ».
+   The seat stays the model the row above just pulled, so this run answers
+   for real — the F4 lock (no mock on the marketing surface) holds. */
+export const EXAMPLES_CMD = 'nika try 01-hello --model ollama/llama3.2:3b'
 export const CHECK_CMD = 'nika check hello.nika.yaml'
 export const RUN_CMD = 'nika run hello.nika.yaml'
 export const WELCOME_CMD = 'nika welcome'

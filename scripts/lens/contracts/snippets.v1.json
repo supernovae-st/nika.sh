@@ -812,7 +812,7 @@
     },
     {
       "path": "src/pages/CatalogModelRoom.tsx",
-      "source_blob": "e3a0fafb2f33ab29444c60c063995a01359fdb42",
+      "source_blob": "c9788bc63110bd05cdb227a826a4a6e5f12b8932",
       "blocks": [
         {
           "selector": "src/pages/CatalogModelRoom.tsx#pre:1",
@@ -938,7 +938,7 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "ebf84616a06acc048b24b30ccdbcae95bc4f8916",
+      "source_blob": "051b0ec2e5cbf4698f331df7b5c0dbdfa7b62005",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",

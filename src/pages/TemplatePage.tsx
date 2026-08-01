@@ -128,7 +128,7 @@ export function Component() {
               <p className="tp-miss-name">{name}</p>
               <p>
                 is not a skeleton the pack ships. Walk <Link to="/templates">the register</Link>{' '}
-                (the routing phrases pick for you), ask the binary (<code>nika template</code>),
+                (the routing phrases pick for you), ask the binary (<code>nika new &apos;?&apos;</code>),
                 or check <a href="/templates/catalog.json">the machine catalog</a>.
               </p>
             </div>
@@ -140,8 +140,8 @@ export function Component() {
                 Your intent sounds like: <b>{hit.intent}</b> One of {TEMPLATES.length} skeletons
                 the pack ships, green as-is under <code>nika check</code>. Fill the{' '}
                 <code># SLOT:</code> lines, repair from the fix lines, re-check. Machines read{' '}
-                <a href="/templates/catalog.json">the catalog</a>; the binary answers{' '}
-                <code>nika template</code>.
+                <a href="/templates/catalog.json">the catalog</a>; the binary lists them with{' '}
+                <code>nika new &apos;?&apos;</code>.
               </p>
 
               {/* the skeleton's dimensions, at a glance — every figure derived */}
@@ -283,7 +283,7 @@ export function Component() {
               <p className="tp-foot" data-rise>
                 Scaffold it locally:{' '}
                 <code>
-                  nika new my-flow.nika.yaml --from {hit.name}
+                  nika new {hit.name} my-flow.nika.yaml
                 </code>
                 . Try the shape in the{' '}
                 <Link to="/play">playground</Link>, or walk{' '}

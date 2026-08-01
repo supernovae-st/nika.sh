@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1134
+  classified_files: 1135
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 780
+    authored: 781
     authored-pin: 3
     generated: 290
     pinned-copy: 21
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 15197bc32b410cf0a8530d19ca03d5cea906c7f910dff465a1457c5c1857c115
+  sha256: 61910351b2809e342532ddb45df71b37069e6cfb967d41079ebba9ac49d0c57d
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 8bcff78177065782ab07aa4be5a8bfa9151e2dbc768721bc219a49d5ce0fcef1
+  sha256: c8dd3a0dc1dc3acadc7197be96a6aa805d8eaa37966f47e99881b9b289500a1c
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@6ac29351a878 (tree 5f7143362bc1)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: 940800020f8e8f37173e1bfc919598c37abdc5dcc6781efb29ef6f011d2b6774
+  sha256: 55916a1a1b717f4f3b172a8379ca15cb9b8b51d690ba93147071ea9da3688a0b
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 42814e13ab0eee2886681ef963842395fce87a1dd317ba94940237b3b45d1cc5
+  aggregate_sha256: faa35802b7eff0453471d2bd41f528335cf19508e3a40ca4a1328b5233d7d9d3
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -935,8 +935,8 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 409
-  aggregate_sha256: 320479d9a54f86cbc6846bf8f00c8815af4a402261a9bf25462cb37ccd99aea2
+  match_count: 410
+  aggregate_sha256: a5c541175abd83124c70a7c5542ee3b7d28cb6c32c1041f6b804aaadcb0921d6
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

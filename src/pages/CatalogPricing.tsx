@@ -1,5 +1,5 @@
 /* ─── /catalog/pricing · the full rule table (engine-release clock) ──────────
-   All the rules, grouped by provider · the table `nika audit` prices against.
+   All the rules, grouped by provider · the table `nika check` prices against.
    Rules are rows and edges, never pages (§I.2-4). Register-diet: the heavy
    table rides the byte island. */
 import { Island } from '../lib/ssg-island'

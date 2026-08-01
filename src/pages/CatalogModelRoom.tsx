@@ -97,7 +97,7 @@ export function Component() {
         {m && m.pricing.length === 0 ? (
           <p className="pv-desc">
             No exact-match row at this pin · the engine resolves pattern rules at run time and{' '}
-            <code>nika audit</code> prints the real ceiling. A local seat is unpriced, never free.
+            <code>nika check</code> prints the real ceiling. A local seat is unpriced, never free.
           </p>
         ) : (
           <ol className="tp-list">
