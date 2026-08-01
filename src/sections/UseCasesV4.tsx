@@ -89,7 +89,7 @@ export default function UseCasesV4() {
     >
       <div className="v4sec-wrap">
         <Island id={UC_ISLAND_ID} payload={islandYaml} />
-        <SectionHead fig="08" id="usecases-title" title={<>Real files you&apos;d write.</>}>
+        <SectionHead fig="09" id="usecases-title" title={<>Real files you&apos;d write.</>}>
           Anything you&apos;d ask an AI to do more than once belongs in a file. Every workflow
           below is <b>real</b>, projected from <code className="mono">nika-spec</code>, audited
           before it runs: plan, cost, secrets. Pick your métier, open a card, read the exact

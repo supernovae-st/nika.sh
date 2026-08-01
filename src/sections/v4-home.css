@@ -2776,3 +2776,99 @@
   padding-left: 12px;
   color: var(--v4-text-faint);
 }
+
+/* ─── FIG 07 · the catalog register (numbers-as-design rows) ──────────────────
+   The section renders like the catalog pages it opens: hairline-ruled rows,
+   the count in white mono (the ProofStrip key idiom), unit + gloss dim, an
+   arrow that answers hover. Motion stays inside the site's tokens and the
+   reduced-motion guard — the rows slide 2px, the arrow 3px, nothing else. */
+.v4cat-rows {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-hairline, rgb(255 255 255 / 0.08));
+}
+.v4cat-row {
+  display: grid;
+  grid-template-columns: 5.5ch auto 1fr auto;
+  align-items: baseline;
+  gap: 0 14px;
+  padding: 13px 6px 14px 2px;
+  border-bottom: 1px solid var(--v4-hairline, rgb(255 255 255 / 0.08));
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  line-height: 1.45;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+}
+.v4cat-n {
+  color: var(--v4-text);
+  font-weight: var(--fw-medium);
+  font-size: 1.25em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.v4cat-unit {
+  color: var(--v4-text);
+}
+.v4cat-gloss {
+  min-width: 0;
+}
+.v4cat-go {
+  color: var(--v4-text-dim);
+}
+@media (max-width: 639px) {
+  .v4cat-row {
+    grid-template-columns: 5.5ch auto 1fr;
+  }
+  .v4cat-gloss {
+    grid-column: 2 / -1;
+  }
+  .v4cat-go {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4cat-row {
+    transition:
+      background-color var(--dur-ui) var(--ease-ui),
+      transform var(--dur-ui) var(--ease-ui);
+  }
+  .v4cat-go {
+    transition:
+      transform var(--dur-ui) var(--ease-ui),
+      color var(--dur-ui) var(--ease-ui);
+  }
+  .v4cat-row:hover {
+    transform: translateX(2px);
+  }
+  .v4cat-row:hover .v4cat-go {
+    transform: translateX(3px);
+  }
+}
+.v4cat-row:hover,
+.v4cat-row:focus-visible {
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+  color: var(--v4-text);
+}
+.v4cat-row:hover .v4cat-go,
+.v4cat-row:focus-visible .v4cat-go {
+  color: var(--v4-text);
+}
+.v4cat-punch {
+  margin: 18px 0 0;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+}
+.v4cat-hub {
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.v4cat-hub b {
+  color: var(--v4-text);
+}
+.v4cat-hub:hover,
+.v4cat-hub:focus-visible {
+  color: var(--v4-text);
+}

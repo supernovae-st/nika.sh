@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1133
+  classified_files: 1134
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 779
+    authored: 780
     authored-pin: 3
     generated: 290
     pinned-copy: 21
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 41f5c8bd89db0e5e65a15bc48aee417b8a1a26af3808df2e51aaab4318ec12bb
+  sha256: 15197bc32b410cf0a8530d19ca03d5cea906c7f910dff465a1457c5c1857c115
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 88862c76342af10f5319b1777f61ba440263d35eb153ce06e6795e4f88f8c70d
+  aggregate_sha256: 797d3c02a19578259e26640b40faf97ae6d839dbb64577af6306c690a6531dad
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 31
-  aggregate_sha256: 745ece0b5344e4f70b5fc3cfdf3dbaee8c01a5cdc073c23198c6c90fe46efae6
+  aggregate_sha256: 453111e1541ce75cd8d03abecec60bde31a24bdd2f80932d623bbc6a81c7d62f
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 408
-  aggregate_sha256: 3914c19a2a2546ab6696c6aba745f5a129ba538c7324c1c7b6540eacfb6103d6
+  match_count: 409
+  aggregate_sha256: 683bb8633dc723ee985a5c3f4339955f482df93747df33abd0256d14f672f65b
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: 6758dc42f84c85e0384491583c4b07f96730bc6cbca7b6686caf754581ff6132
+  aggregate_sha256: a2f3ca7cea164670f5e866bca4a7d008a46516298df62d55e5e65096f0deb4b9
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

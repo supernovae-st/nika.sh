@@ -35,6 +35,10 @@ export interface NavItem {
 
 export const NAV_BAR_LINKS: NavItem[] = [
   {
+    "label": "Catalog",
+    "to": "/catalog"
+  },
+  {
     "label": "Docs",
     "external": true
   },

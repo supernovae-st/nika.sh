@@ -24,6 +24,7 @@ import RunExplains from '../sections/run-explains/RunExplains'
 import Verbs from '../sections/Verbs'
 import WhereItFits from '../sections/WhereItFits'
 import Toolbelt from '../sections/Toolbelt'
+import TheCatalog from '../sections/TheCatalog'
 import UseCasesV4 from '../sections/UseCasesV4'
 import EditorCanvas from '../sections/EditorCanvas'
 import GetStarted from '../sections/GetStarted'
@@ -37,8 +38,9 @@ import FinalCTA from '../sections/FinalCTA'
    Renders PURELY the v4 sections (design doc §6), stamped 01→14 in reading
    order (the Q1 renum lock · no holes, no decimals on the armed page):
      Hero → 01 film → 02 boundary → 03 wedge(+ledger) → 04 run-explains →
-     05 verbs → 06 toolbelt → 07 where-it-fits → 08 gallery → 09 editor →
-     10 changelog → 11 proof → 12 get-started → 13 faq → 14 close (→ footer).
+     05 verbs → 06 toolbelt → 07 catalog → 08 where-it-fits → 09 gallery →
+     10 editor → 11 changelog → 12 proof → 13 get-started → 14 faq →
+     15 close (→ footer).
    (BeyondChat was absorbed into the wedge — one anti-chat chapter.)
    Zero WebGL on first load — the hero is prerendered DOM, instant + crawlable.
 
@@ -296,33 +298,38 @@ export function Component() {
         {/* 06 · Toolbelt — the language's reach: what those verbs may use */}
         <Toolbelt />
 
-        {/* 07 · where Nika fits — the orthogonal layer underneath (light) */}
+        {/* 07 · The catalog — what the released binary KNOWS: models with
+             rooms, pricing, measured energy, MCP servers, the client doors
+             (every count derives from the vendored engine surfaces) */}
+        <TheCatalog />
+
+        {/* 08 · where Nika fits — the orthogonal layer underneath (light) */}
         <WhereItFits />
 
-        {/* 08 · Use cases — the gallery (here plurality is the point) */}
+        {/* 09 · Use cases — the gallery (here plurality is the point) */}
         <UseCasesV4 />
 
-        {/* 09 · In your editor — the file becomes a canvas (the
+        {/* 10 · In your editor — the file becomes a canvas (the
              extension beat: content-first cards · live run · audit-before-
              run, with the two store CTAs) */}
         <EditorCanvas />
 
-        {/* FIG 10 · Changelog — the ship log (latest milestones) */}
+        {/* FIG 11 · Changelog — the ship log (latest milestones) */}
         <ChangelogPreview />
 
-        {/* FIG 11 · Proof — the control guarantees + CANON counts (the ONE
+        {/* FIG 12 · Proof — the control guarantees + CANON counts (the ONE
              sovereignty section — OwnWorkflows said the same claims with the
              same numbers two sections apart and left Home in the W15 re-arc) */}
         <Proof />
 
-        {/* FIG 12 · Get started — the on-ramp, AFTER the case is made (the
+        {/* FIG 13 · Get started — the on-ramp, AFTER the case is made (the
              hero already carries the early CTA; the ask belongs post-proof) */}
         <GetStarted flagship={flagship} />
 
-        {/* FIG 13 · FAQ — disarm the real objections (honest, light) */}
+        {/* FIG 14 · FAQ — disarm the real objections (honest, light) */}
         <Faq />
 
-        {/* FIG 14 · Final CTA + SUPERNOVAE footer (kept intact) */}
+        {/* FIG 15 · Final CTA + SUPERNOVAE footer (kept intact) */}
         <FinalCTA />
       </main>
 

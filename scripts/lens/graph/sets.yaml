@@ -656,6 +656,10 @@ nav:
     # Changelog leaves as text and becomes the version pill (reads
     # ENGINE_VERSION · the release cascade's one truth · never typed here)
     links:
+      # the catalog earns a BAR seat (operator 2026-08-02 · « il est où le
+      # catalogue ? » — 176 rooms buried behind one panel row was the answer;
+      # the biggest register on the site gets a first-level door)
+      - { label: Catalog, to: /catalog }
       - { label: Docs, external: true }   # href = DOCS const (content.ts)
       - { label: Blog, to: /blog }
     version_pill: { to: /changelog, title: "shipping in the open · the ship log" }
