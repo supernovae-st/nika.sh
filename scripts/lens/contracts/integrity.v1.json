@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "40f1f7289ca07b6c0a4ae06fedcc82ae2866e1243e409513f7789a1f21ce80c0"
+   "sha256": "044b8a283a73261d0e135783e4caaa4bb0862b03d0adf1adbdfd8b6d2ddf7049"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "3d296857be09fbf307fa395992458905930fb7ca44995b996c17dc0653bd4786"
+   "sha256": "f600b2c22a93ad9454c8d40e4950ff343dc2ad6a7538101abc6fa0a435e28559"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",

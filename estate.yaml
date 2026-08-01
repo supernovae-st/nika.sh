@@ -19,13 +19,13 @@ classes:
   foreign: "pointer to a third-party sovereign source"
 summary:
   classified_files: 1116
-  file_rows: 99
-  pattern_rows: 28
+  file_rows: 100
+  pattern_rows: 29
   by_class:
-    authored: 766
+    authored: 761
     authored-pin: 3
-    generated: 287
-    pinned-copy: 16
+    generated: 288
+    pinned-copy: 20
     testimonial: 44
     foreign: 0
   unverified-default: 1
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 40f1f7289ca07b6c0a4ae06fedcc82ae2866e1243e409513f7789a1f21ce80c0
+  sha256: 044b8a283a73261d0e135783e4caaa4bb0862b03d0adf1adbdfd8b6d2ddf7049
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -298,7 +298,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 2917bc0b1f0deabc9b5a0ed315da0e29a219cfb661eb2c3a32c28e8aebd7942c
+  sha256: f6249b54777db48c1947333c0889e9c93b90ba0613c02d8c93f47da5b1cccb71
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -469,7 +469,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 1ec4d8f7dd799f3a5fcb36f65244bcdf5bb30f644eba25a1ab477f6e6d6b6764
+  sha256: 28cbb2d9904b2441e5b1c149a6460bc68d125693bd6ad04605f72f6982906bff
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -688,6 +688,15 @@ files:
     inputs:
     - ".github/nika-spec-pin.json"
     - "supernovae-st/nika-spec@6ac29351a878 (tree 5f7143362bc1)"
+- path: "src/lib/check-wasm/PROVENANCE.json"
+  class: generated
+  sha256: f005ddd403d39295e9d617dbd71870bcbeebf52dbb97911802b6f2529792010f
+  evidence: "the revendor receipt: release tag + commit + npm identity + wasm sha16, rewritten by the lane on every revendor"
+  derivation:
+    tool: "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)"
+    gate: "src/test/check-wasm-oracle.test.ts (the wasm speaks the same engine version the captures pin) — pnpm test in .github/workflows/gate.yml"
+    inputs:
+    - ".github release asset supernovae-st-nika-check-wasm-<v>.tgz (sha256-verified against its published sidecar)"
 - path: "src/lib/lint-fixtures.generated.ts"
   class: generated
   sha256: ae0c8a4e896ee636e8bdcf6d205cd53d60b2342213ec89d27c704a4babfd65c1
@@ -851,7 +860,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: edb9b898bf0afe0154415ff86f7642e1a9fe36eae792e0d2b75d55d3e1046c72
+  aggregate_sha256: d9844de46816ed29e910d21f069d55163f7286b6c7a782012f720ccd7c1a8ad2
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -893,10 +902,21 @@ patterns:
   match_count: 8
   aggregate_sha256: cb8465cd376c2d0fa89bdea3d817743a4d516d635555647b99d880d4d3d456bc
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
+- glob: "src/lib/check-wasm/pkg/**"
+  class: pinned-copy
+  match_count: 4
+  aggregate_sha256: 0c116a701931d8d29666f3cb324752209316ccd9c35b135b0c78f0672e04a45e
+  evidence: "the @supernovae-st/nika-check-wasm package vendored VERBATIM from the GitHub release asset (sha256-verified against its published .sha256 sidecar) — the browser half of nika check, attested by the release train"
+  derivation:
+    tool: "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)"
+    gate: "src/test/check-wasm-oracle.test.ts (same voice + same engine version as the captured binary) — pnpm test in .github/workflows/gate.yml"
+    inputs:
+    - "src/lib/check-wasm/PROVENANCE.json (the lane receipt)"
+    - "the release asset supernovae-st-nika-check-wasm-<v>.tgz"
 - glob: "src/**.generated.*"
   class: generated
   match_count: 29
-  aggregate_sha256: ee6af9a367bfa4d8e5f1a799a1d33dc94dd94de697c3a100781ccac97e44ca75
+  aggregate_sha256: dba91a13ff5506a6cf3e866001d2c879b749b00dc4a1a1a0fd2baa13579cb032
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -905,13 +925,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 408
-  aggregate_sha256: b9fe3cfb9afdcf686941493185efb51991ba472e5fd9d20bc89d1755db60bbe1
+  match_count: 403
+  aggregate_sha256: 320fde9d33fab108a4dd66870e7621e929fe9a2546c733a70948ab154d3e68b0
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 82
-  aggregate_sha256: 37741ed934033d8f5473463133aaa1bb7f1e16d83856f0cd3ac77a64ca9236a7
+  aggregate_sha256: 033a80f674422676286e7aaa25da1672cbe0dd556834a68bbe8fff7f2dcb9b52
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

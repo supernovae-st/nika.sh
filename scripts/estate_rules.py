@@ -204,6 +204,14 @@ _OVERRIDES = [
             "estate.yaml + scripts/graph/city.yaml (site voice)",
         ],
     ),
+    # ── the vendored browser checker (release-asset lane) ──────────────────
+    _gen(
+        "src/lib/check-wasm/PROVENANCE.json",
+        "the revendor receipt: release tag + commit + npm identity + wasm sha16, rewritten by the lane on every revendor",
+        "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)",
+        "src/test/check-wasm-oracle.test.ts (the wasm speaks the same engine version the captures pin) — pnpm test in " + _GATE_YML,
+        [".github release asset supernovae-st-nika-check-wasm-<v>.tgz (sha256-verified against its published sidecar)"],
+    ),
     # ── prose · policy · agent context ─────────────────────────────────────
     _auth("README.md", "prose entry surface · no generation marker"),
     _auth("AGENTS.md", "hand-written agent entry per the AGENTS.md convention"),
@@ -619,6 +627,16 @@ PATTERNS = [
         "glob": ".github/workflows/*.yml",
         "class": "authored",
         "evidence": "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these",
+    },
+    {
+        "glob": "src/lib/check-wasm/pkg/**",
+        "class": "pinned-copy",
+        "evidence": "the @supernovae-st/nika-check-wasm package vendored VERBATIM from the GitHub release asset (sha256-verified against its published .sha256 sidecar) — the browser half of nika check, attested by the release train",
+        "derivation": {
+            "tool": "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)",
+            "gate": "src/test/check-wasm-oracle.test.ts (same voice + same engine version as the captured binary) — pnpm test in " + _GATE_YML,
+            "inputs": ["src/lib/check-wasm/PROVENANCE.json (the lane receipt)", "the release asset supernovae-st-nika-check-wasm-<v>.tgz"],
+        },
     },
     {
         "glob": "src/**.generated.*",
