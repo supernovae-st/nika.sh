@@ -76,11 +76,18 @@ function check() {
     bad.push(`receipt source ${receipt.source} != pin ${pin.repository}@${pin.engine_commit}`)
   if (receipt.engine_tree !== pin.engine_tree)
     bad.push(`receipt tree ${receipt.engine_tree} != pin ${pin.engine_tree}`)
+  if (receipt.release_tag !== pin.release_tag)
+    bad.push(`receipt release_tag ${receipt.release_tag} != pin ${pin.release_tag}`)
   const expected = SURFACES.map(([, out]) => out).sort()
   const listed = (receipt.files ?? []).map((f) => f.path).sort()
   if (JSON.stringify(expected) !== JSON.stringify(listed))
     bad.push(`receipt file set [${listed}] != declared surfaces [${expected}]`)
+  const upstreamOf = new Map(SURFACES.map(([src, out]) => [out, src]))
   for (const f of receipt.files ?? []) {
+    // every receipt field is VERIFIED, none decorative (refuter finding
+    // 2026-08-01: an unchecked field is a claim the gate lets lie)
+    if (f.upstream !== upstreamOf.get(f.path))
+      bad.push(`${f.path}: receipt upstream '${f.upstream}' != declared surface '${upstreamOf.get(f.path)}'`)
     let digest
     try {
       digest = sha256(readFileSync(join(OUT_DIR, f.path)))
