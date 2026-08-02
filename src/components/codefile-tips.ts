@@ -14,6 +14,7 @@ import {
 } from '../sections/morph/plain-words'
 import { NIKA_VERBS, type NikaVerb } from './codefile-highlight'
 import { WORD_OPENER } from '../content/word-openers.generated'
+import { wordRoom } from '../lib/rooms'
 
 export interface CodeTip {
   /** the term the tip names (the key · the verb · `${{ … }}`) */
@@ -47,7 +48,7 @@ const SPEC_AT: Record<string, string> = {
    the skeletons that use it. */
 export function tipHref(term: string): string | null {
   if (WORD_OPENER[term] || KEY_WORDS[term] || (NIKA_VERBS as readonly string[]).includes(term)) {
-    return `/language/${term}`
+    return wordRoom(term)
   }
   return SPEC_AT[term] ?? null
 }

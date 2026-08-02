@@ -1254,6 +1254,31 @@ const footerCols = S.sets.nav.footer.authored.map((c) => ({
   kick: c.col,
   items: c.items.map((x) => bare(resolveNavItem(x))),
 }))
+/* THE ROOM BASES · every family's room prefix, projected (2026-08-02).
+   The site linked its own word rooms at /language/<word> for a week after
+   they moved to /language/words/<word>: 63 links in the language register
+   went through a doorway, and the destination rooms read as unreachable to
+   anything that counts links. The compiler already derives every base for
+   its own nodes; this hands the same values to the pages so a family that
+   moves takes its links with it. */
+const roomBasesTs = GEN(
+  'lens-bases.generated.ts',
+  `/** every roomed family's URL prefix, derived from the descriptor.
+ * A link built from these follows a family that moves; a link built from a
+ * literal keeps pointing at the doorway the move left behind. */
+export const ROOM_BASES: Record<string, string> = ${JSON.stringify(
+    Object.fromEntries(
+      S.sets.sets
+        .filter((x) => x.rooms_url && x.rooms_exist)
+        .map((x) => [x.id, x.rooms_url.replace(/\/:[^/]+$/, '')])
+        .sort((a, b) => (a[0] < b[0] ? -1 : 1)),
+    ),
+    null,
+    1,
+  )}
+`,
+)
+
 const navTs = GEN(
   'lens-nav.generated.ts',
   `/** the chrome as projection (§4.11-4.12): the Reference panel, the Product
@@ -1906,6 +1931,7 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/market-vocab.generated.ts'), vocabTs)
   writeFileSync(join(ROOT, 'src/content/snippets.generated.ts'), snippetsTs)
   writeFileSync(join(ROOT, 'src/content/lens-nav.generated.ts'), navTs)
+  writeFileSync(join(ROOT, 'src/content/lens-bases.generated.ts'), roomBasesTs)
   writeFileSync(join(ROOT, 'src/content/showcase-dag.generated.ts'), showcaseDagTs)
   writeFileSync(join(ROOT, 'src/content/member-rooms.generated.ts'), memberRoomsTs)
   writeFileSync(join(ROOT, 'src/content/room-rails.generated.ts'), roomRailsTs)

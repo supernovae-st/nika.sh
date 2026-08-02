@@ -26,6 +26,7 @@ import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './language-page.css'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /language/:word · one word, one room (theme-dark) ───────────────────────
    Every key the schema declares owns a room now — the ToolPage recipe,
@@ -160,9 +161,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/language/${word}`).link,
+    link: routeHead(wordRoom(word)).link,
     meta: [
-      ...routeHead(`/language/${word}`).meta,
+      ...routeHead(wordRoom(word)).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -192,7 +193,7 @@ export function Component() {
                 '@type': 'DefinedTerm',
                 name: hit.word,
                 description: voice ?? '',
-                url: `${SITE}/language/${hit.word}`,
+                url: `${SITE}${wordRoom(hit.word)}`,
                 inDefinedTermSet: {
                   '@type': 'DefinedTermSet',
                   name: 'The Nika language · every word',
@@ -534,7 +535,7 @@ export function Component() {
                       <ul className="td-chips">
                         {g.words.map((w) => (
                           <li key={w}>
-                            <Link className="td-chip" to={`/language/${w}`}>
+                            <Link className="td-chip" to={wordRoom(w)}>
                               {w}
                             </Link>
                           </li>
@@ -550,7 +551,7 @@ export function Component() {
               {/* ── the walk ─────────────────────────────────────────────────── */}
               <nav className="td-nav" aria-label="Language register walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/language/${prev.word}`}>
+                  <Link className="td-nav-link" to={wordRoom(prev.word)}>
                     <span className="td-nav-label">← previous</span>
                     {prev.word}
                   </Link>
@@ -562,7 +563,7 @@ export function Component() {
                   the register
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/language/${next.word}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={wordRoom(next.word)}>
                     <span className="td-nav-label">next →</span>
                     {next.word}
                   </Link>

@@ -21,6 +21,7 @@ import './tools-page.css'
 import './tool-detail.css'
 import './language-page.css'
 import { WordTable } from './WordTable'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
    Every key an author can type in a .nika.yaml, as an anchored row — the
@@ -46,7 +47,7 @@ function WordRow({ entry, prose }: { entry: LanguageWord; prose: WordProse | nul
   return (
     <li id={entry.word} className="lg-row">
       <div className="tp-row-head">
-        <a className="tp-name" href={`/language/${entry.word}`}>
+        <a className="tp-name" href={wordRoom(entry.word)}>
           {entry.word}
         </a>
         {role && (
@@ -229,7 +230,7 @@ export function Component() {
                   <ul className="td-chips">
                     {f.words.map((w) => (
                       <li key={w}>
-                        <a className="td-chip" href={`/language/${w}`}>
+                        <a className="td-chip" href={wordRoom(w)}>
                           {w}
                         </a>
                       </li>

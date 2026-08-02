@@ -17,6 +17,7 @@ import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './errors-page.css'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /errors/:code · one refusal, one room (theme-dark) ──────────────────────
    The engine stamps `docs_url: https://nika.sh/errors/<CODE>` on every
@@ -217,7 +218,7 @@ export function Component() {
                       <ul className="td-chips">
                         {refs.words.map((w) => (
                           <li key={`w:${w}`}>
-                            <Link className="td-chip" to={`/language/${w}`}>
+                            <Link className="td-chip" to={wordRoom(w)}>
                               {w}
                             </Link>
                           </li>

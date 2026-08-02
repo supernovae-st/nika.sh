@@ -17,6 +17,7 @@ import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './errors-page.css'
 import { ErrorCabinet } from './ErrorCabinet'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /errors + /errors/:code · the error register (theme-dark) ───────────────
    The engine stamps `docs_url: https://nika.sh/errors/<CODE>` on every check
@@ -93,7 +94,7 @@ function CodeRow({
         <p className="er-refs mono">
           <span className="er-refs-k">named by</span>
           {CODE_REFS[entry.code].words.map((w) => (
-            <Link key={`w:${w}`} className="er-ref" to={`/language/${w}`}>
+            <Link key={`w:${w}`} className="er-ref" to={wordRoom(w)}>
               {w}
             </Link>
           ))}

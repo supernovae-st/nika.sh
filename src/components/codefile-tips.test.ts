@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { tipFor, tipHref } from './codefile-tips'
 import { KEY_WORDS, VERB_WORDS, WHEN_WORDS } from '../sections/morph/plain-words'
+import { wordRoom } from '../lib/rooms'
 
 /* ── the smart-hover resolver · curated, one vocabulary source ──
    Written FIRST (TDD). The resolver must (a) speak the plain-words glossary
@@ -57,17 +58,17 @@ describe('tipFor', () => {
 })
 
 /* ── the doors · a WORD goes to its room, a BLOCK to its /spec anchor ──
-   Every declared word owns a prerendered room (/language/<word>) carrying its
+   Every declared word owns a prerendered room (/language/words/<word>) carrying its
    full opener, its chapters, the verbs that accept it and the skeletons that
    use it. That is strictly more than a /spec anchor, and it needs no hand-kept
    map — SPEC_AT survives only for the concepts that are BLOCKS rather than
    words, which have no room to go to. */
 describe('tipHref', () => {
   it('a declared word goes to its own room', () => {
-    expect(tipHref('permits')).toBe('/language/permits')
-    expect(tipHref('when')).toBe('/language/when')
-    expect(tipHref('invoke')).toBe('/language/invoke')
-    expect(tipHref('model')).toBe('/language/model')
+    expect(tipHref('permits')).toBe(wordRoom('permits'))
+    expect(tipHref('when')).toBe(wordRoom('when'))
+    expect(tipHref('invoke')).toBe(wordRoom('invoke'))
+    expect(tipHref('model')).toBe(wordRoom('model'))
   })
 
   it('a concept that is a BLOCK, not a word, keeps its /spec anchor', () => {
@@ -79,7 +80,7 @@ describe('tipHref', () => {
       expect(tipHref(key), key).not.toBeNull()
     }
     for (const verb of ['infer', 'exec', 'invoke', 'agent']) {
-      expect(tipHref(verb), verb).toBe(`/language/${verb}`)
+      expect(tipHref(verb), verb).toBe(wordRoom(verb))
     }
   })
 

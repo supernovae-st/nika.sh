@@ -18,6 +18,7 @@ import { MODEL_IDS, MODEL_SLUGS, MCP_IDS, MCP_SLUGS } from './catalog-paths.gene
 import { DOCS, REPO, SPEC } from '../content'
 import { localizedPaths } from '../lib/i18n'
 import { PENDING_ERROR_CODES } from '../../pending-error-codes'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
    /map's « every page » section renders THIS structure (the human sitemap
@@ -156,7 +157,7 @@ export const SITE_MAP: MapGroup[] = [
         href: `/catalog/providers/${id}`,
       })),
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/language/verbs/${c.verb}` })),
-      ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/words/${w.word}` })),
+      ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: wordRoom(w.word) })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
       /* the pending rooms (minted in the canon, awaiting the resync pin —
          pending-error-codes.ts, the leaf site.config derives ERROR_PATHS

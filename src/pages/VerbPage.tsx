@@ -23,6 +23,7 @@ import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './verbs-page.css'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /verbs/:name · one verb, one room (theme-dark) ──────────────────────────
    The four verbs are the language's load-bearing words — each owns a room
@@ -265,7 +266,7 @@ export function Component() {
                   {block.map((d) => (
                     <div className="tp-arg" key={d.word}>
                       <dt className={`tp-arg-name${d.required ? ' tp-arg-name--required' : ''}`}>
-                        <Link className="vb-word-link" to={`/language/${d.word}`}>
+                        <Link className="vb-word-link" to={wordRoom(d.word)}>
                           {d.word}
                         </Link>
                         {d.required && (
@@ -350,7 +351,7 @@ export function Component() {
                     <ul className="td-chips">
                       {(VERB_ACCEPTS[name] ?? []).map((w) => (
                         <li key={w}>
-                          <a className="td-chip" href={`/language/${w}`}>
+                          <a className="td-chip" href={wordRoom(w)}>
                             {w}
                           </a>
                         </li>

@@ -8,6 +8,7 @@ import { WORD_PROSE } from '../content/language-prose.generated'
 import { CHAPTERS } from '../sections/verbs-data'
 import { CANON } from '../canon.generated'
 import { LANGUAGE_PATHS, VERB_PATHS, PATHS } from '../../site.config'
+import { wordRoom } from '../lib/rooms'
 
 /* ── the language-register drift gates ────────────────────────────────────────
    public/schema/workflow.json is the source (the served contract);
@@ -79,7 +80,7 @@ describe('/language · the compiled projection matches the served schema', () =>
       // types are both language words AND register families, and the bare
       // /language/permits now serves the FAMILY (the collision the target
       // sitemap named). The word keeps its room one segment deeper.
-      new Set(LANGUAGE_WORDS.map((w) => `/language/words/${w.word}`)),
+      new Set(LANGUAGE_WORDS.map((w) => wordRoom(w.word))),
     )
   })
 

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { Link } from 'react-router'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { useLamp } from '../lib/use-lamp'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── the word table · where each word is allowed to speak ────────────────────
    62 words, 76 declarations — which means some words speak in more than one
@@ -77,7 +78,7 @@ export function WordTable() {
                   return (
                     <li key={`${scope.id}-${w.word}`}>
                       <Link
-                        to={`/language/${w.word}`}
+                        to={wordRoom(w.word)}
                         className={`plate wt-cell${lit === w.word ? ' is-lit' : ''}`}
                         data-word={w.word}
                         data-required={required ? '' : undefined}

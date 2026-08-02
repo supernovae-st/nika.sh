@@ -15,6 +15,7 @@ import { SITE, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /templates/:name · one skeleton, one room (theme-dark) ──────────────────
    The room ABOUT the skeleton — not the whole register re-served with one
@@ -245,7 +246,7 @@ export function Component() {
                       <ul className="td-chips">
                         {carries.map((w) => (
                           <li key={w}>
-                            <Link className="td-chip" to={`/language/${w}`}>
+                            <Link className="td-chip" to={wordRoom(w)}>
                               {w}
                             </Link>
                           </li>

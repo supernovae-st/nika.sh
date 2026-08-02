@@ -12,6 +12,7 @@ import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './templates-page.css'
 import { collectionLd, ldScript } from '../lib/ld'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── /templates + /templates/:name · the skeleton register (theme-dark) ──────
    « Agents do not invent structure — they instantiate it. » The spec pack's
@@ -77,7 +78,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
                 </Link>
               ))}
               {TEMPLATE_REFS[entry.name].words.map((w) => (
-                <Link key={`w:${w}`} className="er-ref" to={`/language/${w}`}>
+                <Link key={`w:${w}`} className="er-ref" to={wordRoom(w)}>
                   {w}
                 </Link>
               ))}

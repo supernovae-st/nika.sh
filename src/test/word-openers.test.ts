@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { WORD_OPENER, WORDS_WITHOUT_WORDS } from '../content/word-openers.generated'
 import { tipFor, tipHref } from '../components/codefile-tips'
 import { LANGUAGE_PATHS } from '../../site.config'
+import { wordRoom } from '../lib/rooms'
 
 /* ── the teaching-coverage gates ──────────────────────────────────────────────
    The panel is the surface built to TEACH the language, and it hovered blank
@@ -42,10 +43,10 @@ describe('word openers · carried from the contract, never invented', () => {
       const tip = tipFor('key', w)
       expect(tip, `${w} has an opener but no tip`).not.toBeNull()
       const href = tipHref(w)
-      expect(href, `${w} has a tip but no door`).toBe(`/language/${w}`)
+      expect(href, `${w} has a tip but no door`).toBe(wordRoom(w))
       // the WORDS segment is explicit since 2026-08-02 (permits · secrets ·
       // types are words AND families, and the bare path serves the family)
-      expect(LANGUAGE_PATHS, `${w}'s room is not served`).toContain(`/language/words/${w}`)
+      expect(LANGUAGE_PATHS, `${w}'s room is not served`).toContain(wordRoom(w))
     }
   })
 })

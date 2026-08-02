@@ -5,6 +5,7 @@ import { roleOf, ROLE_FAMILIES } from '../lib/word-role'
 import { NIKA_ROLE_WORDS } from '../design-tokens.generated'
 import { LANGUAGE_WORDS } from '../content/language.generated'
 import { LANGUAGE_PATHS } from '../../site.config'
+import { wordRoom } from '../lib/rooms'
 
 /* ── the role wave's gates ────────────────────────────────────────────────────
    The spec owns the classification (nika-spec design/tokens.yaml, derived by
@@ -57,7 +58,7 @@ describe('word roles · the register says what the panel colours', () => {
     for (const word of Object.values(NIKA_ROLE_WORDS).flatMap((j) => j.split(' '))) {
       // the explicit words segment (2026-08-02 · the family collision)
       expect(LANGUAGE_PATHS, `${word} is classified but has no room`).toContain(
-        `/language/words/${word}`,
+        wordRoom(word),
       )
     }
   })

@@ -13,6 +13,7 @@ import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './hubs-page.css'
 import './rooms-page.css'
+import { wordRoom } from '../lib/rooms'
 
 /* ─── the generic member room · one route, every family ──────────────────────
    (rooms universelles · operator verdict 2026-07-18: « chaque élément a sa
@@ -252,7 +253,7 @@ export function Component() {
               schema declares no key for simply shows no door) */}
           {family === 'namespaces' && WORD_INDEX[id] && (
             <p className="room-door">
-              <Link to={`/language/${id}`}>the word's own room: {id} →</Link>
+              <Link to={wordRoom(id)}>the word's own room: {id} →</Link>
             </p>
           )}
 
