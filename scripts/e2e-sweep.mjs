@@ -376,14 +376,14 @@ const until = async (fn, tries = 12, gap = 400) => {
    HIGHLIGHTED and IN VIEW (the scroll effect is a client behavior that can
    break silently — pass 1's static loads never see it). One pin per
    register; the templates pin also asserts the opened skeleton panel. The
-   tools pin differs since the builtin ROOMS shipped: /tools/<name> is a
+   tools pin differs since the builtin ROOMS shipped: /language/stdlib/<name> is a
    full page (no scroll target) — the pin asserts the room mounted FOR the
    right tool and its usage CodeFile rendered. */
 const REGISTER_PINS = [
   /* the error rooms graduated to DEDICATED pages: the pin asserts the room
      mounted for the right code with its namespace walk served */
   { route: '/errors/NIKA-SEC-001', row: 'section[data-code="NIKA-SEC-001"]', extra: '#err-title' },
-  { route: '/tools/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
+  { route: '/language/stdlib/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   /* the provider rooms graduated to DEDICATED pages (the ToolPage path):
      the pin asserts the room mounted for the right provider with its
      donor CodeFile served from the prerendered island */
@@ -418,10 +418,10 @@ await check('jsonld · the register pages carry their DefinedTermSets (post-buil
   const want = [
     ['/errors', 'set-error-codes'],
     ['/language', 'set-words'],
-    ['/tools', 'set-builtins'],
+    ['/language/stdlib', 'set-builtins'],
     ['/verbs', 'set-verbs'],
     ['/providers', 'set-providers'],
-    ['/tools/fetch', 'set-extract-modes'],
+    ['/language/stdlib/fetch', 'set-extract-modes'],
   ]
   for (const [route, marker] of want) {
     await send('Page.navigate', { url: `${BASE}${route}` }).catch((e) => fail(route, 'navigate', String(e).slice(0, 120)))
@@ -440,13 +440,14 @@ await check('jsonld · the register pages carry their DefinedTermSets (post-buil
 
 /* 3-drum · THE PIN DRUM DIED 2026-08-02 (the operator's « supprime tout ce
    qui reste de 3D/2D » · it was the last scene subsystem after the /spec
-   ship and the parts catalog). The register is the truth on /tools now, so
+   ship and the parts catalog). The register is the truth on /language/stdlib
+   now (the family left the root 2026-08-02), so
    the belt checks what a reader actually needs: every builtin is a door. */
-await send('Page.navigate', { url: `${BASE}/tools` })
+await send('Page.navigate', { url: `${BASE}/language/stdlib` })
 await settle()
-await check('tools · every builtin in the register opens its own room', async () => {
+await check('stdlib · every builtin in the register opens its own room', async () => {
   const seen = await evaluate(
-    `document.querySelectorAll('a[href^="/tools/"]').length`,
+    `document.querySelectorAll('a[href^="/language/stdlib/"]').length`,
   )
   if (typeof seen !== 'number' || seen < 28) return { doors: seen }
   return true
