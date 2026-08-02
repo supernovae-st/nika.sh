@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "d0405708862b9ad1919ba655a039b11325db531672bef031df80a64663abf406"
+   "sha256": "968e20ec7fbfe2babba54d7ab93ff96ba858d6b800e6b2ac3aa82f7b3e477444"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -51,7 +51,7 @@
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
-   "sha256": "81bbebf516110297debf7f8d4023c99520a749bf69c4789cda9a196a54e98a90"
+   "sha256": "afce130a408c8733698e6a82369f3c08afb1fce5f109fe7758358fac4c3a9e76"
   },
   {
    "path": "scripts/lens-gate.mjs",
@@ -59,11 +59,11 @@
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",
-   "sha256": "e43302aabf158046987f1dd8ae7068bb8a5e5690513561fd1b8fa682fc78f827"
+   "sha256": "94de959449bd221f91680a14af73de60e4ddddeb595e169b185d80d0a5e37eaa"
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "d7d41fb21c11e999a0bb3a89f54f508c0d629729634a95f2434748e7e91b3729"
+   "sha256": "41cf69ae0339fd49525fc32b263c1ffd4c7a35b1598cfe95dd80b3f44b263862"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "5c666ed9b3023731a72979e959f6e439d6892b2626ecbf2e3fab1933ba82cd2b"
+   "sha256": "7febffc3b5513b866f8a148b65ec961466d9ad1b2e1151cdfd59054907fc2372"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "f045cb354ee15b854ca3c5ff10021b0779bfcfc8e7e3c9d1904658328a38f992"
+   "sha256": "3d685fcd9ce95d02fa5e30d23df69cd87f5e22a07212fac8a9470f6cd1fc6580"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -135,11 +135,11 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "1154d7ab630b4c2a934b8293c6ad12848f61716b7cafdc164e43a4a79f26b0a8"
+   "sha256": "ef33107eb470265a89e6471bf5b7970c00ef892cb001e27b04a9082b637e5a47"
   },
   {
    "path": "src/routes.tsx",
-   "sha256": "cd056827fca86349d1edf8251edc0b1c143c64c690a6d62a44904d659b6ea904"
+   "sha256": "41511e27e37d3a190739cba45d886f983cae1759c4236c07cc94413ff7eb2915"
   },
   {
    "path": "tsconfig.app.json",

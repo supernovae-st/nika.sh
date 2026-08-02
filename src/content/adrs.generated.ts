@@ -8,6 +8,8 @@
 export interface Adr {
   id: string
   title: string
+  /** the file it lives in, in the engine repo */
+  file: string
   /** accepted · proposed · superseded · rejected */
   status: string
   date: string
@@ -18,6 +20,8 @@ export interface Adr {
   /** the engine layers it binds (L0 … L5) */
   layers: string[]
   tags: string[]
+  /** does it have a room of its own · every status but `proposed` */
+  room: boolean
 }
 
 /** the engine release these decisions were read at */
@@ -39,6 +43,7 @@ export const ADRS: Adr[] = [
  {
   "id": "ADR-001",
   "title": "Diamond orphan branch rewrite instead of iterative refactor",
+  "file": "adr-001-diamond-orphan-branch.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 9,
@@ -58,11 +63,13 @@ export const ADRS: Adr[] = [
    "rewrite",
    "diamond",
    "orphan-branch"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-002",
   "title": "Forever v0.x -- no v1.0 target",
+  "file": "adr-002-forever-v0x.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 6,
@@ -73,11 +80,13 @@ export const ADRS: Adr[] = [
    "versioning",
    "release-model",
    "semver"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-003",
   "title": "12-gate crate admission protocol",
+  "file": "adr-003-12-gate-admission.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 20,
@@ -97,11 +106,13 @@ export const ADRS: Adr[] = [
    "quality",
    "gates",
    "admission"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-004",
   "title": "Context-window-sized crate architecture",
+  "file": "adr-004-context-window-sized-crates.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 13,
@@ -121,11 +132,13 @@ export const ADRS: Adr[] = [
    "sizing",
    "crate-structure",
    "context-window"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-005",
   "title": "Trait-based error hierarchy with NikaErrorCode and Box<dyn>",
+  "file": "adr-005-error-hierarchy.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 8,
@@ -138,11 +151,13 @@ export const ADRS: Adr[] = [
    "error-handling",
    "traits",
    "error-codes"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-006",
   "title": "Layered architecture with kernel ISP atomic traits and trait_variant",
+  "file": "adr-006-layered-kernel-isp-traits.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 25,
@@ -162,11 +177,13 @@ export const ADRS: Adr[] = [
    "kernel",
    "traits",
    "isp"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-007",
   "title": "Forward-compat invariants with non_exhaustive, new(), and pre-planted hooks",
+  "file": "adr-007-forward-compat-invariants.md",
   "status": "accepted",
   "date": "2026-04-13",
   "cites": 19,
@@ -181,11 +198,13 @@ export const ADRS: Adr[] = [
    "non-exhaustive",
    "invariants",
    "kernel-hooks"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-008",
   "title": "TOML-driven catalog with build-time codegen and perfect-hash lookup",
+  "file": "adr-008-toml-driven-catalog.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 3,
@@ -200,11 +219,13 @@ export const ADRS: Adr[] = [
    "toml",
    "codegen",
    "build-time"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-009",
   "title": "ADR process and hook discipline (meta)",
+  "file": "adr-009-adr-process.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 3,
@@ -216,11 +237,13 @@ export const ADRS: Adr[] = [
    "adr",
    "documentation",
    "meta"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-010",
   "title": "miette as the L4 diagnostic presentation layer",
+  "file": "adr-010-miette-diagnostic-layer.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 5,
@@ -235,11 +258,13 @@ export const ADRS: Adr[] = [
    "miette",
    "error-rendering",
    "l4"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-011",
   "title": "cargo xtask as canonical automation surface",
+  "file": "adr-011-cargo-xtask.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 4,
@@ -251,11 +276,13 @@ export const ADRS: Adr[] = [
    "xtask",
    "automation",
    "ci"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-012",
   "title": "Typestate for nika-runtime workflow lifecycle",
+  "file": "adr-012-typestate-runtime.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 6,
@@ -270,11 +297,13 @@ export const ADRS: Adr[] = [
    "runtime",
    "workflow",
    "lifecycle"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-013",
   "title": "Loom-based concurrency verification for L0.5 and L3",
+  "file": "adr-013-loom-concurrency-verification.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 3,
@@ -289,11 +318,13 @@ export const ADRS: Adr[] = [
    "concurrency",
    "loom",
    "verification"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-014",
   "title": "Sealed kernel traits with explicit adapter registration",
+  "file": "adr-014-sealed-kernel-traits.md",
   "status": "accepted",
   "date": "2026-04-14",
   "cites": 14,
@@ -306,11 +337,13 @@ export const ADRS: Adr[] = [
    "kernel",
    "sealed-traits",
    "api-stability"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-015",
   "title": "expect-test for inline snapshot assertions on rendered output",
+  "file": "adr-015-expect-test-inline-snapshots.md",
   "status": "accepted",
   "date": "2026-04-15",
   "cites": 5,
@@ -324,11 +357,13 @@ export const ADRS: Adr[] = [
    "snapshots",
    "expect-test",
    "dx"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-016",
   "title": "Cancellation model: future-drop primary, CancelCtx cooperative module",
+  "file": "adr-016-cancellation-model.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 14,
@@ -342,11 +377,13 @@ export const ADRS: Adr[] = [
    "async",
    "cancellation",
    "forward-compat"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-017",
   "title": "Streaming policy: bounded mpsc(32), ReceiverStream at kernel boundary",
+  "file": "adr-017-streaming-policy.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 4,
@@ -360,11 +397,13 @@ export const ADRS: Adr[] = [
    "async",
    "streaming",
    "backpressure"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-018",
   "title": "Runtime + sync primitives: single Tokio rt, parking_lot default",
+  "file": "adr-018-runtime-sync-primitives.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 6,
@@ -381,11 +420,13 @@ export const ADRS: Adr[] = [
    "tokio",
    "parking-lot",
    "concurrency"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-019",
   "title": "Retry + timeout ownership: stratified by layer",
+  "file": "adr-019-retry-timeout-ownership.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 4,
@@ -401,11 +442,13 @@ export const ADRS: Adr[] = [
    "timeout",
    "reliability",
    "layer-discipline"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-020",
   "title": "WASM plugin boundary + Sandbox: trait stubs now, dual timeout later",
+  "file": "adr-020-wasm-plugin-boundary.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 12,
@@ -419,11 +462,13 @@ export const ADRS: Adr[] = [
    "plugin",
    "sandbox",
    "capability"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-021",
   "title": "YAML envelope convention: apiVersion + kind + metadata + spec, multi-doc, 9 doc kinds",
+  "file": "adr-021-yaml-envelope-convention.md",
   "status": "superseded",
   "date": "2026-04-16",
   "cites": 6,
@@ -440,11 +485,13 @@ export const ADRS: Adr[] = [
    "yaml",
    "envelope",
    "k8s"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-022",
   "title": "Foundation crate layout v0.81: 14 crates, publish = false, 5 renames + extracts",
+  "file": "adr-022-foundation-crate-layout-v081.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 11,
@@ -460,11 +507,13 @@ export const ADRS: Adr[] = [
    "crates",
    "layout",
    "publish"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-023",
   "title": "File modularity discipline: 800 LOC warn / 1500 fail / 3000 fail-with-LOC-EXEMPT-allowlist",
+  "file": "adr-023-file-modularity-discipline.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 6,
@@ -484,11 +533,13 @@ export const ADRS: Adr[] = [
    "file-loc",
    "modularity",
    "discipline"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-024",
   "title": "Adopt SOTA Rust patterns: bon Builder, Arc<str>, camino, sealed module, strum, public-api",
+  "file": "adr-024-sota-rust-patterns.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 5,
@@ -503,11 +554,13 @@ export const ADRS: Adr[] = [
    "sota",
    "bon",
    "builder"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-025",
   "title": "Per-crate semver via release-plz (publishable crates only)",
+  "file": "adr-025-per-crate-semver-release-plz.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 3,
@@ -521,11 +574,13 @@ export const ADRS: Adr[] = [
    "release-plz",
    "publish",
    "versioning"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-026",
   "title": "workspace.toml single source of truth + auto-generated crate.md",
+  "file": "adr-026-workspace-toml-ssot.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 4,
@@ -545,11 +600,13 @@ export const ADRS: Adr[] = [
    "ssot",
    "metadata",
    "workspace"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-027",
   "title": "Strict L0 sublayer tiers + max 3 sibling deps + cargo timings per-crate budget",
+  "file": "adr-027-strict-l0-tiers-cargo-timings.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 6,
@@ -564,11 +621,13 @@ export const ADRS: Adr[] = [
    "tiers",
    "cargo-timings",
    "compile-budget"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-028",
   "title": "Forward-compat API-type reservation (amended — feature scheduling dropped)",
+  "file": "adr-028-forward-compat-reservation-policy.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 14,
@@ -583,11 +642,13 @@ export const ADRS: Adr[] = [
    "reservation",
    "seams",
    "yagni"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-029",
   "title": "EmbeddingSpec value-type reservation (Cortex seed)",
+  "file": "adr-029-embedding-spec-reservation.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 4,
@@ -602,11 +663,13 @@ export const ADRS: Adr[] = [
    "cortex",
    "embedding",
    "reservation"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-030",
   "title": "MemoryFrameRef.trust reservation (Shield gate seed)",
+  "file": "adr-030-memory-frame-trust.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 8,
@@ -621,11 +684,13 @@ export const ADRS: Adr[] = [
    "cortex",
    "shield",
    "trust-level"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-031",
   "title": "RecallQuery.tenant reservation (multi-tenant keyspace seed)",
+  "file": "adr-031-recall-query-tenant-keyspace.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 6,
@@ -640,11 +705,13 @@ export const ADRS: Adr[] = [
    "cortex",
    "multi-tenant",
    "tenant-id"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-032",
   "title": "WasmPluginError OutOfFuel + Trap + PluginCallContext reservation",
+  "file": "adr-032-wasm-plugin-context.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 7,
@@ -658,11 +725,13 @@ export const ADRS: Adr[] = [
    "wasm",
    "plugin",
    "fuel"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-033",
   "title": "L0 foundational types: Cost, UUIDv7, TrustLevel, TokenUsage evolution",
+  "file": "adr-033-l0-foundational-types.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 11,
@@ -677,11 +746,13 @@ export const ADRS: Adr[] = [
    "types",
    "foundational",
    "cost"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-034",
   "title": "L0.5 kernel traits expansion: 6 new traits scoped to v0.81+ additions",
+  "file": "adr-034-l05-kernel-traits-expansion.md",
   "status": "accepted",
   "date": "2026-04-16",
   "cites": 14,
@@ -695,11 +766,13 @@ export const ADRS: Adr[] = [
    "kernel",
    "traits",
    "isp"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-035",
   "title": "Telemetry seams: SpanGuard parent_span_id + SpanRef (OTel-ready)",
+  "file": "adr-035-telemetry-seams.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 5,
@@ -713,11 +786,13 @@ export const ADRS: Adr[] = [
    "telemetry",
    "observability",
    "otel"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-036",
   "title": "MSRV policy: rust-toolchain.toml SSOT + N-2 stable cadence (stub)",
+  "file": "adr-036-msrv-policy-stub.md",
   "status": "proposed",
   "date": "2026-04-17",
   "cites": 4,
@@ -737,11 +812,13 @@ export const ADRS: Adr[] = [
    "toolchain",
    "forward-compat",
    "ci"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-037",
   "title": "Bottom-up diamond progression (no feature-milestone defer)",
+  "file": "adr-037-bottom-up-diamond-progression.md",
   "status": "accepted",
   "date": "2026-04-17",
   "cites": 6,
@@ -761,11 +838,13 @@ export const ADRS: Adr[] = [
    "roadmap",
    "admission",
    "forever-v0x"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-038",
   "title": "Admit nika-bm25 as the first L1 memory satellite (CRAFT-from-scratch BM25 scorer)",
+  "file": "adr-038-nika-bm25-admission.md",
   "status": "accepted",
   "date": "2026-05-12",
   "cites": 10,
@@ -779,11 +858,13 @@ export const ADRS: Adr[] = [
    "L1",
    "bm25",
    "ir"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-039",
   "title": "Streaming MemoryRecall for lazy fusion · recall_stream()",
+  "file": "adr-039-streaming-memory-recall.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 10,
@@ -799,11 +880,13 @@ export const ADRS: Adr[] = [
    "trait-surface",
    "streaming",
    "zero-alloc"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-040",
   "title": "Cargo feature matrix for nika-memory · zero-cost modularity",
+  "file": "adr-040-memory-cargo-feature-matrix.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 15,
@@ -818,11 +901,13 @@ export const ADRS: Adr[] = [
    "cargo-features",
    "modularity",
    "zero-cost"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-041",
   "title": "Type-state lifecycle for nika-memory orchestrator",
+  "file": "adr-041-type-state-memory-orchestrator.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 7,
@@ -836,11 +921,13 @@ export const ADRS: Adr[] = [
    "type-state",
    "orchestrator",
    "compile-time"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-042",
   "title": "Autodesc MINIMAL/FULL split · forcing-function moat at W4",
+  "file": "adr-042-autodesc-minimal-full-split.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 5,
@@ -854,11 +941,13 @@ export const ADRS: Adr[] = [
    "autodesc",
    "moat",
    "split"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-078",
   "title": "MemoryRecall &self satellite contract + &mut self orchestrator pool (Option D)",
+  "file": "adr-078-memoryrecall-self-shape.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 13,
@@ -874,11 +963,13 @@ export const ADRS: Adr[] = [
    "memory",
    "trait-shape",
    "send-sync"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-079",
   "title": "Capabilities<E: EffectSet> phantom-type kernel · compile-time effect refusal (Option C hybrid)",
+  "file": "adr-079-capabilities-phantom-type.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 10,
@@ -895,11 +986,13 @@ export const ADRS: Adr[] = [
    "capabilities",
    "type-state",
    "phantom-type"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-080",
   "title": "MCP STDIO transport vulnerability-class sandbox canon · 5-layer mitigation (post phantom-CVE audit)",
+  "file": "adr-080-mcp-stdio-cve-sandbox.md",
   "status": "proposed",
   "date": "2026-05-12",
   "cites": 9,
@@ -916,11 +1009,13 @@ export const ADRS: Adr[] = [
    "mcp",
    "stdio",
    "sandbox"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-081",
   "title": "L1 effect-crate guard contract · 7 security guards as forever crate-admission criteria",
+  "file": "adr-081-l1-effect-crate-guard-contract.md",
   "status": "proposed",
   "date": "2026-05-14",
   "cites": 10,
@@ -934,11 +1029,13 @@ export const ADRS: Adr[] = [
    "security",
    "computer-use",
    "admission"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-082",
   "title": "Workflow envelope: single version marker `nika: v1` (supersedes K8s apiVersion form)",
+  "file": "adr-082-envelope-nika-v1-single-version-marker.md",
   "status": "accepted",
   "date": "2026-05-25",
   "cites": 7,
@@ -955,11 +1052,13 @@ export const ADRS: Adr[] = [
    "yaml",
    "envelope",
    "version-marker"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-083",
   "title": "L1 computer-use effect crates · cross-platform doctrine (macOS + Linux prio · Windows + all)",
+  "file": "adr-083-l1-computer-use-cross-platform-doctrine.md",
   "status": "accepted",
   "date": "2026-05-26",
   "cites": 4,
@@ -973,11 +1072,13 @@ export const ADRS: Adr[] = [
    "computer-use",
    "cross-platform",
    "macos"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-084",
   "title": "nika-catalog builtin set · reconciliation to spec 26 (42→26 stdlib collapse + json_merge cut)",
+  "file": "adr-084-nika-catalog-spec-26-reconciliation.md",
   "status": "accepted",
   "date": "2026-05-27",
   "cites": 7,
@@ -991,11 +1092,13 @@ export const ADRS: Adr[] = [
    "nika-schema",
    "builtins",
    "stdlib"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-085",
   "title": "spec/workflow.schema.json invoke.tool oneOf · interim hand-derived bridge to engine schemars codegen",
+  "file": "adr-085-spec-schema-oneof-bridge-to-schemars-codegen.md",
   "status": "accepted",
   "date": "2026-05-27",
   "cites": 7,
@@ -1009,11 +1112,13 @@ export const ADRS: Adr[] = [
    "nika-catalog",
    "spec",
    "json-schema"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-086",
   "title": "builtin Rams sweep · nika:csv_to_json → nika:convert universal multi-format · less but better",
+  "file": "adr-086-builtin-rams-sweep-convert-universal-multi-format.md",
   "status": "accepted",
   "date": "2026-05-27",
   "cites": 7,
@@ -1027,11 +1132,13 @@ export const ADRS: Adr[] = [
    "nika-schema",
    "stdlib",
    "builtins"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-087",
   "title": "nika:sleep + nika:wait_until → nika:wait · temporal-control Rams collapse",
+  "file": "adr-087-nika-wait-temporal-collapse.md",
   "status": "accepted",
   "date": "2026-05-27",
   "cites": 8,
@@ -1045,11 +1152,13 @@ export const ADRS: Adr[] = [
    "nika-schema",
    "stdlib",
    "builtins"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-088",
   "title": "nika:cost + records + dag_info + threads → nika:inspect · introspection Rams collapse",
+  "file": "adr-088-nika-inspect-introspection-collapse.md",
   "status": "accepted",
   "date": "2026-05-27",
   "cites": 9,
@@ -1063,11 +1172,13 @@ export const ADRS: Adr[] = [
    "nika-schema",
    "stdlib",
    "builtins"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-089",
   "title": "nika:json_diff jq-subsume feasibility · REJECTED · keep RFC-6902 Patch as canonical output format",
+  "file": "adr-089-json-diff-jq-subsume-rejected.md",
   "status": "rejected",
   "date": "2026-05-27",
   "cites": 5,
@@ -1079,11 +1190,13 @@ export const ADRS: Adr[] = [
    "stdlib",
    "builtins",
    "rams"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-090",
   "title": "Structural doctrine enforcement — gates project the SSOT",
+  "file": "adr-090-structural-doctrine-enforcement.md",
   "status": "accepted",
   "date": "2026-06-10",
   "cites": 6,
@@ -1103,11 +1216,13 @@ export const ADRS: Adr[] = [
    "quality",
    "gates",
    "security"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-091",
   "title": "Sovereign local inference · nika-infer-local · pure-Rust candle sidecar, OpenAI-compat reuse, no rig / no mistral.rs",
+  "file": "adr-091-nika-infer-local-candle-sidecar.md",
   "status": "accepted",
   "date": "2026-06-11",
   "cites": 6,
@@ -1121,11 +1236,13 @@ export const ADRS: Adr[] = [
    "local",
    "sovereign",
    "candle"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-092",
   "title": "Make nika check a verifier, not a linter — the static-analysis ladder on a unified flow IR",
+  "file": "adr-092-nika-check-program-analysis-ladder.md",
   "status": "proposed",
   "date": "2026-06-11",
   "cites": 5,
@@ -1139,11 +1256,13 @@ export const ADRS: Adr[] = [
    "static-analysis",
    "ifc",
    "security"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-093",
   "title": "nika-infer-local HTTP server · tiny_http for the v1 sidecar endpoint",
+  "file": "adr-093-infer-local-http-server-tiny-http.md",
   "status": "accepted",
   "date": "2026-06-11",
   "cites": 5,
@@ -1157,11 +1276,13 @@ export const ADRS: Adr[] = [
    "local",
    "sidecar",
    "http"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-094",
   "title": "nika-pck · content-addressed sharing — identity decentralized, discovery a forkable index, trust in the artifact",
+  "file": "adr-094-nika-pck-registry-architecture.md",
   "status": "accepted",
   "date": "2026-06-11",
   "cites": 4,
@@ -1178,11 +1299,13 @@ export const ADRS: Adr[] = [
    "registry",
    "packages",
    "cas"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-095",
   "title": "exec verb security architecture · layered defense-in-depth (permits = declaration, 3 layers enforce)",
+  "file": "adr-095-exec-security-architecture.md",
   "status": "accepted",
   "date": "2026-06-12",
   "cites": 7,
@@ -1199,11 +1322,13 @@ export const ADRS: Adr[] = [
    "exec",
    "injection",
    "sandbox"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-096",
   "title": "The agent-loop intelligence layer — routing, stall guard, compose, telemetry",
+  "file": "adr-096-agent-loop-intelligence.md",
   "status": "accepted",
   "date": "2026-06-12",
   "cites": 3,
@@ -1218,11 +1343,13 @@ export const ADRS: Adr[] = [
    "agent-loop",
    "react",
    "stall-guard"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-097",
   "title": "Parallel intra-turn tool dispatch — concurrent resolve, request-order fold",
+  "file": "adr-097-parallel-intra-turn-dispatch.md",
   "status": "accepted",
   "date": "2026-06-12",
   "cites": 1,
@@ -1236,11 +1363,13 @@ export const ADRS: Adr[] = [
    "agent-loop",
    "parallel-function-calling",
    "determinism"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-098",
   "title": "Underspecified schemas fall back to native JSON mode + local validation",
+  "file": "adr-098-underspecified-schema-json-mode-fallback.md",
   "status": "proposed",
   "date": "2026-07-05",
   "cites": 1,
@@ -1255,11 +1384,13 @@ export const ADRS: Adr[] = [
    "nika-providers",
    "structured-output",
    "json-mode"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-099",
   "title": "Durable-lite run resume — the trace IS the checkpoint",
+  "file": "adr-099-durable-lite-run-resume.md",
   "status": "accepted",
   "date": "2026-07-05",
   "cites": 3,
@@ -1274,11 +1405,13 @@ export const ADRS: Adr[] = [
    "durability",
    "trace",
    "cache-hit"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-100",
   "title": "Trace retention — bounded by default, never silently, never a pending gate",
+  "file": "adr-100-trace-retention.md",
   "status": "accepted",
   "date": "2026-07-05",
   "cites": 2,
@@ -1293,11 +1426,13 @@ export const ADRS: Adr[] = [
    "retention",
    "gc",
    "resume"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-105",
   "title": "nika:image_generate — the Media builtin rides a dedicated image plane",
+  "file": "adr-105-image-generate-builtin.md",
   "status": "accepted",
   "date": "2026-07-05",
   "cites": 4,
@@ -1313,11 +1448,13 @@ export const ADRS: Adr[] = [
    "media",
    "image-generation",
    "local"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-106",
   "title": "nika add — the registry client verb (resolve · verify · install)",
+  "file": "adr-106-nika-add-registry-client.md",
   "status": "proposed",
   "date": "2026-07-06",
   "cites": 3,
@@ -1332,11 +1469,13 @@ export const ADRS: Adr[] = [
    "registry",
    "supply-chain",
    "content-addressed"
-  ]
+  ],
+  "room": false
  },
  {
   "id": "ADR-107",
   "title": "Admit nika-check-wasm — the static half of nika check, compiled to the browser",
+  "file": "adr-107-nika-check-wasm-admission.md",
   "status": "accepted",
   "date": "2026-07-28",
   "cites": 5,
@@ -1350,11 +1489,13 @@ export const ADRS: Adr[] = [
    "check",
    "L4",
    "conformance"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-108",
   "title": "Split the spec-15 proof primitives out of nika-runtime into nika-proof (L0)",
+  "file": "adr-108-nika-proof-split.md",
   "status": "accepted",
   "date": "2026-07-29",
   "cites": 3,
@@ -1369,11 +1510,13 @@ export const ADRS: Adr[] = [
    "receipt",
    "L0",
    "crate-size"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-109",
   "title": "Publish the composition proof receipt — what this engine may claim on spec 14",
+  "file": "adr-109-composition-proof-receipt.md",
   "status": "accepted",
   "date": "2026-07-30",
   "cites": 2,
@@ -1389,11 +1532,13 @@ export const ADRS: Adr[] = [
    "receipt",
    "proof",
    "conformance"
-  ]
+  ],
+  "room": true
  },
  {
   "id": "ADR-110",
   "title": "nika-cli size-cap member split: the host plane descends to nika-cli-host",
+  "file": "adr-110-nika-cli-host-member-split.md",
   "status": "accepted",
   "date": "2026-07-31",
   "cites": 3,
@@ -1407,6 +1552,7 @@ export const ADRS: Adr[] = [
    "crates",
    "split",
    "size-cap"
-  ]
+  ],
+  "room": true
  }
 ]

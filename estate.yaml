@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1412
+  classified_files: 1420
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1055
+    authored: 1061
     authored-pin: 3
-    generated: 295
+    generated: 297
     pinned-copy: 21
     testimonial: 38
     foreign: 0
-  unverified-default: 278
+  unverified-default: 279
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: d0405708862b9ad1919ba655a039b11325db531672bef031df80a64663abf406
+  sha256: 968e20ec7fbfe2babba54d7ab93ff96ba858d6b800e6b2ac3aa82f7b3e477444
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: a1d7a94733069835c337205a9d346341291e95c4c9171009e417a306929d3206
+  sha256: 34043f64779d273479f011886cc9c2fa9c6bcc6ed17e39955689bdab8b4b2ae4
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: d7d41fb21c11e999a0bb3a89f54f508c0d629729634a95f2434748e7e91b3729
+  sha256: 41cf69ae0339fd49525fc32b263c1ffd4c7a35b1598cfe95dd80b3f44b263862
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 13e3b074f557641c481d5336a4ae5a1029b71f5bfa65c0946b59f4fc987f4e8c
+  sha256: 3d14ff5b51bc4d0568653cb9d8da25312ca7339729c2e94d931d474f1478243b
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -525,7 +525,7 @@ files:
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 1154d7ab630b4c2a934b8293c6ad12848f61716b7cafdc164e43a4a79f26b0a8
+  sha256: ef33107eb470265a89e6471bf5b7970c00ef892cb001e27b04a9082b637e5a47
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: dbab741166fc697720408683ac1a39cc357944408961df6634cf0386f7df69f3
+  aggregate_sha256: b1b2720e53335178424139b138667f01627d27295986026d59c416c10d864045
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -925,8 +925,8 @@ patterns:
     - "the release asset supernovae-st-nika-check-wasm-<v>.tgz"
 - glob: "src/**.generated.*"
   class: generated
-  match_count: 36
-  aggregate_sha256: 992b54d22cb19a1af5d9acc21c1409a485c9e66ecd49cc7071cd3cb4259c9100
+  match_count: 38
+  aggregate_sha256: a39976db63c57ed23df01e2215a2c316debca5c259c4581220f9f1c5230627aa
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 415
-  aggregate_sha256: 5953c3409adcba858225f64813dc25ca9024b1d7c15e0ddea9a41629c7f5ac69
+  match_count: 417
+  aggregate_sha256: f5bebafa0fbd41ea6940b3aefbf5b1d07bf4fcf05cf25841cddf750f6a6dd10f
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 87
-  aggregate_sha256: 9e5edefe1718160dc410dde5b8a2f57e82d365d884ea4a41871778c58e3b78a8
+  match_count: 90
+  aggregate_sha256: 28ed0b52e7892bdbd3f4107c336fbc5a891a0b3a546089ee59a607c2bad19f00
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 277
-  aggregate_sha256: 68f4a4a3a9bbade5534a92b6f98295dcbdc7333a3a4ea1da1ccc2ff6738f3571
+  match_count: 278
+  aggregate_sha256: c9c62513726817c707d327d8218698edb8fbe170122c5dc33bbe51745b2f7879
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -967,6 +967,7 @@ unverified:
 - "public/edges/recovery/index.html"
 - "public/edges/terminal-observation/index.html"
 - "public/edges/value/index.html"
+- "public/engine/adr/bodies.json"
 - "public/error-categories/budget_error/index.html"
 - "public/error-categories/cancelled/index.html"
 - "public/error-categories/index.html"

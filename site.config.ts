@@ -112,6 +112,14 @@ export const CLIENT_DOOR_PATHS: string[] = CLIENT_IDS.filter(
   (id) => !CLIENT_ROOMS_ELSEWHERE.has(id),
 ).map((id) => `/integrations/${id}`)
 
+/* the engine's SETTLED decisions, one room each (2026-08-02) · 509
+   cross-reference edges ran between them with no address to point at. The 12
+   `proposed` keep their register row and get no room: a proposal published as
+   an indexed page invites citation as though it were settled. Kept literal
+   (this file stays import-free); adrs.test pins this list against the
+   projection's `room` flag. */
+export const ADR_PATHS = ['/city/decisions/adr-001', '/city/decisions/adr-002', '/city/decisions/adr-003', '/city/decisions/adr-004', '/city/decisions/adr-005', '/city/decisions/adr-006', '/city/decisions/adr-007', '/city/decisions/adr-008', '/city/decisions/adr-009', '/city/decisions/adr-010', '/city/decisions/adr-011', '/city/decisions/adr-012', '/city/decisions/adr-013', '/city/decisions/adr-014', '/city/decisions/adr-015', '/city/decisions/adr-016', '/city/decisions/adr-017', '/city/decisions/adr-018', '/city/decisions/adr-019', '/city/decisions/adr-020', '/city/decisions/adr-021', '/city/decisions/adr-022', '/city/decisions/adr-023', '/city/decisions/adr-024', '/city/decisions/adr-025', '/city/decisions/adr-026', '/city/decisions/adr-027', '/city/decisions/adr-028', '/city/decisions/adr-029', '/city/decisions/adr-030', '/city/decisions/adr-031', '/city/decisions/adr-032', '/city/decisions/adr-033', '/city/decisions/adr-034', '/city/decisions/adr-035', '/city/decisions/adr-037', '/city/decisions/adr-038', '/city/decisions/adr-082', '/city/decisions/adr-083', '/city/decisions/adr-084', '/city/decisions/adr-085', '/city/decisions/adr-086', '/city/decisions/adr-087', '/city/decisions/adr-088', '/city/decisions/adr-089', '/city/decisions/adr-090', '/city/decisions/adr-091', '/city/decisions/adr-093', '/city/decisions/adr-094', '/city/decisions/adr-095', '/city/decisions/adr-096', '/city/decisions/adr-097', '/city/decisions/adr-099', '/city/decisions/adr-100', '/city/decisions/adr-105', '/city/decisions/adr-107', '/city/decisions/adr-108', '/city/decisions/adr-109', '/city/decisions/adr-110']
+
 export const INTEGRATION_PATHS = [
   '/integrations',
   '/integrations/claude-code',
@@ -357,4 +365,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/install', ...INSTALL_PATHS, '/convert', '/brand']

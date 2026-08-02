@@ -5,6 +5,7 @@ import { join } from 'node:path'
 /* the judge reads the heavy module directly · the register-diet law is about
    the BUNDLE, and a test never ships (the same exemption catalog.test takes) */
 import { ADRS, ADRS_PIN, ADR_STATUS_COUNTS } from '../content/adrs.generated'
+import { ADR_ROOM_IDS } from '../content/adr-ids.generated'
 import { PATHS } from '../../site.config'
 
 const ROOT = join(__dirname, '../..')
@@ -51,6 +52,27 @@ describe('the decision record', () => {
       for (const to of [...a.supersedes, ...a.superseded_by]) {
         expect(known.has(to), `${a.id} names ${to}, which the record does not carry`).toBe(true)
       }
+    }
+  })
+
+  it('never links a room that was not written', () => {
+    /* THREE sources have to agree or the site ships links into nothing: the
+       register row's `room` flag, the lean id strip the map and the census
+       read, and the bodies the rooms render from. One predicate writes all
+       three (scripts/lib/adr-law.mjs) and this is what proves it held. */
+    const roomed = ADRS.filter((a) => a.room).map((a) => a.id)
+    expect([...ADR_ROOM_IDS]).toEqual(roomed)
+    const bodies = JSON.parse(
+      readFileSync(join(ROOT, 'public/engine/adr/bodies.json'), 'utf8'),
+    ) as { bodies: { id: string }[] }
+    expect(bodies.bodies.map((b) => b.id)).toEqual(roomed)
+    const served = new Set(PATHS)
+    for (const id of roomed) {
+      expect(served.has(`/city/decisions/${id.toLowerCase()}`), `${id} has no served room`).toBe(true)
+    }
+    /* and a proposal must NOT have one */
+    for (const a of ADRS.filter((x) => x.status === 'proposed')) {
+      expect(served.has(`/city/decisions/${a.id.toLowerCase()}`), `${a.id} is a proposal with a room`).toBe(false)
     }
   })
 

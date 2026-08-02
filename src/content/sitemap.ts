@@ -1,6 +1,7 @@
 import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
 import { INTEGRATION_TABS } from './integrations-tabs'
 import { CLIENT_DOOR_IDS } from './client-doors'
+import { ADR_ROOM_IDS } from './adr-ids.generated'
 import { ERROR_CODES } from './errors.generated'
 import { LESSONS } from './lessons.generated'
 import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
@@ -83,6 +84,9 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The map', href: '/map', hint: 'every page, one graph · the anatomy' },
       { label: 'The city', href: '/city', hint: 'which repo each piece lives in, at which pin' },
       { label: 'The decisions', href: '/city/decisions', hint: 'the 71 ADRs behind the engine, with their status' },
+      /* the settled decisions each own a room · the map lists them the way it
+         lists every other roomed family, from the record itself */
+      ...ADR_ROOM_IDS.map((id) => ({ label: id, href: `/city/decisions/${id.toLowerCase()}` })),
       { label: 'How it works', href: '/how', hint: 'the loop · try · new · check · run · trace' },
       { label: 'Workflows', href: '/workflows', hint: 'the path · the jobs · the skeletons' },
       { label: 'The router', href: '/how/router', hint: 'plain words in, a real workflow out · no model' },

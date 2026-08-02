@@ -149,7 +149,15 @@ export function Component() {
                 <ol className="td-args tp-args">
                   {rows.map((a) => (
                     <li className="tp-arg" key={a.id} style={{ listStyle: 'none' }}>
-                      <span className="tp-arg-name">{a.id}</span>
+                      <span className="tp-arg-name">
+                        {/* a settled decision is a door · a proposal is a row,
+                            and saying so is the point of the distinction */}
+                        {a.room ? (
+                          <Link to={`/city/decisions/${a.id.toLowerCase()}`}>{a.id}</Link>
+                        ) : (
+                          a.id
+                        )}
+                      </span>
                       <span className="tp-arg-desc">
                         {a.title}
                         <br />
@@ -176,10 +184,13 @@ export function Component() {
             <p className="how-fig mono">read them whole</p>
             <h2 className="how-h1">The bodies live in the engine repo</h2>
             <p className="how-body">
-              This register carries the decision, not its argument. Each one is a Context /
-              Decision / Consequences document in the engine repo, and the machine index behind
-              this page is served beside it: <a href="/engine/adr/index.json">adr/index.json</a>{' '}
-              carries every cross-reference edge, verbatim at the pin.
+              The {ADRS.length - ADRS.filter((a) => a.room).length} proposals above have no room
+              of their own on purpose: a proposal published as an indexed page invites citation as
+              though it were settled. They live in the repo until they are decided. The machine
+              surfaces are served beside this one: <a href="/engine/adr/index.json">index.json</a>{' '}
+              carries every cross-reference edge, verbatim at the pin, and{' '}
+              <a href="/engine/adr/bodies.json">bodies.json</a> carries the settled decisions
+              whole, lexed at the pin with each one's sha256 beside it.
             </p>
             <div className="v4doclinks">
               <a
