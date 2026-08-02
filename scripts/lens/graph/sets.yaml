@@ -790,6 +790,7 @@ nav:
       - col: The project
         items:
           - { label: The map, to: /map }
+          - { label: The city, to: /city }
           - { label: The truth system, to: /truth }
           - { label: Changelog, to: /changelog }
           - { label: Timeline, to: /timeline }

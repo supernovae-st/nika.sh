@@ -235,6 +235,10 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "to": "/map"
       },
       {
+        "label": "The city",
+        "to": "/city"
+      },
+      {
         "label": "The truth system",
         "to": "/truth"
       },

@@ -289,7 +289,9 @@ export function Component() {
                     <p className="td-ref-k">the rooms it touches</p>
                     <ul className="td-chips">
                       <li>
-                        <Link className="td-chip" to="/integrations#doors">
+                        {/* the section's real id · #doors was a guess and the
+                            link gate caught it on all 25 rooms at once */}
+                        <Link className="td-chip" to="/integrations#int-doors">
                           the coverage matrix
                         </Link>
                       </li>
@@ -309,7 +311,9 @@ export function Component() {
                     <p className="td-ref-k">where this comes from</p>
                     <ul className="td-chips">
                       <li>
-                        <Link className="td-chip" to="/releases">
+                        {/* the ship log is /changelog · « /releases » was a
+                            url I invented, and it never existed */}
+                        <Link className="td-chip" to="/changelog">
                           {CATALOG_ENGINE.release_tag}
                         </Link>
                       </li>

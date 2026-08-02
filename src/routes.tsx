@@ -27,6 +27,7 @@ import { Component as VerbPage } from './pages/VerbPage'
 import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
+import { Component as City } from './pages/City'
 import { Component as How } from './pages/How'
 import { Component as Workflows } from './pages/Workflows'
 import { Component as LessonRoom } from './pages/LessonRoom'
@@ -171,6 +172,10 @@ export const routes: RouteObject[] = [
          public/sitemap/index.html (the /docs pattern · a React stub
          hydrated during its own refresh and threw #418). */
       { path: 'map', Component: MapPage },
+      /* the belvédère's third page (2026-08-02) · /map draws every PAGE,
+         /truth defines the words, /city says which REPO a room's facts came
+         from and at which commit this site read them */
+      { path: 'city', Component: City },
       /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
