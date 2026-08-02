@@ -177,6 +177,47 @@ export const MCP_SLUGS: string[] = [
  "zendesk"
 ]
 
+export const MARKET_PROVIDER_IDS: string[] = [
+ "ai21",
+ "anthropic",
+ "azure",
+ "bedrock",
+ "cerebras",
+ "cloudflare",
+ "cohere",
+ "databricks",
+ "deepinfra",
+ "deepseek",
+ "fireworks",
+ "gemini",
+ "groq",
+ "huggingface",
+ "hyperbolic",
+ "llamacpp",
+ "lmstudio",
+ "localai",
+ "minimax",
+ "mistral",
+ "mock",
+ "moonshot",
+ "native",
+ "nvidia",
+ "ollama",
+ "openai",
+ "openrouter",
+ "perplexity",
+ "qwen",
+ "replicate",
+ "sambanova",
+ "together",
+ "vertex",
+ "vllm",
+ "voyage",
+ "writer",
+ "xai",
+ "zhipu"
+]
+
 export const MODEL_IDS: string[] = [
  "@cf/meta/llama-3.1-8b-instruct",
  "@cf/meta/llama-3.3-70b-instruct-fp8-fast",

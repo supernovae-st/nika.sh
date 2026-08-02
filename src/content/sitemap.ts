@@ -3,6 +3,7 @@ import { INTEGRATION_TABS } from './integrations-tabs'
 import { ERROR_CODES } from './errors.generated'
 import { LESSONS } from './lessons.generated'
 import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
+import { MARKET_PROVIDER_IDS } from './catalog-paths.generated'
 import { TOOLS } from './tools.generated'
 import { LANGUAGE_WORDS } from './language.generated'
 import { CHAPTERS } from '../sections/verbs-data'
@@ -138,6 +139,12 @@ export const SITE_MAP: MapGroup[] = [
       /* the specification's chapter rooms (V3 · 2026-08-02) · derived from
          the pin-sourced module, so a chapter joins the map the day it lands */
       ...SPEC_CHAPTERS.map((c) => ({ label: `spec: ${c.slug}`, href: `/language/spec/${c.slug}` })),
+      /* the market-only vendor rooms (2026-08-02) · the 17 the spec names are
+         listed by the register-roots block above, so only the other 21 here */
+      ...MARKET_PROVIDER_IDS.filter((id) => !PROVIDERS.some((p) => p.id === id)).map((id) => ({
+        label: `provider: ${id}`,
+        href: `/catalog/providers/${id}`,
+      })),
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/language/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/words/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),

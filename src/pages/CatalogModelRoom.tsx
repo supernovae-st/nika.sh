@@ -7,16 +7,17 @@
 import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { MODEL_SLUGS } from '../content/catalog-paths.generated'
-import { PROVIDERS } from '../content/providers.generated'
+import { MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 
 type CatalogModel = import('../content/catalog.generated').CatalogModel
 
-/* the canonical⇄market join (the graph's implements edge · identity on the
-   id, verified 17/17): a seat whose provider is spec-named links its
-   dedicated room — a wire-only vendor stays a plain row, honestly */
-const CANONICAL_IDS = new Set(PROVIDERS.map((p) => p.id))
+/* EVERY seat is a door now (2026-08-02). It used to link only the 17 the
+   SPEC names, so 39 of the 68 seats on these rooms were dead text and 36 of
+   the 64 rooms had nothing clickable at all. All 38 vendors the catalog
+   knows have a room; the market-only ones say what they are on arrival. */
+const ROOMED_PROVIDERS = new Set(MARKET_PROVIDER_IDS)
 
 export function Component() {
   const { pathname } = useLocation()
@@ -82,7 +83,7 @@ export function Component() {
               </div>
               <p className="pv-desc">
                 {s.provider_name}
-                {CANONICAL_IDS.has(s.provider) && (
+                {ROOMED_PROVIDERS.has(s.provider) && (
                   <>
                     {' · '}
                     <Link to={`/catalog/providers/${s.provider}`}>the provider room</Link>

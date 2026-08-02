@@ -148,7 +148,12 @@ describe('lens · rooms and routes cover each other', () => {
     /* the specification's chapter rooms are AUTHORED pages (the pack is
        vendored by scripts/build-chapters.mjs), not lens member nodes — the
        lens never claimed them and the /language/ prefix now sweeps them in. */
-    const authored = (p: string) => p.startsWith('/language/spec')
+    const authored = (p: string) =>
+      p.startsWith('/language/spec') ||
+      /* the market-only vendor rooms: the SPEC names 17 providers and the lens
+         carries those as nodes; the other 21 are catalog-derived pages the
+         lens never claimed (2026-08-02) */
+      p.startsWith('/catalog/providers/')
     /* a family ROOT is a served page and not a member node: it renders the
        register, its members are the nodes. Since the families moved INSIDE
        /language (2026-08-02) the /language/ prefix matches them too, so they

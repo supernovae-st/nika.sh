@@ -197,6 +197,10 @@ const pathsModule =
   header('the CHROME-LEAN half (register-diet law): slugs the prerender derives routes from, ids for the map, counts + the pin identity for hubs and nav — tiny by construction, eager-importable anywhere. The heavy data lives in catalog.generated.ts, reached ONLY through src/lib/catalog-access.ts (the async chunk + byte island).') +
   `export const MODEL_SLUGS: string[] = ${j(MODELS.map((m) => m.slug))}\n\n` +
   `export const MCP_SLUGS: string[] = ${j(MCP_SERVERS.map((s) => s.slug))}\n\n` +
+  /* every vendor the binary can reach gets a room · the SPEC names 17 of
+     them and the catalog names 38, and the other 21 used to land on « not a
+     spec-named provider » with 39 model seats pointing at that page */
+  `export const MARKET_PROVIDER_IDS: string[] = ${j(MARKET_PROVIDERS.map((p) => p.id))}\n\n` +
   `export const MODEL_IDS: string[] = ${j(MODELS.map((m) => m.id))}\n\n` +
   `export const MCP_IDS: string[] = ${j(MCP_SERVERS.map((s) => s.id))}\n\n` +
   `export const CATALOG_ENGINE = ${j({ release_tag: pin.release_tag, commit: pin.engine_commit, provenance })}\n\n` +

@@ -14,7 +14,8 @@
 
 import { ERROR_CODES } from './src/content/errors.generated'
 import { PENDING_ERROR_CODES } from './pending-error-codes'
-import { MODEL_SLUGS, MCP_SLUGS } from './src/content/catalog-paths.generated'
+import { MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS } from './src/content/catalog-paths.generated'
+import { PROVIDERS as SPEC_PROVIDERS } from './src/content/providers.generated'
 
 /* the pending list is AUTHORED in pending-error-codes.ts (a leaf — see its
    header for the bundle law) and re-exported here: consumers of the static
@@ -294,6 +295,9 @@ export const LENS_PATHS = ['/map', '/how/flow', '/how/boundary', '/how/proof', '
    per model and per MCP server. Slugs derive from the vendored engine
    surfaces (scripts/build-catalog.mjs → catalog-paths.generated); a model
    enters by entering the released catalog, never by editing this list. */
+/** the 17 the SPEC names · their rooms already ride LENS_PATHS */
+const SPEC_NAMED_PROVIDERS = new Set(SPEC_PROVIDERS.map((p) => p.id))
+
 export const CATALOG_PATHS: string[] = [
   '/catalog',
   '/catalog/models',
@@ -304,6 +308,12 @@ export const CATALOG_PATHS: string[] = [
   ...MCP_SLUGS.map((s) => `/catalog/mcp/${s}`),
   '/catalog/embeddings',
   '/catalog/capabilities',
+  /* every vendor the released binary can reach gets a room (2026-08-02) ·
+     the SPEC names 17 of the 38 and those 17 already ride LENS_PATHS with
+     their richer rooms, so only the market-only 21 join here. */
+  ...MARKET_PROVIDER_IDS.filter((id) => !SPEC_NAMED_PROVIDERS.has(id)).map(
+    (id) => `/catalog/providers/${id}`,
+  ),
 ]
 
 /* the teaching path's rooms (V2 · 2026-08-02) · one per numbered spec

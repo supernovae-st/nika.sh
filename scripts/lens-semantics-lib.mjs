@@ -440,6 +440,20 @@ function deriveCatalogPaths(root) {
   }
   const models = jsonArray('MODEL_SLUGS').map((s) => `/catalog/models/${s}`)
   const mcp = jsonArray('MCP_SLUGS').map((s) => `/catalog/mcp/${s}`)
+  /* the market-only vendors (2026-08-02) · the SPEC-named 17 keep their
+     richer rooms on LENS_PATHS, so only the other 21 are derived here.
+     The spec set is read from its own module, never listed twice. */
+  /* TOP-LEVEL ids only: the module nests a models[] whose rows also carry an
+     "id", and matching those pulled model aliases into the provider set. The
+     provider rows sit at exactly four spaces of indent. */
+  const specNamed = new Set(
+    [...readFileSync(join(root, 'src/content/providers.generated.ts'), 'utf8').matchAll(
+      /^ {4}"id": "([a-z0-9-]+)"/gm,
+    )].map((m) => m[1]),
+  )
+  const market = jsonArray('MARKET_PROVIDER_IDS')
+    .filter((id) => !specNamed.has(id))
+    .map((id) => `/catalog/providers/${id}`)
   return [
     '/catalog',
     '/catalog/models',
@@ -450,6 +464,7 @@ function deriveCatalogPaths(root) {
     ...mcp,
     '/catalog/embeddings',
     '/catalog/capabilities',
+    ...market,
   ]
 }
 

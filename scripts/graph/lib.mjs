@@ -178,6 +178,14 @@ export function pathsCensus() {
   }
   const MODEL_SLUGS = slugBlock('MODEL_SLUGS')
   const MCP_SLUGS = slugBlock('MCP_SLUGS')
+  /* the market vendors + the spec-named set (2026-08-02): site.config derives
+     the market-only rooms from these two, so the census must inject both or
+     the evaluation throws on a name it cannot see. TOP-LEVEL ids only — the
+     providers module nests a models[] whose rows also carry an "id". */
+  const MARKET_PROVIDER_IDS = slugBlock('MARKET_PROVIDER_IDS')
+  const SPEC_PROVIDERS = [
+    ...read('src/content/providers.generated.ts').matchAll(/^ {4}"id": "([a-z0-9-]+)"/gm),
+  ].map((m) => ({ id: m[1] }))
   const body = cfg
     .replace(/^import[^\n]*$/gm, '')
     .replace(/^export \{ PENDING_ERROR_CODES \}[^\n]*$/m, '')
@@ -188,7 +196,9 @@ export function pathsCensus() {
     'PENDING_ERROR_CODES',
     'MODEL_SLUGS',
     'MCP_SLUGS',
+    'MARKET_PROVIDER_IDS',
+    'SPEC_PROVIDERS',
     `${body}; return PATHS;`,
-  )(ERROR_CODES, PENDING_ERROR_CODES, MODEL_SLUGS, MCP_SLUGS)
+  )(ERROR_CODES, PENDING_ERROR_CODES, MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS, SPEC_PROVIDERS)
   return new Set(out)
 }

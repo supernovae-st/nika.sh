@@ -119,19 +119,34 @@ export function Component() {
     [hit],
   )
 
+  /* THE MARKET FACET (2026-08-02) · the engine's catalog names 38 vendors and
+     the spec names 17 of them; the other 21 used to land on « not a spec-named
+     provider », which is a 404 wearing a sentence. They are real vendors the
+     released binary can reach, so they get a real room: what the catalog
+     knows, and every wire model it serves. The distinction stays LOUD — a
+     spec-named provider is a different promise, and the room says which it
+     is rather than flattening the two. */
   /* the released catalog's answer (§2.2 · the implements edge rendered):
      which wire models THIS spec-named provider serves at the engine pin —
      each one a room. Rides the catalog cargo door (ssr island + async
      chunk · register-diet); identity join, same law as the graph. */
-  const { payload: catPayload, data: catRooms } = useCatalogCargo<
-    { slug: string; id: string; aliases: string[] }[]
-  >(`prov-cat-${id}`, (mod) =>
-    mod.MODELS.filter((m) => m.served_by.some((s) => s.provider === id)).map((m) => ({
+  const { payload: catPayload, data: catCargo } = useCatalogCargo<{
+    rooms: { slug: string; id: string; aliases: string[] }[]
+    /* the module is `as const`, so its row type is the truth — redeclaring it
+       here would drift the day a field is added */
+    market: (typeof import('../content/catalog.generated'))['MARKET_PROVIDERS'][number] | null
+  }>(`prov-cat-${id}`, (mod) => ({
+    rooms: mod.MODELS.filter((m) => m.served_by.some((s) => s.provider === id)).map((m) => ({
       slug: m.slug,
       id: m.id,
       aliases: m.served_by.filter((s) => s.provider === id).map((s) => s.alias),
     })),
-  )
+    /* the MARKET facet rides the same cargo door: the heavy catalog module is
+       register-diet-gated, so one island carries both halves of this room. */
+    market: mod.MARKET_PROVIDERS.find((m) => m.id === id) ?? null,
+  }))
+  const catRooms = catCargo?.rooms ?? null
+  const market = catCargo?.market ?? null
 
   const title = cargo
     ? `${cargo.meta.title} · Nika`
@@ -222,13 +237,91 @@ export function Component() {
             {hit ? hit.name : id}
           </h1>
 
-          {!hit && (
+          {/* THE MARKET FACET · a vendor the released binary can reach that the
+              SPEC does not name. It used to land on « not a spec-named
+              provider », which is a 404 wearing a sentence: 21 of the 38
+              vendors in the catalog got that page, and 39 model seats pointed
+              at it. The room is real now, and it says plainly which kind of
+              promise it is rather than flattening the two. */}
+          {!hit && market && (
+            <>
+              <Island id={`prov-cat-${id}`} payload={catPayload} />
+              <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+                A vendor the released binary can reach. {market.name} is in the engine's catalog,
+                so a workflow can point a task at it today · it is not one of the{' '}
+                {PROVIDERS.length} providers the SPEC names, which is the stronger promise: those
+                carry a conformance contract and a room written against it.
+              </p>
+
+              <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '150ms' }}>
+                <span className="vp-lane-key">the wire</span>
+                <span>
+                  {market.api_dialect} ·{' '}
+                  {market.requires_key ? 'your key, your account' : 'no key needed'}
+                  {market.data_policy ? ` · ${market.data_policy}` : ''}
+                </span>
+              </p>
+
+              {market.tags.length > 0 && (
+                <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
+                  <span className="vp-lane-key">what it does</span>
+                  <span>{market.tags.join(' · ')}</span>
+                </p>
+              )}
+
+              <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
+                <div className="cl-year-head">
+                  <h2 className="td-h2">the seats it serves</h2>
+                  <span className="cl-year-rule" aria-hidden />
+                  <span className="cl-year-count">
+                    {market.models.length} {market.models.length === 1 ? 'seat' : 'seats'}
+                  </span>
+                </div>
+                <p className="td-gloss">
+                  The aliases a file may write, and the exact upstream id each one pins. A model
+                  with its own room in the released catalog links to it.
+                </p>
+                <ul className="pv-models">
+                  {market.models.map((m) => {
+                    const room = catRooms?.find((r) => r.id === m.model)
+                    return (
+                      <li className="pv-model" key={`${m.alias}-${m.model}`}>
+                        {room ? (
+                          <Link to={`/catalog/models/${room.slug}`} className="pv-model-id">
+                            {id}/{m.alias}
+                          </Link>
+                        ) : (
+                          <code className="pv-model-id">
+                            {id}/{m.alias}
+                          </code>
+                        )}
+                        <span className="pv-model-pin">{m.model}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+
+              <div className="v4doclinks" data-rise>
+                <Link to="/catalog/providers" className="v4doclink">
+                  Every provider the binary knows
+                  <span aria-hidden className="v4doclink-arrow"> →</span>
+                </Link>
+                <Link to="/catalog/models" className="v4doclink">
+                  Every model, with its price
+                  <span aria-hidden className="v4doclink-arrow"> →</span>
+                </Link>
+              </div>
+            </>
+          )}
+
+          {/* the honest miss stays for an id that is in NEITHER register */}
+          {!hit && !market && (
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{id}</p>
               <p>
-                is not a spec-named provider. The engine also embeds an OpenAI-compatible tail;
-                ask the binary (<code>nika catalog</code>), check{' '}
-                <a href="/providers/catalog.json">the machine catalog</a>, or walk{' '}
+                names no provider the binary knows. Ask it yourself (<code>nika catalog</code>),
+                read <a href="/providers/catalog.json">the machine catalog</a>, or walk{' '}
                 <Link to="/catalog/providers">the register</Link>.
               </p>
             </div>

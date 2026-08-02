@@ -12,6 +12,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { parse as parseYaml } from 'yaml'
 import { CATALOG_PATHS, PATHS } from '../../site.config'
+import { PROVIDERS } from '../content/providers.generated'
 import {
   CAPABILITY_RULES,
   CATALOG_ENGINE,
@@ -79,7 +80,13 @@ describe('catalog · the projection derives and every room is served', () => {
       '/catalog/capabilities',
     ].filter((p) => !routes.has(p))
     expect(missing, `rooms not prerendered:\n${missing.join('\n')}`).toEqual([])
-    expect(CATALOG_PATHS.length).toBe(7 + modelSlugs.length + mcpSlugs.length)
+    /* 7 hubs + the model rooms + the mcp rooms + the MARKET-ONLY vendor
+       rooms (2026-08-02): the 17 the spec names keep their richer rooms on
+       LENS_PATHS, so only the other 21 are counted here. */
+    const marketOnly = MARKET_PROVIDERS.filter(
+      (m) => !PROVIDERS.some((p) => p.id === m.id),
+    ).length
+    expect(CATALOG_PATHS.length).toBe(7 + modelSlugs.length + mcpSlugs.length + marketOnly)
   })
 
   it('the doors matrix is whole — statuses in the closed vocabulary, installs on class A', () => {
@@ -138,6 +145,12 @@ describe('catalog · the projection derives and every room is served', () => {
         // `type X = (typeof )import('…')`, and the inline `import { type A }`
         // (every specifier type-prefixed — one value specifier keeps it real)
         if (/^\s*import type\b|^\s*(?:export )?type .*= (?:typeof )?import\(/.test(l)) return false
+        // `typeof import(...)` ANYWHERE is a type expression, not a runtime
+        // one: there is no runtime `typeof import()` in JS (runtime is
+        // `await import()`), so it always erases. The named-form test above
+        // only caught it at the head of a type alias, and an inline use
+        // inside a generic read as an eager import (ProviderPage, 2026-08-02).
+        if (/typeof import\(/.test(l)) return false
         const m = l.match(/import\s*\{([^}]*)\}/)
         if (m && m[1].split(',').every((s) => /^\s*type\s/.test(s))) return false
         return true
