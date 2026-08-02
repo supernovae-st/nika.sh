@@ -7,6 +7,7 @@ import { Island } from '../lib/ssg-island'
 import { MCP_SLUGS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { appLd, crumbLd } from '../lib/ld'
 
 type McpServerEntry = import('../content/catalog.generated').McpServerEntry
 
@@ -18,12 +19,30 @@ export function Component() {
     `cat-mcp-${slug}`,
     (m) => m.MCP_SERVERS.find((x) => x.slug === slug) ?? null,
   )
+  const mcpDesc = known
+    ? `${s?.id ?? slug}: ${s?.description ?? 'an MCP server the released binary can wire.'}`
+    : `${slug} names no MCP server in the released catalog.`
   useCatalogHead(
     `/catalog/mcp/${slug}`,
     known ? `${s?.id ?? slug} · MCP` : 'Not a server',
+    mcpDesc,
     known
-      ? `${s?.id ?? slug}: ${s?.description ?? 'an MCP server the released binary can wire.'}`
-      : `${slug} names no MCP server in the released catalog.`,
+      ? [
+          crumbLd([
+            { name: 'The catalog', path: '/catalog' },
+            { name: 'MCP servers', path: '/catalog/mcp' },
+            { name: s?.id ?? slug },
+          ]),
+          /* a server IS software a reader points their tool at, so it
+             declares itself as one and links its own home when the
+             catalog carries the url */
+          appLd({
+            path: `/catalog/mcp/${slug}`,
+            name: s?.id ?? slug,
+            description: mcpDesc,
+          }),
+        ]
+      : undefined,
   )
   if (!known) {
     return (

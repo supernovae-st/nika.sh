@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
+import { codeLd, crumbLd, ldScript } from '../lib/ld'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
@@ -58,6 +59,24 @@ export function Component() {
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],
+    /* a step is a FILE a reader can run · it declares itself as source, the
+       way the jobs and the skeletons already do (2026-08-02: all 13 bare) */
+    script: known
+      ? [
+          ldScript([
+            crumbLd([
+              { name: 'Workflows', path: '/workflows' },
+              { name: 'The path', path: '/workflows#path' },
+              { name: headline },
+            ]),
+            codeLd({
+              path: `/workflows/path/${slug}`,
+              name: lesson?.file ?? slug,
+              description,
+            }),
+          ]),
+        ]
+      : [],
   })
 
   if (!known) {

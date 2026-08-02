@@ -800,24 +800,24 @@
     },
     {
       "path": "src/pages/CatalogMcpRoom.tsx",
-      "source_blob": "61305583cbeaa7671eaea05528d97570a00d004a",
+      "source_blob": "bcc8cb99382008607bdd418f96be683df81856f8",
       "blocks": [
         {
           "selector": "src/pages/CatalogMcpRoom.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 53,
+          "line": 72,
           "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]
     },
     {
       "path": "src/pages/CatalogModelRoom.tsx",
-      "source_blob": "b45dab2e7f8c4d9a5fd9b0c6e90cd3a564f78121",
+      "source_blob": "99b44795848a95c7181941cea74238fc7e1fec91",
       "blocks": [
         {
           "selector": "src/pages/CatalogModelRoom.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 68,
+          "line": 86,
           "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]
@@ -884,12 +884,12 @@
     },
     {
       "path": "src/pages/LessonRoom.tsx",
-      "source_blob": "ba2c55c48b0f1020f4eb4ea55bf9670b3710b701",
+      "source_blob": "bd2fae9acf93aaa869113cb9b53aba49feeaefbc",
       "blocks": [
         {
           "selector": "src/pages/LessonRoom.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 118,
+          "line": 137,
           "sha256": "4cbae80e52ba2e7c6b53d78e64a2fbc26018100b3862ea99db8285f0934a5939"
         }
       ]
@@ -908,12 +908,12 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "e70daab116157ffe01b5d33ba7a3fb216f76c010",
+      "source_blob": "cb093ad247ee88f1474bc6d9ca78e04a053a7350",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 544,
+          "line": 536,
           "sha256": "28b9b9930aac318b4e5866eff206b9a632ce999657dfcc46c76d51e538b28a4b"
         }
       ]

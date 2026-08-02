@@ -10,6 +10,7 @@ import { MODEL_SLUGS } from '../content/catalog-paths.generated'
 import { MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { crumbLd, termLd } from '../lib/ld'
 
 type CatalogModel = import('../content/catalog.generated').CatalogModel
 
@@ -27,12 +28,29 @@ export function Component() {
     `cat-model-${slug}`,
     (mod) => mod.MODELS.find((x) => x.slug === slug) ?? null,
   )
+  const modelDesc = known
+    ? `${m?.id ?? slug} in the released binary's catalog: serving seats, exact price rows and measured energy where the catalog carries them.`
+    : `${slug} names no model in the released catalog.`
   useCatalogHead(
     `/catalog/models/${slug}`,
     known ? (m?.id ?? slug) : 'Not a model',
+    modelDesc,
     known
-      ? `${m?.id ?? slug} in the released binary's catalog: serving seats, exact price rows and measured energy where the catalog carries them.`
-      : `${slug} names no model in the released catalog.`,
+      ? [
+          crumbLd([
+            { name: 'The catalog', path: '/catalog' },
+            { name: 'Models', path: '/catalog/models' },
+            { name: m?.id ?? slug },
+          ]),
+          termLd({
+            path: `/catalog/models/${slug}`,
+            name: m?.id ?? slug,
+            description: modelDesc,
+            setName: 'The Nika model catalog',
+            setPath: '/catalog/models',
+          }),
+        ]
+      : undefined,
   )
   if (!known) {
     return (

@@ -8,6 +8,7 @@ import { useHead } from '@unhead/react'
 import { routeHead } from '../content'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { loadCatalog, ssrCatalog } from '../lib/catalog-access'
+import { ldScript } from '../lib/ld'
 
 type CatalogModule = typeof import('../content/catalog.generated')
 
@@ -26,11 +27,21 @@ export function useCatalogCargo<T>(id: string, pick: (m: CatalogModule) => T): {
   return { payload: payload ?? '', data }
 }
 
-export function useCatalogHead(path: string, titleHead: string, description: string) {
+/* the 4th argument is the MACHINE layer (2026-08-02): every catalog room
+   used to ship only the site-wide Organization + WebSite, so a crawler
+   learned that a page existed and nothing about the model or the server it
+   described. Rooms pass their entity here; ld.ts holds the shapes. */
+export function useCatalogHead(
+  path: string,
+  titleHead: string,
+  description: string,
+  ld?: object[],
+) {
   const title = `${titleHead} · Nika`
   useHead({
     title,
     link: routeHead(path).link,
+    ...(ld && ld.length ? { script: [ldScript(ld)] } : {}),
     meta: [
       ...routeHead(path).meta,
       { name: 'description', content: description },

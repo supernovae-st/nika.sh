@@ -13,6 +13,7 @@ import { CLIENT_DOOR_IDS } from '../content/client-doors'
 import { CATALOG_ENGINE } from '../content/catalog-paths.generated'
 import { useCatalogCargo } from './catalog-lib'
 import { SITE, routeHead } from '../content'
+import { appLd, crumbLd, ldScript } from '../lib/ld'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
@@ -122,7 +123,21 @@ export function Component() {
             processTemplateParams: false,
           },
         ]
-      : [],
+      : door
+        ? [
+            ldScript([
+              crumbLd([
+                { name: 'Integrations', path: '/integrations' },
+                { name: door.name },
+              ]),
+              appLd({
+                path: `/integrations/${door.id}`,
+                name: door.name,
+                description,
+              }),
+            ]),
+          ]
+        : [],
   })
 
   return (

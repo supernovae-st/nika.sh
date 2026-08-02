@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
+import { articleLd, crumbLd, ldScript } from '../lib/ld'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, SPEC } from '../content'
 import { BlogBody } from '../lib/blog-render'
@@ -68,6 +69,26 @@ export function Component() {
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],
+    /* a chapter says what it is a chapter OF · the spec is the work, the
+       chapter is the part (2026-08-02: all 18 shipped bare) */
+    script: known
+      ? [
+          ldScript([
+            crumbLd([
+              { name: 'The language', path: '/language' },
+              { name: 'The specification', path: '/language/spec' },
+              { name: ch?.title ?? slug },
+            ]),
+            articleLd({
+              path: `/language/spec/${slug}`,
+              name: ch?.title ?? slug,
+              description,
+              partOfName: 'The Nika workflow language specification',
+              partOfPath: '/language/spec',
+            }),
+          ]),
+        ]
+      : [],
   })
 
   if (!known) {

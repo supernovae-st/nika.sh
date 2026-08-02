@@ -19,7 +19,8 @@ import { PROVIDERS, PROVIDER_INDEX, EMBEDDED_EXTRA, type ProviderEntry } from '.
 import { useCatalogCargo } from './catalog-lib'
 import { fmtTokens } from './providers-shared'
 import { PROVIDER_SOURCES } from '../content/sources'
-import { SITE, routeHead } from '../content'
+import { routeHead } from '../content'
+import { crumbLd, ldScript, termLd } from '../lib/ld'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
@@ -187,38 +188,29 @@ export function Component() {
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],
-    script: hit
-      ? [
-          {
-            type: 'application/ld+json',
-            innerHTML: JSON.stringify([
-              {
-                '@context': 'https://schema.org',
-                '@type': 'BreadcrumbList',
-                itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'The providers', item: `${SITE}/providers` },
-                  { '@type': 'ListItem', position: 2, name: hit.name },
-                ],
-              },
-              {
-                '@context': 'https://schema.org',
-                '@type': 'DefinedTerm',
-                '@id': `${SITE}/providers/${hit.id}`,
-                name: hit.name,
+    /* the @id is the url the room is SERVED at · this family moved to
+       /catalog/providers and the machine layer stayed behind on the old
+       one, pointing every crawler at a redirect. The market rooms had no
+       machine layer at all until now. */
+    script:
+      hit || market
+        ? [
+            ldScript([
+              crumbLd([
+                { name: 'The catalog', path: '/catalog' },
+                { name: 'Providers', path: '/catalog/providers' },
+                { name: hit?.name ?? market?.name ?? id },
+              ]),
+              termLd({
+                path: `/catalog/providers/${id}`,
+                name: hit?.name ?? market?.name ?? id,
                 description,
-                url: `${SITE}/providers/${hit.id}`,
-                inDefinedTermSet: {
-                  '@type': 'DefinedTermSet',
-                  name: 'The Nika provider catalog',
-                  url: `${SITE}/providers`,
-                },
-              },
+                setName: 'The Nika provider catalog',
+                setPath: '/catalog/providers',
+              }),
             ]),
-            // unhead: don't HTML-escape JSON (keeps it valid ld+json, not &quot;)
-            processTemplateParams: false,
-          },
-        ]
-      : [],
+          ]
+        : [],
   })
 
   return (
