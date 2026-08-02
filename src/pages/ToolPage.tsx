@@ -168,9 +168,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/tools/${name}`).link,
+    link: routeHead(`/language/stdlib/${name}`).link,
     meta: [
-      ...routeHead(`/tools/${name}`).meta,
+      ...routeHead(`/language/stdlib/${name}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -231,7 +231,7 @@ export function Component() {
       >
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/tools" className="td-crumb-link">
+            <Link to="/language/stdlib" className="td-crumb-link">
               ← the standard library
             </Link>
             {hit && (
@@ -277,7 +277,7 @@ export function Component() {
               <p>
                 is not a builtin the engine ships. The <code>nika:</code> namespace is{' '}
                 <em>closed</em> (engine-specific tools route through <code>mcp:</code> servers
-                instead). Walk <Link to="/tools">the register</Link>, check{' '}
+                instead). Walk <Link to="/language/stdlib">the register</Link>, check{' '}
                 <a href="/tools/catalog.json">the machine catalog</a> or the{' '}
                 <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>stdlib contract</a>.
               </p>
@@ -488,7 +488,7 @@ export function Component() {
                       </li>
                     ) : (
                       <li key={t.bare}>
-                        <Link className="td-chip" to={`/tools/${t.bare}`}>
+                        <Link className="td-chip" to={`/language/stdlib/${t.bare}`}>
                           {t.name}
                         </Link>
                       </li>
@@ -500,19 +500,19 @@ export function Component() {
               {/* ── the walk · alphabetical, the register in the middle ──────── */}
               <nav className="td-nav" aria-label="Standard library walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/tools/${prev.bare}`}>
+                  <Link className="td-nav-link" to={`/language/stdlib/${prev.bare}`}>
                     <span className="td-nav-label">← previous</span>
                     {prev.name}
                   </Link>
                 ) : (
                   <span />
                 )}
-                <Link className="td-nav-link td-nav-link--all" to="/tools">
+                <Link className="td-nav-link td-nav-link--all" to="/language/stdlib">
                   <span className="td-nav-label">all {TOOLS.length}</span>
                   the register
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/tools/${next.bare}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={`/language/stdlib/${next.bare}`}>
                     <span className="td-nav-label">next →</span>
                     {next.name}
                   </Link>

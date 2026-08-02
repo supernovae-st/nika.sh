@@ -72,7 +72,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
             <p className="tm-carries mono">
               <span className="tm-carries-k">carries</span>
               {TEMPLATE_REFS[entry.name].tools.map((t) => (
-                <Link key={`t:${t}`} className="er-ref" to={`/tools/${t}`}>
+                <Link key={`t:${t}`} className="er-ref" to={`/language/stdlib/${t}`}>
                   nika:{t}
                 </Link>
               ))}

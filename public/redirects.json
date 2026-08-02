@@ -1542,6 +1542,209 @@
       "applies": "workflows-world-v2"
     },
     {
+      "from": "/tools",
+      "to": "/language/stdlib",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/assert",
+      "to": "/language/stdlib/assert",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/chart",
+      "to": "/language/stdlib/chart",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/compose",
+      "to": "/language/stdlib/compose",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/convert",
+      "to": "/language/stdlib/convert",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/date",
+      "to": "/language/stdlib/date",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/decide",
+      "to": "/language/stdlib/decide",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/done",
+      "to": "/language/stdlib/done",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/edit",
+      "to": "/language/stdlib/edit",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/emit",
+      "to": "/language/stdlib/emit",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/fetch",
+      "to": "/language/stdlib/fetch",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/glob",
+      "to": "/language/stdlib/glob",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/grep",
+      "to": "/language/stdlib/grep",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/hash",
+      "to": "/language/stdlib/hash",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/image_fx",
+      "to": "/language/stdlib/image_fx",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/image_generate",
+      "to": "/language/stdlib/image_generate",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/inspect",
+      "to": "/language/stdlib/inspect",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/jq",
+      "to": "/language/stdlib/jq",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/json_diff",
+      "to": "/language/stdlib/json_diff",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/json_merge_patch",
+      "to": "/language/stdlib/json_merge_patch",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/log",
+      "to": "/language/stdlib/log",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/notify",
+      "to": "/language/stdlib/notify",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/prompt",
+      "to": "/language/stdlib/prompt",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/read",
+      "to": "/language/stdlib/read",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/tts_generate",
+      "to": "/language/stdlib/tts_generate",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/uuid",
+      "to": "/language/stdlib/uuid",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/validate",
+      "to": "/language/stdlib/validate",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/wait",
+      "to": "/language/stdlib/wait",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
+      "from": "/tools/write",
+      "to": "/language/stdlib/write",
+      "status": 301,
+      "live": true,
+      "applies": "stdlib-move"
+    },
+    {
       "from": "/types",
       "to": "/language/types",
       "status": 301,

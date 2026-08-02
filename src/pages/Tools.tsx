@@ -32,7 +32,7 @@ function ToolRow({ entry }: { entry: ToolEntry }) {
   return (
     <li id={entry.bare} className="tp-row">
       <div className="tp-row-head">
-        <a className="tp-name" href={`/tools/${entry.bare}`}>
+        <a className="tp-name" href={`/language/stdlib/${entry.bare}`}>
           {entry.name}
         </a>
         <span
@@ -96,9 +96,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead('/tools').link,
+    link: routeHead('/language/stdlib').link,
     meta: [
-      ...routeHead('/tools').meta,
+      ...routeHead('/language/stdlib').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

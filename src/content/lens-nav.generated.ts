@@ -116,7 +116,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       },
       {
         "label": "Standard library",
-        "to": "/tools"
+        "to": "/language/stdlib"
       },
       {
         "label": "Types",

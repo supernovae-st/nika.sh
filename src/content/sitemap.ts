@@ -103,7 +103,7 @@ export const SITE_MAP: MapGroup[] = [
     links: [
       {
         label: 'Standard library',
-        href: '/tools',
+        href: '/language/stdlib',
         hint: `every nika: builtin, one closed namespace (${TOOLS.length})`,
       },
       {
@@ -135,7 +135,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Brand', href: '/brand', hint: 'the marks · icons · motion' },
     ],
     dense: [
-      ...TOOLS.map((t) => ({ label: t.name, href: `/tools/${t.bare}` })),
+      ...TOOLS.map((t) => ({ label: t.name, href: `/language/stdlib/${t.bare}` })),
       /* the teaching path (V2 · 2026-08-02) · one room per numbered spec
          example, derived from the pin-sourced module */
       ...LESSONS.map((l) => ({ label: `path: ${l.slug}`, href: `/workflows/path/${l.slug}` })),

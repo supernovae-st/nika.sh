@@ -221,7 +221,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "language/families": {
     "set": "tool-families",
     "title": "The tool families",
-    "hub": "/tools",
+    "hub": "/language/stdlib",
     "members": [
       {
         "id": "core",
@@ -390,7 +390,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "language/modes": {
     "set": "extract-modes",
     "title": "The extract modes",
-    "hub": "/tools/fetch",
+    "hub": "/language/stdlib/fetch",
     "members": [
       {
         "id": "article",

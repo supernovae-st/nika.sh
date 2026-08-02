@@ -2257,7 +2257,7 @@ export const LENS_NODES: LensNode[] = [
     "id": "layer:reach",
     "kind": "layer",
     "title": "The reach",
-    "url": "/tools",
+    "url": "/language/stdlib",
     "status": "both",
     "opener": "Reach is what a workflow can touch: the standard library, the model providers, the routing skeletons. Every capability is named, cataloged and versioned · nothing arrives by plugin.",
     "exists": true,
@@ -3206,7 +3206,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "reach",
     "title": "The standard library",
-    "url": "/tools/:bare",
+    "url": "/language/stdlib/:bare",
     "status": "ratified",
     "opener": "Every nika tool the engine ships, each with a JSON Schema for its args. No plugin store · capability is versioned with the engine and granted per file by the boundary.",
     "closed": false,
@@ -3296,7 +3296,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "reach",
     "title": "The extract modes",
-    "url": "/tools/fetch",
+    "url": "/language/stdlib/fetch",
     "status": "ratified",
     "opener": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them.",
     "closed": false,
@@ -3431,7 +3431,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "reach",
     "title": "The tool families",
-    "url": "/tools",
+    "url": "/language/stdlib",
     "status": "shipped",
     "opener": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts.",
     "closed": false,
@@ -4062,7 +4062,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:assert",
-    "url": "/tools/assert",
+    "url": "/language/stdlib/assert",
     "status": "both",
     "opener": "Fail-fast guard: fail the task when condition is false (else no-op).",
     "meta": {
@@ -4075,7 +4075,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:chart",
-    "url": "/tools/chart",
+    "url": "/language/stdlib/chart",
     "status": "both",
     "opener": "Render a DETERMINISTIC chart artifact from rows + a semantic spec (bar | line | area_band | scatter | heatmap) — byte-identical SVG saved at `out`, sha256 in outputs (the trace-chain receipt) · optional Vega-Lite sibling via compile_to. Pure compute + one permit-gated write: no network, no clock, re-runs are idempotent.",
     "meta": {
@@ -4088,7 +4088,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:compose",
-    "url": "/tools/compose",
+    "url": "/language/stdlib/compose",
     "status": "both",
     "opener": "Statically check a Nika workflow draft you wrote · returns the full `nika check` verdict as JSON (conformance + secret-flow + permits + the termination/cost certificate) · NEVER executes it. Iterate until valid, then deliver the draft. Agent loops only.",
     "meta": {
@@ -4101,7 +4101,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:convert",
-    "url": "/tools/convert",
+    "url": "/language/stdlib/convert",
     "status": "both",
     "opener": "Convert between json·yaml·toml·csv (from/to · identity rejected).",
     "meta": {
@@ -4114,7 +4114,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:date",
-    "url": "/tools/date",
+    "url": "/language/stdlib/date",
     "status": "both",
     "opener": "Timestamp arithmetic · op-discriminated (now|add|subtract|format|parse|diff) · strftime grammar · ISO 8601 out.",
     "meta": {
@@ -4127,7 +4127,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:decide",
-    "url": "/tools/decide",
+    "url": "/language/stdlib/decide",
     "status": "both",
     "opener": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here.",
     "meta": {
@@ -4140,7 +4140,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:done",
-    "url": "/tools/done",
+    "url": "/language/stdlib/done",
     "status": "both",
     "opener": "Mark the current agent loop complete (the loop-completion sentinel · agent loops only).",
     "meta": {
@@ -4153,7 +4153,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:edit",
-    "url": "/tools/edit",
+    "url": "/language/stdlib/edit",
     "status": "both",
     "opener": "In-place literal find/replace (all occurrences · count caps it). NOT regex.",
     "meta": {
@@ -4166,7 +4166,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:emit",
-    "url": "/tools/emit",
+    "url": "/language/stdlib/emit",
     "status": "both",
     "opener": "Emit a custom machine event for subscribers/journal (distinct from log).",
     "meta": {
@@ -4179,7 +4179,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:fetch",
-    "url": "/tools/fetch",
+    "url": "/language/stdlib/fetch",
     "status": "both",
     "opener": "HTTP request + content extraction · returns the extracted body (non-2xx is an error). SSRF-defended.",
     "meta": {
@@ -4192,7 +4192,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:glob",
-    "url": "/tools/glob",
+    "url": "/language/stdlib/glob",
     "status": "both",
     "opener": "Glob match · returns paths sorted lexicographically.",
     "meta": {
@@ -4205,7 +4205,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:grep",
-    "url": "/tools/grep",
+    "url": "/language/stdlib/grep",
     "status": "both",
     "opener": "Recursive regex search · returns {path,line,match} sorted by (path,line).",
     "meta": {
@@ -4218,7 +4218,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:hash",
-    "url": "/tools/hash",
+    "url": "/language/stdlib/hash",
     "status": "both",
     "opener": "Content hashing · blake3 (default) | sha256 | sha512 · hex (default) or base64.",
     "meta": {
@@ -4231,7 +4231,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:image_fx",
-    "url": "/tools/image_fx",
+    "url": "/language/stdlib/image_fx",
     "status": "both",
     "opener": "Apply deterministic artistic effects to a PNG (dither · palette · duotone · pixelate · halftone · grain · vignette · chromatic_aberration · scanlines · glitch · ascii) — byte-identical forever for identical input+args; the recipe rides the artifact (tEXt) and outputs carry path + sha256, bytes never inline.",
     "meta": {
@@ -4244,7 +4244,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:image_generate",
-    "url": "/tools/image_generate",
+    "url": "/language/stdlib/image_generate",
     "status": "both",
     "opener": "Generate image assets (local compat servers · openai gpt-image-2 · gemini gemini-3.1-flash-image · xai grok-imagine-image · mock for offline runs) — saves files under output_dir and returns paths + dimensions + sha256 (+ a provenance manifest); image bytes never ride outputs.",
     "meta": {
@@ -4257,7 +4257,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:inspect",
-    "url": "/tools/inspect",
+    "url": "/language/stdlib/inspect",
     "status": "both",
     "opener": "Introspect the running workflow · view: cost | records | dag_info | threads.",
     "meta": {
@@ -4270,7 +4270,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:jq",
-    "url": "/tools/jq",
+    "url": "/language/stdlib/jq",
     "status": "both",
     "opener": "Run a jq expression over input · THE data-transform language (map·filter·select·reshape). Emits exactly one value.",
     "meta": {
@@ -4283,7 +4283,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:json_diff",
-    "url": "/tools/json_diff",
+    "url": "/language/stdlib/json_diff",
     "status": "both",
     "opener": "JSON diff · returns an RFC 6902 JSON Patch.",
     "meta": {
@@ -4296,7 +4296,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:json_merge_patch",
-    "url": "/tools/json_merge_patch",
+    "url": "/language/stdlib/json_merge_patch",
     "status": "both",
     "opener": "RFC 7396 merge patch (null deletes a key) over a target object.",
     "meta": {
@@ -4309,7 +4309,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:log",
-    "url": "/tools/log",
+    "url": "/language/stdlib/log",
     "status": "both",
     "opener": "Emit a human-readable diagnostic log line to the run stream (best-effort · never fails).",
     "meta": {
@@ -4322,7 +4322,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:notify",
-    "url": "/tools/notify",
+    "url": "/language/stdlib/notify",
     "status": "both",
     "opener": "Send a notification · v0.1 engines support the webhook channel.",
     "meta": {
@@ -4335,7 +4335,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:prompt",
-    "url": "/tools/prompt",
+    "url": "/language/stdlib/prompt",
     "status": "both",
     "opener": "Ask a human (confirm|input|choice). Blocks until answered; uses default when headless.",
     "meta": {
@@ -4348,7 +4348,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:read",
-    "url": "/tools/read",
+    "url": "/language/stdlib/read",
     "status": "both",
     "opener": "Read a file · returns its text (or opaque bytes with binary: true).",
     "meta": {
@@ -4361,7 +4361,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:tts_generate",
-    "url": "/tools/tts_generate",
+    "url": "/language/stdlib/tts_generate",
     "status": "both",
     "opener": "Synthesize speech audio (local compat servers · openai gpt-4o-mini-tts · elevenlabs · mock for offline runs) — saves ONE audio file under output_dir and returns path + format + sha256 + duration (+ a provenance manifest); audio bytes never ride outputs.",
     "meta": {
@@ -4374,7 +4374,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:uuid",
-    "url": "/tools/uuid",
+    "url": "/language/stdlib/uuid",
     "status": "both",
     "opener": "Generate a UUID · v7 (default · sortable) or v4 (random).",
     "meta": {
@@ -4387,7 +4387,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:validate",
-    "url": "/tools/validate",
+    "url": "/language/stdlib/validate",
     "status": "both",
     "opener": "Validate data against a JSON Schema · returns {valid, errors} (invalid data is a report, not a failure).",
     "meta": {
@@ -4400,7 +4400,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:wait",
-    "url": "/tools/wait",
+    "url": "/language/stdlib/wait",
     "status": "both",
     "opener": "Pause: relative duration (e.g. \"30s\") XOR absolute until (ISO 8601). Exactly one.",
     "meta": {
@@ -4413,7 +4413,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "builtins",
     "layer": "reach",
     "title": "nika:write",
-    "url": "/tools/write",
+    "url": "/language/stdlib/write",
     "status": "both",
     "opener": "Write a file · returns the path. overwrite defaults true · create_dirs defaults false.",
     "meta": {

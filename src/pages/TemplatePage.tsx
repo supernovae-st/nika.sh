@@ -231,7 +231,7 @@ export function Component() {
                       <ul className="td-chips">
                         {grants.map((t) => (
                           <li key={t}>
-                            <Link className="td-chip" to={`/tools/${t}`}>
+                            <Link className="td-chip" to={`/language/stdlib/${t}`}>
                               nika:{t}
                             </Link>
                           </li>

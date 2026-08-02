@@ -688,10 +688,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/tools": [
+  "/language/stdlib": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/tools#set-builtins",
+      "@id": "https://nika.sh/language/stdlib#set-builtins",
       "name": "Nika the standard library",
       "description": "Every nika tool the engine ships, each with a JSON Schema for its args. No plugin store · capability is versioned with the engine and granted per file by the boundary.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -699,196 +699,196 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/assert",
+          "@id": "https://nika.sh/language/stdlib/assert",
           "termCode": "nika:assert",
           "name": "nika:assert",
           "description": "Fail-fast guard: fail the task when condition is false (else no-op)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/chart",
+          "@id": "https://nika.sh/language/stdlib/chart",
           "termCode": "nika:chart",
           "name": "nika:chart",
           "description": "Render a DETERMINISTIC chart artifact from rows + a semantic spec (bar | line | area_band | scatter | heatmap) — byte-identical SVG saved at `out`, sha256 in outputs (the trace-chain receipt) · optional Vega-Lite sibling via compile_to. Pure compute + one permit-gated write: no network, no clock, re-runs are idempotent."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/compose",
+          "@id": "https://nika.sh/language/stdlib/compose",
           "termCode": "nika:compose",
           "name": "nika:compose",
           "description": "Statically check a Nika workflow draft you wrote · returns the full `nika check` verdict as JSON (conformance + secret-flow + permits + the termination/cost certificate) · NEVER executes it. Iterate until valid, then deliver the draft. Agent loops only."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/convert",
+          "@id": "https://nika.sh/language/stdlib/convert",
           "termCode": "nika:convert",
           "name": "nika:convert",
           "description": "Convert between json·yaml·toml·csv (from/to · identity rejected)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/date",
+          "@id": "https://nika.sh/language/stdlib/date",
           "termCode": "nika:date",
           "name": "nika:date",
           "description": "Timestamp arithmetic · op-discriminated (now|add|subtract|format|parse|diff) · strftime grammar · ISO 8601 out."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/decide",
+          "@id": "https://nika.sh/language/stdlib/decide",
           "termCode": "nika:decide",
           "name": "nika:decide",
           "description": "Deterministic decision kernel (spec 11) · evaluates a portable Decision Bundle against an EvidenceSnapshot · returns the full receipt (outcome · term-by-term contributions · intervals · conflicts+witnesses · determination provenance). The LLM never decides — collect facts first, then apply the rubric here."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/done",
+          "@id": "https://nika.sh/language/stdlib/done",
           "termCode": "nika:done",
           "name": "nika:done",
           "description": "Mark the current agent loop complete (the loop-completion sentinel · agent loops only)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/edit",
+          "@id": "https://nika.sh/language/stdlib/edit",
           "termCode": "nika:edit",
           "name": "nika:edit",
           "description": "In-place literal find/replace (all occurrences · count caps it). NOT regex."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/emit",
+          "@id": "https://nika.sh/language/stdlib/emit",
           "termCode": "nika:emit",
           "name": "nika:emit",
           "description": "Emit a custom machine event for subscribers/journal (distinct from log)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/fetch",
+          "@id": "https://nika.sh/language/stdlib/fetch",
           "termCode": "nika:fetch",
           "name": "nika:fetch",
           "description": "HTTP request + content extraction · returns the extracted body (non-2xx is an error). SSRF-defended."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/glob",
+          "@id": "https://nika.sh/language/stdlib/glob",
           "termCode": "nika:glob",
           "name": "nika:glob",
           "description": "Glob match · returns paths sorted lexicographically."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/grep",
+          "@id": "https://nika.sh/language/stdlib/grep",
           "termCode": "nika:grep",
           "name": "nika:grep",
           "description": "Recursive regex search · returns {path,line,match} sorted by (path,line)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/hash",
+          "@id": "https://nika.sh/language/stdlib/hash",
           "termCode": "nika:hash",
           "name": "nika:hash",
           "description": "Content hashing · blake3 (default) | sha256 | sha512 · hex (default) or base64."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/image_fx",
+          "@id": "https://nika.sh/language/stdlib/image_fx",
           "termCode": "nika:image_fx",
           "name": "nika:image_fx",
           "description": "Apply deterministic artistic effects to a PNG (dither · palette · duotone · pixelate · halftone · grain · vignette · chromatic_aberration · scanlines · glitch · ascii) — byte-identical forever for identical input+args; the recipe rides the artifact (tEXt) and outputs carry path + sha256, bytes never inline."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/image_generate",
+          "@id": "https://nika.sh/language/stdlib/image_generate",
           "termCode": "nika:image_generate",
           "name": "nika:image_generate",
           "description": "Generate image assets (local compat servers · openai gpt-image-2 · gemini gemini-3.1-flash-image · xai grok-imagine-image · mock for offline runs) — saves files under output_dir and returns paths + dimensions + sha256 (+ a provenance manifest); image bytes never ride outputs."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/inspect",
+          "@id": "https://nika.sh/language/stdlib/inspect",
           "termCode": "nika:inspect",
           "name": "nika:inspect",
           "description": "Introspect the running workflow · view: cost | records | dag_info | threads."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/jq",
+          "@id": "https://nika.sh/language/stdlib/jq",
           "termCode": "nika:jq",
           "name": "nika:jq",
           "description": "Run a jq expression over input · THE data-transform language (map·filter·select·reshape). Emits exactly one value."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/json_diff",
+          "@id": "https://nika.sh/language/stdlib/json_diff",
           "termCode": "nika:json_diff",
           "name": "nika:json_diff",
           "description": "JSON diff · returns an RFC 6902 JSON Patch."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/json_merge_patch",
+          "@id": "https://nika.sh/language/stdlib/json_merge_patch",
           "termCode": "nika:json_merge_patch",
           "name": "nika:json_merge_patch",
           "description": "RFC 7396 merge patch (null deletes a key) over a target object."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/log",
+          "@id": "https://nika.sh/language/stdlib/log",
           "termCode": "nika:log",
           "name": "nika:log",
           "description": "Emit a human-readable diagnostic log line to the run stream (best-effort · never fails)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/notify",
+          "@id": "https://nika.sh/language/stdlib/notify",
           "termCode": "nika:notify",
           "name": "nika:notify",
           "description": "Send a notification · v0.1 engines support the webhook channel."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/prompt",
+          "@id": "https://nika.sh/language/stdlib/prompt",
           "termCode": "nika:prompt",
           "name": "nika:prompt",
           "description": "Ask a human (confirm|input|choice). Blocks until answered; uses default when headless."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/read",
+          "@id": "https://nika.sh/language/stdlib/read",
           "termCode": "nika:read",
           "name": "nika:read",
           "description": "Read a file · returns its text (or opaque bytes with binary: true)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/tts_generate",
+          "@id": "https://nika.sh/language/stdlib/tts_generate",
           "termCode": "nika:tts_generate",
           "name": "nika:tts_generate",
           "description": "Synthesize speech audio (local compat servers · openai gpt-4o-mini-tts · elevenlabs · mock for offline runs) — saves ONE audio file under output_dir and returns path + format + sha256 + duration (+ a provenance manifest); audio bytes never ride outputs."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/uuid",
+          "@id": "https://nika.sh/language/stdlib/uuid",
           "termCode": "nika:uuid",
           "name": "nika:uuid",
           "description": "Generate a UUID · v7 (default · sortable) or v4 (random)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/validate",
+          "@id": "https://nika.sh/language/stdlib/validate",
           "termCode": "nika:validate",
           "name": "nika:validate",
           "description": "Validate data against a JSON Schema · returns {valid, errors} (invalid data is a report, not a failure)."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/wait",
+          "@id": "https://nika.sh/language/stdlib/wait",
           "termCode": "nika:wait",
           "name": "nika:wait",
           "description": "Pause: relative duration (e.g. \"30s\") XOR absolute until (ISO 8601). Exactly one."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/tools/write",
+          "@id": "https://nika.sh/language/stdlib/write",
           "termCode": "nika:write",
           "name": "nika:write",
           "description": "Write a file · returns the path. overwrite defaults true · create_dirs defaults false."
@@ -897,7 +897,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/tools#set-templates",
+      "@id": "https://nika.sh/language/stdlib#set-templates",
       "name": "Nika the templates",
       "description": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -977,7 +977,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/tools#set-tool-families",
+      "@id": "https://nika.sh/language/stdlib#set-tool-families",
       "name": "Nika the tool families",
       "description": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -1153,10 +1153,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/tools/fetch": [
+  "/language/stdlib/fetch": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/tools/fetch#set-extract-modes",
+      "@id": "https://nika.sh/language/stdlib/fetch#set-extract-modes",
       "name": "Nika the extract modes",
       "description": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",

@@ -51,7 +51,7 @@ describe('/tools · the compiled projection matches the served catalog', () => {
   })
 
   it('/tools prerenders (PATHS carries the register page)', () => {
-    expect(PATHS).toContain('/tools')
+    expect(PATHS).toContain('/language/stdlib')
   })
 
   it('every tool prerenders its deep page (DO error_document beats the catchall)', () => {
@@ -59,6 +59,6 @@ describe('/tools · the compiled projection matches the served catalog', () => {
        what keeps it honest: a tool added to the catalog without its static
        landing goes red HERE, never 404 in prod. Exact-set match: no stale
        path survives a removal either. */
-    expect(new Set(TOOL_PATHS)).toEqual(new Set(TOOLS.map((t) => `/tools/${t.bare}`)))
+    expect(new Set(TOOL_PATHS)).toEqual(new Set(TOOLS.map((t) => `/language/stdlib/${t.bare}`)))
   })
 })

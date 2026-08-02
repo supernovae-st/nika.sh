@@ -338,7 +338,7 @@ export function Component() {
               →
             </span>
           </Link>
-          <Link to="/tools" className="v4doclink v4doclink--dim">
+          <Link to="/language/stdlib" className="v4doclink v4doclink--dim">
             The builtins
             <span aria-hidden className="v4doclink-arrow">
               {' '}

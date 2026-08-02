@@ -40,7 +40,7 @@ const FEEDS: Record<string, { label: string; to: string }[]> = {
     { label: 'Real jobs', to: '/workflows/jobs' },
     { label: 'Skeletons', to: '/workflows/skeletons' },
     { label: 'Every word the language knows', to: '/language' },
-    { label: 'The standard library', to: '/tools' },
+    { label: 'The standard library', to: '/language/stdlib' },
   ],
   engine: [
     { label: 'The catalog', to: '/catalog' },

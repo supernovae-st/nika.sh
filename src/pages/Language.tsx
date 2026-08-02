@@ -284,7 +284,7 @@ export function Component() {
             A key the schema doesn't declare is a <code>nika check</code> finding{' '}
             <b>before anything runs</b>. The language teaches itself. Try it in the{' '}
             <Link to="/play">playground</Link>, walk <Link to="/language/verbs">the four verbs</Link> or{' '}
-            <Link to="/tools">the standard library</Link>. <Link to="/language/spec">Read the spec →</Link>
+            <Link to="/language/stdlib">the standard library</Link>. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

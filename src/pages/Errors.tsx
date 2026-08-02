@@ -98,7 +98,7 @@ function CodeRow({
             </Link>
           ))}
           {CODE_REFS[entry.code].tools.map((t) => (
-            <Link key={`t:${t}`} className="er-ref" to={`/tools/${t}`}>
+            <Link key={`t:${t}`} className="er-ref" to={`/language/stdlib/${t}`}>
               nika:{t}
             </Link>
           ))}

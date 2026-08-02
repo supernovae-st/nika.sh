@@ -245,7 +245,7 @@ export function Component() {
                 <Link to="/language">the register</Link>, the{' '}
                 <a href="/schema/workflow.json">served schema</a>, or{' '}
                 <a href={`${SPEC}/tree/main/spec`}>the spec</a>. Tool names live in{' '}
-                <Link to="/tools">the standard library</Link>.
+                <Link to="/language/stdlib">the standard library</Link>.
               </p>
             </div>
           )}
@@ -573,7 +573,7 @@ export function Component() {
 
               <p className="tp-foot" data-rise>
                 The whole grammar in one place: <Link to="/language/verbs">the four verbs</Link> ·{' '}
-                <Link to="/tools">the standard library</Link> ·{' '}
+                <Link to="/language/stdlib">the standard library</Link> ·{' '}
                 <a href={`${SPEC}/tree/main/spec`}>the spec</a>. Try it in the{' '}
                 <Link to="/play">playground</Link>. <Link to="/language/spec">Read the reference →</Link>
               </p>

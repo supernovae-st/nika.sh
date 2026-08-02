@@ -179,38 +179,39 @@ export const ERROR_PATHS: string[] = [
 ].sort()
 
 /* the stdlib register's deep pages — one static landing per builtin (slug =
-   bare name: /tools/fetch). Same prerender law as ERROR_PATHS; kept literal
+   bare name: /language/stdlib/fetch · moved from /tools 2026-08-02).
+   Same prerender law as ERROR_PATHS; kept literal
    (this file stays import-free); the tools drift gate
    (src/test/tools.test.ts) fails when the catalog and these paths diverge. */
 export const TOOL_PATHS = [
-  '/tools/assert',
-  '/tools/chart',
-  '/tools/compose',
-  '/tools/convert',
-  '/tools/date',
-  '/tools/decide',
-  '/tools/done',
-  '/tools/edit',
-  '/tools/emit',
-  '/tools/fetch',
-  '/tools/glob',
-  '/tools/grep',
-  '/tools/hash',
-  '/tools/image_fx',
-  '/tools/image_generate',
-  '/tools/inspect',
-  '/tools/jq',
-  '/tools/json_diff',
-  '/tools/json_merge_patch',
-  '/tools/log',
-  '/tools/notify',
-  '/tools/prompt',
-  '/tools/read',
-  '/tools/tts_generate',
-  '/tools/uuid',
-  '/tools/validate',
-  '/tools/wait',
-  '/tools/write',
+  '/language/stdlib/assert',
+  '/language/stdlib/chart',
+  '/language/stdlib/compose',
+  '/language/stdlib/convert',
+  '/language/stdlib/date',
+  '/language/stdlib/decide',
+  '/language/stdlib/done',
+  '/language/stdlib/edit',
+  '/language/stdlib/emit',
+  '/language/stdlib/fetch',
+  '/language/stdlib/glob',
+  '/language/stdlib/grep',
+  '/language/stdlib/hash',
+  '/language/stdlib/image_fx',
+  '/language/stdlib/image_generate',
+  '/language/stdlib/inspect',
+  '/language/stdlib/jq',
+  '/language/stdlib/json_diff',
+  '/language/stdlib/json_merge_patch',
+  '/language/stdlib/log',
+  '/language/stdlib/notify',
+  '/language/stdlib/prompt',
+  '/language/stdlib/read',
+  '/language/stdlib/tts_generate',
+  '/language/stdlib/uuid',
+  '/language/stdlib/validate',
+  '/language/stdlib/wait',
+  '/language/stdlib/write',
 ]
 
 /* (the provider rooms are REAL dedicated pages at /providers/<id> —
@@ -356,4 +357,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', '/install', ...INSTALL_PATHS, '/convert', '/brand']

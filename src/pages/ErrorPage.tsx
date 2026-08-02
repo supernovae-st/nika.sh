@@ -224,7 +224,7 @@ export function Component() {
                         ))}
                         {refs.tools.map((t) => (
                           <li key={`t:${t}`}>
-                            <Link className="td-chip" to={`/tools/${t}`}>
+                            <Link className="td-chip" to={`/language/stdlib/${t}`}>
                               nika:{t}
                             </Link>
                           </li>

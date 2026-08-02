@@ -932,7 +932,7 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "04a06851e6a247d762ad9a28fca73cc4fa30d959",
+      "source_blob": "300b29ca5aba1678dddca3f59b2c9110f971bf31",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",
@@ -944,7 +944,7 @@
     },
     {
       "path": "src/pages/Templates.tsx",
-      "source_blob": "64abe71211d9a204704b5da4ba3f5c059bfd9cc6",
+      "source_blob": "f67d1212396ad1d2e81781c6efee293f18736e29",
       "blocks": [
         {
           "selector": "src/pages/Templates.tsx#pre:1",
@@ -962,7 +962,7 @@
     },
     {
       "path": "src/pages/ToolPage.tsx",
-      "source_blob": "0015ad870649c31a4bf4d381f781facf24ae2963",
+      "source_blob": "f48d337b03170d406b7fca954baf2e05355ac519",
       "blocks": [
         {
           "selector": "src/pages/ToolPage.tsx#codefile:1",
@@ -974,7 +974,7 @@
     },
     {
       "path": "src/pages/UseCaseRoom.tsx",
-      "source_blob": "b3c66080451c63e268913daff0bd793d62eb5564",
+      "source_blob": "05ed9af639cb78a0e0233c3b691385709c1040a6",
       "blocks": [
         {
           "selector": "src/pages/UseCaseRoom.tsx#codefile:1",
@@ -1004,7 +1004,7 @@
     },
     {
       "path": "src/pages/VerbPage.tsx",
-      "source_blob": "8a256e2dedab53fb00863ab052c7d0eb017c960e",
+      "source_blob": "ee2f4cd1aca7ddb92da2f5cd2337c44edb24baa1",
       "blocks": [
         {
           "selector": "src/pages/VerbPage.tsx#codefile:1",
@@ -1016,7 +1016,7 @@
     },
     {
       "path": "src/pages/WordPage.tsx",
-      "source_blob": "72eff16414fddcb5258978c815b90c774dad5568",
+      "source_blob": "0ea4b67790515d9302b59d310d78420355084422",
       "blocks": [
         {
           "selector": "src/pages/WordPage.tsx#codefile:1",

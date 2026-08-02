@@ -191,7 +191,7 @@ export function Component() {
                 <Link to="/language/verbs/infer">infer</Link> · <Link to="/language/verbs/exec">exec</Link> ·{' '}
                 <Link to="/language/verbs/invoke">invoke</Link> · <Link to="/language/verbs/agent">agent</Link>.
                 Everything callable is a tool under <code>invoke:</code>. See{' '}
-                <Link to="/tools">the standard library</Link>.
+                <Link to="/language/stdlib">the standard library</Link>.
               </p>
             </div>
           )}
@@ -324,7 +324,7 @@ export function Component() {
                     <div>
                       <p className="td-ref-k">the vocabulary</p>
                       <p className="td-none">
-                        everything callable is a tool: <Link to="/tools">the {TOOLS.length}{' '}
+                        everything callable is a tool: <Link to="/language/stdlib">the {TOOLS.length}{' '}
                         builtins</Link> are invoke's standard library; <code>mcp:</code> servers are
                         the other lane.
                       </p>

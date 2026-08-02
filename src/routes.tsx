@@ -112,8 +112,12 @@ export const routes: RouteObject[] = [
       /* the stdlib register · the human twin of /tools/catalog.json — and one
          ROOM per builtin (ToolPage: contract · usage · cross-refs). Every
          room prerenders its own static landing (TOOL_PATHS in site.config.ts). */
-      { path: 'tools', Component: Tools },
-      { path: 'tools/:name', Component: ToolPage },
+      /* the standard library · moved out of the root 2026-08-02 (operator
+         ruling): the last reference family that had not joined /language.
+         /language/tools was unavailable — it lands on the `tools:` schema
+         key — so the family took the name it actually is. */
+      { path: 'language/stdlib', Component: Tools },
+      { path: 'language/stdlib/:name', Component: ToolPage },
       /* the language surfaces · the four verb ROOMS + the keyword register
          (every schema-declared word, /errors-style anchored rows). All
          prerender (VERB_PATHS + LANGUAGE_PATHS in site.config.ts). */

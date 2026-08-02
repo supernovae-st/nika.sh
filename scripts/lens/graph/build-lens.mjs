@@ -45,6 +45,10 @@ const verbBase = (S) => roomBase(S, 'verbs', '/verbs/:name')
 const wordBase = (S) => roomBase(S, 'words', '/language/:word')
 const providerBase = (S) => roomBase(S, 'providers', '/providers/:id')
 const templateBase = (S) => roomBase(S, 'templates', '/templates/:name')
+/* the standard library moved out of the root 2026-08-02 · it was the last
+   base still written as a literal in two places, which is exactly the
+   « a base that lives in three literals moves in two of them » case */
+const builtinBase = (S) => roomBase(S, 'builtins', '/tools/:bare')
 const REPORT_ONLY = process.argv.includes('--report')
 const S = readSources(ROOT)
 
@@ -155,7 +159,7 @@ function membersOf(set) {
           member: bare,
           title: `nika:${bare}`,
           opener: row?.description ?? null,
-          url: `/tools/${bare}`,
+          url: `${builtinBase(S)}/${bare}`,
           status,
           meta: { family: row?.category ?? null },
         }
@@ -443,7 +447,7 @@ for (const post of S.posts) {
 const fromBlog = {}
 const postMentions = {}
 const MEMBER_ROOM = {
-  tool: (id) => ({ label: `nika:${id}`, url: `/tools/${id}` }),
+  tool: (id) => ({ label: `nika:${id}`, url: `${builtinBase(S)}/${id}` }),
   word: (id) => ({ label: id, url: `${wordBase(S)}/${id}` }),
   code: (id) => ({ label: id, url: `/errors/${id}` }),
   provider: (id) => ({ label: id, url: `${providerBase(S)}/${id}` }),

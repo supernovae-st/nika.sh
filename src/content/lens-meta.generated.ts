@@ -27,7 +27,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   {
   "builtins": {
     "count": 28,
-    "url": "/tools",
+    "url": "/language/stdlib",
     "title": "The standard library"
   },
   "conformance-levels": {
@@ -57,7 +57,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "extract-modes": {
     "count": 9,
-    "url": "/tools/fetch",
+    "url": "/language/stdlib/fetch",
     "title": "The extract modes"
   },
   "gate-predicates": {
@@ -97,12 +97,12 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "templates": {
     "count": 10,
-    "url": "/tools",
+    "url": "/language/stdlib",
     "title": "The templates"
   },
   "tool-families": {
     "count": 6,
-    "url": "/tools",
+    "url": "/language/stdlib",
     "title": "The tool families"
   },
   "truth-words": {
@@ -152,7 +152,7 @@ export const LENS_HUBS = [
   {
     "id": "reach",
     "title": "The reach",
-    "hub": "/tools",
+    "hub": "/language/stdlib",
     "exists": true,
     "lands": null
   },

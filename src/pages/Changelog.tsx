@@ -174,7 +174,7 @@ export function Component() {
             <Link className="cl-lede-door" to="/how/boundary">
               <code>permits:</code> boundary
             </Link>{' '}
-            (what a plan is allowed to touch), <Link className="cl-lede-door" to="/tools">the tool library</Link> and{' '}
+            (what a plan is allowed to touch), <Link className="cl-lede-door" to="/language/stdlib">the tool library</Link> and{' '}
             <Link className="cl-lede-door" to="/play">the playground</Link> landed.
           </p>
 

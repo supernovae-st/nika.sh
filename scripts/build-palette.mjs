@@ -37,7 +37,7 @@ const CORE = [
   ['Manifesto', '/manifesto', 'the drum of liberation'],
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/errors', 'the typed error registry'],
-  ['Tools', '/tools', 'the standard library'],
+  ['Standard library', '/language/stdlib', 'every nika: builtin the engine ships'],
   ['The four verbs', '/language/verbs', 'infer · exec · invoke · agent'],
   ['The language', '/language', 'every word the schema declares'],
   ['Providers', '/catalog/providers', 'local first · your keys'],
@@ -132,7 +132,14 @@ export function compilePalette() {
   /* builtins · the stdlib register (full ref + the binary's one-liner) */
   const tools = JSON.parse(readFileSync(join(ROOT, 'public/tools/catalog.json'), 'utf8'))
   for (const t of tools.tools ?? [])
-    entries.push({ kind: 'tool', label: t.name, href: `/tools/${t.bare}`, hint: t.description })
+    entries.push({
+      kind: 'tool',
+      label: t.name,
+      /* the base derives · this file already parses sets.yaml above, and a
+         literal here kept the palette pointing at the pre-move address */
+      href: `${(sets.find((x) => x.id === 'builtins')?.rooms_url ?? '/tools/:bare').replace(/\/:[^/]+$/, '')}/${t.bare}`,
+      hint: t.description,
+    })
 
   /* templates · the skeleton pack (name + the routing phrase) */
   const tmpl = JSON.parse(readFileSync(join(ROOT, 'public/templates/catalog.json'), 'utf8'))

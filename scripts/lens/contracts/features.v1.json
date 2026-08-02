@@ -1480,7 +1480,7 @@
     },
     {
       "selector": "site.config.ts#page:152",
-      "path": "/tools",
+      "path": "/language/stdlib",
       "route_selector": "src/routes.tsx#route:26",
       "component": "Tools",
       "feature": "registry.builtins",
@@ -1488,7 +1488,7 @@
     },
     {
       "selector": "site.config.ts#page:153",
-      "path": "/tools/assert",
+      "path": "/language/stdlib/assert",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1496,7 +1496,7 @@
     },
     {
       "selector": "site.config.ts#page:154",
-      "path": "/tools/chart",
+      "path": "/language/stdlib/chart",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1504,7 +1504,7 @@
     },
     {
       "selector": "site.config.ts#page:155",
-      "path": "/tools/compose",
+      "path": "/language/stdlib/compose",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1512,7 +1512,7 @@
     },
     {
       "selector": "site.config.ts#page:156",
-      "path": "/tools/convert",
+      "path": "/language/stdlib/convert",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1520,7 +1520,7 @@
     },
     {
       "selector": "site.config.ts#page:157",
-      "path": "/tools/date",
+      "path": "/language/stdlib/date",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1528,7 +1528,7 @@
     },
     {
       "selector": "site.config.ts#page:158",
-      "path": "/tools/decide",
+      "path": "/language/stdlib/decide",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1536,7 +1536,7 @@
     },
     {
       "selector": "site.config.ts#page:159",
-      "path": "/tools/done",
+      "path": "/language/stdlib/done",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1544,7 +1544,7 @@
     },
     {
       "selector": "site.config.ts#page:160",
-      "path": "/tools/edit",
+      "path": "/language/stdlib/edit",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1552,7 +1552,7 @@
     },
     {
       "selector": "site.config.ts#page:161",
-      "path": "/tools/emit",
+      "path": "/language/stdlib/emit",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1560,7 +1560,7 @@
     },
     {
       "selector": "site.config.ts#page:162",
-      "path": "/tools/fetch",
+      "path": "/language/stdlib/fetch",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1568,7 +1568,7 @@
     },
     {
       "selector": "site.config.ts#page:163",
-      "path": "/tools/glob",
+      "path": "/language/stdlib/glob",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1576,7 +1576,7 @@
     },
     {
       "selector": "site.config.ts#page:164",
-      "path": "/tools/grep",
+      "path": "/language/stdlib/grep",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1584,7 +1584,7 @@
     },
     {
       "selector": "site.config.ts#page:165",
-      "path": "/tools/hash",
+      "path": "/language/stdlib/hash",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1592,7 +1592,7 @@
     },
     {
       "selector": "site.config.ts#page:166",
-      "path": "/tools/image_fx",
+      "path": "/language/stdlib/image_fx",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1600,7 +1600,7 @@
     },
     {
       "selector": "site.config.ts#page:167",
-      "path": "/tools/image_generate",
+      "path": "/language/stdlib/image_generate",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1608,7 +1608,7 @@
     },
     {
       "selector": "site.config.ts#page:168",
-      "path": "/tools/inspect",
+      "path": "/language/stdlib/inspect",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1616,7 +1616,7 @@
     },
     {
       "selector": "site.config.ts#page:169",
-      "path": "/tools/jq",
+      "path": "/language/stdlib/jq",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1624,7 +1624,7 @@
     },
     {
       "selector": "site.config.ts#page:170",
-      "path": "/tools/json_diff",
+      "path": "/language/stdlib/json_diff",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1632,7 +1632,7 @@
     },
     {
       "selector": "site.config.ts#page:171",
-      "path": "/tools/json_merge_patch",
+      "path": "/language/stdlib/json_merge_patch",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1640,7 +1640,7 @@
     },
     {
       "selector": "site.config.ts#page:172",
-      "path": "/tools/log",
+      "path": "/language/stdlib/log",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1648,7 +1648,7 @@
     },
     {
       "selector": "site.config.ts#page:173",
-      "path": "/tools/notify",
+      "path": "/language/stdlib/notify",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1656,7 +1656,7 @@
     },
     {
       "selector": "site.config.ts#page:174",
-      "path": "/tools/prompt",
+      "path": "/language/stdlib/prompt",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1664,7 +1664,7 @@
     },
     {
       "selector": "site.config.ts#page:175",
-      "path": "/tools/read",
+      "path": "/language/stdlib/read",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1672,7 +1672,7 @@
     },
     {
       "selector": "site.config.ts#page:176",
-      "path": "/tools/tts_generate",
+      "path": "/language/stdlib/tts_generate",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1680,7 +1680,7 @@
     },
     {
       "selector": "site.config.ts#page:177",
-      "path": "/tools/uuid",
+      "path": "/language/stdlib/uuid",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1688,7 +1688,7 @@
     },
     {
       "selector": "site.config.ts#page:178",
-      "path": "/tools/validate",
+      "path": "/language/stdlib/validate",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1696,7 +1696,7 @@
     },
     {
       "selector": "site.config.ts#page:179",
-      "path": "/tools/wait",
+      "path": "/language/stdlib/wait",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",
@@ -1704,7 +1704,7 @@
     },
     {
       "selector": "site.config.ts#page:180",
-      "path": "/tools/write",
+      "path": "/language/stdlib/write",
       "route_selector": "src/routes.tsx#route:27",
       "component": "ToolPage",
       "feature": "registry.builtins",

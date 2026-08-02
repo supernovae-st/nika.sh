@@ -127,7 +127,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "reach",
     "title": "The reach",
-    "hub": "/tools",
+    "hub": "/language/stdlib",
     "exists": true,
     "lands": null,
     "opener": "Reach is what a workflow can touch: the standard library, the model providers, the routing skeletons. Every capability is named, cataloged and versioned · nothing arrives by plugin.",
@@ -135,7 +135,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "builtins",
         "title": "The standard library",
-        "url": "/tools",
+        "url": "/language",
         "count": 28,
         "surface": "rooms",
         "slot": null,
@@ -146,7 +146,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "tool-families",
         "title": "The tool families",
-        "url": "/tools",
+        "url": "/language/stdlib",
         "count": 6,
         "surface": "anchors",
         "slot": null,
@@ -168,7 +168,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "extract-modes",
         "title": "The extract modes",
-        "url": "/tools/fetch",
+        "url": "/language/stdlib/fetch",
         "count": 9,
         "surface": "anchors",
         "slot": null,

@@ -5509,15 +5509,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 1026,
+     "authored": 1055,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 295,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1383,
-    "unverified": 249
+    "classified_files": 1412,
+    "unverified": 278
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",
@@ -20205,7 +20205,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:assert",
-   "url": "/tools/assert"
+   "url": "/language/stdlib/assert"
   },
   {
    "data": {
@@ -20218,7 +20218,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:chart",
-   "url": "/tools/chart"
+   "url": "/language/stdlib/chart"
   },
   {
    "data": {
@@ -20231,7 +20231,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:compose",
-   "url": "/tools/compose"
+   "url": "/language/stdlib/compose"
   },
   {
    "data": {
@@ -20244,7 +20244,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:convert",
-   "url": "/tools/convert"
+   "url": "/language/stdlib/convert"
   },
   {
    "data": {
@@ -20257,7 +20257,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:date",
-   "url": "/tools/date"
+   "url": "/language/stdlib/date"
   },
   {
    "data": {
@@ -20270,7 +20270,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:decide",
-   "url": "/tools/decide"
+   "url": "/language/stdlib/decide"
   },
   {
    "data": {
@@ -20283,7 +20283,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:done",
-   "url": "/tools/done"
+   "url": "/language/stdlib/done"
   },
   {
    "data": {
@@ -20296,7 +20296,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:edit",
-   "url": "/tools/edit"
+   "url": "/language/stdlib/edit"
   },
   {
    "data": {
@@ -20309,7 +20309,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:emit",
-   "url": "/tools/emit"
+   "url": "/language/stdlib/emit"
   },
   {
    "data": {
@@ -20322,7 +20322,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:fetch",
-   "url": "/tools/fetch"
+   "url": "/language/stdlib/fetch"
   },
   {
    "data": {
@@ -20335,7 +20335,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:glob",
-   "url": "/tools/glob"
+   "url": "/language/stdlib/glob"
   },
   {
    "data": {
@@ -20348,7 +20348,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:grep",
-   "url": "/tools/grep"
+   "url": "/language/stdlib/grep"
   },
   {
    "data": {
@@ -20361,7 +20361,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:hash",
-   "url": "/tools/hash"
+   "url": "/language/stdlib/hash"
   },
   {
    "data": {
@@ -20374,7 +20374,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:image_fx",
-   "url": "/tools/image_fx"
+   "url": "/language/stdlib/image_fx"
   },
   {
    "data": {
@@ -20387,7 +20387,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:image_generate",
-   "url": "/tools/image_generate"
+   "url": "/language/stdlib/image_generate"
   },
   {
    "data": {
@@ -20400,7 +20400,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:inspect",
-   "url": "/tools/inspect"
+   "url": "/language/stdlib/inspect"
   },
   {
    "data": {
@@ -20413,7 +20413,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:jq",
-   "url": "/tools/jq"
+   "url": "/language/stdlib/jq"
   },
   {
    "data": {
@@ -20426,7 +20426,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:json_diff",
-   "url": "/tools/json_diff"
+   "url": "/language/stdlib/json_diff"
   },
   {
    "data": {
@@ -20439,7 +20439,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:json_merge_patch",
-   "url": "/tools/json_merge_patch"
+   "url": "/language/stdlib/json_merge_patch"
   },
   {
    "data": {
@@ -20452,7 +20452,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:log",
-   "url": "/tools/log"
+   "url": "/language/stdlib/log"
   },
   {
    "data": {
@@ -20465,7 +20465,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:notify",
-   "url": "/tools/notify"
+   "url": "/language/stdlib/notify"
   },
   {
    "data": {
@@ -20478,7 +20478,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:prompt",
-   "url": "/tools/prompt"
+   "url": "/language/stdlib/prompt"
   },
   {
    "data": {
@@ -20491,7 +20491,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:read",
-   "url": "/tools/read"
+   "url": "/language/stdlib/read"
   },
   {
    "data": {
@@ -20504,7 +20504,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:tts_generate",
-   "url": "/tools/tts_generate"
+   "url": "/language/stdlib/tts_generate"
   },
   {
    "data": {
@@ -20517,7 +20517,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:uuid",
-   "url": "/tools/uuid"
+   "url": "/language/stdlib/uuid"
   },
   {
    "data": {
@@ -20530,7 +20530,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:validate",
-   "url": "/tools/validate"
+   "url": "/language/stdlib/validate"
   },
   {
    "data": {
@@ -20543,7 +20543,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:wait",
-   "url": "/tools/wait"
+   "url": "/language/stdlib/wait"
   },
   {
    "data": {
@@ -20556,7 +20556,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/tools/catalog.json",
    "served": true,
    "title": "nika:write",
-   "url": "/tools/write"
+   "url": "/language/stdlib/write"
   }
  ]
 }

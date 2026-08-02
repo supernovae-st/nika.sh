@@ -76,7 +76,7 @@ tasks:
       tool: "nika:fetch"
       args: { url: "https://nika.sh" }`,
     sub: [
-      { n: '5.3.1', label: 'builtins', to: '/tools' },
+      { n: '5.3.1', label: 'builtins', to: '/language/stdlib' },
       { n: '5.3.2', label: 'extract modes', to: '/language/modes' },
       { n: '5.3.3', label: 'MCP servers' },
     ],

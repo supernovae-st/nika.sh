@@ -292,7 +292,7 @@ export function Component() {
                 { kind: 'try it', label: 'open in the playground', href: playHref },
                 { kind: 'guide', label: 'the walkthrough · docs', href: docsFor(uc) },
                 ...verbs.map((v) => ({ kind: 'verb', label: v, href: `/language/verbs/${v}` })),
-                ...tools.map((t) => ({ kind: 'tool', label: `nika:${t}`, href: `/tools/${t}` })),
+                ...tools.map((t) => ({ kind: 'tool', label: `nika:${t}`, href: `/language/stdlib/${t}` })),
               ]}
             />
           </section>

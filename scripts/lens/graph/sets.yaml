@@ -78,9 +78,15 @@ layers:
 
   - id: reach
     title: The reach
-    hub: /tools
+    # MOVED 2026-08-02 (operator ruling) · /tools was the last reference family
+    # at the root while the other thirteen sat in /language. The obvious name
+    # was taken: /language/tools already 301s to the `tools:` schema key, and
+    # two concepts cannot share one word. /language/stdlib is what the family
+    # actually is — the standard library — and the old URLs stay alive as
+    # doorways forever (the engine plugin README links one of them).
+    hub: /language/stdlib
     hub_exists: true
-    # reach is the one layer with sibling hubs · /tools chains as primary
+    # reach is the one layer with sibling hubs · the stdlib chains as primary
     sibling_hubs: [/catalog/providers, /workflows/skeletons]
     opener: >-
       Reach is what a workflow can touch: the standard library, the model
@@ -284,7 +290,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: rooms
-    rooms_url: /tools/:bare
+    rooms_url: /language/stdlib/:bare
     rooms_exist: true
     unique_data: "args JSON Schema per tool + usage evidence (tool-usage.generated.ts) + template grants"
     defined_by: [stdlib/builtins-v0.1.md]
@@ -305,8 +311,8 @@ sets:
     closed: false
     surface: anchors
     rooms_url: /language/families   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /tools
-    anchor_prefix: ""   # /tools#core · /tools#file · …
+    anchor_page: /language/stdlib
+    anchor_prefix: ""   # /language/stdlib#core · #file · …
     defined_by: [stdlib/builtins-v0.1.md]
     promotion: "anchor→room flips here per quarterly search review · no page today (no distinct intent proven)"
     opener: >-
@@ -346,7 +352,7 @@ sets:
     closed: false
     surface: anchors
     rooms_url: /language/modes   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /tools/fetch
+    anchor_page: /language/stdlib/fetch
     anchor_section: modes
     anchor_prefix: mode-
     defined_by: [stdlib/extract-modes-v0.1.md]
@@ -622,6 +628,14 @@ legacy_moves:
   #    sitemap names as the thing a stranger cannot read: « un inconnu ne
   #    comprend pas /predicates top-level ». Each family is TWO rows: the
   #    root, and one parametric row the compiler expands per member.
+  # ── the standard library joins them (2026-08-02 · operator ruling) · the
+  #    LAST reference family at the root. /language/tools was unavailable (it
+  #    already lands on the `tools:` schema key), so the family goes to the
+  #    name it actually is. Both rows matter: an external surface we do not
+  #    control links /tools/fetch (the engine plugin README), so these
+  #    doorways are permanent, not a migration aid.
+  - { from: /tools, to: /language/stdlib, applied: stdlib-move }
+  - { from: /tools/:id, to: /language/stdlib/:id, applied: stdlib-move }
   - { from: /namespaces, to: /language/namespaces, applied: language-world-v3 }
   - { from: /namespaces/:id, to: /language/namespaces/:id, applied: language-world-v3 }
   - { from: /types, to: /language/types, applied: language-world-v3 }
@@ -757,7 +771,7 @@ nav:
           # /errors has NOT re-homed: its rooms are cited by docs_url in every
           # finding the binary prints, so it moves with the engine wagon
           - { label: Error codes, to: /errors }
-          - { label: Standard library, to: /tools }
+          - { label: Standard library, to: /language/stdlib }
           - { label: Types, to: /language/types }
           - { label: Permits, to: /language/permits }
           - { label: Conformance, to: /language/conformance }

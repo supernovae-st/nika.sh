@@ -11,10 +11,14 @@ import { node, readJson, ROOT } from '../lib.mjs'
 /* the room base comes from the descriptor · the providers family joined the
    catalog world on 2026-08-02 and a literal here would have kept minting the
    old url (the same class the corpus extractor hit the day before). */
-const providerBase = (() => {
+const setsBase = (id, fallback) => {
   const sets = parseYaml(readFileSync(`${ROOT}/scripts/lens/graph/sets.yaml`, 'utf8')).sets
-  return (sets.find((x) => x.id === 'providers')?.rooms_url ?? '/providers/:id').replace(/\/:[^/]+$/, '')
-})()
+  return (sets.find((x) => x.id === id)?.rooms_url ?? fallback).replace(/\/:[^/]+$/, '')
+}
+const providerBase = setsBase('providers', '/providers/:id')
+/* and the standard library, which left the root on 2026-08-02 · the comment
+   above predicted this exact bug one family early */
+const builtinBase = setsBase('builtins', '/tools/:bare')
 
 export function extract({ census, specRef, engineRef }) {
   const nodes = []
@@ -42,7 +46,7 @@ export function extract({ census, specRef, engineRef }) {
   // ── tools (the released binary's own tool catalog) ───────────────────────
   const tools = readJson('public/tools/catalog.json')
   for (const t of tools.tools) {
-    const candidates = [`/tools/${t.bare}`, `/tools/${t.name}`]
+    const candidates = [`${builtinBase}/${t.bare}`, `${builtinBase}/${t.name}`]
     const url = candidates.find((u) => census.has(u)) ?? null
     nodes.push(
       node({

@@ -91,7 +91,7 @@ data language (jq) · workflows are callable · mock-first.
 ## Links
 
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec · read it on the site, chapter by chapter, at the pin it was read at: https://nika.sh/language/spec (e.g. https://nika.sh/language/spec/verbs · /envelope · /dag · /variables · /errors · /conformance · /trace · each chapter whole, with its own sha256)
-- Standard library register (every nika: builtin: args, required set, category): https://nika.sh/tools · one room per builtin (e.g. https://nika.sh/tools/fetch: the arg contract, the tool inside a real check-green file, the skeletons that ship it) · machine catalog: https://nika.sh/tools/catalog.json
+- Standard library register (every nika: builtin: args, required set, category): https://nika.sh/language/stdlib · one room per builtin (e.g. https://nika.sh/language/stdlib/fetch: the arg contract, the tool inside a real check-green file, the skeletons that ship it) · machine catalog: https://nika.sh/tools/catalog.json
 - The four verbs (one room each: block contract, a complete file, the skeletons that speak it): https://nika.sh/language/verbs (e.g. https://nika.sh/language/verbs/invoke)
 - The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/words/with) · the contract: https://nika.sh/schema/workflow.json
 - The truth system (how the site tells the truth: the pinned clocks, the truth words, the coverage score with its gaps named, the verify-yourself protocol): https://nika.sh/truth
