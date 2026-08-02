@@ -111,6 +111,10 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "to": "/language/spec"
       },
       {
+        "label": "Governance",
+        "to": "/language/governance"
+      },
+      {
         "label": "Error codes",
         "to": "/errors"
       },
@@ -237,6 +241,10 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       {
         "label": "The city",
         "to": "/city"
+      },
+      {
+        "label": "The decisions",
+        "to": "/city/decisions"
       },
       {
         "label": "The truth system",

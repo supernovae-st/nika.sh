@@ -771,6 +771,7 @@ nav:
           - { label: Every word, to: /language }
           - { label: The four verbs, to: /language/verbs }
           - { label: The specification, to: /language/spec }
+          - { label: Governance, to: /language/governance }
           # /errors has NOT re-homed: its rooms are cited by docs_url in every
           # finding the binary prints, so it moves with the engine wagon
           - { label: Error codes, to: /errors }
@@ -808,6 +809,7 @@ nav:
         items:
           - { label: The map, to: /map }
           - { label: The city, to: /city }
+          - { label: The decisions, to: /city/decisions }
           - { label: The truth system, to: /truth }
           - { label: Changelog, to: /changelog }
           - { label: Timeline, to: /timeline }

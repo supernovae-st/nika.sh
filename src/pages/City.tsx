@@ -205,6 +205,49 @@ export function Component() {
             </ol>
           </div>
 
+          {/* the city's own room · the decision record it holds */}
+          <div className="how-subs" data-rise>
+            <p className="how-fig mono">why it is built this way</p>
+            <h2 className="how-h1">The decisions are written down</h2>
+            <p className="how-body">
+              Every architectural choice in the engine is argued in writing before it is built,
+              kept in the repo beside the code it binds, and superseded by a named successor
+              rather than quietly rewritten. The record is here, read at the release pin.
+            </p>
+            <ul className="how-sub-rows">
+              <li>
+                <Link to="/city/decisions" className="how-sub-row">
+                  <span className="how-sub-key">the decisions</span>
+                  <span className="how-sub-copy">
+                    <span className="how-sub-title">The engine&apos;s architecture record.</span>
+                    <span className="how-sub-body">
+                      Every decision with its status, the layers it binds and the decisions that
+                      cite it. The settled ones open whole; the proposals keep their row.
+                    </span>
+                  </span>
+                  <span className="how-sub-go" aria-hidden>
+                    →
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/language/governance" className="how-sub-row">
+                  <span className="how-sub-key">the standard</span>
+                  <span className="how-sub-copy">
+                    <span className="how-sub-title">How the language itself changes.</span>
+                    <span className="how-sub-body">
+                      The numbered public proposals that amend the specification. Nobody amends
+                      it directly, the maintainers included.
+                    </span>
+                  </span>
+                  <span className="how-sub-go" aria-hidden>
+                    →
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           <div className="v4doclinks" data-rise>
             <Link to="/map" className="v4doclink">
               Every page, one graph

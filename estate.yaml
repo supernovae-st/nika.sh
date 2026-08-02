@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 45a9c2d8035cd054d9f10665d71201209c1338f0b36a5d4a737d2bd3559df840
+  sha256: 6339ba06eb7efb6b0950597e309de6c34ae95851b946924c321910aeddb702bb
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 43126181bd7a3f9ba9e56fef2333b3ec088550ee95f0b9f377066169ac3c01db
+  sha256: a41f5cf2137c3fe439a76e89fc66da222de5879691ab3f450cfbc4004278cbc9
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 5b622a78f047b341d21883a348c18ee313832069a11f4af29b62f178edfca695
+  aggregate_sha256: b63cac88419c2a29c63f14a77b68f41f5aa7f14ed06c25a9df9d1682c2ca9d33
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 41
-  aggregate_sha256: e238ec340e1e78a80f579231edf48530b1002f6181c86d6b38c4a8354bb77a91
+  aggregate_sha256: 65b8aca92141e3cace9028647b38e3bb1a58525952964322c64406dc992ab64a
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 421
-  aggregate_sha256: dded53c6addd0b4d434122f550b8c90346c7b3143d7aba5c32a7f5de7f00b8a3
+  aggregate_sha256: 1b85058f7ff5166df57fbbced20272be8122a603c2f1f9f66e9b24186a98e27c
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 91
-  aggregate_sha256: 4889c8816394f1b755e8a57d41eca9257f38514d6803fb8470af0d02d7ceaf89
+  aggregate_sha256: 5869f82cacede66805ba68f5ca4d9e0342789d4bfd016b2aa4ab8e5cafcee395
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
