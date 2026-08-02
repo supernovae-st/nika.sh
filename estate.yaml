@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 40cec98904bf6b5024cb90f98b777241fce98fcff6d67aa5e88bc09af90d61de
+  sha256: 017a11c9102782a9697c31a9fa1ee8a853a10511c2a61828325b2eb40cd68d28
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: acd2d5a698830cb6ba732fe79353c11888637ca3415839d6dac98ea99e82806e
+  aggregate_sha256: 198822acb8c4d1fc8696746989bedf4be3d0beb4abf0dfca777e3734d932e305
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 407
-  aggregate_sha256: 48505a46262754fb0daf3c798fd025fecc4bfc0a56781abeb612cbb25502b350
+  aggregate_sha256: 97227419fc64d15e4639f22f784b5d01e0be006cca082d9d30b4f5c6ae9f8aac
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 86
-  aggregate_sha256: fc6f9bcb9643cda29eb2f5b238be5bda26fce624f2224b52ed42d8114cfbbcce
+  aggregate_sha256: c916b803264d6f2ab61bd23fee4ced19c4d331e50362eb36afa94574edefbc6d
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

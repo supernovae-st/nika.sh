@@ -148,16 +148,28 @@ export function Component() {
   const catRooms = catCargo?.rooms ?? null
   const market = catCargo?.market ?? null
 
+  /* every room names ITSELF: the 21 market rooms shared one title the day
+     they were born (« Not a spec-named provider ») and the integrity sweep
+     called the duplication, correctly — a shared title is a shared page as
+     far as a crawler is concerned. */
   const title = cargo
     ? `${cargo.meta.title} · Nika`
     : hit
       ? `${hit.name} · The providers · Nika`
-      : 'Not a spec-named provider · Nika'
+      : market
+        ? `${market.name} · The catalog · Nika`
+        : `${id} · Not a provider the binary knows · Nika`
   const description = hit
     ? `${cargo?.meta.angle ?? hit.description} The file names it as model: ${hit.id}/…; ${
         hit.env_var ? `the key rides ${hit.env_var}, never a config file.` : 'no key, nothing to leak.'
       }`
-    : `${id} is not a spec-named provider. The register lists all of them.`
+    : market
+      ? `${market.name} in the released binary's catalog: the ${market.api_dialect} wire, ${
+          market.requires_key ? 'your own key' : 'no key needed'
+        }, and the ${market.models.length} ${
+          market.models.length === 1 ? 'seat' : 'seats'
+        } a workflow can point at.`
+      : `${id} names no provider the binary knows. The register lists every one.`
 
   useHead({
     title,

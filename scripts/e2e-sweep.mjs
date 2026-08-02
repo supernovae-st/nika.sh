@@ -438,26 +438,19 @@ await check('jsonld · the register pages carry their DefinedTermSets (post-buil
   return true
 })
 
-/* 3-drum · the pin drum paints, or honestly doesn't: on /tools the GL layer
-   must either stamp [data-drum-painted] or not be mounted at all — a canvas
-   that mounted but never painted is the silent-death class the outer
-   watchdog exists for (3 remounts ≈ 15s worst case, hence the long poll;
-   when the gate says no, the prerendered schematic IS the register). */
+/* 3-drum · THE PIN DRUM DIED 2026-08-02 (the operator's « supprime tout ce
+   qui reste de 3D/2D » · it was the last scene subsystem after the /spec
+   ship and the parts catalog). The register is the truth on /tools now, so
+   the belt checks what a reader actually needs: every builtin is a door. */
 await send('Page.navigate', { url: `${BASE}/tools` })
 await settle()
-await check('drum · /tools → GL painted or gracefully absent', () =>
-  until(
-    () =>
-      evaluate(`(() => {
-        const stage = document.querySelector('[data-tools-hud]')
-        if (!stage) return { err: 'no drum stage' }
-        if (!stage.querySelector('canvas')) return true /* gate said no — schematic truth */
-        return stage.dataset.drumPainted === '1' ? true : { canvas: true, painted: false }
-      })()`),
-    40,
-    500,
-  ),
-)
+await check('tools · every builtin in the register opens its own room', async () => {
+  const seen = await evaluate(
+    `document.querySelectorAll('a[href^="/tools/"]').length`,
+  )
+  if (typeof seen !== 'number' || seen < 28) return { doors: seen }
+  return true
+})
 
 /* 3a · the film's done frame: triangle + drag-seek + handoff */
 await send('Page.navigate', { url: `${BASE}/?it=99` })
