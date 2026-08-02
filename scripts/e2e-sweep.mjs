@@ -882,58 +882,33 @@ await check('manifesto · the language rail navigates (EN → FR)', async () => 
   )
 })
 
-/* 3e · THE SPEC READING (/spec · 2D) · the drawing's own belt: the reading
-   assembles the schematic (DOM ticks + tally) and the chapter keys sail.
-   (The GL chassis died 2026-08-01 — the drawing is the only truth.) */
-await send('Page.navigate', { url: `${BASE}/spec` })
+/* 3e · THE SPECIFICATION (/language/spec) · the register and one room. The
+   single /spec page and its 2D ship died 2026-08-02: eighteen chapters have
+   their own rooms now, so the belt walks the register into a chapter and
+   proves the prose really arrived (the island carries tokens, and an empty
+   room would mean the chunk door broke). */
+await send('Page.navigate', { url: `${BASE}/language/spec` })
 await settle()
-await check('spec · the reading assembles the ship (9 ticks · 8/8 tally)', async () => {
-  /* sail the reading: jump each block past the ignition line (the hook's
-     rAF sweep catches instant jumps — its own documented law), then poll
-     the DOM truth: every INDEX tick lit + the ASSEMBLED tally full */
-  const n = await evaluate(`document.querySelectorAll('.spec-block[data-stratum]').length`)
-  if (n !== 9) return { blocks: n }
-  for (let i = 0; i < n; i++) {
-    /* behavior:'instant' — the site's smooth-scroll law (arc 14b): a bare
-       scrollTo under html{scroll-behavior:smooth} ANIMATES, and a starved
-       runner never finishes the glide (lived: lit:0, the page never moved) */
-    await evaluate(`(() => {
-      const el = document.querySelectorAll('.spec-block[data-stratum]')[${i}]
-      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * 0.4, behavior: 'instant' })
-    })()`)
-    await sleep(250)
-  }
-  /* the last block's target can drift under a content-visibility re-layout
-     (the harness re-aim law) — anchor at the page BOTTOM per poll tick: the
-     hook's rAF jump-catch (bottom < 0) ignites everything passed, so the
-     bottom is the one scroll position that cannot under-read */
-  return until(
-    () =>
-      evaluate(`(() => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' })
-        /* a scrollTo that is ALREADY at the bottom moves nothing → fires no
-           scroll event → the hook's rAF sweep never re-runs (lived: lit
-           stuck at 7 for the full poll budget). Force one sweep per tick. */
-        window.dispatchEvent(new Event('scroll'))
-        const lit = document.querySelectorAll('.spec-chip2.is-lit').length
-        const tally = document.querySelector('.spec-rail-hud--bl')?.textContent ?? ''
-        return (lit === 9 && tally.includes('8/8')) || { lit, tally }
-      })()`),
-    10,
-    500,
-  )
+await check('spec · the register lists every chapter, each one a door', async () => {
+  const n = await evaluate(`document.querySelectorAll('.wf-step[href^="/language/spec/"]').length`)
+  if (n < 18) return { chapters: n }
+  return true
 })
-await check('spec · Shift+← sails to the previous station (the chapter keys)', async () => {
-  /* the reading just swept every block (the tally check above) — the
-     chapter key must land a REAL hash (the handler owns window keydown;
-     synthetic keys reach it, the eggs' own precedent; re-type per attempt) */
-  let last = null
-  for (let attempt = 0; attempt < 3; attempt++) {
-    await evaluate(`window.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', shiftKey: true }))`)
-    last = await until(() => evaluate(`location.hash.length > 1 || false`), 5, 300)
-    if (last === true) return true
-  }
-  return last
+await send('Page.navigate', { url: `${BASE}/language/spec/envelope` })
+await settle()
+await check('spec · a chapter room carries its prose and its own anchors', async () => {
+  const seen = await evaluate(
+    `(() => ({ heads: document.querySelectorAll('.ch-prose h2, .ch-prose h3').length, toc: document.querySelectorAll('.ch-toc a').length }))()`,
+  )
+  if (!seen || seen.heads < 5) return seen
+  /* every TOC entry must land on a heading that exists — the anchors are the
+     whole point of exploding the document (and the spec writes GitHub-style
+     anchors, which the house slugger used to break) */
+  const dead = await evaluate(
+    `(() => [...document.querySelectorAll('.ch-toc a')].map((a) => a.getAttribute('href')).filter((h) => !document.querySelector(h)).length)()`,
+  )
+  if (dead !== 0) return { deadAnchors: dead }
+  return true
 })
 
 /* 3f · THE MOBILE BATTERY — everything above ran at 1600×1000; the burger,

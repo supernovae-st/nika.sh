@@ -5514,9 +5514,9 @@
      "foreign": 0,
      "generated": 294,
      "pinned-copy": 21,
-     "testimonial": 40
+     "testimonial": 36
     },
-    "classified_files": 1386,
+    "classified_files": 1382,
     "unverified": 249
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",

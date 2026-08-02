@@ -92,8 +92,11 @@ const FRAMES = [
      canvas never mounts under reduce, so these guard the DOM truth (the
      split stage, the 2D schematic in the rail, the lit TOC ticks + the
      HUD tally, the folds): mid-read + the assembled close. */
-  { name: 'spec-read', route: '/spec', p: 0.55 },
-  { name: 'spec-close', route: '/spec', p: 0.94 },
+  /* the single /spec page died 2026-08-02 (18 chapter rooms took its place,
+     and the 2D ship these two frames were shot for died with it) — the
+     register and one room carry the visual contract now */
+  { name: 'spec-register', route: '/language/spec', p: 0.3 },
+  { name: 'spec-chapter', route: '/language/spec/envelope', p: 0.2 },
   /* the Inspector sheet (round-1 step 2) · born element-anchored (w12i law):
      the ?node deep-link opens the readout at load, 390px = the phone truth */
   /* (the two map-inspector frames died 2026-08-02 with the Inspector —

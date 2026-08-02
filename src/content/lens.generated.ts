@@ -31,6 +31,11 @@ export interface LensNode {
   /** anchor sets: the member section anchors exist on the page today
    * (each enrichment WO flips its sets · renders gate on this) */
   anchors_exist?: boolean
+  /** is the room BASE itself a served page? (/language/types yes · the words
+      base no — the world hub renders them). The constellation asks. */
+  rooms_base_exists?: boolean
+  /** where a set with no served room base sends a reader (the world hub) */
+  anchor_page?: string
   /** layer nodes: register hubs that share the layer (reach: providers ·
    * templates) */
   sibling_hubs?: string[]
@@ -3208,7 +3213,8 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": true,
     "surface": "rooms",
     "clock": "both",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": true
   },
   {
     "id": "set:conformance-levels",
@@ -3267,7 +3273,8 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": true,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": true
   },
   {
     "id": "set:error-namespaces",
@@ -3401,7 +3408,8 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": false,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": true
   },
   {
     "id": "set:templates",
@@ -3415,7 +3423,8 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": true,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": true
   },
   {
     "id": "set:tool-families",
@@ -3474,7 +3483,8 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": true,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": true
   },
   {
     "id": "set:words",
@@ -3488,7 +3498,9 @@ export const LENS_NODES: LensNode[] = [
     "counted_in_canon": false,
     "surface": "rooms",
     "clock": "spec",
-    "page_exists": true
+    "page_exists": true,
+    "rooms_base_exists": false,
+    "anchor_page": "/language"
   },
   {
     "id": "showcase:bookmark-triage",

@@ -3162,7 +3162,8 @@
       "counted_in_canon": true,
       "surface": "rooms",
       "clock": "both",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": true
     },
     {
       "id": "set:conformance-levels",
@@ -3221,7 +3222,8 @@
       "counted_in_canon": true,
       "surface": "rooms",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": true
     },
     {
       "id": "set:error-namespaces",
@@ -3355,7 +3357,8 @@
       "counted_in_canon": false,
       "surface": "rooms",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": true
     },
     {
       "id": "set:templates",
@@ -3369,7 +3372,8 @@
       "counted_in_canon": true,
       "surface": "rooms",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": true
     },
     {
       "id": "set:tool-families",
@@ -3428,7 +3432,8 @@
       "counted_in_canon": true,
       "surface": "rooms",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": true
     },
     {
       "id": "set:words",
@@ -3442,7 +3447,9 @@
       "counted_in_canon": false,
       "surface": "rooms",
       "clock": "spec",
-      "page_exists": true
+      "page_exists": true,
+      "rooms_base_exists": false,
+      "anchor_page": "/language"
     },
     {
       "id": "showcase:bookmark-triage",

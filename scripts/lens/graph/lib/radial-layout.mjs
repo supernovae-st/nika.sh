@@ -128,7 +128,16 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
       aggregates.push({
         set: d.id,
         count: rest,
-        url: d.surface === 'rooms' ? d.url?.split('/:')[0] ?? d.url : d.url,
+        /* the room BASE when it is a real page (/language/types), else the
+           set's ANCHOR page (/language renders every word, so /language/words
+           is a base and never a page). Never the raw pattern: `/x/:id` is not
+           a URL, and printing it dead-linked four aggregate stars. */
+        url:
+          d.surface === 'rooms'
+            ? d.rooms_base_exists
+              ? (d.url?.split('/:')[0] ?? d.url)
+              : (d.anchor_page ?? d.url?.split('/:')[0] ?? d.url)
+            : d.url,
         linkable: d.page_exists,
         x: r2(CENTER + Math.cos(a) * RING.members),
         y: r2(CENTER + Math.sin(a) * RING.members),

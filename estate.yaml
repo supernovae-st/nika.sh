@@ -18,7 +18,7 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1386
+  classified_files: 1382
   file_rows: 101
   pattern_rows: 29
   by_class:
@@ -26,7 +26,7 @@ summary:
     authored-pin: 3
     generated: 294
     pinned-copy: 21
-    testimonial: 40
+    testimonial: 36
     foreign: 0
   unverified-default: 249
 files:
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 32826e5bd895c43c77edde821062217e7a7e4bdeeac8c4eff955b3f3a601cb62
+  sha256: 3a2550dcc5fc98c31effb4211b1c16b9603857e742c9532f154dd107dac18dd8
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -331,7 +331,7 @@ files:
   note: "unverified-default"
 - path: "public/ontology/language.json"
   class: generated
-  sha256: c70271f4802bd691efa1cab2794a6435ca9ff859b30be7e06b2236f683ddda3f
+  sha256: 20f1d37c9ce9f5628c7210633f201222703be52dc721fc7221c4973c97266cc9
   evidence: "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -842,8 +842,8 @@ patterns:
     - "supernovae-st/nika@5d61b7e13f1f (v0.107.0) (the pinned release tree)"
 - glob: "tests/visual/golden/**"
   class: testimonial
-  match_count: 28
-  aggregate_sha256: 26e8833463676088211f11683bc98596131a759a88641dab618e1ae1c0540aa9
+  match_count: 24
+  aggregate_sha256: f3b1d339a43462a92f7faec3a38a681a56bd6593fe489ec5196c847b61e471d1
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 35
-  aggregate_sha256: bbfb5da1b98bf026c012aa8d42e811bbaa78080bab1cbe50be66da6bf2669a06
+  aggregate_sha256: d2c57c23f350ea87ed1464c618991fffd63347425a6714ea5160337c918fa440
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,7 +941,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 86
-  aggregate_sha256: d13102b0593233e61ed11b77cfe0249b8b5a0d2f46eaf68664d56063136e4a9a
+  aggregate_sha256: 2cb3ee6bd1b917665c244cb0a529150cb7c85a34eae778b964377725ee84f9fe
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

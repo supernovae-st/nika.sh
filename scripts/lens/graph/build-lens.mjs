@@ -314,6 +314,15 @@ for (const set of S.sets.sets) {
     surface: set.surface,
     clock: set.clock,
     page_exists: existingPages.has(setPage) || [...existingPages].some((p) => setPage.startsWith(`${p}/`)),
+    /* is the room BASE itself a served page? /language/types is (a family
+       root); /language/words is not (the world hub renders the words). The
+       constellation's aggregate star needs the answer or it links a 404. */
+    ...(set.surface === 'rooms'
+      ? {
+          rooms_base_exists: configPaths.has((set.rooms_url ?? '').replace(/\/:[^/]+$/, '')),
+          ...(set.anchor_page ? { anchor_page: set.anchor_page } : {}),
+        }
+      : {}),
     ...(set.surface === 'anchors' ? { anchors_exist: set.anchors_exist === true } : {}),
   })
   addEdge(setNode, `layer:${set.layer}`, 'member-of')
@@ -633,6 +642,11 @@ const lensTs = GEN(
   /** anchor sets: the member section anchors exist on the page today
    * (each enrichment WO flips its sets · renders gate on this) */
   anchors_exist?: boolean
+  /** is the room BASE itself a served page? (/language/types yes · the words
+      base no — the world hub renders them). The constellation asks. */
+  rooms_base_exists?: boolean
+  /** where a set with no served room base sends a reader (the world hub) */
+  anchor_page?: string
   /** layer nodes: register hubs that share the layer (reach: providers ·
    * templates) */
   sibling_hubs?: string[]
