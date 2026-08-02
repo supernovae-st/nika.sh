@@ -1046,24 +1046,24 @@
     },
     {
       "path": "src/sections/GetStarted.tsx",
-      "source_blob": "e9bcb9fe91008af59928549186289ec86a228487",
+      "source_blob": "e8c4b56a1abdf39e44507525156bfcdd3905ffc9",
       "blocks": [
         {
           "selector": "src/sections/GetStarted.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 23,
+          "line": 25,
           "sha256": "40dcc126a0d4b5dbc739215704b95b24fb5c9954dcb246688a42919f4bc4055c"
         },
         {
           "selector": "src/sections/GetStarted.tsx#codefile:2",
           "kind": "jsx-codefile",
-          "line": 32,
+          "line": 34,
           "sha256": "0bae64fdf54b6e6dddac1394c60a3811cd4d2f77c37cde5d344a958a4f62cc31"
         },
         {
           "selector": "src/sections/GetStarted.tsx#codefile:3",
           "kind": "jsx-codefile",
-          "line": 105,
+          "line": 115,
           "sha256": "fbfa17699451c12cdc9a31c34226694648634948f107bfd595a9cb6a7056746e"
         }
       ]

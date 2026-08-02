@@ -17,7 +17,9 @@ import { SectionHead } from '../components/SectionHead'
 
      6.0.1 INSTALL — the REAL affordances: brew (primary) + a curl | sh alt (the
        real public/install.sh URL), each with a copy button (the hero's monochrome
-       install pattern, .v4install).
+       install pattern, .v4install) — then the offline proof (`nika try 01-hello` ·
+       the mock rehearsal · zero keys · nothing written): the visitor TESTS
+       before believing anything else on the page.
      6.0.2 WRITE A FILE — a SHORT, TRUE slice of a real projected showcase
        (`SHOWCASE_YAML['standup-digest']`, the smallest real multi-verb file):
        header + a couple of representative tasks, rendered by <CodeFile wrap tips />. READ-
@@ -34,6 +36,7 @@ import { SectionHead } from '../components/SectionHead'
    added on mount with content visible by default (no-JS / reduced-motion). */
 
 const CURL_CMD = 'curl -LsSf https://nika.sh/install.sh | sh'
+const TRY_CMD = 'nika try 01-hello'
 
 /* the REAL extension listings (engine README · supernovae.nika-lang) — the
    nika-lang language support for every VS Code-compatible editor. */
@@ -84,6 +87,13 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                   or
                 </span>
                 <CopyRow track="install-copy" cmd={CURL_CMD} label="curl install" />
+              </div>
+              <p className="v4start-desc">
+                Installed? See a workflow work before anything else — offline, zero keys,
+                nothing written:
+              </p>
+              <div className="v4start-installs">
+                <CopyRow track="install-copy" cmd={TRY_CMD} label="offline proof" />
               </div>
             </div>
           </li>

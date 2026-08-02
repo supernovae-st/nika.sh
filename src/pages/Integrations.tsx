@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
+import { DoorsCycle } from '../components/DoorsCycle'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrIntegrations, loadIntegrations } from '../lib/integrations-access'
@@ -119,6 +120,12 @@ export function Component() {
               { n: 'read-only', label: 'the oracle', sub: 'agents audit before they spend' },
             ]}
           />
+
+          {doors && doors.length > 0 && (
+            <div className="int-doorscycle" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+              <DoorsCycle doors={doors} />
+            </div>
+          )}
 
           {/* ── choose your client · the 31-door matrix (kit-native SSOT) ──
               Derived from the engine's clients registry at the release pin ·
