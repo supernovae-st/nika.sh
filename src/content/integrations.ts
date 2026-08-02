@@ -47,7 +47,7 @@ export interface IntegrationEntry {
 const AGENT_KIT = {
   skills: ['nika-authoring', 'nika-debugging', 'nika-operating', 'nika-migration'],
   subagents: ['nika-author', 'nika-debugger', 'nika-migrator'],
-  commands: ['/nika:check', '/nika:explain', '/nika:new', '/nika:trace', '/nika:permits'],
+  commands: ['/nika:check', '/nika:explain', '/nika:new', '/nika:trace', '/nika:permits', '/nika:doctor'],
   mcpTools: [
     'nika_check',
     'nika_inspect',
