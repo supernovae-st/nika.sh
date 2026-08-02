@@ -79,6 +79,11 @@ export function layoutConstellation(twin, { topN = 12 } = {}) {
         surface: s.surface,
         page_exists: s.page_exists !== false,
         anchors_exist: s.anchors_exist !== false,
+        /* the two the aggregate star needs · this object copies field by
+           field, so a new twin field is invisible here until it is named
+           (the /language/words 404 survived one fix for exactly this) */
+        rooms_base_exists: s.rooms_base_exists === true,
+        anchor_page: s.anchor_page,
         count,
         angle: r2(a),
         x: r2(CENTER + Math.cos(a) * RING.sets),
