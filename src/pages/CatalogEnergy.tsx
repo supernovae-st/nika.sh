@@ -3,6 +3,7 @@
    the seats research has weighed. The provenance line ships EXACTLY as the
    TOML carries it (ml.energy · arXiv · measured_at) · the site prints the
    receipt, it never rounds a claim. */
+import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
@@ -36,7 +37,14 @@ export function Component() {
               <div className="pv-row-head">
                 <span className="pv-id">{e.model_pattern}</span>
                 <span className="tp-cat">
-                  {e.wh_per_mtok_out} Wh/Mtok · {e.provider} · {e.provenance ?? 'measured'}
+                  {e.wh_per_mtok_out} Wh/Mtok ·{' '}
+                  {/* the vendor is a door: every one of the 38 has a room */}
+                  <Link to={`/catalog/providers/${e.provider}`}>{e.provider}</Link> ·{' '}
+                  {e.provenance ?? 'measured'}
+                  {/* the clock the measurement was taken on · a number without
+                      its date is a claim without a clock, and the catalog has
+                      carried this field since v0.107.0 without printing it */}
+                  {e.measured_at ? ` · measured ${e.measured_at}` : ''}
                 </span>
               </div>
               <p className="pv-desc">{e.source ?? ''}</p>

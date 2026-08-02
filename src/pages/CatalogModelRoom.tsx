@@ -143,7 +143,10 @@ export function Component() {
               <li key={e.provider} className="tp-row">
                 <div className="pv-row-head">
                   <span className="pv-id">{e.wh_per_mtok_out} Wh / Mtok out</span>
-                  <span className="tp-cat">{e.provenance ?? 'measured'}</span>
+                  <span className="tp-cat">
+                    {e.provenance ?? 'measured'}
+                    {e.measured_at ? ` · measured ${e.measured_at}` : ''}
+                  </span>
                 </div>
                 <p className="pv-desc">{e.source ?? ''}</p>
               </li>

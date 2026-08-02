@@ -812,7 +812,7 @@
     },
     {
       "path": "src/pages/CatalogModelRoom.tsx",
-      "source_blob": "99b44795848a95c7181941cea74238fc7e1fec91",
+      "source_blob": "e435651513f27b05ecc97c8315ca41a58280bb31",
       "blocks": [
         {
           "selector": "src/pages/CatalogModelRoom.tsx#pre:1",
