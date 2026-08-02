@@ -6,13 +6,16 @@ import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 type Rule = { name: string; match_kind: string | null; providers: string[]; api_dialect: string | null }
 
 const DESC = `The ${CATALOG_COUNTS.capability_rules} capability rules the released binary resolves models against · scope, match kind and order, first match wins.`
 
 export function Component() {
-  useCatalogHead('/catalog/capabilities', 'Capability rules', DESC)
+  useCatalogHead('/catalog/capabilities', 'Capability rules', DESC, [
+    collectionLd({ path: '/catalog/capabilities', name: 'Capability rules · Nika', description: DESC, total: CATALOG_COUNTS.capability_rules }),
+  ])
   const { payload, data } = useCatalogCargo<Rule[]>('cat-caps', (m) =>
     m.CAPABILITY_RULES.map((r) => ({
       name: r.name,

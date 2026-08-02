@@ -10,6 +10,7 @@ import { CATALOG_COUNTS, CATALOG_ENGINE } from '../content/catalog-paths.generat
 import { PROVIDERS } from '../content/providers.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 const C = CATALOG_COUNTS
 const DESC = `What the released nika binary knows, page by page: ${C.models} models, ${C.pricing_rules} pricing rules, ${C.energy_rows} measured energy rows, ${C.mcp_servers} MCP servers, ${C.embeddings} embedding models · vendored from ${CATALOG_ENGINE.release_tag}, digest-verified.`
@@ -24,7 +25,9 @@ const DOORS: { to: string; title: string; count: number; unit: string; gloss: st
 ]
 
 export function Component() {
-  useCatalogHead('/catalog', 'The catalog', DESC)
+  useCatalogHead('/catalog', 'The catalog', DESC, [
+    collectionLd({ path: '/catalog', name: 'The catalog · Nika', description: DESC, total: CATALOG_COUNTS.models + CATALOG_COUNTS.mcp_servers + CATALOG_COUNTS.market_providers }),
+  ])
   return (
     <CatalogShell
       fig="the catalog"

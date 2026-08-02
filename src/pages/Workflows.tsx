@@ -10,6 +10,7 @@ import '../sections/v4-home.css'
 import './page-chrome.css'
 import './how-page.css'
 import './workflows-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /workflows · the corpus world (monde 5 of the target sitemap) ───────────
    « The path that teaches, the jobs that prove, the skeletons that start. »
@@ -36,6 +37,21 @@ export function Component() {
   useHead({
     title,
     link: routeHead('/workflows').link,
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/workflows',
+          name: 'The Nika workflow corpus',
+          description,
+          total: LESSONS.length + JOBS + TEMPLATES.length,
+          members: [
+            { name: 'The teaching path', path: '/workflows' },
+            { name: 'Real jobs', path: '/workflows/jobs' },
+            { name: 'Skeletons', path: '/workflows/skeletons' },
+          ],
+        }),
+      ]),
+    ],
     meta: [
       ...routeHead('/workflows').meta,
       { name: 'description', content: description },

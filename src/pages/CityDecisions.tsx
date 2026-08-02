@@ -1,9 +1,13 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, SITE } from '../content'
 import { StampStrip } from '../components/StampStrip'
-import { ADRS, ADRS_PIN, ADR_STATUS_COUNTS } from '../content/adrs.generated'
+import type { Adr } from '../content/adrs.generated'
+import { ssrAdrs, loadAdrs } from '../lib/adrs-access'
+import { Island } from '../lib/ssg-island'
+import { useIslandPayload } from '../lib/use-island-payload'
 import { crumbLd, ldScript } from '../lib/ld'
 import '../sections/v4-home.css'
 import './page-chrome.css'
@@ -34,6 +38,30 @@ const STATUS_GLOSS: Record<string, string> = {
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02 })
+  /* the record rides a byte island (the register-diet law): 25KB of decisions
+     in the entry bundle cost 6.6KB gz and left 200 bytes under the budget */
+  const payload = useIslandPayload(
+    'city-decisions',
+    (() => {
+      const m = ssrAdrs()
+      return m ? JSON.stringify(m) : null
+    })(),
+    async () => JSON.stringify(await loadAdrs()),
+  )
+  const rec = useMemo(
+    () =>
+      payload
+        ? (JSON.parse(payload) as {
+            adrs: Adr[]
+            pin: { release_tag: string; commit: string }
+            counts: Record<string, number>
+          })
+        : null,
+    [payload],
+  )
+  const ADRS = rec?.adrs ?? []
+  const ADRS_PIN = rec?.pin ?? { release_tag: '', commit: '' }
+  const ADR_STATUS_COUNTS = rec?.counts ?? {}
   const title = 'The decisions · The city · Nika'
   const description = `The ${ADRS.length} architecture decisions behind the Nika engine, read at ${ADRS_PIN.release_tag}: what was decided, when, which layers it binds, and which decisions cite it.`
 
@@ -70,6 +98,7 @@ export function Component() {
     <main className="theme-dark tp-page td-page">
       <section ref={ref} aria-labelledby="dec-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
+          <Island id="city-decisions" payload={payload ?? ''} />
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
             <Link to="/city" className="td-crumb-link">
               ← the city

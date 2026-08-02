@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { execFileSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
+/* the judge reads the heavy module directly · the register-diet law is about
+   the BUNDLE, and a test never ships (the same exemption catalog.test takes) */
 import { ADRS, ADRS_PIN, ADR_STATUS_COUNTS } from '../content/adrs.generated'
 import { PATHS } from '../../site.config'
 
@@ -50,6 +52,29 @@ describe('the decision record', () => {
         expect(known.has(to), `${a.id} names ${to}, which the record does not carry`).toBe(true)
       }
     }
+  })
+
+  it('register-diet holds: only adrs-access (and this judge) import the heavy module', () => {
+    const offenders: string[] = []
+    const walk = (dir: string) => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const full = join(dir, e.name)
+        if (e.isDirectory()) walk(full)
+        else if (/\.(ts|tsx)$/.test(e.name)) {
+          const src = readFileSync(full, 'utf8')
+          /* a TYPE-only import costs no bytes · `import type` and `typeof import`
+             both erase, and there is no runtime form of either */
+          const runtime = src
+            .split('\n')
+            .filter((l) => /from '.*adrs\.generated'/.test(l) && !/^\s*import type/.test(l))
+          if (runtime.length && !full.endsWith('lib/adrs-access.ts') && !full.endsWith('test/adrs.test.ts')) {
+            offenders.push(full.slice(ROOT.length + 1))
+          }
+        }
+      }
+    }
+    walk(join(ROOT, 'src'))
+    expect(offenders).toEqual([])
   })
 
   it('is reachable, and names the pin it was read at', () => {

@@ -15,6 +15,7 @@ import {
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './changelog-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /changelog · the full ship log (theme-dark · blueprint register) ─────────
    Design doc §7 (Routes · /changelog) · masthead FIG C (the letter-masthead
@@ -98,6 +99,16 @@ export function Component() {
   useHead({
     title: 'Changelog · Nika',
     link: routeHead('/changelog').link,
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/changelog',
+          name: 'The Nika ship log',
+          description:
+            'Every Nika release and public milestone, dated and tagged: the spec opened, the four verbs locked, the tools and the model providers landed.',
+        }),
+      ]),
+    ],
     meta: [
       ...routeHead('/changelog').meta,
       {

@@ -11,6 +11,7 @@ import { CANON } from '../canon.generated'
 import { SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './templates-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /templates + /templates/:name · the skeleton register (theme-dark) ──────
    « Agents do not invent structure — they instantiate it. » The spec pack's
@@ -109,6 +110,24 @@ export function Component() {
   useHead({
     title,
     link: routeHead(name ? `/workflows/skeletons/${name}` : '/workflows/skeletons').link,
+    /* the collection is the HUB's, never a room's: a skeleton room is one
+       file, and claiming it lists ten would be a lie in JSON */
+    script: name
+      ? []
+      : [
+          ldScript([
+            collectionLd({
+              path: '/workflows/skeletons',
+              name: 'The Nika skeletons',
+              description,
+              total: TEMPLATES.length,
+              members: TEMPLATES.slice(0, 8).map((x) => ({
+                name: x.name,
+                path: `/workflows/skeletons/${x.name}`,
+              })),
+            }),
+          ]),
+        ],
     meta: [
       ...routeHead(name ? `/workflows/skeletons/${name}` : '/workflows/skeletons').meta,
       { name: 'description', content: description },

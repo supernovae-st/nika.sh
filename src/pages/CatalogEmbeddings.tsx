@@ -5,6 +5,7 @@ import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 type Row = {
   id: string
@@ -17,7 +18,9 @@ type Row = {
 const DESC = `The ${CATALOG_COUNTS.embeddings} embedding models the released binary's catalog carries · dimensions, input windows, similarity metrics and price per million input tokens.`
 
 export function Component() {
-  useCatalogHead('/catalog/embeddings', 'Embeddings', DESC)
+  useCatalogHead('/catalog/embeddings', 'Embeddings', DESC, [
+    collectionLd({ path: '/catalog/embeddings', name: 'Embeddings · Nika', description: DESC, total: CATALOG_COUNTS.embeddings }),
+  ])
   const { payload, data } = useCatalogCargo<Row[]>('cat-emb', (m) =>
     m.EMBEDDINGS.map((e) => ({
       id: e.id,

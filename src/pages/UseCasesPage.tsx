@@ -14,6 +14,7 @@ import { SHOWCASE_DAG } from '../content/showcase-dag.generated'
 import { REPO, SPEC, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './usecases-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /use-cases · the « I want to… » persona gallery (theme-light) ───────────
    The discourse-kit shape (public-clarity kit §3): the gallery answers « moi
@@ -455,6 +456,15 @@ export function Component() {
   useHead({
     title: 'Use cases · Nika',
     link: routeHead('/workflows/jobs').link,
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/workflows/jobs',
+          name: 'Real Nika workflows, whole',
+          description: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers, each a file you can read before it runs.`,
+        }),
+      ]),
+    ],
     meta: [
       ...routeHead('/workflows/jobs').meta,
       {

@@ -7,13 +7,16 @@ import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 type Row = { id: string; slug: string; category: string | null; pricing: string | null; env: number; desc: string | null }
 
 const DESC = `The ${CATALOG_COUNTS.mcp_servers} MCP servers the released binary's catalog names · registry-aligned, packages and env vars declared, one room each.`
 
 export function Component() {
-  useCatalogHead('/catalog/mcp', 'MCP servers', DESC)
+  useCatalogHead('/catalog/mcp', 'MCP servers', DESC, [
+    collectionLd({ path: '/catalog/mcp', name: 'MCP servers · Nika', description: DESC, total: CATALOG_COUNTS.mcp_servers }),
+  ])
   const { payload, data } = useCatalogCargo<Row[]>('cat-mcp', (m) =>
     m.MCP_SERVERS.map((s) => ({
       id: s.id,

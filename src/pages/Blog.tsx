@@ -2,12 +2,13 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { routeHead } from '../content'
+import { SITE, routeHead } from '../content'
 import { BLOG_POSTS } from '../content/blog.generated'
 import { CANON } from '../canon.generated'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './blog-page.css'
+import { ldScript } from '../lib/ld'
 
 /* ─── /blog · the journal (theme-dark · blueprint register) ──────────────────
    Long-form pedagogy on Intent as Code, brought up to the home + /spec register:
@@ -80,6 +81,19 @@ export function Component() {
   useHead({
     title: 'Blog · Nika',
     link: routeHead('/blog').link,
+    script: [
+      ldScript([
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Blog',
+          '@id': `${SITE}/blog`,
+          name: 'The Nika blog',
+          description:
+            'Notes from the source: why agentic workflows belong in files you can run, review and keep. Intent as Code, the four verbs, guardrails and local-first.',
+          url: `${SITE}/blog`,
+        },
+      ]),
+    ],
     meta: [
       ...routeHead('/blog').meta,
       {

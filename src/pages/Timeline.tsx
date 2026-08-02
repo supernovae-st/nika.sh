@@ -7,6 +7,7 @@ import { TIMELINE } from '../content/timeline.generated'
 import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './timeline-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /timeline · the one verifiable record ──────────────────────────────────
    Three eras, dated entries, forward gates — spoken in the register
@@ -497,6 +498,16 @@ export function Component() {
   const head = routeHead('/timeline')
   useHead({
     title: 'Timeline · the one verifiable record · Nika',
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/timeline',
+          name: 'The Nika timeline',
+          description:
+            'Three eras, every dated claim re-proven in CI, and a future that carries conditions rather than dates.',
+        }),
+      ]),
+    ],
     meta: [
       {
         name: 'description',

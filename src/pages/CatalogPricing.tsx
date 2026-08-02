@@ -6,6 +6,7 @@ import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 type Rule = import('../content/catalog.generated').PricingRule
 type Cargo = { meta: { source: string | null; as_of: string | null }; rules: Rule[] }
@@ -13,7 +14,9 @@ type Cargo = { meta: { source: string | null; as_of: string | null }; rules: Rul
 const DESC = `The ${CATALOG_COUNTS.pricing_rules} pricing rules the released binary resolves · USD per million tokens, grouped by provider, snapshot carried inside the release.`
 
 export function Component() {
-  useCatalogHead('/catalog/pricing', 'Pricing', DESC)
+  useCatalogHead('/catalog/pricing', 'Pricing', DESC, [
+    collectionLd({ path: '/catalog/pricing', name: 'Pricing · Nika', description: DESC, total: CATALOG_COUNTS.pricing_rules }),
+  ])
   const { payload, data } = useCatalogCargo<Cargo>('cat-pricing', (m) => ({
     meta: m.PRICING_META,
     rules: m.PRICING_RULES,

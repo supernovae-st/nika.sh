@@ -8,13 +8,16 @@ import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { ModelAxis } from './ModelAxis'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 const DESC = `The ${CATALOG_COUNTS.models} models the released binary's wire catalog names · who serves each one, its context window, its exact-match price and its measured energy where the catalog carries them.`
 
 type Row = { id: string; slug: string; providers: string[]; ctx: number | null; priced: boolean; measured: boolean }
 
 export function Component() {
-  useCatalogHead('/catalog/models', 'Models', DESC)
+  useCatalogHead('/catalog/models', 'Models', DESC, [
+    collectionLd({ path: '/catalog/models', name: 'Models · Nika', description: DESC, total: CATALOG_COUNTS.models }),
+  ])
   const { payload, data } = useCatalogCargo<Row[]>('cat-models', (m) =>
     m.MODELS.map((x) => ({
       id: x.id,

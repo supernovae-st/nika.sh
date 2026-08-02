@@ -120,6 +120,45 @@ export function codeLd(o: {
   }
 }
 
+/** a hub that LISTS things · the register pages (2026-08-02)
+    22 pages carried no entity at all: a crawler saw « a page exists » where
+    the site keeps its registers. A hub declares itself a collection, and when
+    its members have their own addresses it names the first few — an ItemList
+    with no addressable members would be a list of nothing. */
+export function collectionLd(o: {
+  path: string
+  name: string
+  description: string
+  members?: { name: string; path: string }[]
+  total?: number
+}) {
+  const members = o.members ?? []
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${SITE}${o.path}`,
+    name: o.name,
+    description: o.description,
+    url: `${SITE}${o.path}`,
+    ...(members.length
+      ? {
+          mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: o.total ?? members.length,
+            itemListElement: members.map((m, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: m.name,
+              url: `${SITE}${m.path}`,
+            })),
+          },
+        }
+      : o.total
+        ? { mainEntity: { '@type': 'ItemList', numberOfItems: o.total } }
+        : {}),
+  }
+}
+
 /** the one script entry a room hands useHead · unhead must not escape it */
 export function ldScript(blocks: object[]) {
   return {

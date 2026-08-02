@@ -9,6 +9,7 @@ import './page-chrome.css'
 import './how-page.css'
 import './workflows-page.css'
 import './chapter-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /language/spec · the specification, chapter by chapter ─────────────────
    The old /spec was one page for the whole document: eighteen chapters in a
@@ -29,6 +30,20 @@ export function Component() {
   useHead({
     title,
     link: routeHead('/language/spec').link,
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/language/spec',
+          name: 'The Nika workflow language specification',
+          description,
+          total: CHAPTERS.length,
+          members: CHAPTERS.slice(0, 8).map((c) => ({
+            name: c.title,
+            path: `/language/spec/${c.slug}`,
+          })),
+        }),
+      ]),
+    ],
     meta: [
       ...routeHead('/language/spec').meta,
       { name: 'description', content: description },

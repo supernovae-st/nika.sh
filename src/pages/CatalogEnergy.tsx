@@ -8,13 +8,16 @@ import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { collectionLd } from '../lib/ld'
 
 type Row = import('../content/catalog.generated').EnergyRow
 
 const DESC = `The ${CATALOG_COUNTS.energy_rows} measured energy rows the released binary carries · watt-hours per million output tokens, each with its measurement source printed verbatim.`
 
 export function Component() {
-  useCatalogHead('/catalog/energy', 'Energy', DESC)
+  useCatalogHead('/catalog/energy', 'Energy', DESC, [
+    collectionLd({ path: '/catalog/energy', name: 'Energy · Nika', description: DESC, total: CATALOG_COUNTS.energy_rows }),
+  ])
   const { payload, data } = useCatalogCargo<Row[]>('cat-energy', (m) => [...m.ENERGY_ROWS])
   return (
     <CatalogShell

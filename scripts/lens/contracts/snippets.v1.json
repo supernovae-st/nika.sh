@@ -944,18 +944,18 @@
     },
     {
       "path": "src/pages/Templates.tsx",
-      "source_blob": "f28353d09403f737a0f664c76af399e260042d7d",
+      "source_blob": "64abe71211d9a204704b5da4ba3f5c059bfd9cc6",
       "blocks": [
         {
           "selector": "src/pages/Templates.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 31,
+          "line": 32,
           "sha256": "23f168524e36c1c8671a98a460f08352779e3396cfce97755fd1c1763fb1a5bc"
         },
         {
           "selector": "src/pages/Templates.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 63,
+          "line": 64,
           "sha256": "24695124e85e6e0b78fc9ea6dd90d34a5890c6f79e31a4e4829999a8925e8ee3"
         }
       ]
@@ -986,18 +986,18 @@
     },
     {
       "path": "src/pages/UseCasesPage.tsx",
-      "source_blob": "54081ef41d1e73ec8396ddfed426325e3cc67147",
+      "source_blob": "080250c96807d780155bcb4ac2f051bf8bbe9611",
       "blocks": [
         {
           "selector": "src/pages/UseCasesPage.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 33,
+          "line": 34,
           "sha256": "9c53b8bc7fd7ae5f3424f723057b5a1ece23ba9d1eacfc0c07960774f5276450"
         },
         {
           "selector": "src/pages/UseCasesPage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 347,
+          "line": 348,
           "sha256": "edd814f91a2c5b74c54f35f7d85bdc8d72d50b68391ec5ebdf39be99fa1aa2d2"
         }
       ]

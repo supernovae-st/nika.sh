@@ -12,6 +12,7 @@ import { ROUTER } from '../content/how-router'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './how-page.css'
+import { collectionLd, ldScript } from '../lib/ld'
 
 /* ─── /how · the récit world (monde 2 of the target sitemap) ──────────────────
    « How Nika works: the doors, the router, the judge, the proof. » The
@@ -78,6 +79,22 @@ export function Component() {
   useHead({
     title,
     link: routeHead('/how').link,
+    script: [
+      ldScript([
+        collectionLd({
+          path: '/how',
+          name: 'How Nika works',
+          description,
+          members: [
+            { name: 'The router', path: '/how/router' },
+            { name: 'The flow', path: '/how/flow' },
+            { name: 'The boundary', path: '/how/boundary' },
+            { name: 'The proof', path: '/how/proof' },
+            { name: 'The MCP oracle', path: '/how/oracle' },
+          ],
+        }),
+      ]),
+    ],
     meta: [
       ...routeHead('/how').meta,
       { name: 'description', content: description },
