@@ -7,11 +7,9 @@ import lz from 'lz-string'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { CodeFile } from '../components/CodeFile'
-import { TOOLS, TOOL_CATEGORIES, TOOL_INDEX } from '../content/tools.generated'
+import { TOOLS, TOOL_INDEX } from '../content/tools.generated'
 import type { ToolUsageEntry } from '../content/tool-usage.generated'
 import { CATEGORY_GLOSS } from '../content/tools-meta'
-import { PartEgg } from '../scene/parts/PartEgg'
-import { layoutDrum } from '../scene/tools-hud/slot-layout'
 import { TOOL_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { FETCH_MODES } from '../content/room-rails.generated'
@@ -49,15 +47,6 @@ const { compressToEncodedURIComponent } = lz
    site.config.ts); the playground handoff is a pure string compress at
    render. No effects beyond the shared reveal. */
 
-/* the archetype the family wears in the parts catalog (part-model.ts) */
-const ARCHETYPE_NAME: Record<string, string> = {
-  core: 'regulator',
-  file: 'cabinet',
-  data: 'prism bench',
-  network: 'dish',
-  introspection: 'periscope',
-  media: 'projector',
-}
 
 function ArgsContract({ bare }: { bare: string }) {
   const entry = TOOL_INDEX[bare]
@@ -159,11 +148,6 @@ export function Component() {
   const { usage, json: usageJson } = useToolUsage(hit?.bare ?? name)
 
   const family = useMemo(() => TOOLS.filter((t) => hit && t.category === hit.category), [hit])
-  /* the drum's slot (register order — the pin drum's own reading) */
-  const slot = useMemo(
-    () => layoutDrum(TOOLS, TOOL_CATEGORIES).slots.find((s) => s.bare === name),
-    [name],
-  )
   const at = useMemo(() => TOOLS.findIndex((t) => t.bare === name), [name])
   const prev = at > 0 ? TOOLS[at - 1] : undefined
   const next = at >= 0 && at < TOOLS.length - 1 ? TOOLS[at + 1] : undefined
@@ -319,7 +303,13 @@ export function Component() {
               <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 {hit.description} One of {TOOLS.length} builtins in the closed{' '}
-                <code>nika:</code> namespace: {CATEGORY_GLOSS[hit.category]}.
+                <code>nika:</code> namespace.
+              </p>
+              {/* the family's own line · the gloss carries its own colon, so
+                  stitching it after « namespace: » read as a double colon */}
+              <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '150ms' }}>
+                <span className="vp-lane-key">the {hit.category} family</span>
+                <span>{CATEGORY_GLOSS[hit.category]}</span>
               </p>
 
               {/* the room's dimensions, at a glance */}
@@ -540,20 +530,6 @@ export function Component() {
               </p>
               </div>
 
-              {/* THE PART · the room's berth (≥1100px) — this builtin's own
-                  machine, removed from the ship: the family names the
-                  archetype, the ports ARE the args (bright = required).
-                  Every room a different part, one ink (the parts catalog). */}
-              <aside className="td-hero-berth" data-rise>
-                <PartEgg id={hit.bare} />
-                <p className="tdrum-caption">
-                  part {String((slot?.index ?? 0) + 1).padStart(2, '0')}/{TOOLS.length} · the{' '}
-                  {hit.category} {ARCHETYPE_NAME[hit.category]} · ports are the args; bright =
-                  required
-                </p>
-                {/* the part's provenance — the sources, right under the machine */}
-                <SourcesRail links={TOOL_SOURCES.slice(0, 3)} dense />
-              </aside>
             </div>
           )}
         </div>

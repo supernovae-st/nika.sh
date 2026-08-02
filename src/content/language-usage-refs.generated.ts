@@ -423,7 +423,10 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ]
   },
   "policy": {
-    "templates": [],
+    "templates": [
+      "etl-state",
+      "human-gated-ship"
+    ],
     "codes": [
       "NIKA-POLICY-001",
       "NIKA-PORT-002"

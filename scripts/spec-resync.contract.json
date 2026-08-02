@@ -296,7 +296,7 @@
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "79738f82172e82c6c3cf0cc67d24fadf79f9e674061f6bb3deb413cbd7311d12",
+   "sha256": "c37cda7ae7741d6935ba285a9ec896b4deab8884bbb79b212ce4213102e13b09",
    "dist": "templates/catalog.json"
   },
   {
@@ -322,7 +322,7 @@
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "45b2fd6f97c8f0e1d68bf220eacdb855df4ad089e56a7c75482266f5081d4932",
+   "sha256": "a7e7118bac6ba79c62702344faaf9e40dfb85fbc28e9d67f3627f6f65b9e80ec",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
@@ -357,35 +357,35 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "dc44eb69301f2eb8ff9674db439e37d350e7db378a0612138f289855493a04b4",
+   "sha256": "8147c5be1b783f63d2e401036cfed549518f63bffe1650502bb9e2bedbfc1fe5",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
   },
   {
    "path": "src/content/tool-usage-refs.generated.ts",
-   "sha256": "8a26feff0fde429feee4486f3d95f27e59bc9be658b131ac10cb6e7abd205dda",
+   "sha256": "337aa019b78d3ab318fc2a0ca42cd278e643b025039d86a829dd2d12a80b68fa",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "43bc51e82ceefa09edf81ed80dbdea86eaba2b01ecd6402b925d302d5e884377",
+   "sha256": "423cbe7e8337ef36ff57b2163da61cafa14d732f42e4d3010660da90d4872fc6",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]
   },
   {
    "path": "src/content/language-usage-refs.generated.ts",
-   "sha256": "b0b03ad8722a0db9a94ad06e7c7c11d19907e1a7d98ba8b6f9973b1790349e52",
+   "sha256": "107e155a1f64fa4e2627ec31f89b3b87f70a1c240c91b48de43f70fae8d0f4e3",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/lib/lint-fixtures.generated.ts",
-   "sha256": "ae0c8a4e896ee636e8bdcf6d205cd53d60b2342213ec89d27c704a4babfd65c1",
+   "sha256": "b0fd344b8e70efcaba541464eb24895b23f265bdafd9a1c8cd343b395c2e8da3",
    "consumers": [
     "src/lib/nika-lint-conformance.test.ts"
    ]

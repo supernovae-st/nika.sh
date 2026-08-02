@@ -137,6 +137,13 @@ export const LINT_FIXTURES: LintFixture[] = [
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-env-bound-interpolated\npermits:\n  exec: true\n  env: [\"${{ inputs.key }}\"]\ninputs:\n  key: { type: string, default: \"API_TOKEN\" }\ntasks:\n  probe:\n    exec: { shell: \"echo ok\" }\n"
   },
   {
+    "id": "authority/015-dotted-bound-canonical-both-sides",
+    "valid": true,
+    "codes": [],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-dotted-bound-canonical-both-sides\npermits:\n  fs: { read: [\"./examples/fixtures/kpis.csv\"] }\n  tools: [\"nika:read\"]\ninputs:\n  sheet: { type: string, default: \"./examples/fixtures/kpis.csv\" }\ntasks:\n  load:\n    invoke:\n      tool: nika:read\n      args: { path: \"${{ inputs.sheet }}\" }\n"
+  },
+  {
     "id": "authority/015-env-dangerous-dead-grant-refused",
     "valid": false,
     "codes": [
@@ -144,6 +151,15 @@ export const LINT_FIXTURES: LintFixture[] = [
     ],
     "namespaces": [],
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-env-dangerous-dead-grant\npermits:\n  exec: true\n  env: [\"LD_PRELOAD\"]\ntasks:\n  build:\n    exec: { shell: \"echo ok\" }\n"
+  },
+  {
+    "id": "authority/016-dotted-star-bound-never-grants-escape",
+    "valid": false,
+    "codes": [
+      "NIKA-AUTH-008"
+    ],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-dotted-star-bound-never-grants-escape\npermits:\n  fs: { read: [\"./**\"] }\n  tools: [\"nika:read\"]\ninputs:\n  p: { type: string, default: \"../../etc/passwd\" }\ntasks:\n  load:\n    invoke:\n      tool: nika:read\n      args: { path: \"${{ inputs.p }}\" }\n"
   },
   {
     "id": "authority/016-env-passthrough-declared-passes",
@@ -160,6 +176,15 @@ export const LINT_FIXTURES: LintFixture[] = [
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-env-declared-zero\npermits:\n  exec: true\n  env: []\ntasks:\n  hermetic:\n    exec: { shell: \"echo ok\" }\n"
   },
   {
+    "id": "authority/017-star-stops-at-the-segment",
+    "valid": false,
+    "codes": [
+      "NIKA-AUTH-008"
+    ],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-star-stops-at-the-segment\npermits:\n  fs: { read: [\"./datasets/*.csv\"] }\n  tools: [\"nika:read\"]\ninputs:\n  p: { type: string, default: \"datasets/sub/deeper/private.key.csv\" }\ntasks:\n  load:\n    invoke:\n      tool: nika:read\n      args: { path: \"${{ inputs.p }}\" }\n"
+  },
+  {
     "id": "authority/018-fetch-code-bearing-serialized-refused",
     "valid": false,
     "codes": [
@@ -167,6 +192,13 @@ export const LINT_FIXTURES: LintFixture[] = [
     ],
     "namespaces": [],
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-fetch-code-bearing-serialized\npermits:\n  net: { http: [\"data.example.com\"] }\n  tools: [\"nika:fetch\"]\ntasks:\n  grab:\n    invoke:\n      tool: nika:fetch\n      args: { url: \"https://data.example.com/models/legacy.pkl\" }\n"
+  },
+  {
+    "id": "authority/018-host-bound-case-insensitive",
+    "valid": true,
+    "codes": [],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t-host-bound-case-insensitive\npermits:\n  net: { http: [\"API.Example.com\"] }\n  tools: [\"nika:fetch\"]\ninputs:\n  u: { type: string, default: \"https://api.example.com/v1/things\" }\ntasks:\n  pull:\n    invoke:\n      tool: nika:fetch\n      args: { url: \"${{ inputs.u }}\" }\n"
   },
   {
     "id": "authority/019-fetch-code-bearing-script-refused",
@@ -325,7 +357,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: core-when-true\npermits:\n  tools: [\"nika:notify\"]\n  exec: [\"./build.sh\"]\ntasks:\n  build:\n    exec: { command: [\"./build.sh\"] }\n  notify:\n    after: { build: terminal }\n    when: true\n    invoke: { tool: \"nika:notify\", args: { message: \"done either way\" } }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: core-when-true\npermits:\n  tools: [\"nika:notify\"]\n  exec: [\"./build.sh\"]\n  net: { http: [\"hooks.example.com\"] }\ntasks:\n  build:\n    exec: { command: [\"./build.sh\"] }\n  notify:\n    after: { build: terminal }\n    when: true\n    invoke:\n      tool: \"nika:notify\"\n      args: { channel: webhook, target: \"https://hooks.example.com/build\", message: \"done either way\" }\n"
   },
   {
     "id": "dag-topology/012-recover-downstream-deadlock",
@@ -459,10 +491,10 @@ export const LINT_FIXTURES: LintFixture[] = [
   {
     "id": "envelope/010-typed-var-bad-type",
     "valid": false,
-    "codes": [],
-    "namespaces": [
-      "NIKA-PARSE"
+    "codes": [
+      "NIKA-TYPE-001"
     ],
+    "namespaces": [],
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: hello\ninputs:\n  topic:\n    type: text\n    required: true\ntasks:\n  a:\n    infer: { prompt: \"Research ${{ inputs.topic }}\" }\n"
   },
   {
@@ -479,7 +511,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "nika: v1\nworkflow:\n  id: core-secret-file\nsecrets:\n  signing_pem:\n    source: file\n    path: ~/.keys/signing.pem\npermits:\n  exec: [\"./sign.sh\"]\ntasks:\n  sign:\n    exec: { command: [\"./sign.sh\"], env: { PEM: \"${{ secrets.signing_pem }}\" } }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: core-secret-file\nsecrets:\n  signing_pem:\n    source: file\n    path: ~/.keys/signing.pem\n    egress: [{ to: \"exec\" }]\npermits:\n  exec: [\"./sign.sh\"]\ntasks:\n  sign:\n    exec: { command: [\"./sign.sh\"], env: { PEM: \"${{ secrets.signing_pem }}\" } }\n"
   },
   {
     "id": "envelope/013-secret-missing-source",
@@ -640,7 +672,7 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\npolicy:\n  require:\n    human_gate_before: [exec]\npermits:\n  exec: [\"echo\"]\n  tools: [\"nika:prompt\"]\ntasks:\n  human:\n    invoke:\n      tool: \"nika:prompt\"\n      args: { message: \"Proceed?\", default: false }\n  act:\n    with: { go: \"${{ tasks.human.output }}\" }\n    when: ${{ with.go == true }}\n    exec: { command: [\"echo\", \"shipped\"] }\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\npolicy:\n  endorsement: solo\n  require:\n    human_gate_before: [exec]\npermits:\n  exec: [\"echo\"]\n  tools: [\"nika:prompt\"]\ntasks:\n  human:\n    invoke:\n      tool: \"nika:prompt\"\n      args: { message: \"Proceed?\", default: false }\n  act:\n    with: { go: \"${{ tasks.human.output }}\" }\n    when: ${{ with.go == true }}\n    exec: { command: [\"echo\", \"shipped\"] }\n"
   },
   {
     "id": "policy/002-human-gate-missing",
@@ -716,6 +748,31 @@ export const LINT_FIXTURES: LintFixture[] = [
     ],
     "namespaces": [],
     "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\nconst:\n  m: { default: \"ollama/llama3.2\" }\npolicy:\n  allow:\n    providers: [ollama]\ntasks:\n  s:\n    infer: { prompt: \"summarize\", model: \"${{ const.m }}\" }\n"
+  },
+  {
+    "id": "policy/011-consent-bare-after-refused",
+    "valid": false,
+    "codes": [
+      "NIKA-SEC-014"
+    ],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\npermits:\n  exec: [\"git\"]\n  tools: [\"nika:prompt\"]\ntasks:\n  ask:\n    invoke:\n      tool: \"nika:prompt\"\n      args: { mode: confirm, message: \"push?\", default: false }\n  push:\n    after: { ask: success }\n    exec: { command: [\"git\", \"push\"] }\n"
+  },
+  {
+    "id": "policy/012-consent-affirmative-clean",
+    "valid": true,
+    "codes": [],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\npermits:\n  exec: [\"git\"]\n  tools: [\"nika:prompt\"]\ntasks:\n  ask:\n    invoke:\n      tool: \"nika:prompt\"\n      args: { mode: confirm, message: \"push?\", default: false }\n  push:\n    with: { go: \"${{ tasks.ask.output }}\" }\n    when: ${{ with.go == true }}\n    exec: { command: [\"git\", \"push\"] }\n"
+  },
+  {
+    "id": "policy/013-consent-status-gate-is-not-consent",
+    "valid": false,
+    "codes": [
+      "NIKA-SEC-014"
+    ],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\nnika: v1\nworkflow:\n  id: t\npermits:\n  exec: [\"git\"]\n  tools: [\"nika:prompt\"]\ntasks:\n  ask:\n    invoke:\n      tool: \"nika:prompt\"\n      args: { mode: confirm, message: \"push?\", default: false }\n  push:\n    with: { st: \"${{ tasks.ask.status }}\" }\n    when: ${{ with.st == 'success' }}\n    exec: { command: [\"git\", \"push\"] }\n"
   },
   {
     "id": "types/001-returns-named-type-valid",
@@ -942,7 +999,23 @@ export const LINT_FIXTURES: LintFixture[] = [
     "valid": true,
     "codes": [],
     "namespaces": [],
-    "yaml": "# SPDX-License-Identifier: Apache-2.0\n# Static binding validation soundness · OPEN levels are never rejected ·\n# (a) `meta` has no additionalProperties:false → unknown keys below stay\n# legal · (b) a schema-less producer (exec) is fully dynamic · (c) a\n# declared property path is of course valid. The engine MUST accept.\nnika: v1\nworkflow:\n  id: schema-path-open\npermits:\n  exec: [\"./dump.sh\", \"report\"]\ntasks:\n  extract:\n    infer:\n      prompt: \"Extract entities\"\n      schema:\n        type: object\n        required: [entities]\n        properties:\n          entities:\n            type: array\n            items: { type: string }\n          meta:\n            type: object\n  fetch_raw:\n    exec: { command: [\"./dump.sh\"] }\n  report:\n    with:\n      extract_entities: ${{ tasks.extract.output.entities }}\n      extract_meta_anything: ${{ tasks.extract.output.meta.anything }}\n      extract_maybe_extra: ${{ tasks.extract.output.maybe_extra }}\n      fetch_raw_whatever: ${{ tasks.fetch_raw.output.whatever }}\n    exec:\n      command: [\"report\", \"${{ with.extract_entities }}\", \"${{ with.extract_meta_anything }}\", \"${{ with.extract_maybe_extra }}\", \"${{ with.fetch_raw_whatever }}\"]\n"
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\n# Static binding validation soundness · genuinely OPEN surfaces are never\n# rejected · (a) `meta` declares NO properties (bare type: object) → nothing\n# declared, nothing to contradict — unknown keys below stay legal · (b) a\n# schema-less producer (exec) is fully dynamic · (c) a declared property\n# path is of course valid. The engine MUST accept. (The undeclared-SIBLING\n# read that used to ride here moved to its own pair — 014 violation ·\n# 015 boundary — per the 2026-07-30 strict-binding lock.)\nnika: v1\nworkflow:\n  id: schema-path-open\npermits:\n  exec: [\"./dump.sh\", \"report\"]\ntasks:\n  extract:\n    infer:\n      prompt: \"Extract entities\"\n      schema:\n        type: object\n        required: [entities]\n        properties:\n          entities:\n            type: array\n            items: { type: string }\n          meta:\n            type: object\n  fetch_raw:\n    exec: { command: [\"./dump.sh\"] }\n  report:\n    with:\n      extract_entities: ${{ tasks.extract.output.entities }}\n      extract_meta_anything: ${{ tasks.extract.output.meta.anything }}\n      fetch_raw_whatever: ${{ tasks.fetch_raw.output.whatever }}\n    exec:\n      command: [\"report\", \"${{ with.extract_entities }}\", \"${{ with.extract_meta_anything }}\", \"${{ with.fetch_raw_whatever }}\"]\n"
+  },
+  {
+    "id": "variables/014-undeclared-sibling-read-rejected",
+    "valid": false,
+    "codes": [
+      "NIKA-VAR-003"
+    ],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\n# Strict binding (04 §Static binding validation · operator lock 2026-07-30) ·\n# the producer declares properties [entities, meta] with no explicit\n# additionalProperties · declaring properties CLOSES the level for binding ·\n# reading the undeclared sibling `maybe_extra` is the misspelled-key class →\n# refused at parse time. Fix is one line either way: declare the key, or\n# open the level with additionalProperties: true (the 015 boundary twin).\nnika: v1\nworkflow:\n  id: schema-sibling-undeclared\npermits:\n  exec: [\"report\"]\ntasks:\n  extract:\n    infer:\n      prompt: \"Extract entities\"\n      schema:\n        type: object\n        required: [entities]\n        properties:\n          entities:\n            type: array\n            items: { type: string }\n          meta:\n            type: object\n  report:\n    with:\n      extract_maybe_extra: ${{ tasks.extract.output.maybe_extra }}\n    exec:\n      command: [\"report\", \"${{ with.extract_maybe_extra }}\"]\n"
+  },
+  {
+    "id": "variables/015-valid-additional-properties-opens-binding",
+    "valid": true,
+    "codes": [],
+    "namespaces": [],
+    "yaml": "# SPDX-License-Identifier: Apache-2.0\n# The boundary twin of 014 (04 §Static binding validation · operator lock\n# 2026-07-30) · same workflow, same undeclared-sibling read — but the level\n# EXPLICITLY opens extras with additionalProperties: true, so the read is\n# legal again. Proves the strict refusal is precise, never blanket.\nnika: v1\nworkflow:\n  id: schema-sibling-opted-open\npermits:\n  exec: [\"report\"]\ntasks:\n  extract:\n    infer:\n      prompt: \"Extract entities\"\n      schema:\n        type: object\n        required: [entities]\n        additionalProperties: true\n        properties:\n          entities:\n            type: array\n            items: { type: string }\n          meta:\n            type: object\n  report:\n    with:\n      extract_maybe_extra: ${{ tasks.extract.output.maybe_extra }}\n    exec:\n      command: [\"report\", \"${{ with.extract_maybe_extra }}\"]\n"
   },
   {
     "id": "variables/020-bare-task-ref-rejected",

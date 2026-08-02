@@ -34,7 +34,6 @@ const ROOT = join(__dirname, '../..')
 const ALLOWED: Record<string, string> = {
   Shell:
     'a scene-local mount shell, one per scene file (drum sphere · part viewer · tool drum) — same role, different scene, never shared',
-  hexRgb: 'three lines of pure colour splitting, local to two scene model files',
   mulberry32: 'a three-line seeded PRNG; sharing it would couple fx/ to fx/dotmatrix for nothing',
   inline:
     'a name collision, not a duplicate: blog-render interpolates markdown, i18n-inline interpolates locale copy',

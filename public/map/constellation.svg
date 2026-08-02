@@ -33,8 +33,8 @@
 <text class="cst-laylab" x="337.57" y="122.34" text-anchor="end" fill="#34d399">the proof</text>
 <path class="cst-lk" data-kind="accepts" d="M 915.26 697.52 Q 691.81 592.99 896.8 455.75" stroke-width="3"/>
 <path class="cst-lk" data-kind="carries" d="M 875.09 782.28 Q 675.21 663.37 826.31 840.17" stroke-width="2.26"/>
-<path class="cst-lk" data-kind="carries" d="M 696.23 915.66 Q 658.95 625.71 896.8 455.75" stroke-width="4.42"/>
-<path class="cst-lk" data-kind="grants" d="M 696.23 915.66 Q 655.7 674.69 875.09 782.28" stroke-width="2.95"/>
+<path class="cst-lk" data-kind="carries" d="M 696.23 915.66 Q 658.95 625.71 896.8 455.75" stroke-width="4.43"/>
+<path class="cst-lk" data-kind="grants" d="M 696.23 915.66 Q 655.7 674.69 875.09 782.28" stroke-width="2.98"/>
 <path class="cst-lk" data-kind="names" d="M 280.39 682.15 Q 593.32 639.66 875.09 782.28" stroke-width="3.05"/>
 <path class="cst-lk" data-kind="names" d="M 280.39 682.15 Q 596.58 590.69 896.8 455.75" stroke-width="4.15"/>
 <circle class="cst-setdot" data-set="verbs" cx="915.26" cy="697.52" r="9.11" fill="#b07bff" stroke="#b07bff"/>

@@ -8,8 +8,6 @@ import { declProse } from '../lib/language-prose-access'
 import { useWordProse, proseIslandId } from '../lib/use-word-prose'
 import { Island } from '../lib/ssg-island'
 import { CHAPTERS } from '../sections/verbs-data'
-import { PartSchematic } from '../scene/parts/PartSchematic'
-import '../scene/parts/part-stage.css'
 import { VERB_SOURCES } from '../content/sources'
 import { SourcesRail } from '../components/SourcesRail'
 import { VERB_ACCEPTS, VERB_ERR_NS } from '../content/room-rails.generated'
@@ -51,12 +49,6 @@ const VERB_ERROR_NS: Record<string, string[]> = {
 }
 
 /* the emblem captions — every count in them is a catalog count */
-const EMBLEM_CAPTION: Record<string, string> = {
-  infer: `the halo · one spoke per provider (${CANON.providers}) · the hub is the prompt`,
-  exec: 'the press · the piston captures, the tray types · five fins, five block keys',
-  invoke: `the carousel · ${CANON.builtins} teeth, one per builtin · six family blades`,
-  agent: 'the gimbal · two budget rings (the leashes) · satellites are the whitelist',
-}
 
 /* the verb's one-line job — the chapter claim+gloss speak it; this is the
    machine-lane line under the stamps */
@@ -209,8 +201,14 @@ export function Component() {
               <div className="td-hero-main">
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
                 <b>{chapter.claim}</b> {chapter.gloss} One of the four verbs. A verb is a{' '}
-                <em>distinct native execution model</em>, and every task speaks exactly one.{' '}
-                {VERB_LANE[chapter.verb]}.
+                <em>distinct native execution model</em>, and every task speaks exactly one.
+              </p>
+              {/* the verb's own lane · a labelled clause, never a lowercase
+                  fragment stitched after a full stop (it read « speaks
+                  exactly one. any of 17 providers » on the live page) */}
+              <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '150ms' }}>
+                <span className="vp-lane-key">its lane</span>
+                <span>{VERB_LANE[chapter.verb]}</span>
               </p>
 
               {/* the verb's dimensions, at a glance */}
@@ -407,18 +405,6 @@ export function Component() {
               </p>
               </div>
 
-              {/* THE EMBLEM · the verb's own part, drawn (infer=halo ·
-                  exec=press · invoke=carousel · agent=gimbal — every count a
-                  catalog count · the 2D schematic; the GL viewer died
-                  2026-08-01, the drawing was always the truth) */}
-              <aside className="td-hero-berth" data-rise>
-                <div className="ptd-stage" data-part-stage={chapter.verb} aria-hidden="true">
-                  <PartSchematic id={chapter.verb} />
-                </div>
-                <p className="tdrum-caption">{EMBLEM_CAPTION[chapter.verb]}</p>
-                {/* the emblem's provenance — the sources, right under the machine */}
-                <SourcesRail links={VERB_SOURCES.slice(0, 3)} dense />
-              </aside>
             </div>
           )}
         </div>

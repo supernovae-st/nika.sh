@@ -3914,7 +3914,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
-      "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1",
+      "sha256": "1c594179c46ff834cd38fbc6dc870018677cc83cb71f846846747741254d0afa",
       "file": "agent-loop.nika.yaml"
     }
   },
@@ -3928,7 +3928,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "call a product API: upload a file and create from it",
     "meta": {
-      "sha256": "530b432962bc3b52a262bd4e6208474fe5295ae6b353ba47d457a3d2b139e77b",
+      "sha256": "3e94a2682deb4c75031d4e4d0fb722fa64ce561dd227607fdb0b92191704bee9",
       "file": "api-upload-and-create.nika.yaml"
     }
   },
@@ -3942,7 +3942,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
-      "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231",
+      "sha256": "2ffe6e1e85a5616b4acfd4457c15766a39eaeaf8b8c1ae68e76b9f4bbb6e3773",
       "file": "chain.nika.yaml"
     }
   },
@@ -3956,7 +3956,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "read a system's state (docker · kubectl · gh), explain it, keep the report",
     "meta": {
-      "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd",
+      "sha256": "b17d9ca7da5a01771e5cb87fd98155b24cff6872f862ec2816c0e64c6921be04",
       "file": "docker-report.nika.yaml"
     }
   },
@@ -3970,7 +3970,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "only what changed since last run · survive bad input",
     "meta": {
-      "sha256": "3172ef4be066dcf4d0b250e24c900626d5e30c3097c9456ad214a38d8e25f685",
+      "sha256": "47f2985af82d7f525d40eff6862748436c62d7c07f869164b378a21d386a82bb",
       "file": "etl-state.nika.yaml"
     }
   },
@@ -3984,7 +3984,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
-      "sha256": "78c79d1bae091e1f117d0a1d2277b85316824d77022f73aa4707871e1eb802ef",
+      "sha256": "96e4c9e077f7c74803464f627a617c612133e373d74da82dbe233d9878cc7b80",
       "file": "fanout.nika.yaml"
     }
   },
@@ -3998,7 +3998,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "watch X, act when Y",
     "meta": {
-      "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6",
+      "sha256": "a548c0e551f7efb585df1922b26cf51cc9497e47d8f9c9afc7ed3d974efc62d9",
       "file": "gate-and-act.nika.yaml"
     }
   },
@@ -4012,7 +4012,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "anything irreversible (deploy · send · publish)",
     "meta": {
-      "sha256": "a28beb3d1edf92dbc89c4c20a040c35b9a3cc21f7dea7aa01221844a8b9dcf96",
+      "sha256": "3a9bbde8086cbe4183559ac519f00b3bb7e678385a58e6465930c5e723998cd8",
       "file": "human-gated-ship.nika.yaml"
     }
   },
@@ -4026,7 +4026,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
-      "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def",
+      "sha256": "308c54c2053138bb0c026b4b4a46b950f39781d21d37fd66f65c2e2136b0bbc5",
       "file": "media-asset-pack.nika.yaml"
     }
   },
@@ -4040,7 +4040,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "understand a site (domain · theme · assets) from a URL",
     "meta": {
-      "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845",
+      "sha256": "6504ccae51b3a06460baa1900d844acb32961fd09e7a0f2702d205b68efd944f",
       "file": "website-brief.nika.yaml"
     }
   },
@@ -7374,6 +7374,11 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "template:etl-state",
+    "to": "word:policy",
+    "kind": "carries"
+  },
+  {
+    "from": "template:etl-state",
     "to": "word:recover",
     "kind": "carries"
   },
@@ -7691,15 +7696,20 @@ const LENS_EDGES_0: LensEdge[] = [
     "from": "template:human-gated-ship",
     "to": "word:outputs",
     "kind": "carries"
-  },
-  {
-    "from": "template:human-gated-ship",
-    "to": "word:permits",
-    "kind": "carries"
   }
 ]
 
 const LENS_EDGES_1: LensEdge[] = [
+  {
+    "from": "template:human-gated-ship",
+    "to": "word:permits",
+    "kind": "carries"
+  },
+  {
+    "from": "template:human-gated-ship",
+    "to": "word:policy",
+    "kind": "carries"
+  },
   {
     "from": "template:human-gated-ship",
     "to": "word:recover",
@@ -8153,6 +8163,11 @@ const LENS_EDGES_1: LensEdge[] = [
   {
     "from": "template:fanout",
     "to": "tool:jq",
+    "kind": "grants"
+  },
+  {
+    "from": "template:fanout",
+    "to": "tool:read",
     "kind": "grants"
   },
   {
@@ -9684,7 +9699,10 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "type:bool",
     "to": "set:types",
     "kind": "member-of"
-  },
+  }
+]
+
+const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "type:bytes",
     "to": "set:types",
@@ -9699,10 +9717,7 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "type:integer",
     "to": "set:types",
     "kind": "member-of"
-  }
-]
-
-const LENS_EDGES_2: LensEdge[] = [
+  },
   {
     "from": "type:null",
     "to": "set:types",
@@ -11687,7 +11702,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:price-watch",
     "to": "tool:fetch",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:price-watch",
     "to": "tool:notify",
@@ -11702,10 +11720,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:release-notes",
     "to": "tool:edit",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:release-notes",
     "to": "tool:notify",

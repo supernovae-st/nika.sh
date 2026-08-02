@@ -175,6 +175,7 @@ export const TOOL_USAGE_REFS: Record<string, ToolUsageRefs> = {
   "read": {
     "templates": [
       "chain",
+      "fanout",
       "etl-state"
     ],
     "errorCodes": [

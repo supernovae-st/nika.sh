@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 287,
-    "set_sha256": "04e79aa0b6ab6501790a2893c94edda62e46fd8e2d145ff9bb5b5af0bdac195c",
-    "rendered_count": 586,
-    "rendered_set_sha256": "3f00eda8d7981bf2dd78e63ad739a75697faf590083e6a6750e14912898e6176"
+    "count": 282,
+    "set_sha256": "dbae5995f111845cc9b460a9f15a4c5ebe8f79fba5e3efb8ebbef269e701a5df",
+    "rendered_count": 580,
+    "rendered_set_sha256": "432448f21e879fb1b00fde2f72ff99199cf760b8a59d01ee9be1f15fd46fa3dd"
   },
-  "claim_count": 140,
+  "claim_count": 139,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -1182,7 +1182,7 @@
     {
       "selector": "src/pages/ToolPage.tsx#count:1",
       "path": "src/pages/ToolPage.tsx",
-      "line": 28,
+      "line": 26,
       "text": "one builtin",
       "source": "one",
       "field": "builtins",
@@ -1242,7 +1242,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:1",
       "path": "src/pages/VerbPage.tsx",
-      "line": 29,
+      "line": 27,
       "text": "one verb",
       "source": "one",
       "field": "verbs",
@@ -1254,7 +1254,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:2",
       "path": "src/pages/VerbPage.tsx",
-      "line": 30,
+      "line": 28,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1266,7 +1266,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:3",
       "path": "src/pages/VerbPage.tsx",
-      "line": 64,
+      "line": 56,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -1279,7 +1279,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:4",
       "path": "src/pages/VerbPage.tsx",
-      "line": 100,
+      "line": 92,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1291,7 +1291,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:5",
       "path": "src/pages/VerbPage.tsx",
-      "line": 100,
+      "line": 92,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1303,7 +1303,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:6",
       "path": "src/pages/VerbPage.tsx",
-      "line": 116,
+      "line": 108,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1315,7 +1315,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:7",
       "path": "src/pages/VerbPage.tsx",
-      "line": 130,
+      "line": 122,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1327,7 +1327,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:8",
       "path": "src/pages/VerbPage.tsx",
-      "line": 142,
+      "line": 134,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1339,7 +1339,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:9",
       "path": "src/pages/VerbPage.tsx",
-      "line": 168,
+      "line": 160,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1351,7 +1351,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:10",
       "path": "src/pages/VerbPage.tsx",
-      "line": 211,
+      "line": 203,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1363,7 +1363,19 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:11",
       "path": "src/pages/VerbPage.tsx",
-      "line": 378,
+      "line": 208,
+      "text": "17 providers",
+      "source": "17",
+      "field": "providers",
+      "value": 17,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.providers"
+    },
+    {
+      "selector": "src/pages/VerbPage.tsx#count:12",
+      "path": "src/pages/VerbPage.tsx",
+      "line": 376,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1473,30 +1485,6 @@
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
       "line": 110,
-      "text": "four verb",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/scene/parts/part-model.ts#count:1",
-      "path": "src/scene/parts/part-model.ts",
-      "line": 9,
-      "text": "four verb",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/scene/parts/part-model.ts#count:2",
-      "path": "src/scene/parts/part-model.ts",
-      "line": 280,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
