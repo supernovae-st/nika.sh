@@ -577,7 +577,7 @@ export function Component() {
                         </Link>
                       </li>
                       <li>
-                        <Link className="td-chip" to="/boundary">
+                        <Link className="td-chip" to="/how/boundary">
                           the boundary
                         </Link>
                       </li>

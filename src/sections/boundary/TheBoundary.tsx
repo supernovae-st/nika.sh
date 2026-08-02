@@ -81,7 +81,7 @@ export default function TheBoundary({ flagship }: { flagship: FlagshipEntry }) {
           The <code className="mono">permits:</code> block is part of the file you
           review. It is the <b>whole</b> list. Everything not on it is denied by
           default, before it runs. The full reference · families, secrets, the
-          always-on floor · lives at <Link to="/boundary">/boundary</Link>.
+          always-on floor · lives at <Link to="/how/boundary">/boundary</Link>.
         </SectionHead>
 
         <div className="v5bnd-grid" data-rise>

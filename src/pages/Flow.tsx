@@ -148,7 +148,7 @@ export function Component() {
             </p>
             <Rails
               rails={[
-                { kind: 'projects to', label: 'the run graph · /proof#graph', href: '/proof#graph' },
+                { kind: 'projects to', label: 'the run graph · /proof#graph', href: '/how/proof#graph' },
               ]}
             />
           </section>
@@ -223,7 +223,7 @@ export function Component() {
 
           <p className="fl-foot" data-rise>
             Edges are read, never declared: change the file and the graph follows, and{' '}
-            <Link to="/proof">/proof</Link> renders what the engine derived. Sketch an edge in
+            <Link to="/how/proof">/proof</Link> renders what the engine derived. Sketch an edge in
             the <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and let{' '}
             <code>nika check</code> read your file. <Link to="/spec">Read the spec →</Link>
           </p>

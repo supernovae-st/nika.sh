@@ -137,7 +137,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "edges": {
     "set": "edge-kinds",
     "title": "The edge kinds",
-    "hub": "/flow",
+    "hub": "/how/flow",
     "members": [
       {
         "id": "control",
@@ -186,7 +186,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "predicates": {
     "set": "gate-predicates",
     "title": "The gate predicates",
-    "hub": "/flow",
+    "hub": "/how/flow",
     "members": [
       {
         "id": "failure",
@@ -451,7 +451,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "permits": {
     "set": "permit-families",
     "title": "The permit families",
-    "hub": "/boundary",
+    "hub": "/how/boundary",
     "members": [
       {
         "id": "env",
@@ -493,7 +493,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "secrets": {
     "set": "secret-sources",
     "title": "The secret sources",
-    "hub": "/boundary",
+    "hub": "/how/boundary",
     "members": [
       {
         "id": "env",
@@ -771,7 +771,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "conformance": {
     "set": "conformance-levels",
     "title": "The conformance levels",
-    "hub": "/proof",
+    "hub": "/how/proof",
     "members": [
       {
         "id": "core",
@@ -799,7 +799,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "mcp": {
     "set": "mcp-tools",
     "title": "The oracle tools",
-    "hub": "/proof",
+    "hub": "/how/proof",
     "members": [
       {
         "id": "nika_canon",

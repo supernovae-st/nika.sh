@@ -2,6 +2,13 @@
   "redirects_format": 1,
   "redirects": [
     {
+      "from": "/boundary",
+      "to": "/how/boundary",
+      "status": 301,
+      "live": true,
+      "applies": "how-world-v1"
+    },
+    {
       "from": "/concepts",
       "to": "/map",
       "status": 301,
@@ -38,7 +45,7 @@
     },
     {
       "from": "/concepts/dag-execution",
-      "to": "/flow",
+      "to": "/how/flow",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
@@ -59,7 +66,7 @@
     },
     {
       "from": "/concepts/graceful-degradation",
-      "to": "/flow",
+      "to": "/how/flow",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
@@ -73,21 +80,21 @@
     },
     {
       "from": "/concepts/observability-driven",
-      "to": "/proof",
+      "to": "/how/proof",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
     },
     {
       "from": "/concepts/scope-isolation",
-      "to": "/boundary",
+      "to": "/how/boundary",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
     },
     {
       "from": "/concepts/self-healing",
-      "to": "/flow",
+      "to": "/how/flow",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
@@ -98,6 +105,13 @@
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/flow",
+      "to": "/how/flow",
+      "status": 301,
+      "live": true,
+      "applies": "how-world-v1"
     },
     {
       "from": "/language/depends_on",
@@ -189,6 +203,13 @@
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/proof",
+      "to": "/how/proof",
+      "status": 301,
+      "live": true,
+      "applies": "how-world-v1"
     },
     {
       "from": "/sitemap",

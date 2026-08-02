@@ -7,10 +7,6 @@ import { CodeFile } from '../components/CodeFile'
 import { DecodeText } from '../fx/DecodeText'
 import { tokenize } from '../components/codefile-highlight'
 import { STEPS, ERROR_JSON, DICT, FULL_FILE, FULL_FILE_TRANSCRIPT } from '../content/learn'
-import type { LoopDoor } from '../content/learn-loop'
-import { ssrLoopDoors, loadLoopDoors } from '../lib/learn-loop-access'
-import { Island } from '../lib/ssg-island'
-import { useIslandPayload } from '../lib/use-island-payload'
 import { LearnCheck } from '../components/LearnCheck'
 import { InstallCommand } from '../components/InstallCommand'
 import { TermCapture } from '../components/TermCapture'
@@ -267,26 +263,10 @@ const ERROR_FIELDS: { key: string; gloss: React.ReactNode }[] = [
   },
 ]
 
-const LOOP_ISLAND_ID = 'learn-loop-island'
-
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
-  /* the loop transcripts ride their own chunk (register diet · the size
-     budget refused them in the main bundle): SSG serializes them into the
-     island, hydration reads its bytes, a SPA hop pulls the chunk once. */
-  const loopPayload = useIslandPayload(
-    LOOP_ISLAND_ID,
-    (() => {
-      const d = ssrLoopDoors()
-      return d ? JSON.stringify(d) : null
-    })(),
-    async () => JSON.stringify(await loadLoopDoors()),
-  )
-  const loopDoors = useMemo<LoopDoor[]>(
-    () => (loopPayload ? (JSON.parse(loopPayload) as LoopDoor[]) : []),
-    [loopPayload],
-  )
+
 
   /* the funnel beat · reaching the close = the walk was completed (A6:
      learn-done). Fires once; track() no-ops when analytics is absent. */
@@ -454,42 +434,23 @@ export function Component() {
             </div>
           </div>
 
-          {/* 11 · THE LOOP (G-6) · the page taught the FILE; this teaches the
-              five doors V5 collapsed the grammar into. Every transcript was
-              captured from one real sandbox arc (content/learn-loop.ts) —
-              the cost warning is a local seat's real unbounded verdict. */}
-          <div className="lrn-loop" data-rise id="the-loop" data-sec="">
-            <Island id={LOOP_ISLAND_ID} payload={loopPayload} />
+          {/* 11 · the loop MOVED to /how (2026-08-02 · the eight-worlds
+              migration): a page about the FILE was the wrong home for the
+              arc of COMMANDS. It lives whole at /how; this is its door. */}
+          <div className="lrn-loop" data-rise id="the-loop">
             <p className="lrn-full-fig mono">11 · the loop</p>
-            <h2 className="lrn-full-title">Five doors, one arc</h2>
+            <h2 className="lrn-full-title">Then the loop around it</h2>
             <p className="lrn-full-body">
-              Reading a file is half of it. The other half is the loop the binary teaches you:
+              Reading the file is half of it. The other half is the arc the binary teaches:
               see it work, make it yours, audit it, run it, read back what happened. Five
-              commands, in this order, every time. Below is one real arc through them, in one
-              directory, captured from the released binary.
+              commands, captured from one real run, at{' '}
+              <Link to="/how">how Nika works</Link>.
             </p>
-            <ol className="lrn-loop-doors">
-              {loopDoors.map((d) => (
-                <li className="lrn-loop-door" key={d.verb} id={`door-${d.verb}`}>
-                  <div className="lrn-loop-copy">
-                    <div className="lrn-step-head">
-                      <span className="lrn-step-n">
-                        {d.n} · nika {d.verb}
-                      </span>
-                      <h3 className="lrn-step-title">{d.title}</h3>
-                    </div>
-                    <p className="lrn-step-plain">{d.plain}</p>
-                    <p className="lrn-loop-proves">{d.proves}</p>
-                  </div>
-                  <div className="lrn-loop-term">
-                    <TermCapture title={`nika ${d.verb}`} lines={d.lines} command={d.command} />
-                  </div>
-                </li>
-              ))}
-            </ol>
             <p className="lrn-loop-close">
-              The loop closes where it opened: a trace you can replay is the thing that makes
-              the next <code className="mono">try</code> worth trusting.
+              <Link to="/how" className="v4doclink">
+                Walk the loop
+                <span aria-hidden className="v4doclink-arrow"> →</span>
+              </Link>
             </p>
           </div>
 

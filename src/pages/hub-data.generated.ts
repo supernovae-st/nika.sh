@@ -42,7 +42,7 @@ export const HUBS: Record<string, HubData> = {
   "flow": {
     "id": "flow",
     "title": "The flow",
-    "hub": "/flow",
+    "hub": "/how/flow",
     "opener": "Tasks link through two doors: with binds values, after orders effects. The engine reads those bindings and builds the run graph · nothing else creates an edge.",
     "sections": [
       {
@@ -156,7 +156,7 @@ export const HUBS: Record<string, HubData> = {
   "boundary": {
     "id": "boundary",
     "title": "The boundary",
-    "hub": "/boundary",
+    "hub": "/how/boundary",
     "opener": "The file declares its blast radius. Permits allowlist what runs, reads, writes and calls · secrets stay masked references. Absent means the engine floor, present means default-deny.",
     "sections": [
       {
@@ -247,7 +247,7 @@ export const HUBS: Record<string, HubData> = {
   "proof": {
     "id": "proof",
     "title": "The proof",
-    "hub": "/proof",
+    "hub": "/how/proof",
     "opener": "A run you can verify, a graph you can read. The proof layer is how Nika shows its work: the run graph, the hash-chained trace, the conformance suite that re-proves every claim.",
     "sections": [
       {

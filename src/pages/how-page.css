@@ -1,0 +1,242 @@
+/* ─── /how · the récit world (born 2026-08-02) ────────────────────────────────
+   One grammar for the whole world: hairline-ruled registers, mono keys,
+   copy left and evidence right where a transcript needs the room. Reuses
+   the site's tokens throughout — this file adds no new scale, no new hue,
+   and no motion outside the reduced-motion guard. */
+.how-fig {
+  margin: clamp(36px, 5vh, 60px) 0 0;
+  font-size: var(--type-mini);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint, color-mix(in srgb, var(--v4-text) 45%, transparent));
+}
+.how-h1 {
+  margin: 10px 0 0;
+  font-size: var(--type-h3);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.how-h2 {
+  margin: 0 0 10px;
+  font-size: var(--type-h3);
+  line-height: 1.25;
+  color: var(--v4-text);
+}
+.how-body {
+  margin: 12px 0 0;
+  max-width: 68ch;
+  font-size: var(--type-body-sm);
+  line-height: 1.7;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* the beat register (the router's five, the loop's five) */
+.how-beats {
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.how-beat {
+  scroll-margin-top: 104px;
+  padding: clamp(22px, 3vh, 32px) 2px;
+  border-bottom: 1px solid var(--v4-line);
+}
+.how-beat-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+.how-beat-n {
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint, color-mix(in srgb, var(--v4-text) 45%, transparent));
+}
+.how-beat-title {
+  margin: 0;
+  font-size: var(--type-h3);
+  line-height: 1.25;
+  color: var(--v4-text);
+}
+.how-beat-plain {
+  margin: 10px 0 0;
+  max-width: 72ch;
+  font-size: var(--type-body-sm);
+  line-height: 1.7;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.how-beat-detail {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 48%, transparent);
+}
+
+/* the two-answer pair · side by side where there is room */
+.how-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(26px, 4vh, 40px);
+  margin: clamp(36px, 5vh, 56px) 0 0;
+}
+@media (min-width: 1000px) {
+  .how-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+}
+
+/* the limit block · a claim the page refuses to hide */
+.how-limit {
+  margin: clamp(36px, 5vh, 56px) 0 0;
+  padding: clamp(20px, 3vh, 28px) clamp(18px, 2.5vw, 26px);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius, 4px);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+}
+.how-limit-probe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 12px 0 0;
+  font-family: var(--mono);
+  font-size: var(--type-eyebrow);
+  line-height: 1.6;
+  color: var(--v4-text);
+}
+.how-limit-key {
+  flex: none;
+  padding: 2px 8px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius, 4px);
+  font-size: var(--type-mini);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 58%, transparent);
+}
+
+/* the loop · copy left, the real transcript right */
+.how-loop {
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  scroll-margin-top: 104px;
+}
+.how-doors {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.how-door {
+  scroll-margin-top: 104px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px 36px;
+  padding: clamp(24px, 3.5vh, 38px) 2px;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: start;
+}
+@media (min-width: 1000px) {
+  .how-door {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+}
+.how-door-copy,
+.how-door-term {
+  min-width: 0;
+}
+.how-door-proves {
+  margin: 14px 0 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--v4-line);
+  font-size: var(--type-ui);
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+
+/* the four subsystems · one row each, the whole row is the door */
+.how-subs {
+  margin: clamp(40px, 6vh, 72px) 0 0;
+}
+.how-sub-rows {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.how-sub-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 18px;
+  padding: clamp(18px, 2.5vh, 26px) 6px clamp(18px, 2.5vh, 26px) 2px;
+  border-bottom: 1px solid var(--v4-line);
+  text-decoration: none;
+}
+@media (min-width: 900px) {
+  .how-sub-row {
+    grid-template-columns: 12ch minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+}
+.how-sub-key {
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint, color-mix(in srgb, var(--v4-text) 45%, transparent));
+}
+.how-sub-copy {
+  display: block;
+  min-width: 0;
+}
+.how-sub-title {
+  display: block;
+  font-size: var(--type-body);
+  line-height: 1.3;
+  color: var(--v4-text);
+}
+.how-sub-body {
+  display: block;
+  margin-top: 6px;
+  max-width: 70ch;
+  font-size: var(--type-ui);
+  line-height: 1.65;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.how-sub-go {
+  color: var(--v4-text-dim);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .how-sub-row {
+    transition:
+      background-color var(--dur-ui) var(--ease-ui),
+      transform var(--dur-ui) var(--ease-ui);
+  }
+  .how-sub-go {
+    transition: transform var(--dur-ui) var(--ease-ui);
+  }
+  .how-sub-row:hover {
+    transform: translateX(2px);
+  }
+  .how-sub-row:hover .how-sub-go {
+    transform: translateX(3px);
+  }
+}
+.how-sub-row:hover,
+.how-sub-row:focus-visible {
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+}
+.how-sub-row:hover .how-sub-go,
+.how-sub-row:focus-visible .how-sub-go {
+  color: var(--v4-text);
+}

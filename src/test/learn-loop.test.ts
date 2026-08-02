@@ -71,7 +71,7 @@ describe('the loop chapter (G-6)', () => {
       .split('\n')
       .filter(Boolean)
       .map((p) => p.slice(ROOT.length + 1))
-      .filter((p) => !['src/lib/learn-loop-access.ts', 'src/test/learn-loop.test.ts'].includes(p))
+      .filter((p) => p !== 'src/lib/learn-loop-access.ts' && !p.startsWith('src/test/'))
       .filter((p) => {
         // type-only imports are erased at build — they cost nothing
         const src = readFileSync(join(ROOT, p), 'utf8')

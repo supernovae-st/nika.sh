@@ -117,7 +117,7 @@ describe('lens · rooms and routes cover each other', () => {
   })
 
   it('every anchored member points at a page that exists or is landing', () => {
-    const landing = new Set(['/flow', '/boundary', '/proof', '/truth', '/map'])
+    const landing = new Set(['/how/flow', '/how/boundary', '/how/proof', '/truth', '/map'])
     for (const n of LENS_NODES) {
       if (n.kind !== 'member' || !n.anchor || !n.url) continue
       const page = n.url.split('#')[0]

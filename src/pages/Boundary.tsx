@@ -181,7 +181,7 @@ export function Component() {
             <Rails
               rails={[
                 { kind: 'named by', label: 'NIKA-SEC-005 · SSRF refused', href: '/errors/NIKA-SEC-005' },
-                { kind: 'proof', label: 'static vs runtime enforcement · /proof', href: '/proof#conformance' },
+                { kind: 'proof', label: 'static vs runtime enforcement · /proof', href: '/how/proof#conformance' },
               ]}
             />
           </section>

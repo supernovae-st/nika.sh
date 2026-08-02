@@ -87,7 +87,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     doors: [
       { label: 'the oracle, one room per tool', href: '/mcp/nika_check' },
       { label: 'the skeletons it scaffolds from', href: '/templates' },
-      { label: 'the proof it can verify', href: '/proof' },
+      { label: 'the proof it can verify', href: '/how/proof' },
     ],
     kit: AGENT_KIT,
   },
@@ -136,7 +136,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       label: 'the extension, in depth',
     },
     doors: [
-      { label: 'the boundary the chips draw', href: '/boundary' },
+      { label: 'the boundary the chips draw', href: '/how/boundary' },
       { label: 'the language it highlights', href: '/language' },
     ],
     external: [{ label: 'Open VSX', href: 'https://open-vsx.org/extension/supernovae/nika-lang' }],
@@ -162,7 +162,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     },
     doors: [
       { label: 'the served schema, word by word', href: '/language' },
-      { label: 'the boundary it draws', href: '/boundary' },
+      { label: 'the boundary it draws', href: '/how/boundary' },
     ],
     external: [
       { label: 'VS Code Marketplace', href: 'https://marketplace.visualstudio.com/items?itemName=supernovae.nika-lang' },
@@ -184,7 +184,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     ],
     doors: [
       { label: 'the skeletons it reaches for', href: '/templates' },
-      { label: 'the cost line it respects', href: '/boundary' },
+      { label: 'the cost line it respects', href: '/how/boundary' },
     ],
     external: [{ label: 'skills.sh listing', href: 'https://skills.sh/supernovae-st/nika-agents' }],
   },
@@ -203,7 +203,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     ],
     doors: [
       { label: 'the nine tools, one room each', href: '/mcp/nika_check' },
-      { label: 'the proof surfaces', href: '/proof' },
+      { label: 'the proof surfaces', href: '/how/proof' },
     ],
   },
 
@@ -225,7 +225,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     doors: [
       { label: 'install, walked through', href: '/install' },
       { label: 'the four verbs', href: '/verbs' },
-      { label: 'the proof surfaces', href: '/proof' },
+      { label: 'the proof surfaces', href: '/how/proof' },
     ],
     external: [{ label: 'releases', href: 'https://github.com/supernovae-st/nika/releases' }],
   },
@@ -262,8 +262,8 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       { text: 'Then run it', code: 'nika run registry:owner/name@version' },
     ],
     doors: [
-      { label: 'the chain of custody, taught', href: '/proof' },
-      { label: 'the boundary that holds', href: '/boundary' },
+      { label: 'the chain of custody, taught', href: '/how/proof' },
+      { label: 'the boundary that holds', href: '/how/boundary' },
     ],
     external: [
       { label: 'the machine index', href: 'https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json' },

@@ -209,6 +209,25 @@
        leaving a gate everyone has learned to ignore, but the growth is NOT
        explained and stays a debt: someone should bisect 8b46bb4..HEAD for it.
        The lazy-language cut named above is still the bigger prize.
+
+   2026-08-02 · 406 → 409 · THE /how WORLD (the eight-worlds migration, V1).
+     Two authored pages join the sync route table, which is where every page
+     rides: the prerenderer does not await React.lazy, so a lazy route would
+     render its error boundary instead of its page. That law is what makes a
+     NEW WORLD cost bundle bytes, and this is the payment, named:
+     · +2.0 · How.tsx + HowRouter.tsx + how-page.css · the récit world's hub
+       and the router story, which the site told NOWHERE (one changelog
+       sentence for the most magical thing the binary does).
+     · +0.9 · how-router.ts · the router's constants and its three real
+       probe transcripts, including the French one that FAILS. Small, and
+       it belongs in the page: the numbers are the argument.
+     The loop transcripts did NOT move the needle — they were already an
+     async chunk (learn-loop-access) and they stayed one when the section
+     moved from /learn to /how.
+     Paid rather than dodged: the alternative was to lazy-load a page the
+     prerenderer cannot lazy-load. The next honest cut is still the language
+     projection, unchanged from the note above.
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -216,7 +235,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 406
+const BUDGET_KB = 409
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

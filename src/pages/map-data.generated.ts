@@ -74,7 +74,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "flow",
     "title": "The flow",
-    "hub": "/flow",
+    "hub": "/how/flow",
     "exists": true,
     "lands": null,
     "opener": "Tasks link through two doors: with binds values, after orders effects. The engine reads those bindings and builds the run graph · nothing else creates an edge.",
@@ -82,7 +82,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "edge-kinds",
         "title": "The edge kinds",
-        "url": "/flow",
+        "url": "/how/flow",
         "count": 6,
         "surface": "anchors",
         "slot": null,
@@ -93,7 +93,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "gate-predicates",
         "title": "The gate predicates",
-        "url": "/flow",
+        "url": "/how/flow",
         "count": 4,
         "surface": "anchors",
         "slot": null,
@@ -192,7 +192,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "boundary",
     "title": "The boundary",
-    "hub": "/boundary",
+    "hub": "/how/boundary",
     "exists": true,
     "lands": null,
     "opener": "The file declares its blast radius. Permits allowlist what runs, reads, writes and calls · secrets stay masked references. Absent means the engine floor, present means default-deny.",
@@ -200,7 +200,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "permit-families",
         "title": "The permit families",
-        "url": "/boundary",
+        "url": "/how/boundary",
         "count": 5,
         "surface": "anchors",
         "slot": null,
@@ -211,7 +211,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "secret-sources",
         "title": "The secret sources",
-        "url": "/boundary",
+        "url": "/how/boundary",
         "count": 3,
         "surface": "anchors",
         "slot": null,
@@ -267,7 +267,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "proof",
     "title": "The proof",
-    "hub": "/proof",
+    "hub": "/how/proof",
     "exists": true,
     "lands": null,
     "opener": "A run you can verify, a graph you can read. The proof layer is how Nika shows its work: the run graph, the hash-chained trace, the conformance suite that re-proves every claim.",
@@ -275,7 +275,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "conformance-levels",
         "title": "The conformance levels",
-        "url": "/proof",
+        "url": "/how/proof",
         "count": 3,
         "surface": "anchors",
         "slot": null,
@@ -286,7 +286,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "mcp-tools",
         "title": "The oracle tools",
-        "url": "/proof",
+        "url": "/how/proof",
         "count": 9,
         "surface": "anchors",
         "slot": null,

@@ -160,7 +160,7 @@ export function Component() {
             A workflow language earns trust by <b>moving</b>, and by not breaking what you
             wrote. Every public milestone, dated and tagged: <Link className="cl-lede-door" to="/spec">the spec</Link>{' '}
             opened, <Link className="cl-lede-door" to="/verbs">the verbs</Link> locked, the{' '}
-            <Link className="cl-lede-door" to="/boundary">
+            <Link className="cl-lede-door" to="/how/boundary">
               <code>permits:</code> boundary
             </Link>{' '}
             (what a plan is allowed to touch), <Link className="cl-lede-door" to="/tools">the tool library</Link> and{' '}

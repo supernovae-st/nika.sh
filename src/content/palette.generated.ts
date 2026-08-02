@@ -126,19 +126,19 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "The flow",
-    "href": "/flow",
+    "href": "/how/flow",
     "hint": "two doors, one graph · the gate matrix"
   },
   {
     "kind": "page",
     "label": "The boundary",
-    "href": "/boundary",
+    "href": "/how/boundary",
     "hint": "permits · secrets · the floor"
   },
   {
     "kind": "page",
     "label": "The proof",
-    "href": "/proof",
+    "href": "/how/proof",
     "hint": "run graph · conformance · machine surfaces"
   },
   {

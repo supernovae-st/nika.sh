@@ -560,10 +560,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/flow": [
+  "/how/flow": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/flow#set-edge-kinds",
+      "@id": "https://nika.sh/how/flow#set-edge-kinds",
       "name": "Nika the edge kinds",
       "description": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -615,7 +615,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/flow#set-gate-predicates",
+      "@id": "https://nika.sh/how/flow#set-gate-predicates",
       "name": "Nika the gate predicates",
       "description": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -1219,10 +1219,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/boundary": [
+  "/how/boundary": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/boundary#set-permit-families",
+      "@id": "https://nika.sh/how/boundary#set-permit-families",
       "name": "Nika the permit families",
       "description": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -1267,7 +1267,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/boundary#set-secret-sources",
+      "@id": "https://nika.sh/how/boundary#set-secret-sources",
       "name": "Nika the secret sources",
       "description": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -2237,10 +2237,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/proof": [
+  "/how/proof": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/proof#set-conformance-levels",
+      "@id": "https://nika.sh/how/proof#set-conformance-levels",
       "name": "Nika the conformance levels",
       "description": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -2271,7 +2271,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/proof#set-mcp-tools",
+      "@id": "https://nika.sh/how/proof#set-mcp-tools",
       "name": "Nika the oracle tools",
       "description": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -2335,7 +2335,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/proof#set-showcases",
+      "@id": "https://nika.sh/how/proof#set-showcases",
       "name": "Nika the showcases",
       "description": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",

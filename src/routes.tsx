@@ -26,6 +26,8 @@ import { Component as VerbPage } from './pages/VerbPage'
 import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
+import { Component as How } from './pages/How'
+import { Component as HowRouter } from './pages/HowRouter'
 import { Component as FlowPage } from './pages/Flow'
 import { Component as SourcesPage } from './pages/Sources'
 import { Component as BoundaryPage } from './pages/Boundary'
@@ -169,9 +171,17 @@ export const routes: RouteObject[] = [
       /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
-      { path: 'flow', Component: FlowPage },
-      { path: 'boundary', Component: BoundaryPage },
-      { path: 'proof', Component: ProofPage },
+      /* the /how world (V1 · the eight-worlds migration) · the RÉCIT world:
+         the hub carries the loop (moved from /learn) and the router story
+         that lived nowhere. A hub RECOUNTS how
+         a subsystem works, which is what /how is for. The URLs moved by a
+         descriptor flip (sets.yaml hub:) — these literals follow it, and the
+         old paths live on as doorways (legacy_moves · zero-404.test). */
+      { path: 'how', Component: How },
+      { path: 'how/router', Component: HowRouter },
+      { path: 'how/flow', Component: FlowPage },
+      { path: 'how/boundary', Component: BoundaryPage },
+      { path: 'how/proof', Component: ProofPage },
       { path: 'use-cases', Component: UseCasesPage },
       /* one room per conformance-gated showcase (§4.13 · rooms_exist flip:
          LENS_PATHS prerenders all 26 · the gallery keeps the browse) */

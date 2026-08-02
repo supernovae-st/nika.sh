@@ -67,7 +67,7 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "label": "The boundary",
         "icon": "shield",
         "desc": "The file declares its blast radius",
-        "to": "/boundary"
+        "to": "/how/boundary"
       },
       {
         "label": "Use cases",
@@ -185,7 +185,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "icon": "run",
           "desc": "How a file becomes work",
           "layer": "flow",
-          "to": "/flow"
+          "to": "/how/flow"
         },
         {
           "label": "Error codes",
@@ -201,14 +201,14 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "icon": "shield",
           "desc": "What a run may touch",
           "layer": "boundary",
-          "to": "/boundary"
+          "to": "/how/boundary"
         },
         {
           "label": "The proof",
           "icon": "shield",
           "desc": "The trace a run leaves",
           "layer": "proof",
-          "to": "/proof"
+          "to": "/how/proof"
         }
       ]
     },
@@ -282,6 +282,14 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
     "kick": "When it runs",
     "fromPanel": 1,
     "items": [
+      {
+        "label": "How it works",
+        "to": "/how"
+      },
+      {
+        "label": "The router",
+        "to": "/how/router"
+      },
       {
         "label": "Changelog",
         "to": "/changelog"

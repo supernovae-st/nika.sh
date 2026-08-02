@@ -93,7 +93,7 @@ export function Component() {
                 including `nika inspect` with its human|json dual */}
             <LivingTerminal />
             <p className="pf-refs">
-              <a className="pf-ref" href="/flow#edges">
+              <a className="pf-ref" href="/how/flow#edges">
                 <span className="pf-ref-k">kinds</span>the six edge kinds · /flow#edges
               </a>
               <a className="pf-ref" href={chapterHref('spec/03-dag.md')}>

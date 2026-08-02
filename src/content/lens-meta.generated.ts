@@ -32,12 +32,12 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "conformance-levels": {
     "count": 3,
-    "url": "/proof",
+    "url": "/how/proof",
     "title": "The conformance levels"
   },
   "edge-kinds": {
     "count": 6,
-    "url": "/flow",
+    "url": "/how/flow",
     "title": "The edge kinds"
   },
   "error-categories": {
@@ -62,12 +62,12 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "gate-predicates": {
     "count": 4,
-    "url": "/flow",
+    "url": "/how/flow",
     "title": "The gate predicates"
   },
   "mcp-tools": {
     "count": 9,
-    "url": "/proof",
+    "url": "/how/proof",
     "title": "The oracle tools"
   },
   "namespaces": {
@@ -77,7 +77,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "permit-families": {
     "count": 5,
-    "url": "/boundary",
+    "url": "/how/boundary",
     "title": "The permit families"
   },
   "providers": {
@@ -87,12 +87,12 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "secret-sources": {
     "count": 3,
-    "url": "/boundary",
+    "url": "/how/boundary",
     "title": "The secret sources"
   },
   "showcases": {
     "count": 26,
-    "url": "/proof",
+    "url": "/how/proof",
     "title": "The showcases"
   },
   "templates": {
@@ -138,7 +138,7 @@ export const LENS_HUBS = [
   {
     "id": "flow",
     "title": "The flow",
-    "hub": "/flow",
+    "hub": "/how/flow",
     "exists": true,
     "lands": null
   },
@@ -159,7 +159,7 @@ export const LENS_HUBS = [
   {
     "id": "boundary",
     "title": "The boundary",
-    "hub": "/boundary",
+    "hub": "/how/boundary",
     "exists": true,
     "lands": null
   },
@@ -173,7 +173,7 @@ export const LENS_HUBS = [
   {
     "id": "proof",
     "title": "The proof",
-    "hub": "/proof",
+    "hub": "/how/proof",
     "exists": true,
     "lands": null
   }

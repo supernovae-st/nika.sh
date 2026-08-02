@@ -14,7 +14,7 @@ export interface NavChord {
    /sources joined the table the day the page landed. */
 export const NAV_CHORDS: NavChord[] = [
   { key: 'm', to: '/map', label: 'the map' },
-  { key: 'f', to: '/flow', label: 'the flow' },
+  { key: 'f', to: '/how/flow', label: 'the flow' },
   { key: 'e', to: '/errors', label: 'the error register' },
   { key: 't', to: '/tools', label: 'the standard library' },
   { key: 'l', to: '/language', label: 'the language register' },
