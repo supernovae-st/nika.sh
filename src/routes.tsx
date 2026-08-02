@@ -11,7 +11,8 @@ import { Component as Manifesto } from './pages/Manifesto'
 import { Component as Changelog } from './pages/Changelog'
 import { Component as UseCasesPage } from './pages/UseCasesPage'
 import { Component as UseCaseRoom } from './pages/UseCaseRoom'
-import { Component as Spec } from './pages/Spec'
+import { Component as SpecHub } from './pages/SpecHub'
+import { Component as ChapterRoom } from './pages/ChapterRoom'
 import { Component as Timeline } from './pages/Timeline'
 import { Component as Install } from './pages/Install'
 import { Component as Convert } from './pages/Convert'
@@ -212,7 +213,11 @@ export const routes: RouteObject[] = [
       { path: 'catalog/mcp/:slug', Component: CatalogMcpRoom },
       { path: 'catalog/embeddings', Component: CatalogEmbeddings },
       { path: 'catalog/capabilities', Component: CatalogCapabilities },
-      { path: 'spec', Component: Spec },
+      /* the specification EXPLODES (V3 · 2026-08-02): one page for eighteen
+         chapters gave no citable address to any of them. The 3D machine that
+         was its hero died with it (the operator's nuke mandate). */
+      { path: 'language/spec', Component: SpecHub },
+      { path: 'language/spec/:chapter', Component: ChapterRoom },
       { path: 'timeline', Component: Timeline },
       { path: 'install', Component: Install },
       { path: 'convert', Component: Convert },

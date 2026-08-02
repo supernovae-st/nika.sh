@@ -246,7 +246,7 @@ export function Component() {
             (<code>model: sonnet</code>) pinned to exact upstream ids by the engine, so a run is
             reproducible even after a vendor rotates names. Try one in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and go local
-            first. <Link to="/spec">Read the spec →</Link>
+            first. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

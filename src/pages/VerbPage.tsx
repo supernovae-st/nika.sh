@@ -401,7 +401,7 @@ export function Component() {
                 not a verb; ordering is the DAG's job, not a word's). The grammar lives in{' '}
                 <a href={`${SPEC}/blob/main/spec/02-verbs.md`}>spec 02 · verbs</a>; every other key
                 is in <Link to="/language">the keyword register</Link>.{' '}
-                <Link to="/spec">Read the spec →</Link>
+                <Link to="/language/spec">Read the spec →</Link>
               </p>
               </div>
 

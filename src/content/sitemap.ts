@@ -2,6 +2,7 @@ import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
 import { INTEGRATION_TABS } from './integrations-tabs'
 import { ERROR_CODES } from './errors.generated'
 import { LESSONS } from './lessons.generated'
+import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
 import { TOOLS } from './tools.generated'
 import { LANGUAGE_WORDS } from './language.generated'
 import { CHAPTERS } from '../sections/verbs-data'
@@ -85,7 +86,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The boundary', href: '/how/boundary', hint: 'permits · secrets · the always-on floor' },
       { label: 'The proof', href: '/how/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'The truth system', href: '/truth', hint: 'how this site tells the truth · verify it yourself' },
-      { label: 'Spec', href: '/spec', hint: 'the language reference · nika: v1' },
+      { label: 'Spec', href: '/language/spec', hint: 'the language reference · nika: v1' },
       { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
@@ -134,6 +135,9 @@ export const SITE_MAP: MapGroup[] = [
       /* the teaching path (V2 · 2026-08-02) · one room per numbered spec
          example, derived from the pin-sourced module */
       ...LESSONS.map((l) => ({ label: `path: ${l.slug}`, href: `/workflows/path/${l.slug}` })),
+      /* the specification's chapter rooms (V3 · 2026-08-02) · derived from
+         the pin-sourced module, so a chapter joins the map the day it lands */
+      ...SPEC_CHAPTERS.map((c) => ({ label: `spec: ${c.slug}`, href: `/language/spec/${c.slug}` })),
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/language/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/words/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),

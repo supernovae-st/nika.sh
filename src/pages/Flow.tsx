@@ -225,7 +225,7 @@ export function Component() {
             Edges are read, never declared: change the file and the graph follows, and{' '}
             <Link to="/how/proof">/proof</Link> renders what the engine derived. Sketch an edge in
             the <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and let{' '}
-            <code>nika check</code> read your file. <Link to="/spec">Read the spec →</Link>
+            <code>nika check</code> read your file. <Link to="/language/spec">Read the spec →</Link>
           </p>
 
           <HubFoot nodeId="layer:flow" />

@@ -252,7 +252,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "The spec at a glance",
           "icon": "book",
           "desc": "The contract, on one page",
-          "to": "/spec"
+          "to": "/language/spec"
         }
       ]
     }

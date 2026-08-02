@@ -1,0 +1,55 @@
+/* ─── /language/spec · the specification's register and its rooms ────────────
+   Shares the /how and /workflows grammar; adds only the chapter's own table
+   of contents and the prose measure. No new scale, no new hue. */
+.ch-toc {
+  margin: clamp(26px, 3.5vh, 38px) 0 0;
+  padding: clamp(16px, 2.5vh, 22px) clamp(16px, 2.5vw, 22px);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius, 4px);
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 55%, transparent);
+}
+.ch-toc-key {
+  margin: 0 0 10px;
+  font-size: var(--type-plate);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 50%, transparent);
+}
+.ch-toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px 22px;
+}
+@media (min-width: 760px) {
+  .ch-toc ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.ch-toc a {
+  font-size: var(--type-ui);
+  line-height: 1.55;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+}
+.ch-toc a:hover,
+.ch-toc a:focus-visible {
+  color: var(--v4-text);
+  text-decoration: underline;
+}
+/* the normative prose · a reading measure, the blog's own element styles */
+.ch-prose {
+  margin: clamp(28px, 4vh, 42px) 0 0;
+  max-width: 74ch;
+}
+/* the chapter row's own lede on the register */
+.ch-row-lede {
+  display: block;
+  margin-top: 4px;
+  max-width: 78ch;
+  font-size: var(--type-ui);
+  line-height: 1.6;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}

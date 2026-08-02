@@ -38,7 +38,7 @@ export interface CodeTip {
    What survives is the concept that is a BLOCK rather than a word: `${{ … }}`
    is grammar the schema never declares as a key, so no room can own it. */
 const SPEC_AT: Record<string, string> = {
-  '${{ … }}': '/spec#s0',
+  '${{ … }}': '/language/spec#s0',
 }
 
 /** the spec anchor for a tip term — null when the term has no owned block */

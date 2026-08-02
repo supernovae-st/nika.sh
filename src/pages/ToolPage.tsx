@@ -526,7 +526,7 @@ export function Component() {
                 <a href="/tools/catalog.json">/tools/catalog.json</a>; the contract lives in{' '}
                 <a href={`${SPEC}/blob/main/spec/06-stdlib-contract.md`}>spec 06 · stdlib</a>.{' '}
                 <Link to="/install">Install</Link> and ask the binary itself:{' '}
-                <code>nika catalog --tools</code>. <Link to="/spec">Read the spec →</Link>
+                <code>nika catalog --tools</code>. <Link to="/language/spec">Read the spec →</Link>
               </p>
               </div>
 

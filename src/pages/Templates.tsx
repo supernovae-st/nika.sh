@@ -178,7 +178,7 @@ export function Component() {
             The protocol is mechanical: route with the phrases above, instantiate, fill the slots,
             then <code>nika check</code> teaches anything you missed <b>before anything runs</b>.
             Try one in the <Link to="/play">playground</Link>, or <Link to="/install">install</Link>{' '}
-            and start from a real file. <Link to="/spec">Read the spec →</Link>
+            and start from a real file. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

@@ -288,7 +288,7 @@ export function Component() {
                 . Try the shape in the{' '}
                 <Link to="/play">playground</Link>, or walk{' '}
                 <Link to="/workflows/jobs">the showcase</Link> for the same patterns on real work.{' '}
-                <Link to="/spec">Read the spec →</Link>
+                <Link to="/language/spec">Read the spec →</Link>
               </p>
             </>
           )}

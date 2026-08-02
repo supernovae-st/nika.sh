@@ -158,7 +158,7 @@ export function Component() {
                 /convert class, one register down: a page that says « the tool
                 library landed » owes the reader the library. */}
             A workflow language earns trust by <b>moving</b>, and by not breaking what you
-            wrote. Every public milestone, dated and tagged: <Link className="cl-lede-door" to="/spec">the spec</Link>{' '}
+            wrote. Every public milestone, dated and tagged: <Link className="cl-lede-door" to="/language/spec">the spec</Link>{' '}
             opened, <Link className="cl-lede-door" to="/language/verbs">the verbs</Link> locked, the{' '}
             <Link className="cl-lede-door" to="/how/boundary">
               <code>permits:</code> boundary

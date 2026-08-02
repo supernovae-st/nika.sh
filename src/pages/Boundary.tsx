@@ -237,7 +237,7 @@ export function Component() {
             every refusal lands in the <Link to="/errors">error register</Link> with a stable
             code. Break a boundary in the <Link to="/play">playground</Link>, or{' '}
             <Link to="/install">install</Link> and let <code>nika check --infer-permits</code>{' '}
-            write yours. <Link to="/spec">Read the spec →</Link>
+            write yours. <Link to="/language/spec">Read the spec →</Link>
           </p>
 
           <HubFoot nodeId="layer:boundary" />

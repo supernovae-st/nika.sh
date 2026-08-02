@@ -51,7 +51,7 @@ export function Component() {
         <Link className="nf-btn nf-btn--primary" to="/">
           Back to nika.sh
         </Link>
-        <Link className="nf-btn" to="/spec">
+        <Link className="nf-btn" to="/language/spec">
           Read the spec
         </Link>
       </nav>

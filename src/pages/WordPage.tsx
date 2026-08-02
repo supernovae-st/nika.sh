@@ -575,7 +575,7 @@ export function Component() {
                 The whole grammar in one place: <Link to="/language/verbs">the four verbs</Link> ·{' '}
                 <Link to="/tools">the standard library</Link> ·{' '}
                 <a href={`${SPEC}/tree/main/spec`}>the spec</a>. Try it in the{' '}
-                <Link to="/play">playground</Link>. <Link to="/spec">Read the reference →</Link>
+                <Link to="/play">playground</Link>. <Link to="/language/spec">Read the reference →</Link>
               </p>
             </>
           )}

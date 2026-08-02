@@ -785,10 +785,10 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
     "gate": "the 404 file is a VALID workflow (the law has no exception)"
   },
   {
-    "file": "src/pages/Spec.tsx",
+    "file": "src/pages/SpecHub.tsx",
     "kind": "crafted-room",
     "gate": "onpage-yaml AJV",
-    "note": "permanent · the page derives from canon (verdict 2026-07-16) · the sample rides the showcase island"
+    "note": "permanent · the specification REGISTER (the single /spec page exploded into 18 chapter rooms 2026-08-02) · every figure derives from the vendored pack at the pin"
   },
   {
     "file": "src/sections/EditorCanvas.tsx",

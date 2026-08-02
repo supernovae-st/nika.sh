@@ -338,7 +338,7 @@ export function Component() {
               <p className="tp-foot" data-rise>
                 Break a file on purpose in the <Link to="/play">playground</Link> and watch the
                 code arrive typed. <Link to="/how/boundary">The boundary</Link> teaches the security
-                family. <Link to="/spec">Read the spec →</Link>
+                family. <Link to="/language/spec">Read the spec →</Link>
               </p>
             </>
           )}

@@ -51,7 +51,11 @@ const FAMILY_OG: Record<string, { img: string; alt: string }> = {
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { pathname } = useLocation()
-  const family = pathname.split('/')[1] ?? ''
+  /* the family key is every segment BEFORE the member id, not the first
+     one: families live inside their worlds since 2026-08-02 (language/types ·
+     catalog/providers · how/oracle). Taking segment [1] made every oracle
+     room canonicalise to /how/<id> and shipped nine dead links. */
+  const family = pathname.split('/').slice(1, -1).filter(Boolean).join('/')
   const { id = '' } = useParams()
   const fam = MEMBER_ROOM_FAMILIES[family]
   const at = fam ? fam.members.findIndex((m) => m.id === id) : -1

@@ -266,7 +266,7 @@ export function Component() {
 
           <p className="tp-foot" data-rise>
             Start local: <Link to="/install">install the binary</Link>. The whole language lives
-            in <Link to="/map">the map</Link>. <Link to="/spec">Read the spec →</Link>
+            in <Link to="/map">the map</Link>. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

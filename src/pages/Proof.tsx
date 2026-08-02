@@ -225,7 +225,7 @@ export function Component() {
           <p className="pf-foot" data-rise>
             The proof is portable: replay the conformance corpus in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and ask the
-            binary itself: <code>nika check --json</code>. <Link to="/spec">Read the spec →</Link>
+            binary itself: <code>nika check --json</code>. <Link to="/language/spec">Read the spec →</Link>
           </p>
 
           <HubFoot nodeId="layer:proof" />

@@ -312,9 +312,14 @@ export const CATALOG_PATHS: string[] = [
    against the generated module so the two can never disagree. */
 export const LESSON_PATHS = ['/workflows/path/01-hello', '/workflows/path/02-parallel-fanout', '/workflows/path/03-exec-pipeline', '/workflows/path/04-schema-retry', '/workflows/path/05-fetch-chain', '/workflows/path/06-code-review', '/workflows/path/07-for-each-locales', '/workflows/path/08-config-values', '/workflows/path/09-returns-typed-door', '/workflows/path/10-compose-child', '/workflows/path/10-compose-pipeline', '/workflows/path/11-declassify-the-door', '/workflows/path/12-failure-routing']
 
+/* the specification's chapter rooms (V3 · 2026-08-02) · one per chapter of
+   the pack, in reading order. Slugs come from scripts/build-chapters.mjs
+   (pin-sourced); chapters.test pins this list against the module. */
+export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelope', '/language/spec/verbs', '/language/spec/dag', '/language/spec/variables', '/language/spec/errors', '/language/spec/stdlib-contract', '/language/spec/conformance', '/language/spec/out-of-scope', '/language/spec/types', '/language/spec/authority', '/language/spec/decision', '/language/spec/gateway', '/language/spec/outcomes', '/language/spec/composition', '/language/spec/proof', '/language/spec/projections', '/language/spec/trace']
+
 /* the /how world (V1 · 2026-08-02) · the RÉCIT world's own pages. The three
    re-homed hubs ride LENS_PATHS (descriptor-derived); these two are authored
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, ...LENS_PATHS, '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

@@ -3898,7 +3898,7 @@ export const LENS_NODES: LensNode[] = [
     "id": "surface:spec-lens",
     "kind": "surface",
     "title": "The spec at a glance",
-    "url": "/spec",
+    "url": "/language/spec",
     "status": "both",
     "opener": null,
     "exists": true,

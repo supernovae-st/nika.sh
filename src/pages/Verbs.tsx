@@ -115,7 +115,7 @@ export function Component() {
             DAG construct; a verb only exists where the <em>execution model</em> differs. Try one
             in the <Link to="/play">playground</Link>, or walk{' '}
             <Link to="/language">every word the schema declares</Link>.{' '}
-            <Link to="/spec">Read the spec →</Link>
+            <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

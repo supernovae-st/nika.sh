@@ -14,8 +14,8 @@
   "route_source": "src/routes.tsx",
   "prerender_source": "site.config.ts",
   "prerender_consumer": "react-ssg.config.ts",
-  "route_definition_count": 88,
-  "page_claim_count": 648,
+  "route_definition_count": 89,
+  "page_claim_count": 666,
   "features": [
     {
       "id": "product.boundary",
@@ -78,6 +78,13 @@
       "status": "live",
       "evidence": [
         "src/pages/Proof.tsx"
+      ]
+    },
+    {
+      "id": "product.spec_chapter",
+      "status": "live",
+      "evidence": [
+        "src/pages/ChapterRoom.tsx"
       ]
     },
     {
@@ -231,7 +238,7 @@
       "id": "site.spec",
       "status": "live",
       "evidence": [
-        "src/pages/Spec.tsx"
+        "src/pages/SpecHub.tsx"
       ]
     },
     {
@@ -4113,6 +4120,158 @@
     },
     {
       "selector": "site.config.ts#page:482",
+      "path": "/language/spec",
+      "route_selector": "src/routes.tsx#route:83",
+      "component": "SpecHub",
+      "feature": "site.spec",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:483",
+      "path": "/language/spec/overview",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:484",
+      "path": "/language/spec/envelope",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:485",
+      "path": "/language/spec/verbs",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:486",
+      "path": "/language/spec/dag",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:487",
+      "path": "/language/spec/variables",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:488",
+      "path": "/language/spec/errors",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:489",
+      "path": "/language/spec/stdlib-contract",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:490",
+      "path": "/language/spec/conformance",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:491",
+      "path": "/language/spec/out-of-scope",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:492",
+      "path": "/language/spec/types",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:493",
+      "path": "/language/spec/authority",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:494",
+      "path": "/language/spec/decision",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:495",
+      "path": "/language/spec/gateway",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:496",
+      "path": "/language/spec/outcomes",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:497",
+      "path": "/language/spec/composition",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:498",
+      "path": "/language/spec/proof",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:499",
+      "path": "/language/spec/projections",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:500",
+      "path": "/language/spec/trace",
+      "route_selector": "src/routes.tsx#route:84",
+      "component": "ChapterRoom",
+      "feature": "product.spec_chapter",
+      "presented_as": "live"
+    },
+    {
+      "selector": "site.config.ts#page:501",
       "path": "/map",
       "route_selector": "src/routes.tsx#route:62",
       "component": "MapPage",
@@ -4120,7 +4279,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:483",
+      "selector": "site.config.ts#page:502",
       "path": "/how/flow",
       "route_selector": "src/routes.tsx#route:65",
       "component": "FlowPage",
@@ -4128,7 +4287,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:484",
+      "selector": "site.config.ts#page:503",
       "path": "/how/boundary",
       "route_selector": "src/routes.tsx#route:66",
       "component": "BoundaryPage",
@@ -4136,7 +4295,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:485",
+      "selector": "site.config.ts#page:504",
       "path": "/how/proof",
       "route_selector": "src/routes.tsx#route:67",
       "component": "ProofPage",
@@ -4144,7 +4303,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:486",
+      "selector": "site.config.ts#page:505",
       "path": "/catalog/providers/anthropic",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4152,7 +4311,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:487",
+      "selector": "site.config.ts#page:506",
       "path": "/catalog/providers/deepseek",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4160,7 +4319,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:488",
+      "selector": "site.config.ts#page:507",
       "path": "/catalog/providers/gemini",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4168,7 +4327,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:489",
+      "selector": "site.config.ts#page:508",
       "path": "/catalog/providers/groq",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4176,7 +4335,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:490",
+      "selector": "site.config.ts#page:509",
       "path": "/catalog/providers/huggingface",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4184,7 +4343,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:491",
+      "selector": "site.config.ts#page:510",
       "path": "/catalog/providers/llamacpp",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4192,7 +4351,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:492",
+      "selector": "site.config.ts#page:511",
       "path": "/catalog/providers/lmstudio",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4200,7 +4359,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:493",
+      "selector": "site.config.ts#page:512",
       "path": "/catalog/providers/localai",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4208,7 +4367,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:494",
+      "selector": "site.config.ts#page:513",
       "path": "/catalog/providers/mistral",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4216,7 +4375,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:495",
+      "selector": "site.config.ts#page:514",
       "path": "/catalog/providers/mock",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4224,7 +4383,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:496",
+      "selector": "site.config.ts#page:515",
       "path": "/catalog/providers/moonshot",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4232,7 +4391,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:497",
+      "selector": "site.config.ts#page:516",
       "path": "/catalog/providers/nvidia",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4240,7 +4399,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:498",
+      "selector": "site.config.ts#page:517",
       "path": "/catalog/providers/ollama",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4248,7 +4407,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:499",
+      "selector": "site.config.ts#page:518",
       "path": "/catalog/providers/openai",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4256,7 +4415,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:500",
+      "selector": "site.config.ts#page:519",
       "path": "/catalog/providers/openrouter",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4264,7 +4423,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:501",
+      "selector": "site.config.ts#page:520",
       "path": "/catalog/providers/vllm",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4272,7 +4431,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:502",
+      "selector": "site.config.ts#page:521",
       "path": "/catalog/providers/xai",
       "route_selector": "src/routes.tsx#route:33",
       "component": "ProviderPage",
@@ -4280,7 +4439,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:503",
+      "selector": "site.config.ts#page:522",
       "path": "/how/oracle/nika_canon",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4288,7 +4447,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:504",
+      "selector": "site.config.ts#page:523",
       "path": "/how/oracle/nika_catalog",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4296,7 +4455,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:505",
+      "selector": "site.config.ts#page:524",
       "path": "/how/oracle/nika_check",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4304,7 +4463,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:506",
+      "selector": "site.config.ts#page:525",
       "path": "/how/oracle/nika_examples",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4312,7 +4471,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:507",
+      "selector": "site.config.ts#page:526",
       "path": "/how/oracle/nika_explain",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4320,7 +4479,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:508",
+      "selector": "site.config.ts#page:527",
       "path": "/how/oracle/nika_inspect",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4328,7 +4487,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:509",
+      "selector": "site.config.ts#page:528",
       "path": "/how/oracle/nika_schema",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4336,7 +4495,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:510",
+      "selector": "site.config.ts#page:529",
       "path": "/how/oracle/nika_template",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4344,7 +4503,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:511",
+      "selector": "site.config.ts#page:530",
       "path": "/how/oracle/nika_tools",
       "route_selector": "src/routes.tsx#route:58",
       "component": "MemberRoom",
@@ -4352,7 +4511,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:512",
+      "selector": "site.config.ts#page:531",
       "path": "/language/conformance/core",
       "route_selector": "src/routes.tsx#route:55",
       "component": "MemberRoom",
@@ -4360,7 +4519,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:513",
+      "selector": "site.config.ts#page:532",
       "path": "/language/conformance/runtime",
       "route_selector": "src/routes.tsx#route:55",
       "component": "MemberRoom",
@@ -4368,7 +4527,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:514",
+      "selector": "site.config.ts#page:533",
       "path": "/language/conformance/stdlib",
       "route_selector": "src/routes.tsx#route:55",
       "component": "MemberRoom",
@@ -4376,7 +4535,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:515",
+      "selector": "site.config.ts#page:534",
       "path": "/language/edges/control",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4384,7 +4543,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:516",
+      "selector": "site.config.ts#page:535",
       "path": "/language/edges/failure-observation",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4392,7 +4551,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:517",
+      "selector": "site.config.ts#page:536",
       "path": "/language/edges/finally",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4400,7 +4559,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:518",
+      "selector": "site.config.ts#page:537",
       "path": "/language/edges/recovery",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4408,7 +4567,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:519",
+      "selector": "site.config.ts#page:538",
       "path": "/language/edges/terminal-observation",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4416,7 +4575,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:520",
+      "selector": "site.config.ts#page:539",
       "path": "/language/edges/value",
       "route_selector": "src/routes.tsx#route:49",
       "component": "MemberRoom",
@@ -4424,7 +4583,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:521",
+      "selector": "site.config.ts#page:540",
       "path": "/language/error-categories/budget_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4432,7 +4591,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:522",
+      "selector": "site.config.ts#page:541",
       "path": "/language/error-categories/cancelled",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4440,7 +4599,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:523",
+      "selector": "site.config.ts#page:542",
       "path": "/language/error-categories/internal_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4448,7 +4607,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:524",
+      "selector": "site.config.ts#page:543",
       "path": "/language/error-categories/network_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4456,7 +4615,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:525",
+      "selector": "site.config.ts#page:544",
       "path": "/language/error-categories/parse_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4464,7 +4623,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:526",
+      "selector": "site.config.ts#page:545",
       "path": "/language/error-categories/process_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4472,7 +4631,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:527",
+      "selector": "site.config.ts#page:546",
       "path": "/language/error-categories/provider_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4480,7 +4639,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:528",
+      "selector": "site.config.ts#page:547",
       "path": "/language/error-categories/security_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4488,7 +4647,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:529",
+      "selector": "site.config.ts#page:548",
       "path": "/language/error-categories/timeout_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4496,7 +4655,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:530",
+      "selector": "site.config.ts#page:549",
       "path": "/language/error-categories/tool_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4504,7 +4663,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:531",
+      "selector": "site.config.ts#page:550",
       "path": "/language/error-categories/validation_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4512,7 +4671,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:532",
+      "selector": "site.config.ts#page:551",
       "path": "/language/error-categories/variable_error",
       "route_selector": "src/routes.tsx#route:57",
       "component": "MemberRoom",
@@ -4520,7 +4679,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:533",
+      "selector": "site.config.ts#page:552",
       "path": "/language/error-namespaces/NIKA-AGENT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4528,7 +4687,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:534",
+      "selector": "site.config.ts#page:553",
       "path": "/language/error-namespaces/NIKA-ASSERT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4536,7 +4695,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:535",
+      "selector": "site.config.ts#page:554",
       "path": "/language/error-namespaces/NIKA-AUTH",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4544,7 +4703,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:536",
+      "selector": "site.config.ts#page:555",
       "path": "/language/error-namespaces/NIKA-BUILTIN",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4552,7 +4711,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:537",
+      "selector": "site.config.ts#page:556",
       "path": "/language/error-namespaces/NIKA-CANCEL",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4560,7 +4719,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:538",
+      "selector": "site.config.ts#page:557",
       "path": "/language/error-namespaces/NIKA-COMP",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4568,7 +4727,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:539",
+      "selector": "site.config.ts#page:558",
       "path": "/language/error-namespaces/NIKA-DAG",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4576,7 +4735,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:540",
+      "selector": "site.config.ts#page:559",
       "path": "/language/error-namespaces/NIKA-DECIDE",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4584,7 +4743,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:541",
+      "selector": "site.config.ts#page:560",
       "path": "/language/error-namespaces/NIKA-DEFAULT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4592,7 +4751,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:542",
+      "selector": "site.config.ts#page:561",
       "path": "/language/error-namespaces/NIKA-DRIFT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4600,7 +4759,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:543",
+      "selector": "site.config.ts#page:562",
       "path": "/language/error-namespaces/NIKA-EXEC",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4608,7 +4767,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:544",
+      "selector": "site.config.ts#page:563",
       "path": "/language/error-namespaces/NIKA-IMPL",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4616,7 +4775,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:545",
+      "selector": "site.config.ts#page:564",
       "path": "/language/error-namespaces/NIKA-INFER",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4624,7 +4783,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:546",
+      "selector": "site.config.ts#page:565",
       "path": "/language/error-namespaces/NIKA-INVOKE",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4632,7 +4791,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:547",
+      "selector": "site.config.ts#page:566",
       "path": "/language/error-namespaces/NIKA-LOCK",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4640,7 +4799,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:548",
+      "selector": "site.config.ts#page:567",
       "path": "/language/error-namespaces/NIKA-MCP",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4648,7 +4807,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:549",
+      "selector": "site.config.ts#page:568",
       "path": "/language/error-namespaces/NIKA-PARSE",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4656,7 +4815,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:550",
+      "selector": "site.config.ts#page:569",
       "path": "/language/error-namespaces/NIKA-POLICY",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4664,7 +4823,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:551",
+      "selector": "site.config.ts#page:570",
       "path": "/language/error-namespaces/NIKA-PORT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4672,7 +4831,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:552",
+      "selector": "site.config.ts#page:571",
       "path": "/language/error-namespaces/NIKA-PROVIDER",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4680,7 +4839,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:553",
+      "selector": "site.config.ts#page:572",
       "path": "/language/error-namespaces/NIKA-SEC",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4688,7 +4847,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:554",
+      "selector": "site.config.ts#page:573",
       "path": "/language/error-namespaces/NIKA-TIMEOUT",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4696,7 +4855,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:555",
+      "selector": "site.config.ts#page:574",
       "path": "/language/error-namespaces/NIKA-TYPE",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4704,7 +4863,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:556",
+      "selector": "site.config.ts#page:575",
       "path": "/language/error-namespaces/NIKA-VALUES",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4712,7 +4871,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:557",
+      "selector": "site.config.ts#page:576",
       "path": "/language/error-namespaces/NIKA-VAR",
       "route_selector": "src/routes.tsx#route:56",
       "component": "MemberRoom",
@@ -4720,7 +4879,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:558",
+      "selector": "site.config.ts#page:577",
       "path": "/language/families/core",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4728,7 +4887,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:559",
+      "selector": "site.config.ts#page:578",
       "path": "/language/families/data",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4736,7 +4895,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:560",
+      "selector": "site.config.ts#page:579",
       "path": "/language/families/file",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4744,7 +4903,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:561",
+      "selector": "site.config.ts#page:580",
       "path": "/language/families/introspection",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4752,7 +4911,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:562",
+      "selector": "site.config.ts#page:581",
       "path": "/language/families/media",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4760,7 +4919,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:563",
+      "selector": "site.config.ts#page:582",
       "path": "/language/families/network",
       "route_selector": "src/routes.tsx#route:51",
       "component": "MemberRoom",
@@ -4768,7 +4927,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:564",
+      "selector": "site.config.ts#page:583",
       "path": "/language/modes/article",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4776,7 +4935,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:565",
+      "selector": "site.config.ts#page:584",
       "path": "/language/modes/feed",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4784,7 +4943,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:566",
+      "selector": "site.config.ts#page:585",
       "path": "/language/modes/jq",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4792,7 +4951,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:567",
+      "selector": "site.config.ts#page:586",
       "path": "/language/modes/links",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4800,7 +4959,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:568",
+      "selector": "site.config.ts#page:587",
       "path": "/language/modes/markdown",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4808,7 +4967,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:569",
+      "selector": "site.config.ts#page:588",
       "path": "/language/modes/metadata",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4816,7 +4975,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:570",
+      "selector": "site.config.ts#page:589",
       "path": "/language/modes/selector",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4824,7 +4983,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:571",
+      "selector": "site.config.ts#page:590",
       "path": "/language/modes/sitemap",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4832,7 +4991,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:572",
+      "selector": "site.config.ts#page:591",
       "path": "/language/modes/text",
       "route_selector": "src/routes.tsx#route:52",
       "component": "MemberRoom",
@@ -4840,7 +4999,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:573",
+      "selector": "site.config.ts#page:592",
       "path": "/language/namespaces/config",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4848,7 +5007,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:574",
+      "selector": "site.config.ts#page:593",
       "path": "/language/namespaces/const",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4856,7 +5015,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:575",
+      "selector": "site.config.ts#page:594",
       "path": "/language/namespaces/inputs",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4864,7 +5023,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:576",
+      "selector": "site.config.ts#page:595",
       "path": "/language/namespaces/secrets",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4872,7 +5031,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:577",
+      "selector": "site.config.ts#page:596",
       "path": "/language/namespaces/tasks",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4880,7 +5039,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:578",
+      "selector": "site.config.ts#page:597",
       "path": "/language/namespaces/with",
       "route_selector": "src/routes.tsx#route:47",
       "component": "MemberRoom",
@@ -4888,7 +5047,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:579",
+      "selector": "site.config.ts#page:598",
       "path": "/language/permits/env",
       "route_selector": "src/routes.tsx#route:53",
       "component": "MemberRoom",
@@ -4896,7 +5055,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:580",
+      "selector": "site.config.ts#page:599",
       "path": "/language/permits/exec",
       "route_selector": "src/routes.tsx#route:53",
       "component": "MemberRoom",
@@ -4904,7 +5063,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:581",
+      "selector": "site.config.ts#page:600",
       "path": "/language/permits/fs",
       "route_selector": "src/routes.tsx#route:53",
       "component": "MemberRoom",
@@ -4912,7 +5071,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:582",
+      "selector": "site.config.ts#page:601",
       "path": "/language/permits/net",
       "route_selector": "src/routes.tsx#route:53",
       "component": "MemberRoom",
@@ -4920,7 +5079,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:583",
+      "selector": "site.config.ts#page:602",
       "path": "/language/permits/tools",
       "route_selector": "src/routes.tsx#route:53",
       "component": "MemberRoom",
@@ -4928,7 +5087,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:584",
+      "selector": "site.config.ts#page:603",
       "path": "/language/predicates/failure",
       "route_selector": "src/routes.tsx#route:50",
       "component": "MemberRoom",
@@ -4936,7 +5095,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:585",
+      "selector": "site.config.ts#page:604",
       "path": "/language/predicates/skipped",
       "route_selector": "src/routes.tsx#route:50",
       "component": "MemberRoom",
@@ -4944,7 +5103,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:586",
+      "selector": "site.config.ts#page:605",
       "path": "/language/predicates/success",
       "route_selector": "src/routes.tsx#route:50",
       "component": "MemberRoom",
@@ -4952,7 +5111,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:587",
+      "selector": "site.config.ts#page:606",
       "path": "/language/predicates/terminal",
       "route_selector": "src/routes.tsx#route:50",
       "component": "MemberRoom",
@@ -4960,7 +5119,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:588",
+      "selector": "site.config.ts#page:607",
       "path": "/language/secrets/env",
       "route_selector": "src/routes.tsx#route:54",
       "component": "MemberRoom",
@@ -4968,7 +5127,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:589",
+      "selector": "site.config.ts#page:608",
       "path": "/language/secrets/file",
       "route_selector": "src/routes.tsx#route:54",
       "component": "MemberRoom",
@@ -4976,7 +5135,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:590",
+      "selector": "site.config.ts#page:609",
       "path": "/language/secrets/vault",
       "route_selector": "src/routes.tsx#route:54",
       "component": "MemberRoom",
@@ -4984,7 +5143,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:591",
+      "selector": "site.config.ts#page:610",
       "path": "/language/types/bool",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -4992,7 +5151,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:592",
+      "selector": "site.config.ts#page:611",
       "path": "/language/types/bytes",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5000,7 +5159,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:593",
+      "selector": "site.config.ts#page:612",
       "path": "/language/types/duration",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5008,7 +5167,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:594",
+      "selector": "site.config.ts#page:613",
       "path": "/language/types/integer",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5016,7 +5175,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:595",
+      "selector": "site.config.ts#page:614",
       "path": "/language/types/null",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5024,7 +5183,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:596",
+      "selector": "site.config.ts#page:615",
       "path": "/language/types/number",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5032,7 +5191,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:597",
+      "selector": "site.config.ts#page:616",
       "path": "/language/types/path",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5040,7 +5199,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:598",
+      "selector": "site.config.ts#page:617",
       "path": "/language/types/string",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5048,7 +5207,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:599",
+      "selector": "site.config.ts#page:618",
       "path": "/language/types/timestamp",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5056,7 +5215,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:600",
+      "selector": "site.config.ts#page:619",
       "path": "/language/types/uri",
       "route_selector": "src/routes.tsx#route:48",
       "component": "MemberRoom",
@@ -5064,7 +5223,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:601",
+      "selector": "site.config.ts#page:620",
       "path": "/truth/canon",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5072,7 +5231,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:602",
+      "selector": "site.config.ts#page:621",
       "path": "/truth/catalog",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5080,7 +5239,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:603",
+      "selector": "site.config.ts#page:622",
       "path": "/truth/lens",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5088,7 +5247,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:604",
+      "selector": "site.config.ts#page:623",
       "path": "/truth/manifest",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5096,7 +5255,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:605",
+      "selector": "site.config.ts#page:624",
       "path": "/truth/mirror",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5104,7 +5263,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:606",
+      "selector": "site.config.ts#page:625",
       "path": "/truth/pack",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5112,7 +5271,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:607",
+      "selector": "site.config.ts#page:626",
       "path": "/truth/pin",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5120,7 +5279,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:608",
+      "selector": "site.config.ts#page:627",
       "path": "/truth/registry",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5128,7 +5287,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:609",
+      "selector": "site.config.ts#page:628",
       "path": "/truth/schema",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5136,7 +5295,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:610",
+      "selector": "site.config.ts#page:629",
       "path": "/truth/spec",
       "route_selector": "src/routes.tsx#route:59",
       "component": "MemberRoom",
@@ -5144,7 +5303,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:611",
+      "selector": "site.config.ts#page:630",
       "path": "/workflows/jobs/bookmark-triage",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5152,7 +5311,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:612",
+      "selector": "site.config.ts#page:631",
       "path": "/workflows/jobs/ceo-monday-brief",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5160,7 +5319,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:613",
+      "selector": "site.config.ts#page:632",
       "path": "/workflows/jobs/competitor-radar",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5168,7 +5327,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:614",
+      "selector": "site.config.ts#page:633",
       "path": "/workflows/jobs/config-drift-sentinel",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5176,7 +5335,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:615",
+      "selector": "site.config.ts#page:634",
       "path": "/workflows/jobs/contract-guard",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5184,7 +5343,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:616",
+      "selector": "site.config.ts#page:635",
       "path": "/workflows/jobs/csv-chart-report",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5192,7 +5351,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:617",
+      "selector": "site.config.ts#page:636",
       "path": "/workflows/jobs/deep-research-brief",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5200,7 +5359,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:618",
+      "selector": "site.config.ts#page:637",
       "path": "/workflows/jobs/etl-quarantine",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5208,7 +5367,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:619",
+      "selector": "site.config.ts#page:638",
       "path": "/workflows/jobs/image-fx-batch",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5216,7 +5375,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:620",
+      "selector": "site.config.ts#page:639",
       "path": "/workflows/jobs/incident-war-room",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5224,7 +5383,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:621",
+      "selector": "site.config.ts#page:640",
       "path": "/workflows/jobs/invoice-chaser",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5232,7 +5391,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:622",
+      "selector": "site.config.ts#page:641",
       "path": "/workflows/jobs/localization-factory",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5240,7 +5399,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:623",
+      "selector": "site.config.ts#page:642",
       "path": "/workflows/jobs/meeting-actions",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5248,7 +5407,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:624",
+      "selector": "site.config.ts#page:643",
       "path": "/workflows/jobs/model-bench",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5256,7 +5415,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:625",
+      "selector": "site.config.ts#page:644",
       "path": "/workflows/jobs/og-images",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5264,7 +5423,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:626",
+      "selector": "site.config.ts#page:645",
       "path": "/workflows/jobs/pr-review-fanout",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5272,7 +5431,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:627",
+      "selector": "site.config.ts#page:646",
       "path": "/workflows/jobs/price-watch",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5280,7 +5439,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:628",
+      "selector": "site.config.ts#page:647",
       "path": "/workflows/jobs/release-notes",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5288,7 +5447,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:629",
+      "selector": "site.config.ts#page:648",
       "path": "/workflows/jobs/release-radar",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5296,7 +5455,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:630",
+      "selector": "site.config.ts#page:649",
       "path": "/workflows/jobs/release-train",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5304,7 +5463,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:631",
+      "selector": "site.config.ts#page:650",
       "path": "/workflows/jobs/resume-screener",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5312,7 +5471,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:632",
+      "selector": "site.config.ts#page:651",
       "path": "/workflows/jobs/seo-content-brief",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5320,7 +5479,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:633",
+      "selector": "site.config.ts#page:652",
       "path": "/workflows/jobs/social-repurpose",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5328,7 +5487,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:634",
+      "selector": "site.config.ts#page:653",
       "path": "/workflows/jobs/standup-digest",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5336,7 +5495,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:635",
+      "selector": "site.config.ts#page:654",
       "path": "/workflows/jobs/support-triage",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5344,7 +5503,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:636",
+      "selector": "site.config.ts#page:655",
       "path": "/workflows/jobs/transcript-shownotes",
       "route_selector": "src/routes.tsx#route:71",
       "component": "UseCaseRoom",
@@ -5352,31 +5511,23 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:637",
-      "path": "/spec",
-      "route_selector": "src/routes.tsx#route:83",
-      "component": "Spec",
-      "feature": "site.spec",
-      "presented_as": "live"
-    },
-    {
-      "selector": "site.config.ts#page:638",
+      "selector": "site.config.ts#page:656",
       "path": "/timeline",
-      "route_selector": "src/routes.tsx#route:84",
+      "route_selector": "src/routes.tsx#route:85",
       "component": "Timeline",
       "feature": "site.timeline",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:639",
+      "selector": "site.config.ts#page:657",
       "path": "/install",
-      "route_selector": "src/routes.tsx#route:85",
+      "route_selector": "src/routes.tsx#route:86",
       "component": "Install",
       "feature": "product.install",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:640",
+      "selector": "site.config.ts#page:658",
       "path": "/fr/install",
       "route_selector": "src/routes.tsx#route:16",
       "component": "Install",
@@ -5384,7 +5535,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:641",
+      "selector": "site.config.ts#page:659",
       "path": "/es/install",
       "route_selector": "src/routes.tsx#route:17",
       "component": "Install",
@@ -5392,7 +5543,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:642",
+      "selector": "site.config.ts#page:660",
       "path": "/de/install",
       "route_selector": "src/routes.tsx#route:18",
       "component": "Install",
@@ -5400,7 +5551,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:643",
+      "selector": "site.config.ts#page:661",
       "path": "/pt-br/install",
       "route_selector": "src/routes.tsx#route:19",
       "component": "Install",
@@ -5408,7 +5559,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:644",
+      "selector": "site.config.ts#page:662",
       "path": "/ja/install",
       "route_selector": "src/routes.tsx#route:20",
       "component": "Install",
@@ -5416,7 +5567,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:645",
+      "selector": "site.config.ts#page:663",
       "path": "/ko/install",
       "route_selector": "src/routes.tsx#route:21",
       "component": "Install",
@@ -5424,7 +5575,7 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:646",
+      "selector": "site.config.ts#page:664",
       "path": "/zh-hans/install",
       "route_selector": "src/routes.tsx#route:22",
       "component": "Install",
@@ -5432,17 +5583,17 @@
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:647",
+      "selector": "site.config.ts#page:665",
       "path": "/convert",
-      "route_selector": "src/routes.tsx#route:86",
+      "route_selector": "src/routes.tsx#route:87",
       "component": "Convert",
       "feature": "product.convert",
       "presented_as": "live"
     },
     {
-      "selector": "site.config.ts#page:648",
+      "selector": "site.config.ts#page:666",
       "path": "/brand",
-      "route_selector": "src/routes.tsx#route:87",
+      "route_selector": "src/routes.tsx#route:88",
       "component": "Brand",
       "feature": "site.brand",
       "presented_as": "live"

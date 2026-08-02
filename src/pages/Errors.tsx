@@ -248,7 +248,7 @@ export function Component() {
           <p className="er-foot" data-rise>
             Codes are <b>stable identifiers</b>: never renamed, never repurposed. Route on them
             (<code>retry.on_codes</code> · <code>on_error.on_codes</code>) and they keep meaning the
-            same failure forever. <Link to="/spec">Read the spec →</Link>
+            same failure forever. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

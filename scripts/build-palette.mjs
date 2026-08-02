@@ -27,7 +27,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const CORE = [
   ['Home', '/', 'the film · intent as code'],
   ['Playground', '/play', 'write Nika, checked live'],
-  ['Spec', '/spec', 'the language reference'],
+  ['Spec', '/language/spec', 'the language reference'],
   ['Learn', '/learn', 'one file, line by line · 5 minutes'],
   ['Install', '/install', 'one binary · two minutes'],
   ['Use cases', '/workflows/jobs', 'real files you would write'],

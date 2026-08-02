@@ -44,8 +44,7 @@ const HALF = /font-size:\s*[0-9]+\.5px/g
 /** files whose type is fully on the scale · this list only grows */
 const CLEAN = [
   'src/sections/v4-home.css',
-  'src/pages/spec-page.css',
-  /* the site's three DAG renderers · the ledger's « écrit trois fois » row,
+    /* the site's three DAG renderers · the ledger's « écrit trois fois » row,
      and the place a size drifting hurts a reader most */
   'src/components/dag/dag-node.css',
   'src/components/dag-view.css',

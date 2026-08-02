@@ -30,7 +30,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "Spec",
-    "href": "/spec",
+    "href": "/language/spec",
     "hint": "the language reference"
   },
   {

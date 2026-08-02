@@ -28,7 +28,7 @@ export const SITE = 'https://nika.sh'
    `https://nika.sh/` (telling crawlers each page IS the homepage). useHead's
    `link` + `meta` are flushed into each route's static HTML by
    vite-plugin-react-ssg, so the canonical/og:url ship correct per route.
-   Pass the route path (e.g. '/spec'); '/' yields the bare origin + trailing slash. */
+   Pass the route path (e.g. '/language/spec'); '/' yields the bare origin + trailing slash. */
 export function routeHead(path: string): {
   link: { rel: 'canonical'; href: string }[]
   meta: { property: 'og:url'; content: string }[]

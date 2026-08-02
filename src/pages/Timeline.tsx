@@ -675,7 +675,7 @@ export function Component() {
             re-proves it, this page re-renders. The{' '}
             <Link to="/changelog">changelog</Link> is the exhaustive ship log this record
             distills, and <Link to="/install">install</Link> puts the engine it describes on
-            your machine. <Link to="/spec">Read the spec →</Link>
+            your machine. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

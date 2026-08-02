@@ -179,7 +179,7 @@ export function Component() {
             A missing required arg is a <code>nika check</code> finding <b>before anything runs</b>;
             the engine teaches its own vocabulary. Try one in the{' '}
             <Link to="/play">playground</Link>, or <Link to="/install">install</Link> and ask the
-            binary itself: <code>nika catalog --tools</code>. <Link to="/spec">Read the spec →</Link>
+            binary itself: <code>nika catalog --tools</code>. <Link to="/language/spec">Read the spec →</Link>
           </p>
         </div>
       </section>

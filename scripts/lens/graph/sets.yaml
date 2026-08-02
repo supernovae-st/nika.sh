@@ -600,7 +600,7 @@ surfaces:
       claim on these pages is a projection of pinned sources, re-derived at
       build time and gated in CI. This page teaches the machinery and names
       what it does not cover yet.
-  - { id: spec-lens, url: /spec, exists: true, title: "The spec at a glance",
+  - { id: spec-lens, url: /language/spec, exists: true, title: "The spec at a glance",
       role: "the linear lens · derives from canon via spec-machine-data (verdict 2026-07-16 · the hand-body premise retired) · residue: gloss-vs-opener voice merge (op-call) + provenance close (contract field)" }
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
@@ -613,6 +613,10 @@ surfaces:
 # meta-refresh stub (dist has no server rules · the stub IS the 301).
 # These are NOT lens surfaces — no node, no graph edge, just the door.
 legacy_moves:
+  # ── the specification EXPLODES (V3 · 2026-08-02) · one page for eighteen
+  #    chapters gave no citable address to any of them. The old /spec keeps
+  #    working and lands on the register.
+  - { from: /spec, to: /language/spec, applied: language-world-v3 }
   # ── the /language world absorbs its families (the casse §1 · V3 ·
   #    2026-08-02). Eleven register heads sat at the ROOT, which the target
   #    sitemap names as the thing a stranger cannot read: « un inconnu ne
@@ -791,7 +795,7 @@ nav:
           # the panel stays inside its measured 3-column law · nav.css:942).
           - { label: The catalog, to: /catalog, icon: tiles, desc: "What the released binary knows" }
           - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from", unit: files }
-          - { label: The spec at a glance, to: /spec, icon: book, desc: "The contract, on one page" }
+          - { label: The spec at a glance, to: /language/spec, icon: book, desc: "The contract, on one page" }
   footer:
     # columns 1-3 = the reference cols + these extras appended (the footer is
     # the COMPLETE card where the panel is the curated one) · 4-5 authored
@@ -904,7 +908,7 @@ snippet_registry:
   - { file: src/flagships/flagship-data.ts, kind: library-hero, gate: "served byte-pin + recorded traces (see library_heroes_gates)" }
   - { file: src/pages/Convert.tsx, kind: crafted-room, gate: "convert PROOF export + AJV" }
   - { file: src/pages/NotFound.tsx, kind: crafted-room, gate: "the 404 file is a VALID workflow (the law has no exception)" }
-  - { file: src/pages/Spec.tsx, kind: crafted-room, gate: "onpage-yaml AJV", note: "permanent · the page derives from canon (verdict 2026-07-16) · the sample rides the showcase island" }
+  - { file: src/pages/SpecHub.tsx, kind: crafted-room, gate: "onpage-yaml AJV", note: "permanent · the specification REGISTER (the single /spec page exploded into 18 chapter rooms 2026-08-02) · every figure derives from the vendored pack at the pin" }
   - { file: src/sections/EditorCanvas.tsx, kind: crafted-room, gate: "play lint (nika-lint.test.ts) + onpage-yaml" }
   - { file: src/sections/morph/plain-words.ts, kind: crafted-room, gate: "onpage-yaml AJV (the film corpus)" }
   - { file: src/sections/verbs-data.ts, kind: crafted-room, gate: "verb-cards embedding gate (fragment validated as written)" }

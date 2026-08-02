@@ -632,7 +632,7 @@ export function Component() {
               <p className="tp-foot" data-rise>
                 Try it in the <Link to="/play">playground</Link>, or{' '}
                 <Link to="/install">install</Link> and go local first.{' '}
-                <Link to="/spec">Read the spec →</Link>
+                <Link to="/language/spec">Read the spec →</Link>
               </p>
 
               <footer className="hub-foot">

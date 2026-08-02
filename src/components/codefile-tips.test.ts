@@ -71,7 +71,7 @@ describe('tipHref', () => {
   })
 
   it('a concept that is a BLOCK, not a word, keeps its /spec anchor', () => {
-    expect(tipHref('${{ … }}')).toBe('/spec#s0')
+    expect(tipHref('${{ … }}')).toBe('/language/spec#s0')
   })
 
   it('every curated tip term carries a link (the card never dead-ends)', () => {
@@ -100,7 +100,7 @@ describe('tipHref', () => {
       (m) => m[1] ?? m[2],
     )
     expect(keys.length, 'the SPEC_AT literal was not readable').toBeGreaterThan(0)
-    const shadowed = keys.filter((k) => !String(tipHref(k)).startsWith('/spec'))
+    const shadowed = keys.filter((k) => !String(tipHref(k)).startsWith('/language/spec'))
     expect(
       shadowed,
       `these anchors are unreachable — a room already owns the word, so delete them:\n  ${shadowed.join(' ')}`,

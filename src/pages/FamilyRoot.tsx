@@ -43,7 +43,9 @@ const islandNote = (family: string) => `fr-${family}`
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { pathname } = useLocation()
-  const family = pathname.split('/')[1] ?? ''
+  /* the whole path is the family key: families live inside their worlds
+     since 2026-08-02 (language/types · catalog/providers · how/oracle). */
+  const family = pathname.split('/').filter(Boolean).join('/')
   const fam = MEMBER_ROOM_FAMILIES[family]
   const setNode = fam ? `set:${fam.set}` : ''
 
@@ -212,7 +214,7 @@ export function Component() {
 
           <p className="tp-foot" data-rise>
             The whole lens lives in <Link to="/map">the map</Link>.{' '}
-            <Link to="/spec">Read the spec →</Link>
+            <Link to="/language/spec">Read the spec →</Link>
           </p>
 
           <footer className="hub-foot">

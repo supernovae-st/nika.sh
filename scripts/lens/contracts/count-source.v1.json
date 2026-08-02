@@ -24,12 +24,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 290,
-    "set_sha256": "8e106238f2e46644d8ca01aee1693ac6c7c4b2e648417740b24833841c4741cc",
-    "rendered_count": 827,
-    "rendered_set_sha256": "1ea77eb26458eca4dd1fab88f5c7937adfd527b1148a5565c99ba9791132058b"
+    "count": 289,
+    "set_sha256": "f79ab2269dca3b8ed2310a7029f7060fdbf88e7cd3b86b9ceb2339b0691428b9",
+    "rendered_count": 830,
+    "rendered_set_sha256": "604f2755340cce1d0fbb7b735d9f437c21c5d597309b09f7e0b6b9a2201def3c"
   },
-  "claim_count": 139,
+  "claim_count": 127,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -663,7 +663,7 @@
     {
       "selector": "src/content/sitemap.ts#count:1",
       "path": "src/content/sitemap.ts",
-      "line": 105,
+      "line": 106,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1023,9 +1023,9 @@
       "reason": "singular member reference is bounded by CANON.providers"
     },
     {
-      "selector": "src/pages/Spec.tsx#count:1",
-      "path": "src/pages/Spec.tsx",
-      "line": 48,
+      "selector": "src/pages/SpecHub.tsx#count:1",
+      "path": "src/pages/SpecHub.tsx",
+      "line": 28,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1035,9 +1035,9 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "src/pages/Spec.tsx#count:2",
-      "path": "src/pages/Spec.tsx",
-      "line": 112,
+      "selector": "src/pages/SpecHub.tsx#count:2",
+      "path": "src/pages/SpecHub.tsx",
+      "line": 56,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1045,139 +1045,6 @@
       "ordinal": false,
       "relation": "canon-count",
       "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:3",
-      "path": "src/pages/Spec.tsx",
-      "line": 137,
-      "text": "4 verbs",
-      "source": "4",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:4",
-      "path": "src/pages/Spec.tsx",
-      "line": 309,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:5",
-      "path": "src/pages/Spec.tsx",
-      "line": 315,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:6",
-      "path": "src/pages/Spec.tsx",
-      "line": 378,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:7",
-      "path": "src/pages/Spec.tsx",
-      "line": 635,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:8",
-      "path": "src/pages/Spec.tsx",
-      "line": 640,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:9",
-      "path": "src/pages/Spec.tsx",
-      "line": 673,
-      "text": "1 verb",
-      "source": "1",
-      "field": "verbs",
-      "value": 1,
-      "ordinal": false,
-      "relation": "registry-member",
-      "reason": "singular member reference is bounded by CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:10",
-      "path": "src/pages/Spec.tsx",
-      "line": 674,
-      "text": "one verb",
-      "source": "one",
-      "field": "verbs",
-      "value": 1,
-      "ordinal": false,
-      "relation": "registry-member",
-      "reason": "singular member reference is bounded by CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:11",
-      "path": "src/pages/Spec.tsx",
-      "line": 870,
-      "text": "${CANON.builtins} builtins",
-      "source": "${CANON.builtins}",
-      "field": "builtins",
-      "value": null,
-      "ordinal": false,
-      "expression_field": "builtins",
-      "relation": "canon-expression",
-      "reason": "runtime interpolation reads CANON.builtins"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:12",
-      "path": "src/pages/Spec.tsx",
-      "line": 1001,
-      "text": "Four verbs",
-      "source": "Four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/pages/Spec.tsx#count:13",
-      "path": "src/pages/Spec.tsx",
-      "line": 1003,
-      "text": "fifth verb",
-      "source": "fifth",
-      "field": "verbs",
-      "value": 5,
-      "ordinal": true,
-      "relation": "ordinal-member",
-      "reason": "ordinal member reference is bounded by CANON.verbs"
     },
     {
       "selector": "src/pages/ToolPage.tsx#count:1",
@@ -1484,7 +1351,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 114,
+      "line": 115,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
@@ -1492,18 +1359,6 @@
       "ordinal": false,
       "relation": "canon-count",
       "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "src/scene/spec-machine-data.ts#count:1",
-      "path": "src/scene/spec-machine-data.ts",
-      "line": 71,
-      "text": "one verb",
-      "source": "one",
-      "field": "verbs",
-      "value": 1,
-      "ordinal": false,
-      "relation": "registry-member",
-      "reason": "singular member reference is bounded by CANON.verbs"
     },
     {
       "selector": "src/scene/use-plan3d.ts#count:1",

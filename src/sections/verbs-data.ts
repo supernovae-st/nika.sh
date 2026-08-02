@@ -37,9 +37,9 @@ tasks:
     infer:
       prompt: "Three risks in this release, ranked"`,
     sub: [
-      { n: '5.1.1', label: 'providers', to: '/spec#s4' },
-      { n: '5.1.2', label: 'structured output', to: '/spec#s1' },
-      { n: '5.1.3', label: 'local models', to: '/spec#s4' },
+      { n: '5.1.1', label: 'providers', to: '/catalog/providers' },
+      { n: '5.1.2', label: 'structured output', to: '/language/spec/errors#structured-output-validation' },
+      { n: '5.1.3', label: 'local models', to: '/catalog/models' },
     ],
   },
   {
@@ -57,8 +57,8 @@ tasks:
       command: ["cargo", "build", "--release"]`,
     sub: [
       { n: '5.2.1', label: 'capture & exit codes' },
-      { n: '5.2.2', label: 'retry · timeout', to: '/spec#s2' },
-      { n: '5.2.3', label: 'permitted programs', to: '/spec#permits' },
+      { n: '5.2.2', label: 'retry · timeout', to: '/language/spec/errors#retry-policy' },
+      { n: '5.2.3', label: 'permitted programs', to: '/language/permits' },
     ],
   },
   {
@@ -76,8 +76,8 @@ tasks:
       tool: "nika:fetch"
       args: { url: "https://nika.sh" }`,
     sub: [
-      { n: '5.3.1', label: 'builtins', to: '/spec#s3' },
-      { n: '5.3.2', label: 'extract modes', to: '/spec#s5' },
+      { n: '5.3.1', label: 'builtins', to: '/tools' },
+      { n: '5.3.2', label: 'extract modes', to: '/language/modes' },
       { n: '5.3.3', label: 'MCP servers' },
     ],
   },
@@ -97,7 +97,7 @@ tasks:
       prompt: "Find every dead link in ./docs"
       tools: [ "nika:read", "nika:fetch" ]`,
     sub: [
-      { n: '5.4.1', label: 'tool allow-list', to: '/spec#permits' },
+      { n: '5.4.1', label: 'tool allow-list', to: '/language/permits' },
       { n: '5.4.2', label: 'max turns' },
       { n: '5.4.3', label: 'the human gate', to: '#run-explains' },
     ],

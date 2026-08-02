@@ -243,7 +243,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       { text: 'or walk the served projections below.' },
     ],
     doors: [
-      { label: 'the spec at a glance', href: '/spec' },
+      { label: 'the spec at a glance', href: '/language/spec' },
       { label: 'every language word', href: '/language' },
       { label: 'how the site tells the truth', href: '/truth' },
     ],

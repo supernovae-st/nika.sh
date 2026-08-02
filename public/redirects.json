@@ -1458,6 +1458,13 @@
       "applies": "sources-truth-fusion"
     },
     {
+      "from": "/spec",
+      "to": "/language/spec",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/templates",
       "to": "/workflows/skeletons",
       "status": 301,

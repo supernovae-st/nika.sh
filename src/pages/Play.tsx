@@ -720,7 +720,7 @@ export function Component() {
                 →
               </span>
             </Link>
-            <Link to="/spec" className="v4doclink v4doclink--dim">
+            <Link to="/language/spec" className="v4doclink v4doclink--dim">
               Read the spec
               <span aria-hidden className="v4doclink-arrow">
                 {' '}

@@ -145,13 +145,17 @@ describe('lens · rooms and routes cover each other', () => {
        proof — served with a gated declaration, never an orphan. */
     const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
     const lensRoots = ['/language/', '/language/verbs/', '/tools/', '/workflows/skeletons/', '/errors/', '/catalog/providers/']
+    /* the specification's chapter rooms are AUTHORED pages (the pack is
+       vendored by scripts/build-chapters.mjs), not lens member nodes — the
+       lens never claimed them and the /language/ prefix now sweeps them in. */
+    const authored = (p: string) => p.startsWith('/language/spec')
     /* a family ROOT is a served page and not a member node: it renders the
        register, its members are the nodes. Since the families moved INSIDE
        /language (2026-08-02) the /language/ prefix matches them too, so they
        are named here rather than the prefix loosened. */
     const roots = new Set<string>(FAMILY_ROOT_PATHS)
     for (const p of PATHS) {
-      if (roots.has(p)) continue
+      if (roots.has(p) || authored(p)) continue
       if (!lensRoots.some((r) => p.startsWith(r))) continue
       expect(
         lensUrls.has(p) || moved.has(p) || pending.has(p),
