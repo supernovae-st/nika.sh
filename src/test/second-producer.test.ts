@@ -32,8 +32,9 @@ const ROOT = join(__dirname, '../..')
 
 /** duplicate definitions that are DELIBERATE, each with the reason it stands */
 const ALLOWED: Record<string, string> = {
-  Shell:
-    'a scene-local mount shell, one per scene file (drum sphere · part viewer · tool drum) — same role, different scene, never shared',
+  /* Shell left 2026-08-02: the part viewer and the tool drum were deleted
+     with the parts catalog and the nav rase, so the drum sphere is the only
+     scene mount left and the name no longer duplicates anything. */
   mulberry32: 'a three-line seeded PRNG; sharing it would couple fx/ to fx/dotmatrix for nothing',
   inline:
     'a name collision, not a duplicate: blog-render interpolates markdown, i18n-inline interpolates locale copy',

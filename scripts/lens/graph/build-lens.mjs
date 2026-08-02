@@ -1192,28 +1192,11 @@ function resolveNavItem(item) {
   }
   return out
 }
-const navProduct = S.sets.nav.product.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) }))
-/* the HUD readout · the graph counting ITSELF, so the panel's header is an
-   instrument reading rather than a caption. Three numbers, derived here: a
-   claim on this site that nobody typed. */
-const lensStats = [
-  [nodes.filter((n) => n.kind === 'layer').length, 'layers'],
-  [nodes.filter((n) => n.kind === 'set').length, 'registers'],
-  [nodes.filter((n) => n.kind === 'member').length, 'members'],
-]
-const navReference = {
-  featured: { ...resolveNavItem(S.sets.nav.reference.featured), stats: lensStats },
-  cols: S.sets.nav.reference.cols.map((c) => ({ col: c.col, items: c.items.map(resolveNavItem) })),
-}
-
-/* ONE PATH, ONE DOOR (§4.11 ratchet · 2026-07-18): a panel never shows two
-   sibling rows resolving to the same bare path — the visitor reads two doors
-   and lands in one place (the Types/The-language confusion, operator-named).
-   A LATER row on an already-doored path must be an ANCHORED SUB-DOOR: its
-   set's landing section (a `sections:` entry whose anchor equals the set id,
-   on the page-owner set) gives the deep link, and the row renders as a child
-   of the door above it. No resolvable section anchor = the build goes red
-   naming the row — a second blank door cannot ship. */
+/* ── THE PANELS DIED 2026-08-02 (the nav table rase). navProduct and
+   navReference used to be built here, each a curated column set behind a
+   mega-panel. The eight worlds are the navigation now: six flat bar links,
+   and each world's HUB is where a reader browses. A panel that lists what a
+   hub already lists is a second copy of that hub in the chrome. */
 const sectionAnchors = new Set(
   [...S.sets.sets, ...S.sets.layers].flatMap((owner) =>
     (owner.sections ?? []).map(
@@ -1243,8 +1226,6 @@ function subordinateCollidingDoors(panel, cols) {
   }
   for (const c of cols) for (const item of c.items) delete item._set
 }
-subordinateCollidingDoors('nav.reference', navReference.cols)
-subordinateCollidingDoors('nav.product', navProduct)
 /* the footer takes the panel's rows STRIPPED of their second line. The panel
    is the curated door and teaches what is behind each click; the footer is the
    complete card, five dense columns where a desc per row would triple its
@@ -1262,16 +1243,13 @@ const bare = (item) => {
    stripped: the panel is the curated door and teaches what is behind a click,
    the footer is the complete card where a desc per row would triple its
    height. Same items, two registers. */
-const footerCols = [
-  ...navReference.cols.map((c, i) => ({
-    kick: c.col,
-    fromPanel: i,
-    items: S.sets.nav.footer.extras
-      .filter((e) => e.col === c.col)
-      .map((e) => bare(resolveNavItem(e.item))),
-  })),
-  ...S.sets.nav.footer.authored.map((c) => ({ kick: c.col, items: c.items.map(resolveNavItem) })),
-]
+/* the footer is the COMPLETE CARD and it carries its own rows: it used to
+   mirror the Reference panel's columns to avoid serializing them twice, and
+   with the panels gone there is nothing to mirror. One column per WORLD. */
+const footerCols = S.sets.nav.footer.authored.map((c) => ({
+  kick: c.col,
+  items: c.items.map((x) => bare(resolveNavItem(x))),
+}))
 const navTs = GEN(
   'lens-nav.generated.ts',
   `/** the chrome as projection (§4.11-4.12): the Reference panel, the Product
@@ -1308,27 +1286,7 @@ export const NAV_BAR_LINKS: NavItem[] = ${JSON.stringify(S.sets.nav.bar.links.ma
 
 export const NAV_VERSION_PILL = ${JSON.stringify(S.sets.nav.bar.version_pill, null, 2)} as const
 
-export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = ${JSON.stringify(navProduct, null, 2)}
-
-export const NAV_DOCTRINE = ${JSON.stringify(S.sets.nav.product.doctrine_line, null, 2)} as const
-
-export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: NavItem[] }[] } =
-  ${JSON.stringify(navReference, null, 2)}
-
-/** the footer row set for a column · the first three EXTEND the Reference
- *  panel (serialized once), the rest are authored. One composer, so the
- *  component and its gates can never disagree about what the footer holds. */
-export const footerRows = (col: { fromPanel?: number; items: NavItem[] }): NavItem[] =>
-  col.fromPanel == null
-    ? col.items
-    : [
-        ...(NAV_REFERENCE.cols[col.fromPanel]?.items ?? []).map(
-          ({ desc, layer, ...rest }) => (void desc, void layer, rest),
-        ),
-        ...col.items,
-      ]
-
-export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }[] = ${JSON.stringify(footerCols, null, 2)}
+export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = ${JSON.stringify(footerCols, null, 2)}
 
 export const FOOTER_MACHINE: { label: string; href: string }[] =
   ${JSON.stringify(S.sets.nav.footer.machine_row, null, 2)}

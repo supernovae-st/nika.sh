@@ -3,71 +3,49 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   FOOTER_COLS,
-  footerRows,
   FOOTER_MACHINE,
   NAV_BAR_LINKS,
-  NAV_DOCTRINE,
-  NAV_PRODUCT,
-  NAV_REFERENCE,
   NAV_VERSION_PILL,
   type NavItem,
 } from '../content/lens-nav.generated'
-import { LENS_SET_COUNTS } from '../content/lens-meta.generated'
 import { PATHS } from '../../site.config'
 
-/* ── the chrome-projection gates (§4.11-4.12) ─────────────────────────────────
-   Nav + footer read lens-nav.generated.ts; these gates hold the §4.11
-   verdicts structurally: the scannability law (descs only on the Product
-   featured-class), the count chips = the derived register counts, soon
-   flags only on surfaces that genuinely have not landed, every link a real
-   route, the footer covering the Reference panel (nav curates · footer
-   completes), and the anti-slop voice on all authored strings. */
+/* ── the chrome-projection gates (§4.11-4.12, after the 2026-08-02 table rase)
+   Nav + footer read lens-nav.generated.ts. The two mega-panels died with the
+   rase — the bar is six flat WORLD links and the footer is the complete card,
+   one column per world — so the gates that judged panel-only properties
+   (descs on the featured class, count chips, soon flags, the panel-covers-
+   footer law) went with them. What survives is what still has a subject:
+   one path one door, every link a real route, the machine row served, the
+   bar inside the 5-7 law, the footer's link budget, and the anti-slop voice
+   on every authored string. */
 
 const ROOT = join(__dirname, '../..')
 const routeSet = new Set(PATHS)
 
 const allItems: { where: string; item: NavItem }[] = [
   ...NAV_BAR_LINKS.map((item) => ({ where: 'bar', item })),
-  ...NAV_PRODUCT.flatMap((g) => g.items.map((item) => ({ where: `product/${g.col}`, item }))),
-  { where: 'reference/featured', item: NAV_REFERENCE.featured },
-  ...NAV_REFERENCE.cols.flatMap((g) => g.items.map((item) => ({ where: `reference/${g.col}`, item }))),
-  ...FOOTER_COLS.flatMap((g) => footerRows(g).map((item) => ({ where: `footer/${g.kick}`, item }))),
+  /* the panels died with the nav table rase (2026-08-02): the bar is six
+     flat world links and the footer carries its own rows. */
+  ...FOOTER_COLS.flatMap((g) => g.items.map((item) => ({ where: `footer/${g.kick}`, item }))),
 ]
 
 describe('lens-nav · one path, one door (§4.11 ratchet)', () => {
-  it('no two sibling rows of a panel share a bare path — the later is an anchored sub-door', () => {
-    for (const [panel, cols] of [
-      ['reference', NAV_REFERENCE.cols],
-      ['product', NAV_PRODUCT],
-    ] as const) {
-      const seen = new Set<string>()
-      for (const g of cols) {
-        for (const item of g.items) {
-          if (!item.to) continue
-          const bare = item.to.split('#')[0]
-          if (!seen.has(bare)) {
-            seen.add(bare)
-            continue
-          }
-          expect(item.sub, `${panel}: second door to ${bare} (${item.label}) must be a sub-door`).toBe(true)
-          expect(item.to.includes('#'), `${panel}: sub-door ${item.label} must deep-link an anchor`).toBe(true)
-        }
+  it('one path, one door: the footer never lists the same page twice', () => {
+    /* the panels are gone, so the law moves to the surface that survived —
+       the complete card. A page listed in two world columns teaches two
+       homes for one thing, which is the drift the §4.11 ratchet refuses. */
+    const seen = new Map<string, string>()
+    for (const col of FOOTER_COLS) {
+      for (const item of col.items) {
+        if (!item.to) continue
+        const bare = item.to.split('#')[0]
+        const first = seen.get(bare)
+        expect(first, `${bare} is listed in both « ${first} » and « ${col.kick} »`).toBeUndefined()
+        seen.set(bare, col.kick)
       }
     }
   })
-
-  /* THE CLASS IS EMPTY NOW, and that is the finding. It held exactly one
-     member — Types, deep-linking /language#types — and the operator clicked it:
-     « ça redirige vers n'importe quoi ». The anchor exists, but it is one row
-     buried in a 62-row register, so the browser lands near the page foot and
-     the door reads as broken. The set's own descriptor already said
-     `anchors_exist: false`.
-
-     The word HAS a room, like every declared word, carrying its definition,
-     its declarations and its usage — so the door is /language/types and the
-     sub-door treatment (the § glyph, the indent) goes with it. An anchored
-     second door is now a thing this nav does not do; if one returns, it will
-     be a decision, and this gate will ask for it. */
   it('no door deep-links an anchor any more (the sub-door class is empty)', () => {
     const subs = allItems.filter(({ item }) => item.sub)
     expect(subs.map(({ item }) => `${item.label}→${item.to}`)).toEqual([])
@@ -87,7 +65,6 @@ describe('lens-nav · every rendered link resolves', () => {
         expect(routeSet.has('/'), `${where}: ${item.label}`).toBe(true)
       }
     }
-    expect(routeSet.has(NAV_DOCTRINE.to)).toBe(true)
     expect(routeSet.has(NAV_VERSION_PILL.to)).toBe(true)
   })
 
@@ -124,84 +101,14 @@ describe('lens-nav · the §4.11 scannability law holds', () => {
      inverts: every Reference row carries its second line, and the FOOTER keeps
      none, because the footer is the complete card where the panel is the
      curated one. The original reading is preserved above rather than deleted. */
-  it('every Reference row carries its second line, the footer carries none', () => {
-    for (const g of NAV_REFERENCE.cols) {
-      for (const item of g.items) {
-        expect(item.desc, `reference/${g.col}/${item.label} has no desc`).toBeTruthy()
-      }
-    }
-    for (const g of FOOTER_COLS) {
-      for (const item of footerRows(g)) {
-        expect(item.desc, `footer/${g.kick}/${item.label} carries a desc`).toBeUndefined()
-      }
-    }
-    expect(NAV_REFERENCE.featured.desc).toBeTruthy()
-    for (const g of NAV_PRODUCT) {
-      for (const item of g.items) expect(item.desc, `product ${item.label}`).toBeTruthy()
-    }
-  })
-
-  /* THE HEADS ANSWER A QUESTION. « The reach » is a canonical layer id and
-     means nothing to a visitor; a head that opens with « The » is naming our
-     taxonomy rather than the reader's intent. */
-  it('no panel column head names our ontology', () => {
-    for (const g of [...NAV_REFERENCE.cols.map((c) => c.col), ...NAV_PRODUCT.map((c) => c.col)]) {
-      expect(g.startsWith('The '), `the column head "${g}" names our taxonomy`).toBe(false)
-    }
-  })
-
-  /* the row wears the colour of the page it opens · a layer outside the
-     canonical seven would tint a row with a hue no hub page wears */
-  it('every layer a row carries is one the lens declares', () => {
-    const LAYERS = ['shape', 'flow', 'acts', 'reach', 'boundary', 'refusals', 'proof']
-    const tinted = NAV_REFERENCE.cols.flatMap((g) => g.items).filter((i) => i.layer)
-    expect(tinted.length, 'no Reference row carries its layer').toBeGreaterThan(6)
-    for (const item of tinted) {
-      expect(LAYERS, `${item.label} claims layer "${item.layer}"`).toContain(item.layer)
-    }
-  })
-
-  it('the bar stays in the 5-7 law: 2 panels + generated links + pill + CTA', () => {
-    expect(NAV_BAR_LINKS.length).toBeLessThanOrEqual(3)
+  it('the bar stays in the 5-7 law: the worlds, the pill and the CTA', () => {
+    /* six WORLDS + the pill + the CTA + ⌘K + GitHub · the 5-7 law counts
+       the DOORS a reader chooses between, and six flat worlds is the whole
+       map (it was 3 links plus two panels hiding eleven more). */
+    expect(NAV_BAR_LINKS.length).toBeLessThanOrEqual(7)
     // Spec and Changelog left the bar (§4.11) — the pill carries the release signal
     for (const l of NAV_BAR_LINKS) {
       expect(['Spec', 'Changelog'], `${l.label} should not ride the bar`).not.toContain(l.label)
-    }
-  })
-
-  it('count chips equal the derived register counts (never typed)', () => {
-    const expectCount = (label: string, setId: string) => {
-      const item = allItems.find((x) => x.item.label === label && x.item.count != null)
-      expect(item, `${label} with a chip`).toBeTruthy()
-      expect(item!.item.count).toBe(LENS_SET_COUNTS[setId].count)
-    }
-    expectCount('The language', 'words')
-    expectCount('The four verbs', 'verbs')
-    expectCount('Error codes', 'error-codes')
-    expectCount('Standard library', 'builtins')
-    expectCount('Providers', 'providers')
-    expectCount('Templates', 'templates')
-  })
-
-  it('soon flags ride exactly the surfaces that have not landed', () => {
-    const soonLabels = new Set(
-      [...NAV_REFERENCE.cols.flatMap((c) => c.items)].filter((i) => i.soon).map((i) => i.label),
-    )
-    // WO-4 flipped the three hubs live · the types register landed with the
-    // 0.104 window (10 primitives from the schema's own typeExpr) — nothing
-    // on the reference panel waits anymore
-    expect(soonLabels).toEqual(new Set([]))
-    for (const { item } of allItems) {
-      if (item.soon) expect(item.to ?? item.href, `${item.label} soon must not link`).toBeUndefined()
-    }
-  })
-})
-
-describe('lens-nav · the footer completes what the panel curates (§4.12)', () => {
-  it('every reference panel item appears in the footer columns', () => {
-    const footerLabels = new Set(FOOTER_COLS.flatMap((c) => footerRows(c).map((i) => i.label)))
-    for (const item of NAV_REFERENCE.cols.flatMap((c) => c.items)) {
-      expect(footerLabels.has(item.label), `${item.label} missing from footer`).toBe(true)
     }
   })
 
@@ -212,7 +119,7 @@ describe('lens-nav · the footer completes what the panel curates (§4.12)', () 
        completeness is footer-coverage.test.ts (every world head has a
        door); this law bounds the CEILING so the card stays scannable. */
     expect(FOOTER_COLS.length).toBe(6)
-    const total = FOOTER_COLS.reduce((n, c) => n + footerRows(c).length, 0)
+    const total = FOOTER_COLS.reduce((n, c) => n + c.items.length, 0)
     expect(total).toBeGreaterThanOrEqual(30)
     expect(total).toBeLessThanOrEqual(52)
     expect(FOOTER_MACHINE.length).toBe(5)
@@ -223,7 +130,6 @@ describe('lens-nav · the anti-slop voice on the chrome', () => {
   it('no em dash, no banned intensifiers, anywhere in the nav data', () => {
     const texts = [
       ...allItems.map(({ item }) => `${item.label} ${item.desc ?? ''} ${item.title ?? ''}`),
-      NAV_DOCTRINE.label,
       NAV_VERSION_PILL.title,
     ]
     for (const t of texts) {

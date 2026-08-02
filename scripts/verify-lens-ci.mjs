@@ -276,7 +276,9 @@ function verifyCarrierAuthority() {
     count_claims: 'forbidden',
     allowed_literals: [
       '', ' (', ' · ', ')', '+', 'plain words', '· press ▶ · or keep scrolling ·',
-      '“', '”', '›', '→', '→ ', '−', '★ ', '✓ ',
+      /* '★ ' died 2026-08-02 with the Reference panel's featured row (the nav
+         table rase) — the star was that row's marker and nothing else set it */
+      '“', '”', '›', '→', '→ ', '−', '✓ ',
     ],
     allowed_dynamic_expressions: ['attr(href)', 'counter(verify)'],
   }

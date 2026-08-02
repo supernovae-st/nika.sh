@@ -12,7 +12,6 @@ import { variantsFor } from '../lib/i18n'
 import {
   FOOTER_COLS,
   FOOTER_MACHINE,
-  footerRows,
   type NavItem,
 } from '../content/lens-nav.generated'
 /* the registers strip DERIVES from the same generated registry the rooms
@@ -158,14 +157,16 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           <span className="sitefoot-doctrine">Every claim on this site derives from the spec</span>
         </div>
 
-        {/* THE COLUMNS · five, projected (the anatomy trio = the Reference
-            panel's columns + extras · learn/build + project = authored) */}
+        {/* THE COLUMNS · one per WORLD, authored in the descriptor. They used
+            to MIRROR the Reference panel's columns to avoid serializing them
+            twice; the panels died with the nav table rase (2026-08-02) and the
+            footer carries its own rows now — one source, one map. */}
         <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map">
           {FOOTER_COLS.map((col) => (
             <div className="sitefoot-col" key={col.kick}>
               <p className="sitefoot-kick">{col.kick}</p>
               <ul className="sitefoot-list">
-                {footerRows(col).map((l) => (
+                {col.items.map((l) => (
                   <li key={l.label}>
                     <FooterLink item={l} />
                   </li>

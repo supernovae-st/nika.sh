@@ -79,11 +79,12 @@ const ALL = sources.flatMap(programsIn)
 
 describe('scene · a shared uniform agrees on precision across stages', () => {
   it('finds the scene programs at all (a gate over nothing is not a gate)', () => {
-    /* floor re-anchored 2026-08-02 (the PARTS-CATALOG nuke took its 3
-       programs with it, as the spec-machine nuke did the day before) —
-       10 live wirings remain: drum-hud 5 · drum-sphere 3 · verb-glyphs 2.
-       A drop below re-questions the census. */
-    expect(ALL.length).toBeGreaterThanOrEqual(10)
+    /* floor re-anchored 2026-08-02 · third cut of the same day: the TOOL
+       DRUM went with the nav table rase (the operator's « supprime tout ce
+       qui reste de 3D/2D »), taking the drum-hud's 5 programs. 5 live
+       wirings remain: drum-sphere 3 · verb-glyphs 2. A drop below
+       re-questions the census. */
+    expect(ALL.length).toBeGreaterThanOrEqual(5)
   })
 
   it('no fragment stage narrows a uniform the vertex stage declares', () => {

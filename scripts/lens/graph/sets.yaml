@@ -715,161 +715,95 @@ legacy_moves:
 # nav edits). The Product panel and the last two footer columns are AUTHORED
 # intent (linted: no em dash · no intensifiers · sentence case).
 nav:
+  # ── TABLE RASE 2026-08-02 (operator: « la navbar n'a aucun sens · supprime
+  #    tout · refais par rapport au nouveau monde »). The old bar named OUR
+  #    ontology — « Product » and « Reference » are words from our own layer
+  #    model, not questions a visitor asks — and hid eleven doors behind two
+  #    mega-panels with a constellation drawing at the top of one of them.
+  #
+  #    The eight worlds ARE the navigation now. Six flat links, no dropdown,
+  #    no panel: each one is a WORLD with its own hub, and the hub is where a
+  #    reader browses. A dropdown that lists what a page already lists is a
+  #    second copy of that page in the chrome.
   bar:
-    # 6 + CTA (the 5-7 law) · Spec leaves the bar for the Reference panel ·
-    # Changelog leaves as text and becomes the version pill (reads
-    # ENGINE_VERSION · the release cascade's one truth · never typed here)
     links:
-      # the catalog earns a BAR seat (operator 2026-08-02 · « il est où le
-      # catalogue ? » — 176 rooms buried behind one panel row was the answer;
-      # the biggest register on the site gets a first-level door)
+      - { label: How it works, to: /how }
+      - { label: The language, to: /language }
+      - { label: Workflows, to: /workflows }
       - { label: Catalog, to: /catalog }
       - { label: Docs, external: true }   # href = DOCS const (content.ts)
       - { label: Blog, to: /blog }
     version_pill: { to: /changelog, title: "shipping in the open · the ship log" }
-  product:
-    cols:
-      - col: Why nika
-        items:
-          - { label: See it run, href: "/#the-run", icon: run,
-              desc: "The plan, reviewed and enforced" }
-          - { label: The boundary, to: /how/boundary, icon: shield,
-              desc: "The file declares its blast radius" }
-          - { label: Use cases, to: /workflows/jobs, icon: tiles,
-              desc: "Real plans, reviewable and bound" }
-          - { label: Manifesto, to: /manifesto, icon: butterfly,
-              desc: "The drum, in 8 languages" }
-      - col: Try it
-        items:
-          - { label: Playground, to: /play, icon: terminal,
-              desc: "Write it live in the browser" }
-          - { label: Learn it in 5 min, to: /learn, icon: book,
-              desc: "One file, line by line" }
-          - { label: Install, to: /install, icon: run,
-              desc: "One binary · two minutes" }
-          - { label: Wire your client, to: /integrations, icon: tiles,
-              desc: "Claude Code · Codex · Cursor · 31 doors, one kit" }
-          - { label: Send a workflow, to: /convert, icon: tiles,
-              desc: "Yours, converted to a file" }
-    doctrine_line: { label: "Every claim on this site derives from the spec", to: /map }
-  reference:
-    # THE HEADS ANSWER A QUESTION, they do not name our ontology. « The reach »
-    # is a canonical LAYER here and means nothing to a visitor — the layer's own
-    # opener says « reach is what a workflow can touch », so that is what the
-    # head says now. The sibling Product panel has read this way from the start
-    # (« Why nika » · « Try it ») and Reference was the one left behind.
-    #
-    # Every row carries a desc for the same reason: a two-word abstract label
-    # asks a reader to guess what is behind the click, and eight of these labels
-    # open with « The », so the distinguishing word never leads. The LABEL stays
-    # the page's canonical name (the hubs call themselves « The boundary » and
-    # « The proof »; a menu that renamed them would teach two names for one
-    # page) and the second line is what makes the row scannable.
-    featured: { label: The map, desc: "Every page, and how they connect", to: /map, icon: tiles }
-    cols:
-      - col: What you write
-        items:
-          - { ref: "set:words", label: The language, icon: book, desc: "Every key you can type", unit: words }
-          - { ref: "set:verbs", label: The four verbs, icon: verbs, desc: "infer, exec, invoke, agent", unit: verbs }
-          # NOT set:types · that ref resolves to /language#types, a row buried in
-          # a 62-row register (the operator clicked it and landed at the page
-          # foot: « ça redirige vers n'importe quoi »). /types is worse still —
-          # a family root whose own opener says « this surface fills when the
-          # resync brings it ». The word HAS a room, like every declared word,
-          # and the room carries its definition, its declarations and its usage.
-          - { label: Types, to: /language/types, icon: book, desc: "The shapes a value takes" }
-      - col: When it runs
-        items:
-          - { ref: "layer:flow", label: The flow, icon: run, desc: "How a file becomes work" }
-          - { ref: "set:error-codes", label: Error codes, icon: book, desc: "Every refusal has a name", unit: codes }
-          - { ref: "layer:boundary", label: The boundary, icon: shield, desc: "What a run may touch" }
-          - { ref: "layer:proof", label: The proof, icon: shield, desc: "The trace a run leaves" }
-      - col: What it can touch
-        items:
-          - { ref: "set:builtins", label: Standard library, icon: tiles, desc: "Tools it calls, no install", unit: tools }
-          - { ref: "set:providers", label: Providers, icon: tiles, desc: "Models to point it at", unit: providers }
-          # the catalog world (engine-release clock · D1) — ONE curated door,
-          # authored on purpose (its counts ride the engine pin, not the spec
-          # canon, so no `ref:` resolves it; the /catalog hub carries the
-          # register doors — models · pricing · energy · mcp — itself, and
-          # the panel stays inside its measured 3-column law · nav.css:942).
-          - { label: The catalog, to: /catalog, icon: tiles, desc: "What the released binary knows" }
-          - { ref: "set:templates", label: Templates, icon: tiles, desc: "Files to start from", unit: files }
-          - { label: The spec at a glance, to: /language/spec, icon: book, desc: "The contract, on one page" }
+  # ── THE FOOTER · the complete card, one column per WORLD (the panels died,
+  #    so it carries its own rows now instead of mirroring them). Its law is
+  #    unchanged and structural: every world has a door here, and
+  #    footer-coverage.test refuses a world without one.
   footer:
-    # columns 1-3 = the reference cols + these extras appended (the footer is
-    # the COMPLETE card where the panel is the curated one) · 4-5 authored
-    extras:
-      # (The spec door lives once: the panel's « The spec at a glance » row
-      #  mirrors into The reach — a second /spec label was the same
-      #  two-doors-one-path confusion the §4.11 ratchet now refuses)
-      # the /how world (V1 · 2026-08-02) · the RÉCIT world's own doors: the
-      # footer is the COMPLETE card, so a new world earns its rows the day
-      # it is born (footer-coverage.test refuses a world with no door)
-      - { col: When it runs, item: { label: How it works, to: /how } }
-      - { col: When it runs, item: { label: The router, to: /how/router } }
-      - { col: When it runs, item: { label: Changelog, to: /changelog } }
-      # the truth system's ONE door (fused 2026-08-02 · the casse §1.3)
-      - { col: When it runs, item: { label: The truth system, to: /truth } }
-      - { col: What it can touch, item: { label: Use cases, to: /workflows/jobs } }
-      # the registry's on-site room landed with /integrations — the owed
-      # surface is paid, the slot dies (§4.11: one door, one path)
-      - { col: What it can touch, item: { label: Registry, to: /integrations/registry } }
-      - { col: What it can touch, item: { label: Integrations, to: /integrations } }
+    extras: []
     authored:
-      # the catalog world (engine-release clock · D1) — the complete card
-      # carries every register door; counts live on the pages, never here
+      - col: How it works
+        items:
+          - { label: The loop, to: /how }
+          - { label: The router, to: /how/router }
+          - { label: The flow, to: /how/flow }
+          - { label: The boundary, to: /how/boundary }
+          - { label: The proof, to: /how/proof }
+          - { label: The MCP oracle, to: /how/oracle }
+      - col: The language
+        items:
+          - { label: Every word, to: /language }
+          - { label: The four verbs, to: /language/verbs }
+          - { label: The specification, to: /language/spec }
+          # /errors has NOT re-homed: its rooms are cited by docs_url in every
+          # finding the binary prints, so it moves with the engine wagon
+          - { label: Error codes, to: /errors }
+          - { label: Standard library, to: /tools }
+          - { label: Types, to: /language/types }
+          - { label: Permits, to: /language/permits }
+          - { label: Conformance, to: /language/conformance }
+      - col: Workflows
+        items:
+          - { label: The corpus, to: /workflows }
+          - { label: The teaching path, to: /workflows/path/01-hello }
+          - { label: Real jobs, to: /workflows/jobs }
+          - { label: Skeletons, to: /workflows/skeletons }
+          - { label: Playground, to: /play }
+          - { label: Learn it in 5 min, to: /learn }
       - col: What it knows
         items:
           - { label: The catalog, to: /catalog }
           - { label: Models, to: /catalog/models }
+          - { label: Providers, to: /catalog/providers }
           - { label: Pricing, to: /catalog/pricing }
           - { label: Energy, to: /catalog/energy }
           - { label: MCP servers, to: /catalog/mcp }
           - { label: Embeddings, to: /catalog/embeddings }
           - { label: Capability rules, to: /catalog/capabilities }
-          - { label: Wire your client, to: /integrations }
-      - col: Learn · build
+      - col: Get it running
         items:
-          - { label: Playground, to: /play }
-          - { label: Learn it in 5 min, to: /learn }
           - { label: Install, to: /install }
-          - { label: Docs, external: true }
-          - { label: Send a workflow, to: /convert }
-          - { label: Blog, to: /blog }
-      - col: The project
-        items:
-          - { label: Manifesto, to: /manifesto }
-          - { label: Design system, to: /brand }
-          - { label: GitHub, external: true }   # href = REPO const
-          # the editor + tap doors moved ON-SITE with /integrations — the
-          # rooms carry the marketplace/repo links themselves
+          - { label: Wire your client, to: /integrations }
+          - { label: Registry, to: /integrations/registry }
           - { label: VS Code extension, to: /integrations/vscode }
           - { label: Homebrew tap, to: /integrations/homebrew }
+          - { label: Send a workflow, to: /convert }
+      - col: The project
+        items:
+          - { label: The map, to: /map }
+          - { label: The truth system, to: /truth }
+          - { label: Changelog, to: /changelog }
           - { label: Timeline, to: /timeline }
-          - { label: SuperNovae, href: "https://supernovae.studio" }
+          - { label: Manifesto, to: /manifesto }
+          - { label: Design system, to: /brand }
+          - { label: Blog, to: /blog }
+          - { label: GitHub, external: true }   # href = REPO const
     machine_row:
       - { label: llms.txt, href: /llms.txt }
-      - { label: ontology/language.json, href: /ontology/language.json }
-      - { label: rss.xml, href: /rss.xml }
       - { label: sitemap.xml, href: /sitemap.xml }
-      - { label: schema/workflow.json, href: /schema/workflow.json }
+      - { label: nika-graph.json, href: /nika-graph.json }
+      - { label: schema, href: /schema/workflow.json }
+      - { label: errors, href: /errors/catalog.json }
 
-# ─── the library heroes (§2bis audit · VERDICT · WO-2b 2026-07-15) ──────────
-# Two legal classes exist: re-vendored from spec (pinned) or crafted with the
-# binary gate. A third class does not exist.
-#
-# AUDIT RECEIPTS (evidence at the binary + the test suite):
-#  · all 7 are FLAGSHIPS: real recorded traces (src/flagships/traces ·
-#    trace.test.ts honesty suite) + served copies byte-pinned to the rendered
-#    module (served-library.test.ts) + registered sourceUrl (the source ↗ law).
-#  · 5 of 7 share a showcase name upstream but the bodies DIVERGED on
-#    purpose (recorded runs) · daily-brief and pr-risk-review have no
-#    upstream twin → the vendored class is false for all 7.
-#  · `nika check` at the RELEASED 0.103.0 refuses all 7 (NIKA-PARSE-019:
-#    the W2 envelope's `workflow:` object vs the pre-W2 scalar) — the
-#    binary-check leg of the crafted gate is RELEASE-GATED until the first
-#    W2+ train · the schema gate (AJV, full file) holds today.
 library_heroes_gates: "served byte-pin (served-library.test.ts) · recorded-trace honesty (trace.test.ts) · plan parity (library.test.ts) · schema AJV · binary check RELEASE-GATED (pre-W2 released binary refuses the W2 envelope)"
 library_heroes:
   - { file: public/library/daily-brief.nika.yaml, class: crafted-room }

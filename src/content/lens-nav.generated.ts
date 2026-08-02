@@ -35,6 +35,18 @@ export interface NavItem {
 
 export const NAV_BAR_LINKS: NavItem[] = [
   {
+    "label": "How it works",
+    "to": "/how"
+  },
+  {
+    "label": "The language",
+    "to": "/language"
+  },
+  {
+    "label": "Workflows",
+    "to": "/workflows"
+  },
+  {
     "label": "Catalog",
     "to": "/catalog"
   },
@@ -53,237 +65,12 @@ export const NAV_VERSION_PILL = {
   "title": "shipping in the open · the ship log"
 } as const
 
-export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
+export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
   {
-    "col": "Why nika",
+    "kick": "How it works",
     "items": [
       {
-        "label": "See it run",
-        "icon": "run",
-        "desc": "The plan, reviewed and enforced",
-        "href": "/#the-run"
-      },
-      {
-        "label": "The boundary",
-        "icon": "shield",
-        "desc": "The file declares its blast radius",
-        "to": "/how/boundary"
-      },
-      {
-        "label": "Use cases",
-        "icon": "tiles",
-        "desc": "Real plans, reviewable and bound",
-        "to": "/workflows/jobs"
-      },
-      {
-        "label": "Manifesto",
-        "icon": "butterfly",
-        "desc": "The drum, in 8 languages",
-        "to": "/manifesto"
-      }
-    ]
-  },
-  {
-    "col": "Try it",
-    "items": [
-      {
-        "label": "Playground",
-        "icon": "terminal",
-        "desc": "Write it live in the browser",
-        "to": "/play"
-      },
-      {
-        "label": "Learn it in 5 min",
-        "icon": "book",
-        "desc": "One file, line by line",
-        "to": "/learn"
-      },
-      {
-        "label": "Install",
-        "icon": "run",
-        "desc": "One binary · two minutes",
-        "to": "/install"
-      },
-      {
-        "label": "Wire your client",
-        "icon": "tiles",
-        "desc": "Claude Code · Codex · Cursor · 31 doors, one kit",
-        "to": "/integrations"
-      },
-      {
-        "label": "Send a workflow",
-        "icon": "tiles",
-        "desc": "Yours, converted to a file",
-        "to": "/convert"
-      }
-    ]
-  }
-]
-
-export const NAV_DOCTRINE = {
-  "label": "Every claim on this site derives from the spec",
-  "to": "/map"
-} as const
-
-export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: NavItem[] }[] } =
-  {
-  "featured": {
-    "label": "The map",
-    "icon": "tiles",
-    "desc": "Every page, and how they connect",
-    "to": "/map",
-    "stats": [
-      [
-        7,
-        "layers"
-      ],
-      [
-        20,
-        "registers"
-      ],
-      [
-        351,
-        "members"
-      ]
-    ]
-  },
-  "cols": [
-    {
-      "col": "What you write",
-      "items": [
-        {
-          "label": "The language",
-          "icon": "book",
-          "desc": "Every key you can type",
-          "to": "/language",
-          "count": 62,
-          "unit": "words",
-          "layer": "shape"
-        },
-        {
-          "label": "The four verbs",
-          "icon": "verbs",
-          "desc": "infer, exec, invoke, agent",
-          "to": "/language/verbs",
-          "count": 4,
-          "unit": "verbs",
-          "layer": "acts"
-        },
-        {
-          "label": "Types",
-          "icon": "book",
-          "desc": "The shapes a value takes",
-          "to": "/language/types"
-        }
-      ]
-    },
-    {
-      "col": "When it runs",
-      "items": [
-        {
-          "label": "The flow",
-          "icon": "run",
-          "desc": "How a file becomes work",
-          "layer": "flow",
-          "to": "/how/flow"
-        },
-        {
-          "label": "Error codes",
-          "icon": "book",
-          "desc": "Every refusal has a name",
-          "to": "/errors",
-          "count": 96,
-          "unit": "codes",
-          "layer": "refusals"
-        },
-        {
-          "label": "The boundary",
-          "icon": "shield",
-          "desc": "What a run may touch",
-          "layer": "boundary",
-          "to": "/how/boundary"
-        },
-        {
-          "label": "The proof",
-          "icon": "shield",
-          "desc": "The trace a run leaves",
-          "layer": "proof",
-          "to": "/how/proof"
-        }
-      ]
-    },
-    {
-      "col": "What it can touch",
-      "items": [
-        {
-          "label": "Standard library",
-          "icon": "tiles",
-          "desc": "Tools it calls, no install",
-          "to": "/tools",
-          "count": 28,
-          "unit": "tools",
-          "layer": "reach"
-        },
-        {
-          "label": "Providers",
-          "icon": "tiles",
-          "desc": "Models to point it at",
-          "to": "/catalog/providers",
-          "count": 17,
-          "unit": "providers",
-          "layer": "reach"
-        },
-        {
-          "label": "The catalog",
-          "icon": "tiles",
-          "desc": "What the released binary knows",
-          "to": "/catalog"
-        },
-        {
-          "label": "Templates",
-          "icon": "tiles",
-          "desc": "Files to start from",
-          "to": "/workflows/skeletons",
-          "count": 10,
-          "unit": "files",
-          "layer": "reach"
-        },
-        {
-          "label": "The spec at a glance",
-          "icon": "book",
-          "desc": "The contract, on one page",
-          "to": "/language/spec"
-        }
-      ]
-    }
-  ]
-}
-
-/** the footer row set for a column · the first three EXTEND the Reference
- *  panel (serialized once), the rest are authored. One composer, so the
- *  component and its gates can never disagree about what the footer holds. */
-export const footerRows = (col: { fromPanel?: number; items: NavItem[] }): NavItem[] =>
-  col.fromPanel == null
-    ? col.items
-    : [
-        ...(NAV_REFERENCE.cols[col.fromPanel]?.items ?? []).map(
-          ({ desc, layer, ...rest }) => (void desc, void layer, rest),
-        ),
-        ...col.items,
-      ]
-
-export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }[] = [
-  {
-    "kick": "What you write",
-    "fromPanel": 0,
-    "items": []
-  },
-  {
-    "kick": "When it runs",
-    "fromPanel": 1,
-    "items": [
-      {
-        "label": "How it works",
+        "label": "The loop",
         "to": "/how"
       },
       {
@@ -291,30 +78,86 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
         "to": "/how/router"
       },
       {
-        "label": "Changelog",
-        "to": "/changelog"
+        "label": "The flow",
+        "to": "/how/flow"
       },
       {
-        "label": "The truth system",
-        "to": "/truth"
+        "label": "The boundary",
+        "to": "/how/boundary"
+      },
+      {
+        "label": "The proof",
+        "to": "/how/proof"
+      },
+      {
+        "label": "The MCP oracle",
+        "to": "/how/oracle"
       }
     ]
   },
   {
-    "kick": "What it can touch",
-    "fromPanel": 2,
+    "kick": "The language",
     "items": [
       {
-        "label": "Use cases",
+        "label": "Every word",
+        "to": "/language"
+      },
+      {
+        "label": "The four verbs",
+        "to": "/language/verbs"
+      },
+      {
+        "label": "The specification",
+        "to": "/language/spec"
+      },
+      {
+        "label": "Error codes",
+        "to": "/errors"
+      },
+      {
+        "label": "Standard library",
+        "to": "/tools"
+      },
+      {
+        "label": "Types",
+        "to": "/language/types"
+      },
+      {
+        "label": "Permits",
+        "to": "/language/permits"
+      },
+      {
+        "label": "Conformance",
+        "to": "/language/conformance"
+      }
+    ]
+  },
+  {
+    "kick": "Workflows",
+    "items": [
+      {
+        "label": "The corpus",
+        "to": "/workflows"
+      },
+      {
+        "label": "The teaching path",
+        "to": "/workflows/path/01-hello"
+      },
+      {
+        "label": "Real jobs",
         "to": "/workflows/jobs"
       },
       {
-        "label": "Registry",
-        "to": "/integrations/registry"
+        "label": "Skeletons",
+        "to": "/workflows/skeletons"
       },
       {
-        "label": "Integrations",
-        "to": "/integrations"
+        "label": "Playground",
+        "to": "/play"
+      },
+      {
+        "label": "Learn it in 5 min",
+        "to": "/learn"
       }
     ]
   },
@@ -328,6 +171,10 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
       {
         "label": "Models",
         "to": "/catalog/models"
+      },
+      {
+        "label": "Providers",
+        "to": "/catalog/providers"
       },
       {
         "label": "Pricing",
@@ -348,56 +195,23 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
       {
         "label": "Capability rules",
         "to": "/catalog/capabilities"
-      },
-      {
-        "label": "Wire your client",
-        "to": "/integrations"
       }
     ]
   },
   {
-    "kick": "Learn · build",
+    "kick": "Get it running",
     "items": [
-      {
-        "label": "Playground",
-        "to": "/play"
-      },
-      {
-        "label": "Learn it in 5 min",
-        "to": "/learn"
-      },
       {
         "label": "Install",
         "to": "/install"
       },
       {
-        "label": "Docs",
-        "external": true
+        "label": "Wire your client",
+        "to": "/integrations"
       },
       {
-        "label": "Send a workflow",
-        "to": "/convert"
-      },
-      {
-        "label": "Blog",
-        "to": "/blog"
-      }
-    ]
-  },
-  {
-    "kick": "The project",
-    "items": [
-      {
-        "label": "Manifesto",
-        "to": "/manifesto"
-      },
-      {
-        "label": "Design system",
-        "to": "/brand"
-      },
-      {
-        "label": "GitHub",
-        "external": true
+        "label": "Registry",
+        "to": "/integrations/registry"
       },
       {
         "label": "VS Code extension",
@@ -408,12 +222,45 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
         "to": "/integrations/homebrew"
       },
       {
+        "label": "Send a workflow",
+        "to": "/convert"
+      }
+    ]
+  },
+  {
+    "kick": "The project",
+    "items": [
+      {
+        "label": "The map",
+        "to": "/map"
+      },
+      {
+        "label": "The truth system",
+        "to": "/truth"
+      },
+      {
+        "label": "Changelog",
+        "to": "/changelog"
+      },
+      {
         "label": "Timeline",
         "to": "/timeline"
       },
       {
-        "label": "SuperNovae",
-        "href": "https://supernovae.studio"
+        "label": "Manifesto",
+        "to": "/manifesto"
+      },
+      {
+        "label": "Design system",
+        "to": "/brand"
+      },
+      {
+        "label": "Blog",
+        "to": "/blog"
+      },
+      {
+        "label": "GitHub",
+        "external": true
       }
     ]
   }
@@ -426,19 +273,19 @@ export const FOOTER_MACHINE: { label: string; href: string }[] =
     "href": "/llms.txt"
   },
   {
-    "label": "ontology/language.json",
-    "href": "/ontology/language.json"
-  },
-  {
-    "label": "rss.xml",
-    "href": "/rss.xml"
-  },
-  {
     "label": "sitemap.xml",
     "href": "/sitemap.xml"
   },
   {
-    "label": "schema/workflow.json",
+    "label": "nika-graph.json",
+    "href": "/nika-graph.json"
+  },
+  {
+    "label": "schema",
     "href": "/schema/workflow.json"
+  },
+  {
+    "label": "errors",
+    "href": "/errors/catalog.json"
   }
 ]
