@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 6a69a03facbcee7fb8ce0a79224048ec2abfd270ace16beb44c67f271da3a847
+  sha256: 790ffaa9fd234d6f7035afd1258bfdfa3575abaaf9f734c78eb2b08a3fbcfce7
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
