@@ -109,18 +109,18 @@ export const INTEGRATION_PATHS = [
    root page too (the /types 404 class). Kept literal; the drift gate
    (family-roots.test.ts) pins these against MEMBER_ROOM_FAMILIES. */
 export const FAMILY_ROOT_PATHS = [
-  '/namespaces',
-  '/types',
-  '/edges',
-  '/predicates',
-  '/families',
-  '/modes',
-  '/permits',
-  '/secrets',
-  '/conformance',
-  '/error-namespaces',
-  '/error-categories',
-  '/mcp',
+  '/language/namespaces',
+  '/language/types',
+  '/language/edges',
+  '/language/predicates',
+  '/language/families',
+  '/language/modes',
+  '/language/permits',
+  '/language/secrets',
+  '/language/conformance',
+  '/language/error-namespaces',
+  '/language/error-categories',
+  '/how/oracle',
   '/truth',
 ]
 
@@ -195,7 +195,7 @@ export const TOOL_PATHS = [
 /* the verb rooms — one static landing per verb (slug = verb name:
    /verbs/infer). Same prerender law; kept literal; the language drift gate
    (src/test/language.test.ts) pins these against CANON.verbNames. */
-export const VERB_PATHS = ['/verbs/infer', '/verbs/exec', '/verbs/invoke', '/verbs/agent']
+export const VERB_PATHS = ['/language/verbs/infer', '/language/verbs/exec', '/language/verbs/invoke', '/language/verbs/agent']
 
 /* the keyword register's deep pages — one static landing per language word
    (slug = the key as typed: /language/with). Same prerender law;
@@ -203,68 +203,68 @@ export const VERB_PATHS = ['/verbs/infer', '/verbs/exec', '/verbs/invoke', '/ver
    (src/test/language.test.ts) fails when the schema's word set and these
    paths diverge. */
 export const LANGUAGE_PATHS = [
-  '/language/after',
-  '/language/agent',
-  '/language/args',
-  '/language/backoff_max_ms',
-  '/language/backoff_ms',
-  '/language/backoff_strategy',
-  '/language/capture',
-  '/language/command',
-  '/language/config',
-  '/language/const',
-  '/language/cwd',
-  '/language/declassify',
-  '/language/decode',
-  '/language/description',
-  '/language/env',
-  '/language/exec',
-  '/language/fail_fast',
-  '/language/fail_workflow',
-  '/language/for_each',
-  '/language/id',
-  '/language/inert',
-  '/language/infer',
-  '/language/inputs',
-  '/language/invoke',
-  '/language/jitter',
-  '/language/max_attempts',
-  '/language/max_parallel',
-  '/language/max_tokens',
-  '/language/max_tokens_total',
-  '/language/max_turns',
-  '/language/model',
-  '/language/nika',
-  '/language/on_codes',
-  '/language/on_error',
-  '/language/on_finally',
-  '/language/output',
-  '/language/outputs',
-  '/language/permits',
-  '/language/policy',
-  '/language/prompt',
-  '/language/recover',
-  '/language/retry',
-  '/language/returns',
-  '/language/run',
-  '/language/schema',
-  '/language/secrets',
-  '/language/shell',
-  '/language/skills',
-  '/language/skip',
-  '/language/stdin',
-  '/language/system',
-  '/language/tasks',
-  '/language/temperature',
-  '/language/thinking',
-  '/language/timeout',
-  '/language/tool',
-  '/language/tools',
-  '/language/types',
-  '/language/vision',
-  '/language/when',
-  '/language/with',
-  '/language/workflow',
+  '/language/words/after',
+  '/language/words/agent',
+  '/language/words/args',
+  '/language/words/backoff_max_ms',
+  '/language/words/backoff_ms',
+  '/language/words/backoff_strategy',
+  '/language/words/capture',
+  '/language/words/command',
+  '/language/words/config',
+  '/language/words/const',
+  '/language/words/cwd',
+  '/language/words/declassify',
+  '/language/words/decode',
+  '/language/words/description',
+  '/language/words/env',
+  '/language/words/exec',
+  '/language/words/fail_fast',
+  '/language/words/fail_workflow',
+  '/language/words/for_each',
+  '/language/words/id',
+  '/language/words/inert',
+  '/language/words/infer',
+  '/language/words/inputs',
+  '/language/words/invoke',
+  '/language/words/jitter',
+  '/language/words/max_attempts',
+  '/language/words/max_parallel',
+  '/language/words/max_tokens',
+  '/language/words/max_tokens_total',
+  '/language/words/max_turns',
+  '/language/words/model',
+  '/language/words/nika',
+  '/language/words/on_codes',
+  '/language/words/on_error',
+  '/language/words/on_finally',
+  '/language/words/output',
+  '/language/words/outputs',
+  '/language/words/permits',
+  '/language/words/policy',
+  '/language/words/prompt',
+  '/language/words/recover',
+  '/language/words/retry',
+  '/language/words/returns',
+  '/language/words/run',
+  '/language/words/schema',
+  '/language/words/secrets',
+  '/language/words/shell',
+  '/language/words/skills',
+  '/language/words/skip',
+  '/language/words/stdin',
+  '/language/words/system',
+  '/language/words/tasks',
+  '/language/words/temperature',
+  '/language/words/thinking',
+  '/language/words/timeout',
+  '/language/words/tool',
+  '/language/words/tools',
+  '/language/words/types',
+  '/language/words/vision',
+  '/language/words/when',
+  '/language/words/with',
+  '/language/words/workflow',
 ]
 
 /* the skeleton register's deep pages — one static landing per template
@@ -287,7 +287,7 @@ export const TEMPLATE_PATHS = [
 /* ── LENS PATHS · GENERATED between these markers by scripts/lens/graph/build-lens.mjs
    (compiler output 3): the routes the LENS introduced — hubs and surfaces flip
    into existence by descriptor edit + recompile, never by hand here. DO NOT EDIT. */
-export const LENS_PATHS = ['/map', '/how/flow', '/how/boundary', '/how/proof', '/conformance/core', '/conformance/runtime', '/conformance/stdlib', '/edges/control', '/edges/failure-observation', '/edges/finally', '/edges/recovery', '/edges/terminal-observation', '/edges/value', '/error-categories/budget_error', '/error-categories/cancelled', '/error-categories/internal_error', '/error-categories/network_error', '/error-categories/parse_error', '/error-categories/process_error', '/error-categories/provider_error', '/error-categories/security_error', '/error-categories/timeout_error', '/error-categories/tool_error', '/error-categories/validation_error', '/error-categories/variable_error', '/error-namespaces/NIKA-AGENT', '/error-namespaces/NIKA-ASSERT', '/error-namespaces/NIKA-AUTH', '/error-namespaces/NIKA-BUILTIN', '/error-namespaces/NIKA-CANCEL', '/error-namespaces/NIKA-COMP', '/error-namespaces/NIKA-DAG', '/error-namespaces/NIKA-DECIDE', '/error-namespaces/NIKA-DEFAULT', '/error-namespaces/NIKA-DRIFT', '/error-namespaces/NIKA-EXEC', '/error-namespaces/NIKA-IMPL', '/error-namespaces/NIKA-INFER', '/error-namespaces/NIKA-INVOKE', '/error-namespaces/NIKA-LOCK', '/error-namespaces/NIKA-MCP', '/error-namespaces/NIKA-PARSE', '/error-namespaces/NIKA-POLICY', '/error-namespaces/NIKA-PORT', '/error-namespaces/NIKA-PROVIDER', '/error-namespaces/NIKA-SEC', '/error-namespaces/NIKA-TIMEOUT', '/error-namespaces/NIKA-TYPE', '/error-namespaces/NIKA-VALUES', '/error-namespaces/NIKA-VAR', '/families/core', '/families/data', '/families/file', '/families/introspection', '/families/media', '/families/network', '/mcp/nika_canon', '/mcp/nika_catalog', '/mcp/nika_check', '/mcp/nika_examples', '/mcp/nika_explain', '/mcp/nika_inspect', '/mcp/nika_schema', '/mcp/nika_template', '/mcp/nika_tools', '/modes/article', '/modes/feed', '/modes/jq', '/modes/links', '/modes/markdown', '/modes/metadata', '/modes/selector', '/modes/sitemap', '/modes/text', '/namespaces/config', '/namespaces/const', '/namespaces/inputs', '/namespaces/secrets', '/namespaces/tasks', '/namespaces/with', '/permits/env', '/permits/exec', '/permits/fs', '/permits/net', '/permits/tools', '/predicates/failure', '/predicates/skipped', '/predicates/success', '/predicates/terminal', '/providers/anthropic', '/providers/deepseek', '/providers/gemini', '/providers/groq', '/providers/huggingface', '/providers/llamacpp', '/providers/lmstudio', '/providers/localai', '/providers/mistral', '/providers/mock', '/providers/moonshot', '/providers/nvidia', '/providers/ollama', '/providers/openai', '/providers/openrouter', '/providers/vllm', '/providers/xai', '/secrets/env', '/secrets/file', '/secrets/vault', '/truth/canon', '/truth/catalog', '/truth/lens', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/types/bool', '/types/bytes', '/types/duration', '/types/integer', '/types/null', '/types/number', '/types/path', '/types/string', '/types/timestamp', '/types/uri', '/workflows/jobs/bookmark-triage', '/workflows/jobs/ceo-monday-brief', '/workflows/jobs/competitor-radar', '/workflows/jobs/config-drift-sentinel', '/workflows/jobs/contract-guard', '/workflows/jobs/csv-chart-report', '/workflows/jobs/deep-research-brief', '/workflows/jobs/etl-quarantine', '/workflows/jobs/image-fx-batch', '/workflows/jobs/incident-war-room', '/workflows/jobs/invoice-chaser', '/workflows/jobs/localization-factory', '/workflows/jobs/meeting-actions', '/workflows/jobs/model-bench', '/workflows/jobs/og-images', '/workflows/jobs/pr-review-fanout', '/workflows/jobs/price-watch', '/workflows/jobs/release-notes', '/workflows/jobs/release-radar', '/workflows/jobs/release-train', '/workflows/jobs/resume-screener', '/workflows/jobs/seo-content-brief', '/workflows/jobs/social-repurpose', '/workflows/jobs/standup-digest', '/workflows/jobs/support-triage', '/workflows/jobs/transcript-shownotes']
+export const LENS_PATHS = ['/map', '/how/flow', '/how/boundary', '/how/proof', '/catalog/providers/anthropic', '/catalog/providers/deepseek', '/catalog/providers/gemini', '/catalog/providers/groq', '/catalog/providers/huggingface', '/catalog/providers/llamacpp', '/catalog/providers/lmstudio', '/catalog/providers/localai', '/catalog/providers/mistral', '/catalog/providers/mock', '/catalog/providers/moonshot', '/catalog/providers/nvidia', '/catalog/providers/ollama', '/catalog/providers/openai', '/catalog/providers/openrouter', '/catalog/providers/vllm', '/catalog/providers/xai', '/how/oracle/nika_canon', '/how/oracle/nika_catalog', '/how/oracle/nika_check', '/how/oracle/nika_examples', '/how/oracle/nika_explain', '/how/oracle/nika_inspect', '/how/oracle/nika_schema', '/how/oracle/nika_template', '/how/oracle/nika_tools', '/language/conformance/core', '/language/conformance/runtime', '/language/conformance/stdlib', '/language/edges/control', '/language/edges/failure-observation', '/language/edges/finally', '/language/edges/recovery', '/language/edges/terminal-observation', '/language/edges/value', '/language/error-categories/budget_error', '/language/error-categories/cancelled', '/language/error-categories/internal_error', '/language/error-categories/network_error', '/language/error-categories/parse_error', '/language/error-categories/process_error', '/language/error-categories/provider_error', '/language/error-categories/security_error', '/language/error-categories/timeout_error', '/language/error-categories/tool_error', '/language/error-categories/validation_error', '/language/error-categories/variable_error', '/language/error-namespaces/NIKA-AGENT', '/language/error-namespaces/NIKA-ASSERT', '/language/error-namespaces/NIKA-AUTH', '/language/error-namespaces/NIKA-BUILTIN', '/language/error-namespaces/NIKA-CANCEL', '/language/error-namespaces/NIKA-COMP', '/language/error-namespaces/NIKA-DAG', '/language/error-namespaces/NIKA-DECIDE', '/language/error-namespaces/NIKA-DEFAULT', '/language/error-namespaces/NIKA-DRIFT', '/language/error-namespaces/NIKA-EXEC', '/language/error-namespaces/NIKA-IMPL', '/language/error-namespaces/NIKA-INFER', '/language/error-namespaces/NIKA-INVOKE', '/language/error-namespaces/NIKA-LOCK', '/language/error-namespaces/NIKA-MCP', '/language/error-namespaces/NIKA-PARSE', '/language/error-namespaces/NIKA-POLICY', '/language/error-namespaces/NIKA-PORT', '/language/error-namespaces/NIKA-PROVIDER', '/language/error-namespaces/NIKA-SEC', '/language/error-namespaces/NIKA-TIMEOUT', '/language/error-namespaces/NIKA-TYPE', '/language/error-namespaces/NIKA-VALUES', '/language/error-namespaces/NIKA-VAR', '/language/families/core', '/language/families/data', '/language/families/file', '/language/families/introspection', '/language/families/media', '/language/families/network', '/language/modes/article', '/language/modes/feed', '/language/modes/jq', '/language/modes/links', '/language/modes/markdown', '/language/modes/metadata', '/language/modes/selector', '/language/modes/sitemap', '/language/modes/text', '/language/namespaces/config', '/language/namespaces/const', '/language/namespaces/inputs', '/language/namespaces/secrets', '/language/namespaces/tasks', '/language/namespaces/with', '/language/permits/env', '/language/permits/exec', '/language/permits/fs', '/language/permits/net', '/language/permits/tools', '/language/predicates/failure', '/language/predicates/skipped', '/language/predicates/success', '/language/predicates/terminal', '/language/secrets/env', '/language/secrets/file', '/language/secrets/vault', '/language/types/bool', '/language/types/bytes', '/language/types/duration', '/language/types/integer', '/language/types/null', '/language/types/number', '/language/types/path', '/language/types/string', '/language/types/timestamp', '/language/types/uri', '/truth/canon', '/truth/catalog', '/truth/lens', '/truth/manifest', '/truth/mirror', '/truth/pack', '/truth/pin', '/truth/registry', '/truth/schema', '/truth/spec', '/workflows/jobs/bookmark-triage', '/workflows/jobs/ceo-monday-brief', '/workflows/jobs/competitor-radar', '/workflows/jobs/config-drift-sentinel', '/workflows/jobs/contract-guard', '/workflows/jobs/csv-chart-report', '/workflows/jobs/deep-research-brief', '/workflows/jobs/etl-quarantine', '/workflows/jobs/image-fx-batch', '/workflows/jobs/incident-war-room', '/workflows/jobs/invoice-chaser', '/workflows/jobs/localization-factory', '/workflows/jobs/meeting-actions', '/workflows/jobs/model-bench', '/workflows/jobs/og-images', '/workflows/jobs/pr-review-fanout', '/workflows/jobs/price-watch', '/workflows/jobs/release-notes', '/workflows/jobs/release-radar', '/workflows/jobs/release-train', '/workflows/jobs/resume-screener', '/workflows/jobs/seo-content-brief', '/workflows/jobs/social-repurpose', '/workflows/jobs/standup-digest', '/workflows/jobs/support-triage', '/workflows/jobs/transcript-shownotes']
 /* ── LENS PATHS END ── */
 
 /* the catalog world (D1 · engine-release clock) — hub + registers + one room
@@ -317,4 +317,4 @@ export const LESSON_PATHS = ['/workflows/path/01-hello', '/workflows/path/02-par
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, ...LENS_PATHS, '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, ...LENS_PATHS, '/spec', '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

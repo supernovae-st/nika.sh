@@ -37,7 +37,7 @@ export function VerbField() {
         {PRIMITIVES.map(({ verb, does, why }) => (
           <li key={verb}>
             <Link
-              to={`/verbs/${verb}`}
+              to={`/language/verbs/${verb}`}
               className="plate vfield-plate"
               style={{ ['--vf-hue' as string]: NIKA_VERB_HEX[verb] }}
             >
@@ -63,7 +63,7 @@ export function VerbField() {
       <p className="vfield-axis vfield-axis--low">and exactly one way to loop them</p>
 
       <Link
-        to="/verbs/agent"
+        to="/language/verbs/agent"
         className="plate vfield-plate vfield-plate--loop"
         style={{ ['--vf-hue' as string]: NIKA_VERB_HEX.agent }}
       >

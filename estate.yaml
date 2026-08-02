@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1190
+  classified_files: 1383
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 834
+    authored: 1027
     authored-pin: 3
     generated: 292
     pinned-copy: 21
     testimonial: 40
     foreign: 0
-  unverified-default: 55
+  unverified-default: 247
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 1e9bc24baaa1cc66b611607bfeb787bba9a29c7f1df86f30b9d0f9494e24726c
+  sha256: 0d3b6f83520f384ef39a849e2388e78e60cddd69337304e2fa7ea304d0e81dc5
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -255,10 +255,10 @@ files:
   sha256: 982e24ab9fd4b676556df34164279d435a18e359a4260544739c6c63c22e51ba
   evidence: "hand-written installer"
   note: "VERSION + VERSION_TRANSCRIPT rewritten by scripts/sync-version.mjs — the transcript is a REAL captured `nika --version` (honesty law: re-capture, never hand-edit)"
-- path: "public/language/depends_on/index.html"
+- path: "public/language/words/depends_on/index.html"
   class: generated
-  sha256: b43c813a3aa48ece07dc5a5fdf98e2302ad5ae5182e1b8666bdd4d3bbbeb5f69
-  evidence: "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/language/depends_on' → '/language/after' row): meta-refresh + canonical"
+  sha256: 7079f8750edda769aa5c72cde7c4e54225f1da09efe8c821fb1e68e204f74166
+  evidence: "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/language/words/depends_on' → '/language/words/after' row): meta-refresh + canonical"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
     gate: "src/test/lens.test.ts + design-graph.test.ts (+ lens-census/nav/sets companions) recompile + byte-diff — pnpm test in .github/workflows/gate.yml"
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 8302adb6a97e5e76a0be7487adfefde000e702fa5e957225460e3ca1691032f7
+  sha256: 6a69a03facbcee7fb8ce0a79224048ec2abfd270ace16beb44c67f271da3a847
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -286,7 +286,7 @@ files:
   evidence: "hand-written PWA manifest"
 - path: "public/map/constellation.svg"
   class: generated
-  sha256: 788518c6d98f1630c5efc56c75bac55b0c529e398cb6fa8285302ab6220252a4
+  sha256: 5ec1f8430a1fe0754ebc772ffe357283b3a5bea7741bef91f4570ca732393cb8
   evidence: "written by build-lens.mjs:1730 — the served twin of src/assets/constellation.generated.svg"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 04bf317f72f765fea24d725320d5101a31520dd51c97b3eefd6aa084468590f2
+  sha256: 59412d4a9234851ed4b38ca51d48c9c2596a1ee677a132bbffe3c167f79772c7
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -331,7 +331,7 @@ files:
   note: "unverified-default"
 - path: "public/ontology/language.json"
   class: generated
-  sha256: eb6804ed51c15fcc102d7a8f082e0a9a9d488884b657d7030c615776ea6edb10
+  sha256: bd53796a126e669d35666e7a08a6adc97a7b06e4b9a2168c02980df97dc43ce3
   evidence: "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -351,7 +351,7 @@ files:
     - "nika 0.107.0 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
-  sha256: 873b56461343dcec7a699c0d4051f91446b01794cd8a7e9d2b92512127197b23
+  sha256: 049e1d7d5fbb66aa653068afcdf2424d2cbb495e988c9b36915b2378af247e68
   evidence: "written by build-lens.mjs:1736 (redirects_format shape) — the append-only redirect registry (a published URL never 404s)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 0c0cb9d66ea0f6dad5f207e8bdc8e539c5defa2116177967d57e6ec109b39d4e
+  sha256: 518260e1fcc2fb0625960bf336b1d8c5806829f9af8999a6af16c1a0a86dba78
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 4a3755b3018f7ffec754deba6f4a9079250ffb6bfa5af96e3132dc30ff38aebf
+  sha256: 047b8b77c5c0439203f55166615c3ca51c75ba79b3b355698b1de6dbeca0f21d
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 441caf454a2c8c532172c54504e210520522826f11d31afee40827c1ecb6f65c
+  sha256: 43309620e3a5bbedf21f62bd2f54ebc67cd145f52f0f60494ca9d88ccf77de81
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -525,12 +525,12 @@ files:
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 4bdb42918b757736e4b682d7998e705347b357248050f1c3a1fd1337c19f7b09
+  sha256: 355855260f878b07b389c3f94a0370f0a4e8a6aebe6299a15cf41b3c53987291
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
   class: generated
-  sha256: 788518c6d98f1630c5efc56c75bac55b0c529e398cb6fa8285302ab6220252a4
+  sha256: 5ec1f8430a1fe0754ebc772ffe357283b3a5bea7741bef91f4570ca732393cb8
   evidence: "written by build-lens.mjs:1716 (.generated. basename · no textual marker inside the SVG)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -620,7 +620,7 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
   class: generated
-  sha256: 527ada4a6db550b9dacc280f15966407f33bc1f4309ea2bbfdbd5bd1fb391472
+  sha256: 70a2d3a2f3fda05664f6ec6dcf292c3a7bb7165dfc4e8aaf09738f84e17d84de
   evidence: "declared output of resync contract generator 'website-palette' (supernovae-st/nika.sh scripts/build-palette.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-palette.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -820,7 +820,7 @@ patterns:
 - glob: "public/concepts/**"
   class: generated
   match_count: 14
-  aggregate_sha256: 03740f5c479417b5e318c5286071b1f7828e5f9995aac639f8e31efb2b059255
+  aggregate_sha256: 19b8b2ad073e7bc33ae68fc8018e6c8176a00627236f26ae2c1e16fdd751c74c
   evidence: "lens redirect stubs (build-lens.mjs stub() · the redirects.json '/concepts/*' legacy_moves rows): meta-refresh + canonical — the append-only law: a published URL never 404s"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: d8a4b812e1e2eafe5a53f9f418e40c45cfae948ce4db72a707a79fb4309006a2
+  aggregate_sha256: 01e678cecbce513c7977274eb67d1af64bd3895fe5990836d1554d97f481c94d
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 33
-  aggregate_sha256: 703ab5d806494b5e55e3b6c71f020eb3f6c889aa7dedac1b62de7839acaade7d
+  aggregate_sha256: 54109f5086e726e34f9bd4c1846e4e1300b7c2469bdd44c1e3d81046bf19b2cd
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 420
-  aggregate_sha256: 58af04c2b02c18a4ed607d308136e37a7b870118f7ac9f6c2264b9d7c35393d6
+  aggregate_sha256: 734e775edda672219caaea6504afcfeb6fc68a542356ca4df3b60845533941ff
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 84
-  aggregate_sha256: 91d976525cc7af90baf88aa0549ca707ab93a7ce19267753c4d4f8b306db2952
+  match_count: 85
+  aggregate_sha256: 130d200177120d347a436003a5ae6d4efa9965ae587e88e9f4b253f10ad16a24
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,13 +950,129 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 54
-  aggregate_sha256: 053104b50367e533499ebd153af55807bac5b48c2291f43b99cf73192ab803d1
+  match_count: 246
+  aggregate_sha256: 8c1f77dbd623fe318627092d3c18deef534813dccdccb17bdad077315f640ae9
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
 - "public/boundary/index.html"
+- "public/conformance/core/index.html"
+- "public/conformance/index.html"
+- "public/conformance/runtime/index.html"
+- "public/conformance/stdlib/index.html"
+- "public/edges/control/index.html"
+- "public/edges/failure-observation/index.html"
+- "public/edges/finally/index.html"
+- "public/edges/index.html"
+- "public/edges/recovery/index.html"
+- "public/edges/terminal-observation/index.html"
+- "public/edges/value/index.html"
+- "public/error-categories/budget_error/index.html"
+- "public/error-categories/cancelled/index.html"
+- "public/error-categories/index.html"
+- "public/error-categories/internal_error/index.html"
+- "public/error-categories/network_error/index.html"
+- "public/error-categories/parse_error/index.html"
+- "public/error-categories/process_error/index.html"
+- "public/error-categories/provider_error/index.html"
+- "public/error-categories/security_error/index.html"
+- "public/error-categories/timeout_error/index.html"
+- "public/error-categories/tool_error/index.html"
+- "public/error-categories/validation_error/index.html"
+- "public/error-categories/variable_error/index.html"
+- "public/error-namespaces/NIKA-AGENT/index.html"
+- "public/error-namespaces/NIKA-ASSERT/index.html"
+- "public/error-namespaces/NIKA-AUTH/index.html"
+- "public/error-namespaces/NIKA-BUILTIN/index.html"
+- "public/error-namespaces/NIKA-CANCEL/index.html"
+- "public/error-namespaces/NIKA-COMP/index.html"
+- "public/error-namespaces/NIKA-DAG/index.html"
+- "public/error-namespaces/NIKA-DECIDE/index.html"
+- "public/error-namespaces/NIKA-DEFAULT/index.html"
+- "public/error-namespaces/NIKA-DRIFT/index.html"
+- "public/error-namespaces/NIKA-EXEC/index.html"
+- "public/error-namespaces/NIKA-IMPL/index.html"
+- "public/error-namespaces/NIKA-INFER/index.html"
+- "public/error-namespaces/NIKA-INVOKE/index.html"
+- "public/error-namespaces/NIKA-LOCK/index.html"
+- "public/error-namespaces/NIKA-MCP/index.html"
+- "public/error-namespaces/NIKA-PARSE/index.html"
+- "public/error-namespaces/NIKA-POLICY/index.html"
+- "public/error-namespaces/NIKA-PORT/index.html"
+- "public/error-namespaces/NIKA-PROVIDER/index.html"
+- "public/error-namespaces/NIKA-SEC/index.html"
+- "public/error-namespaces/NIKA-TIMEOUT/index.html"
+- "public/error-namespaces/NIKA-TYPE/index.html"
+- "public/error-namespaces/NIKA-VALUES/index.html"
+- "public/error-namespaces/NIKA-VAR/index.html"
+- "public/error-namespaces/index.html"
+- "public/families/core/index.html"
+- "public/families/data/index.html"
+- "public/families/file/index.html"
+- "public/families/index.html"
+- "public/families/introspection/index.html"
+- "public/families/media/index.html"
+- "public/families/network/index.html"
 - "public/flow/index.html"
+- "public/language/after/index.html"
+- "public/language/agent/index.html"
+- "public/language/args/index.html"
+- "public/language/backoff_max_ms/index.html"
+- "public/language/backoff_ms/index.html"
+- "public/language/backoff_strategy/index.html"
+- "public/language/capture/index.html"
+- "public/language/command/index.html"
+- "public/language/config/index.html"
+- "public/language/const/index.html"
+- "public/language/cwd/index.html"
+- "public/language/declassify/index.html"
+- "public/language/decode/index.html"
+- "public/language/description/index.html"
+- "public/language/env/index.html"
+- "public/language/exec/index.html"
+- "public/language/fail_fast/index.html"
+- "public/language/fail_workflow/index.html"
+- "public/language/for_each/index.html"
+- "public/language/id/index.html"
+- "public/language/inert/index.html"
+- "public/language/infer/index.html"
+- "public/language/inputs/index.html"
+- "public/language/invoke/index.html"
+- "public/language/jitter/index.html"
+- "public/language/max_attempts/index.html"
+- "public/language/max_parallel/index.html"
+- "public/language/max_tokens/index.html"
+- "public/language/max_tokens_total/index.html"
+- "public/language/max_turns/index.html"
+- "public/language/model/index.html"
+- "public/language/nika/index.html"
+- "public/language/on_codes/index.html"
+- "public/language/on_error/index.html"
+- "public/language/on_finally/index.html"
+- "public/language/output/index.html"
+- "public/language/outputs/index.html"
+- "public/language/policy/index.html"
+- "public/language/prompt/index.html"
+- "public/language/recover/index.html"
+- "public/language/retry/index.html"
+- "public/language/returns/index.html"
+- "public/language/run/index.html"
+- "public/language/schema/index.html"
+- "public/language/shell/index.html"
+- "public/language/skills/index.html"
+- "public/language/skip/index.html"
+- "public/language/stdin/index.html"
+- "public/language/system/index.html"
+- "public/language/tasks/index.html"
+- "public/language/temperature/index.html"
+- "public/language/thinking/index.html"
+- "public/language/timeout/index.html"
+- "public/language/tool/index.html"
+- "public/language/tools/index.html"
+- "public/language/vision/index.html"
+- "public/language/when/index.html"
+- "public/language/with/index.html"
+- "public/language/workflow/index.html"
 - "public/library/daily_brief/index.html"
 - "public/library/deep-research-brief/index.html"
 - "public/library/etl_quarantine/index.html"
@@ -968,8 +1084,68 @@ unverified:
 - "public/library/price_watch/index.html"
 - "public/library/social_repurpose/index.html"
 - "public/library/standup_digest/index.html"
+- "public/mcp/index.html"
+- "public/mcp/nika_canon/index.html"
+- "public/mcp/nika_catalog/index.html"
+- "public/mcp/nika_check/index.html"
+- "public/mcp/nika_examples/index.html"
+- "public/mcp/nika_explain/index.html"
+- "public/mcp/nika_inspect/index.html"
+- "public/mcp/nika_schema/index.html"
+- "public/mcp/nika_template/index.html"
+- "public/mcp/nika_tools/index.html"
+- "public/modes/article/index.html"
+- "public/modes/feed/index.html"
+- "public/modes/index.html"
+- "public/modes/jq/index.html"
+- "public/modes/links/index.html"
+- "public/modes/markdown/index.html"
+- "public/modes/metadata/index.html"
+- "public/modes/selector/index.html"
+- "public/modes/sitemap/index.html"
+- "public/modes/text/index.html"
+- "public/namespaces/config/index.html"
+- "public/namespaces/const/index.html"
+- "public/namespaces/index.html"
+- "public/namespaces/inputs/index.html"
+- "public/namespaces/secrets/index.html"
+- "public/namespaces/tasks/index.html"
+- "public/namespaces/with/index.html"
 - "public/ontology/design/index.html"
+- "public/permits/env/index.html"
+- "public/permits/exec/index.html"
+- "public/permits/fs/index.html"
+- "public/permits/index.html"
+- "public/permits/net/index.html"
+- "public/permits/tools/index.html"
+- "public/predicates/failure/index.html"
+- "public/predicates/index.html"
+- "public/predicates/skipped/index.html"
+- "public/predicates/success/index.html"
+- "public/predicates/terminal/index.html"
 - "public/proof/index.html"
+- "public/providers/anthropic/index.html"
+- "public/providers/deepseek/index.html"
+- "public/providers/gemini/index.html"
+- "public/providers/groq/index.html"
+- "public/providers/huggingface/index.html"
+- "public/providers/index.html"
+- "public/providers/llamacpp/index.html"
+- "public/providers/lmstudio/index.html"
+- "public/providers/localai/index.html"
+- "public/providers/mistral/index.html"
+- "public/providers/mock/index.html"
+- "public/providers/moonshot/index.html"
+- "public/providers/nvidia/index.html"
+- "public/providers/ollama/index.html"
+- "public/providers/openai/index.html"
+- "public/providers/openrouter/index.html"
+- "public/providers/vllm/index.html"
+- "public/providers/xai/index.html"
+- "public/secrets/env/index.html"
+- "public/secrets/file/index.html"
+- "public/secrets/index.html"
+- "public/secrets/vault/index.html"
 - "public/sources/index.html"
 - "public/templates/agent-loop/index.html"
 - "public/templates/api-upload-and-create/index.html"
@@ -982,6 +1158,17 @@ unverified:
 - "public/templates/index.html"
 - "public/templates/media-asset-pack/index.html"
 - "public/templates/website-brief/index.html"
+- "public/types/bool/index.html"
+- "public/types/bytes/index.html"
+- "public/types/duration/index.html"
+- "public/types/index.html"
+- "public/types/integer/index.html"
+- "public/types/null/index.html"
+- "public/types/number/index.html"
+- "public/types/path/index.html"
+- "public/types/string/index.html"
+- "public/types/timestamp/index.html"
+- "public/types/uri/index.html"
 - "public/use-cases/bookmark-triage/index.html"
 - "public/use-cases/ceo-monday-brief/index.html"
 - "public/use-cases/competitor-radar/index.html"
@@ -1009,4 +1196,9 @@ unverified:
 - "public/use-cases/standup-digest/index.html"
 - "public/use-cases/support-triage/index.html"
 - "public/use-cases/transcript-shownotes/index.html"
+- "public/verbs/agent/index.html"
+- "public/verbs/exec/index.html"
+- "public/verbs/index.html"
+- "public/verbs/infer/index.html"
+- "public/verbs/invoke/index.html"
 - "public/workflows/lessons.json"

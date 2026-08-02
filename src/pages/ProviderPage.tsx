@@ -146,9 +146,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/providers/${id}`).link,
+    link: routeHead(`/catalog/providers/${id}`).link,
     meta: [
-      ...routeHead(`/providers/${id}`).meta,
+      ...routeHead(`/catalog/providers/${id}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -200,7 +200,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="pvr-title" className="v4sec v4-in" data-provider={hit?.id}>
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/providers" className="td-crumb-link">
+            <Link to="/catalog/providers" className="td-crumb-link">
               ← the provider catalog
             </Link>
             {hit && (
@@ -229,7 +229,7 @@ export function Component() {
                 is not a spec-named provider. The engine also embeds an OpenAI-compatible tail;
                 ask the binary (<code>nika catalog</code>), check{' '}
                 <a href="/providers/catalog.json">the machine catalog</a>, or walk{' '}
-                <Link to="/providers">the register</Link>.
+                <Link to="/catalog/providers">the register</Link>.
               </p>
             </div>
           )}
@@ -540,7 +540,7 @@ export function Component() {
                   <ul className="td-chips">
                     {kin.map((p) => (
                       <li key={p.id}>
-                        <Link className="td-chip" to={`/providers/${p.id}`}>
+                        <Link className="td-chip" to={`/catalog/providers/${p.id}`}>
                           {p.id}
                         </Link>
                       </li>
@@ -562,7 +562,7 @@ export function Component() {
                     <p className="td-ref-k">the words that meet it</p>
                     <ul className="td-chips">
                       <li>
-                        <Link className="td-chip" to="/verbs/infer">
+                        <Link className="td-chip" to="/language/verbs/infer">
                           infer
                         </Link>
                       </li>
@@ -608,19 +608,19 @@ export function Component() {
               {/* ── the walk ── */}
               <nav className="td-nav" aria-label="Provider catalog walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/providers/${prev.id}`}>
+                  <Link className="td-nav-link" to={`/catalog/providers/${prev.id}`}>
                     <span className="td-nav-label">← previous</span>
                     {prev.id}
                   </Link>
                 ) : (
                   <span />
                 )}
-                <Link className="td-nav-link td-nav-link--all" to="/providers">
+                <Link className="td-nav-link td-nav-link--all" to="/catalog/providers">
                   <span className="td-nav-label">all {PROVIDERS.length}</span>
                   the register
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/providers/${next.id}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={`/catalog/providers/${next.id}`}>
                     <span className="td-nav-label">next →</span>
                     {next.id}
                   </Link>

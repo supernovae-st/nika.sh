@@ -5509,15 +5509,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 834,
+     "authored": 1027,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 292,
      "pinned-copy": 21,
      "testimonial": 40
     },
-    "classified_files": 1190,
-    "unverified": 55
+    "classified_files": 1383,
+    "unverified": 247
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",
@@ -18995,7 +18995,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Anthropic Claude",
-   "url": "/providers/anthropic"
+   "url": "/catalog/providers/anthropic"
   },
   {
    "data": {
@@ -19009,7 +19009,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "DeepSeek",
-   "url": "/providers/deepseek"
+   "url": "/catalog/providers/deepseek"
   },
   {
    "data": {
@@ -19023,7 +19023,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Google Gemini",
-   "url": "/providers/gemini"
+   "url": "/catalog/providers/gemini"
   },
   {
    "data": {
@@ -19037,7 +19037,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Groq",
-   "url": "/providers/groq"
+   "url": "/catalog/providers/groq"
   },
   {
    "data": {
@@ -19051,7 +19051,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Hugging Face",
-   "url": "/providers/huggingface"
+   "url": "/catalog/providers/huggingface"
   },
   {
    "data": {
@@ -19065,7 +19065,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "llama.cpp",
-   "url": "/providers/llamacpp"
+   "url": "/catalog/providers/llamacpp"
   },
   {
    "data": {
@@ -19079,7 +19079,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "LM Studio",
-   "url": "/providers/lmstudio"
+   "url": "/catalog/providers/lmstudio"
   },
   {
    "data": {
@@ -19093,7 +19093,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "LocalAI",
-   "url": "/providers/localai"
+   "url": "/catalog/providers/localai"
   },
   {
    "data": {
@@ -19107,7 +19107,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Mistral AI",
-   "url": "/providers/mistral"
+   "url": "/catalog/providers/mistral"
   },
   {
    "data": {
@@ -19121,7 +19121,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Mock",
-   "url": "/providers/mock"
+   "url": "/catalog/providers/mock"
   },
   {
    "data": {
@@ -19135,7 +19135,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Moonshot (Kimi)",
-   "url": "/providers/moonshot"
+   "url": "/catalog/providers/moonshot"
   },
   {
    "data": {
@@ -19149,7 +19149,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "NVIDIA",
-   "url": "/providers/nvidia"
+   "url": "/catalog/providers/nvidia"
   },
   {
    "data": {
@@ -19163,7 +19163,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "Ollama",
-   "url": "/providers/ollama"
+   "url": "/catalog/providers/ollama"
   },
   {
    "data": {
@@ -19177,7 +19177,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "OpenAI",
-   "url": "/providers/openai"
+   "url": "/catalog/providers/openai"
   },
   {
    "data": {
@@ -19191,7 +19191,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "OpenRouter",
-   "url": "/providers/openrouter"
+   "url": "/catalog/providers/openrouter"
   },
   {
    "data": {
@@ -19205,7 +19205,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "vLLM",
-   "url": "/providers/vllm"
+   "url": "/catalog/providers/vllm"
   },
   {
    "data": {
@@ -19219,7 +19219,7 @@
    "provenance": "supernovae-st/nika@5d61b7e13f1f (v0.107.0) · public/providers/catalog.json",
    "served": true,
    "title": "xAI Grok",
-   "url": "/providers/xai"
+   "url": "/catalog/providers/xai"
   },
   {
    "data": {

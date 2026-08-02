@@ -49,7 +49,7 @@ describe('/integrations · the register matches its paths and its laws', () => {
     const routeSet = new Set(PATHS)
     for (const e of INTEGRATIONS) {
       for (const t of e.kit?.mcpTools ?? []) {
-        expect(routeSet.has(`/mcp/${t}`), `${e.id} kit → /mcp/${t}`).toBe(true)
+        expect(routeSet.has(`/how/oracle/${t}`), `${e.id} kit → /mcp/${t}`).toBe(true)
       }
     }
   })

@@ -96,9 +96,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/verbs/${name}`).link,
+    link: routeHead(`/language/verbs/${name}`).link,
     meta: [
-      ...routeHead(`/verbs/${name}`).meta,
+      ...routeHead(`/language/verbs/${name}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -156,7 +156,7 @@ export function Component() {
       >
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/verbs" className="td-crumb-link">
+            <Link to="/language/verbs" className="td-crumb-link">
               ← the four verbs
             </Link>
             {chapter && (
@@ -188,8 +188,8 @@ export function Component() {
               <p className="tp-miss-name">{name}</p>
               <p>
                 is not a Nika verb. The language ships exactly four, locked forever:{' '}
-                <Link to="/verbs/infer">infer</Link> · <Link to="/verbs/exec">exec</Link> ·{' '}
-                <Link to="/verbs/invoke">invoke</Link> · <Link to="/verbs/agent">agent</Link>.
+                <Link to="/language/verbs/infer">infer</Link> · <Link to="/language/verbs/exec">exec</Link> ·{' '}
+                <Link to="/language/verbs/invoke">invoke</Link> · <Link to="/language/verbs/agent">agent</Link>.
                 Everything callable is a tool under <code>invoke:</code>. See{' '}
                 <Link to="/tools">the standard library</Link>.
               </p>
@@ -334,7 +334,7 @@ export function Component() {
                     <div>
                       <p className="td-ref-k">the providers</p>
                       <p className="td-none">
-                        <Link to="/providers">{CANON.providers} spec-named providers</Link>, local
+                        <Link to="/catalog/providers">{CANON.providers} spec-named providers</Link>, local
                         first; your keys ride env vars, never a config file.
                       </p>
                     </div>
@@ -375,19 +375,19 @@ export function Component() {
               {/* ── the walk ─────────────────────────────────────────────────── */}
               <nav className="td-nav" aria-label="The four verbs walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/verbs/${prev.verb}`}>
+                  <Link className="td-nav-link" to={`/language/verbs/${prev.verb}`}>
                     <span className="td-nav-label">← previous</span>
                     {prev.verb}
                   </Link>
                 ) : (
                   <span />
                 )}
-                <Link className="td-nav-link td-nav-link--all" to="/verbs">
+                <Link className="td-nav-link td-nav-link--all" to="/language/verbs">
                   <span className="td-nav-label">all 4</span>
                   the verbs
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/verbs/${next.verb}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={`/language/verbs/${next.verb}`}>
                     <span className="td-nav-label">next →</span>
                     {next.verb}
                   </Link>

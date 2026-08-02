@@ -53,7 +53,7 @@ export function ErrorCabinet() {
         {SHELF.map(({ ns, n, dominant, families }) => (
           <li key={ns}>
             <Link
-              to={`/error-namespaces/${ns}`}
+              to={`/language/error-namespaces/${ns}`}
               className="plate ec-front"
               data-tone={REACH.has(dominant) ? 'reach' : 'shape'}
             >

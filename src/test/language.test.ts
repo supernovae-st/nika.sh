@@ -48,7 +48,7 @@ describe('/language · the compiled projection matches the served schema', () =>
     const verbs = LANGUAGE_WORDS.filter((w) => w.verb).map((w) => w.word)
     expect(new Set(verbs)).toEqual(new Set(CANON.verbNames))
     /* and the four rooms exist for exactly those */
-    expect(new Set(VERB_PATHS)).toEqual(new Set(CANON.verbNames.map((v) => `/verbs/${v}`)))
+    expect(new Set(VERB_PATHS)).toEqual(new Set(CANON.verbNames.map((v) => `/language/verbs/${v}`)))
     /* the rooms' chapters cover every verb */
     expect(new Set(CHAPTERS.map((c) => c.verb))).toEqual(new Set(CANON.verbNames))
   })
@@ -73,9 +73,13 @@ describe('/language · the compiled projection matches the served schema', () =>
 
   it('/language and /verbs prerender, and every word owns its deep page', () => {
     expect(PATHS).toContain('/language')
-    expect(PATHS).toContain('/verbs')
+    expect(PATHS).toContain('/language/verbs')
     expect(new Set(LANGUAGE_PATHS)).toEqual(
-      new Set(LANGUAGE_WORDS.map((w) => `/language/${w.word}`)),
+      // the WORDS segment is explicit since 2026-08-02: permits · secrets ·
+      // types are both language words AND register families, and the bare
+      // /language/permits now serves the FAMILY (the collision the target
+      // sitemap named). The word keeps its room one segment deeper.
+      new Set(LANGUAGE_WORDS.map((w) => `/language/words/${w.word}`)),
     )
   })
 

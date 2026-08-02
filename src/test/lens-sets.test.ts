@@ -116,7 +116,7 @@ describe('sets.yaml · the descriptor is structurally sound', () => {
 describe('sets.yaml · existing room sets match the routes the site serves', () => {
   const cases: [string, string[], (p: string) => string][] = [
     ['words', LANGUAGE_PATHS, (p) => p.replace('/language/', '')],
-    ['verbs', VERB_PATHS, (p) => p.replace('/verbs/', '')],
+    ['verbs', VERB_PATHS, (p) => p.replace('/language/verbs/', '')],
     ['builtins', TOOL_PATHS, (p) => p.replace('/tools/', '')],
     ['templates', TEMPLATE_PATHS, (p) => p.replace('/workflows/skeletons/', '')],
     ['error-codes', ERROR_PATHS, (p) => p.replace('/errors/', '')],
@@ -195,13 +195,13 @@ describe('sets.yaml · moved entries are complete and shaped as redirects', () =
        verdict INVERTED it: same URLs, real pages. The register keeps its
        anchors (the hub view); the room is the member's canonical url. */
     expect(need('providers').moved).toBeUndefined()
-    expect(need('providers').rooms_url).toBe('/providers')
+    expect(need('providers').rooms_url).toBe('/catalog/providers')
     const catalog = JSON.parse(
       readFileSync(join(ROOT, 'public/providers/catalog.json'), 'utf8'),
     ) as { providers: { id: string }[] }
     const paths = readFileSync(join(ROOT, 'site.config.ts'), 'utf8')
     for (const p of catalog.providers) {
-      expect(paths.includes(`'/providers/${p.id}'`), `/providers/${p.id} must prerender`).toBe(true)
+      expect(paths.includes(`'/catalog/providers/${p.id}'`), `/catalog/providers/${p.id} must prerender`).toBe(true)
     }
   })
 

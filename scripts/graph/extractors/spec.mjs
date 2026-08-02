@@ -4,7 +4,17 @@
 // — the compiler never re-derives upstream truth, it JOINS what the lanes
 // already proved.
 
-import { node, readJson } from '../lib.mjs'
+import { readFileSync } from 'node:fs'
+import { parse as parseYaml } from 'yaml'
+import { node, readJson, ROOT } from '../lib.mjs'
+
+/* the room base comes from the descriptor · the providers family joined the
+   catalog world on 2026-08-02 and a literal here would have kept minting the
+   old url (the same class the corpus extractor hit the day before). */
+const providerBase = (() => {
+  const sets = parseYaml(readFileSync(`${ROOT}/scripts/lens/graph/sets.yaml`, 'utf8')).sets
+  return (sets.find((x) => x.id === 'providers')?.rooms_url ?? '/providers/:id').replace(/\/:[^/]+$/, '')
+})()
 
 export function extract({ census, specRef, engineRef }) {
   const nodes = []
@@ -51,7 +61,7 @@ export function extract({ census, specRef, engineRef }) {
   // ── canonical providers (the 17 — the STANDARD, not the market) ──────────
   const providers = readJson('public/providers/catalog.json')
   for (const p of providers.providers) {
-    const url = `/providers/${p.id}`
+    const url = `${providerBase}/${p.id}`
     nodes.push(
       node({
         id: `provider-canonical/${p.id}`,

@@ -37,7 +37,13 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..')
    lives in three literals is a base that moves in two of them. */
 const roomBase = (S, id, fallback) =>
   (S.sets.sets.find((x) => x.id === id)?.rooms_url ?? fallback).replace(/\/:[^/]+$/, '')
+const configPaths = new Set(
+  [...readFileSync(join(ROOT, 'site.config.ts'), 'utf8').matchAll(/'(\/[^']*)'/g)].map((m) => m[1]),
+)
 const showcaseBase = (S) => roomBase(S, 'showcases', '/use-cases/:slug')
+const verbBase = (S) => roomBase(S, 'verbs', '/verbs/:name')
+const wordBase = (S) => roomBase(S, 'words', '/language/:word')
+const providerBase = (S) => roomBase(S, 'providers', '/providers/:id')
 const templateBase = (S) => roomBase(S, 'templates', '/templates/:name')
 const REPORT_ONLY = process.argv.includes('--report')
 const S = readSources(ROOT)
@@ -102,7 +108,7 @@ function membersOf(set) {
         member: w.word,
         title: w.word,
         opener: w.decls[0]?.desc ?? null,
-        url: `/language/${w.word}`,
+        url: `${wordBase(S)}/${w.word}`,
         status: 'ratified',
         meta: { scopes: w.decls.map((d) => d.scope), verb: w.verb },
       }))
@@ -136,7 +142,7 @@ function membersOf(set) {
       }))
     case 'verbs':
       return S.canon.verbNames.map((m) => ({
-        member: m, title: m, opener: null, url: `/verbs/${m}`, status: 'ratified',
+        member: m, title: m, opener: null, url: `${verbBase(S)}/${m}`, status: 'ratified',
       }))
     case 'builtins': {
       const all = [...new Set([...ratifiedBuiltins, ...shippedBuiltins])].sort()
@@ -429,9 +435,9 @@ const fromBlog = {}
 const postMentions = {}
 const MEMBER_ROOM = {
   tool: (id) => ({ label: `nika:${id}`, url: `/tools/${id}` }),
-  word: (id) => ({ label: id, url: `/language/${id}` }),
+  word: (id) => ({ label: id, url: `${wordBase(S)}/${id}` }),
   code: (id) => ({ label: id, url: `/errors/${id}` }),
-  provider: (id) => ({ label: id, url: `/providers/${id}` }),
+  provider: (id) => ({ label: id, url: `${providerBase(S)}/${id}` }),
 }
 for (const e of edges) {
   if (e.kind !== 'mentions' || !e.from.startsWith('post:')) continue
@@ -1135,9 +1141,17 @@ function resolveNavItem(item) {
      the page it opens · derived from the graph, never authored twice */
   if (node.kind === 'set') {
     const setDecl = S.sets.sets.find((s) => `set:${s.id}` === item.ref)
-    const page = setDecl.surface === 'rooms'
-      ? `/${(setDecl.rooms_url ?? '/x').split('/')[1]}`
-      : (setDecl.anchor_page ?? hubOf(setDecl)).split('#')[0]
+    /* the room BASE, not the first segment: a nested family
+       (/language/verbs/:name) resolved to /language and collided with the
+       language hub itself. Strip the param, keep every segment before it. */
+    /* the room BASE when it is a real page, else the anchor page: /language
+       renders every word, so /language/words is a base and never a page —
+       a door onto it pointed at nothing (footer-coverage, V3). */
+    const roomsBase = (setDecl.rooms_url ?? '/x').replace(/\/:[^/]+$/, '')
+    const page =
+      setDecl.surface === 'rooms' && configPaths.has(roomsBase)
+        ? roomsBase
+        : (setDecl.anchor_page ?? hubOf(setDecl)).split('#')[0]
     const soon = Boolean(setDecl.slot) || node.page_exists === false
     if (soon) {
       out.soon = true
@@ -1826,14 +1840,32 @@ for (const mv of S.sets.legacy_moves ?? []) {
     if (members.length === 0) {
       throw new Error(`legacy_moves: parametric ${mv.from} → ${mv.to} expands to ZERO members`)
     }
+    /* a doorway must never SHADOW a served route (zero-404 law 3), and the
+       expansion respects that by construction rather than emitting rows a
+       gate then rejects. Real case: `permits` · `secrets` · `types` are BOTH
+       language words AND register families, so /language/permits is now the
+       FAMILY root — a live page. The word keeps its room at
+       /language/words/permits; the bare URL serves the family. Never silent. */
+    const served = new Set(servedPaths)
+    const shadowed = []
     for (const m of members) {
+      const from = `${fromBase}/${m}`
+      if (served.has(from)) {
+        shadowed.push(from)
+        continue
+      }
       redirects.push({
-        from: `${fromBase}/${m}`,
+        from,
         to: `${toBase}/${m}`,
         status: 301,
         live: true,
         applies: mv.applied ?? null,
       })
+    }
+    if (shadowed.length) {
+      console.log(
+        `  legacy_moves ${mv.from}: ${shadowed.length} member(s) already SERVE that path, so no doorway is minted — ${shadowed.join(' · ')}`,
+      )
     }
     continue
   }

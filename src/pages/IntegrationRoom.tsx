@@ -257,7 +257,7 @@ export function Component() {
                       <ul className="td-chips">
                         {hit.kit.mcpTools.map((t) => (
                           <li key={t}>
-                            <Link className="td-chip" to={`/mcp/${t}`}>
+                            <Link className="td-chip" to={`/how/oracle/${t}`}>
                               {t}
                             </Link>
                           </li>

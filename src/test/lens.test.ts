@@ -10,7 +10,7 @@ import { HUBS } from '../pages/hub-data.generated'
 import { hubJsonldSets, sourcesJsonldSets } from '../pages/hub-lib'
 import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { SNIPPETS, SNIPPET_REGISTRY, CAPTURES } from '../content/snippets.generated'
-import { PATHS, PENDING_ERROR_CODES } from '../../site.config'
+import { FAMILY_ROOT_PATHS, PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 /* ── the lens compiler gates ─────────────────────────────────────────────────
    build-lens.mjs is the ONE compiler of the language lens; these gates make
@@ -44,7 +44,7 @@ const OUTPUTS = [
   // the in-place LENS_PATHS block + the moved-row 301 stubs are emissions too
   'site.config.ts',
   ...JSON.parse(readFileSync(join(__dirname, '../../public/redirects.json'), 'utf8'))
-    .redirects.filter((r: { from: string }) => r.from.startsWith('/providers/'))
+    .redirects.filter((r: { from: string }) => r.from.startsWith('/catalog/providers/'))
     .map((r: { from: string }) => `public${r.from}/index.html`),
 ]
 
@@ -144,8 +144,14 @@ describe('lens · rooms and routes cover each other', () => {
        until then the pending declaration is the room's known-to-the-graph
        proof — served with a gated declaration, never an orphan. */
     const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
-    const lensRoots = ['/language/', '/verbs/', '/tools/', '/workflows/skeletons/', '/errors/', '/providers/']
+    const lensRoots = ['/language/', '/language/verbs/', '/tools/', '/workflows/skeletons/', '/errors/', '/catalog/providers/']
+    /* a family ROOT is a served page and not a member node: it renders the
+       register, its members are the nodes. Since the families moved INSIDE
+       /language (2026-08-02) the /language/ prefix matches them too, so they
+       are named here rather than the prefix loosened. */
+    const roots = new Set<string>(FAMILY_ROOT_PATHS)
     for (const p of PATHS) {
+      if (roots.has(p)) continue
       if (!lensRoots.some((r) => p.startsWith(r))) continue
       expect(
         lensUrls.has(p) || moved.has(p) || pending.has(p),

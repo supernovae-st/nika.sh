@@ -74,7 +74,7 @@ function CodeRow({
         </a>
         <Link
           className={`er-cat er-cat--${entry.category}`}
-          to={`/error-categories/${entry.category}`}
+          to={`/language/error-categories/${entry.category}`}
           title={CATEGORY_GLOSS[entry.category] ?? 'see spec 05 · errors'}
         >
           {entry.category}
@@ -223,7 +223,7 @@ export function Component() {
           {groups.map((group, gi) => (
             <div className="er-ns" key={group.ns} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>
               <div className="cl-year-head">
-                <Link className="cl-year-n er-ns-n" to={`/error-namespaces/${group.ns}`} title="open the namespace's page">
+                <Link className="cl-year-n er-ns-n" to={`/language/error-namespaces/${group.ns}`} title="open the namespace's page">
                   {group.ns}
                 </Link>
                 <span className="cl-year-rule" aria-hidden />

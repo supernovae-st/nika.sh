@@ -46,7 +46,7 @@ describe('palette actions · pure whens, derived rows', () => {
     expect(a.when(ctx('/map'))).toBe(true)
     expect(a.when(ctx('/map', false, true))).toBe(false) // the veto wins
     expect(a.when(ctx('/'))).toBe(false)
-    expect(a.when(ctx('/types/string'))).toBe(false)
+    expect(a.when(ctx('/language/types/string'))).toBe(false)
   })
 
   it('locale rows equal variantsFor, self excluded (the i18n gate extends)', () => {

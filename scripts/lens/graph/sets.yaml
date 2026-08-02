@@ -69,7 +69,7 @@ layers:
 
   - id: acts
     title: The acts
-    hub: /verbs
+    hub: /language/verbs
     hub_exists: true
     opener: >-
       A verb is a distinct native execution model: infer thinks, exec runs,
@@ -81,7 +81,7 @@ layers:
     hub: /tools
     hub_exists: true
     # reach is the one layer with sibling hubs · /tools chains as primary
-    sibling_hubs: [/providers, /templates]
+    sibling_hubs: [/catalog/providers, /workflows/skeletons]
     opener: >-
       Reach is what a workflow can touch: the standard library, the model
       providers, the routing skeletons. Every capability is named, cataloged
@@ -153,7 +153,10 @@ sets:
     counted_in_canon: false
     closed: false
     surface: rooms
-    rooms_url: /language/:word
+    rooms_url: /language/words/:word
+    # the register ROOT is the world hub itself: /language renders every word,
+    # and /language/words is only a room BASE, never a page (V3 · 2026-08-02)
+    anchor_page: /language
     rooms_exist: true
     unique_data: "per-scope declarations (type · required · enum · pattern · desc) + usage evidence (language-usage.generated.ts)"
     defined_by: [spec/01-envelope.md, spec/03-dag.md, spec/04-variables.md]
@@ -174,7 +177,7 @@ sets:
     counted_in_canon: true
     closed: true
     surface: anchors
-    rooms_url: /namespaces   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/namespaces   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /language
     anchor_prefix: ns-
     defined_by: [spec/04-variables.md]
@@ -193,7 +196,7 @@ sets:
     counted_in_canon: false
     closed: false
     surface: anchors
-    rooms_url: /types   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/types   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /language
     anchor_prefix: type-
     defined_by: [spec/09-types.md]   # lands with the types wave · not in the vendored tree yet
@@ -211,7 +214,7 @@ sets:
     counted_in_canon: false   # deliberately · closed set, spec prose is the source
     closed: true
     surface: anchors
-    rooms_url: /edges   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/edges   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/flow
     anchor_prefix: edge-
     defined_by: [spec/03-dag.md]
@@ -237,7 +240,7 @@ sets:
     counted_in_canon: false
     closed: true
     surface: anchors
-    rooms_url: /predicates   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/predicates   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/flow
     anchor_prefix: predicate-
     defined_by: [spec/03-dag.md]
@@ -262,7 +265,7 @@ sets:
     counted_in_canon: true
     closed: true
     surface: rooms
-    rooms_url: /verbs/:name
+    rooms_url: /language/verbs/:name
     rooms_exist: true
     unique_data: "the verb's schema block (accepted words · required shape) + skeleton excerpts + its error namespace"
     defined_by: [spec/02-verbs.md]
@@ -301,7 +304,7 @@ sets:
     counted_in_canon: false
     closed: false
     surface: anchors
-    rooms_url: /families   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/families   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /tools
     anchor_prefix: ""   # /tools#core · /tools#file · …
     defined_by: [stdlib/builtins-v0.1.md]
@@ -320,8 +323,8 @@ sets:
     counted_in_canon: true
     closed: false
     surface: anchors   # + rooms (verdict 2026-07-18 · chaque élément sa page · WO-6 301s reborn as pages)
-    rooms_url: /providers   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /providers
+    rooms_url: /catalog/providers   # verdict 2026-07-18 · chaque élément sa page
+    anchor_page: /catalog/providers
     anchor_prefix: ""   # /providers#ollama · /providers#mistral · …
     order: "local-first (locked): the catalog order is the law · local · cloud · mock"
     unique_data: "env var · api dialect · default and cheap model · capabilities per provider (rendered as hub sections)"
@@ -342,7 +345,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: anchors
-    rooms_url: /modes   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/modes   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /tools/fetch
     anchor_section: modes
     anchor_prefix: mode-
@@ -380,7 +383,7 @@ sets:
     counted_in_canon: false
     closed: true
     surface: anchors
-    rooms_url: /permits   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/permits   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/boundary
     anchor_prefix: ""   # /boundary#exec · #fs · #net · #tools · #env
     defined_by: [spec/01-envelope.md]
@@ -405,7 +408,7 @@ sets:
     counted_in_canon: false
     closed: true
     surface: anchors
-    rooms_url: /secrets   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/secrets   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/boundary
     anchor_section: secrets
     anchor_prefix: secret-
@@ -448,7 +451,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: anchors
-    rooms_url: /error-namespaces   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/error-namespaces   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /errors
     anchor_prefix: ns-
     defined_by: [spec/05-errors.md]
@@ -471,7 +474,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: anchors
-    rooms_url: /error-categories   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/error-categories   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /errors
     anchor_prefix: cat-
     defined_by: [spec/05-errors.md]
@@ -490,7 +493,7 @@ sets:
     counted_in_canon: false
     closed: true
     surface: anchors
-    rooms_url: /conformance   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /language/conformance   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/proof
     anchor_section: conformance
     anchor_prefix: level-
@@ -513,7 +516,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: anchors
-    rooms_url: /mcp   # verdict 2026-07-18 · chaque élément sa page
+    rooms_url: /how/oracle   # verdict 2026-07-18 · chaque élément sa page
     anchor_page: /how/proof
     anchor_section: machine
     anchor_prefix: mcp-
@@ -610,6 +613,45 @@ surfaces:
 # meta-refresh stub (dist has no server rules · the stub IS the 301).
 # These are NOT lens surfaces — no node, no graph edge, just the door.
 legacy_moves:
+  # ── the /language world absorbs its families (the casse §1 · V3 ·
+  #    2026-08-02). Eleven register heads sat at the ROOT, which the target
+  #    sitemap names as the thing a stranger cannot read: « un inconnu ne
+  #    comprend pas /predicates top-level ». Each family is TWO rows: the
+  #    root, and one parametric row the compiler expands per member.
+  - { from: /namespaces, to: /language/namespaces, applied: language-world-v3 }
+  - { from: /namespaces/:id, to: /language/namespaces/:id, applied: language-world-v3 }
+  - { from: /types, to: /language/types, applied: language-world-v3 }
+  - { from: /types/:id, to: /language/types/:id, applied: language-world-v3 }
+  - { from: /edges, to: /language/edges, applied: language-world-v3 }
+  - { from: /edges/:id, to: /language/edges/:id, applied: language-world-v3 }
+  - { from: /predicates, to: /language/predicates, applied: language-world-v3 }
+  - { from: /predicates/:id, to: /language/predicates/:id, applied: language-world-v3 }
+  - { from: /families, to: /language/families, applied: language-world-v3 }
+  - { from: /families/:id, to: /language/families/:id, applied: language-world-v3 }
+  - { from: /modes, to: /language/modes, applied: language-world-v3 }
+  - { from: /modes/:id, to: /language/modes/:id, applied: language-world-v3 }
+  - { from: /permits, to: /language/permits, applied: language-world-v3 }
+  - { from: /permits/:id, to: /language/permits/:id, applied: language-world-v3 }
+  - { from: /secrets, to: /language/secrets, applied: language-world-v3 }
+  - { from: /secrets/:id, to: /language/secrets/:id, applied: language-world-v3 }
+  - { from: /conformance, to: /language/conformance, applied: language-world-v3 }
+  - { from: /conformance/:id, to: /language/conformance/:id, applied: language-world-v3 }
+  - { from: /error-namespaces, to: /language/error-namespaces, applied: language-world-v3 }
+  - { from: /error-namespaces/:id, to: /language/error-namespaces/:id, applied: language-world-v3 }
+  - { from: /error-categories, to: /language/error-categories, applied: language-world-v3 }
+  - { from: /error-categories/:id, to: /language/error-categories/:id, applied: language-world-v3 }
+  - { from: /verbs, to: /language/verbs, applied: language-world-v3 }
+  - { from: /verbs/:name, to: /language/verbs/:name, applied: language-world-v3 }
+  # the WORD collision the target sitemap names: permits · secrets · types are
+  # both words AND families, so the word segment becomes explicit. The old
+  # bare form keeps working for every word that is not a family name.
+  - { from: /language/:word, to: /language/words/:word, applied: language-world-v3 }
+  # the MCP oracle joins the récit world · the /mcp collision dies (D6)
+  - { from: /mcp, to: /how/oracle, applied: language-world-v3 }
+  - { from: /mcp/:id, to: /how/oracle/:id, applied: language-world-v3 }
+  # the provider market facet joins the catalog world
+  - { from: /providers, to: /catalog/providers, applied: language-world-v3 }
+  - { from: /providers/:id, to: /catalog/providers/:id, applied: language-world-v3 }
   # ── the /workflows world is born (the casse §1 · V2 · 2026-08-02) · the
   #    corpus gets one roof: the PATH is new, the jobs and the skeletons
   #    re-home under it. Room-level rows are expanded from the member census
@@ -644,7 +686,7 @@ legacy_moves:
   - { from: /library/invoice-chaser, to: /workflows/jobs/invoice-chaser, applied: library-fusion }
   - { from: /library/deep-research-brief, to: /workflows/jobs/deep-research-brief, applied: library-fusion }
   - { from: /library/localization-factory, to: /workflows/jobs/localization-factory, applied: library-fusion }
-  - { from: /language/depends_on, to: /language/after, applied: provider-rooms-arc }
+  - { from: /language/words/depends_on, to: /language/words/after, applied: provider-rooms-arc }
   - { from: /method, to: /timeline, applied: provider-rooms-arc }
   - { from: /concepts, to: /map, applied: provider-rooms-arc }
   - { from: /concepts/antifragility, to: /manifesto, applied: provider-rooms-arc }
@@ -655,7 +697,7 @@ legacy_moves:
   - { from: /concepts/declarative-intent, to: /manifesto, applied: provider-rooms-arc }
   - { from: /concepts/epistemic-awareness, to: /truth, applied: provider-rooms-arc }
   - { from: /concepts/graceful-degradation, to: /how/flow, applied: provider-rooms-arc }
-  - { from: /concepts/multi-provider, to: /providers, applied: provider-rooms-arc }
+  - { from: /concepts/multi-provider, to: /catalog/providers, applied: provider-rooms-arc }
   - { from: /concepts/observability-driven, to: /how/proof, applied: provider-rooms-arc }
   - { from: /concepts/scope-isolation, to: /how/boundary, applied: provider-rooms-arc }
   - { from: /concepts/self-healing, to: /how/flow, applied: provider-rooms-arc }

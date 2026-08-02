@@ -24,7 +24,7 @@ export interface MemberRoomFamily {
   members: MemberRoomEntry[]
 }
 export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
-  "namespaces": {
+  "language/namespaces": {
     "set": "namespaces",
     "title": "The namespaces",
     "hub": "/language",
@@ -32,42 +32,42 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "config",
         "title": "config",
-        "url": "/namespaces/config",
+        "url": "/language/namespaces/config",
         "node": "ns:config"
       },
       {
         "id": "const",
         "title": "const",
-        "url": "/namespaces/const",
+        "url": "/language/namespaces/const",
         "node": "ns:const"
       },
       {
         "id": "inputs",
         "title": "inputs",
-        "url": "/namespaces/inputs",
+        "url": "/language/namespaces/inputs",
         "node": "ns:inputs"
       },
       {
         "id": "secrets",
         "title": "secrets",
-        "url": "/namespaces/secrets",
+        "url": "/language/namespaces/secrets",
         "node": "ns:secrets"
       },
       {
         "id": "tasks",
         "title": "tasks",
-        "url": "/namespaces/tasks",
+        "url": "/language/namespaces/tasks",
         "node": "ns:tasks"
       },
       {
         "id": "with",
         "title": "with",
-        "url": "/namespaces/with",
+        "url": "/language/namespaces/with",
         "node": "ns:with"
       }
     ]
   },
-  "types": {
+  "language/types": {
     "set": "types",
     "title": "The types",
     "hub": "/language",
@@ -75,66 +75,66 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "bool",
         "title": "bool",
-        "url": "/types/bool",
+        "url": "/language/types/bool",
         "node": "type:bool"
       },
       {
         "id": "bytes",
         "title": "bytes",
-        "url": "/types/bytes",
+        "url": "/language/types/bytes",
         "node": "type:bytes"
       },
       {
         "id": "duration",
         "title": "duration",
-        "url": "/types/duration",
+        "url": "/language/types/duration",
         "node": "type:duration"
       },
       {
         "id": "integer",
         "title": "integer",
-        "url": "/types/integer",
+        "url": "/language/types/integer",
         "node": "type:integer"
       },
       {
         "id": "null",
         "title": "null",
-        "url": "/types/null",
+        "url": "/language/types/null",
         "node": "type:null"
       },
       {
         "id": "number",
         "title": "number",
-        "url": "/types/number",
+        "url": "/language/types/number",
         "node": "type:number"
       },
       {
         "id": "path",
         "title": "path",
-        "url": "/types/path",
+        "url": "/language/types/path",
         "node": "type:path"
       },
       {
         "id": "string",
         "title": "string",
-        "url": "/types/string",
+        "url": "/language/types/string",
         "node": "type:string"
       },
       {
         "id": "timestamp",
         "title": "timestamp",
-        "url": "/types/timestamp",
+        "url": "/language/types/timestamp",
         "node": "type:timestamp"
       },
       {
         "id": "uri",
         "title": "uri",
-        "url": "/types/uri",
+        "url": "/language/types/uri",
         "node": "type:uri"
       }
     ]
   },
-  "edges": {
+  "language/edges": {
     "set": "edge-kinds",
     "title": "The edge kinds",
     "hub": "/how/flow",
@@ -142,48 +142,48 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "control",
         "title": "control",
-        "url": "/edges/control",
+        "url": "/language/edges/control",
         "node": "edgekind:control",
         "gloss": "an after entry · carries its gate predicate"
       },
       {
         "id": "failure-observation",
         "title": "failure-observation",
-        "url": "/edges/failure-observation",
+        "url": "/language/edges/failure-observation",
         "node": "edgekind:failure-observation",
         "gloss": "an error read in with · flows only when the producer failed"
       },
       {
         "id": "finally",
         "title": "finally",
-        "url": "/edges/finally",
+        "url": "/language/edges/finally",
         "node": "edgekind:finally",
         "gloss": "reserved · named so the enum is complete before the trace wave gives cleanup identity"
       },
       {
         "id": "recovery",
         "title": "recovery",
-        "url": "/edges/recovery",
+        "url": "/language/edges/recovery",
         "node": "edgekind:recovery",
         "gloss": "an on_error.recover reference · a parking read, not an ordering edge"
       },
       {
         "id": "terminal-observation",
         "title": "terminal-observation",
-        "url": "/edges/terminal-observation",
+        "url": "/language/edges/terminal-observation",
         "node": "edgekind:terminal-observation",
         "gloss": "a status or timing read in with · settles with the producer"
       },
       {
         "id": "value",
         "title": "value",
-        "url": "/edges/value",
+        "url": "/language/edges/value",
         "node": "edgekind:value",
         "gloss": "a with binding referencing a task output · carries the binding name"
       }
     ]
   },
-  "predicates": {
+  "language/predicates": {
     "set": "gate-predicates",
     "title": "The gate predicates",
     "hub": "/how/flow",
@@ -191,34 +191,34 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "failure",
         "title": "failure",
-        "url": "/predicates/failure",
+        "url": "/language/predicates/failure",
         "node": "predicate:failure",
         "gloss": "fire when the producer failed terminally"
       },
       {
         "id": "skipped",
         "title": "skipped",
-        "url": "/predicates/skipped",
+        "url": "/language/predicates/skipped",
         "node": "predicate:skipped",
         "gloss": "fire when the producer was gated out"
       },
       {
         "id": "success",
         "title": "success",
-        "url": "/predicates/success",
+        "url": "/language/predicates/success",
         "node": "predicate:success",
         "gloss": "fire when the producer completed clean"
       },
       {
         "id": "terminal",
         "title": "terminal",
-        "url": "/predicates/terminal",
+        "url": "/language/predicates/terminal",
         "node": "predicate:terminal",
         "gloss": "fire when the producer reached any terminal state"
       }
     ]
   },
-  "families": {
+  "language/families": {
     "set": "tool-families",
     "title": "The tool families",
     "hub": "/tools",
@@ -226,168 +226,168 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "core",
         "title": "core",
-        "url": "/families/core",
+        "url": "/language/families/core",
         "node": "family:core"
       },
       {
         "id": "data",
         "title": "data",
-        "url": "/families/data",
+        "url": "/language/families/data",
         "node": "family:data"
       },
       {
         "id": "file",
         "title": "file",
-        "url": "/families/file",
+        "url": "/language/families/file",
         "node": "family:file"
       },
       {
         "id": "introspection",
         "title": "introspection",
-        "url": "/families/introspection",
+        "url": "/language/families/introspection",
         "node": "family:introspection"
       },
       {
         "id": "media",
         "title": "media",
-        "url": "/families/media",
+        "url": "/language/families/media",
         "node": "family:media"
       },
       {
         "id": "network",
         "title": "network",
-        "url": "/families/network",
+        "url": "/language/families/network",
         "node": "family:network"
       }
     ]
   },
-  "providers": {
+  "catalog/providers": {
     "set": "providers",
     "title": "The providers",
-    "hub": "/providers",
+    "hub": "/catalog/providers",
     "members": [
       {
         "id": "anthropic",
         "title": "Anthropic Claude",
-        "url": "/providers/anthropic",
+        "url": "/catalog/providers/anthropic",
         "node": "provider:anthropic",
         "gloss": "Claude models (Opus, Sonnet, Haiku)."
       },
       {
         "id": "deepseek",
         "title": "DeepSeek",
-        "url": "/providers/deepseek",
+        "url": "/catalog/providers/deepseek",
         "node": "provider:deepseek",
         "gloss": "DeepSeek Chat and Coder models."
       },
       {
         "id": "gemini",
         "title": "Google Gemini",
-        "url": "/providers/gemini",
+        "url": "/catalog/providers/gemini",
         "node": "provider:gemini",
         "gloss": "Gemini Pro, Flash, and Ultra models."
       },
       {
         "id": "groq",
         "title": "Groq",
-        "url": "/providers/groq",
+        "url": "/catalog/providers/groq",
         "node": "provider:groq",
         "gloss": "Fast inference with Llama, Mixtral models."
       },
       {
         "id": "huggingface",
         "title": "Hugging Face",
-        "url": "/providers/huggingface",
+        "url": "/catalog/providers/huggingface",
         "node": "provider:huggingface",
         "gloss": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
       },
       {
         "id": "llamacpp",
         "title": "llama.cpp",
-        "url": "/providers/llamacpp",
+        "url": "/catalog/providers/llamacpp",
         "node": "provider:llamacpp",
         "gloss": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
       },
       {
         "id": "lmstudio",
         "title": "LM Studio",
-        "url": "/providers/lmstudio",
+        "url": "/catalog/providers/lmstudio",
         "node": "provider:lmstudio",
         "gloss": "LM Studio local server (default port 1234) — serves the loaded model."
       },
       {
         "id": "localai",
         "title": "LocalAI",
-        "url": "/providers/localai",
+        "url": "/catalog/providers/localai",
         "node": "provider:localai",
         "gloss": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
       },
       {
         "id": "mistral",
         "title": "Mistral AI",
-        "url": "/providers/mistral",
+        "url": "/catalog/providers/mistral",
         "node": "provider:mistral",
         "gloss": "Mistral Large, Medium, Small models."
       },
       {
         "id": "mock",
         "title": "Mock",
-        "url": "/providers/mock",
+        "url": "/catalog/providers/mock",
         "node": "provider:mock",
         "gloss": "Deterministic test responses — no API calls, no keys needed."
       },
       {
         "id": "moonshot",
         "title": "Moonshot (Kimi)",
-        "url": "/providers/moonshot",
+        "url": "/catalog/providers/moonshot",
         "node": "provider:moonshot",
         "gloss": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
       },
       {
         "id": "nvidia",
         "title": "NVIDIA",
-        "url": "/providers/nvidia",
+        "url": "/catalog/providers/nvidia",
         "node": "provider:nvidia",
         "gloss": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
       },
       {
         "id": "ollama",
         "title": "Ollama",
-        "url": "/providers/ollama",
+        "url": "/catalog/providers/ollama",
         "node": "provider:ollama",
         "gloss": "Local Ollama server (default port 11434) — serves any pulled model."
       },
       {
         "id": "openai",
         "title": "OpenAI",
-        "url": "/providers/openai",
+        "url": "/catalog/providers/openai",
         "node": "provider:openai",
         "gloss": "GPT-5.x, the o-series, and other OpenAI models."
       },
       {
         "id": "openrouter",
         "title": "OpenRouter",
-        "url": "/providers/openrouter",
+        "url": "/catalog/providers/openrouter",
         "node": "provider:openrouter",
         "gloss": "200+ models via unified gateway."
       },
       {
         "id": "vllm",
         "title": "vLLM",
-        "url": "/providers/vllm",
+        "url": "/catalog/providers/vllm",
         "node": "provider:vllm",
         "gloss": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
       },
       {
         "id": "xai",
         "title": "xAI Grok",
-        "url": "/providers/xai",
+        "url": "/catalog/providers/xai",
         "node": "provider:xai",
         "gloss": "Grok models (Grok-3, Grok-4)."
       }
     ]
   },
-  "modes": {
+  "language/modes": {
     "set": "extract-modes",
     "title": "The extract modes",
     "hub": "/tools/fetch",
@@ -395,60 +395,60 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "article",
         "title": "article",
-        "url": "/modes/article",
+        "url": "/language/modes/article",
         "node": "mode:article"
       },
       {
         "id": "feed",
         "title": "feed",
-        "url": "/modes/feed",
+        "url": "/language/modes/feed",
         "node": "mode:feed"
       },
       {
         "id": "jq",
         "title": "jq",
-        "url": "/modes/jq",
+        "url": "/language/modes/jq",
         "node": "mode:jq"
       },
       {
         "id": "links",
         "title": "links",
-        "url": "/modes/links",
+        "url": "/language/modes/links",
         "node": "mode:links"
       },
       {
         "id": "markdown",
         "title": "markdown",
-        "url": "/modes/markdown",
+        "url": "/language/modes/markdown",
         "node": "mode:markdown"
       },
       {
         "id": "metadata",
         "title": "metadata",
-        "url": "/modes/metadata",
+        "url": "/language/modes/metadata",
         "node": "mode:metadata"
       },
       {
         "id": "selector",
         "title": "selector",
-        "url": "/modes/selector",
+        "url": "/language/modes/selector",
         "node": "mode:selector"
       },
       {
         "id": "sitemap",
         "title": "sitemap",
-        "url": "/modes/sitemap",
+        "url": "/language/modes/sitemap",
         "node": "mode:sitemap"
       },
       {
         "id": "text",
         "title": "text",
-        "url": "/modes/text",
+        "url": "/language/modes/text",
         "node": "mode:text"
       }
     ]
   },
-  "permits": {
+  "language/permits": {
     "set": "permit-families",
     "title": "The permit families",
     "hub": "/how/boundary",
@@ -456,41 +456,41 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "env",
         "title": "env",
-        "url": "/permits/env",
+        "url": "/language/permits/env",
         "node": "permit:env",
         "gloss": "exact env names a child may see · never inherited, never a glob"
       },
       {
         "id": "exec",
         "title": "exec",
-        "url": "/permits/exec",
+        "url": "/language/permits/exec",
         "node": "permit:exec",
         "gloss": "which commands may run · false kills the family"
       },
       {
         "id": "fs",
         "title": "fs",
-        "url": "/permits/fs",
+        "url": "/language/permits/fs",
         "node": "permit:fs",
         "gloss": "read and write globs · the walk root is gated"
       },
       {
         "id": "net",
         "title": "net",
-        "url": "/permits/net",
+        "url": "/language/permits/net",
         "node": "permit:net",
         "gloss": "http allowlist · the SSRF floor stays on regardless"
       },
       {
         "id": "tools",
         "title": "tools",
-        "url": "/permits/tools",
+        "url": "/language/permits/tools",
         "node": "permit:tools",
         "gloss": "which nika tools the file may invoke"
       }
     ]
   },
-  "secrets": {
+  "language/secrets": {
     "set": "secret-sources",
     "title": "The secret sources",
     "hub": "/how/boundary",
@@ -498,27 +498,27 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "env",
         "title": "env",
-        "url": "/secrets/env",
+        "url": "/language/secrets/env",
         "node": "secret:env",
         "gloss": "read from the environment at run time"
       },
       {
         "id": "file",
         "title": "file",
-        "url": "/secrets/file",
+        "url": "/language/secrets/file",
         "node": "secret:file",
         "gloss": "read from a path the boundary allows"
       },
       {
         "id": "vault",
         "title": "vault",
-        "url": "/secrets/vault",
+        "url": "/language/secrets/vault",
         "node": "secret:vault",
         "gloss": "the OS keychain backend · the default posture"
       }
     ]
   },
-  "error-namespaces": {
+  "language/error-namespaces": {
     "set": "error-namespaces",
     "title": "The error namespaces",
     "hub": "/errors",
@@ -526,170 +526,170 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "NIKA-AGENT",
         "title": "NIKA-AGENT",
-        "url": "/error-namespaces/NIKA-AGENT",
+        "url": "/language/error-namespaces/NIKA-AGENT",
         "node": "errns:NIKA-AGENT",
         "gloss": "agent: verb errors"
       },
       {
         "id": "NIKA-ASSERT",
         "title": "NIKA-ASSERT",
-        "url": "/error-namespaces/NIKA-ASSERT",
+        "url": "/language/error-namespaces/NIKA-ASSERT",
         "node": "errns:NIKA-ASSERT"
       },
       {
         "id": "NIKA-AUTH",
         "title": "NIKA-AUTH",
-        "url": "/error-namespaces/NIKA-AUTH",
+        "url": "/language/error-namespaces/NIKA-AUTH",
         "node": "errns:NIKA-AUTH"
       },
       {
         "id": "NIKA-BUILTIN",
         "title": "NIKA-BUILTIN",
-        "url": "/error-namespaces/NIKA-BUILTIN",
+        "url": "/language/error-namespaces/NIKA-BUILTIN",
         "node": "errns:NIKA-BUILTIN",
         "gloss": "Builtin tool errors · per-builtin sub-namespace"
       },
       {
         "id": "NIKA-CANCEL",
         "title": "NIKA-CANCEL",
-        "url": "/error-namespaces/NIKA-CANCEL",
+        "url": "/language/error-namespaces/NIKA-CANCEL",
         "node": "errns:NIKA-CANCEL",
         "gloss": "Task or workflow cancellation"
       },
       {
         "id": "NIKA-COMP",
         "title": "NIKA-COMP",
-        "url": "/error-namespaces/NIKA-COMP",
+        "url": "/language/error-namespaces/NIKA-COMP",
         "node": "errns:NIKA-COMP"
       },
       {
         "id": "NIKA-DAG",
         "title": "NIKA-DAG",
-        "url": "/error-namespaces/NIKA-DAG",
+        "url": "/language/error-namespaces/NIKA-DAG",
         "node": "errns:NIKA-DAG",
         "gloss": "DAG topology · cycles · invalid deps"
       },
       {
         "id": "NIKA-DECIDE",
         "title": "NIKA-DECIDE",
-        "url": "/error-namespaces/NIKA-DECIDE",
+        "url": "/language/error-namespaces/NIKA-DECIDE",
         "node": "errns:NIKA-DECIDE"
       },
       {
         "id": "NIKA-DEFAULT",
         "title": "NIKA-DEFAULT",
-        "url": "/error-namespaces/NIKA-DEFAULT",
+        "url": "/language/error-namespaces/NIKA-DEFAULT",
         "node": "errns:NIKA-DEFAULT"
       },
       {
         "id": "NIKA-DRIFT",
         "title": "NIKA-DRIFT",
-        "url": "/error-namespaces/NIKA-DRIFT",
+        "url": "/language/error-namespaces/NIKA-DRIFT",
         "node": "errns:NIKA-DRIFT"
       },
       {
         "id": "NIKA-EXEC",
         "title": "NIKA-EXEC",
-        "url": "/error-namespaces/NIKA-EXEC",
+        "url": "/language/error-namespaces/NIKA-EXEC",
         "node": "errns:NIKA-EXEC",
         "gloss": "exec: verb errors"
       },
       {
         "id": "NIKA-IMPL",
         "title": "NIKA-IMPL",
-        "url": "/error-namespaces/NIKA-IMPL",
+        "url": "/language/error-namespaces/NIKA-IMPL",
         "node": "errns:NIKA-IMPL",
         "gloss": "Engine internal errors"
       },
       {
         "id": "NIKA-INFER",
         "title": "NIKA-INFER",
-        "url": "/error-namespaces/NIKA-INFER",
+        "url": "/language/error-namespaces/NIKA-INFER",
         "node": "errns:NIKA-INFER",
         "gloss": "infer: verb errors"
       },
       {
         "id": "NIKA-INVOKE",
         "title": "NIKA-INVOKE",
-        "url": "/error-namespaces/NIKA-INVOKE",
+        "url": "/language/error-namespaces/NIKA-INVOKE",
         "node": "errns:NIKA-INVOKE",
         "gloss": "invoke: verb errors"
       },
       {
         "id": "NIKA-LOCK",
         "title": "NIKA-LOCK",
-        "url": "/error-namespaces/NIKA-LOCK",
+        "url": "/language/error-namespaces/NIKA-LOCK",
         "node": "errns:NIKA-LOCK"
       },
       {
         "id": "NIKA-MCP",
         "title": "NIKA-MCP",
-        "url": "/error-namespaces/NIKA-MCP",
+        "url": "/language/error-namespaces/NIKA-MCP",
         "node": "errns:NIKA-MCP",
         "gloss": "MCP client errors"
       },
       {
         "id": "NIKA-PARSE",
         "title": "NIKA-PARSE",
-        "url": "/error-namespaces/NIKA-PARSE",
+        "url": "/language/error-namespaces/NIKA-PARSE",
         "node": "errns:NIKA-PARSE",
         "gloss": "YAML parse + envelope validation"
       },
       {
         "id": "NIKA-POLICY",
         "title": "NIKA-POLICY",
-        "url": "/error-namespaces/NIKA-POLICY",
+        "url": "/language/error-namespaces/NIKA-POLICY",
         "node": "errns:NIKA-POLICY"
       },
       {
         "id": "NIKA-PORT",
         "title": "NIKA-PORT",
-        "url": "/error-namespaces/NIKA-PORT",
+        "url": "/language/error-namespaces/NIKA-PORT",
         "node": "errns:NIKA-PORT"
       },
       {
         "id": "NIKA-PROVIDER",
         "title": "NIKA-PROVIDER",
-        "url": "/error-namespaces/NIKA-PROVIDER",
+        "url": "/language/error-namespaces/NIKA-PROVIDER",
         "node": "errns:NIKA-PROVIDER",
         "gloss": "Provider adapter errors"
       },
       {
         "id": "NIKA-SEC",
         "title": "NIKA-SEC",
-        "url": "/error-namespaces/NIKA-SEC",
+        "url": "/language/error-namespaces/NIKA-SEC",
         "node": "errns:NIKA-SEC",
         "gloss": "Security policy violations (SSRF · blocklist)"
       },
       {
         "id": "NIKA-TIMEOUT",
         "title": "NIKA-TIMEOUT",
-        "url": "/error-namespaces/NIKA-TIMEOUT",
+        "url": "/language/error-namespaces/NIKA-TIMEOUT",
         "node": "errns:NIKA-TIMEOUT",
         "gloss": "Task or step timeouts"
       },
       {
         "id": "NIKA-TYPE",
         "title": "NIKA-TYPE",
-        "url": "/error-namespaces/NIKA-TYPE",
+        "url": "/language/error-namespaces/NIKA-TYPE",
         "node": "errns:NIKA-TYPE"
       },
       {
         "id": "NIKA-VALUES",
         "title": "NIKA-VALUES",
-        "url": "/error-namespaces/NIKA-VALUES",
+        "url": "/language/error-namespaces/NIKA-VALUES",
         "node": "errns:NIKA-VALUES"
       },
       {
         "id": "NIKA-VAR",
         "title": "NIKA-VAR",
-        "url": "/error-namespaces/NIKA-VAR",
+        "url": "/language/error-namespaces/NIKA-VAR",
         "node": "errns:NIKA-VAR",
         "gloss": "Variable resolution failures"
       }
     ]
   },
-  "error-categories": {
+  "language/error-categories": {
     "set": "error-categories",
     "title": "The error categories",
     "hub": "/errors",
@@ -697,78 +697,78 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "budget_error",
         "title": "budget_error",
-        "url": "/error-categories/budget_error",
+        "url": "/language/error-categories/budget_error",
         "node": "errcat:budget_error"
       },
       {
         "id": "cancelled",
         "title": "cancelled",
-        "url": "/error-categories/cancelled",
+        "url": "/language/error-categories/cancelled",
         "node": "errcat:cancelled"
       },
       {
         "id": "internal_error",
         "title": "internal_error",
-        "url": "/error-categories/internal_error",
+        "url": "/language/error-categories/internal_error",
         "node": "errcat:internal_error"
       },
       {
         "id": "network_error",
         "title": "network_error",
-        "url": "/error-categories/network_error",
+        "url": "/language/error-categories/network_error",
         "node": "errcat:network_error"
       },
       {
         "id": "parse_error",
         "title": "parse_error",
-        "url": "/error-categories/parse_error",
+        "url": "/language/error-categories/parse_error",
         "node": "errcat:parse_error"
       },
       {
         "id": "process_error",
         "title": "process_error",
-        "url": "/error-categories/process_error",
+        "url": "/language/error-categories/process_error",
         "node": "errcat:process_error"
       },
       {
         "id": "provider_error",
         "title": "provider_error",
-        "url": "/error-categories/provider_error",
+        "url": "/language/error-categories/provider_error",
         "node": "errcat:provider_error"
       },
       {
         "id": "security_error",
         "title": "security_error",
-        "url": "/error-categories/security_error",
+        "url": "/language/error-categories/security_error",
         "node": "errcat:security_error"
       },
       {
         "id": "timeout_error",
         "title": "timeout_error",
-        "url": "/error-categories/timeout_error",
+        "url": "/language/error-categories/timeout_error",
         "node": "errcat:timeout_error"
       },
       {
         "id": "tool_error",
         "title": "tool_error",
-        "url": "/error-categories/tool_error",
+        "url": "/language/error-categories/tool_error",
         "node": "errcat:tool_error"
       },
       {
         "id": "validation_error",
         "title": "validation_error",
-        "url": "/error-categories/validation_error",
+        "url": "/language/error-categories/validation_error",
         "node": "errcat:validation_error"
       },
       {
         "id": "variable_error",
         "title": "variable_error",
-        "url": "/error-categories/variable_error",
+        "url": "/language/error-categories/variable_error",
         "node": "errcat:variable_error"
       }
     ]
   },
-  "conformance": {
+  "language/conformance": {
     "set": "conformance-levels",
     "title": "The conformance levels",
     "hub": "/how/proof",
@@ -776,27 +776,27 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "core",
         "title": "core",
-        "url": "/conformance/core",
+        "url": "/language/conformance/core",
         "node": "level:core",
         "gloss": "parse · validate · DAG · variables · typed errors · no execution"
       },
       {
         "id": "runtime",
         "title": "runtime",
-        "url": "/conformance/runtime",
+        "url": "/language/conformance/runtime",
         "node": "level:runtime",
         "gloss": "executes verbs · evaluates when and for_each over run state"
       },
       {
         "id": "stdlib",
         "title": "stdlib",
-        "url": "/conformance/stdlib",
+        "url": "/language/conformance/stdlib",
         "node": "level:stdlib",
         "gloss": "proves the v0.1 library surface · the production default"
       }
     ]
   },
-  "mcp": {
+  "how/oracle": {
     "set": "mcp-tools",
     "title": "The oracle tools",
     "hub": "/how/proof",
@@ -804,55 +804,55 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
       {
         "id": "nika_canon",
         "title": "nika_canon",
-        "url": "/mcp/nika_canon",
+        "url": "/how/oracle/nika_canon",
         "node": "mcp:nika_canon"
       },
       {
         "id": "nika_catalog",
         "title": "nika_catalog",
-        "url": "/mcp/nika_catalog",
+        "url": "/how/oracle/nika_catalog",
         "node": "mcp:nika_catalog"
       },
       {
         "id": "nika_check",
         "title": "nika_check",
-        "url": "/mcp/nika_check",
+        "url": "/how/oracle/nika_check",
         "node": "mcp:nika_check"
       },
       {
         "id": "nika_examples",
         "title": "nika_examples",
-        "url": "/mcp/nika_examples",
+        "url": "/how/oracle/nika_examples",
         "node": "mcp:nika_examples"
       },
       {
         "id": "nika_explain",
         "title": "nika_explain",
-        "url": "/mcp/nika_explain",
+        "url": "/how/oracle/nika_explain",
         "node": "mcp:nika_explain"
       },
       {
         "id": "nika_inspect",
         "title": "nika_inspect",
-        "url": "/mcp/nika_inspect",
+        "url": "/how/oracle/nika_inspect",
         "node": "mcp:nika_inspect"
       },
       {
         "id": "nika_schema",
         "title": "nika_schema",
-        "url": "/mcp/nika_schema",
+        "url": "/how/oracle/nika_schema",
         "node": "mcp:nika_schema"
       },
       {
         "id": "nika_template",
         "title": "nika_template",
-        "url": "/mcp/nika_template",
+        "url": "/how/oracle/nika_template",
         "node": "mcp:nika_template"
       },
       {
         "id": "nika_tools",
         "title": "nika_tools",
-        "url": "/mcp/nika_tools",
+        "url": "/how/oracle/nika_tools",
         "node": "mcp:nika_tools"
       }
     ]

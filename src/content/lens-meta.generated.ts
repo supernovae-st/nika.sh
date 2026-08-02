@@ -82,7 +82,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "providers": {
     "count": 17,
-    "url": "/providers",
+    "url": "/catalog/providers",
     "title": "The providers"
   },
   "secret-sources": {
@@ -117,7 +117,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "verbs": {
     "count": 4,
-    "url": "/verbs",
+    "url": "/language/verbs",
     "title": "The four verbs"
   },
   "words": {
@@ -145,7 +145,7 @@ export const LENS_HUBS = [
   {
     "id": "acts",
     "title": "The acts",
-    "hub": "/verbs",
+    "hub": "/language/verbs",
     "exists": true,
     "lands": null
   },

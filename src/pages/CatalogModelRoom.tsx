@@ -85,7 +85,7 @@ export function Component() {
                 {CANONICAL_IDS.has(s.provider) && (
                   <>
                     {' · '}
-                    <Link to={`/providers/${s.provider}`}>the provider room</Link>
+                    <Link to={`/catalog/providers/${s.provider}`}>the provider room</Link>
                   </>
                 )}
               </p>

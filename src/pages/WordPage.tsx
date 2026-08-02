@@ -369,7 +369,7 @@ export function Component() {
                   <p className="td-gloss">
                     <b>{hit.word}</b> is one of the four verbs; its room owns the complete file:
                     the shape, the block contract, the skeletons that speak it.{' '}
-                    <Link to={`/verbs/${hit.word}`}>enter the verb's room →</Link>
+                    <Link to={`/language/verbs/${hit.word}`}>enter the verb's room →</Link>
                   </p>
                 ) : use?.usage ? (
                   <>
@@ -474,7 +474,7 @@ export function Component() {
                       <ul className="td-chips">
                         {(WORD_ACCEPTS[hit.word] ?? []).map((v) => (
                           <li key={v}>
-                            <a className="td-chip" href={`/verbs/${v}`}>
+                            <a className="td-chip" href={`/language/verbs/${v}`}>
                               {v}
                             </a>
                           </li>
@@ -572,7 +572,7 @@ export function Component() {
               </nav>
 
               <p className="tp-foot" data-rise>
-                The whole grammar in one place: <Link to="/verbs">the four verbs</Link> ·{' '}
+                The whole grammar in one place: <Link to="/language/verbs">the four verbs</Link> ·{' '}
                 <Link to="/tools">the standard library</Link> ·{' '}
                 <a href={`${SPEC}/tree/main/spec`}>the spec</a>. Try it in the{' '}
                 <Link to="/play">playground</Link>. <Link to="/spec">Read the reference →</Link>

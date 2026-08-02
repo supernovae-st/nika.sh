@@ -38,9 +38,9 @@ const CORE = [
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/errors', 'the typed error registry'],
   ['Tools', '/tools', 'the standard library'],
-  ['The four verbs', '/verbs', 'infer · exec · invoke · agent'],
+  ['The four verbs', '/language/verbs', 'infer · exec · invoke · agent'],
   ['The language', '/language', 'every word the schema declares'],
-  ['Providers', '/providers', 'local first · your keys'],
+  ['Providers', '/catalog/providers', 'local first · your keys'],
   ['Templates', '/workflows/skeletons', 'instantiable skeletons'],
   ['The map', '/map', 'every page, one graph'],
   ['The flow', '/how/flow', 'two doors, one graph · the gate matrix'],
@@ -152,7 +152,7 @@ export function compilePalette() {
     entries.push({
       kind: 'provider',
       label: `provider: ${p.id}`,
-      href: `/providers/${p.id}`,
+      href: `/catalog/providers/${p.id}`,
       hint: p.description,
     })
 
@@ -249,7 +249,7 @@ export function compilePalette() {
     ['agent', 'Delegate. An autonomous loop, on a leash you can read.'],
   ]
   for (const [v, hint] of VERBS)
-    entries.push({ kind: 'verb', label: `verb: ${v}`, href: `/verbs/${v}`, hint })
+    entries.push({ kind: 'verb', label: `verb: ${v}`, href: `/language/verbs/${v}`, hint })
 
   /* showcases · one room per conformance-gated workflow (slugs from the
      generated projection · regex like the words below — never an import) */
@@ -281,7 +281,7 @@ export function compilePalette() {
     entries.push({
       kind: 'word',
       label: w.word,
-      href: `/language/${w.word}`,
+      href: `/language/words/${w.word}`,
       hint: desc ? `${scopes} — ${desc}`.slice(0, 110) : scopes,
     })
   }

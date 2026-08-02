@@ -106,7 +106,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "acts",
     "title": "The acts",
-    "hub": "/verbs",
+    "hub": "/language/verbs",
     "exists": true,
     "lands": null,
     "opener": "A verb is a distinct native execution model: infer thinks, exec runs, invoke calls a tool, agent loops with judgment. The set is closed by design · everything callable is a tool under invoke.",
@@ -114,7 +114,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "verbs",
         "title": "The four verbs",
-        "url": "/verbs",
+        "url": "/language",
         "count": 4,
         "surface": "rooms",
         "slot": null,
@@ -157,7 +157,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "providers",
         "title": "The providers",
-        "url": "/providers",
+        "url": "/catalog/providers",
         "count": 17,
         "surface": "anchors",
         "slot": null,

@@ -48,7 +48,7 @@ describe('palette stage 2 · the pagefind merge stays lawful', () => {
     const rows = mergePageHits(
       new Set(),
       [
-        { url: '/providers/ollama/', title: 'ollama', excerpt: 'a doorway stub' },
+        { url: '/catalog/providers/ollama/', title: 'ollama', excerpt: 'a doorway stub' },
         { url: '/map/', title: 'The map', excerpt: 'served' },
       ],
       8,

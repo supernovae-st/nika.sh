@@ -103,7 +103,7 @@ export const SITE_MAP: MapGroup[] = [
       },
       {
         label: 'The four verbs',
-        href: '/verbs',
+        href: '/language/verbs',
         hint: 'infer · exec · invoke · agent; locked forever, one room each',
       },
       {
@@ -118,7 +118,7 @@ export const SITE_MAP: MapGroup[] = [
       },
       {
         label: 'Providers',
-        href: '/providers',
+        href: '/catalog/providers',
         hint: `local first · your keys · no lock-in (${PROVIDERS.length})`,
       },
       {
@@ -134,8 +134,8 @@ export const SITE_MAP: MapGroup[] = [
       /* the teaching path (V2 · 2026-08-02) · one room per numbered spec
          example, derived from the pin-sourced module */
       ...LESSONS.map((l) => ({ label: `path: ${l.slug}`, href: `/workflows/path/${l.slug}` })),
-      ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
-      ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
+      ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/language/verbs/${c.verb}` })),
+      ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/words/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
       /* the pending rooms (minted in the canon, awaiting the resync pin —
          pending-error-codes.ts, the leaf site.config derives ERROR_PATHS
@@ -157,7 +157,10 @@ export const SITE_MAP: MapGroup[] = [
          minus the dedicated doors already placed above (providers · truth:
          its root fused with the epistemology page, linked in product) */
       ...Object.keys(MEMBER_ROOM_FAMILIES)
-        .filter((f) => f !== 'providers' && f !== 'truth')
+        // the registry key is the whole path since the families moved inside
+        // their worlds (catalog/providers · language/types), so the two that
+        // are listed by hand above are named by their FULL key
+        .filter((f) => f !== 'catalog/providers' && f !== 'truth')
         .map((f) => ({
           label: `${f} · the root`,
           href: `/${f}`,

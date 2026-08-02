@@ -85,7 +85,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       label: 'the editor extension',
     },
     doors: [
-      { label: 'the oracle, one room per tool', href: '/mcp/nika_check' },
+      { label: 'the oracle, one room per tool', href: '/how/oracle/nika_check' },
       { label: 'the skeletons it scaffolds from', href: '/workflows/skeletons' },
       { label: 'the proof it can verify', href: '/how/proof' },
     ],
@@ -111,8 +111,8 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       label: 'Nika for Claude Code',
     },
     doors: [
-      { label: 'the oracle, one room per tool', href: '/mcp/nika_check' },
-      { label: 'the four verbs it writes', href: '/verbs' },
+      { label: 'the oracle, one room per tool', href: '/how/oracle/nika_check' },
+      { label: 'the four verbs it writes', href: '/language/verbs' },
     ],
     kit: AGENT_KIT,
   },
@@ -202,7 +202,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       { text: 'Any other client', code: '{"command": "nika", "args": ["mcp"]}' },
     ],
     doors: [
-      { label: 'the nine tools, one room each', href: '/mcp/nika_check' },
+      { label: 'the nine tools, one room each', href: '/how/oracle/nika_check' },
       { label: 'the proof surfaces', href: '/how/proof' },
     ],
   },
@@ -224,7 +224,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     ],
     doors: [
       { label: 'install, walked through', href: '/install' },
-      { label: 'the four verbs', href: '/verbs' },
+      { label: 'the four verbs', href: '/language/verbs' },
       { label: 'the proof surfaces', href: '/how/proof' },
     ],
     external: [{ label: 'releases', href: 'https://github.com/supernovae-st/nika/releases' }],

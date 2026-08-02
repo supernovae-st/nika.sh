@@ -60,7 +60,7 @@ function ProviderRow({ entry, active }: { entry: ProviderEntry; active: boolean 
   return (
     <li id={entry.id} className={`pv-row${active ? ' pv-row--active' : ''}`}>
       <div className="pv-row-head">
-        <Link className="pv-id" to={`/providers/${entry.id}`} title="open the provider's room">
+        <Link className="pv-id" to={`/catalog/providers/${entry.id}`} title="open the provider's room">
           {entry.id}
         </Link>
         <a className="pv-hash" href={`#${entry.id}`} aria-label={`anchor the ${entry.id} row`} title="cite this row">
@@ -159,9 +159,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead('/providers').link,
+    link: routeHead('/catalog/providers').link,
     meta: [
-      ...routeHead('/providers').meta,
+      ...routeHead('/catalog/providers').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

@@ -342,8 +342,8 @@ _OVERRIDES = [
         _LENS_INPUTS,
     ),
     _gen(
-        "public/language/depends_on/index.html",
-        "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/language/depends_on' → '/language/after' row): meta-refresh + canonical",
+        "public/language/words/depends_on/index.html",
+        "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/language/words/depends_on' → '/language/words/after' row): meta-refresh + canonical",
         f"node {_LENS} (pnpm lens)",
         _LENS_GATE,
         _LENS_INPUTS,

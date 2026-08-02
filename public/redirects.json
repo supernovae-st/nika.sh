@@ -73,7 +73,7 @@
     },
     {
       "from": "/concepts/multi-provider",
-      "to": "/providers",
+      "to": "/catalog/providers",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
@@ -107,6 +107,405 @@
       "applies": "provider-rooms-arc"
     },
     {
+      "from": "/conformance",
+      "to": "/language/conformance",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/conformance/core",
+      "to": "/language/conformance/core",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/conformance/runtime",
+      "to": "/language/conformance/runtime",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/conformance/stdlib",
+      "to": "/language/conformance/stdlib",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges",
+      "to": "/language/edges",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/control",
+      "to": "/language/edges/control",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/failure-observation",
+      "to": "/language/edges/failure-observation",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/finally",
+      "to": "/language/edges/finally",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/recovery",
+      "to": "/language/edges/recovery",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/terminal-observation",
+      "to": "/language/edges/terminal-observation",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/edges/value",
+      "to": "/language/edges/value",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories",
+      "to": "/language/error-categories",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/budget_error",
+      "to": "/language/error-categories/budget_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/cancelled",
+      "to": "/language/error-categories/cancelled",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/internal_error",
+      "to": "/language/error-categories/internal_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/network_error",
+      "to": "/language/error-categories/network_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/parse_error",
+      "to": "/language/error-categories/parse_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/process_error",
+      "to": "/language/error-categories/process_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/provider_error",
+      "to": "/language/error-categories/provider_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/security_error",
+      "to": "/language/error-categories/security_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/timeout_error",
+      "to": "/language/error-categories/timeout_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/tool_error",
+      "to": "/language/error-categories/tool_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/validation_error",
+      "to": "/language/error-categories/validation_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-categories/variable_error",
+      "to": "/language/error-categories/variable_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces",
+      "to": "/language/error-namespaces",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-AGENT",
+      "to": "/language/error-namespaces/NIKA-AGENT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-ASSERT",
+      "to": "/language/error-namespaces/NIKA-ASSERT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-AUTH",
+      "to": "/language/error-namespaces/NIKA-AUTH",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-BUILTIN",
+      "to": "/language/error-namespaces/NIKA-BUILTIN",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-CANCEL",
+      "to": "/language/error-namespaces/NIKA-CANCEL",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-COMP",
+      "to": "/language/error-namespaces/NIKA-COMP",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-DAG",
+      "to": "/language/error-namespaces/NIKA-DAG",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-DECIDE",
+      "to": "/language/error-namespaces/NIKA-DECIDE",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-DEFAULT",
+      "to": "/language/error-namespaces/NIKA-DEFAULT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-DRIFT",
+      "to": "/language/error-namespaces/NIKA-DRIFT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-EXEC",
+      "to": "/language/error-namespaces/NIKA-EXEC",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-IMPL",
+      "to": "/language/error-namespaces/NIKA-IMPL",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-INFER",
+      "to": "/language/error-namespaces/NIKA-INFER",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-INVOKE",
+      "to": "/language/error-namespaces/NIKA-INVOKE",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-LOCK",
+      "to": "/language/error-namespaces/NIKA-LOCK",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-MCP",
+      "to": "/language/error-namespaces/NIKA-MCP",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-PARSE",
+      "to": "/language/error-namespaces/NIKA-PARSE",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-POLICY",
+      "to": "/language/error-namespaces/NIKA-POLICY",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-PORT",
+      "to": "/language/error-namespaces/NIKA-PORT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-PROVIDER",
+      "to": "/language/error-namespaces/NIKA-PROVIDER",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-SEC",
+      "to": "/language/error-namespaces/NIKA-SEC",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-TIMEOUT",
+      "to": "/language/error-namespaces/NIKA-TIMEOUT",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-TYPE",
+      "to": "/language/error-namespaces/NIKA-TYPE",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-VALUES",
+      "to": "/language/error-namespaces/NIKA-VALUES",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/error-namespaces/NIKA-VAR",
+      "to": "/language/error-namespaces/NIKA-VAR",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families",
+      "to": "/language/families",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/core",
+      "to": "/language/families/core",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/data",
+      "to": "/language/families/data",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/file",
+      "to": "/language/families/file",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/introspection",
+      "to": "/language/families/introspection",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/media",
+      "to": "/language/families/media",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/families/network",
+      "to": "/language/families/network",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/flow",
       "to": "/how/flow",
       "status": 301,
@@ -114,11 +513,424 @@
       "applies": "how-world-v1"
     },
     {
-      "from": "/language/depends_on",
-      "to": "/language/after",
+      "from": "/language/after",
+      "to": "/language/words/after",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/agent",
+      "to": "/language/words/agent",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/args",
+      "to": "/language/words/args",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/backoff_max_ms",
+      "to": "/language/words/backoff_max_ms",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/backoff_ms",
+      "to": "/language/words/backoff_ms",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/backoff_strategy",
+      "to": "/language/words/backoff_strategy",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/capture",
+      "to": "/language/words/capture",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/command",
+      "to": "/language/words/command",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/config",
+      "to": "/language/words/config",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/const",
+      "to": "/language/words/const",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/cwd",
+      "to": "/language/words/cwd",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/declassify",
+      "to": "/language/words/declassify",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/decode",
+      "to": "/language/words/decode",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/description",
+      "to": "/language/words/description",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/env",
+      "to": "/language/words/env",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/exec",
+      "to": "/language/words/exec",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/fail_fast",
+      "to": "/language/words/fail_fast",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/fail_workflow",
+      "to": "/language/words/fail_workflow",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/for_each",
+      "to": "/language/words/for_each",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/id",
+      "to": "/language/words/id",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/inert",
+      "to": "/language/words/inert",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/infer",
+      "to": "/language/words/infer",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/inputs",
+      "to": "/language/words/inputs",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/invoke",
+      "to": "/language/words/invoke",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/jitter",
+      "to": "/language/words/jitter",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/max_attempts",
+      "to": "/language/words/max_attempts",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/max_parallel",
+      "to": "/language/words/max_parallel",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/max_tokens",
+      "to": "/language/words/max_tokens",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/max_tokens_total",
+      "to": "/language/words/max_tokens_total",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/max_turns",
+      "to": "/language/words/max_turns",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/model",
+      "to": "/language/words/model",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/nika",
+      "to": "/language/words/nika",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/on_codes",
+      "to": "/language/words/on_codes",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/on_error",
+      "to": "/language/words/on_error",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/on_finally",
+      "to": "/language/words/on_finally",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/output",
+      "to": "/language/words/output",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/outputs",
+      "to": "/language/words/outputs",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/policy",
+      "to": "/language/words/policy",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/prompt",
+      "to": "/language/words/prompt",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/recover",
+      "to": "/language/words/recover",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/retry",
+      "to": "/language/words/retry",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/returns",
+      "to": "/language/words/returns",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/run",
+      "to": "/language/words/run",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/schema",
+      "to": "/language/words/schema",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/shell",
+      "to": "/language/words/shell",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/skills",
+      "to": "/language/words/skills",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/skip",
+      "to": "/language/words/skip",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/stdin",
+      "to": "/language/words/stdin",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/system",
+      "to": "/language/words/system",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/tasks",
+      "to": "/language/words/tasks",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/temperature",
+      "to": "/language/words/temperature",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/thinking",
+      "to": "/language/words/thinking",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/timeout",
+      "to": "/language/words/timeout",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/tool",
+      "to": "/language/words/tool",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/tools",
+      "to": "/language/words/tools",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/vision",
+      "to": "/language/words/vision",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/when",
+      "to": "/language/words/when",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/with",
+      "to": "/language/words/with",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/words/depends_on",
+      "to": "/language/words/after",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/language/workflow",
+      "to": "/language/words/workflow",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
     },
     {
       "from": "/library",
@@ -198,6 +1010,76 @@
       "applies": "library-fusion"
     },
     {
+      "from": "/mcp",
+      "to": "/how/oracle",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_canon",
+      "to": "/how/oracle/nika_canon",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_catalog",
+      "to": "/how/oracle/nika_catalog",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_check",
+      "to": "/how/oracle/nika_check",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_examples",
+      "to": "/how/oracle/nika_examples",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_explain",
+      "to": "/how/oracle/nika_explain",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_inspect",
+      "to": "/how/oracle/nika_inspect",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_schema",
+      "to": "/how/oracle/nika_schema",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_template",
+      "to": "/how/oracle/nika_template",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/mcp/nika_tools",
+      "to": "/how/oracle/nika_tools",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/method",
       "to": "/timeline",
       "status": 301,
@@ -205,11 +1087,361 @@
       "applies": "provider-rooms-arc"
     },
     {
+      "from": "/modes",
+      "to": "/language/modes",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/article",
+      "to": "/language/modes/article",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/feed",
+      "to": "/language/modes/feed",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/jq",
+      "to": "/language/modes/jq",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/links",
+      "to": "/language/modes/links",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/markdown",
+      "to": "/language/modes/markdown",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/metadata",
+      "to": "/language/modes/metadata",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/selector",
+      "to": "/language/modes/selector",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/sitemap",
+      "to": "/language/modes/sitemap",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/modes/text",
+      "to": "/language/modes/text",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces",
+      "to": "/language/namespaces",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/config",
+      "to": "/language/namespaces/config",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/const",
+      "to": "/language/namespaces/const",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/inputs",
+      "to": "/language/namespaces/inputs",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/secrets",
+      "to": "/language/namespaces/secrets",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/tasks",
+      "to": "/language/namespaces/tasks",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/namespaces/with",
+      "to": "/language/namespaces/with",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits",
+      "to": "/language/permits",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits/env",
+      "to": "/language/permits/env",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits/exec",
+      "to": "/language/permits/exec",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits/fs",
+      "to": "/language/permits/fs",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits/net",
+      "to": "/language/permits/net",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/permits/tools",
+      "to": "/language/permits/tools",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/predicates",
+      "to": "/language/predicates",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/predicates/failure",
+      "to": "/language/predicates/failure",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/predicates/skipped",
+      "to": "/language/predicates/skipped",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/predicates/success",
+      "to": "/language/predicates/success",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/predicates/terminal",
+      "to": "/language/predicates/terminal",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/proof",
       "to": "/how/proof",
       "status": 301,
       "live": true,
       "applies": "how-world-v1"
+    },
+    {
+      "from": "/providers",
+      "to": "/catalog/providers",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/anthropic",
+      "to": "/catalog/providers/anthropic",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/deepseek",
+      "to": "/catalog/providers/deepseek",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/gemini",
+      "to": "/catalog/providers/gemini",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/groq",
+      "to": "/catalog/providers/groq",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/huggingface",
+      "to": "/catalog/providers/huggingface",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/llamacpp",
+      "to": "/catalog/providers/llamacpp",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/lmstudio",
+      "to": "/catalog/providers/lmstudio",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/localai",
+      "to": "/catalog/providers/localai",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/mistral",
+      "to": "/catalog/providers/mistral",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/mock",
+      "to": "/catalog/providers/mock",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/moonshot",
+      "to": "/catalog/providers/moonshot",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/nvidia",
+      "to": "/catalog/providers/nvidia",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/ollama",
+      "to": "/catalog/providers/ollama",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/openai",
+      "to": "/catalog/providers/openai",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/openrouter",
+      "to": "/catalog/providers/openrouter",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/vllm",
+      "to": "/catalog/providers/vllm",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/xai",
+      "to": "/catalog/providers/xai",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/secrets",
+      "to": "/language/secrets",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/secrets/env",
+      "to": "/language/secrets/env",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/secrets/file",
+      "to": "/language/secrets/file",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/secrets/vault",
+      "to": "/language/secrets/vault",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
     },
     {
       "from": "/sitemap",
@@ -301,6 +1533,83 @@
       "status": 301,
       "live": true,
       "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/types",
+      "to": "/language/types",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/bool",
+      "to": "/language/types/bool",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/bytes",
+      "to": "/language/types/bytes",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/duration",
+      "to": "/language/types/duration",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/integer",
+      "to": "/language/types/integer",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/null",
+      "to": "/language/types/null",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/number",
+      "to": "/language/types/number",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/path",
+      "to": "/language/types/path",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/string",
+      "to": "/language/types/string",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/timestamp",
+      "to": "/language/types/timestamp",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/types/uri",
+      "to": "/language/types/uri",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
     },
     {
       "from": "/use-cases",
@@ -490,6 +1799,41 @@
       "status": 301,
       "live": true,
       "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/verbs",
+      "to": "/language/verbs",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/verbs/agent",
+      "to": "/language/verbs/agent",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/verbs/exec",
+      "to": "/language/verbs/exec",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/verbs/infer",
+      "to": "/language/verbs/infer",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/verbs/invoke",
+      "to": "/language/verbs/invoke",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
     }
   ]
 }

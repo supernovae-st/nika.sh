@@ -637,7 +637,7 @@ const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: 
                   The verb hue lights ONLY inside the code frame — the card chrome
                   and the rest of the reference stay monochrome. */}
               <div id="s1" className="spec-block" data-sec="" data-stratum="verbs" data-rise>
-                <SpecHead fig="S.1" name="The four verbs" register={{ href: '/verbs', label: 'the verb rooms' }} count={`${CANON.verbs} · locked forever`}>
+                <SpecHead fig="S.1" name="The four verbs" register={{ href: '/language/verbs', label: 'the verb rooms' }} count={`${CANON.verbs} · locked forever`}>
                   A verb is a <b>distinct native execution model</b>. A task binds exactly one. That is
                   the whole operation space: <code>fetch</code>, recall, db and files are <em>tools</em>{' '}
                   reached under <code>invoke:</code>, not verbs.
@@ -896,7 +896,7 @@ const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: 
                 <SpecHead
                   fig="S.5"
                   name="Providers"
-                  register={{ href: '/providers', label: 'the provider register' }}
+                  register={{ href: '/catalog/providers', label: 'the provider register' }}
                   count={`${CANON.providers} · ${CANON.providersLocal} local · ${CANON.providersCloud} cloud · ${CANON.providersTest} mock`}
                 >
                   Pick per task or per file. <b>Local-first</b>: <code>provider: ollama</code> runs

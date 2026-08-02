@@ -18,7 +18,12 @@ describe('/<family> · every roomed family owns its root', () => {
   })
 
   it('FAMILY_ROOT_PATHS is exactly the generic wing (registry minus the dedicated roots)', () => {
-    const DEDICATED = new Set(['providers'])
+    // The registry key IS the full path now (language/types · catalog/providers
+    // · how/oracle): families live inside worlds since 2026-08-02, so the root
+    // is `/${key}` whole, never `/${firstSegment}`. providers keeps its
+    // DEDICATED page (the Providers component), so it is not in the generic
+    // wing; every other family rides FamilyRoot.
+    const DEDICATED = new Set(['catalog/providers'])
     expect(new Set(FAMILY_ROOT_PATHS)).toEqual(
       new Set(
         Object.keys(MEMBER_ROOM_FAMILIES)

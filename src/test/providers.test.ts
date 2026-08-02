@@ -62,23 +62,25 @@ describe('/providers · the compiled projection matches the served catalog', () 
   })
 
   it('/providers prerenders (PATHS carries the register page)', () => {
-    expect(PATHS).toContain('/providers')
+    expect(PATHS).toContain('/catalog/providers')
   })
 
-  it('every provider room is REBORN as a real page (verdict 2026-07-18 · the WO-6 stubs die)', () => {
-    /* the fusion's 301 stubs are gone: /providers/:id prerenders the generic
-       member room at the SAME urls (zero broken links ever) — no stub file
-       may survive (public/ copies into dist and would shadow the page), and
-       the redirects manifest carries no provider rows */
+  it('no stub shadows a provider room, wherever the rooms live', () => {
+    /* The law is SHADOWING, not the old address. The rooms moved into the
+       catalog world on 2026-08-02 (/catalog/providers/:id), so a stub under
+       the OLD base is now a legitimate doorway and the thing that must never
+       exist is a stub at the SERVED base — public/ copies into dist and would
+       shadow the prerendered page. */
     for (const p of PROVIDERS) {
       expect(
-        existsSync(join(ROOT, `public/providers/${p.id}`)),
-        `${p.id}: a stub dir survives — it would shadow the prerendered room`,
+        existsSync(join(ROOT, `public/catalog/providers/${p.id}`)),
+        `${p.id}: a stub sits at the served room path and would shadow it`,
       ).toBe(false)
     }
     const manifest = JSON.parse(readFileSync(join(ROOT, 'public/redirects.json'), 'utf8')) as {
       redirects: { from: string }[]
     }
-    expect(manifest.redirects.filter((r) => r.from.startsWith('/providers/'))).toEqual([])
+    // no doorway may point AT the served base either (zero-404 law 3)
+    expect(manifest.redirects.filter((r) => r.from.startsWith('/catalog/providers/'))).toEqual([])
   })
 })

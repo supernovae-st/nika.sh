@@ -29,9 +29,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead('/verbs').link,
+    link: routeHead('/language/verbs').link,
     meta: [
-      ...routeHead('/verbs').meta,
+      ...routeHead('/language/verbs').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -89,7 +89,7 @@ export function Component() {
                 </span>
                 <div className="vbs-body">
                   <div className="tp-row-head">
-                    <Link className="tp-name vbs-name" to={`/verbs/${c.verb}`}>
+                    <Link className="tp-name vbs-name" to={`/language/verbs/${c.verb}`}>
                       <span className="vb-glyph" aria-hidden>
                         {NIKA_VERB_GLYPH[c.verb]}
                       </span>
@@ -103,7 +103,7 @@ export function Component() {
                     <b>{c.claim}</b> {c.gloss}
                   </p>
                   <p className="vbs-open">
-                    <Link to={`/verbs/${c.verb}`}>open the room →</Link>
+                    <Link to={`/language/verbs/${c.verb}`}>open the room →</Link>
                   </p>
                 </div>
               </li>

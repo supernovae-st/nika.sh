@@ -164,7 +164,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "The four verbs",
           "icon": "verbs",
           "desc": "infer, exec, invoke, agent",
-          "to": "/verbs",
+          "to": "/language/verbs",
           "count": 4,
           "unit": "verbs",
           "layer": "acts"
@@ -228,7 +228,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Providers",
           "icon": "tiles",
           "desc": "Models to point it at",
-          "to": "/providers",
+          "to": "/catalog/providers",
           "count": 17,
           "unit": "providers",
           "layer": "reach"
@@ -243,7 +243,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Templates",
           "icon": "tiles",
           "desc": "Files to start from",
-          "to": "/workflows",
+          "to": "/workflows/skeletons",
           "count": 10,
           "unit": "files",
           "layer": "reach"

@@ -88,33 +88,33 @@ export const HUBS: Record<string, HubData> = {
           {
             "id": "value",
             "one_liner": "a with binding referencing a task output · carries the binding name",
-            "url": "/edges/value"
+            "url": "/language/edges/value"
           },
           {
             "id": "terminal-observation",
             "one_liner": "a status or timing read in with · settles with the producer",
-            "url": "/edges/terminal-observation"
+            "url": "/language/edges/terminal-observation"
           },
           {
             "id": "failure-observation",
             "one_liner": "an error read in with · flows only when the producer failed",
-            "url": "/edges/failure-observation"
+            "url": "/language/edges/failure-observation"
           },
           {
             "id": "control",
             "one_liner": "an after entry · carries its gate predicate",
-            "url": "/edges/control"
+            "url": "/language/edges/control"
           },
           {
             "id": "recovery",
             "one_liner": "an on_error.recover reference · a parking read, not an ordering edge",
-            "url": "/edges/recovery"
+            "url": "/language/edges/recovery"
           },
           {
             "id": "finally",
             "one_liner": "reserved · named so the enum is complete before the trace wave gives cleanup identity",
             "slot": "W5",
-            "url": "/edges/finally"
+            "url": "/language/edges/finally"
           }
         ]
       },
@@ -132,22 +132,22 @@ export const HUBS: Record<string, HubData> = {
           {
             "id": "success",
             "one_liner": "fire when the producer completed clean",
-            "url": "/predicates/success"
+            "url": "/language/predicates/success"
           },
           {
             "id": "failure",
             "one_liner": "fire when the producer failed terminally",
-            "url": "/predicates/failure"
+            "url": "/language/predicates/failure"
           },
           {
             "id": "skipped",
             "one_liner": "fire when the producer was gated out",
-            "url": "/predicates/skipped"
+            "url": "/language/predicates/skipped"
           },
           {
             "id": "terminal",
             "one_liner": "fire when the producer reached any terminal state",
-            "url": "/predicates/terminal"
+            "url": "/language/predicates/terminal"
           }
         ]
       }
@@ -190,27 +190,27 @@ export const HUBS: Record<string, HubData> = {
           {
             "id": "exec",
             "one_liner": "which commands may run · false kills the family",
-            "url": "/permits/exec"
+            "url": "/language/permits/exec"
           },
           {
             "id": "fs",
             "one_liner": "read and write globs · the walk root is gated",
-            "url": "/permits/fs"
+            "url": "/language/permits/fs"
           },
           {
             "id": "net",
             "one_liner": "http allowlist · the SSRF floor stays on regardless",
-            "url": "/permits/net"
+            "url": "/language/permits/net"
           },
           {
             "id": "tools",
             "one_liner": "which nika tools the file may invoke",
-            "url": "/permits/tools"
+            "url": "/language/permits/tools"
           },
           {
             "id": "env",
             "one_liner": "exact env names a child may see · never inherited, never a glob",
-            "url": "/permits/env"
+            "url": "/language/permits/env"
           }
         ]
       },
@@ -228,17 +228,17 @@ export const HUBS: Record<string, HubData> = {
           {
             "id": "vault",
             "one_liner": "the OS keychain backend · the default posture",
-            "url": "/secrets/vault"
+            "url": "/language/secrets/vault"
           },
           {
             "id": "env",
             "one_liner": "read from the environment at run time",
-            "url": "/secrets/env"
+            "url": "/language/secrets/env"
           },
           {
             "id": "file",
             "one_liner": "read from a path the boundary allows",
-            "url": "/secrets/file"
+            "url": "/language/secrets/file"
           }
         ]
       }
@@ -289,17 +289,17 @@ export const HUBS: Record<string, HubData> = {
           {
             "id": "core",
             "one_liner": "parse · validate · DAG · variables · typed errors · no execution",
-            "url": "/conformance/core"
+            "url": "/language/conformance/core"
           },
           {
             "id": "runtime",
             "one_liner": "executes verbs · evaluates when and for_each over run state",
-            "url": "/conformance/runtime"
+            "url": "/language/conformance/runtime"
           },
           {
             "id": "stdlib",
             "one_liner": "proves the v0.1 library surface · the production default",
-            "url": "/conformance/stdlib"
+            "url": "/language/conformance/stdlib"
           }
         ]
       },
@@ -316,39 +316,39 @@ export const HUBS: Record<string, HubData> = {
         "members": [
           {
             "id": "nika_check",
-            "url": "/mcp/nika_check"
+            "url": "/how/oracle/nika_check"
           },
           {
             "id": "nika_explain",
-            "url": "/mcp/nika_explain"
+            "url": "/how/oracle/nika_explain"
           },
           {
             "id": "nika_schema",
-            "url": "/mcp/nika_schema"
+            "url": "/how/oracle/nika_schema"
           },
           {
             "id": "nika_examples",
-            "url": "/mcp/nika_examples"
+            "url": "/how/oracle/nika_examples"
           },
           {
             "id": "nika_template",
-            "url": "/mcp/nika_template"
+            "url": "/how/oracle/nika_template"
           },
           {
             "id": "nika_canon",
-            "url": "/mcp/nika_canon"
+            "url": "/how/oracle/nika_canon"
           },
           {
             "id": "nika_catalog",
-            "url": "/mcp/nika_catalog"
+            "url": "/how/oracle/nika_catalog"
           },
           {
             "id": "nika_tools",
-            "url": "/mcp/nika_tools"
+            "url": "/how/oracle/nika_tools"
           },
           {
             "id": "nika_inspect",
-            "url": "/mcp/nika_inspect"
+            "url": "/how/oracle/nika_inspect"
           }
         ]
       }

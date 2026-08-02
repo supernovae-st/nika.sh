@@ -29,7 +29,7 @@
     "gates": "node scripts/run-gates.mjs",
     "gates:fast": "node scripts/run-gates.mjs --fast",
     "lens": "node scripts/lens/graph/build-lens.mjs",
-    "postbuild": "pagefind --site dist && node scripts/sort-pagefind-entry.mjs",
+    "postbuild": "node scripts/prerender-coverage.mjs && pagefind --site dist && node scripts/sort-pagefind-entry.mjs",
     "bench": "node design/bench.mjs"
   },
   "dependencies": {

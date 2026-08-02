@@ -32,7 +32,7 @@ export function Component() {
       lede={
         <>
           Two catalogs live in Nika and this page keeps them honest. The{' '}
-          <Link to="/providers">{PROVIDERS.length} canonical providers</Link> are the standard · the
+          <Link to="/catalog/providers">{PROVIDERS.length} canonical providers</Link> are the standard · the
           seats the spec names. THIS world is the market facet: everything the downloadable binary
           ships knowledge of, vendored at the release pin · never HEAD, never a fetch. Each count
           names its clock.

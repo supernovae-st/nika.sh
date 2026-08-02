@@ -92,11 +92,11 @@ data language (jq) · workflows are callable · mock-first.
 
 - Language spec (Apache-2.0): https://github.com/supernovae-st/nika-spec
 - Standard library register (every nika: builtin: args, required set, category): https://nika.sh/tools · one room per builtin (e.g. https://nika.sh/tools/fetch: the arg contract, the tool inside a real check-green file, the skeletons that ship it) · machine catalog: https://nika.sh/tools/catalog.json
-- The four verbs (one room each: block contract, a complete file, the skeletons that speak it): https://nika.sh/verbs (e.g. https://nika.sh/verbs/invoke)
-- The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/with) · the contract: https://nika.sh/schema/workflow.json
+- The four verbs (one room each: block contract, a complete file, the skeletons that speak it): https://nika.sh/language/verbs (e.g. https://nika.sh/language/verbs/invoke)
+- The language register (every schema-declared key: scopes, types, required flags): https://nika.sh/language (e.g. https://nika.sh/language/words/with) · the contract: https://nika.sh/schema/workflow.json
 - The truth system (how the site tells the truth: the pinned clocks, the truth words, the coverage score with its gaps named, the verify-yourself protocol): https://nika.sh/truth
 - Error register (every NIKA-* code: category, transient flag, failure line): https://nika.sh/errors · one room per code (e.g. https://nika.sh/errors/NIKA-PARSE-001) · machine catalog: https://nika.sh/errors/catalog.json
-- Provider register (local first, model pins, env vars): https://nika.sh/providers · one room per provider (angle, models, key ritual, an audited real file · e.g. https://nika.sh/providers/ollama) · machine catalog: https://nika.sh/providers/catalog.json
+- Provider register (local first, model pins, env vars): https://nika.sh/catalog/providers · one room per provider (angle, models, key ritual, an audited real file · e.g. https://nika.sh/catalog/providers/ollama) · machine catalog: https://nika.sh/providers/catalog.json
 - Engine source (AGPL): https://github.com/supernovae-st/nika
 - Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-agents
 - Editor lane (VS Code · Cursor · Windsurf: syntax, diagnostics, DAG view; files validate against https://nika.sh/spec/v1/workflow.schema.json via the yaml-language-server line): https://github.com/supernovae-st/nika-vscode
@@ -107,7 +107,7 @@ data language (jq) · workflows are callable · mock-first.
 - The changelog (the exhaustive ship log: every release and public milestone, dated · the timeline below is its provenance record): https://nika.sh/changelog
 - The map (every page, one graph): https://nika.sh/map · crawler twin: https://nika.sh/sitemap.xml · lens twin: https://nika.sh/ontology/language.json
 - The anatomy hubs (one page per language layer; every member owns a room of its own, linked from its hub): https://nika.sh/how/flow (edges · gates) · https://nika.sh/how/boundary (permits · secrets) · https://nika.sh/how/proof (conformance · trace · machine surfaces)
-- The register roots (every roomed family owns its root page listing its rooms, each member glossed): https://nika.sh/types · /namespaces · /edges · /predicates · /families · /modes · /permits · /secrets · /conformance · /error-namespaces · /error-categories · /mcp · /truth
+- The register roots (every roomed family owns its root page listing its rooms, each member glossed): https://nika.sh/language/types · /language/namespaces · /language/edges · /language/predicates · /language/families · /language/modes · /language/permits · /language/secrets · /language/conformance · /language/error-namespaces · /language/error-categories · /how/oracle · /truth
 - The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
 - Integrations (get Nika into your stack · one room per client lane and per public repo, install commands verbatim from the READMEs): https://nika.sh/integrations · Claude Code: https://nika.sh/integrations/claude-code · Codex: https://nika.sh/integrations/codex · Cursor: https://nika.sh/integrations/cursor · VS Code: https://nika.sh/integrations/vscode · Hermes/skills.sh: https://nika.sh/integrations/hermes · the MCP server: https://nika.sh/integrations/mcp
 - Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/workflows/jobs (the gallery lists all rooms; each room lives at its own slug under that path)

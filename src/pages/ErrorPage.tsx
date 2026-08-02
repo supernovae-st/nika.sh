@@ -255,12 +255,12 @@ export function Component() {
                     <p className="td-ref-k">the family it sits in</p>
                     <ul className="td-chips">
                       <li>
-                        <Link className="td-chip" to={`/error-namespaces/${ns}`}>
+                        <Link className="td-chip" to={`/language/error-namespaces/${ns}`}>
                           {ns}
                         </Link>
                       </li>
                       <li>
-                        <Link className="td-chip" to={`/error-categories/${hit.category}`}>
+                        <Link className="td-chip" to={`/language/error-categories/${hit.category}`}>
                           {hit.category}
                         </Link>
                       </li>

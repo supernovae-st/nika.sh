@@ -114,50 +114,50 @@ export const routes: RouteObject[] = [
       /* the language surfaces · the four verb ROOMS + the keyword register
          (every schema-declared word, /errors-style anchored rows). All
          prerender (VERB_PATHS + LANGUAGE_PATHS in site.config.ts). */
-      { path: 'verbs', Component: Verbs },
-      { path: 'verbs/:name', Component: VerbPage },
+      { path: 'language/verbs', Component: Verbs },
+      { path: 'language/verbs/:name', Component: VerbPage },
       { path: 'language', Component: Language },
-      { path: 'language/:word', Component: WordPage },
+      { path: 'language/words/:word', Component: WordPage },
       /* the provider register · the human twin of /providers/catalog.json.
          Spec-named set only; the engine's embedded tail stays a count. */
-      { path: 'providers', Component: Providers },
+      { path: 'catalog/providers', Component: Providers },
       /* rooms universelles (operator verdict 2026-07-18 · « chaque élément a
          sa page ») — ONE generic room route per roomed register family; the
          member registry + PATHS both derive from the descriptor, so a new
          family is a descriptor flip, never a route edit. Providers graduated
          to a DEDICATED room (the ToolPage/WordPage path): derived facts +
          authored meta + an audited donor file per provider. */
-      { path: 'providers/:id', Component: ProviderPage },
+      { path: 'catalog/providers/:id', Component: ProviderPage },
       /* every roomed family owns its ROOT too (the /types 404 of
          2026-07-24: rooms without a root are a trimmed-URL dead end) —
          one generic component, the registry drives it */
-      { path: 'namespaces', Component: FamilyRoot },
-      { path: 'types', Component: FamilyRoot },
-      { path: 'edges', Component: FamilyRoot },
-      { path: 'predicates', Component: FamilyRoot },
-      { path: 'families', Component: FamilyRoot },
-      { path: 'modes', Component: FamilyRoot },
-      { path: 'permits', Component: FamilyRoot },
-      { path: 'secrets', Component: FamilyRoot },
-      { path: 'conformance', Component: FamilyRoot },
-      { path: 'error-namespaces', Component: FamilyRoot },
-      { path: 'error-categories', Component: FamilyRoot },
-      { path: 'mcp', Component: FamilyRoot },
+      { path: 'language/namespaces', Component: FamilyRoot },
+      { path: 'language/types', Component: FamilyRoot },
+      { path: 'language/edges', Component: FamilyRoot },
+      { path: 'language/predicates', Component: FamilyRoot },
+      { path: 'language/families', Component: FamilyRoot },
+      { path: 'language/modes', Component: FamilyRoot },
+      { path: 'language/permits', Component: FamilyRoot },
+      { path: 'language/secrets', Component: FamilyRoot },
+      { path: 'language/conformance', Component: FamilyRoot },
+      { path: 'language/error-namespaces', Component: FamilyRoot },
+      { path: 'language/error-categories', Component: FamilyRoot },
+      { path: 'how/oracle', Component: FamilyRoot },
       /* the truth hub IS the epistemology page (fused from /sources
          2026-08-02 · §1.3) — its member rows render inside it */
       { path: 'truth', Component: SourcesPage },
-      { path: 'namespaces/:id', Component: MemberRoom },
-      { path: 'types/:id', Component: MemberRoom },
-      { path: 'edges/:id', Component: MemberRoom },
-      { path: 'predicates/:id', Component: MemberRoom },
-      { path: 'families/:id', Component: MemberRoom },
-      { path: 'modes/:id', Component: MemberRoom },
-      { path: 'permits/:id', Component: MemberRoom },
-      { path: 'secrets/:id', Component: MemberRoom },
-      { path: 'conformance/:id', Component: MemberRoom },
-      { path: 'error-namespaces/:id', Component: MemberRoom },
-      { path: 'error-categories/:id', Component: MemberRoom },
-      { path: 'mcp/:id', Component: MemberRoom },
+      { path: 'language/namespaces/:id', Component: MemberRoom },
+      { path: 'language/types/:id', Component: MemberRoom },
+      { path: 'language/edges/:id', Component: MemberRoom },
+      { path: 'language/predicates/:id', Component: MemberRoom },
+      { path: 'language/families/:id', Component: MemberRoom },
+      { path: 'language/modes/:id', Component: MemberRoom },
+      { path: 'language/permits/:id', Component: MemberRoom },
+      { path: 'language/secrets/:id', Component: MemberRoom },
+      { path: 'language/conformance/:id', Component: MemberRoom },
+      { path: 'language/error-namespaces/:id', Component: MemberRoom },
+      { path: 'language/error-categories/:id', Component: MemberRoom },
+      { path: 'how/oracle/:id', Component: MemberRoom },
       { path: 'truth/:id', Component: MemberRoom },
       /* the skeleton register · the human twin of /templates/catalog.json —
          and one ROOM per skeleton (TemplatePage: the file whole ·

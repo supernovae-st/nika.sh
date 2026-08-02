@@ -73,7 +73,7 @@ function WordRow({ entry, prose }: { entry: LanguageWord; prose: WordProse | nul
           </span>
         )}
         {entry.verb && (
-          <Link className="lg-room-link" to={`/verbs/${entry.word}`}>
+          <Link className="lg-room-link" to={`/language/verbs/${entry.word}`}>
             the verb's room →
           </Link>
         )}
@@ -161,7 +161,7 @@ export function Component() {
             engine serves: <a href="/schema/workflow.json">workflow.schema.json</a>, the same file
             your editor validates against. Descriptions are the schema's own. <b>Every word opens its own room</b>; the
             contract, the word in a real file, the block it lives in; the{' '}
-            <Link to="/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
+            <Link to="/language/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
             <a href={`${SPEC}/tree/main/spec`}>the spec</a>.
           </p>
 
@@ -256,7 +256,7 @@ export function Component() {
                   the namespaces · every <code>{'${{ … }}'}</code> reference starts at one
                 </p>
                 <ul className="td-chips">
-                  {MEMBER_ROOM_FAMILIES.namespaces.members.map((m) => (
+                  {MEMBER_ROOM_FAMILIES['language/namespaces'].members.map((m) => (
                     <li key={m.id}>
                       <Link className="td-chip" to={m.url}>
                         {m.title}
@@ -268,7 +268,7 @@ export function Component() {
               <div>
                 <p className="td-ref-k">the value types · what a declared shape can be</p>
                 <ul className="td-chips">
-                  {MEMBER_ROOM_FAMILIES.types.members.map((m) => (
+                  {MEMBER_ROOM_FAMILIES['language/types'].members.map((m) => (
                     <li key={m.id}>
                       <Link className="td-chip" to={m.url}>
                         {m.title}
@@ -283,7 +283,7 @@ export function Component() {
           <p className="tp-foot" data-rise>
             A key the schema doesn't declare is a <code>nika check</code> finding{' '}
             <b>before anything runs</b>. The language teaches itself. Try it in the{' '}
-            <Link to="/play">playground</Link>, walk <Link to="/verbs">the four verbs</Link> or{' '}
+            <Link to="/play">playground</Link>, walk <Link to="/language/verbs">the four verbs</Link> or{' '}
             <Link to="/tools">the standard library</Link>. <Link to="/spec">Read the spec →</Link>
           </p>
         </div>

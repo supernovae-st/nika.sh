@@ -43,7 +43,9 @@ describe('word openers · carried from the contract, never invented', () => {
       expect(tip, `${w} has an opener but no tip`).not.toBeNull()
       const href = tipHref(w)
       expect(href, `${w} has a tip but no door`).toBe(`/language/${w}`)
-      expect(LANGUAGE_PATHS, `${w}'s room is not served`).toContain(`/language/${w}`)
+      // the WORDS segment is explicit since 2026-08-02 (permits · secrets ·
+      // types are words AND families, and the bare path serves the family)
+      expect(LANGUAGE_PATHS, `${w}'s room is not served`).toContain(`/language/words/${w}`)
     }
   })
 })

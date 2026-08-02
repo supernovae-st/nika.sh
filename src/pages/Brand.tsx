@@ -331,7 +331,7 @@ export function Component() {
               →
             </span>
           </Link>
-          <Link to="/verbs" className="v4doclink v4doclink--dim">
+          <Link to="/language/verbs" className="v4doclink v4doclink--dim">
             The verbs
             <span aria-hidden className="v4doclink-arrow">
               {' '}

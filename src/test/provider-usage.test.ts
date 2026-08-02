@@ -38,7 +38,7 @@ const validate = ajv.compile(schema)
 
 const ids = PROVIDERS.map((p) => p.id)
 
-describe('/providers/:id · the usage projection matches its sources', () => {
+describe('/catalog/providers/:id · the usage projection matches its sources', () => {
   it('provider-usage.generated.ts is exactly what the compiler emits today (hermetic)', () => {
     const path = join(ROOT, 'src/content/provider-usage.generated.ts')
     const committed = readFileSync(path, 'utf8')

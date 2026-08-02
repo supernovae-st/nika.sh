@@ -96,7 +96,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "The four verbs",
-    "href": "/verbs",
+    "href": "/language/verbs",
     "hint": "infer · exec · invoke · agent"
   },
   {
@@ -108,7 +108,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "Providers",
-    "href": "/providers",
+    "href": "/catalog/providers",
     "hint": "local first · your keys"
   },
   {
@@ -149,32 +149,26 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "set",
-    "label": "The language words",
-    "href": "/language",
-    "hint": "Every key an author can type in a workflow file, each scoped to the surface where it speaks. The schema declares them · the register lists them all · each room shows the word at work."
-  },
-  {
-    "kind": "set",
     "label": "The namespaces",
-    "href": "/namespaces",
+    "href": "/language/namespaces",
     "hint": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime."
   },
   {
     "kind": "set",
     "label": "The types",
-    "href": "/types",
+    "href": "/language/types",
     "hint": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it."
   },
   {
     "kind": "set",
     "label": "The edge kinds",
-    "href": "/edges",
+    "href": "/language/edges",
     "hint": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec."
   },
   {
     "kind": "set",
     "label": "The gate predicates",
-    "href": "/predicates",
+    "href": "/language/predicates",
     "hint": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it."
   },
   {
@@ -186,19 +180,19 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The tool families",
-    "href": "/families",
+    "href": "/language/families",
     "hint": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts."
   },
   {
     "kind": "set",
     "label": "The providers",
-    "href": "/providers",
+    "href": "/catalog/providers",
     "hint": "Model access is provider-agnostic and local-first: the same file runs on a laptop runtime or a cloud API. Each provider declares its env var, its dialect and its models · the file picks, never the vendor."
   },
   {
     "kind": "set",
     "label": "The extract modes",
-    "href": "/modes",
+    "href": "/language/modes",
     "hint": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them."
   },
   {
@@ -210,13 +204,13 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The permit families",
-    "href": "/permits",
+    "href": "/language/permits",
     "hint": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny."
   },
   {
     "kind": "set",
     "label": "The secret sources",
-    "href": "/secrets",
+    "href": "/language/secrets",
     "hint": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind."
   },
   {
@@ -228,25 +222,25 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The error namespaces",
-    "href": "/error-namespaces",
+    "href": "/language/error-namespaces",
     "hint": "Codes group by namespace, one per surface of the engine: parse, DAG, variables, security, each verb and the machine seams. A namespace can exist before its first code ships · the register says so out loud."
   },
   {
     "kind": "set",
     "label": "The error categories",
-    "href": "/error-categories",
+    "href": "/language/error-categories",
     "hint": "A category names the kind of failure, orthogonal to the namespace that raised it. Transient categories are retry candidates · the rest are contract refusals that no retry will fix."
   },
   {
     "kind": "set",
     "label": "The conformance levels",
-    "href": "/conformance",
+    "href": "/language/conformance",
     "hint": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose."
   },
   {
     "kind": "set",
     "label": "The oracle tools",
-    "href": "/mcp",
+    "href": "/how/oracle",
     "hint": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything."
   },
   {
@@ -1398,103 +1392,103 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "provider",
     "label": "provider: ollama",
-    "href": "/providers/ollama",
+    "href": "/catalog/providers/ollama",
     "hint": "Local Ollama server (default port 11434) — serves any pulled model."
   },
   {
     "kind": "provider",
     "label": "provider: lmstudio",
-    "href": "/providers/lmstudio",
+    "href": "/catalog/providers/lmstudio",
     "hint": "LM Studio local server (default port 1234) — serves the loaded model."
   },
   {
     "kind": "provider",
     "label": "provider: llamacpp",
-    "href": "/providers/llamacpp",
+    "href": "/catalog/providers/llamacpp",
     "hint": "llama.cpp server (default port 8080) — serves the loaded GGUF; the wire model id is free-form."
   },
   {
     "kind": "provider",
     "label": "provider: localai",
-    "href": "/providers/localai",
+    "href": "/catalog/providers/localai",
     "hint": "LocalAI server (default port 8080) — an OpenAI-compatible gateway over local backends."
   },
   {
     "kind": "provider",
     "label": "provider: vllm",
-    "href": "/providers/vllm",
+    "href": "/catalog/providers/vllm",
     "hint": "vLLM server (default port 8000) — serves Hugging Face model ids at throughput."
   },
   {
     "kind": "provider",
     "label": "provider: mistral",
-    "href": "/providers/mistral",
+    "href": "/catalog/providers/mistral",
     "hint": "Mistral Large, Medium, Small models."
   },
   {
     "kind": "provider",
     "label": "provider: anthropic",
-    "href": "/providers/anthropic",
+    "href": "/catalog/providers/anthropic",
     "hint": "Claude models (Opus, Sonnet, Haiku)."
   },
   {
     "kind": "provider",
     "label": "provider: openai",
-    "href": "/providers/openai",
+    "href": "/catalog/providers/openai",
     "hint": "GPT-5.x, the o-series, and other OpenAI models."
   },
   {
     "kind": "provider",
     "label": "provider: gemini",
-    "href": "/providers/gemini",
+    "href": "/catalog/providers/gemini",
     "hint": "Gemini Pro, Flash, and Ultra models."
   },
   {
     "kind": "provider",
     "label": "provider: deepseek",
-    "href": "/providers/deepseek",
+    "href": "/catalog/providers/deepseek",
     "hint": "DeepSeek Chat and Coder models."
   },
   {
     "kind": "provider",
     "label": "provider: xai",
-    "href": "/providers/xai",
+    "href": "/catalog/providers/xai",
     "hint": "Grok models (Grok-3, Grok-4)."
   },
   {
     "kind": "provider",
     "label": "provider: groq",
-    "href": "/providers/groq",
+    "href": "/catalog/providers/groq",
     "hint": "Fast inference with Llama, Mixtral models."
   },
   {
     "kind": "provider",
     "label": "provider: openrouter",
-    "href": "/providers/openrouter",
+    "href": "/catalog/providers/openrouter",
     "hint": "200+ models via unified gateway."
   },
   {
     "kind": "provider",
     "label": "provider: huggingface",
-    "href": "/providers/huggingface",
+    "href": "/catalog/providers/huggingface",
     "hint": "Inference Providers router · 100+ open-weight models across 18 providers (Groq · Cerebras · Together · Scaleway · OVHcloud · …) · zero markup · :provider or :fastest/:cheapest routing suffix."
   },
   {
     "kind": "provider",
     "label": "provider: nvidia",
-    "href": "/providers/nvidia",
+    "href": "/catalog/providers/nvidia",
     "hint": "NVIDIA API (integrate.api.nvidia.com) · Nemotron 3 family (Open Model License · agentic-first) + hosted open models · self-hosted NIM containers expose the same surface."
   },
   {
     "kind": "provider",
     "label": "provider: moonshot",
-    "href": "/providers/moonshot",
+    "href": "/catalog/providers/moonshot",
     "hint": "Moonshot AI — Kimi K2, K2.5 (international endpoint api.moonshot.ai/v1). rig-core native provider."
   },
   {
     "kind": "provider",
     "label": "provider: mock",
-    "href": "/providers/mock",
+    "href": "/catalog/providers/mock",
     "hint": "Deterministic test responses — no API calls, no keys needed."
   },
   {
@@ -2555,78 +2549,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
-    "label": "namespaces · the register root",
-    "href": "/namespaces",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "types · the register root",
-    "href": "/types",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "edges · the register root",
-    "href": "/edges",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "predicates · the register root",
-    "href": "/predicates",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "families · the register root",
-    "href": "/families",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "modes · the register root",
-    "href": "/modes",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "permits · the register root",
-    "href": "/permits",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "secrets · the register root",
-    "href": "/secrets",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "conformance · the register root",
-    "href": "/conformance",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "error-namespaces · the register root",
-    "href": "/error-namespaces",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "error-categories · the register root",
-    "href": "/error-categories",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
-    "label": "mcp · the register root",
-    "href": "/mcp",
-    "hint": "every member, one room each"
-  },
-  {
-    "kind": "page",
     "label": "truth · the register root",
     "href": "/truth",
     "hint": "every member, one room each"
@@ -2634,529 +2556,529 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "member",
     "label": "edge: control",
-    "href": "/edges/control",
+    "href": "/language/edges/control",
     "hint": "an after entry · carries its gate predicate"
   },
   {
     "kind": "member",
     "label": "edge: failure-observation",
-    "href": "/edges/failure-observation",
+    "href": "/language/edges/failure-observation",
     "hint": "an error read in with · flows only when the producer failed"
   },
   {
     "kind": "member",
     "label": "edge: finally",
-    "href": "/edges/finally",
+    "href": "/language/edges/finally",
     "hint": "reserved · named so the enum is complete before the trace wave gives cleanup identity"
   },
   {
     "kind": "member",
     "label": "edge: recovery",
-    "href": "/edges/recovery",
+    "href": "/language/edges/recovery",
     "hint": "an on_error.recover reference · a parking read, not an ordering edge"
   },
   {
     "kind": "member",
     "label": "edge: terminal-observation",
-    "href": "/edges/terminal-observation",
+    "href": "/language/edges/terminal-observation",
     "hint": "a status or timing read in with · settles with the producer"
   },
   {
     "kind": "member",
     "label": "edge: value",
-    "href": "/edges/value",
+    "href": "/language/edges/value",
     "hint": "a with binding referencing a task output · carries the binding name"
   },
   {
     "kind": "member",
     "label": "error category: budget_error",
-    "href": "/error-categories/budget_error",
+    "href": "/language/error-categories/budget_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: cancelled",
-    "href": "/error-categories/cancelled",
+    "href": "/language/error-categories/cancelled",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: internal_error",
-    "href": "/error-categories/internal_error",
+    "href": "/language/error-categories/internal_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: network_error",
-    "href": "/error-categories/network_error",
+    "href": "/language/error-categories/network_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: parse_error",
-    "href": "/error-categories/parse_error",
+    "href": "/language/error-categories/parse_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: process_error",
-    "href": "/error-categories/process_error",
+    "href": "/language/error-categories/process_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: provider_error",
-    "href": "/error-categories/provider_error",
+    "href": "/language/error-categories/provider_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: security_error",
-    "href": "/error-categories/security_error",
+    "href": "/language/error-categories/security_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: timeout_error",
-    "href": "/error-categories/timeout_error",
+    "href": "/language/error-categories/timeout_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: tool_error",
-    "href": "/error-categories/tool_error",
+    "href": "/language/error-categories/tool_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: validation_error",
-    "href": "/error-categories/validation_error",
+    "href": "/language/error-categories/validation_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error category: variable_error",
-    "href": "/error-categories/variable_error",
+    "href": "/language/error-categories/variable_error",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-AGENT",
-    "href": "/error-namespaces/NIKA-AGENT",
+    "href": "/language/error-namespaces/NIKA-AGENT",
     "hint": "agent: verb errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-ASSERT",
-    "href": "/error-namespaces/NIKA-ASSERT",
+    "href": "/language/error-namespaces/NIKA-ASSERT",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-AUTH",
-    "href": "/error-namespaces/NIKA-AUTH",
+    "href": "/language/error-namespaces/NIKA-AUTH",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-BUILTIN",
-    "href": "/error-namespaces/NIKA-BUILTIN",
+    "href": "/language/error-namespaces/NIKA-BUILTIN",
     "hint": "Builtin tool errors · per-builtin sub-namespace"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-CANCEL",
-    "href": "/error-namespaces/NIKA-CANCEL",
+    "href": "/language/error-namespaces/NIKA-CANCEL",
     "hint": "Task or workflow cancellation"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-COMP",
-    "href": "/error-namespaces/NIKA-COMP",
+    "href": "/language/error-namespaces/NIKA-COMP",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-DAG",
-    "href": "/error-namespaces/NIKA-DAG",
+    "href": "/language/error-namespaces/NIKA-DAG",
     "hint": "DAG topology · cycles · invalid deps"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-DECIDE",
-    "href": "/error-namespaces/NIKA-DECIDE",
+    "href": "/language/error-namespaces/NIKA-DECIDE",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-DEFAULT",
-    "href": "/error-namespaces/NIKA-DEFAULT",
+    "href": "/language/error-namespaces/NIKA-DEFAULT",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-DRIFT",
-    "href": "/error-namespaces/NIKA-DRIFT",
+    "href": "/language/error-namespaces/NIKA-DRIFT",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-EXEC",
-    "href": "/error-namespaces/NIKA-EXEC",
+    "href": "/language/error-namespaces/NIKA-EXEC",
     "hint": "exec: verb errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-IMPL",
-    "href": "/error-namespaces/NIKA-IMPL",
+    "href": "/language/error-namespaces/NIKA-IMPL",
     "hint": "Engine internal errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-INFER",
-    "href": "/error-namespaces/NIKA-INFER",
+    "href": "/language/error-namespaces/NIKA-INFER",
     "hint": "infer: verb errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-INVOKE",
-    "href": "/error-namespaces/NIKA-INVOKE",
+    "href": "/language/error-namespaces/NIKA-INVOKE",
     "hint": "invoke: verb errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-LOCK",
-    "href": "/error-namespaces/NIKA-LOCK",
+    "href": "/language/error-namespaces/NIKA-LOCK",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-MCP",
-    "href": "/error-namespaces/NIKA-MCP",
+    "href": "/language/error-namespaces/NIKA-MCP",
     "hint": "MCP client errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-PARSE",
-    "href": "/error-namespaces/NIKA-PARSE",
+    "href": "/language/error-namespaces/NIKA-PARSE",
     "hint": "YAML parse + envelope validation"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-POLICY",
-    "href": "/error-namespaces/NIKA-POLICY",
+    "href": "/language/error-namespaces/NIKA-POLICY",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-PORT",
-    "href": "/error-namespaces/NIKA-PORT",
+    "href": "/language/error-namespaces/NIKA-PORT",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-PROVIDER",
-    "href": "/error-namespaces/NIKA-PROVIDER",
+    "href": "/language/error-namespaces/NIKA-PROVIDER",
     "hint": "Provider adapter errors"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-SEC",
-    "href": "/error-namespaces/NIKA-SEC",
+    "href": "/language/error-namespaces/NIKA-SEC",
     "hint": "Security policy violations (SSRF · blocklist)"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-TIMEOUT",
-    "href": "/error-namespaces/NIKA-TIMEOUT",
+    "href": "/language/error-namespaces/NIKA-TIMEOUT",
     "hint": "Task or step timeouts"
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-TYPE",
-    "href": "/error-namespaces/NIKA-TYPE",
+    "href": "/language/error-namespaces/NIKA-TYPE",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-VALUES",
-    "href": "/error-namespaces/NIKA-VALUES",
+    "href": "/language/error-namespaces/NIKA-VALUES",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "error namespace: NIKA-VAR",
-    "href": "/error-namespaces/NIKA-VAR",
+    "href": "/language/error-namespaces/NIKA-VAR",
     "hint": "Variable resolution failures"
   },
   {
     "kind": "member",
     "label": "family: core",
-    "href": "/families/core",
+    "href": "/language/families/core",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "family: data",
-    "href": "/families/data",
+    "href": "/language/families/data",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "family: file",
-    "href": "/families/file",
+    "href": "/language/families/file",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "family: introspection",
-    "href": "/families/introspection",
+    "href": "/language/families/introspection",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "family: media",
-    "href": "/families/media",
+    "href": "/language/families/media",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "family: network",
-    "href": "/families/network",
+    "href": "/language/families/network",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "conformance: core",
-    "href": "/conformance/core",
+    "href": "/language/conformance/core",
     "hint": "parse · validate · DAG · variables · typed errors · no execution"
   },
   {
     "kind": "member",
     "label": "conformance: runtime",
-    "href": "/conformance/runtime",
+    "href": "/language/conformance/runtime",
     "hint": "executes verbs · evaluates when and for_each over run state"
   },
   {
     "kind": "member",
     "label": "conformance: stdlib",
-    "href": "/conformance/stdlib",
+    "href": "/language/conformance/stdlib",
     "hint": "proves the v0.1 library surface · the production default"
   },
   {
     "kind": "member",
     "label": "mcp: nika_canon",
-    "href": "/mcp/nika_canon",
+    "href": "/how/oracle/nika_canon",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_catalog",
-    "href": "/mcp/nika_catalog",
+    "href": "/how/oracle/nika_catalog",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_check",
-    "href": "/mcp/nika_check",
+    "href": "/how/oracle/nika_check",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_examples",
-    "href": "/mcp/nika_examples",
+    "href": "/how/oracle/nika_examples",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_explain",
-    "href": "/mcp/nika_explain",
+    "href": "/how/oracle/nika_explain",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_inspect",
-    "href": "/mcp/nika_inspect",
+    "href": "/how/oracle/nika_inspect",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_schema",
-    "href": "/mcp/nika_schema",
+    "href": "/how/oracle/nika_schema",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_template",
-    "href": "/mcp/nika_template",
+    "href": "/how/oracle/nika_template",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mcp: nika_tools",
-    "href": "/mcp/nika_tools",
+    "href": "/how/oracle/nika_tools",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: article",
-    "href": "/modes/article",
+    "href": "/language/modes/article",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: feed",
-    "href": "/modes/feed",
+    "href": "/language/modes/feed",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: jq",
-    "href": "/modes/jq",
+    "href": "/language/modes/jq",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: links",
-    "href": "/modes/links",
+    "href": "/language/modes/links",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: markdown",
-    "href": "/modes/markdown",
+    "href": "/language/modes/markdown",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: metadata",
-    "href": "/modes/metadata",
+    "href": "/language/modes/metadata",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: selector",
-    "href": "/modes/selector",
+    "href": "/language/modes/selector",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: sitemap",
-    "href": "/modes/sitemap",
+    "href": "/language/modes/sitemap",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "mode: text",
-    "href": "/modes/text",
+    "href": "/language/modes/text",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: config",
-    "href": "/namespaces/config",
+    "href": "/language/namespaces/config",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: const",
-    "href": "/namespaces/const",
+    "href": "/language/namespaces/const",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: inputs",
-    "href": "/namespaces/inputs",
+    "href": "/language/namespaces/inputs",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: secrets",
-    "href": "/namespaces/secrets",
+    "href": "/language/namespaces/secrets",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: tasks",
-    "href": "/namespaces/tasks",
+    "href": "/language/namespaces/tasks",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "namespace: with",
-    "href": "/namespaces/with",
+    "href": "/language/namespaces/with",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "permit: env",
-    "href": "/permits/env",
+    "href": "/language/permits/env",
     "hint": "exact env names a child may see · never inherited, never a glob"
   },
   {
     "kind": "member",
     "label": "permit: exec",
-    "href": "/permits/exec",
+    "href": "/language/permits/exec",
     "hint": "which commands may run · false kills the family"
   },
   {
     "kind": "member",
     "label": "permit: fs",
-    "href": "/permits/fs",
+    "href": "/language/permits/fs",
     "hint": "read and write globs · the walk root is gated"
   },
   {
     "kind": "member",
     "label": "permit: net",
-    "href": "/permits/net",
+    "href": "/language/permits/net",
     "hint": "http allowlist · the SSRF floor stays on regardless"
   },
   {
     "kind": "member",
     "label": "permit: tools",
-    "href": "/permits/tools",
+    "href": "/language/permits/tools",
     "hint": "which nika tools the file may invoke"
   },
   {
     "kind": "member",
     "label": "predicate: failure",
-    "href": "/predicates/failure",
+    "href": "/language/predicates/failure",
     "hint": "fire when the producer failed terminally"
   },
   {
     "kind": "member",
     "label": "predicate: skipped",
-    "href": "/predicates/skipped",
+    "href": "/language/predicates/skipped",
     "hint": "fire when the producer was gated out"
   },
   {
     "kind": "member",
     "label": "predicate: success",
-    "href": "/predicates/success",
+    "href": "/language/predicates/success",
     "hint": "fire when the producer completed clean"
   },
   {
     "kind": "member",
     "label": "predicate: terminal",
-    "href": "/predicates/terminal",
+    "href": "/language/predicates/terminal",
     "hint": "fire when the producer reached any terminal state"
   },
   {
     "kind": "member",
     "label": "secret: env",
-    "href": "/secrets/env",
+    "href": "/language/secrets/env",
     "hint": "read from the environment at run time"
   },
   {
     "kind": "member",
     "label": "secret: file",
-    "href": "/secrets/file",
+    "href": "/language/secrets/file",
     "hint": "read from a path the boundary allows"
   },
   {
     "kind": "member",
     "label": "secret: vault",
-    "href": "/secrets/vault",
+    "href": "/language/secrets/vault",
     "hint": "the OS keychain backend · the default posture"
   },
   {
@@ -3222,85 +3144,85 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "member",
     "label": "type: bool",
-    "href": "/types/bool",
+    "href": "/language/types/bool",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: bytes",
-    "href": "/types/bytes",
+    "href": "/language/types/bytes",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: duration",
-    "href": "/types/duration",
+    "href": "/language/types/duration",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: integer",
-    "href": "/types/integer",
+    "href": "/language/types/integer",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: null",
-    "href": "/types/null",
+    "href": "/language/types/null",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: number",
-    "href": "/types/number",
+    "href": "/language/types/number",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: path",
-    "href": "/types/path",
+    "href": "/language/types/path",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: string",
-    "href": "/types/string",
+    "href": "/language/types/string",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: timestamp",
-    "href": "/types/timestamp",
+    "href": "/language/types/timestamp",
     "hint": ""
   },
   {
     "kind": "member",
     "label": "type: uri",
-    "href": "/types/uri",
+    "href": "/language/types/uri",
     "hint": ""
   },
   {
     "kind": "verb",
     "label": "verb: infer",
-    "href": "/verbs/infer",
+    "href": "/language/verbs/infer",
     "hint": "Think. Ask any model · local or cloud."
   },
   {
     "kind": "verb",
     "label": "verb: exec",
-    "href": "/verbs/exec",
+    "href": "/language/verbs/exec",
     "hint": "Run. A shell command, captured and typed."
   },
   {
     "kind": "verb",
     "label": "verb: invoke",
-    "href": "/verbs/invoke",
+    "href": "/language/verbs/invoke",
     "hint": "Use a tool. Every tool explicit."
   },
   {
     "kind": "verb",
     "label": "verb: agent",
-    "href": "/verbs/agent",
+    "href": "/language/verbs/agent",
     "hint": "Delegate. An autonomous loop, on a leash you can read."
   },
   {
@@ -3462,373 +3384,373 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "word",
     "label": "after",
-    "href": "/language/after",
+    "href": "/language/words/after",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "agent",
-    "href": "/language/agent",
+    "href": "/language/words/agent",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "args",
-    "href": "/language/args",
+    "href": "/language/words/args",
     "hint": "invoke"
   },
   {
     "kind": "word",
     "label": "backoff_max_ms",
-    "href": "/language/backoff_max_ms",
+    "href": "/language/words/backoff_max_ms",
     "hint": "retry"
   },
   {
     "kind": "word",
     "label": "backoff_ms",
-    "href": "/language/backoff_ms",
+    "href": "/language/words/backoff_ms",
     "hint": "retry"
   },
   {
     "kind": "word",
     "label": "backoff_strategy",
-    "href": "/language/backoff_strategy",
+    "href": "/language/words/backoff_strategy",
     "hint": "retry"
   },
   {
     "kind": "word",
     "label": "capture",
-    "href": "/language/capture",
+    "href": "/language/words/capture",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "command",
-    "href": "/language/command",
+    "href": "/language/words/command",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "config",
-    "href": "/language/config",
+    "href": "/language/words/config",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "const",
-    "href": "/language/const",
+    "href": "/language/words/const",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "cwd",
-    "href": "/language/cwd",
+    "href": "/language/words/cwd",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "declassify",
-    "href": "/language/declassify",
+    "href": "/language/words/declassify",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "decode",
-    "href": "/language/decode",
+    "href": "/language/words/decode",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "description",
-    "href": "/language/description",
+    "href": "/language/words/description",
     "hint": "workflow"
   },
   {
     "kind": "word",
     "label": "env",
-    "href": "/language/env",
+    "href": "/language/words/env",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "exec",
-    "href": "/language/exec",
+    "href": "/language/words/exec",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "fail_fast",
-    "href": "/language/fail_fast",
+    "href": "/language/words/fail_fast",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "fail_workflow",
-    "href": "/language/fail_workflow",
+    "href": "/language/words/fail_workflow",
     "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "for_each",
-    "href": "/language/for_each",
+    "href": "/language/words/for_each",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "id",
-    "href": "/language/id",
+    "href": "/language/words/id",
     "hint": "workflow"
   },
   {
     "kind": "word",
     "label": "inert",
-    "href": "/language/inert",
+    "href": "/language/words/inert",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "infer",
-    "href": "/language/infer",
+    "href": "/language/words/infer",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "inputs",
-    "href": "/language/inputs",
+    "href": "/language/words/inputs",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "invoke",
-    "href": "/language/invoke",
+    "href": "/language/words/invoke",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "jitter",
-    "href": "/language/jitter",
+    "href": "/language/words/jitter",
     "hint": "retry"
   },
   {
     "kind": "word",
     "label": "max_attempts",
-    "href": "/language/max_attempts",
+    "href": "/language/words/max_attempts",
     "hint": "retry"
   },
   {
     "kind": "word",
     "label": "max_parallel",
-    "href": "/language/max_parallel",
+    "href": "/language/words/max_parallel",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "max_tokens",
-    "href": "/language/max_tokens",
+    "href": "/language/words/max_tokens",
     "hint": "infer"
   },
   {
     "kind": "word",
     "label": "max_tokens_total",
-    "href": "/language/max_tokens_total",
+    "href": "/language/words/max_tokens_total",
     "hint": "agent"
   },
   {
     "kind": "word",
     "label": "max_turns",
-    "href": "/language/max_turns",
+    "href": "/language/words/max_turns",
     "hint": "agent"
   },
   {
     "kind": "word",
     "label": "model",
-    "href": "/language/model",
+    "href": "/language/words/model",
     "hint": "envelope · infer · agent"
   },
   {
     "kind": "word",
     "label": "nika",
-    "href": "/language/nika",
+    "href": "/language/words/nika",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "on_codes",
-    "href": "/language/on_codes",
+    "href": "/language/words/on_codes",
     "hint": "retry · on_error"
   },
   {
     "kind": "word",
     "label": "on_error",
-    "href": "/language/on_error",
+    "href": "/language/words/on_error",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "on_finally",
-    "href": "/language/on_finally",
+    "href": "/language/words/on_finally",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "output",
-    "href": "/language/output",
+    "href": "/language/words/output",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "outputs",
-    "href": "/language/outputs",
+    "href": "/language/words/outputs",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "permits",
-    "href": "/language/permits",
+    "href": "/language/words/permits",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "policy",
-    "href": "/language/policy",
+    "href": "/language/words/policy",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "prompt",
-    "href": "/language/prompt",
+    "href": "/language/words/prompt",
     "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "recover",
-    "href": "/language/recover",
+    "href": "/language/words/recover",
     "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "retry",
-    "href": "/language/retry",
+    "href": "/language/words/retry",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "returns",
-    "href": "/language/returns",
+    "href": "/language/words/returns",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "run",
-    "href": "/language/run",
+    "href": "/language/words/run",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "schema",
-    "href": "/language/schema",
+    "href": "/language/words/schema",
     "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "secrets",
-    "href": "/language/secrets",
+    "href": "/language/words/secrets",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "shell",
-    "href": "/language/shell",
+    "href": "/language/words/shell",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "skills",
-    "href": "/language/skills",
+    "href": "/language/words/skills",
     "hint": "agent"
   },
   {
     "kind": "word",
     "label": "skip",
-    "href": "/language/skip",
+    "href": "/language/words/skip",
     "hint": "on_error"
   },
   {
     "kind": "word",
     "label": "stdin",
-    "href": "/language/stdin",
+    "href": "/language/words/stdin",
     "hint": "exec"
   },
   {
     "kind": "word",
     "label": "system",
-    "href": "/language/system",
+    "href": "/language/words/system",
     "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "tasks",
-    "href": "/language/tasks",
+    "href": "/language/words/tasks",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "temperature",
-    "href": "/language/temperature",
+    "href": "/language/words/temperature",
     "hint": "infer · agent"
   },
   {
     "kind": "word",
     "label": "thinking",
-    "href": "/language/thinking",
+    "href": "/language/words/thinking",
     "hint": "infer"
   },
   {
     "kind": "word",
     "label": "timeout",
-    "href": "/language/timeout",
+    "href": "/language/words/timeout",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "tool",
-    "href": "/language/tool",
+    "href": "/language/words/tool",
     "hint": "invoke"
   },
   {
     "kind": "word",
     "label": "tools",
-    "href": "/language/tools",
+    "href": "/language/words/tools",
     "hint": "agent"
   },
   {
     "kind": "word",
     "label": "types",
-    "href": "/language/types",
+    "href": "/language/words/types",
     "hint": "envelope"
   },
   {
     "kind": "word",
     "label": "vision",
-    "href": "/language/vision",
+    "href": "/language/words/vision",
     "hint": "infer"
   },
   {
     "kind": "word",
     "label": "when",
-    "href": "/language/when",
+    "href": "/language/words/when",
     "hint": "task · on_finally"
   },
   {
     "kind": "word",
     "label": "with",
-    "href": "/language/with",
+    "href": "/language/words/with",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "workflow",
-    "href": "/language/workflow",
+    "href": "/language/words/workflow",
     "hint": "envelope · invoke"
   }
 ]

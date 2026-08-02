@@ -55,8 +55,9 @@ describe('word roles · the register says what the panel colours', () => {
      exist. */
   it('every classified word owns a room', () => {
     for (const word of Object.values(NIKA_ROLE_WORDS).flatMap((j) => j.split(' '))) {
+      // the explicit words segment (2026-08-02 · the family collision)
       expect(LANGUAGE_PATHS, `${word} is classified but has no room`).toContain(
-        `/language/${word}`,
+        `/language/words/${word}`,
       )
     }
   })

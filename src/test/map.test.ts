@@ -140,7 +140,7 @@ describe('/map · the constellation is one drawing, twice served', () => {
     }
     // providers was live pre-lens · WO-4 lit its hubs' sections — each
     // enrichment WO widens this by descriptor, the gate follows the twin
-    expect(liveByPage.get('/providers')).toBe(true)
+    expect(liveByPage.get('/catalog/providers')).toBe(true)
     const fragments = [...svg.matchAll(/<a href="([^"]+)#[^"]+"/g)].map((m) => m[1])
     for (const page of fragments) {
       expect(liveByPage.get(page), `${page}: fragment link on a page with no living sections`).toBe(true)

@@ -158,7 +158,7 @@ export function Component() {
           {groups.map((group, gi) => (
             <div className="tp-family" key={group.category} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>
               <div className="cl-year-head">
-                <Link className="cl-year-n tp-family-n" to={`/families/${group.category}`} title="open the family's page">
+                <Link className="cl-year-n tp-family-n" to={`/language/families/${group.category}`} title="open the family's page">
                   {group.category}
                 </Link>
                 <span className="cl-year-rule" aria-hidden />
