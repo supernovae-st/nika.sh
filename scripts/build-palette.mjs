@@ -30,7 +30,7 @@ const CORE = [
   ['Spec', '/spec', 'the language reference'],
   ['Learn', '/learn', 'one file, line by line · 5 minutes'],
   ['Install', '/install', 'one binary · two minutes'],
-  ['Use cases', '/use-cases', 'real files you would write'],
+  ['Use cases', '/workflows/jobs', 'real files you would write'],
   ['Blog', '/blog', 'notes from the source'],
   ['Changelog', '/changelog', 'the ship log'],
   ['Timeline', '/timeline', 'the one verifiable record'],
@@ -41,7 +41,7 @@ const CORE = [
   ['The four verbs', '/verbs', 'infer · exec · invoke · agent'],
   ['The language', '/language', 'every word the schema declares'],
   ['Providers', '/providers', 'local first · your keys'],
-  ['Templates', '/templates', 'instantiable skeletons'],
+  ['Templates', '/workflows/skeletons', 'instantiable skeletons'],
   ['The map', '/map', 'every page, one graph'],
   ['The flow', '/how/flow', 'two doors, one graph · the gate matrix'],
   ['The boundary', '/how/boundary', 'permits · secrets · the floor'],
@@ -140,7 +140,7 @@ export function compilePalette() {
     entries.push({
       kind: 'template',
       label: t.name,
-      href: `/templates/${t.name}`,
+      href: `/workflows/skeletons/${t.name}`,
       hint: t.intent,
     })
 
@@ -264,7 +264,7 @@ export function compilePalette() {
     entries.push({
       kind: 'usecase',
       label: slug.replace(/-/g, ' '),
-      href: `/use-cases/${slug}`,
+      href: `/workflows/jobs/${slug}`,
       hint: 'a real workflow · the whole file, one room',
     })
 

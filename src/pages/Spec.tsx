@@ -1085,7 +1085,7 @@ const SpecReference = memo(function SpecReference({ sampleYaml }: { sampleYaml: 
                       ↗
                     </span>
                   </a>
-                  <Link to="/use-cases" className="spec-link spec-link--dim">
+                  <Link to="/workflows/jobs" className="spec-link spec-link--dim">
                     See it in real workflows
                     <span aria-hidden className="spec-link-arrow">
                       {' '}

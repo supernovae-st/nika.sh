@@ -274,7 +274,11 @@
 }
 @media (min-width: 620px) {
   .v4stamp {
-    grid-template-columns: repeat(4, 1fr);
+    /* AUTO-FIT, not a fixed four: a strip of three reserved a fourth column
+       and printed an empty cell (the /workflows hub, 2026-08-02). The strip
+       has always been a variable-length register; the grid now says so. */
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
   }
 }
 .v4stamp-cell {

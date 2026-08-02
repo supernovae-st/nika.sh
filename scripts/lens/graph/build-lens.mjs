@@ -30,6 +30,15 @@ import { layoutConstellation } from './lib/radial-layout.mjs'
 import { renderConstellation } from './lib/render-constellation.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..')
+
+/* the showcase family's ROOM BASE, derived from the descriptor · never typed.
+   Three places hardcoded `/use-cases` until the V2 re-home (2026-08-02): the
+   node urls, the hub-door list, and the rendered_on evidence. A base that
+   lives in three literals is a base that moves in two of them. */
+const roomBase = (S, id, fallback) =>
+  (S.sets.sets.find((x) => x.id === id)?.rooms_url ?? fallback).replace(/\/:[^/]+$/, '')
+const showcaseBase = (S) => roomBase(S, 'showcases', '/use-cases/:slug')
+const templateBase = (S) => roomBase(S, 'templates', '/templates/:name')
 const REPORT_ONLY = process.argv.includes('--report')
 const S = readSources(ROOT)
 
@@ -168,7 +177,7 @@ function membersOf(set) {
         member: t.name,
         title: t.name,
         opener: t.intent,
-        url: `/templates/${t.name}`,
+        url: `${templateBase(S)}/${t.name}`,
         status: 'ratified',
         meta: { sha256: t.sha256, file: t.file },
       }))
@@ -209,7 +218,7 @@ function membersOf(set) {
         member: slug,
         title: slug.replace(/^t\d-/, ''),
         opener: null, // authored at WO-5 with the rooms
-        url: `/use-cases/${slug}`,
+        url: `${showcaseBase(S)}/${slug}`,
         status: 'ratified',
         meta: { tier: slug.match(/^t(\d)-/)?.[1] ?? null, waves: S.dag[slug].waves },
       }))
@@ -555,17 +564,27 @@ const knownPages = new Set([
   ...S.sets.layers.map((l) => l.hub),
   ...S.sets.layers.flatMap((l) => l.sibling_hubs ?? []),
   ...S.sets.surfaces.map((s) => s.url),
-  '/use-cases',
+  showcaseBase(S),
   /* rooms universelles (verdict 2026-07-18): a roomed anchor set's family
      root IS a hub door — every member room hangs off its set's register
      (the hub rows link the rooms · prev/next chains them) */
   ...S.sets.sets.filter((x) => x.rooms_url).map((x) => x.rooms_url),
+  /* and the BASE of every room pattern · the pattern itself
+     (/workflows/skeletons/:name) is not a page, so a family whose base was
+     never listed by hand read as 10 orphan rooms. Derived, so the next
+     family to re-home needs no edit here at all. */
+  ...S.sets.sets.filter((x) => x.rooms_url).map((x) => x.rooms_url.replace(/\/:[^/]+$/, '')),
 ])
 for (const n of nodes) {
   if (n.kind !== 'member' || !n.url) continue
   const page = n.url.split('#')[0]
-  const root = `/${page.split('/')[1] ?? ''}`
-  if (!knownPages.has(page) && !knownPages.has(root)) {
+  /* walk EVERY ancestor, not just the first segment: a world owns nested
+     families now (/workflows/jobs/:slug hangs off /workflows/jobs, which
+     hangs off /workflows), and a root-only check called all 26 showcase
+     rooms orphans the moment they re-homed. */
+  const parts = page.split('/').filter(Boolean)
+  const ancestors = parts.map((_, i) => `/${parts.slice(0, i + 1).join('/')}`)
+  if (!ancestors.some((a) => knownPages.has(a))) {
     deductions.push({ points: 2, why: `${n.id}: page ${page} hangs off no hub` })
   }
 }
@@ -1454,7 +1473,7 @@ for (const t of S.templates.templates) {
     source: { kind: 'spec-template', artifact: `templates/${t.file}`, pin: S.specPin, sha256: t.sha256 },
     gates: ['templates catalog byte-diff (vitest)', 'sha-pinned at the catalog'],
     badge: 're-proven at every push',
-    rendered_on: [`/templates/${t.name}`],
+    rendered_on: [`${templateBase(S)}/${t.name}`],
   })
 }
 for (const slug of Object.keys(S.dag).sort()) {
@@ -1463,7 +1482,7 @@ for (const slug of Object.keys(S.dag).sort()) {
     source: { kind: 'spec-showcase', artifact: `examples/${slug}.nika.yaml`, pin: S.specPin },
     gates: ['showcase-projector --check (byte parity)', 'spec conformance gate upstream'],
     badge: 're-proven at every push',
-    rendered_on: ['/use-cases'],
+    rendered_on: [showcaseBase(S)],
   })
 }
 for (const h of S.sets.library_heroes) {
@@ -1524,10 +1543,29 @@ const lensPaths = [
     .sort(),
   /* lens-born ROOM sets (the showcases · §4.13): every member url joins
      the prerender the day rooms_exist flips — never listed by hand */
+  /* the base comes from the DESCRIPTOR's rooms_url, never hardcoded here:
+     the showcase rooms re-homed under /workflows/jobs on 2026-08-02 by a
+     descriptor flip, and this line was the one place that would have
+     silently kept emitting the old base. */
   ...(S.sets.sets.find((x) => x.id === 'showcases')?.rooms_exist
-    ? Object.keys(S.dag).sort().map((slug) => `/use-cases/${slug}`)
+    ? Object.keys(S.dag).sort().map((slug) => `${showcaseBase(S)}/${slug}`)
     : []),
 ]
+
+/* every path this build SERVES · the parametric legacy_moves expansion reads
+   it (the heirs are the truth: a doorway can only point at a live room). It
+   is LENS_PATHS plus the authored arrays site.config declares, which is what
+   PATHS itself spreads. */
+const servedPaths = [
+  ...new Set([
+    ...lensPaths,
+    ...[...readFileSync(join(ROOT, 'site.config.ts'), 'utf8').matchAll(/'(\/[^']*)'/g)].map((m) => m[1]),
+  ]),
+]
+/* DEDUPED, and it must be: LENS_PATHS is written IN PLACE inside
+   site.config.ts, so the union above reads every lens room twice — which
+   expanded each parametric family into two identical doorway rows (caught by
+   zero-404 law 5, the duplicate-row law, on its first real use). */
 const siteConfigPath = join(ROOT, 'site.config.ts')
 const siteConfig = readFileSync(siteConfigPath, 'utf8')
 const MARK_A = 'export const LENS_PATHS = '
@@ -1767,6 +1805,38 @@ for (const surf of S.sets.surfaces) {
 /* legacy moves (retired URLs → living heirs · descriptor §legacy_moves):
    crawl debt with no lens node — just the redirect row + the stub */
 for (const mv of S.sets.legacy_moves ?? []) {
+  /* PARAMETRIC family moves (V2 · 2026-08-02): a whole family re-homes with
+     ONE row. `{ from: /use-cases/:slug, to: /workflows/jobs/:slug }` expands
+     into one row per member, and the member list comes from the SERVED paths
+     — the heirs are the truth, so a room that did not survive the move can
+     never get a doorway pointing at nothing. Hand-writing 231 rows (what
+     /language needs next) was never the plan; this is the mechanism. */
+  const param = mv.from.match(/\/:([a-zA-Z][a-zA-Z0-9]*)$/)
+  if (param) {
+    const name = param[1]
+    if (!mv.to.endsWith(`/:${name}`)) {
+      throw new Error(`legacy_moves: parametric from ${mv.from} needs the SAME param in to (${mv.to})`)
+    }
+    const fromBase = mv.from.slice(0, -(`/:${name}`.length))
+    const toBase = mv.to.slice(0, -(`/:${name}`.length))
+    const members = servedPaths
+      .filter((p) => p.startsWith(`${toBase}/`) && !p.slice(toBase.length + 1).includes('/'))
+      .map((p) => p.slice(toBase.length + 1))
+      .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    if (members.length === 0) {
+      throw new Error(`legacy_moves: parametric ${mv.from} → ${mv.to} expands to ZERO members`)
+    }
+    for (const m of members) {
+      redirects.push({
+        from: `${fromBase}/${m}`,
+        to: `${toBase}/${m}`,
+        status: 301,
+        live: true,
+        applies: mv.applied ?? null,
+      })
+    }
+    continue
+  }
   redirects.push({
     from: mv.from,
     to: mv.to,

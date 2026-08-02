@@ -1,6 +1,7 @@
 import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
 import { INTEGRATION_TABS } from './integrations-tabs'
 import { ERROR_CODES } from './errors.generated'
+import { LESSONS } from './lessons.generated'
 import { TOOLS } from './tools.generated'
 import { LANGUAGE_WORDS } from './language.generated'
 import { CHAPTERS } from '../sections/verbs-data'
@@ -62,11 +63,11 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Install', href: '/install', hint: 'one binary · two minutes' },
       { label: 'Playground', href: '/play', hint: 'write Nika in the browser, checked live' },
       { label: 'Learn it in 5 minutes', href: '/learn', hint: 'one file, line by line' },
-      { label: 'Use cases', href: '/use-cases', hint: 'real files you would write' },
+      { label: 'Use cases', href: '/workflows/jobs', hint: 'real files you would write' },
       { label: 'Send us a workflow', href: '/convert', hint: 'yours, converted' },
     ],
     dense: [
-      ...UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/use-cases/${uc.slug}` }))),
+      ...UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/workflows/jobs/${uc.slug}` }))),
       /* the install locale cluster (WO-10 wiring) — derived from the registry */
       ...localizedPaths('/install').map((p) => ({ label: `install · ${p.split('/')[1]}`, href: p })),
     ],
@@ -78,6 +79,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Home', href: '/', hint: 'the film · intent as code' },
       { label: 'The map', href: '/map', hint: 'every page, one graph · the anatomy' },
       { label: 'How it works', href: '/how', hint: 'the loop · try · new · check · run · trace' },
+      { label: 'Workflows', href: '/workflows', hint: 'the path · the jobs · the skeletons' },
       { label: 'The router', href: '/how/router', hint: 'plain words in, a real workflow out · no model' },
       { label: 'The flow', href: '/how/flow', hint: 'two doors, one graph · the gate matrix' },
       { label: 'The boundary', href: '/how/boundary', hint: 'permits · secrets · the always-on floor' },
@@ -121,7 +123,7 @@ export const SITE_MAP: MapGroup[] = [
       },
       {
         label: 'Templates',
-        href: '/templates',
+        href: '/workflows/skeletons',
         hint: `instantiable skeletons: route · copy · fill (${TEMPLATES.length})`,
       },
       { label: 'Changelog', href: '/changelog', hint: 'the ship log, dated and tagged' },
@@ -129,6 +131,9 @@ export const SITE_MAP: MapGroup[] = [
     ],
     dense: [
       ...TOOLS.map((t) => ({ label: t.name, href: `/tools/${t.bare}` })),
+      /* the teaching path (V2 · 2026-08-02) · one room per numbered spec
+         example, derived from the pin-sourced module */
+      ...LESSONS.map((l) => ({ label: `path: ${l.slug}`, href: `/workflows/path/${l.slug}` })),
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: `/language/${w.word}` })),
       ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
@@ -143,7 +148,7 @@ export const SITE_MAP: MapGroup[] = [
         label: c,
         href: `/errors/${c}`,
       })),
-      ...TEMPLATES.map((t) => ({ label: t.file, href: `/templates/${t.name}` })),
+      ...TEMPLATES.map((t) => ({ label: t.file, href: `/workflows/skeletons/${t.name}` })),
       /* rooms universelles (verdict 2026-07-18): every member of every
          roomed register — derived from the SAME generated registry the
          generic room renders, so the map can never drift from the rooms

@@ -144,7 +144,7 @@ describe('lens · rooms and routes cover each other', () => {
        until then the pending declaration is the room's known-to-the-graph
        proof — served with a gated declaration, never an orphan. */
     const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
-    const lensRoots = ['/language/', '/verbs/', '/tools/', '/templates/', '/errors/', '/providers/']
+    const lensRoots = ['/language/', '/verbs/', '/tools/', '/workflows/skeletons/', '/errors/', '/providers/']
     for (const p of PATHS) {
       if (!lensRoots.some((r) => p.startsWith(r))) continue
       expect(

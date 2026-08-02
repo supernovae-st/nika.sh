@@ -98,7 +98,10 @@ describe('sets.yaml · the descriptor is structurally sound', () => {
   it('three-conditions law: a rooms surface names its unique data', () => {
     for (const s of doc.sets.filter((x) => x.surface === 'rooms')) {
       expect(s.unique_data?.trim().length, `${s.id} rooms need unique_data`).toBeGreaterThan(10)
-      expect(s.rooms_url, `${s.id} rooms need a url pattern`).toMatch(/^\/[a-z-]+\/:/)
+      // a room base may be NESTED now: worlds own their families
+      // (/workflows/jobs/:slug · /language/errors/:code), so the pattern is
+      // one-or-more path segments then the param, not exactly one.
+      expect(s.rooms_url, `${s.id} rooms need a url pattern`).toMatch(/^(?:\/[a-z-]+)+\/:/)
     }
   })
 
@@ -115,7 +118,7 @@ describe('sets.yaml · existing room sets match the routes the site serves', () 
     ['words', LANGUAGE_PATHS, (p) => p.replace('/language/', '')],
     ['verbs', VERB_PATHS, (p) => p.replace('/verbs/', '')],
     ['builtins', TOOL_PATHS, (p) => p.replace('/tools/', '')],
-    ['templates', TEMPLATE_PATHS, (p) => p.replace('/templates/', '')],
+    ['templates', TEMPLATE_PATHS, (p) => p.replace('/workflows/skeletons/', '')],
     ['error-codes', ERROR_PATHS, (p) => p.replace('/errors/', '')],
   ]
   it.each(cases)('%s rooms exist and the url pattern matches PATHS', (id, paths) => {

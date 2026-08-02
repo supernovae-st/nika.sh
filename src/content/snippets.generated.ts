@@ -169,7 +169,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -185,7 +185,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -201,7 +201,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -217,7 +217,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -233,7 +233,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -249,7 +249,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -265,7 +265,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -281,7 +281,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -297,7 +297,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -313,7 +313,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -329,7 +329,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -345,7 +345,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -361,7 +361,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -377,7 +377,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -393,7 +393,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -409,7 +409,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -425,7 +425,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -441,7 +441,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -457,7 +457,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -473,7 +473,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -489,7 +489,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -505,7 +505,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -521,7 +521,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -537,7 +537,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -553,7 +553,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -569,7 +569,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/use-cases"
+      "/workflows/jobs"
     ]
   },
   {
@@ -586,7 +586,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/agent-loop"
+      "/workflows/skeletons/agent-loop"
     ]
   },
   {
@@ -603,7 +603,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/api-upload-and-create"
+      "/workflows/skeletons/api-upload-and-create"
     ]
   },
   {
@@ -620,7 +620,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/chain"
+      "/workflows/skeletons/chain"
     ]
   },
   {
@@ -637,7 +637,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/docker-report"
+      "/workflows/skeletons/docker-report"
     ]
   },
   {
@@ -654,7 +654,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/etl-state"
+      "/workflows/skeletons/etl-state"
     ]
   },
   {
@@ -671,7 +671,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/fanout"
+      "/workflows/skeletons/fanout"
     ]
   },
   {
@@ -688,7 +688,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/gate-and-act"
+      "/workflows/skeletons/gate-and-act"
     ]
   },
   {
@@ -705,7 +705,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/human-gated-ship"
+      "/workflows/skeletons/human-gated-ship"
     ]
   },
   {
@@ -722,7 +722,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/media-asset-pack"
+      "/workflows/skeletons/media-asset-pack"
     ]
   },
   {
@@ -739,7 +739,7 @@ export const SNIPPETS: SnippetRef[] = [
     ],
     "badge": "re-proven at every push",
     "rendered_on": [
-      "/templates/website-brief"
+      "/workflows/skeletons/website-brief"
     ]
   }
 ]

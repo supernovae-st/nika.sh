@@ -1,0 +1,129 @@
+/* ─── /workflows · the corpus world (born 2026-08-02) ────────────────────────
+   Shares the /how grammar (how-page.css) and adds only what the path needs:
+   a numbered walk, a file frame, and the two neighbours that make a step
+   mean something. No new scale, no new hue. */
+.wf-path {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.wf-step {
+  display: grid;
+  grid-template-columns: 3.5ch minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 6px 16px;
+  padding: 13px 6px 14px 2px;
+  border-bottom: 1px solid var(--v4-line);
+  text-decoration: none;
+}
+.wf-step-n {
+  font-family: var(--mono);
+  font-size: var(--type-eyebrow);
+  color: var(--v4-text-faint, color-mix(in srgb, var(--v4-text) 45%, transparent));
+  font-variant-numeric: tabular-nums;
+}
+.wf-step-copy {
+  display: block;
+  min-width: 0;
+}
+.wf-step-title {
+  display: block;
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: var(--v4-text);
+  text-wrap: pretty;
+}
+.wf-step-file {
+  display: block;
+  margin-top: 3px;
+  font-size: var(--type-plate);
+  color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wf-step {
+    transition:
+      background-color var(--dur-ui) var(--ease-ui),
+      transform var(--dur-ui) var(--ease-ui);
+  }
+  .wf-step:hover {
+    transform: translateX(2px);
+  }
+}
+.wf-step:hover,
+.wf-step:focus-visible {
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+}
+
+/* the pin line · every derived surface says what it was read at */
+.wf-pin {
+  margin: 14px 0 0;
+  font-size: var(--type-plate);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+}
+
+/* the run line · the one command that makes this step move */
+.wf-run {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 18px 0 0;
+  font-size: var(--type-eyebrow);
+  color: var(--v4-text);
+}
+
+.wf-file {
+  margin: 22px 0 0;
+}
+
+/* the walk · the two neighbours, because a step is only a step in a path */
+.wf-walk {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: clamp(32px, 4vh, 48px) 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--v4-line);
+}
+@media (min-width: 760px) {
+  .wf-walk {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+.wf-walk-link {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius, 4px);
+  font-size: var(--type-body-sm);
+  line-height: 1.5;
+  color: var(--v4-text);
+  text-decoration: none;
+  text-wrap: pretty;
+}
+.wf-walk-link--next {
+  text-align: right;
+}
+.wf-walk-link--none {
+  color: color-mix(in srgb, var(--v4-text) 42%, transparent);
+}
+.wf-walk-key {
+  display: block;
+  margin-bottom: 5px;
+  font-size: var(--type-plate);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--v4-text) 50%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  a.wf-walk-link {
+    transition: background-color var(--dur-ui) var(--ease-ui);
+  }
+}
+a.wf-walk-link:hover,
+a.wf-walk-link:focus-visible {
+  background-color: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
+}

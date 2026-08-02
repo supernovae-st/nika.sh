@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 287,
-    "set_sha256": "002e84aacb3e3c2e2d126d71ef1da96224e67db6b8ccd07b3ef53ceacb240693",
-    "rendered_count": 590,
-    "rendered_set_sha256": "fa536ca778bbef9bc6a589832f50cf3ec8bdc402cb143e8f643db713539c1637"
+    "count": 290,
+    "set_sha256": "8e106238f2e46644d8ca01aee1693ac6c7c4b2e648417740b24833841c4741cc",
+    "rendered_count": 635,
+    "rendered_set_sha256": "d1bcb2643dedb4b224fa3838212f9cd9ae856f156ca7b947f93f6214c7bb2bad"
   },
   "claim_count": 139,
   "bindings": [
@@ -663,7 +663,7 @@
     {
       "selector": "src/content/sitemap.ts#count:1",
       "path": "src/content/sitemap.ts",
-      "line": 103,
+      "line": 105,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1484,7 +1484,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 112,
+      "line": 114,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

@@ -216,6 +216,9 @@ const COMPONENT_FEATURE = {
   MapPage: 'registry.map',
   /* the /how world (V1 · 2026-08-02) · the récit world's own pages */
   How: 'product.how',
+  /* the /workflows world (V2 · 2026-08-02) · the corpus */
+  Workflows: 'product.workflows',
+  LessonRoom: 'product.workflows_path',
   HowRouter: 'product.how_router',
   FlowPage: 'product.flow',
   BoundaryPage: 'product.boundary',
@@ -268,6 +271,8 @@ const FEATURE_EVIDENCE = {
   'registry.map': 'src/pages/Map.tsx',
   'site.sources': 'src/pages/Sources.tsx',
   'product.how': 'src/pages/How.tsx',
+  'product.workflows': 'src/pages/Workflows.tsx',
+  'product.workflows_path': 'src/pages/LessonRoom.tsx',
   'product.how_router': 'src/pages/HowRouter.tsx',
   'product.flow': 'src/pages/Flow.tsx',
   'product.boundary': 'src/pages/Boundary.tsx',

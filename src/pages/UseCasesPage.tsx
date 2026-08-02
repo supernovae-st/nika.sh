@@ -278,7 +278,7 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
   /* the morph (V4 combo): ONLY the clicked card carries the name — a
      duplicated view-transition-name silently SKIPS the whole transition.
      Hook before the miss return (rules-of-hooks · the dict precedent). */
-  const morphing = useViewTransitionState(`/use-cases/${card.slug}`)
+  const morphing = useViewTransitionState(`/workflows/jobs/${card.slug}`)
   if (!uc) return null
   const cardVerbs = verbsFor(uc) as NikaVerb[]
   const yaml = dict[uc.slug] ?? ''
@@ -294,7 +294,7 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
           {/* the room door (WO-5: the gallery gains the links — the rooms
               were reachable only by palette/map, caught by the SPA probe) */}
           <Link
-            to={`/use-cases/${uc.slug}`}
+            to={`/workflows/jobs/${uc.slug}`}
             viewTransition
             className="ucp-wf-door"
             style={morphing ? { viewTransitionName: 'uc-door' } : undefined}
@@ -336,7 +336,7 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
               </span>
               <b>{fileFor(uc)}</b>
             </span>
-            <Link className="ucp-wf-walk" to={`/use-cases/${uc.slug}`}>
+            <Link className="ucp-wf-walk" to={`/workflows/jobs/${uc.slug}`}>
               the room →
             </Link>
             <a className="ucp-wf-walk" href={docsFor(uc)} target="_blank" rel="noreferrer">
@@ -454,9 +454,9 @@ export function Component() {
 
   useHead({
     title: 'Use cases · Nika',
-    link: routeHead('/use-cases').link,
+    link: routeHead('/workflows/jobs').link,
     meta: [
-      ...routeHead('/use-cases').meta,
+      ...routeHead('/workflows/jobs').meta,
       {
         name: 'description',
         content: `Pick the thing you keep doing. ${total} real workflows for everyone, founders and developers, each a file you can read before it runs.`,

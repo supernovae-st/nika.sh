@@ -111,18 +111,18 @@
 <g class="cst-star"><a href="/mcp/nika_schema" tabindex="-1"><circle cx="370.6" cy="189.78" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_schema</title></a></g>
 <g class="cst-star"><a href="/mcp/nika_template" tabindex="-1"><circle cx="394.03" cy="177.54" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_template</title></a></g>
 <g class="cst-star"><a href="/mcp/nika_tools" tabindex="-1"><circle cx="418.1" cy="166.62" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>nika_tools</title></a></g>
-<g class="cst-star"><a href="/use-cases/bookmark-triage" tabindex="-1"><circle cx="326" cy="218.13" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>bookmark-triage</title></a></g>
-<g class="cst-star"><a href="/use-cases/ceo-monday-brief" tabindex="-1"><circle cx="343.64" cy="206.07" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>ceo-monday-brief</title></a></g>
-<g class="cst-star"><a href="/use-cases/competitor-radar" tabindex="-1"><circle cx="361.8" cy="194.83" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>competitor-radar</title></a></g>
-<g class="cst-star"><a href="/use-cases/config-drift-sentinel" tabindex="-1"><circle cx="380.46" cy="184.43" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>config-drift-sentinel</title></a></g>
-<g class="cst-star"><a href="/use-cases/contract-guard" tabindex="-1"><circle cx="399.57" cy="174.88" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>contract-guard</title></a></g>
-<g class="cst-star"><a href="/use-cases/csv-chart-report" tabindex="-1"><circle cx="419.09" cy="166.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>csv-chart-report</title></a></g>
-<g class="cst-star"><a href="/use-cases/deep-research-brief" tabindex="-1"><circle cx="438.99" cy="158.44" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>deep-research-brief</title></a></g>
-<g class="cst-star"><a href="/use-cases/etl-quarantine" tabindex="-1"><circle cx="459.22" cy="151.58" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></a></g>
-<g class="cst-star"><a href="/use-cases/image-fx-batch" tabindex="-1"><circle cx="479.74" cy="145.65" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>image-fx-batch</title></a></g>
-<g class="cst-star"><a href="/use-cases/incident-war-room" tabindex="-1"><circle cx="500.51" cy="140.65" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>incident-war-room</title></a></g>
-<g class="cst-star"><a href="/use-cases/invoice-chaser" tabindex="-1"><circle cx="521.48" cy="136.6" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></a></g>
-<g class="cst-star"><a href="/use-cases/localization-factory" tabindex="-1"><circle cx="542.62" cy="133.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>localization-factory</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/bookmark-triage" tabindex="-1"><circle cx="326" cy="218.13" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>bookmark-triage</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/ceo-monday-brief" tabindex="-1"><circle cx="343.64" cy="206.07" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>ceo-monday-brief</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/competitor-radar" tabindex="-1"><circle cx="361.8" cy="194.83" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>competitor-radar</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/config-drift-sentinel" tabindex="-1"><circle cx="380.46" cy="184.43" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>config-drift-sentinel</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/contract-guard" tabindex="-1"><circle cx="399.57" cy="174.88" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>contract-guard</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/csv-chart-report" tabindex="-1"><circle cx="419.09" cy="166.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>csv-chart-report</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/deep-research-brief" tabindex="-1"><circle cx="438.99" cy="158.44" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>deep-research-brief</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/etl-quarantine" tabindex="-1"><circle cx="459.22" cy="151.58" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>etl-quarantine</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/image-fx-batch" tabindex="-1"><circle cx="479.74" cy="145.65" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>image-fx-batch</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/incident-war-room" tabindex="-1"><circle cx="500.51" cy="140.65" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>incident-war-room</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/invoice-chaser" tabindex="-1"><circle cx="521.48" cy="136.6" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>invoice-chaser</title></a></g>
+<g class="cst-star"><a href="/workflows/jobs/localization-factory" tabindex="-1"><circle cx="542.62" cy="133.52" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>localization-factory</title></a></g>
 <g class="cst-star"><a href="/truth/canon" tabindex="-1"><circle cx="428.99" cy="162.21" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>canon</title></a></g>
 <g class="cst-star"><a href="/truth/catalog" tabindex="-1"><circle cx="453.57" cy="153.39" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>catalog</title></a></g>
 <g class="cst-star"><a href="/truth/lens" tabindex="-1"><circle cx="478.59" cy="145.95" r="3.1" fill="#34d399" stroke="#34d399" stroke-width="0"/><title>lens</title></a></g>
@@ -166,16 +166,16 @@
 <g class="cst-star"><a href="/providers/mock" tabindex="-1"><circle cx="766.32" cy="1039.59" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Mock</title></a></g>
 <g class="cst-star"><a href="/providers/moonshot" tabindex="-1"><circle cx="746.17" cy="1046.69" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>Moonshot (Kimi)</title></a></g>
 <g class="cst-star"><a href="/providers/nvidia" tabindex="-1"><circle cx="725.72" cy="1052.87" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>NVIDIA</title></a></g>
-<g class="cst-star"><a href="/templates/agent-loop" tabindex="-1"><circle cx="845.98" cy="1000.49" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>agent-loop</title></a></g>
-<g class="cst-star"><a href="/templates/api-upload-and-create" tabindex="-1"><circle cx="823.36" cy="1013.53" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>api-upload-and-create</title></a></g>
-<g class="cst-star"><a href="/templates/chain" tabindex="-1"><circle cx="800.06" cy="1025.3" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>chain</title></a></g>
-<g class="cst-star"><a href="/templates/docker-report" tabindex="-1"><circle cx="776.13" cy="1035.75" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>docker-report</title></a></g>
-<g class="cst-star"><a href="/templates/etl-state" tabindex="-1"><circle cx="751.67" cy="1044.86" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>etl-state</title></a></g>
-<g class="cst-star"><a href="/templates/fanout" tabindex="-1"><circle cx="726.73" cy="1052.59" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>fanout</title></a></g>
-<g class="cst-star"><a href="/templates/gate-and-act" tabindex="-1"><circle cx="701.4" cy="1058.93" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>gate-and-act</title></a></g>
-<g class="cst-star"><a href="/templates/human-gated-ship" tabindex="-1"><circle cx="675.76" cy="1063.85" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>human-gated-ship</title></a></g>
-<g class="cst-star"><a href="/templates/media-asset-pack" tabindex="-1"><circle cx="649.89" cy="1067.34" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media-asset-pack</title></a></g>
-<g class="cst-star"><a href="/templates/website-brief" tabindex="-1"><circle cx="623.86" cy="1069.39" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>website-brief</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/agent-loop" tabindex="-1"><circle cx="845.98" cy="1000.49" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>agent-loop</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/api-upload-and-create" tabindex="-1"><circle cx="823.36" cy="1013.53" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>api-upload-and-create</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/chain" tabindex="-1"><circle cx="800.06" cy="1025.3" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>chain</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/docker-report" tabindex="-1"><circle cx="776.13" cy="1035.75" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>docker-report</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/etl-state" tabindex="-1"><circle cx="751.67" cy="1044.86" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>etl-state</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/fanout" tabindex="-1"><circle cx="726.73" cy="1052.59" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>fanout</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/gate-and-act" tabindex="-1"><circle cx="701.4" cy="1058.93" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>gate-and-act</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/human-gated-ship" tabindex="-1"><circle cx="675.76" cy="1063.85" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>human-gated-ship</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/media-asset-pack" tabindex="-1"><circle cx="649.89" cy="1067.34" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>media-asset-pack</title></a></g>
+<g class="cst-star"><a href="/workflows/skeletons/website-brief" tabindex="-1"><circle cx="623.86" cy="1069.39" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>website-brief</title></a></g>
 <g class="cst-star cst-star--soon"><circle cx="702.93" cy="1058.59" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>core</title></g>
 <g class="cst-star cst-star--soon"><circle cx="675.25" cy="1063.94" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>data</title></g>
 <g class="cst-star cst-star--soon"><circle cx="647.29" cy="1067.61" r="3.1" fill="#22d3ee" stroke="#22d3ee" stroke-width="0"/><title>file</title></g>
@@ -246,7 +246,7 @@
 <g class="cst-star"><a href="/language/const" tabindex="-1"><circle cx="1050.25" cy="465.19" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>const</title></a></g>
 <g class="cst-star"><a href="/language/cwd" tabindex="-1"><circle cx="1055.91" cy="485.79" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>cwd</title></a></g>
 <g class="cst-star"><a href="/language/declassify" tabindex="-1"><circle cx="1060.63" cy="506.63" r="3.1" fill="#9fd0ff" stroke="#9fd0ff" stroke-width="0"/><title>declassify</title></a></g>
-<g class="cst-agg"><a href="/use-cases" tabindex="-1"><text x="558.98" y="131.79" text-anchor="middle">+14</text><title>+14 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/workflows/jobs" tabindex="-1"><text x="558.98" y="131.79" text-anchor="middle">+14</text><title>+14 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/tools" tabindex="-1"><text x="901.27" y="960.75" text-anchor="middle">+16</text><title>+16 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/providers" tabindex="-1"><text x="709.8" y="1056.99" text-anchor="middle">+5</text><title>+5 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/errors" tabindex="-1"><text x="130.26" y="584.3" text-anchor="middle">+84</text><title>+84 more · open the register</title></a></g>

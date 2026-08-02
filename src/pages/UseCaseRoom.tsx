@@ -133,9 +133,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/use-cases/${slug}`).link,
+    link: routeHead(`/workflows/jobs/${slug}`).link,
     meta: [
-      ...routeHead(`/use-cases/${slug}`).meta,
+      ...routeHead(`/workflows/jobs/${slug}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -182,7 +182,7 @@ export function Component() {
             <h1 className="v4sec-title">Not a registered showcase.</h1>
             <p className="v4sec-lede">
               `{slug}` is not in the showcase corpus. Every registered workflow lives in{' '}
-              <Link to="/use-cases">the gallery</Link>.
+              <Link to="/workflows/jobs">the gallery</Link>.
             </p>
           </div>
         </section>
@@ -313,18 +313,18 @@ export function Component() {
             </div>
             <div className="hub-rails">
               {prev && (
-                <Link className="hub-rail" to={`/use-cases/${prev.slug}`}>
+                <Link className="hub-rail" to={`/workflows/jobs/${prev.slug}`}>
                   <span className="hub-rail-kind">prev</span>
                   {prev.title}
                 </Link>
               )}
               {next && (
-                <Link className="hub-rail" to={`/use-cases/${next.slug}`}>
+                <Link className="hub-rail" to={`/workflows/jobs/${next.slug}`}>
                   <span className="hub-rail-kind">next</span>
                   {next.title}
                 </Link>
               )}
-              <Link className="hub-rail" to="/use-cases">
+              <Link className="hub-rail" to="/workflows/jobs">
                 <span className="hub-rail-kind">all</span>
                 the gallery
               </Link>

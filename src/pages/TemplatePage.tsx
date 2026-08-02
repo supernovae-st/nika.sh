@@ -50,9 +50,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/templates/${name}`).link,
+    link: routeHead(`/workflows/skeletons/${name}`).link,
     meta: [
-      ...routeHead(`/templates/${name}`).meta,
+      ...routeHead(`/workflows/skeletons/${name}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -101,7 +101,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="tm-title" className="v4sec v4-in" data-template={hit?.name}>
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/templates" className="td-crumb-link">
+            <Link to="/workflows/skeletons" className="td-crumb-link">
               ← the skeleton register
             </Link>
             {hit && (
@@ -127,7 +127,7 @@ export function Component() {
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{name}</p>
               <p>
-                is not a skeleton the pack ships. Walk <Link to="/templates">the register</Link>{' '}
+                is not a skeleton the pack ships. Walk <Link to="/workflows/skeletons">the register</Link>{' '}
                 (the routing phrases pick for you), ask the binary (<code>nika new &apos;?&apos;</code>),
                 or check <a href="/templates/catalog.json">the machine catalog</a>.
               </p>
@@ -259,19 +259,19 @@ export function Component() {
               {/* ── the walk (routing order · the README's own) ── */}
               <nav className="td-nav" aria-label="Skeleton register walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/templates/${prev.name}`}>
+                  <Link className="td-nav-link" to={`/workflows/skeletons/${prev.name}`}>
                     <span className="td-nav-label">← previous</span>
                     {prev.name}
                   </Link>
                 ) : (
                   <span />
                 )}
-                <Link className="td-nav-link td-nav-link--all" to="/templates">
+                <Link className="td-nav-link td-nav-link--all" to="/workflows/skeletons">
                   <span className="td-nav-label">all {TEMPLATES.length}</span>
                   the register
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/templates/${next.name}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={`/workflows/skeletons/${next.name}`}>
                     <span className="td-nav-label">next →</span>
                     {next.name}
                   </Link>
@@ -287,7 +287,7 @@ export function Component() {
                 </code>
                 . Try the shape in the{' '}
                 <Link to="/play">playground</Link>, or walk{' '}
-                <Link to="/use-cases">the showcase</Link> for the same patterns on real work.{' '}
+                <Link to="/workflows/jobs">the showcase</Link> for the same patterns on real work.{' '}
                 <Link to="/spec">Read the spec →</Link>
               </p>
             </>

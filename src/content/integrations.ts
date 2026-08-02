@@ -86,7 +86,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     },
     doors: [
       { label: 'the oracle, one room per tool', href: '/mcp/nika_check' },
-      { label: 'the skeletons it scaffolds from', href: '/templates' },
+      { label: 'the skeletons it scaffolds from', href: '/workflows/skeletons' },
       { label: 'the proof it can verify', href: '/how/proof' },
     ],
     kit: AGENT_KIT,
@@ -183,7 +183,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       { text: 'Any skills.sh client', code: 'npx skills add supernovae-st/nika-agents' },
     ],
     doors: [
-      { label: 'the skeletons it reaches for', href: '/templates' },
+      { label: 'the skeletons it reaches for', href: '/workflows/skeletons' },
       { label: 'the cost line it respects', href: '/how/boundary' },
     ],
     external: [{ label: 'skills.sh listing', href: 'https://skills.sh/supernovae-st/nika-agents' }],
@@ -298,8 +298,8 @@ export const INTEGRATIONS: IntegrationEntry[] = [
       { text: 'and the current grammar lives in the engine\'s examples/ and on docs.nika.sh.' },
     ],
     doors: [
-      { label: 'the template that works today', href: '/templates' },
-      { label: 'the same patterns, taught', href: '/use-cases' },
+      { label: 'the template that works today', href: '/workflows/skeletons' },
+      { label: 'the same patterns, taught', href: '/workflows/jobs' },
     ],
   },
   {

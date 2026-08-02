@@ -48,7 +48,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "Use cases",
-    "href": "/use-cases",
+    "href": "/workflows/jobs",
     "hint": "real files you would write"
   },
   {
@@ -114,7 +114,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "Templates",
-    "href": "/templates",
+    "href": "/workflows/skeletons",
     "hint": "instantiable skeletons"
   },
   {
@@ -204,7 +204,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The templates",
-    "href": "/templates",
+    "href": "/workflows/skeletons",
     "hint": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it."
   },
   {
@@ -252,7 +252,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The showcases",
-    "href": "/use-cases",
+    "href": "/workflows/jobs",
     "hint": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel."
   },
   {
@@ -1338,61 +1338,61 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "template",
     "label": "chain",
-    "href": "/templates/chain",
+    "href": "/workflows/skeletons/chain",
     "hint": "take data, produce words, save them"
   },
   {
     "kind": "template",
     "label": "gate-and-act",
-    "href": "/templates/gate-and-act",
+    "href": "/workflows/skeletons/gate-and-act",
     "hint": "watch X, act when Y"
   },
   {
     "kind": "template",
     "label": "fanout",
-    "href": "/templates/fanout",
+    "href": "/workflows/skeletons/fanout",
     "hint": "do this for EVERY item"
   },
   {
     "kind": "template",
     "label": "etl-state",
-    "href": "/templates/etl-state",
+    "href": "/workflows/skeletons/etl-state",
     "hint": "only what changed since last run · survive bad input"
   },
   {
     "kind": "template",
     "label": "agent-loop",
-    "href": "/templates/agent-loop",
+    "href": "/workflows/skeletons/agent-loop",
     "hint": "research / review / open-ended"
   },
   {
     "kind": "template",
     "label": "human-gated-ship",
-    "href": "/templates/human-gated-ship",
+    "href": "/workflows/skeletons/human-gated-ship",
     "hint": "anything irreversible (deploy · send · publish)"
   },
   {
     "kind": "template",
     "label": "website-brief",
-    "href": "/templates/website-brief",
+    "href": "/workflows/skeletons/website-brief",
     "hint": "understand a site (domain · theme · assets) from a URL"
   },
   {
     "kind": "template",
     "label": "media-asset-pack",
-    "href": "/templates/media-asset-pack",
+    "href": "/workflows/skeletons/media-asset-pack",
     "hint": "generate image/audio assets from a brief"
   },
   {
     "kind": "template",
     "label": "api-upload-and-create",
-    "href": "/templates/api-upload-and-create",
+    "href": "/workflows/skeletons/api-upload-and-create",
     "hint": "call a product API: upload a file and create from it"
   },
   {
     "kind": "template",
     "label": "docker-report",
-    "href": "/templates/docker-report",
+    "href": "/workflows/skeletons/docker-report",
     "hint": "read a system's state (docker · kubectl · gh), explain it, keep the report"
   },
   {
@@ -3306,157 +3306,157 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "usecase",
     "label": "bookmark triage",
-    "href": "/use-cases/bookmark-triage",
+    "href": "/workflows/jobs/bookmark-triage",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "ceo monday brief",
-    "href": "/use-cases/ceo-monday-brief",
+    "href": "/workflows/jobs/ceo-monday-brief",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "competitor radar",
-    "href": "/use-cases/competitor-radar",
+    "href": "/workflows/jobs/competitor-radar",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "config drift sentinel",
-    "href": "/use-cases/config-drift-sentinel",
+    "href": "/workflows/jobs/config-drift-sentinel",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "contract guard",
-    "href": "/use-cases/contract-guard",
+    "href": "/workflows/jobs/contract-guard",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "csv chart report",
-    "href": "/use-cases/csv-chart-report",
+    "href": "/workflows/jobs/csv-chart-report",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "deep research brief",
-    "href": "/use-cases/deep-research-brief",
+    "href": "/workflows/jobs/deep-research-brief",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "etl quarantine",
-    "href": "/use-cases/etl-quarantine",
+    "href": "/workflows/jobs/etl-quarantine",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "image fx batch",
-    "href": "/use-cases/image-fx-batch",
+    "href": "/workflows/jobs/image-fx-batch",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "incident war room",
-    "href": "/use-cases/incident-war-room",
+    "href": "/workflows/jobs/incident-war-room",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "invoice chaser",
-    "href": "/use-cases/invoice-chaser",
+    "href": "/workflows/jobs/invoice-chaser",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "localization factory",
-    "href": "/use-cases/localization-factory",
+    "href": "/workflows/jobs/localization-factory",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "meeting actions",
-    "href": "/use-cases/meeting-actions",
+    "href": "/workflows/jobs/meeting-actions",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "model bench",
-    "href": "/use-cases/model-bench",
+    "href": "/workflows/jobs/model-bench",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "og images",
-    "href": "/use-cases/og-images",
+    "href": "/workflows/jobs/og-images",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "pr review fanout",
-    "href": "/use-cases/pr-review-fanout",
+    "href": "/workflows/jobs/pr-review-fanout",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "price watch",
-    "href": "/use-cases/price-watch",
+    "href": "/workflows/jobs/price-watch",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "release notes",
-    "href": "/use-cases/release-notes",
+    "href": "/workflows/jobs/release-notes",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "release radar",
-    "href": "/use-cases/release-radar",
+    "href": "/workflows/jobs/release-radar",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "release train",
-    "href": "/use-cases/release-train",
+    "href": "/workflows/jobs/release-train",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "resume screener",
-    "href": "/use-cases/resume-screener",
+    "href": "/workflows/jobs/resume-screener",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "seo content brief",
-    "href": "/use-cases/seo-content-brief",
+    "href": "/workflows/jobs/seo-content-brief",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "social repurpose",
-    "href": "/use-cases/social-repurpose",
+    "href": "/workflows/jobs/social-repurpose",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "standup digest",
-    "href": "/use-cases/standup-digest",
+    "href": "/workflows/jobs/standup-digest",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "support triage",
-    "href": "/use-cases/support-triage",
+    "href": "/workflows/jobs/support-triage",
     "hint": "a real workflow · the whole file, one room"
   },
   {
     "kind": "usecase",
     "label": "transcript shownotes",
-    "href": "/use-cases/transcript-shownotes",
+    "href": "/workflows/jobs/transcript-shownotes",
     "hint": "a real workflow · the whole file, one room"
   },
   {

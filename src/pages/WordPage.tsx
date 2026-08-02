@@ -388,7 +388,7 @@ export function Component() {
                             {use.usage.source.file}
                           </a>
                           , conformance-gated upstream on every spec push.{' '}
-                          <Link to={`/templates/${use.usage.source.name}`}>
+                          <Link to={`/workflows/skeletons/${use.usage.source.name}`}>
                             open the full skeleton →
                           </Link>
                         </>
@@ -434,7 +434,7 @@ export function Component() {
                       <ul className="td-chips">
                         {use.templates.map((t) => (
                           <li key={t}>
-                            <Link className="td-chip" to={`/templates/${t}`}>
+                            <Link className="td-chip" to={`/workflows/skeletons/${t}`}>
                               {t}
                             </Link>
                           </li>

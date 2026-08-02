@@ -72,10 +72,10 @@ describe('/templates · the compiled projection matches the served catalog', () 
   })
 
   it('/templates prerenders (PATHS carries the register page)', () => {
-    expect(PATHS).toContain('/templates')
+    expect(PATHS).toContain('/workflows/skeletons')
   })
 
   it('every template prerenders its deep page (DO error_document beats the catchall)', () => {
-    expect(new Set(TEMPLATE_PATHS)).toEqual(new Set(TEMPLATES.map((t) => `/templates/${t.name}`)))
+    expect(new Set(TEMPLATE_PATHS)).toEqual(new Set(TEMPLATES.map((t) => `/workflows/skeletons/${t.name}`)))
   })
 })

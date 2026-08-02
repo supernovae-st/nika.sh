@@ -27,6 +27,8 @@ import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
 import { Component as How } from './pages/How'
+import { Component as Workflows } from './pages/Workflows'
+import { Component as LessonRoom } from './pages/LessonRoom'
 import { Component as HowRouter } from './pages/HowRouter'
 import { Component as FlowPage } from './pages/Flow'
 import { Component as SourcesPage } from './pages/Sources'
@@ -160,8 +162,8 @@ export const routes: RouteObject[] = [
       /* the skeleton register · the human twin of /templates/catalog.json —
          and one ROOM per skeleton (TemplatePage: the file whole ·
          sha-pinned · grants and carries rails). */
-      { path: 'templates', Component: Templates },
-      { path: 'templates/:name', Component: TemplatePage },
+      { path: 'workflows/skeletons', Component: Templates },
+      { path: 'workflows/skeletons/:name', Component: TemplatePage },
       /* the mother page · the anatomy of the language, one graph. The
          coverage gate (src/test/map.test.ts) keeps it exhaustive both
          ways; /sitemap meta-refreshes here via the STATIC stub
@@ -182,10 +184,15 @@ export const routes: RouteObject[] = [
       { path: 'how/flow', Component: FlowPage },
       { path: 'how/boundary', Component: BoundaryPage },
       { path: 'how/proof', Component: ProofPage },
-      { path: 'use-cases', Component: UseCasesPage },
+      /* the /workflows world (V2 · the eight-worlds migration) · the corpus:
+         the PATH is new (13 spec lessons the site never rendered), the jobs
+         and skeletons re-home under it (their old URLs live on as doorways). */
+      { path: 'workflows', Component: Workflows },
+      { path: 'workflows/path/:slug', Component: LessonRoom },
+      { path: 'workflows/jobs', Component: UseCasesPage },
       /* one room per conformance-gated showcase (§4.13 · rooms_exist flip:
          LENS_PATHS prerenders all 26 · the gallery keeps the browse) */
-      { path: 'use-cases/:slug', Component: UseCaseRoom },
+      { path: 'workflows/jobs/:slug', Component: UseCaseRoom },
       /* the integrations · get Nika into your stack: one room per client
          lane (Claude Code · Codex · Cursor · VS Code · Hermes · MCP) and
          per public repo — install rituals verbatim from the READMEs */

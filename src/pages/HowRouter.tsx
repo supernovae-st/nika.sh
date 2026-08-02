@@ -134,7 +134,7 @@ export function Component() {
               The whole loop
               <span aria-hidden className="v4doclink-arrow"> →</span>
             </Link>
-            <Link to="/use-cases" className="v4doclink">
+            <Link to="/workflows/jobs" className="v4doclink">
               What it ranks against
               <span aria-hidden className="v4doclink-arrow"> →</span>
             </Link>

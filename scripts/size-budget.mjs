@@ -228,6 +228,19 @@
      prerenderer cannot lazy-load. The next honest cut is still the language
      projection, unchanged from the note above.
 
+
+   2026-08-02 · 409 → 412 · THE /workflows WORLD (the eight-worlds migration,
+     V2). Same law as the /how payment above: the prerenderer cannot await
+     React.lazy, so every page rides the sync route table.
+     · +2.2 · Workflows.tsx + LessonRoom.tsx + workflows-page.css · the hub
+       with its three shelves and the room that renders one teaching step
+       whole, with the two steps on either side.
+     · +1.1 · lessons.generated.ts · thirteen rows of metadata (slug, file,
+       step, headline, sha256). The 44KB of WORKFLOW TEXT is not here: it
+       rides lessons-access as its own chunk, the anatomy-access recipe.
+     Cheaper than it looks for what it buys: 14 new routes, and the teaching
+     path the spec has shipped all along became visible for the first time.
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -235,7 +248,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 409
+const BUDGET_KB = 412
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

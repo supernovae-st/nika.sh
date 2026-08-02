@@ -5509,15 +5509,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 790,
+     "authored": 834,
      "authored-pin": 3,
      "foreign": 0,
-     "generated": 290,
+     "generated": 292,
      "pinned-copy": 21,
      "testimonial": 40
     },
-    "classified_files": 1144,
-    "unverified": 16
+    "classified_files": 1190,
+    "unverified": 55
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",
@@ -20075,7 +20075,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "agent-loop",
-   "url": "/templates/agent-loop"
+   "url": "/workflows/skeletons/agent-loop"
   },
   {
    "data": {
@@ -20088,7 +20088,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "api-upload-and-create",
-   "url": "/templates/api-upload-and-create"
+   "url": "/workflows/skeletons/api-upload-and-create"
   },
   {
    "data": {
@@ -20101,7 +20101,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "chain",
-   "url": "/templates/chain"
+   "url": "/workflows/skeletons/chain"
   },
   {
    "data": {
@@ -20114,7 +20114,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "docker-report",
-   "url": "/templates/docker-report"
+   "url": "/workflows/skeletons/docker-report"
   },
   {
    "data": {
@@ -20127,7 +20127,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "etl-state",
-   "url": "/templates/etl-state"
+   "url": "/workflows/skeletons/etl-state"
   },
   {
    "data": {
@@ -20140,7 +20140,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "fanout",
-   "url": "/templates/fanout"
+   "url": "/workflows/skeletons/fanout"
   },
   {
    "data": {
@@ -20153,7 +20153,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "gate-and-act",
-   "url": "/templates/gate-and-act"
+   "url": "/workflows/skeletons/gate-and-act"
   },
   {
    "data": {
@@ -20166,7 +20166,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "human-gated-ship",
-   "url": "/templates/human-gated-ship"
+   "url": "/workflows/skeletons/human-gated-ship"
   },
   {
    "data": {
@@ -20179,7 +20179,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "media-asset-pack",
-   "url": "/templates/media-asset-pack"
+   "url": "/workflows/skeletons/media-asset-pack"
   },
   {
    "data": {
@@ -20192,7 +20192,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
    "served": true,
    "title": "website-brief",
-   "url": "/templates/website-brief"
+   "url": "/workflows/skeletons/website-brief"
   },
   {
    "data": {

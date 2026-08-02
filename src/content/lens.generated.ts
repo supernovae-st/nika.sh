@@ -3394,7 +3394,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "proof",
     "title": "The showcases",
-    "url": "/use-cases/:slug",
+    "url": "/workflows/jobs/:slug",
     "status": "ratified",
     "opener": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel.",
     "closed": false,
@@ -3408,7 +3408,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "reach",
     "title": "The templates",
-    "url": "/templates/:name",
+    "url": "/workflows/skeletons/:name",
     "status": "ratified",
     "opener": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it.",
     "closed": false,
@@ -3496,7 +3496,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "bookmark-triage",
-    "url": "/use-cases/bookmark-triage",
+    "url": "/workflows/jobs/bookmark-triage",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3510,7 +3510,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "ceo-monday-brief",
-    "url": "/use-cases/ceo-monday-brief",
+    "url": "/workflows/jobs/ceo-monday-brief",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3524,7 +3524,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "competitor-radar",
-    "url": "/use-cases/competitor-radar",
+    "url": "/workflows/jobs/competitor-radar",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3538,7 +3538,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "config-drift-sentinel",
-    "url": "/use-cases/config-drift-sentinel",
+    "url": "/workflows/jobs/config-drift-sentinel",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3552,7 +3552,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "contract-guard",
-    "url": "/use-cases/contract-guard",
+    "url": "/workflows/jobs/contract-guard",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3566,7 +3566,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "csv-chart-report",
-    "url": "/use-cases/csv-chart-report",
+    "url": "/workflows/jobs/csv-chart-report",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3580,7 +3580,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "deep-research-brief",
-    "url": "/use-cases/deep-research-brief",
+    "url": "/workflows/jobs/deep-research-brief",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3594,7 +3594,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "etl-quarantine",
-    "url": "/use-cases/etl-quarantine",
+    "url": "/workflows/jobs/etl-quarantine",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3608,7 +3608,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "image-fx-batch",
-    "url": "/use-cases/image-fx-batch",
+    "url": "/workflows/jobs/image-fx-batch",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3622,7 +3622,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "incident-war-room",
-    "url": "/use-cases/incident-war-room",
+    "url": "/workflows/jobs/incident-war-room",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3636,7 +3636,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "invoice-chaser",
-    "url": "/use-cases/invoice-chaser",
+    "url": "/workflows/jobs/invoice-chaser",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3650,7 +3650,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "localization-factory",
-    "url": "/use-cases/localization-factory",
+    "url": "/workflows/jobs/localization-factory",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3664,7 +3664,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "meeting-actions",
-    "url": "/use-cases/meeting-actions",
+    "url": "/workflows/jobs/meeting-actions",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3678,7 +3678,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "model-bench",
-    "url": "/use-cases/model-bench",
+    "url": "/workflows/jobs/model-bench",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3692,7 +3692,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "og-images",
-    "url": "/use-cases/og-images",
+    "url": "/workflows/jobs/og-images",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3706,7 +3706,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "pr-review-fanout",
-    "url": "/use-cases/pr-review-fanout",
+    "url": "/workflows/jobs/pr-review-fanout",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3720,7 +3720,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "price-watch",
-    "url": "/use-cases/price-watch",
+    "url": "/workflows/jobs/price-watch",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3734,7 +3734,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "release-notes",
-    "url": "/use-cases/release-notes",
+    "url": "/workflows/jobs/release-notes",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3748,7 +3748,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "release-radar",
-    "url": "/use-cases/release-radar",
+    "url": "/workflows/jobs/release-radar",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3762,7 +3762,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "release-train",
-    "url": "/use-cases/release-train",
+    "url": "/workflows/jobs/release-train",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3776,7 +3776,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "resume-screener",
-    "url": "/use-cases/resume-screener",
+    "url": "/workflows/jobs/resume-screener",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3790,7 +3790,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "seo-content-brief",
-    "url": "/use-cases/seo-content-brief",
+    "url": "/workflows/jobs/seo-content-brief",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3804,7 +3804,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "social-repurpose",
-    "url": "/use-cases/social-repurpose",
+    "url": "/workflows/jobs/social-repurpose",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3818,7 +3818,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "standup-digest",
-    "url": "/use-cases/standup-digest",
+    "url": "/workflows/jobs/standup-digest",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3832,7 +3832,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "support-triage",
-    "url": "/use-cases/support-triage",
+    "url": "/workflows/jobs/support-triage",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3846,7 +3846,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "showcases",
     "layer": "proof",
     "title": "transcript-shownotes",
-    "url": "/use-cases/transcript-shownotes",
+    "url": "/workflows/jobs/transcript-shownotes",
     "status": "ratified",
     "opener": null,
     "meta": {
@@ -3910,7 +3910,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "agent-loop",
-    "url": "/templates/agent-loop",
+    "url": "/workflows/skeletons/agent-loop",
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
@@ -3924,7 +3924,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "api-upload-and-create",
-    "url": "/templates/api-upload-and-create",
+    "url": "/workflows/skeletons/api-upload-and-create",
     "status": "ratified",
     "opener": "call a product API: upload a file and create from it",
     "meta": {
@@ -3938,7 +3938,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "chain",
-    "url": "/templates/chain",
+    "url": "/workflows/skeletons/chain",
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
@@ -3952,7 +3952,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "docker-report",
-    "url": "/templates/docker-report",
+    "url": "/workflows/skeletons/docker-report",
     "status": "ratified",
     "opener": "read a system's state (docker · kubectl · gh), explain it, keep the report",
     "meta": {
@@ -3966,7 +3966,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "etl-state",
-    "url": "/templates/etl-state",
+    "url": "/workflows/skeletons/etl-state",
     "status": "ratified",
     "opener": "only what changed since last run · survive bad input",
     "meta": {
@@ -3980,7 +3980,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "fanout",
-    "url": "/templates/fanout",
+    "url": "/workflows/skeletons/fanout",
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
@@ -3994,7 +3994,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "gate-and-act",
-    "url": "/templates/gate-and-act",
+    "url": "/workflows/skeletons/gate-and-act",
     "status": "ratified",
     "opener": "watch X, act when Y",
     "meta": {
@@ -4008,7 +4008,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "human-gated-ship",
-    "url": "/templates/human-gated-ship",
+    "url": "/workflows/skeletons/human-gated-ship",
     "status": "ratified",
     "opener": "anything irreversible (deploy · send · publish)",
     "meta": {
@@ -4022,7 +4022,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "media-asset-pack",
-    "url": "/templates/media-asset-pack",
+    "url": "/workflows/skeletons/media-asset-pack",
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
@@ -4036,7 +4036,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "templates",
     "layer": "reach",
     "title": "website-brief",
-    "url": "/templates/website-brief",
+    "url": "/workflows/skeletons/website-brief",
     "status": "ratified",
     "opener": "understand a site (domain · theme · assets) from a URL",
     "meta": {

@@ -211,14 +211,14 @@ export function Component() {
               dead end — this was the only route on the site with zero outbound
               links). The skeletons are the « don't wait for us » lane. */}
           <div className="v4doclinks" data-rise style={{ ['--rise-delay' as string]: '400ms' }}>
-            <Link to="/use-cases" className="v4doclink">
+            <Link to="/workflows/jobs" className="v4doclink">
               See where they land
               <span aria-hidden className="v4doclink-arrow">
                 {' '}
                 →
               </span>
             </Link>
-            <Link to="/templates" className="v4doclink v4doclink--dim">
+            <Link to="/workflows/skeletons" className="v4doclink v4doclink--dim">
               Or start from a skeleton yourself
               <span aria-hidden className="v4doclink-arrow">
                 {' '}

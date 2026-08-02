@@ -73,7 +73,7 @@ export const NAV_PRODUCT: { col: string; items: NavItem[] }[] = [
         "label": "Use cases",
         "icon": "tiles",
         "desc": "Real plans, reviewable and bound",
-        "to": "/use-cases"
+        "to": "/workflows/jobs"
       },
       {
         "label": "Manifesto",
@@ -243,7 +243,7 @@ export const NAV_REFERENCE: { featured: NavItem; cols: { col: string; items: Nav
           "label": "Templates",
           "icon": "tiles",
           "desc": "Files to start from",
-          "to": "/templates",
+          "to": "/workflows",
           "count": 10,
           "unit": "files",
           "layer": "reach"
@@ -306,7 +306,7 @@ export const FOOTER_COLS: { kick: string; fromPanel?: number; items: NavItem[] }
     "items": [
       {
         "label": "Use cases",
-        "to": "/use-cases"
+        "to": "/workflows/jobs"
       },
       {
         "label": "Registry",

@@ -43,7 +43,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
         </span>
       </p>
       <div className="tm-row-head">
-        <a className="tm-name" href={`/templates/${entry.name}`}>
+        <a className="tm-name" href={`/workflows/skeletons/${entry.name}`}>
           {entry.name}
         </a>
         <span className="tm-slots" title="SLOT-marked decision points: fill these, nothing else">
@@ -85,7 +85,7 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
         </div>
       ) : (
         <p className="tm-open">
-          <a href={`/templates/${entry.name}`}>open the skeleton →</a>
+          <a href={`/workflows/skeletons/${entry.name}`}>open the skeleton →</a>
         </p>
       )}
     </li>
@@ -108,9 +108,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(name ? `/templates/${name}` : '/templates').link,
+    link: routeHead(name ? `/workflows/skeletons/${name}` : '/workflows/skeletons').link,
     meta: [
-      ...routeHead(name ? `/templates/${name}` : '/templates').meta,
+      ...routeHead(name ? `/workflows/skeletons/${name}` : '/workflows/skeletons').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

@@ -122,77 +122,77 @@
     },
     {
       "from": "/library",
-      "to": "/use-cases",
+      "to": "/workflows/jobs",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/daily_brief",
-      "to": "/use-cases",
+      "to": "/workflows/jobs",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/deep-research-brief",
-      "to": "/use-cases/deep-research-brief",
+      "to": "/workflows/jobs/deep-research-brief",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/etl_quarantine",
-      "to": "/use-cases/etl-quarantine",
+      "to": "/workflows/jobs/etl-quarantine",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/invoice-chaser",
-      "to": "/use-cases/invoice-chaser",
+      "to": "/workflows/jobs/invoice-chaser",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/localization-factory",
-      "to": "/use-cases/localization-factory",
+      "to": "/workflows/jobs/localization-factory",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/meeting_actions",
-      "to": "/use-cases/meeting-actions",
+      "to": "/workflows/jobs/meeting-actions",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/pr_risk_review",
-      "to": "/use-cases/pr-review-fanout",
+      "to": "/workflows/jobs/pr-review-fanout",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/price_watch",
-      "to": "/use-cases/price-watch",
+      "to": "/workflows/jobs/price-watch",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/social_repurpose",
-      "to": "/use-cases/social-repurpose",
+      "to": "/workflows/jobs/social-repurpose",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
     },
     {
       "from": "/library/standup_digest",
-      "to": "/use-cases/standup-digest",
+      "to": "/workflows/jobs/standup-digest",
       "status": 301,
       "live": true,
       "applies": "library-fusion"
@@ -224,6 +224,272 @@
       "status": 301,
       "live": true,
       "applies": "sources-truth-fusion"
+    },
+    {
+      "from": "/templates",
+      "to": "/workflows/skeletons",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/agent-loop",
+      "to": "/workflows/skeletons/agent-loop",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/api-upload-and-create",
+      "to": "/workflows/skeletons/api-upload-and-create",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/chain",
+      "to": "/workflows/skeletons/chain",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/docker-report",
+      "to": "/workflows/skeletons/docker-report",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/etl-state",
+      "to": "/workflows/skeletons/etl-state",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/fanout",
+      "to": "/workflows/skeletons/fanout",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/gate-and-act",
+      "to": "/workflows/skeletons/gate-and-act",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/human-gated-ship",
+      "to": "/workflows/skeletons/human-gated-ship",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/media-asset-pack",
+      "to": "/workflows/skeletons/media-asset-pack",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/templates/website-brief",
+      "to": "/workflows/skeletons/website-brief",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases",
+      "to": "/workflows/jobs",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/bookmark-triage",
+      "to": "/workflows/jobs/bookmark-triage",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/ceo-monday-brief",
+      "to": "/workflows/jobs/ceo-monday-brief",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/competitor-radar",
+      "to": "/workflows/jobs/competitor-radar",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/config-drift-sentinel",
+      "to": "/workflows/jobs/config-drift-sentinel",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/contract-guard",
+      "to": "/workflows/jobs/contract-guard",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/csv-chart-report",
+      "to": "/workflows/jobs/csv-chart-report",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/deep-research-brief",
+      "to": "/workflows/jobs/deep-research-brief",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/etl-quarantine",
+      "to": "/workflows/jobs/etl-quarantine",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/image-fx-batch",
+      "to": "/workflows/jobs/image-fx-batch",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/incident-war-room",
+      "to": "/workflows/jobs/incident-war-room",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/invoice-chaser",
+      "to": "/workflows/jobs/invoice-chaser",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/localization-factory",
+      "to": "/workflows/jobs/localization-factory",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/meeting-actions",
+      "to": "/workflows/jobs/meeting-actions",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/model-bench",
+      "to": "/workflows/jobs/model-bench",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/og-images",
+      "to": "/workflows/jobs/og-images",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/pr-review-fanout",
+      "to": "/workflows/jobs/pr-review-fanout",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/price-watch",
+      "to": "/workflows/jobs/price-watch",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/release-notes",
+      "to": "/workflows/jobs/release-notes",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/release-radar",
+      "to": "/workflows/jobs/release-radar",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/release-train",
+      "to": "/workflows/jobs/release-train",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/resume-screener",
+      "to": "/workflows/jobs/resume-screener",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/seo-content-brief",
+      "to": "/workflows/jobs/seo-content-brief",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/social-repurpose",
+      "to": "/workflows/jobs/social-repurpose",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/standup-digest",
+      "to": "/workflows/jobs/standup-digest",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/support-triage",
+      "to": "/workflows/jobs/support-triage",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/transcript-shownotes",
+      "to": "/workflows/jobs/transcript-shownotes",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
     }
   ]
 }

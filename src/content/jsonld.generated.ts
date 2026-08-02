@@ -905,70 +905,70 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/agent-loop",
+          "@id": "https://nika.sh/workflows/skeletons/agent-loop",
           "termCode": "agent-loop",
           "name": "agent-loop",
           "description": "research / review / open-ended"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/api-upload-and-create",
+          "@id": "https://nika.sh/workflows/skeletons/api-upload-and-create",
           "termCode": "api-upload-and-create",
           "name": "api-upload-and-create",
           "description": "call a product API: upload a file and create from it"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/chain",
+          "@id": "https://nika.sh/workflows/skeletons/chain",
           "termCode": "chain",
           "name": "chain",
           "description": "take data, produce words, save them"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/docker-report",
+          "@id": "https://nika.sh/workflows/skeletons/docker-report",
           "termCode": "docker-report",
           "name": "docker-report",
           "description": "read a system's state (docker · kubectl · gh), explain it, keep the report"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/etl-state",
+          "@id": "https://nika.sh/workflows/skeletons/etl-state",
           "termCode": "etl-state",
           "name": "etl-state",
           "description": "only what changed since last run · survive bad input"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/fanout",
+          "@id": "https://nika.sh/workflows/skeletons/fanout",
           "termCode": "fanout",
           "name": "fanout",
           "description": "do this for EVERY item"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/gate-and-act",
+          "@id": "https://nika.sh/workflows/skeletons/gate-and-act",
           "termCode": "gate-and-act",
           "name": "gate-and-act",
           "description": "watch X, act when Y"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/human-gated-ship",
+          "@id": "https://nika.sh/workflows/skeletons/human-gated-ship",
           "termCode": "human-gated-ship",
           "name": "human-gated-ship",
           "description": "anything irreversible (deploy · send · publish)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/media-asset-pack",
+          "@id": "https://nika.sh/workflows/skeletons/media-asset-pack",
           "termCode": "media-asset-pack",
           "name": "media-asset-pack",
           "description": "generate image/audio assets from a brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/templates/website-brief",
+          "@id": "https://nika.sh/workflows/skeletons/website-brief",
           "termCode": "website-brief",
           "name": "website-brief",
           "description": "understand a site (domain · theme · assets) from a URL"
@@ -2343,157 +2343,157 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/bookmark-triage",
+          "@id": "https://nika.sh/workflows/jobs/bookmark-triage",
           "termCode": "bookmark-triage",
           "name": "bookmark-triage"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/ceo-monday-brief",
+          "@id": "https://nika.sh/workflows/jobs/ceo-monday-brief",
           "termCode": "ceo-monday-brief",
           "name": "ceo-monday-brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/competitor-radar",
+          "@id": "https://nika.sh/workflows/jobs/competitor-radar",
           "termCode": "competitor-radar",
           "name": "competitor-radar"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/config-drift-sentinel",
+          "@id": "https://nika.sh/workflows/jobs/config-drift-sentinel",
           "termCode": "config-drift-sentinel",
           "name": "config-drift-sentinel"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/contract-guard",
+          "@id": "https://nika.sh/workflows/jobs/contract-guard",
           "termCode": "contract-guard",
           "name": "contract-guard"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/csv-chart-report",
+          "@id": "https://nika.sh/workflows/jobs/csv-chart-report",
           "termCode": "csv-chart-report",
           "name": "csv-chart-report"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/deep-research-brief",
+          "@id": "https://nika.sh/workflows/jobs/deep-research-brief",
           "termCode": "deep-research-brief",
           "name": "deep-research-brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/etl-quarantine",
+          "@id": "https://nika.sh/workflows/jobs/etl-quarantine",
           "termCode": "etl-quarantine",
           "name": "etl-quarantine"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/image-fx-batch",
+          "@id": "https://nika.sh/workflows/jobs/image-fx-batch",
           "termCode": "image-fx-batch",
           "name": "image-fx-batch"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/incident-war-room",
+          "@id": "https://nika.sh/workflows/jobs/incident-war-room",
           "termCode": "incident-war-room",
           "name": "incident-war-room"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/invoice-chaser",
+          "@id": "https://nika.sh/workflows/jobs/invoice-chaser",
           "termCode": "invoice-chaser",
           "name": "invoice-chaser"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/localization-factory",
+          "@id": "https://nika.sh/workflows/jobs/localization-factory",
           "termCode": "localization-factory",
           "name": "localization-factory"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/meeting-actions",
+          "@id": "https://nika.sh/workflows/jobs/meeting-actions",
           "termCode": "meeting-actions",
           "name": "meeting-actions"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/model-bench",
+          "@id": "https://nika.sh/workflows/jobs/model-bench",
           "termCode": "model-bench",
           "name": "model-bench"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/og-images",
+          "@id": "https://nika.sh/workflows/jobs/og-images",
           "termCode": "og-images",
           "name": "og-images"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/pr-review-fanout",
+          "@id": "https://nika.sh/workflows/jobs/pr-review-fanout",
           "termCode": "pr-review-fanout",
           "name": "pr-review-fanout"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/price-watch",
+          "@id": "https://nika.sh/workflows/jobs/price-watch",
           "termCode": "price-watch",
           "name": "price-watch"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/release-notes",
+          "@id": "https://nika.sh/workflows/jobs/release-notes",
           "termCode": "release-notes",
           "name": "release-notes"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/release-radar",
+          "@id": "https://nika.sh/workflows/jobs/release-radar",
           "termCode": "release-radar",
           "name": "release-radar"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/release-train",
+          "@id": "https://nika.sh/workflows/jobs/release-train",
           "termCode": "release-train",
           "name": "release-train"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/resume-screener",
+          "@id": "https://nika.sh/workflows/jobs/resume-screener",
           "termCode": "resume-screener",
           "name": "resume-screener"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/seo-content-brief",
+          "@id": "https://nika.sh/workflows/jobs/seo-content-brief",
           "termCode": "seo-content-brief",
           "name": "seo-content-brief"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/social-repurpose",
+          "@id": "https://nika.sh/workflows/jobs/social-repurpose",
           "termCode": "social-repurpose",
           "name": "social-repurpose"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/standup-digest",
+          "@id": "https://nika.sh/workflows/jobs/standup-digest",
           "termCode": "standup-digest",
           "name": "standup-digest"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/support-triage",
+          "@id": "https://nika.sh/workflows/jobs/support-triage",
           "termCode": "support-triage",
           "name": "support-triage"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/use-cases/transcript-shownotes",
+          "@id": "https://nika.sh/workflows/jobs/transcript-shownotes",
           "termCode": "transcript-shownotes",
           "name": "transcript-shownotes"
         }

@@ -179,7 +179,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "templates",
         "title": "The templates",
-        "url": "/templates",
+        "url": "/workflows",
         "count": 10,
         "surface": "rooms",
         "slot": null,
@@ -297,7 +297,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "showcases",
         "title": "The showcases",
-        "url": "/use-cases",
+        "url": "/workflows",
         "count": 26,
         "surface": "rooms",
         "slot": null,

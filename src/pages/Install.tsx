@@ -289,7 +289,7 @@ export function Component() {
             <Link to="/learn" className="ins-link">
               {T.more.learn}
             </Link>{' '}
-            · <Link to="/use-cases" className="ins-link">
+            · <Link to="/workflows/jobs" className="ins-link">
               {T.more.usecases}
             </Link>{' '}
             ·{' '}

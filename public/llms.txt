@@ -58,7 +58,7 @@ verifiable end-to-end; docs and site render projections of the same
 files.
 Every served library file (e.g. https://nika.sh/library/daily-brief.nika.yaml) carries its SPDX line (Apache-2.0).
 
-- Templates (instantiate, never invent: SLOT-marked skeletons): https://nika.sh/templates · machine catalog: https://nika.sh/templates/catalog.json · source: https://github.com/supernovae-st/nika-spec/tree/main/templates
+- Templates (instantiate, never invent: SLOT-marked skeletons): https://nika.sh/workflows/skeletons · machine catalog: https://nika.sh/templates/catalog.json · source: https://github.com/supernovae-st/nika-spec/tree/main/templates
 - Agent authoring protocol: https://docs.nika.sh/guides/agent-authoring
 - Pack manifest: https://github.com/supernovae-st/nika-spec/blob/main/examples/manifest.yaml
 - Showcase source: https://github.com/supernovae-st/nika-spec/tree/main/examples/showcase
@@ -110,7 +110,7 @@ data language (jq) · workflows are callable · mock-first.
 - The register roots (every roomed family owns its root page listing its rooms, each member glossed): https://nika.sh/types · /namespaces · /edges · /predicates · /families · /modes · /permits · /secrets · /conformance · /error-namespaces · /error-categories · /mcp · /truth
 - The timeline (the one verifiable record: eras · releases · forward gates · every provable claim re-proven in CI): https://nika.sh/timeline
 - Integrations (get Nika into your stack · one room per client lane and per public repo, install commands verbatim from the READMEs): https://nika.sh/integrations · Claude Code: https://nika.sh/integrations/claude-code · Codex: https://nika.sh/integrations/codex · Cursor: https://nika.sh/integrations/cursor · VS Code: https://nika.sh/integrations/vscode · Hermes/skills.sh: https://nika.sh/integrations/hermes · the MCP server: https://nika.sh/integrations/mcp
-- Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/use-cases (the gallery lists all rooms; each room lives at its own slug under that path)
+- Showcase rooms (one URL per conformance-gated real workflow, whole file + plan facts): https://nika.sh/workflows/jobs (the gallery lists all rooms; each room lives at its own slug under that path)
 - The catalog (what the RELEASED binary knows · vendored at the engine release pin, digest-verified · engine-release clock): https://nika.sh/catalog · models (one room each: serving seats, exact prices, measured energy): https://nika.sh/catalog/models · pricing (the rule table the audit reads · a local model is unpriced, never free): https://nika.sh/catalog/pricing · energy (measured Wh/Mtok with sources verbatim): https://nika.sh/catalog/energy · MCP servers (one room each: packages, env vars, the permit line): https://nika.sh/catalog/mcp · embeddings: https://nika.sh/catalog/embeddings · capability rules: https://nika.sh/catalog/capabilities · machine twin (the whole site as evidence-bearing JSON-LD triples): https://nika.sh/nika-graph.json
 
 ## Status

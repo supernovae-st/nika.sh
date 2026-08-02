@@ -360,7 +360,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: rooms
-    rooms_url: /templates/:name
+    rooms_url: /workflows/skeletons/:name
     rooms_exist: true
     unique_data: "the sha-pinned YAML + intent + slots + the tools each skeleton grants (whitelist scan)"
     defined_by: [templates/README.md]
@@ -531,7 +531,7 @@ sets:
     counted_in_canon: false
     closed: false
     surface: rooms
-    rooms_url: /use-cases/:slug
+    rooms_url: /workflows/jobs/:slug
     rooms_exist: true
     unique_data: "the ENTIRE workflow file + its projected DAG model + tier and persona + verbs and tools used (scan)"
     defined_by: [examples/manifest.yaml]
@@ -610,6 +610,17 @@ surfaces:
 # meta-refresh stub (dist has no server rules · the stub IS the 301).
 # These are NOT lens surfaces — no node, no graph edge, just the door.
 legacy_moves:
+  # ── the /workflows world is born (the casse §1 · V2 · 2026-08-02) · the
+  #    corpus gets one roof: the PATH is new, the jobs and the skeletons
+  #    re-home under it. Room-level rows are expanded from the member census
+  #    by the compiler (see the parametric block below).
+  - { from: /use-cases, to: /workflows/jobs, applied: workflows-world-v2 }
+  - { from: /templates, to: /workflows/skeletons, applied: workflows-world-v2 }
+  # PARAMETRIC (the mechanism V3 needs for 231 rooms): one row, one family.
+  # The compiler expands over the SERVED members of the heir base, so a room
+  # that did not survive the move never gets a doorway onto nothing.
+  - { from: /use-cases/:slug, to: /workflows/jobs/:slug, applied: workflows-world-v2 }
+  - { from: /templates/:name, to: /workflows/skeletons/:name, applied: workflows-world-v2 }
   # ── the /how world is born (the casse §1 · V1 · 2026-08-02) · the three
   #    lens-born hubs RE-HOME: a hub RECOUNTS how a subsystem works, which is
   #    the definition of the /how world (target sitemap §3-c). Descriptor flip
@@ -622,17 +633,17 @@ legacy_moves:
   # ── the /library death (D6 · the casse §1.1 · 2026-08-02) · the page dies,
   #    the DATA lives (flagships/ stays the hero's picking corpus) · 8 rooms
   #    map to their use-case twins · 2 recorded-only ids heir to the gallery
-  - { from: /library, to: /use-cases, applied: library-fusion }
-  - { from: /library/daily_brief, to: /use-cases, applied: library-fusion }
-  - { from: /library/pr_risk_review, to: /use-cases/pr-review-fanout, applied: library-fusion }
-  - { from: /library/meeting_actions, to: /use-cases/meeting-actions, applied: library-fusion }
-  - { from: /library/price_watch, to: /use-cases/price-watch, applied: library-fusion }
-  - { from: /library/social_repurpose, to: /use-cases/social-repurpose, applied: library-fusion }
-  - { from: /library/standup_digest, to: /use-cases/standup-digest, applied: library-fusion }
-  - { from: /library/etl_quarantine, to: /use-cases/etl-quarantine, applied: library-fusion }
-  - { from: /library/invoice-chaser, to: /use-cases/invoice-chaser, applied: library-fusion }
-  - { from: /library/deep-research-brief, to: /use-cases/deep-research-brief, applied: library-fusion }
-  - { from: /library/localization-factory, to: /use-cases/localization-factory, applied: library-fusion }
+  - { from: /library, to: /workflows/jobs, applied: library-fusion }
+  - { from: /library/daily_brief, to: /workflows/jobs, applied: library-fusion }
+  - { from: /library/pr_risk_review, to: /workflows/jobs/pr-review-fanout, applied: library-fusion }
+  - { from: /library/meeting_actions, to: /workflows/jobs/meeting-actions, applied: library-fusion }
+  - { from: /library/price_watch, to: /workflows/jobs/price-watch, applied: library-fusion }
+  - { from: /library/social_repurpose, to: /workflows/jobs/social-repurpose, applied: library-fusion }
+  - { from: /library/standup_digest, to: /workflows/jobs/standup-digest, applied: library-fusion }
+  - { from: /library/etl_quarantine, to: /workflows/jobs/etl-quarantine, applied: library-fusion }
+  - { from: /library/invoice-chaser, to: /workflows/jobs/invoice-chaser, applied: library-fusion }
+  - { from: /library/deep-research-brief, to: /workflows/jobs/deep-research-brief, applied: library-fusion }
+  - { from: /library/localization-factory, to: /workflows/jobs/localization-factory, applied: library-fusion }
   - { from: /language/depends_on, to: /language/after, applied: provider-rooms-arc }
   - { from: /method, to: /timeline, applied: provider-rooms-arc }
   - { from: /concepts, to: /map, applied: provider-rooms-arc }
@@ -678,7 +689,7 @@ nav:
               desc: "The plan, reviewed and enforced" }
           - { label: The boundary, to: /how/boundary, icon: shield,
               desc: "The file declares its blast radius" }
-          - { label: Use cases, to: /use-cases, icon: tiles,
+          - { label: Use cases, to: /workflows/jobs, icon: tiles,
               desc: "Real plans, reviewable and bound" }
           - { label: Manifesto, to: /manifesto, icon: butterfly,
               desc: "The drum, in 8 languages" }
@@ -754,7 +765,7 @@ nav:
       - { col: When it runs, item: { label: Changelog, to: /changelog } }
       # the truth system's ONE door (fused 2026-08-02 · the casse §1.3)
       - { col: When it runs, item: { label: The truth system, to: /truth } }
-      - { col: What it can touch, item: { label: Use cases, to: /use-cases } }
+      - { col: What it can touch, item: { label: Use cases, to: /workflows/jobs } }
       # the registry's on-site room landed with /integrations — the owed
       # surface is paid, the slot dies (§4.11: one door, one path)
       - { col: What it can touch, item: { label: Registry, to: /integrations/registry } }

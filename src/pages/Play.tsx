@@ -713,7 +713,7 @@ export function Component() {
                 →
               </span>
             </Link>
-            <Link to="/use-cases" className="v4doclink v4doclink--dim">
+            <Link to="/workflows/jobs" className="v4doclink v4doclink--dim">
               See real workflows
               <span aria-hidden className="v4doclink-arrow">
                 {' '}

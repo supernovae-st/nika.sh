@@ -298,7 +298,7 @@ export function Component() {
                       <ul className="td-chips">
                         {templates.map((t) => (
                           <li key={t}>
-                            <Link className="td-chip" to={`/templates/${t}`}>
+                            <Link className="td-chip" to={`/workflows/skeletons/${t}`}>
                               {t}
                             </Link>
                           </li>

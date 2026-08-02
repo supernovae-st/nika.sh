@@ -285,7 +285,7 @@ export function Component() {
                 →
               </span>
             </Link>
-            <Link to="/use-cases" className="cl-link cl-link--dim">
+            <Link to="/workflows/jobs" className="cl-link cl-link--dim">
               See it in use
               <span aria-hidden className="cl-link-arrow">
                 {' '}

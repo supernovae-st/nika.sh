@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "f5d2a4b89046f1273b554ef6ad432c6b7ad7696dff2d0540adc22faa5cc49403"
+   "sha256": "1e9bc24baaa1cc66b611607bfeb787bba9a29c7f1df86f30b9d0f9494e24726c"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -51,7 +51,7 @@
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
-   "sha256": "76a4f2141d90ee63038edbf949bfa2581a8ffab03f24fbd185c47921b663cfb1"
+   "sha256": "659051df060845090988ba3df41e2ee10311d27dda390b4168ab4a3061b56063"
   },
   {
    "path": "scripts/lens-gate.mjs",
@@ -59,11 +59,11 @@
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",
-   "sha256": "94e8797f2a4b4a19651b9b643034d512e339e0bdcd925287e3445ab21a8cb88d"
+   "sha256": "bdc8a3b0a53b734adee05ba798083c6a55d9a88325293bf725daaf5361f3817f"
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "9fbcc70175c05570b03cf12c00e55deb7cd097db0362402cea0b268b602830c3"
+   "sha256": "0c0cb9d66ea0f6dad5f207e8bdc8e539c5defa2116177967d57e6ec109b39d4e"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "e8c045597dfb884af71b3c277335144b536d5ed4bfa844dfd7aa117b37b25dc5"
+   "sha256": "c09afc959f9c39bb34101c8a67024ec5020c80088bdb6f4feb8401f36119a2c3"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "cb7c87545a76f6c6e1e8043b88950b8316ed6bb40d69aaf379eefffc05abc3e2"
+   "sha256": "773af2d93dc70897b48f12e97a58a8d9493b6377827af1e1484415dd641b0162"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "f35d86422680c175f43b6be04b24e0aedd33bff624b2d66ae11b643e6bc4eb02"
+   "sha256": "ce9f64efc91f6a0ff6872227e81e5aa9b6e11b1577a9b358ca78832a269655b7"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "c91a8395d4a49faabc81d678e494e8dd361e008cea781f7465daa4709de0958d"
+   "sha256": "441caf454a2c8c532172c54504e210520522826f11d31afee40827c1ecb6f65c"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,11 +135,11 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "0bb8d1343a14ee336e54c5ce8750b967a8aeaf79280b230370e8a0d455bdcd4c"
+   "sha256": "4bdb42918b757736e4b682d7998e705347b357248050f1c3a1fd1337c19f7b09"
   },
   {
    "path": "src/routes.tsx",
-   "sha256": "322f5b6642a956af8cf1428b0e7da679b7cab9ff81173d9e48932c9e60a6a720"
+   "sha256": "8ff971495e9b4b56adc89efad23c3ec48617921ea483cf532f989650729c530d"
   },
   {
    "path": "tsconfig.app.json",

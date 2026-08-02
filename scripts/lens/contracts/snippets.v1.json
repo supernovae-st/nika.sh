@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 59,
-    "block_count": 121
+    "carrier_count": 60,
+    "block_count": 122
   },
   "carriers": [
     {
@@ -824,7 +824,7 @@
     },
     {
       "path": "src/pages/Convert.tsx",
-      "source_blob": "bc7e23ee19891d4cb5d03544b6c6c6a7d60ce22a",
+      "source_blob": "8b7d7ba4182515fa614817c1dad5fcc70f582b0f",
       "blocks": [
         {
           "selector": "src/pages/Convert.tsx#codefile:1",
@@ -848,7 +848,7 @@
     },
     {
       "path": "src/pages/Install.tsx",
-      "source_blob": "591d3468b8a136c4e6acee959d3439340ee65b9b",
+      "source_blob": "1b0755d09d189f7fab3163c462773ab378ec3900",
       "blocks": [
         {
           "selector": "src/pages/Install.tsx#codefile:1",
@@ -879,6 +879,18 @@
           "kind": "jsx-codefile",
           "line": 405,
           "sha256": "2cf60368f39c72c789aea7ffc72d75b9b978a9bbd4afd45f0ff8a75c2c1ad045"
+        }
+      ]
+    },
+    {
+      "path": "src/pages/LessonRoom.tsx",
+      "source_blob": "ba2c55c48b0f1020f4eb4ea55bf9670b3710b701",
+      "blocks": [
+        {
+          "selector": "src/pages/LessonRoom.tsx#codefile:1",
+          "kind": "jsx-codefile",
+          "line": 118,
+          "sha256": "4cbae80e52ba2e7c6b53d78e64a2fbc26018100b3862ea99db8285f0934a5939"
         }
       ]
     },
@@ -920,7 +932,7 @@
     },
     {
       "path": "src/pages/Spec.tsx",
-      "source_blob": "9281a388d884bb09dfef5cb8cdcf9804349acc06",
+      "source_blob": "76b44b8e2996339451603809749206c8a73f1047",
       "blocks": [
         {
           "selector": "src/pages/Spec.tsx#codefile:1",
@@ -938,7 +950,7 @@
     },
     {
       "path": "src/pages/TemplatePage.tsx",
-      "source_blob": "051b0ec2e5cbf4698f331df7b5c0dbdfa7b62005",
+      "source_blob": "9ffacb38a81784d1be1b835dbcec3d263d987bf5",
       "blocks": [
         {
           "selector": "src/pages/TemplatePage.tsx#codefile:1",
@@ -950,7 +962,7 @@
     },
     {
       "path": "src/pages/Templates.tsx",
-      "source_blob": "a7c121348f110860c3da3e6cd6d3e86015cf4f8c",
+      "source_blob": "4c001a7684f3eaaa2d5be606818eb57e796711eb",
       "blocks": [
         {
           "selector": "src/pages/Templates.tsx#pre:1",
@@ -968,7 +980,7 @@
     },
     {
       "path": "src/pages/ToolPage.tsx",
-      "source_blob": "878efd591a8188c8d19c38954e684d34c189584f",
+      "source_blob": "0437e2e49ecfd47b3c904f9979c9b5d65474052c",
       "blocks": [
         {
           "selector": "src/pages/ToolPage.tsx#codefile:1",
@@ -980,7 +992,7 @@
     },
     {
       "path": "src/pages/UseCaseRoom.tsx",
-      "source_blob": "661ef97fadcfd8eec7d15d55fd7e5c901118db4d",
+      "source_blob": "8aaf7baf8ddb3f0f0ee66d97b4edde1b2b25f726",
       "blocks": [
         {
           "selector": "src/pages/UseCaseRoom.tsx#codefile:1",
@@ -992,7 +1004,7 @@
     },
     {
       "path": "src/pages/UseCasesPage.tsx",
-      "source_blob": "1d640f8b5ceaff16ff1a8216d121a77a28ba95eb",
+      "source_blob": "54081ef41d1e73ec8396ddfed426325e3cc67147",
       "blocks": [
         {
           "selector": "src/pages/UseCasesPage.tsx#pre:1",
@@ -1010,7 +1022,7 @@
     },
     {
       "path": "src/pages/VerbPage.tsx",
-      "source_blob": "8e8b80cf332e607cedbae3e5dba4ba9e168039dd",
+      "source_blob": "07d40f0db86c9854b1d564c79be78b9fb66ac87c",
       "blocks": [
         {
           "selector": "src/pages/VerbPage.tsx#codefile:1",
@@ -1022,7 +1034,7 @@
     },
     {
       "path": "src/pages/WordPage.tsx",
-      "source_blob": "a5e443bc7beb3572afba61ff5470a6ca88701adf",
+      "source_blob": "f6840af3fdb4e092f04f26e637a70ac1b4714b96",
       "blocks": [
         {
           "selector": "src/pages/WordPage.tsx#codefile:1",
