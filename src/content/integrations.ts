@@ -72,7 +72,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     title: 'Nika for Claude Code · plugin, skills, MCP server',
     repo: AGENTS_REPO,
     license: 'MIT',
-    what: 'One plugin install hands the agent the whole kit: 4 skills, 3 subagents, 5 slash commands, the read-only MCP oracle and the seatbelt hooks.',
+    what: 'One plugin install hands the agent the whole kit: 4 skills, 3 subagents, 6 slash commands, the read-only MCP oracle and the seatbelt hooks.',
     how: 'The agent authors a plain-text workflow it can `nika check` before a token is spent and `nika trace verify` after. The oracle answers read-only (check · inspect · explain · schema · examples · template · canon · catalog · tools); the subagents author, debug and migrate; `/nika:check` is one keystroke. Updating is TWO rungs by design: refresh the marketplace clone, then move the install. The reason is that an install once sat three releases behind, silently, with a fresh clone right next to it.',
     install: [
       { text: 'Add the marketplace', code: 'claude plugin marketplace add supernovae-st/nika-agents' },

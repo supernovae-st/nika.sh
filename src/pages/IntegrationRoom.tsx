@@ -189,6 +189,13 @@ export function Component() {
                     </li>
                   ))}
                 </ol>
+                {hit.kind === 'client' && (
+                  <p className="td-gloss">
+                    Out of sync — the binary moved and the kit stayed behind?{' '}
+                    <code>nika doctor</code> names the lagging kit and prints the exact
+                    per-client fix.
+                  </p>
+                )}
                 {hit.also && (
                   <p className="td-gloss">
                     {hit.also.text} <Link to={hit.also.href}>{hit.also.label} →</Link>
