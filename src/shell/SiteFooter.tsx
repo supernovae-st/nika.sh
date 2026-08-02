@@ -139,7 +139,9 @@ export function SignatureMark() {
 
 export default function SiteFooter({ signature = true }: { signature?: boolean }) {
   return (
-    <footer className="theme-dark v4sec" aria-label="Site footer">
+    /* lang="en" · see the note on the nav: the footer is English on every
+       page, including the ones the document declares as French */
+    <footer className="theme-dark v4sec" aria-label="Site footer" lang="en">
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
         {/* THE SIGNATURE · the continuous living butterfly (F3) — Home
             renders it above the final CTA instead (signature={false}:

@@ -152,8 +152,15 @@ export default function Nav() {
 
   return (
     <>
+      {/* lang="en" · the chrome is ENGLISH on every page, and the 14 locale
+          pages set <html lang="fr|es|…> over it. 108 of the footer's 108 text
+          segments are byte-identical English there, so without this the
+          document asserts French over words that are not French — a screen
+          reader takes the document at its word. If the chrome is ever
+          translated, this attribute moves with it. */}
       <header
         className="v4nav"
+        lang="en"
         data-solid="true"
         data-scrolled={scrolled || undefined}
       >
@@ -252,6 +259,7 @@ export default function Nav() {
             aria-modal="true"
             aria-label="Menu"
             className="v4sheet"
+            lang="en"
           >
             <div className="v4sheet-head">
               {/* BrandMark IS a link and carries its own wordmark · wrapping it
