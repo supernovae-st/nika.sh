@@ -53,6 +53,15 @@ function GitHubGlyph() {
   );
 }
 
+function SearchGlyph() {
+  return (
+    <svg viewBox="0 0 14 14" width="11" height="11" aria-hidden focusable="false">
+      <circle cx="6" cy="6" r="4.1" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M9.2 9.2 12.4 12.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 /** one bar link · internal or external, no state, no panel */
 function BarLink({ item }: { item: NavItem }) {
   const { pathname } = useLocation();
@@ -155,17 +164,14 @@ export default function Nav() {
             itemScope
             itemType="https://schema.org/SiteNavigationElement"
           >
-            {/* the mark carries its own wordmark — a second one printed « nikanika » */}
-            <BrandMark />
-
-            {/* THE WORLDS · flat, no dropdown */}
-            <div className="v4nav-rail">
-              {NAV_BAR_LINKS.map((item) => (
-                <BarLink key={item.label} item={item} />
-              ))}
-            </div>
-
-            <div className="v4nav-right">
+            {/* THE LEFT ZONE · the mark carries its own wordmark (a second one
+                printed « nikanika ») and the version rides beside it. The
+                version used to sit on the right, where it competed with the
+                CTA for the eye: four boxes in a row, three of them quiet. The
+                references we measured (Raycast · Linear) keep exactly two
+                things on the right, and so do we now. */}
+            <div className="v4nav-left">
+              <BrandMark />
               <Link
                 to={NAV_VERSION_PILL.to}
                 className="v4nav-vpill"
@@ -174,12 +180,25 @@ export default function Nav() {
               >
                 {ENGINE_VERSION}
               </Link>
+            </div>
+
+            {/* THE WORLDS · flat, no dropdown, optically centred in the capsule */}
+            <div className="v4nav-rail">
+              {NAV_BAR_LINKS.map((item) => (
+                <BarLink key={item.label} item={item} />
+              ))}
+            </div>
+
+            <div className="v4nav-right">
               <button
                 type="button"
                 className="ck-trigger"
                 aria-label="Search the site (Command K)"
                 onClick={() => window.dispatchEvent(new Event("ck:open"))}
               >
+                {/* the glyph is what makes this readable to a stranger: on
+                    its own, « ⌘K » is a keycap floating between two links */}
+                <SearchGlyph />
                 <span aria-hidden>⌘</span>K
               </button>
               <a
@@ -235,15 +254,10 @@ export default function Nav() {
             className="v4sheet"
           >
             <div className="v4sheet-head">
-              <Link
-                to="/"
-                className="v4nav-brand"
-                onClick={close}
-                aria-label="Nika, home"
-              >
-                <BrandMark />
-                <span className="v4nav-wordmark">nika</span>
-              </Link>
+              {/* BrandMark IS a link and carries its own wordmark · wrapping it
+                  in a second one nested an anchor inside an anchor and printed
+                  « nikanika » on every phone */}
+              <BrandMark />
               <button
                 type="button"
                 className="v4sheet-close"

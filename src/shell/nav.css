@@ -157,9 +157,17 @@
 }
 
 .v4nav-row {
-  display: flex;
+  /* THREE ZONES, not a flex river (2026-08-02) · brand+version left, the
+     worlds optically CENTRED, the actions right. A flex row centres the
+     links only when both sides happen to weigh the same, which they never
+     do; the 1fr auto 1fr grid centres them against the CAPSULE, which is
+     what the eye reads and what Raycast and Linear both do. */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 8px;
+  /* 16px between ZONES · at 8px the last world and the first action read as
+     one cluster, which is what the broken bar taught us to see */
+  gap: 16px;
   height: 64px;
   width: 100%;
   /* fold the safe-area inset into the gutter so the burger/CTA never ride under
@@ -179,6 +187,7 @@
   .v4nav[data-scrolled='true'] .v4nav-row {
     height: 60px;
   }
+}
 
 /* the brand lockup · butterfly mark + wordmark */
 .v4nav-brand {
@@ -207,11 +216,27 @@
    the one positioning context up here, so both the sliding pill and the mega
    panel anchor to it (the panel's 8px capsule-bottom gap must survive the
    64→56 compression; a rail-anchored panel drifts into the capsule). */
+/* the left zone · the mark and the version it shipped at, one lockup */
+.v4nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* the columns are NAMED, never implicit: below 900px the rail goes
+     display:none, which removes it from the grid entirely, and an implicit
+     placement then slides the actions into the middle column. */
+  grid-column: 1;
+  justify-self: start;
+  min-width: 0;
+}
+
 .v4nav-rail {
   display: none;
   align-items: center;
-  gap: 2px;
-  margin-left: 6px;
+  /* 4px + the 12px item padding reads as a ~28px rhythm, the air the
+     measured references keep between their nav items */
+  gap: 4px;
+  grid-column: 2;
+  justify-self: center;
 }
 @media (min-width: 900px) {
   .v4nav-rail {
@@ -253,7 +278,7 @@
   align-items: center;
   gap: 5px;
   min-height: 36px; /* ≥24px hit target, comfortably */
-  padding: 7px 11px;
+  padding: 7px 12px;
   border-radius: var(--v4-radius);
   font-size: 14px;
   font-weight: var(--fw-medium);
@@ -272,8 +297,11 @@
 }
 /* the active route · a persistent dim pill (one step quieter than hover) */
 .v4nav-link[aria-current='page'] {
+  /* the world you stand in · brighter ink first, the fill only whispers.
+     A permanent solid box is a hover state that forgot to end. */
   color: var(--v4-text);
-  background: color-mix(in oklch, var(--v4-text) 5%, transparent);
+  background: color-mix(in oklch, var(--v4-text) 7%, transparent);
+  font-weight: var(--fw-semibold);
 }
 /* the trigger HOLDS its active state while the mega is open — the sliding
    hover pill leaves with the pointer (it rides into the panel), so the
@@ -332,7 +360,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto;
+  grid-column: 3;
+  justify-self: end;
 }
 
 .v4nav-ghost {
@@ -415,11 +444,27 @@
 .v4nav-burger:hover {
   background: color-mix(in oklch, var(--v4-text) 6%, transparent);
 }
+/* the two bars · they are two empty spans, so they exist only if this rule
+   does. The table rase took their styling with the panels and left a 44px
+   invisible button: the phone had a menu it could not see. */
+.v4nav-burger span {
+  display: block;
+  width: 17px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform var(--dur-ui) var(--ease-ui);
+}
+.v4nav-burger span + span {
+  margin-top: 5px;
+}
+.v4nav-burger {
+  flex-direction: column;
+}
 @media (min-width: 900px) {
   .v4nav-burger {
     display: none;
   }
-}
 }
 
 /* ─── the mobile sheet ──────────────────────────────────────────────────────── */
@@ -482,6 +527,18 @@
 .v4sheet-close:hover {
   background: color-mix(in oklch, var(--v4-text) 8%, transparent);
 }
+/* one world per block in the sheet · the columns the footer draws, stacked */
+.v4sheet-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 0 4px;
+  border-top: 1px solid var(--v4-line);
+}
+.v4sheet-sec:first-of-type {
+  border-top: 0;
+}
+
 .v4sheet-sectitle {
   margin: 16px 8px 6px;
   font-family: var(--mono);
