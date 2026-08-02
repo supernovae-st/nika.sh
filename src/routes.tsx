@@ -30,6 +30,8 @@ import { Component as MapPage } from './pages/Map'
 import { Component as City } from './pages/City'
 import { Component as CityDecisions } from './pages/CityDecisions'
 import { Component as AdrRoom } from './pages/AdrRoom'
+import { Component as Governance } from './pages/Governance'
+import { Component as NepRoom } from './pages/NepRoom'
 import { Component as How } from './pages/How'
 import { Component as Workflows } from './pages/Workflows'
 import { Component as LessonRoom } from './pages/LessonRoom'
@@ -234,6 +236,9 @@ export const routes: RouteObject[] = [
          was its hero died with it (the operator's nuke mandate). */
       { path: 'language/spec', Component: SpecHub },
       { path: 'language/spec/:chapter', Component: ChapterRoom },
+      /* how the standard CHANGES · the 18 NEPs, beside the spec they amend */
+      { path: 'language/governance', Component: Governance },
+      { path: 'language/governance/:slug', Component: NepRoom },
       { path: 'timeline', Component: Timeline },
       { path: 'install', Component: Install },
       { path: 'convert', Component: Convert },

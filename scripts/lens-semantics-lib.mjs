@@ -494,7 +494,7 @@ export function discoverPrerenderPaths(root) {
   for (const name of [
     'BLOG_PATHS', 'BLOG_TAG_PATHS', 'BLOG_SERIES_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS', 'LIBRARY_PATHS', 'INTEGRATION_PATHS', 'FAMILY_ROOT_PATHS',
-    'LENS_PATHS', 'CATALOG_PATHS', 'CLIENT_DOOR_PATHS', 'ADR_PATHS', 'HOW_PATHS', 'LESSON_PATHS', 'CHAPTER_PATHS',
+    'LENS_PATHS', 'CATALOG_PATHS', 'CLIENT_DOOR_PATHS', 'ADR_PATHS', 'NEP_PATHS', 'HOW_PATHS', 'LESSON_PATHS', 'CHAPTER_PATHS',
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);
     // only arrays still declared join the map — an unknown SPREAD stays fatal.

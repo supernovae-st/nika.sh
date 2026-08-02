@@ -218,6 +218,8 @@ const COMPONENT_FEATURE = {
   City: 'registry.map',
   CityDecisions: 'registry.map',
   AdrRoom: 'registry.map',
+  Governance: 'site.spec',
+  NepRoom: 'site.spec',
   /* the /how world (V1 · 2026-08-02) · the récit world's own pages */
   How: 'product.how',
   /* the /workflows world (V2 · 2026-08-02) · the corpus */

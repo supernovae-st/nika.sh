@@ -144,12 +144,15 @@ describe('lens · rooms and routes cover each other', () => {
        until then the pending declaration is the room's known-to-the-graph
        proof — served with a gated declaration, never an orphan. */
     const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
-    const lensRoots = ['/language/', '/language/verbs/', '/tools/', '/workflows/skeletons/', '/errors/', '/catalog/providers/']
+    const lensRoots = ['/language/', '/language/verbs/', '/workflows/skeletons/', '/errors/', '/catalog/providers/']
     /* the specification's chapter rooms are AUTHORED pages (the pack is
        vendored by scripts/build-chapters.mjs), not lens member nodes — the
        lens never claimed them and the /language/ prefix now sweeps them in. */
     const authored = (p: string) =>
       p.startsWith('/language/spec') ||
+      /* the governance rooms are the same class as the chapters: vendored
+         from the spec pack by scripts/build-neps.mjs, not lens member nodes */
+      p.startsWith('/language/governance') ||
       /* the market-only vendor rooms: the SPEC names 17 providers and the lens
          carries those as nodes; the other 21 are catalog-derived pages the
          lens never claimed (2026-08-02) */

@@ -608,6 +608,9 @@ surfaces:
       what it does not cover yet.
   - { id: spec-lens, url: /language/spec, exists: true, title: "The spec at a glance",
       role: "the linear lens · derives from canon via spec-machine-data (verdict 2026-07-16 · the hand-body premise retired) · residue: gloss-vs-opener voice merge (op-call) + provenance close (contract field)" }
+  - { id: governance-lens, url: /language/governance, exists: true,
+      title: "How the standard changes",
+      role: "the NEP register · 18 numbered proposals read at the spec pin, beside the specification they amend · every one citable BY DESIGN, which is what numbering a proposal is for (the ADR record took the opposite ruling for the opposite reason: an internal decision published as settled)" }
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 

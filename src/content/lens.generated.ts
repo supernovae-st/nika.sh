@@ -3867,6 +3867,16 @@ export const LENS_NODES: LensNode[] = [
     }
   },
   {
+    "id": "surface:governance-lens",
+    "kind": "surface",
+    "title": "How the standard changes",
+    "url": "/language/governance",
+    "status": "both",
+    "opener": null,
+    "exists": true,
+    "lands": null
+  },
+  {
     "id": "surface:home",
     "kind": "surface",
     "title": "Home",

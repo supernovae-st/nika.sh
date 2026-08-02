@@ -2,6 +2,7 @@ import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
 import { INTEGRATION_TABS } from './integrations-tabs'
 import { CLIENT_DOOR_IDS } from './client-doors'
 import { ADR_ROOM_IDS } from './adr-ids.generated'
+import { NEP_SLUGS } from './nep-ids.generated'
 import { ERROR_CODES } from './errors.generated'
 import { LESSONS } from './lessons.generated'
 import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
@@ -95,6 +96,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The proof', href: '/how/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'The truth system', href: '/truth', hint: 'how this site tells the truth · verify it yourself' },
       { label: 'Spec', href: '/language/spec', hint: 'the language reference · nika: v1' },
+      { label: 'Governance', href: '/language/governance', hint: 'the 18 NEPs · how the standard changes' },
       { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
@@ -146,6 +148,7 @@ export const SITE_MAP: MapGroup[] = [
       /* the specification's chapter rooms (V3 · 2026-08-02) · derived from
          the pin-sourced module, so a chapter joins the map the day it lands */
       ...SPEC_CHAPTERS.map((c) => ({ label: `spec: ${c.slug}`, href: `/language/spec/${c.slug}` })),
+      ...NEP_SLUGS.map((s) => ({ label: `NEP-${s.slice(4, 8)}`, href: `/language/governance/${s}` })),
       /* the market-only vendor rooms (2026-08-02) · the 17 the spec names are
          listed by the register-roots block above, so only the other 21 here */
       ...MARKET_PROVIDER_IDS.filter((id) => !PROVIDERS.some((p) => p.id === id)).map((id) => ({
