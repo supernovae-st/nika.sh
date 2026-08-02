@@ -18,7 +18,7 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1382
+  classified_files: 1384
   file_rows: 101
   pattern_rows: 29
   by_class:
@@ -26,7 +26,7 @@ summary:
     authored-pin: 3
     generated: 294
     pinned-copy: 21
-    testimonial: 36
+    testimonial: 38
     foreign: 0
   unverified-default: 249
 files:
@@ -842,8 +842,8 @@ patterns:
     - "supernovae-st/nika@5d61b7e13f1f (v0.107.0) (the pinned release tree)"
 - glob: "tests/visual/golden/**"
   class: testimonial
-  match_count: 24
-  aggregate_sha256: f3b1d339a43462a92f7faec3a38a681a56bd6593fe489ec5196c847b61e471d1
+  match_count: 26
+  aggregate_sha256: 62303219b55869c9e6c794990de30bb2f5e2c23852808ac6433739fe9cae5d15
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
