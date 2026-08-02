@@ -201,6 +201,11 @@ const pathsModule =
      them and the catalog names 38, and the other 21 used to land on « not a
      spec-named provider » with 39 model seats pointing at that page */
   `export const MARKET_PROVIDER_IDS: string[] = ${j(MARKET_PROVIDERS.map((p) => p.id))}\n\n` +
+  /* every client door gets a room (2026-08-02) · the matrix listed 31 and
+     linked 5, so 26 rows — five of them PROVEN live — were plain text. The
+     ids ride the lean strip; the rooms read the heavy record through the
+     island, same as every other catalog room. */
+  `export const CLIENT_IDS: string[] = ${j(CLIENTS.map((c) => c.id))}\n\n` +
   `export const MODEL_IDS: string[] = ${j(MODELS.map((m) => m.id))}\n\n` +
   `export const MCP_IDS: string[] = ${j(MCP_SERVERS.map((s) => s.id))}\n\n` +
   `export const CATALOG_ENGINE = ${j({ release_tag: pin.release_tag, commit: pin.engine_commit, provenance })}\n\n` +

@@ -14,7 +14,7 @@
 
 import { ERROR_CODES } from './src/content/errors.generated'
 import { PENDING_ERROR_CODES } from './pending-error-codes'
-import { MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS } from './src/content/catalog-paths.generated'
+import { MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS, CLIENT_IDS } from './src/content/catalog-paths.generated'
 import { PROVIDERS as SPEC_PROVIDERS } from './src/content/providers.generated'
 
 /* the pending list is AUTHORED in pending-error-codes.ts (a leaf — see its
@@ -88,6 +88,30 @@ export const BLOG_SERIES_PATHS = ['/blog/series/trace-family']
    client lane (how people search: claude code · codex · cursor · vscode ·
    hermes · mcp) and per public repo. Kept literal; the drift gate
    (integrations.test.ts) pins these against the authored module. */
+/* the client ids that already have a room somewhere else · the first five
+   are authored lanes living at their own id, and « mcp-generic » is the
+   catalog's name for the authored « mcp » lane (one room, two names — the
+   link map lives in Integrations.tsx and client-doors.test pins the two
+   together). Everything NOT in this set gets the door room below. */
+const CLIENT_ROOMS_ELSEWHERE = new Set([
+  'claude-code',
+  'codex',
+  'cursor',
+  'vscode',
+  'hermes',
+  'mcp-generic',
+])
+
+/* every client door gets a room (2026-08-02) · the coverage matrix carried
+   31 rows and linked 5 of them; the other 26 — copilot-cli, grok-build,
+   kimi-code and opencode among them, all four PROVEN live — were plain
+   text. These rooms render what the released binary proves about the door
+   and nothing else: its class, its status, the install line verbatim, the
+   components the kit lands, and the gaps the coverage run names. */
+export const CLIENT_DOOR_PATHS: string[] = CLIENT_IDS.filter(
+  (id) => !CLIENT_ROOMS_ELSEWHERE.has(id),
+).map((id) => `/integrations/${id}`)
+
 export const INTEGRATION_PATHS = [
   '/integrations',
   '/integrations/claude-code',
@@ -332,4 +356,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/tools', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...LENS_PATHS, '/timeline', '/install', ...INSTALL_PATHS, '/convert', '/brand']

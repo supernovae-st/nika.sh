@@ -1,5 +1,6 @@
 import { BLOG_POSTS, BLOG_SERIES } from './blog.generated'
 import { INTEGRATION_TABS } from './integrations-tabs'
+import { CLIENT_DOOR_IDS } from './client-doors'
 import { ERROR_CODES } from './errors.generated'
 import { LESSONS } from './lessons.generated'
 import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
@@ -209,7 +210,13 @@ export const SITE_MAP: MapGroup[] = [
         hint: 'Claude Code · Codex · Cursor · VS Code · Hermes · MCP · the repos',
       },
     ],
-    dense: INTEGRATION_TABS.map((e) => ({ label: e.name, href: `/integrations/${e.id}` })),
+    /* the authored lanes and surfaces, then every OTHER client door the
+       binary knows: 26 of the 31 rows in the coverage matrix had no room
+       until 2026-08-02, so the map could not list them either. */
+    dense: [
+      ...INTEGRATION_TABS.map((e) => ({ label: e.name, href: `/integrations/${e.id}` })),
+      ...CLIENT_DOOR_IDS.map((id) => ({ label: id, href: `/integrations/${id}` })),
+    ],
   },
   {
     kick: 'the catalog',

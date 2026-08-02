@@ -8,6 +8,7 @@ import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrIntegrations, loadIntegrations } from '../lib/integrations-access'
 import { INTEGRATION_TABS } from '../content/integrations-tabs'
+import { clientRoomHref } from '../content/client-doors'
 import type { IntegrationEntry } from '../content/integrations'
 import { CATALOG_COUNTS, CATALOG_ENGINE } from '../content/catalog-paths.generated'
 import { useCatalogCargo } from './catalog-lib'
@@ -19,9 +20,10 @@ import './tools-page.css'
 import './tool-detail.css'
 import './providers-page.css'
 
-/* the authored rooms that exist today · a matrix row links its room when one
-   is authored, and stays a plain row when not (never a dead link) */
-const INTEGRATION_ROOM_IDS = new Set(INTEGRATION_TABS.map((t) => t.id))
+/* EVERY matrix row is a door now (2026-08-02) · it used to link only the
+   five authored lanes, so 26 of the 31 rows — four of them PROVEN live —
+   were plain text. clientRoomHref sends each id to its authored lane when
+   one covers it, and to its own door room otherwise. */
 
 /* ─── /integrations · get Nika into your stack (theme-dark) ───────────────────
    Named for how people actually search (Ahrefs 2026-07-24: « claude
@@ -149,17 +151,13 @@ export function Component() {
             </p>
             <ol className="tp-list">
               {(doors ?? []).map((c) => {
-                const room = INTEGRATION_ROOM_IDS.has(c.id) ? `/integrations/${c.id}` : null
+                const room = clientRoomHref(c.id)
                 return (
                   <li key={c.id} className="tp-row" id={`door-${c.id}`}>
                     <div className="pv-row-head">
-                      {room ? (
-                        <Link className="pv-id" to={room}>
-                          {c.name}
-                        </Link>
-                      ) : (
-                        <span className="pv-id">{c.name}</span>
-                      )}
+                      <Link className="pv-id" to={room}>
+                        {c.name}
+                      </Link>
                       <span className="tp-cat">
                         {c.status}
                         {c.wire ? ` · nika wire ${c.wire}` : ''}

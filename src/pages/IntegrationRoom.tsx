@@ -8,6 +8,10 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrIntegrations, loadIntegrations } from '../lib/integrations-access'
 import { INTEGRATION_TABS } from '../content/integrations-tabs'
 import type { IntegrationEntry } from '../content/integrations'
+import type { ClientDoor } from '../content/catalog.generated'
+import { CLIENT_DOOR_IDS } from '../content/client-doors'
+import { CATALOG_ENGINE } from '../content/catalog-paths.generated'
+import { useCatalogCargo } from './catalog-lib'
 import { SITE, routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
@@ -46,10 +50,34 @@ export function Component() {
     [payload],
   )
 
-  const title = hit ? `${hit.title} · Nika` : tab ? `${tab.name} · Integrations · Nika` : 'Not an integration · Nika'
+  /* THE DOOR FACET (2026-08-02) · 26 of the 31 rows in the coverage matrix
+     had no room at all — four of them PROVEN live. A door room renders what
+     the released binary proves and nothing else, so it needs no authored
+     prose to exist and cannot drift from the engine. */
+  const doorAt = CLIENT_DOOR_IDS.indexOf(id)
+  const { payload: doorPayload, data: door } = useCatalogCargo<ClientDoor | null>(
+    `int-door-${id}`,
+    (m) => (doorAt >= 0 ? (m.CLIENTS.find((c) => c.id === id) ?? null) : null),
+  )
+  const doorPrev = doorAt > 0 ? CLIENT_DOOR_IDS[doorAt - 1] : undefined
+  const doorNext =
+    doorAt >= 0 && doorAt < CLIENT_DOOR_IDS.length - 1 ? CLIENT_DOOR_IDS[doorAt + 1] : undefined
+  const comps = door ? Object.entries(door.components) : []
+
+  const title = hit
+    ? `${hit.title} · Nika`
+    : tab
+      ? `${tab.name} · Integrations · Nika`
+      : door
+        ? `${door.name} · Client coverage · Nika`
+        : `${id} · Not an integration · Nika`
   const description = hit
     ? `${hit.what} License: ${hit.license}; source and claims live in the repo. This room is its projection.`
-    : `${id} is not a lane or surface the ecosystem ships.`
+    : door
+      ? `What ${CATALOG_ENGINE.release_tag} proves about ${door.name}: ${door.status}, class ${door.class}${
+          door.wire ? `, wired with nika wire ${door.wire}` : ''
+        }. The install line, the pieces the kit lands, and the gaps the coverage run names.`
+      : `${id} is not a lane or surface the ecosystem ships.`
 
   useHead({
     title,
@@ -111,6 +139,11 @@ export function Component() {
                 {hit.kind === 'client' ? 'a client lane' : 'a public surface'} · {hit.license}
               </span>
             )}
+            {!hit && door && (
+              <span className="tp-cat">
+                a client door · class {door.class} · {door.status}
+              </span>
+            )}
           </nav>
 
           <p className="v4sec-fig" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
@@ -122,12 +155,12 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '80ms' }}
           >
-            {tab ? tab.name : id}
+            {tab ? tab.name : (door?.name ?? id)}
           </h1>
 
           <Island id={islandId(id)} payload={payload ?? ''} />
 
-          {!tab && (
+          {!tab && doorAt < 0 && (
             <div className="tp-miss" role="status" data-rise>
               <p className="tp-miss-name">{id}</p>
               <p>
@@ -136,6 +169,169 @@ export function Component() {
                 repo.
               </p>
             </div>
+          )}
+
+          <Island id={`int-door-${id}`} payload={doorPayload} />
+
+          {/* ── the door facet · what the released binary proves ────────────
+              No authored prose lives here on purpose: every line is a field
+              of the coverage record, so the room cannot drift from the
+              engine it describes. */}
+          {!hit && door && (
+            <>
+              <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
+                {door.status === 'proven'
+                  ? 'Proven live: someone ran a real task through this client against the binary, and the pair is recorded.'
+                  : door.status === 'wired'
+                    ? 'Wired: the connection is written and lands, and no end-to-end run is recorded yet.'
+                    : 'Recon: the client is mapped, and nothing is wired yet.'}{' '}
+                Class {door.class}
+                {door.class === 'A'
+                  ? ': it loads a native plugin, so the skills, the commands and the oracle arrive together.'
+                  : door.class === 'B'
+                    ? ': no plugin loader, so MCP and the scaffold carry the teaching.'
+                    : ': it speaks MCP and nothing else, so the oracle is the whole surface.'}
+              </p>
+
+              <StampStrip
+                items={[
+                  { n: door.status, label: 'the state', sub: `at ${CATALOG_ENGINE.release_tag}` },
+                  { n: door.class, label: 'the class', sub: 'how much lands' },
+                  { n: comps.length, label: comps.length === 1 ? 'piece lands' : 'pieces land', sub: 'named below' },
+                  { n: door.gaps.length, label: door.gaps.length === 1 ? 'gap' : 'gaps', sub: door.gaps.length ? 'named, not hidden' : 'nothing missing' },
+                ]}
+              />
+
+              {/* ── get set up ── */}
+              {door.install && (
+                <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+                  <div className="cl-year-head">
+                    <h2 className="td-h2">get set up</h2>
+                    <span className="cl-year-rule" aria-hidden />
+                  </div>
+                  <p className="td-gloss">
+                    <code>{door.install}</code>
+                  </p>
+                  {door.wire && (
+                    <p className="td-gloss">
+                      The binary writes that itself: <code>nika wire {door.wire}</code> puts the
+                      oracle where this client looks for it, and <code>nika doctor</code> says so
+                      when the two fall out of step.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* ── what lands ── */}
+              {comps.length > 0 && (
+                <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '220ms' }}>
+                  <div className="cl-year-head">
+                    <h2 className="td-h2">what lands, and how</h2>
+                    <span className="cl-year-rule" aria-hidden />
+                    <span className="cl-year-count">{comps.length}</span>
+                  </div>
+                  <ol className="td-args tp-args">
+                    {comps.map(([piece, how]) => (
+                      <li className="tp-arg" key={piece} style={{ listStyle: 'none' }}>
+                        <span className="tp-arg-name">{piece}</span>
+                        <span className="tp-arg-desc">{how}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {/* ── what does not land ── */}
+              {(door.gaps.length > 0 || door.class_gap) && (
+                <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '250ms' }}>
+                  <div className="cl-year-head">
+                    <h2 className="td-h2">what does not</h2>
+                    <span className="cl-year-rule" aria-hidden />
+                  </div>
+                  {door.gaps.length > 0 && (
+                    <ul className="td-chips">
+                      {door.gaps.map((g) => (
+                        <li key={g}>
+                          <span className="td-chip" title="the kit carries this; this client cannot load it">
+                            {g}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {door.class_gap && <p className="td-gloss">{door.class_gap}</p>}
+                </div>
+              )}
+
+              {/* ── cross-references ── */}
+              <div className="td-sec" data-rise style={{ ['--rise-delay' as string]: '270ms' }}>
+                <div className="cl-year-head">
+                  <h2 className="td-h2">cross-references</h2>
+                  <span className="cl-year-rule" aria-hidden />
+                </div>
+                <div className="td-refs">
+                  <div>
+                    <p className="td-ref-k">the rooms it touches</p>
+                    <ul className="td-chips">
+                      <li>
+                        <Link className="td-chip" to="/integrations#doors">
+                          the coverage matrix
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="td-chip" to="/integrations/mcp">
+                          the oracle, any MCP client
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="td-chip" to="/install">
+                          install the binary
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="td-ref-k">where this comes from</p>
+                    <ul className="td-chips">
+                      <li>
+                        <Link className="td-chip" to="/releases">
+                          {CATALOG_ENGINE.release_tag}
+                        </Link>
+                      </li>
+                      <li>
+                        <span className="td-chip" title="the id the coverage run uses">
+                          {door.id}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── the walk, among the door rooms ── */}
+              <nav className="td-nav" aria-label="Client doors walk" data-rise>
+                {doorPrev ? (
+                  <Link className="td-nav-link" to={`/integrations/${doorPrev}`}>
+                    <span className="td-nav-label">← previous</span>
+                    {doorPrev}
+                  </Link>
+                ) : (
+                  <span />
+                )}
+                <Link className="td-nav-link td-nav-link--all" to="/integrations">
+                  <span className="td-nav-label">all {CLIENT_DOOR_IDS.length + INTEGRATION_TABS.length}</span>
+                  the register
+                </Link>
+                {doorNext ? (
+                  <Link className="td-nav-link td-nav-link--next" to={`/integrations/${doorNext}`}>
+                    <span className="td-nav-label">next →</span>
+                    {doorNext}
+                  </Link>
+                ) : (
+                  <span />
+                )}
+              </nav>
+            </>
           )}
 
           {hit && (

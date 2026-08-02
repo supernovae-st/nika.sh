@@ -218,6 +218,40 @@ export const MARKET_PROVIDER_IDS: string[] = [
  "zhipu"
 ]
 
+export const CLIENT_IDS: string[] = [
+ "aider",
+ "amp",
+ "antigravity",
+ "anythingllm",
+ "cherry-studio",
+ "claude-code",
+ "claude-desktop",
+ "cline",
+ "codex",
+ "continue",
+ "copilot-cli",
+ "cursor",
+ "gemini-cli",
+ "goose",
+ "grok-build",
+ "hermes",
+ "jan",
+ "junie",
+ "kimi-code",
+ "kiro",
+ "lmstudio",
+ "mcp-generic",
+ "neovim",
+ "open-webui",
+ "openclaude",
+ "opencode",
+ "qwen-code",
+ "vscode",
+ "warp",
+ "windsurf",
+ "zed"
+]
+
 export const MODEL_IDS: string[] = [
  "@cf/meta/llama-3.1-8b-instruct",
  "@cf/meta/llama-3.3-70b-instruct-fp8-fast",

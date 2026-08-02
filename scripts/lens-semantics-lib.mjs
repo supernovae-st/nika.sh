@@ -468,13 +468,33 @@ function deriveCatalogPaths(root) {
   ]
 }
 
+/* CLIENT_DOOR_PATHS derives the same way (second-producer law): the client
+   ids come from the pin-sourced lean strip, and « which id already has a
+   room elsewhere » from the authored module that owns that fact — never
+   from site.config's own filter. client-doors.test pins the two together. */
+function deriveClientDoorPaths(root) {
+  const gen = readFileSync(join(root, 'src/content/catalog-paths.generated.ts'), 'utf8')
+  const m = gen.match(/export const CLIENT_IDS: string\[\] = (\[[\s\S]*?\])/)
+  if (!m) throw new Error('catalog slug array missing: CLIENT_IDS')
+  const authored = readFileSync(join(root, 'src/content/client-doors.ts'), 'utf8')
+  const setBlock = authored.match(/CLIENT_ROOMS_ELSEWHERE = new Set\(\[([\s\S]*?)\]\)/)?.[1] ?? ''
+  const aliasBlock = authored.match(/CLIENT_ROOM_ALIAS: Record<string, string> = \{([^}]*)\}/)?.[1] ?? ''
+  const elsewhere = new Set([
+    ...[...setBlock.matchAll(/'([a-z0-9-]+)'/g)].map((x) => x[1]),
+    ...[...aliasBlock.matchAll(/'([a-z0-9-]+)':/g)].map((x) => x[1]),
+  ])
+  return JSON.parse(m[1])
+    .filter((id) => !elsewhere.has(id))
+    .map((id) => `/integrations/${id}`)
+}
+
 export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
   for (const name of [
     'BLOG_PATHS', 'BLOG_TAG_PATHS', 'BLOG_SERIES_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS', 'LIBRARY_PATHS', 'INTEGRATION_PATHS', 'FAMILY_ROOT_PATHS',
-    'LENS_PATHS', 'CATALOG_PATHS', 'HOW_PATHS', 'LESSON_PATHS', 'CHAPTER_PATHS',
+    'LENS_PATHS', 'CATALOG_PATHS', 'CLIENT_DOOR_PATHS', 'HOW_PATHS', 'LESSON_PATHS', 'CHAPTER_PATHS',
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);
     // only arrays still declared join the map — an unknown SPREAD stays fatal.
@@ -482,6 +502,7 @@ export function discoverPrerenderPaths(root) {
     // sources, by law (never re-read from site.config's own arithmetic).
     if (name === 'ERROR_PATHS') arrays.set(name, deriveErrorPaths(root, source))
     else if (name === 'CATALOG_PATHS') arrays.set(name, deriveCatalogPaths(root))
+    else if (name === 'CLIENT_DOOR_PATHS') arrays.set(name, deriveClientDoorPaths(root))
     else if (new RegExp(`export const ${name} = \\[`).test(source)) {
       arrays.set(name, literalArray(source, name))
     }
