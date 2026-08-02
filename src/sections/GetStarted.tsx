@@ -89,7 +89,7 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 <CopyRow track="install-copy" cmd={CURL_CMD} label="curl install" />
               </div>
               <p className="v4start-desc">
-                Installed? See a workflow work before anything else — offline, zero keys,
+                Installed? See a workflow work before anything else · offline, zero keys,
                 nothing written:
               </p>
               <div className="v4start-installs">

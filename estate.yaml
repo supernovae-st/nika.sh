@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1136
+  classified_files: 1137
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 782
+    authored: 783
     authored-pin: 3
     generated: 290
     pinned-copy: 21
@@ -257,7 +257,7 @@ files:
   note: "VERSION + VERSION_TRANSCRIPT rewritten by scripts/sync-version.mjs — the transcript is a REAL captured `nika --version` (honesty law: re-capture, never hand-edit)"
 - path: "public/language/depends_on/index.html"
   class: generated
-  sha256: 1b6dfb495527e5828439227574b1f848b44643a18e174808e0ed8351a77c009b
+  sha256: b43c813a3aa48ece07dc5a5fdf98e2302ad5ae5182e1b8666bdd4d3bbbeb5f69
   evidence: "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/language/depends_on' → '/language/after' row): meta-refresh + canonical"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -297,7 +297,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/method/index.html"
   class: generated
-  sha256: aec7eb157c887c81256c51574a64d9e7872c8ffc41dff0864e7a0b81fec6e8a8
+  sha256: 61b102800c21b492f10c6e8220ddc040c479653bf7ec68525b71549713ece580
   evidence: "the lens redirect stub template (build-lens.mjs stub() · the redirects.json '/method' row): meta-refresh + canonical"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 18932185eaccbe2c200eacafae5be76c3e67c34a991467ea75f6019e71aa1078
+  sha256: 95442529d105bfa743aabc725f56a0d9455bf36f27fcc152ac8e809153125dfb
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: f12098ce6b03c36b73bb4333d96af557aa68ee7cd347b107501c048743f57be8
+  sha256: fb27c4224b56d07ad8c1611aaee0192784cb5130062ac3f2b4ee714d0217ce9c
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -820,7 +820,7 @@ patterns:
 - glob: "public/concepts/**"
   class: generated
   match_count: 14
-  aggregate_sha256: 0f7981c628d499084fe1b2279ba585bc6eaebdde03c5e4d9c57fe4d94af25796
+  aggregate_sha256: 82678831c7428e51438787ed45075fca2c938d671d167a3794629cfb1c718f22
   evidence: "lens redirect stubs (build-lens.mjs stub() · the redirects.json '/concepts/*' legacy_moves rows): meta-refresh + canonical — the append-only law: a published URL never 404s"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 3ee6d8b155c19ca9b42b314f8b185a97c3841658bdbf699c167ddda323666c44
+  aggregate_sha256: 4b5351372bfcf2461423427018add348a8ab952eb420836edc757acb9df17196
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 411
-  aggregate_sha256: 21a46994ee62c410fbe8f99f0b496ab30a00daac6804db9d1294e2ee2a6af46d
+  match_count: 412
+  aggregate_sha256: f807ab0af25eb56d38c37ee85f807494d2cd7e3febc96cc218039daa520c76de
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 83
-  aggregate_sha256: ce277de559980aa0bd918daf8e3209d301239f4bff47c93be93d466d22f2ef78
+  aggregate_sha256: 0dfeeb66b76c589a005e80de4f40eeca8da70bcc4c6cf2be043c0c08cab3b04e
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -951,7 +951,7 @@ patterns:
 - glob: "**"
   class: authored
   match_count: 12
-  aggregate_sha256: 1aee7455ed4fe800cb5fdca2c29a2595501175238979a939ffad762a7765f0a4
+  aggregate_sha256: 209335d74db9883fd438c9c10644343d0763b1c6ec623108bac5a04adbaf9cb4
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:

@@ -22,7 +22,7 @@
 
    Run: node scripts/lens/graph/build-lens.mjs            (write + report)
         node scripts/lens/graph/build-lens.mjs --report   (report only · no writes) */
-import { writeFileSync, mkdirSync, readFileSync } from 'node:fs'
+import { writeFileSync, mkdirSync, readFileSync, readdirSync, unlinkSync, rmdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
@@ -1775,7 +1775,11 @@ for (const mv of S.sets.legacy_moves ?? []) {
     applies: mv.applied ?? null,
   })
 }
-redirects.sort((a, b) => a.from.localeCompare(b.from))
+/* CODEPOINT, never localeCompare: ICU collation varies by machine and Node
+   build, and lens.test.ts byte-diffs this exact file — the same-pins-
+   different-bytes hazard we killed in the graph compiler on 2026-08-01 was
+   still live here (found by the wave-1 scouts, 2026-08-02). */
+redirects.sort((a, b) => (a.from < b.from ? -1 : a.from > b.from ? 1 : 0))
 const redirectsJson = JSON.stringify({ redirects_format: 1, redirects }, null, 2) + '\n'
 
 /* the 301 stubs (WO-6): every LIVE moved row under /providers/ becomes a
@@ -1783,12 +1787,17 @@ const redirectsJson = JSON.stringify({ redirects_format: 1, redirects }, null, 2
    during its own refresh and throws #418, the law paid at /sitemap).
    Emitted FROM redirects.json rows: the manifest and the files cannot
    drift apart. Static hosting has no server rules; the stub IS the 301. */
+/* the reaper's handle: every emitted stub carries this exact string, so a
+   retired doorway can be told apart from a hand-authored public/ page. */
+const STUB_MARK = 'nika-lens-doorway'
+
 const stub = (to, label) => `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="robots" content="noindex" />
+    <meta name="generator" content="${STUB_MARK}" />
     <meta http-equiv="refresh" content="0; url=${to}" />
     <link rel="canonical" href="https://nika.sh${to.split('#')[0]}" />
     <title>${label} · Nika</title>
@@ -1832,6 +1841,24 @@ if (!REPORT_ONLY) {
   writeFileSync(join(ROOT, 'src/content/design.generated.ts'), designTs)
   writeFileSync(join(ROOT, 'public/design-palette.json'), designPalette)
   writeFileSync(join(ROOT, 'public/design-tokens.dtcg.json'), dtcg)
+  /* THE REAPER (2026-08-02): the emitter used to only mkdir+write, so
+     deleting a legacy_moves row left its stub file on disk serving an
+     UNDECLARED redirect forever — a doorway the manifest no longer knows
+     about. Every stub carries a marker; any marked file that is not in the
+     current live set is unlinked before the write. */
+  const wanted = new Set(legacyStubs.map((r) => join(ROOT, 'public', r.from.slice(1), 'index.html')))
+  const reap = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const path = join(dir, e.name)
+      if (e.isDirectory()) { reap(path); continue }
+      if (e.name !== 'index.html' || wanted.has(path)) continue
+      if (readFileSync(path, 'utf8').includes(STUB_MARK)) {
+        unlinkSync(path)
+        try { rmdirSync(dir) } catch { /* the dir holds other files · fine */ }
+      }
+    }
+  }
+  reap(join(ROOT, 'public'))
   for (const r of legacyStubs) {
     const dir = join(ROOT, 'public', r.from.slice(1))
     mkdirSync(dir, { recursive: true })

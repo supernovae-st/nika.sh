@@ -123,7 +123,11 @@ describe('catalog · the projection derives and every room is served', () => {
       .split('\n')
       .filter(Boolean)
       .map((p) => p.slice(ROOT.length + 1))
-      .filter((p) => !['src/lib/catalog-access.ts', 'src/test/catalog.test.ts'].includes(p))
+      // TESTS never ship, so they may read the heavy module directly. The
+      // exemption used to name ONE test file, so the next test that imported
+      // it went red for no real reason (2026-08-02, the doors-cycle pair).
+      // The diet is about the BUNDLE; the door is src/lib/catalog-access.
+      .filter((p) => p !== 'src/lib/catalog-access.ts' && !p.startsWith('src/test/'))
     const real = offenders.filter((p) => {
       const src = readFileSync(join(ROOT, p), 'utf8')
       return src.split('\n').some((l) => {

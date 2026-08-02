@@ -51,7 +51,7 @@ export function DoorsCycle({ doors }: { doors: ClientDoor[] }) {
         pick your door · <span className="dc-name">{cur.name}</span>
       </p>
       <p className="sr-only">
-        One Add per client. The command row cycles through the proven doors — every door, proven
+        One Add per client. The command row cycles through the proven doors · every door, proven
         or not, is listed whole in the matrix below.
       </p>
       <CopyRow

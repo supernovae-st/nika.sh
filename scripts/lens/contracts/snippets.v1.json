@@ -1046,7 +1046,7 @@
     },
     {
       "path": "src/sections/GetStarted.tsx",
-      "source_blob": "e8c4b56a1abdf39e44507525156bfcdd3905ffc9",
+      "source_blob": "01ee5c14cb04b4792035ff3f6a806995586132ef",
       "blocks": [
         {
           "selector": "src/sections/GetStarted.tsx#codefile:1",
