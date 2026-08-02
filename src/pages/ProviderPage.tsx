@@ -84,6 +84,51 @@ function useProviderBlogRefs(id: string): BlogRef[] {
   return payload ? (JSON.parse(payload) as BlogRef[]) : []
 }
 
+/* WHAT THEY DO WITH YOUR DATA · the catalog carries this on 18 of the 38
+   vendors and the site printed it into a sentence, so one room shipped
+   « [object Object] » and the other seventeen showed nothing at all. It is
+   four fields, not a phrase — and on a site whose whole argument is that your
+   data stays yours, it is the field that earns its own lane with the receipt
+   beside it. ONE component, because both facets of this room need it: the 17
+   the spec names and the 21 the market adds. */
+type DataPolicy = { trains?: string; retention?: string; zdr?: string; source?: string }
+
+function DataPolicyLane({ policy }: { policy: DataPolicy | null | undefined }) {
+  if (!policy) return null
+  const kept =
+    policy.retention === 'none'
+      ? 'not at all'
+      : /^\d+$/.test(policy.retention ?? '')
+        ? `${policy.retention} days`
+        : policy.retention
+  return (
+    <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
+      <span className="vp-lane-key">your data</span>
+      <span>
+        {policy.trains === 'no'
+          ? 'they do not train on it'
+          : policy.trains === 'yes'
+            ? 'they train on it'
+            : `training: ${policy.trains ?? 'unstated'}`}
+        {kept ? ` · kept ${kept}` : ''}
+        {policy.zdr
+          ? ` · zero-retention ${policy.zdr === 'local' ? 'by construction, it never leaves' : policy.zdr}`
+          : ''}
+        {policy.source && (
+          <>
+            {' · '}
+            {/^https?:\/\//.test(policy.source) ? (
+              <a href={policy.source.split(' ')[0]}>their statement</a>
+            ) : (
+              <span className="mono">{policy.source}</span>
+            )}
+          </>
+        )}
+      </span>
+    </p>
+  )
+}
+
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const { id: rawId } = useParams()
@@ -262,9 +307,10 @@ export function Component() {
                 <span>
                   {market.api_dialect} ·{' '}
                   {market.requires_key ? 'your key, your account' : 'no key needed'}
-                  {market.data_policy ? ` · ${market.data_policy}` : ''}
                 </span>
               </p>
+
+              <DataPolicyLane policy={market.data_policy} />
 
               {market.tags.length > 0 && (
                 <p className="vp-lane" data-rise style={{ ['--rise-delay' as string]: '170ms' }}>
@@ -343,6 +389,10 @@ export function Component() {
                 <a href="/providers/catalog.json">the catalog</a>; the binary answers{' '}
                 <code>nika catalog</code>.
               </p>
+
+              {/* the 17 the SPEC names carry the same sovereignty record, and
+                  they are the ones a reader is deciding between */}
+              <DataPolicyLane policy={market?.data_policy} />
 
               {/* the room's dimensions, at a glance — every figure derived */}
               <StampStrip

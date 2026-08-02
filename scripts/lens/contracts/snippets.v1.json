@@ -908,12 +908,12 @@
     },
     {
       "path": "src/pages/ProviderPage.tsx",
-      "source_blob": "cb093ad247ee88f1474bc6d9ca78e04a053a7350",
+      "source_blob": "e2b71529a20ba202115047d4f41f07194c158582",
       "blocks": [
         {
           "selector": "src/pages/ProviderPage.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 536,
+          "line": 586,
           "sha256": "28b9b9930aac318b4e5866eff206b9a632ce999657dfcc46c76d51e538b28a4b"
         }
       ]

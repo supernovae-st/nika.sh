@@ -216,6 +216,7 @@ const COMPONENT_FEATURE = {
   /* the belvédère's third page (2026-08-02) · which repo each piece lives
      in, at which pin this site read it */
   City: 'registry.map',
+  CityDecisions: 'registry.map',
   /* the /how world (V1 · 2026-08-02) · the récit world's own pages */
   How: 'product.how',
   /* the /workflows world (V2 · 2026-08-02) · the corpus */

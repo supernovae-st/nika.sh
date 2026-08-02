@@ -188,7 +188,7 @@ _OVERRIDES = [
     {
         "path": "public/engine/adr/index.json",
         "class": "pinned-copy",
-        "evidence": f"byte-copy of docs/adr/index.json at the pinned engine release ({_release_ref}) — the ADR machine index the /engineering world derives from",
+        "evidence": f"byte-copy of docs/adr/index.json at the pinned engine release ({_release_ref}) — the ADR machine index /city/decisions derives from (via scripts/build-adrs.mjs)",
         "derivation": {
             "tool": "node scripts/engine-resync.mjs --write",
             "gate": _ENGINE_RESYNC_GATE,

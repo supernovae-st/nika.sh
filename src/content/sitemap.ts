@@ -82,6 +82,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Home', href: '/', hint: 'the film · intent as code' },
       { label: 'The map', href: '/map', hint: 'every page, one graph · the anatomy' },
       { label: 'The city', href: '/city', hint: 'which repo each piece lives in, at which pin' },
+      { label: 'The decisions', href: '/city/decisions', hint: 'the 71 ADRs behind the engine, with their status' },
       { label: 'How it works', href: '/how', hint: 'the loop · try · new · check · run · trace' },
       { label: 'Workflows', href: '/workflows', hint: 'the path · the jobs · the skeletons' },
       { label: 'The router', href: '/how/router', hint: 'plain words in, a real workflow out · no model' },

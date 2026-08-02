@@ -28,6 +28,7 @@ import { Component as Language } from './pages/Language'
 import { Component as WordPage } from './pages/WordPage'
 import { Component as MapPage } from './pages/Map'
 import { Component as City } from './pages/City'
+import { Component as CityDecisions } from './pages/CityDecisions'
 import { Component as How } from './pages/How'
 import { Component as Workflows } from './pages/Workflows'
 import { Component as LessonRoom } from './pages/LessonRoom'
@@ -176,6 +177,9 @@ export const routes: RouteObject[] = [
          /truth defines the words, /city says which REPO a room's facts came
          from and at which commit this site read them */
       { path: 'city', Component: City },
+      /* the engine's decision record · 71 ADRs vendored at the release pin
+         and read by nobody until now (44KB of dead deploy payload) */
+      { path: 'city/decisions', Component: CityDecisions },
       /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
