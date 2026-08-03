@@ -165,8 +165,13 @@ download_release() {
 
   # Integrity: every release publishes SHA256SUMS — the tarball MUST match
   # before anything is extracted. The same digest-pinning the Homebrew
-  # formula and the registry enforce; curl|sh is not exempt. A missing
-  # sums file (releases predating it) warns; a MISMATCH always dies.
+  # formula and the registry enforce; curl|sh is not exempt.
+  #
+  # Absent sums DIE, exactly like a mismatch. A verifier that proceeds when
+  # it cannot verify hands the same green for "checked and clean" and "never
+  # looked" · and here that green ends in an extract. Measured 2026-08-03:
+  # of 26 published releases, the only 4 without a sums file are the
+  # v0.80.0-alpha.* tags, which no supported install path pins.
   sums_url="https://github.com/$GITHUB_REPO/releases/download/$tag/SHA256SUMS"
   if curl -fsSL "$sums_url" -o "$tmp/SHA256SUMS"; then
     expected=$(awk -v a="$asset" '$2 == a { print $1 }' "$tmp/SHA256SUMS")
@@ -183,7 +188,9 @@ download_release() {
       refusing to install — the artifact does not match the release manifest"
     say "sha256 verified ($(printf %.16s "$expected")…)"
   else
-    say "warning: SHA256SUMS not found for $tag — integrity not verified (older release?)"
+    die "no SHA256SUMS published for $tag
+      refusing to install what cannot be verified · every supported release ships one
+      if NIKA_VERSION pins a pre-1.0 alpha, unset it to take the current release"
   fi
 
   tar -xzf "$tmp/$asset" -C "$tmp" \

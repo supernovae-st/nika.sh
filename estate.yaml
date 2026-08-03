@@ -252,7 +252,7 @@ files:
   note: "BYTE-FROZEN input: design/build.mjs READS it (build.mjs:87-100 — 'public/icons.svg is BYTE-FROZEN (the visual goldens shoot the footer)') — never regenerated"
 - path: "public/install.sh"
   class: authored
-  sha256: 982e24ab9fd4b676556df34164279d435a18e359a4260544739c6c63c22e51ba
+  sha256: 16278cbfe12248d84e15b0102bdad48b61fa196aebe8d57f1446c9b2e3b0d016
   evidence: "hand-written installer"
   note: "VERSION + VERSION_TRANSCRIPT rewritten by scripts/sync-version.mjs — the transcript is a REAL captured `nika --version` (honesty law: re-capture, never hand-edit)"
 - path: "public/language/words/depends_on/index.html"
