@@ -49,7 +49,7 @@ files:
   evidence: "the catalog seam INPUT (D1) — the full engine RELEASE commit AND tree the /catalog world derives from; advanced only at release trains, PR-only; its $comment narrates the trust model"
 - path: ".github/nika-spec-pin.json"
   class: authored-pin
-  sha256: 11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329
+  sha256: 53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43
   evidence: "the resync INPUT — a deliberately bumped pin carrying the full nika-spec commit AND tree; its $comment narrates the LENS-011 trust model; advanced by the bot ONE-PR lane only, never HEAD"
   note: "scripts/lens/repin-spec-resync-contract.mjs re-derives the resync contract FROM this pin; public/.well-known/nika-spec-pin.json is its byte-identical generated twin"
 - path: ".gitignore"
@@ -123,7 +123,7 @@ files:
     - "package.json"
 - path: "public/.well-known/nika-spec-pin.json"
   class: pinned-copy
-  sha256: 11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329
+  sha256: 53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43
   evidence: "resync contract generator 'website-spec-pin-twin' (runtime: copy) — byte-copy of .github/nika-spec-pin.json at the resync pin"
   derivation:
     tool: "node scripts/spec-resync-run.mjs (the pinned resync)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 95ac92f24ec3072d839d66d6a66510bcef71faa119f0c0ec6a21673246448140
+  sha256: 9dbc97382f7f48c2dfd3378580ee3100b656164ca824f3a4efa2f3df6920a857
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -488,7 +488,7 @@ files:
     - "the tracked publish-input artifacts (digest census)"
 - path: "scripts/lens/contracts/release-attestation.v1.json"
   class: generated
-  sha256: defa36c10d7cb78cffc2921fc696e117e08f17360e3d33a90ed0cb7b34cbccee
+  sha256: b6cf628001fd5dde2c9e7a4e6a607030a646d4f1b41d5352793e3e7029db1365
   evidence: "attestation of the pinned spec release closure (release_id spec-6ac29351a878…-stable); sha256-bound into .github/nika-spec-pin.json"
   derivation:
     tool: "the repin lane (spec release closure)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: f629f7066b5ff6c3edd164d67fe1e7c5fa90be6cd89eadb1316d12cb2bd65e87
+  sha256: b076f30872e91a9704716f393679f87cbdf2d99bfd2473d04db863d338ba435f
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
