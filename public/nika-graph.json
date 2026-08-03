@@ -23,6 +23,38 @@
  "edges": [
   {
    "data": {
+    "law": "the CI door: the action installs the pinned engine release (engine-version input · SHA256SUMS-verified download) and posts the check receipt on the PR"
+   },
+   "evidence": "nika-action action.yml (engine-version default + digest-verified install)",
+   "from": "building/action",
+   "inverse_of": "vendors-to",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendored-from",
+   "to": "building/engine"
+  },
+  {
+   "data": {
+    "law": "the starter's workflows use supernovae-st/nika-action@v1 · first-party tracks the action's release tag by design"
+   },
+   "evidence": "nika-actions-starter .github/workflows/nika.yml (the uses: line and its comment)",
+   "from": "building/action",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendors-to",
+   "to": "building/actions-starter"
+  },
+  {
+   "data": {
+    "law": "the starter's workflows use supernovae-st/nika-action@v1 · first-party tracks the action's release tag by design"
+   },
+   "evidence": "nika-actions-starter .github/workflows/nika.yml (the uses: line and its comment)",
+   "from": "building/actions-starter",
+   "inverse_of": "vendors-to",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendored-from",
+   "to": "building/action"
+  },
+  {
+   "data": {
     "law": "the kit mirror: agent-client surfaces resynced from the engine repo (entries-pinned)"
    },
    "evidence": "the agents mirror resync lane (agents scripts/update-mirrors.sh)",
@@ -136,6 +168,16 @@
   },
   {
    "data": {
+    "law": "the CI door: the action installs the pinned engine release (engine-version input · SHA256SUMS-verified download) and posts the check receipt on the PR"
+   },
+   "evidence": "nika-action action.yml (engine-version default + digest-verified install)",
+   "from": "building/engine",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendors-to",
+   "to": "building/action"
+  },
+  {
+   "data": {
     "law": "the kit mirror: agent-client surfaces resynced from the engine repo (entries-pinned)"
    },
    "evidence": "the agents mirror resync lane (agents scripts/update-mirrors.sh)",
@@ -143,6 +185,16 @@
    "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
    "rel": "vendors-to",
    "to": "building/agents"
+  },
+  {
+   "data": {
+    "law": "the gh door: the extension downloads the release binary once and refuses any asset absent from the release's SHA256SUMS"
+   },
+   "evidence": "gh-nika extension script (gh release download + SHA256SUMS check · refuses unlisted assets)",
+   "from": "building/engine",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendors-to",
+   "to": "building/gh-nika"
   },
   {
    "data": {
@@ -213,6 +265,17 @@
    "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
    "rel": "mirrors-to",
    "to": "building/website"
+  },
+  {
+   "data": {
+    "law": "the gh door: the extension downloads the release binary once and refuses any asset absent from the release's SHA256SUMS"
+   },
+   "evidence": "gh-nika extension script (gh release download + SHA256SUMS check · refuses unlisted assets)",
+   "from": "building/gh-nika",
+   "inverse_of": "vendors-to",
+   "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
+   "rel": "vendored-from",
+   "to": "building/engine"
   },
   {
    "data": {
