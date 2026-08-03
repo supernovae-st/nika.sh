@@ -12,6 +12,15 @@ import './catalog-models.css'
 
 type McpServerEntry = import('../content/catalog.generated').McpServerEntry
 
+/* the try-it block · ONE builder, rendered by the room and judged by
+   src/test/mcp-try-block.test.ts (AJV against the pinned schema with a real
+   tool ref — the oracle returned `✔ clean` on this exact shape 2026-08-03).
+   invoke takes a MAPPING · the ref separator is `/` · the grant lives in
+   permits.tools with the FULL ref. */
+export function mcpTryBlock(id: string, slug: string): string {
+  return `nika: v1\nworkflow:\n  id: wire-${slug}\ntasks:\n  work:\n    invoke:\n      tool: "mcp:${id}/<tool>"\npermits:\n  tools: ["mcp:${id}/<tool>"]`
+}
+
 export function Component() {
   const { pathname } = useLocation()
   const slug = pathname.split('/')[3] ?? ''
@@ -85,11 +94,11 @@ export function Component() {
       )}
       <CatalogSection id="try" title="Call it from a workflow">
         <pre className="src-cmd mono">
-          <code>{`tasks:\n  work:\n    invoke: "mcp:${s?.id ?? slug}.<tool>"\npermits:\n  mcp: ["${s?.id ?? slug}"]`}</code>
+          <code>{mcpTryBlock(s?.id ?? slug, s?.slug ?? slug)}</code>
         </pre>
         <p className="pv-desc">
-          The permit names the server · absent means the empty boundary, and the run refuses before
-          a call leaves.
+          The permit names the exact tool · absent means the empty boundary, and the run refuses
+          before a call leaves.
         </p>
       </CatalogSection>
       {s && s.packages.length > 0 && (

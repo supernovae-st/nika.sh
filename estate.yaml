@@ -18,15 +18,15 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1608
+  classified_files: 1611
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1235
+    authored: 1236
     authored-pin: 3
     generated: 311
     pinned-copy: 21
-    testimonial: 38
+    testimonial: 40
     foreign: 0
   unverified-default: 427
 files:
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 64342396c15767d587210d87edee73e2fb22b4f68bd38c2dffa34c5af92a1642
+  sha256: bbf352ebd83aebc409b11b59086236c7c6b045e41ed272d5018aa9990d92689d
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 4d13d06a8a7d9b66b4c22297c238d8d194fcea9d5fb7ebfbe224876096d5e14e
+  sha256: f3ecc96b4aef535ce43787b55e439e2b6a040b02a983c2ab317a56d5bdad5895
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -842,8 +842,8 @@ patterns:
     - "supernovae-st/nika@57673f61c411 (v0.107.2) (the pinned release tree)"
 - glob: "tests/visual/golden/**"
   class: testimonial
-  match_count: 26
-  aggregate_sha256: e69a4de01fc66b36284290a447bb02baab81a947d14c3285b86780112130a3b3
+  match_count: 28
+  aggregate_sha256: 2c77b73de9425e68b0527278f2195ac3480a4c8dcfcb7820bf6bd55b4f296c29
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 81ff248127d005888c1f6bd59d470aa3aef5230cfcc6129680e072e78429884c
+  aggregate_sha256: 65d6c0755ef3c55677abe7340f1fdffccf98b55fa7e225176b2744aca0e5bd14
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: aaca70d36ebd09e3e1fc2ee62fd935436188192ad81dd7b1544f9653fd8de5df
+  aggregate_sha256: 6441ef1dcb1a01f92c4b6cba5d4a2b05a0b556953468315971da533a9b7ece3f
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 438
-  aggregate_sha256: 8fdff2c4e129af7a0f4dc7a439d6de2fc4128aed636315d92cdb8b5ea12394e3
+  match_count: 439
+  aggregate_sha256: 041f929f71cff50b08bfc4f29c54bb2cba6ea03b85b8234809e6f8bf24cdd01d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: 104fb4e7c5f70ed0db0c3e426ca9f373bc61506202e4d7d972fd9b2f45b0520c
+  aggregate_sha256: 3c41aa73100919cfda262a9e84d2a41f4e820d712a3c7dda78dafe1511722c37
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

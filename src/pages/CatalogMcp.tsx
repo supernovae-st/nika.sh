@@ -55,8 +55,8 @@ export function Component() {
       lede={
         <>
           Registry-aligned MCP servers, vendored with the release: what each one does, how it
-          installs, which env vars it takes. In a workflow they answer to{' '}
-          <code>invoke: "mcp:&lt;server&gt;.&lt;tool&gt;"</code> · the boundary still decides what
+          installs, which env vars it takes. In a workflow they answer to <code>invoke</code> with{' '}
+          <code>tool: "mcp:&lt;server&gt;/&lt;tool&gt;"</code> · the boundary still decides what
           runs.
         </>
       }

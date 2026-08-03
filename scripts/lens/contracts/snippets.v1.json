@@ -800,12 +800,12 @@
     },
     {
       "path": "src/pages/CatalogMcpRoom.tsx",
-      "source_blob": "81b4efc6cd4bf3cbdb903bcc2bc270fa98125038",
+      "source_blob": "e834e990d4874be4cb3091d9ad65c4f6d7d1367d",
       "blocks": [
         {
           "selector": "src/pages/CatalogMcpRoom.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 87,
+          "line": 96,
           "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]
@@ -998,7 +998,7 @@
     },
     {
       "path": "src/pages/UseCasesPage.tsx",
-      "source_blob": "080250c96807d780155bcb4ac2f051bf8bbe9611",
+      "source_blob": "c939ec5265d4a1591e9a34032d2851c86c175691",
       "blocks": [
         {
           "selector": "src/pages/UseCasesPage.tsx#pre:1",
@@ -1010,7 +1010,7 @@
           "selector": "src/pages/UseCasesPage.tsx#codefile:1",
           "kind": "jsx-codefile",
           "line": 348,
-          "sha256": "edd814f91a2c5b74c54f35f7d85bdc8d72d50b68391ec5ebdf39be99fa1aa2d2"
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
@@ -1052,7 +1052,7 @@
     },
     {
       "path": "src/sections/GetStarted.tsx",
-      "source_blob": "01ee5c14cb04b4792035ff3f6a806995586132ef",
+      "source_blob": "c41608dbfa1bbcafbc7769fcf9597f928fe5246c",
       "blocks": [
         {
           "selector": "src/sections/GetStarted.tsx#codefile:1",
@@ -1070,7 +1070,7 @@
           "selector": "src/sections/GetStarted.tsx#codefile:3",
           "kind": "jsx-codefile",
           "line": 115,
-          "sha256": "fbfa17699451c12cdc9a31c34226694648634948f107bfd595a9cb6a7056746e"
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
@@ -1112,7 +1112,7 @@
     },
     {
       "path": "src/sections/UseCasesV4.tsx",
-      "source_blob": "591121334ad9f8a078232e877e7c96bdbf94d818",
+      "source_blob": "bf6a2ed9fa0b15feca57cf093e061c137b81656f",
       "blocks": [
         {
           "selector": "src/sections/UseCasesV4.tsx#codefile:1",
@@ -1129,8 +1129,8 @@
         {
           "selector": "src/sections/UseCasesV4.tsx#codefile:2",
           "kind": "jsx-codefile",
-          "line": 222,
-          "sha256": "a90c9ef3996fbd7435bdf529b04d950197431e75bc5defb472a2ac05d498458c"
+          "line": 226,
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
@@ -1148,13 +1148,13 @@
     },
     {
       "path": "src/sections/Wedge.tsx",
-      "source_blob": "8480701c03662e7ece5f4042c2a6dbe8c4f3f61a",
+      "source_blob": "f64e75e3519602b9e9a0ad3cbafe6d612b83ef75",
       "blocks": [
         {
           "selector": "src/sections/Wedge.tsx#codefile:1",
           "kind": "jsx-codefile",
           "line": 82,
-          "sha256": "99eb4b5dd3a3bdcb19d97bb3c8ce34559c234e76d1b25c95ea4b01a4bfa68bcb"
+          "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]
     },
