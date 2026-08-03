@@ -8,6 +8,7 @@ import { MCP_SLUGS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { appLd, crumbLd } from '../lib/ld'
+import './catalog-models.css'
 
 type McpServerEntry = import('../content/catalog.generated').McpServerEntry
 
@@ -68,6 +69,20 @@ export function Component() {
       lede={<>{s?.description ?? 'An MCP server the released binary can wire.'}</>}
       crumb={{ to: '/catalog/mcp', label: 'MCP servers' }}
     >
+      {/* the registry's own facts · glyph seconds the word, never colour alone */}
+      {s && (
+        <p className="pv-desc cm-facts">
+          {s.pricing ?? 'unpriced'}
+          {s.env_vars.length ? ` · ${s.env_vars.length} env` : ' · keyless'}
+          {s.tags.includes('destructive') && ' · ⚠ destructive'}
+          {s.tags.includes('official') && ' · official'}
+          {s.tags
+            .filter((t) => !['destructive', 'official', 'read-only'].includes(t))
+            .map((t) => ` · ${t}`)
+            .join('')}
+          {s.tags.includes('read-only') && <span className="cm-open">◇ read-only</span>}
+        </p>
+      )}
       <CatalogSection id="try" title="Call it from a workflow">
         <pre className="src-cmd mono">
           <code>{`tasks:\n  work:\n    invoke: "mcp:${s?.id ?? slug}.<tool>"\npermits:\n  mcp: ["${s?.id ?? slug}"]`}</code>

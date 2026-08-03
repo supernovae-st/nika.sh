@@ -8,6 +8,9 @@ import { CATALOG_COUNTS, MARKET_PROVIDER_IDS } from '../content/catalog-paths.ge
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+/* cm-facts rides this sheet · css is code-split per chunk, so the consumer
+   imports what it wears (the rail was unstyled on a direct load without it) */
+import './catalog-models.css'
 
 type Rule = import('../content/catalog.generated').PricingRule
 type Cargo = {

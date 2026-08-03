@@ -8,8 +8,19 @@ import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import './catalog-models.css'
 
-type Row = { id: string; slug: string; category: string | null; pricing: string | null; env: number; desc: string | null }
+type Row = {
+  id: string
+  slug: string
+  category: string | null
+  pricing: string | null
+  env: number
+  desc: string | null
+  ro: boolean
+  del: boolean
+  off: boolean
+}
 
 const DESC = `The ${CATALOG_COUNTS.mcp_servers} MCP servers the released binary's catalog names · registry-aligned, packages and env vars declared, one room each.`
 
@@ -25,9 +36,18 @@ export function Component() {
       pricing: s.pricing,
       env: s.env_vars.length,
       desc: s.description,
+      ro: s.tags.includes('read-only'),
+      del: s.tags.includes('destructive'),
+      off: s.tags.includes('official'),
     })),
   )
   const cats = [...new Set((data ?? []).map((s) => s.category ?? 'other'))].sort()
+  /* the trust ledger · every number DERIVED from the vendored register —
+     read-only vs destructive is the boundary's own partition of the list */
+  const nRo = (data ?? []).filter((s) => s.ro).length
+  const nDel = (data ?? []).filter((s) => s.del).length
+  const nOff = (data ?? []).filter((s) => s.off).length
+  const nKeyless = (data ?? []).filter((s) => s.env === 0).length
   return (
     <CatalogShell
       fig={`the mcp servers · ${CATALOG_COUNTS.mcp_servers}`}
@@ -42,6 +62,19 @@ export function Component() {
       }
       crumb={{ to: '/catalog', label: 'The catalog' }}
     >
+      {/* the jump rail · 17 categories is a WALK, not a glance — one door per
+          section (the pricing-rail grammar · categorical registers get a rail,
+          only measured quantities get an axis) */}
+      {cats.length > 1 && (
+        <nav className="pv-desc cm-facts" aria-label="Jump to a category" style={{ lineHeight: 2 }}>
+          {cats.map((c, i) => (
+            <span key={c}>
+              {i > 0 && ' · '}
+              <a href={`#c-${c}`}>{c}</a>
+            </span>
+          ))}
+        </nav>
+      )}
       {cats.map((c) => {
         const rows = (data ?? []).filter((s) => (s.category ?? 'other') === c)
         return (
@@ -53,9 +86,14 @@ export function Component() {
                     <Link className="pv-id" to={`/catalog/mcp/${s.slug}`}>
                       {s.id}
                     </Link>
-                    <span className="tp-cat">
+                    <span className="tp-cat cm-facts">
                       {s.pricing ?? '·'}
                       {s.env ? ` · ${s.env} env` : ' · keyless'}
+                      {/* the registry's own trust tags · the glyph seconds the
+                          word, never colour alone · untagged shows nothing */}
+                      {s.del && ' · ⚠ destructive'}
+                      {s.off && ' · official'}
+                      {s.ro && <span className="cm-open">◇ read-only</span>}
                     </span>
                   </div>
                   {s.desc && <p className="pv-desc">{s.desc}</p>}
@@ -65,6 +103,11 @@ export function Component() {
           </CatalogSection>
         )
       })}
+      {/* the trust ledger · derived from the vendored register, never typed */}
+      <p className="pv-desc cm-facts">
+        {CATALOG_COUNTS.mcp_servers} servers · {cats.length} categories · {nDel} tagged destructive
+        · {nRo} read-only · {nOff} official · {nKeyless} keyless · the permit decides what runs
+      </p>
       <Island id="cat-mcp" payload={payload} />
     </CatalogShell>
   )

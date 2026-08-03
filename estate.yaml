@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: ac7e1cf6801a0fcfa7ce17b2c390b7e81f4daf34be38a71f7a77556ba08a72e8
+  sha256: 64342396c15767d587210d87edee73e2fb22b4f68bd38c2dffa34c5af92a1642
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
