@@ -207,30 +207,32 @@ export function Component() {
             </ol>
           </div>
 
+          {/* The rail at the top already names the changelog and what it
+              answers, so this section keeps only what the rail cannot say:
+              where the CATALOG sits (a fourth surface, pinned rather than
+              chronological) and where the machine copy of this register is
+              served. Re-explaining the changelog here, plus a doc-link to a
+              page the rail already offers, was the same fact three times on
+              one screen. */}
           <div className="how-subs" data-rise>
-            <p className="how-fig mono">two registers, one truth</p>
-            <h2 className="how-h1">The twin pages</h2>
+            <p className="how-fig mono">beyond the three</p>
+            <h2 className="how-h1">What the pin knows</h2>
             <p className="how-body">
-              The <Link to="/changelog">changelog</Link> is the narrative: what each release means,
-              written with the bump, never after. The <Link to="/catalog">catalog</Link> is what the
-              PINNED release knows (models, pricing, MCP servers), vendored at{' '}
-              <span className="mono">{ENGINE_VERSION}</span> and re-vendored only when the pin
-              advances. The machine copy of this register is served at{' '}
+              The <Link to="/catalog">catalog</Link> is what the PINNED release knows (models,
+              pricing, MCP servers), vendored at <span className="mono">{ENGINE_VERSION}</span> and
+              re-vendored only when the pin advances · a snapshot, where this register is a
+              chronology. The machine copy of this register is served at{' '}
               <a href="/releases/catalog.json">/releases/catalog.json</a>.
             </p>
             <div className="v4doclinks">
-              <Link to="/changelog" className="v4doclink">
-                What shipped, and when
+              <Link to="/catalog" className="v4doclink">
+                What the pinned release knows
                 <span aria-hidden className="v4doclink-arrow"> →</span>
               </Link>
               <a className="v4doclink" href="https://github.com/supernovae-st/nika/releases">
                 The record at GitHub
                 <span aria-hidden className="v4doclink-arrow"> →</span>
               </a>
-              <Link to="/catalog" className="v4doclink">
-                What the pinned release knows
-                <span aria-hidden className="v4doclink-arrow"> →</span>
-              </Link>
             </div>
           </div>
         </div>
