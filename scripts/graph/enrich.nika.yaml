@@ -4,13 +4,15 @@
 #
 # The site enriches itself WITH Nika (dogfooding): the deterministic doctor
 # (D7 ②) PROPOSES edges by heuristics — advisory, never mutating — and this
-# workflow TRIAGES those proposals with a bounded LOCAL model, then lands a
+# workflow TRIAGES those proposals with a BOUNDED model (the seat named
+# below · cloud today, by operator ruling), then lands a
 # PR brief. The model sorts, it never invents: an edge the doctor did not
 # propose does not exist for it. Nothing here writes the graph; a HUMAN
 # reviews the brief and merges — PR-only, at trains.
 #
 #   run   · nika run scripts/graph/enrich.nika.yaml            (from repo root)
-#   spend · bounded: one local infer (unpriced compute), max_tokens capped
+#   spend · bounded: one infer, max_tokens capped · a cloud seat rides
+#           --max-cost-usd (the check prints the ceiling)
 #   out   · .nika/out/graph-enrich/PROPOSALS.md
 #
 # EXEC LEDGER ·
@@ -21,7 +23,7 @@
 nika: v1
 workflow:
   id: graph-enrich
-  description: "Doctor proposes → bounded local model triages → PR brief lands. Advisory: a human merges."
+  description: "Doctor proposes → a bounded model triages → PR brief lands. Advisory: a human merges."
 
 run:
   # timeouts below ride a clock — say which one out loud.

@@ -164,3 +164,21 @@ lanes:
     rel: certifies
     law: "every registry entry is CI-re-proven against the released engine (hash + oracle + engine cert)"
     evidence: "the registry model: entries re-proven by the runner (nika-registry CI)"
+  # ── the D7③ loop's first merged enrichment (2026-08-03) · the doctor
+  #    proposed « buildings with no outgoing lane », the triage kept it, a
+  #    human verified each law AT ITS SOURCE before writing the row.
+  - from: engine
+    to: action
+    rel: vendors-to
+    law: "the CI door: the action installs the pinned engine release (engine-version input · SHA256SUMS-verified download) and posts the check receipt on the PR"
+    evidence: "nika-action action.yml (engine-version default + digest-verified install)"
+  - from: action
+    to: actions-starter
+    rel: vendors-to
+    law: "the starter's workflows use supernovae-st/nika-action@v1 · first-party tracks the action's release tag by design"
+    evidence: "nika-actions-starter .github/workflows/nika.yml (the uses: line and its comment)"
+  - from: engine
+    to: gh-nika
+    rel: vendors-to
+    law: "the gh door: the extension downloads the release binary once and refuses any asset absent from the release's SHA256SUMS"
+    evidence: "gh-nika extension script (gh release download + SHA256SUMS check · refuses unlisted assets)"

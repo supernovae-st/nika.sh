@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: a0033137d7b367a95bec740bc20a23c448a57c917e941bcd63f28a4896e5590a
+  sha256: 8e8ea68717918e616037e82204c95cd8dba3767e03d07025a3a6ce1918a4c604
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -466,7 +466,7 @@ files:
     - "supernovae-st/nika-estate@<ESTATE_PIN>:scripts/estate.py"
 - path: "scripts/graph/city.yaml"
   class: authored
-  sha256: 6f33a39f2f1444c2ef13bb60c4c2fcbaa6ef09b68d392c155772640db9ea5e36
+  sha256: 9f04d7fff35ef46feb00dee67f57595b2393d6c8723d874f86a25f0783a350d2
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
@@ -941,7 +941,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: c73e70efa445f27a62f81bd0837515d9081cd9bf4b0349a5a10ecb1df10b1ff6
+  aggregate_sha256: b0d77e2b0d18056797feb5e55321e71eacd0b48ad3b73a4d06cbe176aa02a107
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
