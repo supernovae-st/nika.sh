@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 2af146e88ee9b80a2d5dd824f561bd8062d7637ccc9b92b42afd2c16a53e0e13
+  sha256: 5cc051798176dd28a09f8b86d9a9952ddf361617cc7d3400e671e82a02f82dc6
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 01e82b3e1a58d8b200ad9bab6188955ad8a7edc9bb8597018054d1144bba712f
+  aggregate_sha256: 055d40425741c2ae9c61c07e4febc7ed61139c6b6cf8cdb25732e806e0bfca08
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 428
-  aggregate_sha256: 70d026254742a2c3f0c77df797e6bd9e269a3cdbf890554ce1de9638a7b56410
+  aggregate_sha256: 29cc773087dce21ad17b7932d927d0e138bb845a9feaa41e9e50b319309efe72
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: 2b1e5fea6ee16eb7024bac187829213d21b66e13e3d4b26eee7f975a1c7a9724
+  aggregate_sha256: 6c2a7a8249f57f04d292aecf059c461f7a196624779cbd30a5c337397b837052
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

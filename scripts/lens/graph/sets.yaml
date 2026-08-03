@@ -839,6 +839,7 @@ nav:
       - { label: nika-graph.json, href: /nika-graph.json }
       - { label: schema, href: /schema/workflow.json }
       - { label: errors, href: /errors/catalog.json }
+      - { label: releases, href: /releases/catalog.json }
 
 library_heroes_gates: "served byte-pin (served-library.test.ts) · recorded-trace honesty (trace.test.ts) · plan parity (library.test.ts) · schema AJV · binary check RELEASE-GATED (pre-W2 released binary refuses the W2 envelope)"
 library_heroes:

@@ -112,17 +112,20 @@ describe('lens-nav · the §4.11 scannability law holds', () => {
     }
   })
 
-  it('six columns in the 30-52 links law, machine row of five', () => {
+  it('six columns in the 30-52 links law, machine row of six', () => {
     /* §4.12 window re-anchored 2026-08-02 (the complete-card mandate): the
        catalog world lands its own column (8 doors) and the truth system its
        two extras — six columns, 30-52 links, still one screen. The FLOOR of
        completeness is footer-coverage.test.ts (every world head has a
-       door); this law bounds the CEILING so the card stays scannable. */
+       door); this law bounds the CEILING so the card stays scannable.
+       Machine row: 5 → 6 on 2026-08-03 — the release record's catalog joins
+       its register sisters (every register ships its machine twin, the
+       /errors/catalog.json law · world ⑦). */
     expect(FOOTER_COLS.length).toBe(6)
     const total = FOOTER_COLS.reduce((n, c) => n + c.items.length, 0)
     expect(total).toBeGreaterThanOrEqual(30)
     expect(total).toBeLessThanOrEqual(52)
-    expect(FOOTER_MACHINE.length).toBe(5)
+    expect(FOOTER_MACHINE.length).toBe(6)
   })
 })
 

@@ -303,5 +303,9 @@ export const FOOTER_MACHINE: { label: string; href: string }[] =
   {
     "label": "errors",
     "href": "/errors/catalog.json"
+  },
+  {
+    "label": "releases",
+    "href": "/releases/catalog.json"
   }
 ]
