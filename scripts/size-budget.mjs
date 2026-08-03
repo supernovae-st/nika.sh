@@ -253,6 +253,19 @@
        witness row per PUBLISHED receipt — small by construction (a row
        per RUN, never per query) and testimonial-gated, so it grows only
        when a receipt is published.
+
+
+   2026-08-03 · 416 → 418 · THE RECORD BECOMES AN INSTRUMENT (the wow
+     pass on world ⑦). The /releases pages are sync-routed record pages
+     (the WO-7 class: the weight IS the page) and they grew the three
+     things a record owes its reader:
+     · +0.9 · the cadence strip (Releases.tsx + releases-lib.ts) · every
+       release a tick-LINK on the real time axis, same-day trains kept,
+       the lone accent on the serving release · pure derivation, no dep
+     · +0.7 · the room's delta walk + verify block + prev/next
+       (ReleaseRoom.tsx) · what moved since the previous release, the
+       two-line shasum proof, the ErrorPage walk precedent
+     Measured 417.0 · margin ~1.0 (the bite-on-growth grammar holds).
      Cheaper than it looks for what it buys: 14 new routes, and the teaching
      path the spec has shipped all along became visible for the first time.
 
@@ -263,7 +276,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 416
+const BUDGET_KB = 418
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

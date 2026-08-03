@@ -9,7 +9,9 @@ import type { EngineRelease } from '../content/releases.generated'
 import { ssrReleases, loadReleases } from '../lib/releases-access'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
+import { fmtWeight } from './releases-lib'
 import '../sections/v4-home.css'
+import './releases-page.css'
 import './page-chrome.css'
 import './how-page.css'
 import './tool-detail.css'
@@ -30,21 +32,60 @@ export function Component() {
   const { pathname } = useLocation()
   const tag = pathname.split('/')[2] ?? ''
 
+  /* the room ships its row AND its two neighbours: the delta walks against
+     the PREVIOUS release, the nav walks both ways · one island, no second
+     fetch (newest-first record: prev = the older sibling) */
+  const slice = (m: { releases: EngineRelease[] }) => {
+    const i = m.releases.findIndex((r) => r.tag === tag)
+    return {
+      row: i >= 0 ? m.releases[i] : null,
+      prev: i >= 0 ? (m.releases[i + 1] ?? null) : null,
+      newer: i > 0 ? { tag: m.releases[i - 1].tag } : null,
+    }
+  }
   const payload = useIslandPayload(
     `release-${tag}`,
     (() => {
       const m = ssrReleases()
-      return m ? JSON.stringify({ row: m.releases.find((r) => r.tag === tag) ?? null }) : null
+      return m ? JSON.stringify(slice(m)) : null
     })(),
-    async () => {
-      const m = await loadReleases()
-      return JSON.stringify({ row: m.releases.find((r) => r.tag === tag) ?? null })
-    },
+    async () => JSON.stringify(slice(await loadReleases())),
   )
-  const rel = useMemo(
-    () => (payload ? (JSON.parse(payload) as { row: EngineRelease | null }).row : null),
+  const rec = useMemo(
+    () =>
+      payload
+        ? (JSON.parse(payload) as {
+            row: EngineRelease | null
+            prev: EngineRelease | null
+            newer: { tag: string } | null
+          })
+        : null,
     [payload],
   )
+  const rel = rec?.row ?? null
+  const prev = rec?.prev ?? null
+  const delta = useMemo(() => {
+    if (!rel || !prev) return null
+    const before = new Map(prev.assets.map((a) => [a.name, a.size]))
+    const after = new Map(rel.assets.map((a) => [a.name, a.size]))
+    const rows: { name: string; move: string; cls: string }[] = []
+    for (const [name, size] of after) {
+      const was = before.get(name)
+      if (was == null) rows.push({ name, move: `+ ${fmtWeight(size)} · new`, cls: 'rl-delta-row--add' })
+      else if (was !== size) {
+        const d = size - was
+        rows.push({
+          name,
+          move: `${fmtWeight(was)} → ${fmtWeight(size)} (${d > 0 ? '+' : '−'}${Math.abs(Math.round(d / 1024))} KB)`,
+          cls: '',
+        })
+      }
+    }
+    for (const name of before.keys()) {
+      if (!after.has(name)) rows.push({ name, move: 'gone', cls: 'rl-delta-row--del' })
+    }
+    return rows
+  }, [rel, prev])
 
   /* the narrative twin, joined by tag (already in the bundle: /changelog owns it) */
   const story = useMemo(
@@ -170,9 +211,73 @@ export function Component() {
                 </ol>
               </div>
 
+              {(() => {
+                const a =
+                  rel?.assets.find((x) => x.name.includes('macos-arm64') && x.sha256) ??
+                  rel?.assets.find((x) => x.sha256)
+                return a ? (
+                  <div className="how-subs" data-rise>
+                    <p className="how-fig mono">verify a download</p>
+                    <h2 className="how-h1">Two lines, no trust</h2>
+                    <p className="how-body">
+                      The digest below is this release's own record for{' '}
+                      <span className="mono">{a.name}</span>. Paste both lines where the file
+                      landed: a silent OK is the proof, anything else is a refusal.
+                    </p>
+                    <pre className="src-cmd mono">
+                      <code>{`echo "${a.sha256}  ${a.name}" | shasum -a 256 -c -`}</code>
+                    </pre>
+                  </div>
+                ) : null
+              })()}
+
+              {delta && (
+                <div className="how-subs" data-rise>
+                  <p className="how-fig mono">the delta</p>
+                  <h2 className="how-h1">
+                    What moved since {prev?.tag}
+                  </h2>
+                  {delta.length === 0 ? (
+                    <p className="how-body">
+                      Same asset set, same bytes recorded: this release changed the code, not the
+                      shape of what ships.
+                    </p>
+                  ) : (
+                    <div>
+                      {delta.map((d) => (
+                        <div key={d.name} className={`rl-delta-row ${d.cls}`.trim()}>
+                          <span className="rl-delta-name">{d.name}</span>
+                          <span className="rl-delta-move">{d.move}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               <p className="wf-pin mono" data-rise>
                 vendored from the public release record · re-vendored at the train cadence
               </p>
+
+              <nav className="td-nav" aria-label="Release walk" data-rise>
+                {prev ? (
+                  <Link className="td-nav-link" to={`/releases/${prev.tag}`}>
+                    <span className="td-nav-label">older</span>← {prev.tag}
+                  </Link>
+                ) : (
+                  <span />
+                )}
+                <Link className="td-nav-link td-nav-link--all" to="/releases">
+                  every release
+                </Link>
+                {rec?.newer ? (
+                  <Link className="td-nav-link td-nav-link--next" to={`/releases/${rec.newer.tag}`}>
+                    <span className="td-nav-label">newer</span>{rec.newer.tag} →
+                  </Link>
+                ) : (
+                  <span />
+                )}
+              </nav>
 
               <div className="v4doclinks" data-rise>
                 <a className="v4doclink" href={rel?.url}>

@@ -10,7 +10,9 @@ import { ssrReleases, loadReleases } from '../lib/releases-access'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { crumbLd, ldScript } from '../lib/ld'
+import { cadence, kindChips, fmtWeight } from './releases-lib'
 import '../sections/v4-home.css'
+import './releases-page.css'
 import './page-chrome.css'
 import './how-page.css'
 import './tool-detail.css'
@@ -59,6 +61,8 @@ export function Component() {
     0,
   )
   const assetsTotal = RELEASES.reduce((n, r) => n + r.assets.length, 0)
+  const weight = RELEASES.reduce((n, r) => n + r.assets.reduce((m, a) => m + a.size, 0), 0)
+  const strip = useMemo(() => cadence(RELEASES), [RELEASES])
 
   const title = 'Releases · Nika'
   const description = `Every published Nika engine release: ${RELEASES.length} versions, ${assetsTotal} assets, each with the digest GitHub recorded at upload. The served catalog follows ${ENGINE_VERSION}.`
@@ -136,6 +140,53 @@ export function Component() {
           />
 
           <div className="how-subs" data-rise>
+            <p className="how-fig mono">the cadence</p>
+            <h2 className="how-h1">Every release, on the axis of time it shipped in</h2>
+            <p className="how-body">
+              One tick per published version, seated where its day falls; the bar carries the
+              asset count and the lone accent marks the release this site serves. Same-day trains
+              keep both ticks: the record never hides a hotfix.
+            </p>
+            {strip.ticks.length > 1 && (
+              <>
+                <div
+                  className="rl-cadence"
+                  role="img"
+                  aria-label={`${RELEASES.length} releases across ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'}`}
+                >
+                  {strip.ticks.map((k) => (
+                    <Link
+                      key={k.tag}
+                      to={`/releases/${k.tag}`}
+                      className={k.latest ? 'rl-tick rl-tick--latest' : 'rl-tick'}
+                      style={{ left: `${k.left}%`, ['--h' as string]: `${k.h}px` }}
+                      title={k.label}
+                      aria-label={k.label}
+                    >
+                      <i aria-hidden />
+                    </Link>
+                  ))}
+                  <span className="rl-cadence-label" style={{ left: '0%' }} aria-hidden>
+                    {strip.ticks[0]?.tag}
+                  </span>
+                  <span
+                    className="rl-cadence-label rl-cadence-label--latest"
+                    style={{ left: '100%' }}
+                    aria-hidden
+                  >
+                    {strip.ticks[strip.ticks.length - 1]?.tag}
+                  </span>
+                </div>
+                <p className="rl-cadence-foot">
+                  {RELEASES.length} releases · {strip.spanDays} days ·
+                  median gap {strip.medianGapDays} {strip.medianGapDays === 1 ? 'day' : 'days'} ·
+                  {' '}{fmtWeight(weight)} shipped
+                </p>
+              </>
+            )}
+          </div>
+
+          <div className="how-subs" data-rise>
             <p className="how-fig mono">newest first</p>
             <h2 className="how-h1">The record</h2>
             <ol className="td-args tp-args">
@@ -150,6 +201,13 @@ export function Component() {
                     <span className="mono">
                       {r.date} · {r.assets.length} {r.assets.length === 1 ? 'asset' : 'assets'}
                       {r.tag === ENGINE_VERSION ? ' · the catalog this site serves' : ''}
+                    </span>
+                    <span className="rl-chips" aria-hidden>
+                      {kindChips(r.assets).map((c) => (
+                        <span key={c} className="rl-chip">
+                          {c}
+                        </span>
+                      ))}
                     </span>
                   </span>
                 </li>

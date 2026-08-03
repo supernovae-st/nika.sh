@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 59,
-    "block_count": 120
+    "carrier_count": 60,
+    "block_count": 121
   },
   "carriers": [
     {
@@ -915,6 +915,18 @@
           "kind": "jsx-codefile",
           "line": 586,
           "sha256": "28b9b9930aac318b4e5866eff206b9a632ce999657dfcc46c76d51e538b28a4b"
+        }
+      ]
+    },
+    {
+      "path": "src/pages/ReleaseRoom.tsx",
+      "source_blob": "2197317a095ca248252e25ea195c1a83e692ef21",
+      "blocks": [
+        {
+          "selector": "src/pages/ReleaseRoom.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 227,
+          "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]
     },
