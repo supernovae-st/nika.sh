@@ -289,14 +289,22 @@
      signature seat. ~0.5 KB is the whole footer cost; the union measured
      420.4. Margin ~0.6 (the bite-on-growth grammar holds).
 
-   2026-08-03 · 421 → 423 · THE SAME EVENING, THIRD CONVERGENCE. The learn
-     page took its teaching gate's real verdict into the entry (~1.4 KB of
-     lesson truth — content growth, the corpus-flatten precedent) while the
-     footer's polish pass added its reveal wiring + world indices (~0.2 KB:
-     the shared useRevealOnce was already in the entry — only attributes
-     and one span per column). Union measured 422.0; a 421 ceiling died on
-     main within the hour it was set (the gate's red WAS this line's proof).
-     Margin ~1.0 (the bite-on-growth grammar holds).
+   2026-08-03 · 421 → 422 · THE GATE THAT GATES. /learn takes the
+     registered weekly-radar (nika-spec examples/snippets) and a FRESH
+     verbatim transcript: the old one swore « passes check » over text
+     today's binary refuses (NIKA-SEC-014 · the consent gate never
+     gated). The consent bindings + the 0.107 voice (ENERGY · WRITES ·
+     JOURNEY lanes, the headless-prompt hint that is the price of a real
+     gate) are ~1.5 KB of teaching truth — content, not code. Measured
+     421.8 · margin 0.2, deliberately thin: the next growth faces the
+     gate immediately (the bite-on-growth grammar holds).
+
+   2026-08-03 · 422 → 423 · THE PLATE RISES (the polish pass). The footer's
+     reveal wiring + the six world indices ride the entry (~0.2 KB: the
+     shared useRevealOnce was already there — only attributes and one span
+     per column). The 0.2 margin above met that growth the same evening,
+     as designed. Union measured 422.0 · margin ~1.0 (the bite-on-growth
+     grammar holds).
 
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
