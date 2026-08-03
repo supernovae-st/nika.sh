@@ -1417,20 +1417,31 @@
     #000 460px
   );
 }
-/* the dawn · a struck-blue breath UNDER the grain, behind the butterfly
-   (element background paints beneath the z0 field — light under texture).
+/* the dawn · a struck-blue breath UNDER the grain, behind the butterfly.
    Two radials, one light: a tight core where the swarm lives + a wide
    atmospheric wash. Radials fade to nothing by construction: no edge
    exists to cut — the threshold is an event of light, not a line.
-   Same specificity as the grain-kill above, later in source: the melt
-   footer re-opens background-image for the light (a bare .sitefoot--melt
-   selector loses to `.v4sec.sitefoot { background-image: none }`). */
-.v4sec.sitefoot--melt {
-  /* raw rgb stops on purpose (the --v4-accent-soft idiom): the footer is
-     pinned theme-dark, and a color-mix() inside a gradient stop dies as an
-     invalid VALUE in older engines — the whole declaration falls back to
-     the `none` above and the light silently never exists. #4f86ff = the
-     struck blue, alpha-laddered by hand. */
+   It lives on a ::before layer (generated before the .sitefoot-field
+   child → paints beneath the grain) so the light can BREATHE: a slow
+   7s opacity sine, the swarm's own tempo. Reduced-motion = the settled
+   register (full, still). Same double-class specificity as the hairline
+   kill above, later in source (a bare .sitefoot--melt selector loses to
+   `.v4sec.sitefoot::before { content: none }`).
+   Raw rgb stops on purpose (the --v4-accent-soft idiom): the footer is
+   pinned theme-dark, and a color-mix() inside a gradient stop dies as an
+   invalid VALUE in older engines — the whole declaration falls back and
+   the light silently never exists. #4f86ff = the struck blue.
+   background-size restated: the grain theme (.v4sec.theme-dark) pins it
+   to the 4px tile and SIZE cascades independently of IMAGE — without the
+   restate each radial renders as one invisible 4×4 corner dot (three
+   blind screenshots paid for that sentence). */
+.v4sec.sitefoot--melt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  height: auto;
+  pointer-events: none;
   background-image:
     radial-gradient(
       320px 220px at 50% 155px,
@@ -1443,11 +1454,20 @@
       transparent 75%
     );
   background-repeat: no-repeat;
-  /* the grain theme (.v4sec.theme-dark) pins background-size to the 4px
-     tile, and SIZE cascades independently of IMAGE — without this restate
-     each radial renders as one invisible 4×4 corner dot (three blind
-     screenshots paid for that sentence) */
   background-size: 100% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v4sec.sitefoot--melt::before {
+    animation: sf-dawn 7s ease-in-out infinite alternate;
+  }
+}
+@keyframes sf-dawn {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .sitefoot-wrap {
   padding-top: 40px;
@@ -1586,9 +1606,33 @@
 .sitefoot-cols--six {
   margin-top: 0;
   border-top: none;
-  gap: 28px 24px;
+  gap: 28px 0; /* the drawer rules own the horizontal rhythm now */
   padding-top: 4px;
   padding-bottom: 36px;
+}
+/* THE CABINET · each world is a drawer: a vertical hairline opens it and
+   the content indents inside. The rules turn six floating lists into one
+   architectural plate (the blueprint made visible — same ink as every
+   horizontal rule). Phones drop the rules with the indent: two columns
+   of drawers would spend a third of the screen on furniture. */
+.sitefoot-cols--six .sitefoot-col,
+.sitefoot-cols--five .sitefoot-col {
+  border-left: 1px solid var(--v4-line);
+  padding-left: 16px;
+  padding-right: 12px;
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .sitefoot-cols--six .sitefoot-col,
+  .sitefoot-cols--five .sitefoot-col {
+    border-left: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .sitefoot-cols--five,
+  .sitefoot-cols--six {
+    gap: 28px 24px;
+  }
 }
 .sitefoot-cols--five {
   grid-template-columns: repeat(5, minmax(0, 1fr));

@@ -41,8 +41,26 @@
   opacity: 0;
 }
 .fsig-caption {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.18em;
   color: var(--v4-text-faint);
+}
+/* the museum-plate wings · two hairlines fading OUT from the caption — the
+   words sit on an engraved line, the line dissolves into the field */
+.fsig-caption::before,
+.fsig-caption::after {
+  content: '';
+  height: 1px;
+  width: 64px;
+  flex: none;
+}
+.fsig-caption::before {
+  background: linear-gradient(to left, var(--v4-line-strong), transparent);
+}
+.fsig-caption::after {
+  background: linear-gradient(to right, var(--v4-line-strong), transparent);
 }
