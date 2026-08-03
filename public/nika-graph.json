@@ -5512,11 +5512,11 @@
      "authored": 1209,
      "authored-pin": 3,
      "foreign": 0,
-     "generated": 303,
+     "generated": 304,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1574,
+    "classified_files": 1575,
     "unverified": 411
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",

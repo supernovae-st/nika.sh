@@ -845,30 +845,3 @@ export const RELEASES: EngineRelease[] = [
     ]
   }
 ]
-
-/** the room slugs · one per published release (second-producer law: the lens
- * discovery re-derives these from this module, never from site.config) */
-export const RELEASE_TAGS: string[] = [
-  "v0.107.2",
-  "v0.107.1",
-  "v0.107.0",
-  "v0.106.1",
-  "v0.106.0",
-  "v0.105.0",
-  "v0.104.0",
-  "v0.103.0",
-  "v0.102.0",
-  "v0.101.0",
-  "v0.100.0",
-  "v0.99.0",
-  "v0.98.0",
-  "v0.97.0",
-  "v0.96.0",
-  "v0.95.0",
-  "v0.94.0",
-  "v0.93.1",
-  "v0.93.0",
-  "v0.92.0",
-  "v0.91.0",
-  "v0.90.0"
-]

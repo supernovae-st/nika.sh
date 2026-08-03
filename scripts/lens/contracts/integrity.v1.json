@@ -59,11 +59,11 @@
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",
-   "sha256": "0c7ebfd3e49d01efbef42662e0d8ec9dbcb7791e6721b333b7229769a490c12b"
+   "sha256": "9192618019aaa13ec6429bbcab0dd49fa4c46b40fc97c8b38659b9e5810effdd"
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "48028059f9196a59fcb56e02d30b82e644b1968c51b3facfa46f4c99b802c58c"
+   "sha256": "c76ec9c9e9309e249f2cf4e3066de3096bee475799f42c9f7e6b7651f32fc370"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "7eecc8e7ec333390b4946de0ff670e2c98da01bc852b94584ed562f5fb8fb2c4"
+   "sha256": "421894662615d258bd652a50011230fee82407c0adfd289d7e05e5d8ebf432b2"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "ab00dbb592b40bcd9b17fbe723a273c80005a0cc3f2da0b9eed570eaf72bf8a3"
+   "sha256": "129541018bd2d3e56f180f844f59743a8b3b9fb6197005c31ddafaa00d3aed39"
   },
   {
    "path": "src/routes.tsx",

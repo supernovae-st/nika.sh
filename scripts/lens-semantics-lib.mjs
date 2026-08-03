@@ -493,7 +493,7 @@ function deriveClientDoorPaths(root) {
    public/releases/catalog.json, drift-gated by build-releases --check in
    pnpm check + src/test/releases.test.ts. */
 function deriveReleasePaths(root) {
-  const gen = readFileSync(join(root, 'src/content/releases.generated.ts'), 'utf8')
+  const gen = readFileSync(join(root, 'src/content/release-tags.generated.ts'), 'utf8')
   const m = gen.match(/export const RELEASE_TAGS: string\[\] = (\[[\s\S]*?\])/)
   if (!m) throw new Error('release tag array missing: RELEASE_TAGS')
   return JSON.parse(m[1]).map((t) => `/releases/${t}`)

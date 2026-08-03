@@ -40,25 +40,51 @@ run:
 permits:
   # argv-array execs only, so the tight allowlist form applies: node, nothing else.
   exec: ["node"]
-  tools: ["nika:date", "nika:write"]
-  # NO fs.read: no engine-mediated task reads a file (the doctor's own reads
-  # ride the exec verb, outside the fs bounds — a grant here would be dead
-  # authority, and dead read authority completes the lethal trifecta
-  # NIKA-SEC-009). For the reviewer, the doctor's read surface — cadastred by
-  # public/nika-graph.json .inputs[] — is: public/nika-graph.json ·
-  # public/engine/catalog/*.toml · public/{errors,providers,templates,tools}/
-  # catalog.json · .github/nika-{spec,engine}-pin.json · estate.yaml ·
-  # site.config.ts · pending-error-codes.ts · src/content/*.generated.ts ·
-  # scripts/graph/**.
+  tools: ["nika:assert", "nika:date", "nika:prompt", "nika:write"]
   fs:
-    # The ONLY file authority this workflow holds (the exact artifact, per
-    # --infer-permits — tighter than the .nika/out/graph-enrich/** bound it
-    # sits inside). No net axis: nothing egresses.
+    # The read grant is NECESSARY and the trifecta it completes is REAL —
+    # both were proven the same day (2026-08-03). Necessary: the exec runs
+    # sandboxed and the sandbox derives its walls from these bounds — with
+    # no read grant node died AT BOOT (`EPERM uv_cwd` · exit 1 · empty
+    # stdout · trace 13-58-24Z-7119) while `capture: structured` turned the
+    # corpse into data. Real: with the grant, the checker names SEC-009
+    # (exec output = untrusted ingress · the brief on disk = egress · this
+    # read = the third leg). The resolution is the judge's own fix: the
+    # `go` human gate dominates every path — the Rule of Two, kept. The
+    # surface is the doctor's own (cadastred by public/nika-graph.json
+    # .inputs[]) plus what node needs to boot: the module graph, the cwd.
+    read:
+      - "package.json"
+      - "node_modules/**"
+      - "scripts/**"
+      - "public/**"
+      - ".github/**"
+      - "estate.yaml"
+      - "site.config.ts"
+      - "pending-error-codes.ts"
+      - "src/content/**"
     write:
       - ".nika/out/graph-enrich/PROPOSALS.md"
 
 tasks:
+  go:
+    # The Rule of Two, satisfied the product's own way (NEP-0002 · SEC-009):
+    # this file holds all three legs — private read (the doctor's surface) ·
+    # untrusted ingress (an exec's output is never trusted) · egress (the
+    # brief lands on disk) — so a BLOCKING human gate dominates every path.
+    # D7③ is « assisted » by charter: a human launches it at the train
+    # cadence, answers one question, reviews the PR. The gate is consumed
+    # affirmatively below (NEP-0020): a refusal proves false on every route.
+    invoke:
+      tool: "nika:prompt"
+      args:
+        message: "Run the graph-enrichment loop? The doctor reads the repo, a local model triages its proposals, a PR brief lands in .nika/out/ — nothing mutates the graph."
+
   propose:
+    after: { go: success }
+    with:
+      approved: ${{ tasks.go.output }}
+    when: ${{ with.approved == true }}
     timeout: "3m"
     exec:
       # Advisory judge: proposals ride stdout; a non-zero exit (3 holes ·
@@ -69,12 +95,31 @@ tasks:
       capture: structured
 
   stamp:
+    after: { go: success }
+    with:
+      approved: ${{ tasks.go.output }}
+    when: ${{ with.approved == true }}
     # Provenance date comes from the RUNTIME, never hardcoded.
     invoke:
       tool: "nika:date"
       args: { op: "now" }
 
+  spoke:
+    # The doctor MUST have spoken. `capture: structured` makes propose's exit
+    # a NUMBER by design (3 holes · 5 drift are verdicts, not failures) — but
+    # an empty stdout is not a verdict, it is a corpse: the smoke's EPERM
+    # crash sailed through here as a green run and the model triaged VOID.
+    # This gate makes a silent doctor a LOUD red run.
+    with:
+      doctor_stdout: ${{ tasks.propose.output.stdout }}
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: ${{ with.doctor_stdout != '' }}
+        message: "the doctor spoke nothing (crash, not a verdict — its stderr in the trace has the cause) · triage refuses to run on a void report"
+
   triage:
+    after: { spoke: success }
     with:
       doctor_report: ${{ tasks.propose.output.stdout }}
     timeout: "10m" # a cold local model loads before it speaks

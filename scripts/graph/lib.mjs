@@ -189,7 +189,7 @@ export function pathsCensus() {
   ].map((m) => ({ id: m[1] }))
   /* the release register (2026-08-03): RELEASE_PATHS derives from the
      vendored record's tag list — inject it like the others */
-  const relm = read('src/content/releases.generated.ts').match(
+  const relm = read('src/content/release-tags.generated.ts').match(
     /RELEASE_TAGS: string\[\] = (\[[^\]]*\])/s,
   )
   const RELEASE_TAGS = relm ? JSON.parse(relm[1]) : []

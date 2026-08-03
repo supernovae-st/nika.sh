@@ -238,6 +238,21 @@
      · +1.1 · lessons.generated.ts · thirteen rows of metadata (slug, file,
        step, headline, sha256). The 44KB of WORKFLOW TEXT is not here: it
        rides lessons-access as its own chunk, the anatomy-access recipe.
+
+
+   2026-08-03 · 412 → 416 · THE /releases WORLD + THE BENCH WITNESS. The
+     review pass first CLAWED BACK ~8 KB — the one-module form of the
+     release record dragged 22 releases of asset rows into the entry
+     through site.config's RELEASE_TAGS import (the budget's own red flag
+     caught it on main); release-tags.generated.ts is the chrome-lean
+     split (the catalog-paths law), the record rides releases-access as
+     its own chunk. What remains is the real product growth:
+     · +1.5 · Releases.tsx + ReleaseRoom.tsx · the record register and the
+       one-version room (sync route table, the prerender law above).
+     · +0.7 · bench.generated.ts + the room/hub bench sections · one
+       witness row per PUBLISHED receipt — small by construction (a row
+       per RUN, never per query) and testimonial-gated, so it grows only
+       when a receipt is published.
      Cheaper than it looks for what it buys: 14 new routes, and the teaching
      path the spec has shipped all along became visible for the first time.
 
@@ -248,7 +263,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 412
+const BUDGET_KB = 416
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

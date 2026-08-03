@@ -43,8 +43,8 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 1000,
-  "set_sha256": "334f29916381071add36cd3eace1e5c90f0eee4cf6f7824935e1d575b47a05ae",
+  "carrier_count": 1001,
+  "set_sha256": "100057be4222840582c0b9303c25079d0f4ce0c0aaa5115dad8bd830f9f632bc",
   "normative_source_count": 296,
   "normative_source_sha256": "d902e726568b474a73c8525690084b7789986e35e3f8184c57a4d07be013945c",
   "normative_sources": [
@@ -975,6 +975,7 @@
     "src/content/palette.generated.ts",
     "src/content/provider-usage.generated.ts",
     "src/content/providers.generated.ts",
+    "src/content/release-tags.generated.ts",
     "src/content/releases.generated.ts",
     "src/content/room-rails.generated.ts",
     "src/content/showcase-dag.generated.ts",
@@ -1765,6 +1766,7 @@
     "src/content/provider-meta.ts",
     "src/content/provider-usage.generated.ts",
     "src/content/providers.generated.ts",
+    "src/content/release-tags.generated.ts",
     "src/content/releases.generated.ts",
     "src/content/room-rails.generated.ts",
     "src/content/showcase-dag.generated.ts",

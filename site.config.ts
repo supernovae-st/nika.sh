@@ -13,7 +13,7 @@
    sitemap pick it up with zero extra wiring. */
 
 import { ERROR_CODES } from './src/content/errors.generated'
-import { RELEASE_TAGS } from './src/content/releases.generated'
+import { RELEASE_TAGS } from './src/content/release-tags.generated'
 import { PENDING_ERROR_CODES } from './pending-error-codes'
 import { MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS, CLIENT_IDS } from './src/content/catalog-paths.generated'
 import { PROVIDERS as SPEC_PROVIDERS } from './src/content/providers.generated'
