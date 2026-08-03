@@ -615,7 +615,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/learn.ts"
   class: authored
-  sha256: 054004e218643d3963606014eaa82db23ec0fba538bc82568d095c7be65a12cc
+  sha256: ee3f4724eb7ebdb00082c3456ec6ba41283455ef9838669e5bf7a9cbdcd96401
   evidence: "hand-written learn-track copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 419abec622a5d7e260b341173d632609747706ade55fc4f824342ca4c567ae06
+  aggregate_sha256: 4e3ad617ae5d1f30c8497825db8af1a6b7487a671958b0ea0dd8513a2dab3d21
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 442
-  aggregate_sha256: a24d02757109784c78a3cf26c14174573a2d14d7f6950a55f62ee049e4a1c8c1
+  aggregate_sha256: 83ceebf9712314088f2b3bb77ce0f76f5cba22f69fb0bb61d5ae8a9c330d3077
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
