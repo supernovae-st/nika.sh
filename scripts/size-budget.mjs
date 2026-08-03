@@ -281,6 +281,14 @@
      Cheaper than it looks for what it buys: 14 new routes, and the teaching
      path the spec has shipped all along became visible for the first time.
 
+   2026-08-03 · 420 → 421 · THE PHOTO-FINISH MERGE. Two same-evening
+     flights converged on one entry: yaml-truth (seven taught yamls take
+     their registered bytes — content, not code) landed at 419.9, and the
+     footer cabinet rides the entry BY DESIGN (the ONE footer on every
+     route): the melt field, the index-band grid markup, the size-agnostic
+     signature seat. ~0.5 KB is the whole footer cost; the union measured
+     420.4. Margin ~0.6 (the bite-on-growth grammar holds).
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -288,7 +296,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 420
+const BUDGET_KB = 421
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
