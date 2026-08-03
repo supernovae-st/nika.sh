@@ -1417,58 +1417,15 @@
     #000 460px
   );
 }
-/* the dawn · a struck-blue breath UNDER the grain, behind the butterfly.
-   Two radials, one light: a tight core where the swarm lives + a wide
-   atmospheric wash. Radials fade to nothing by construction: no edge
-   exists to cut — the threshold is an event of light, not a line.
-   It lives on a ::before layer (generated before the .sitefoot-field
-   child → paints beneath the grain) so the light can BREATHE: a slow
-   7s opacity sine, the swarm's own tempo. Reduced-motion = the settled
-   register (full, still). Same double-class specificity as the hairline
-   kill above, later in source (a bare .sitefoot--melt selector loses to
-   `.v4sec.sitefoot::before { content: none }`).
-   Raw rgb stops on purpose (the --v4-accent-soft idiom): the footer is
-   pinned theme-dark, and a color-mix() inside a gradient stop dies as an
-   invalid VALUE in older engines — the whole declaration falls back and
-   the light silently never exists. #4f86ff = the struck blue.
-   background-size restated: the grain theme (.v4sec.theme-dark) pins it
-   to the 4px tile and SIZE cascades independently of IMAGE — without the
-   restate each radial renders as one invisible 4×4 corner dot (three
-   blind screenshots paid for that sentence). */
-.v4sec.sitefoot--melt::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  height: auto;
-  pointer-events: none;
-  background-image:
-    radial-gradient(
-      320px 220px at 50% 155px,
-      rgb(79 134 255 / 0.2),
-      transparent 68%
-    ),
-    radial-gradient(
-      960px 480px at 50% 190px,
-      rgb(79 134 255 / 0.09),
-      transparent 75%
-    );
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .v4sec.sitefoot--melt::before {
-    animation: sf-dawn 7s ease-in-out infinite alternate;
-  }
-}
-@keyframes sf-dawn {
-  from {
-    opacity: 0.72;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* (the dawn halo lived here for one evening — two struck-blue radials
+   behind the butterfly. On a real display the low-alpha wash lifted the
+   whole plate to blue-grey; the operator called it: « remet en fond
+   noir ». The threshold keeps the grain bloom + the dead hairline; the
+   ground is the black itself. The background-size law its debugging paid
+   for stays recorded in memory: the grain theme pins background-size to
+   the 4px tile and SIZE cascades independently of IMAGE — any new
+   background-image on a grained v4sec must restate it. Git keeps the
+   recipe.) */
 .sitefoot-wrap {
   padding-top: 40px;
   padding-bottom: 40px;
