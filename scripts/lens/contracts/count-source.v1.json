@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 301,
-    "set_sha256": "5b3fde7ea69bb68dfd54d3e61f5a32dac5af09f0daa5a3c8ecda7a4c9fdfdfb3",
-    "rendered_count": 1029,
-    "rendered_set_sha256": "806ce832dd007da3f87a40445d07ada6fd7721e2e4fdb487388d6b3fcede010d"
+    "count": 302,
+    "set_sha256": "d04ae7498d8cbf8476acfc25ed810c2637c232be8d7e6d911bcfb3945586ad3a",
+    "rendered_count": 1030,
+    "rendered_set_sha256": "4bf8c8094dbaa325c295a2ba8d9d95c67ba5ff6072cbfadda18e616a6c7ed57b"
   },
   "claim_count": 130,
   "bindings": [
