@@ -1,0 +1,63 @@
+/* ─── tick-axis · the ONE instrument recipe ───────────────────────────────────
+   Shared by every register axis (releases cadence · models price · energy ·
+   embeddings). CSS carries no facts: geometry and accents arrive computed
+   from the page's own derivation. */
+
+.ax-strip {
+  position: relative;
+  height: 72px;
+  margin-top: clamp(18px, 3vh, 28px);
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+}
+.ax-tick {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  text-decoration: none;
+  outline-offset: 2px;
+}
+.ax-tick i {
+  display: block;
+  width: 2px;
+  height: var(--h, 18px);
+  background: color-mix(in srgb, var(--v4-text) 33%, transparent);
+  transition: background var(--dur-ui) var(--ease-ui);
+}
+/* a DOOR brightens under the hand · a MARK never pretends to be one */
+a.ax-tick:hover i,
+a.ax-tick:focus-visible i {
+  background: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+.ax-tick--mark {
+  cursor: default;
+}
+.ax-tick--accent i {
+  width: 3px;
+  background: color-mix(in srgb, var(--v4-accent) 76%, var(--v4-text-dim));
+}
+a.ax-tick--accent:hover i,
+a.ax-tick--accent:focus-visible i {
+  background: var(--v4-accent);
+}
+.ax-label {
+  position: absolute;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--v4-text) 46%, transparent);
+  white-space: nowrap;
+}
+.ax-foot {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--v4-text) 42%, transparent);
+}

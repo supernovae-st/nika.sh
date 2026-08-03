@@ -266,6 +266,18 @@
        (ReleaseRoom.tsx) · what moved since the previous release, the
        two-line shasum proof, the ErrorPage walk precedent
      Measured 417.0 · margin ~1.0 (the bite-on-growth grammar holds).
+
+
+   2026-08-03 · 418 → 420 · THE INSTRUMENT BECOMES A COMPONENT. The third
+     consumer made extraction the design-system move: TickAxis + one CSS
+     replace the two page-local copies (the dedup paid first · rl-cadence
+     and cm-axis both died), and two NEW axes ride the shared recipe:
+     · +0.4 · TickAxis.tsx · door-or-mark ticks, the lone accent reserved
+       for meaning, geometry handed down by the page that owns the scale
+     · +0.5 · the energy axis (Wh/Mtok · log · accent on the most frugal
+       recorded seat) + the embedding dimension axis (the page's own
+       thesis drawn: a shared column is a shared store shape)
+     Measured 418.3 · margin ~1.7 (the bite-on-growth grammar holds).
      Cheaper than it looks for what it buys: 14 new routes, and the teaching
      path the spec has shipped all along became visible for the first time.
 
@@ -276,7 +288,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 418
+const BUDGET_KB = 420
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

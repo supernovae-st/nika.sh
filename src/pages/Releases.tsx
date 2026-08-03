@@ -11,6 +11,7 @@ import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { crumbLd, ldScript } from '../lib/ld'
 import { cadence, kindChips, fmtWeight } from './releases-lib'
+import { TickAxis } from '../components/TickAxis'
 import '../sections/v4-home.css'
 import './releases-page.css'
 import './page-chrome.css'
@@ -147,43 +148,20 @@ export function Component() {
               asset count and the lone accent marks the release this site serves. Same-day trains
               keep both ticks: the record never hides a hotfix.
             </p>
-            {strip.ticks.length > 1 && (
-              <>
-                <div
-                  className="rl-cadence"
-                  role="img"
-                  aria-label={`${RELEASES.length} releases across ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'}`}
-                >
-                  {strip.ticks.map((k) => (
-                    <Link
-                      key={k.tag}
-                      to={`/releases/${k.tag}`}
-                      className={k.latest ? 'rl-tick rl-tick--latest' : 'rl-tick'}
-                      style={{ left: `${k.left}%`, ['--h' as string]: `${k.h}px` }}
-                      title={k.label}
-                      aria-label={k.label}
-                    >
-                      <i aria-hidden />
-                    </Link>
-                  ))}
-                  <span className="rl-cadence-label" style={{ left: '0%' }} aria-hidden>
-                    {strip.ticks[0]?.tag}
-                  </span>
-                  <span
-                    className="rl-cadence-label rl-cadence-label--latest"
-                    style={{ left: '100%' }}
-                    aria-hidden
-                  >
-                    {strip.ticks[strip.ticks.length - 1]?.tag}
-                  </span>
-                </div>
-                <p className="rl-cadence-foot">
-                  {RELEASES.length} releases · {strip.spanDays} days ·
-                  median gap {strip.medianGapDays} {strip.medianGapDays === 1 ? 'day' : 'days'} ·
-                  {' '}{fmtWeight(weight)} shipped
-                </p>
-              </>
-            )}
+            <TickAxis
+              ticks={strip.ticks.map((k) => ({
+                key: k.tag,
+                left: k.left,
+                h: k.h,
+                accent: k.latest,
+                label: k.label,
+                to: `/releases/${k.tag}`,
+              }))}
+              ariaLabel={`${RELEASES.length} releases across ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'}`}
+              lo={strip.ticks[0]?.tag ?? ''}
+              hi={strip.ticks[strip.ticks.length - 1]?.tag ?? ''}
+              foot={`${RELEASES.length} releases · ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'} · ${fmtWeight(weight)} shipped`}
+            />
           </div>
 
           <div className="how-subs" data-rise>

@@ -9,6 +9,8 @@ import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import { TickAxis } from '../components/TickAxis'
+import './catalog-models.css'
 
 type Row = import('../content/catalog.generated').EnergyRow
 
@@ -33,13 +35,56 @@ export function Component() {
       }
       crumb={{ to: '/catalog', label: 'The catalog' }}
     >
+      <CatalogSection id="axis" title="The energy axis">
+        {/* the instrument (the shared TickAxis recipe): every measured seat at
+            its watt-hours per million output tokens, log scale, the accent on
+            the most frugal recorded seat. The ticks are MARKS, not doors — a
+            measurement row belongs to a pattern, not a room, and the register
+            below carries every receipt verbatim. */}
+        <p className="pv-desc">
+          Every measured seat, seated at what a million output tokens burns. The accent marks the
+          most frugal recorded measurement; the register below prints each receipt verbatim.
+        </p>
+        {(() => {
+          const rows = (data ?? []).filter(
+            (e): e is Row & { wh_per_mtok_out: number } =>
+              e.wh_per_mtok_out != null && e.wh_per_mtok_out > 0,
+          )
+          if (rows.length < 2) return null
+          const lo = Math.min(...rows.map((e) => e.wh_per_mtok_out))
+          const hi = Math.max(...rows.map((e) => e.wh_per_mtok_out))
+          const span = Math.log10(hi) - Math.log10(lo) || 1
+          const nudge = new Map<number, number>()
+          return (
+            <TickAxis
+              ticks={rows.map((e) => {
+                const base = ((Math.log10(e.wh_per_mtok_out) - Math.log10(lo)) / span) * 100
+                const k = Math.round(base * 2)
+                const nth = nudge.get(k) ?? 0
+                nudge.set(k, nth + 1)
+                return {
+                  key: `${e.provider}/${e.model_pattern}`,
+                  left: Math.min(100, base + nth * 0.7),
+                  h: e.wh_per_mtok_out === lo ? 26 : 18,
+                  accent: e.wh_per_mtok_out === lo,
+                  label: `${e.model_pattern} · ${e.wh_per_mtok_out} Wh/Mtok · ${e.provider}`,
+                }
+              })}
+              ariaLabel={`${rows.length} measured seats from ${lo} to ${hi} watt-hours per million output tokens`}
+              lo={`${lo} Wh`}
+              hi={`${hi} Wh`}
+              foot={`${rows.length} measured · ${lo} → ${hi} Wh/Mtok · log scale · provenance printed per row`}
+            />
+          )
+        })()}
+      </CatalogSection>
       <CatalogSection id="rows" title="The measured rows">
         <ol className="tp-list">
           {(data ?? []).map((e) => (
             <li key={`${e.provider}/${e.model_pattern}`} className="tp-row">
               <div className="pv-row-head">
                 <span className="pv-id">{e.model_pattern}</span>
-                <span className="tp-cat">
+                <span className="tp-cat cm-facts">
                   {e.wh_per_mtok_out} Wh/Mtok ·{' '}
                   {/* the vendor is a door: every one of the 38 has a room */}
                   <Link to={`/catalog/providers/${e.provider}`}>{e.provider}</Link> ·{' '}

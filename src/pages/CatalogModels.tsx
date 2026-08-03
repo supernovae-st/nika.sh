@@ -10,6 +10,7 @@ import { ModelAxis } from './ModelAxis'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import { TickAxis } from '../components/TickAxis'
 import './catalog-models.css'
 
 const DESC = `The ${CATALOG_COUNTS.models} models the released binary's wire catalog names · who serves each one, its context window, its exact-match price and its measured energy where the catalog carries them.`
@@ -104,42 +105,26 @@ export function Component() {
           const nudge = new Map<number, number>()
           const openCount = priced.filter((m) => m.open).length
           return (
-            <>
-              <div
-                className="cm-axis"
-                role="img"
-                aria-label={`${priced.length} priced models from ${fmtUsd(lo)} to ${fmtUsd(hi)} per million output tokens · ${openCount} open weights`}
-              >
-                {priced.map((m) => {
-                  const base = ((Math.log10(m.out) - Math.log10(lo)) / span) * 100
-                  const k = Math.round(base * 2)
-                  const nth = nudge.get(k) ?? 0
-                  nudge.set(k, nth + 1)
-                  return (
-                    <Link
-                      key={m.slug}
-                      to={`/catalog/models/${m.slug}`}
-                      className={m.open ? 'cm-tick cm-tick--open' : 'cm-tick'}
-                      style={{ left: `${Math.min(100, base + nth * 0.7)}%` }}
-                      title={`${m.id} · ${fmtUsd(m.out)} out/Mtok${m.open ? ' · open weights' : ''}`}
-                      aria-label={`${m.id} · ${fmtUsd(m.out)} per million output tokens${m.open ? ' · open weights' : ''}`}
-                    >
-                      <i aria-hidden />
-                    </Link>
-                  )
-                })}
-                <span className="cm-axis-label" style={{ left: '0%' }} aria-hidden>
-                  {fmtUsd(lo)}
-                </span>
-                <span className="cm-axis-label" style={{ left: '100%' }} aria-hidden>
-                  {fmtUsd(hi)}
-                </span>
-              </div>
-              <p className="cm-axis-foot">
-                {priced.length} priced · {fmtUsd(lo)} → {fmtUsd(hi)} out/Mtok · log scale ·{' '}
-                {openCount} open weights
-              </p>
-            </>
+            <TickAxis
+              ticks={priced.map((m) => {
+                const base = ((Math.log10(m.out) - Math.log10(lo)) / span) * 100
+                const k = Math.round(base * 2)
+                const nth = nudge.get(k) ?? 0
+                nudge.set(k, nth + 1)
+                return {
+                  key: m.slug,
+                  left: Math.min(100, base + nth * 0.7),
+                  h: m.open ? 26 : 18,
+                  accent: m.open,
+                  label: `${m.id} · ${fmtUsd(m.out)} out/Mtok${m.open ? ' · open weights' : ''}`,
+                  to: `/catalog/models/${m.slug}`,
+                }
+              })}
+              ariaLabel={`${priced.length} priced models from ${fmtUsd(lo)} to ${fmtUsd(hi)} per million output tokens · ${openCount} open weights`}
+              lo={fmtUsd(lo)}
+              hi={fmtUsd(hi)}
+              foot={`${priced.length} priced · ${fmtUsd(lo)} → ${fmtUsd(hi)} out/Mtok · log scale · ${openCount} open weights`}
+            />
           )
         })()}
       </CatalogSection>

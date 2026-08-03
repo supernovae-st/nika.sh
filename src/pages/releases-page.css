@@ -5,68 +5,9 @@
    accent lives on the single latest tick and nowhere else. Every number the
    strip draws is derived from the vendored record — CSS carries no facts. */
 
-/* ── the cadence · a time axis of ticks ────────────────────────────────────── */
-.rl-cadence {
-  position: relative;
-  height: 84px;
-  margin-top: clamp(18px, 3vh, 28px);
-  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
-}
-/* the tick is a LINK to its room · the visual bar is thin, the hit area is
-   not (≥24px wide via padding · the whole height is clickable) */
-.rl-tick {
-  position: absolute;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  text-decoration: none;
-  outline-offset: 2px;
-}
-.rl-tick i {
-  display: block;
-  width: 2px;
-  height: var(--h, 16px);
-  background: color-mix(in srgb, var(--v4-text) 34%, transparent);
-  transition: background var(--dur-ui) var(--ease-ui), height var(--dur-ui) var(--ease-ui);
-}
-.rl-tick:hover i,
-.rl-tick:focus-visible i {
-  background: color-mix(in srgb, var(--v4-text) 78%, transparent);
-}
-.rl-tick--latest i {
-  width: 3px;
-  background: var(--v4-accent);
-}
-.rl-tick--latest:hover i,
-.rl-tick--latest:focus-visible i {
-  background: var(--v4-accent);
-  filter: brightness(1.25);
-}
-/* the two anchored labels (first · latest) · the rest speak via title/aria */
-.rl-cadence-label {
-  position: absolute;
-  top: calc(100% + 6px);
-  transform: translateX(-50%);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--v4-text) 46%, transparent);
-  white-space: nowrap;
-}
-.rl-cadence-label--latest {
-  color: color-mix(in srgb, var(--v4-accent) 72%, var(--v4-text));
-}
-.rl-cadence-foot {
-  margin-top: 34px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  color: color-mix(in srgb, var(--v4-text) 42%, transparent);
-}
+/* the cadence strip itself moved to the SHARED instrument
+   (src/components/tick-axis.css · the ax- vocabulary) when the third
+   consumer arrived — this file keeps only what is releases-specific. */
 
 /* ── the asset-kind chips · redundant cues, never colour-only ──────────────── */
 .rl-chips {
