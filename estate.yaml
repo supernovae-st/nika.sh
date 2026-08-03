@@ -810,7 +810,7 @@ patterns:
 - glob: "public/library/*.nika.yaml"
   class: authored
   match_count: 7
-  aggregate_sha256: b15da2e37b0b13ecf170e0e3bd5f2a8b6483a7e4cf3be2148d434bdfb3502816
+  aggregate_sha256: fff3867ab28139e451e5839f56a85e2f17843a19c0c6a671fce0f525b4a96abf
   evidence: "hand-crafted example workflows (SPDX headers · © SuperNovae Studio); src/test/onpage-yaml.test.ts validates them against the SHIPPED schema (engine 0.107.2)"
 - glob: "public/hero/*.nika.yaml"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 549f893ae9953874217b454f46bfd3f8a030779395a700729c497e59aa43a7bc
+  aggregate_sha256: 34ca4e03eae420193b32a5df84ceed330a275f787eef1e8700c864671b23c598
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 442
-  aggregate_sha256: c6c1e00b4a01c4f3ffb6da766fb18eecc7811661f760d364db1e59a81af817ba
+  aggregate_sha256: fab656951df7323d0e0ea9fa2a7a64aa9074642669dcbef307d758d9a025949b
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

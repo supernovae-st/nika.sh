@@ -7,7 +7,7 @@ workflow:
 
 # the file IS the blast radius
 permits:
-  fs: { read: [ ./data/incoming/* ], write: [ ./data/* ] }
+  fs: { read: [ ./data/incoming/* ], write: [ ./data/daily-totals.json, ./data/quarantine/rejected.json ] }
   tools: [ "nika:read", "nika:convert", "nika:validate", "nika:jq", "nika:write" ]
 
 tasks:
