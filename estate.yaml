@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1606
+  classified_files: 1608
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1233
+    authored: 1235
     authored-pin: 3
     generated: 311
     pinned-copy: 21
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 2d5e1f6c9d936acb691d581f0483fbec3cef251173ff6893ad8aed6b948b1069
+  sha256: 34c7c2170b068714cef5f2a1ac4600d163436f4d05ca2485c007d0fff2f8d425
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 2f62f5d38e6a3c02ec09d28d9219bc7eef927ad249aa6c69993dc48a1ed22d32
+  sha256: 53fb369bbdd978e065b53ad61d08ea0d9cf7f505e1b28c2c3b1ec6a4277c1bfc
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: ca3f06c67fa84796b28f0e39abcddfa5ea0cb25aae22cd3764ae8c193ba4c9df
+  aggregate_sha256: c60dd69acc36dd71e2a6deb3dae3b6fff743169463e8e70dcdad4e935a3742e9
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -935,8 +935,8 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 436
-  aggregate_sha256: 64be3adbf038c9dc0981fa32ccc38a98f51827eaf8235113ac920867ab2cb694
+  match_count: 438
+  aggregate_sha256: 119c8db8b770def517282d5b8dd876c32ac6fd7c6563e9566421b4ebf9210b24
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

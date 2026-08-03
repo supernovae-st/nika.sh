@@ -9,6 +9,79 @@
    (src/components/tick-axis.css · the ax- vocabulary) when the third
    consumer arrived — this file keeps only what is releases-specific. */
 
+/* ── the register · the record row, in the anatomy the changelog speaks ──────
+   Same reading order on both pages: the DATE holds the gutter, the row head
+   carries the identity, the body carries the sentence. The register used to
+   borrow `td-args`/`tp-arg` — a tool page's ARGUMENT table — which put the
+   version in the gutter AND at the head of the sentence, printing it twice on
+   every row. Column widths track the changelog's (11rem · 1fr) so the two
+   registers line up when a reader moves between them. */
+.rl-reg {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.rl-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  padding: 0 0 18px;
+}
+@media (min-width: 760px) {
+  .rl-row {
+    grid-template-columns: 11rem 1fr;
+    gap: 0 22px;
+    align-items: baseline;
+  }
+}
+.rl-when {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rl-body {
+  display: block;
+  min-width: 0;
+}
+.rl-head {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  color: var(--v4-text);
+  transition: color 0.18s ease;
+}
+.rl-ver {
+  font-size: 13px;
+  color: var(--v4-text-dim);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.18s ease;
+}
+.rl-head:hover .rl-ver,
+.rl-head:focus-visible .rl-ver {
+  color: var(--v4-text);
+}
+.rl-story {
+  font-size: 15px;
+  line-height: 1.35;
+}
+.rl-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--v4-text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rl-head,
+  .rl-ver {
+    transition: none;
+  }
+}
+
 /* ── the asset-kind chips · redundant cues, never colour-only ──────────────── */
 .rl-chips {
   display: inline-flex;

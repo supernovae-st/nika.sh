@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { RecordRail } from '../components/RecordRail'
 import { StampStrip } from '../components/StampStrip'
 import { useHead } from '@unhead/react'
 import {
@@ -197,6 +198,8 @@ export function Component() {
               </li>
             ))}
           </ul>
+
+          <RecordRail current="changelog" />
 
           {/* the full register · a hairline timeline, grouped by year, newest-first.
               Each entry is a timeline node (its register hue) + a register card. */}

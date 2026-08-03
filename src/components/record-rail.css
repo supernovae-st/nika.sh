@@ -1,0 +1,94 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   The record rail · the relation between /timeline, /changelog and /releases,
+   stated in the design instead of in one page's closing paragraph.
+
+   It borrows the house vocabulary rather than inventing a fourth dialect: the
+   mono kicker of `v4sec-fig`, the hairline of `--v4-line`, the dim/plain text
+   pair, and the 44px touch target the link row already keeps. The only weight
+   it adds is on the view you are standing in.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.rec-rail {
+  margin-top: clamp(22px, 3.4vh, 34px);
+}
+
+.rec-rail-fig {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+
+.rec-rail-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1px;
+  background: var(--v4-line);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  overflow: hidden;
+}
+
+@media (min-width: 760px) {
+  .rec-rail-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.rec-rail-item {
+  background: var(--v4-bg);
+}
+
+.rec-rail-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 44px;
+  padding: 11px 14px;
+  justify-content: center;
+  color: var(--v4-text-dim);
+  transition:
+    color 0.18s ease,
+    background 0.18s ease;
+}
+
+a.rec-rail-cell:hover,
+a.rec-rail-cell:focus-visible {
+  color: var(--v4-text);
+  background: color-mix(in oklab, var(--v4-text) 4%, transparent);
+}
+
+.rec-rail-label {
+  font-size: 14.5px;
+  line-height: 1.2;
+}
+
+a.rec-rail-cell:hover .rec-rail-label {
+  color: var(--v4-text);
+}
+
+.rec-rail-answers {
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--v4-text-faint);
+}
+
+/* The view you are standing in · stated, not linked. A left seam marks it
+   without colour, so the rail reads the same in any register hue. */
+.rec-rail-item.is-here .rec-rail-cell {
+  color: var(--v4-text);
+  box-shadow: inset 2px 0 0 var(--v4-text);
+}
+
+.rec-rail-item.is-here .rec-rail-label {
+  font-weight: var(--fw-medium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-rail-cell {
+    transition: none;
+  }
+}

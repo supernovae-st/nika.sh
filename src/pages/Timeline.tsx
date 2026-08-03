@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { RecordRail } from '../components/RecordRail'
 import { StampStrip } from '../components/StampStrip'
 import { TIMELINE } from '../content/timeline.generated'
 import { routeHead } from '../content'
@@ -582,6 +583,8 @@ export function Component() {
 
           {/* the chapters · deep links the whole page understands: the ledger
               scrolls, the stage SEEKS the era onto the playhead (toHash) */}
+          <RecordRail current="timeline" />
+
           <nav className="tl-chapters mono" aria-label="Chapters" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {CHAPTERS.map((c) => (
               <a key={c.id} className="tl-chapter" href={`#${c.id}`}>

@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { routeHead, SITE, ENGINE_VERSION } from '../content'
+import { RecordRail } from '../components/RecordRail'
 import { StampStrip } from '../components/StampStrip'
 import { CHANGELOG } from '../content/changelog'
 import type { EngineRelease } from '../content/releases.generated'
@@ -57,6 +58,18 @@ export function Component() {
     return m
   }, [])
 
+  /* The gutter already states the version, and the row head restates it in
+     mono beside the sentence · so the SENTENCE must not open with it a third
+     time. Changelog titles read « v0.101.0 · the sovereign lane ships whole »;
+     everything up to the first separator is the identity, already on screen.
+     A title with no separator (or none recorded) is returned whole rather
+     than truncated: a missing story is a missing story, never a silent trim. */
+  const story = (tag: string, fallback: string) => {
+    const t = storyByTag.get(tag) ?? fallback
+    const cut = t.indexOf(' · ')
+    return cut > 0 && t.slice(0, cut).trim() === tag ? t.slice(cut + 3) : t
+  }
+
   const digested = RELEASES.reduce(
     (n, r) => n + r.assets.filter((a) => a.sha256).length,
     0,
@@ -102,13 +115,6 @@ export function Component() {
       <section ref={ref} aria-labelledby="rel-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <Island id="releases-register" payload={payload ?? ''} />
-          <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/changelog" className="td-crumb-link">
-              ← the narrative twin
-            </Link>
-            <span className="tp-cat">the record</span>
-          </nav>
-
           <p className="v4sec-fig" data-rise>
             the releases
           </p>
@@ -140,6 +146,8 @@ export function Component() {
             ]}
           />
 
+          <RecordRail current="releases" />
+
           <div className="how-subs" data-rise>
             <p className="how-fig mono">the cadence</p>
             <h2 className="how-h1">Every release, on the axis of time it shipped in</h2>
@@ -167,17 +175,23 @@ export function Component() {
           <div className="how-subs" data-rise>
             <p className="how-fig mono">newest first</p>
             <h2 className="how-h1">The record</h2>
-            <ol className="td-args tp-args">
+            {/* The record anatomy the changelog already speaks: the DATE holds
+                the gutter, the row head carries the identity. The register used
+                to print the version twice per row (gutter `r.tag`, then again
+                at the head of `r.name`) because it borrowed the argument-table
+                layout of a tool page. `story()` drops the leading version so
+                the sentence starts where the eye already is. */}
+            <ol className="rl-reg">
               {RELEASES.map((r) => (
-                <li className="tp-arg" key={r.tag} style={{ listStyle: 'none' }}>
-                  <span className="tp-arg-name">
-                    <Link to={`/releases/${r.tag}`}>{r.tag}</Link>
-                  </span>
-                  <span className="tp-arg-desc">
-                    {storyByTag.get(r.tag) ?? r.name}
-                    <br />
-                    <span className="mono">
-                      {r.date} · {r.assets.length} {r.assets.length === 1 ? 'asset' : 'assets'}
+                <li className="rl-row" key={r.tag}>
+                  <span className="rl-when mono">{r.date}</span>
+                  <span className="rl-body">
+                    <Link to={`/releases/${r.tag}`} className="rl-head">
+                      <span className="rl-ver mono">{r.tag}</span>
+                      <span className="rl-story">{story(r.tag, r.name)}</span>
+                    </Link>
+                    <span className="rl-meta mono">
+                      {r.assets.length} {r.assets.length === 1 ? 'asset' : 'assets'}
                       {r.tag === ENGINE_VERSION ? ' · the catalog this site serves' : ''}
                     </span>
                     <span className="rl-chips" aria-hidden>
