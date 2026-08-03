@@ -98,7 +98,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-templates.mjs",
-   "sha256": "f3add4627c23799cb39437798f55349876700e8f4a3f9787c6c04446cbea3214",
+   "sha256": "4d79c6f828e6253191dde0487486cbcef0e49ba6f4b6e04fe428d3ccfb2645de",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -296,7 +296,7 @@
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "c37cda7ae7741d6935ba285a9ec896b4deab8884bbb79b212ce4213102e13b09",
+   "sha256": "1e377203e4e5cdec6afdcf32e60c9c92a72c2aaad2c1a31003be28c4b5a094ad",
    "dist": "templates/catalog.json"
   },
   {
@@ -322,7 +322,7 @@
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "a7e7118bac6ba79c62702344faaf9e40dfb85fbc28e9d67f3627f6f65b9e80ec",
+   "sha256": "7cda790b6840587626643710f2b4d1403c230bfb85c9d7761d601adc24633d61",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
@@ -357,21 +357,21 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "8147c5be1b783f63d2e401036cfed549518f63bffe1650502bb9e2bedbfc1fe5",
+   "sha256": "5cf88fe4039ab6a381960f662d01394ba98bc64034ecc9ad2cb565857afe6543",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
   },
   {
    "path": "src/content/tool-usage-refs.generated.ts",
-   "sha256": "337aa019b78d3ab318fc2a0ca42cd278e643b025039d86a829dd2d12a80b68fa",
+   "sha256": "8a26feff0fde429feee4486f3d95f27e59bc9be658b131ac10cb6e7abd205dda",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "423cbe7e8337ef36ff57b2163da61cafa14d732f42e4d3010660da90d4872fc6",
+   "sha256": "d39590e7b47953f59127dc37af96124e5a54caeb2c26b5bc04cb654969f29236",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]

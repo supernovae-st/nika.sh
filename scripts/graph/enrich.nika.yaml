@@ -33,9 +33,13 @@ run:
 # string to the provider · NIKA-INFER-001 · trace 2026-08-03T13-55-14Z-690c).
 # Reported engine-side; when the gap closes, the seat may move back to
 # config. Until then: to redeploy on another seat, edit the model line.
-# Seat choice: a NON-thinking local model — the first smoke (trace 7677)
-# watched qwen3.5:4b spend all 2000 tokens inside its think block and
-# hand back an empty triage; llama3.2:3b answers in the open.
+# Seat: openai/gpt-5.2 (operator ruling 2026-08-03 · « pas de local, un bon
+# modèle » · the catalog's best priced OpenAI seat — the asked-for "gpt5.6"
+# is not in this binary's catalog, and an off-catalog id kills the dollar
+# meter). A cloud seat means the run MUST carry --max-cost-usd. For any
+# LOCAL redeploy, pick a NON-thinking model: the first smoke (trace 7677)
+# watched qwen3.5:4b spend all 2000 tokens inside its think block and hand
+# back an empty triage; llama3.2:3b answers in the open.
 
 permits:
   # argv-array execs only, so the tight allowlist form applies: node, nothing else.
@@ -54,6 +58,7 @@ permits:
     # surface is the doctor's own (cadastred by public/nika-graph.json
     # .inputs[]) plus what node needs to boot: the module graph, the cwd.
     read:
+      - "ESTATE_PIN"
       - "package.json"
       - "node_modules/**"
       - "scripts/**"
@@ -124,7 +129,7 @@ tasks:
       doctor_report: ${{ tasks.propose.output.stdout }}
     timeout: "10m" # a cold local model loads before it speaks
     infer:
-      model: "ollama/llama3.2:3b"
+      model: "openai/gpt-5.2"
       max_tokens: 2000
       prompt: |
         You are the triage half of the nika.sh graph enrichment loop.

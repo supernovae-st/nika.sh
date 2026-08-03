@@ -1,15 +1,19 @@
 /* ─── build-templates · the spec's template pack → catalog + typed projection ─
    Two stages, one convention (the tools/providers pipeline shape):
 
-     1 · SPEC PACK → public/templates/catalog.json — when a sibling nika-spec
-         checkout is reachable (NIKA_SPEC_ROOT or the monorepo layout), the
-         pack IS the source: templates/README.md carries the intent-routing
-         table (« Your intent sounds like… » → template → patterns), each
-         *.nika.yaml is a COMPLETE valid workflow (conformance-gated on every
-         spec push — the shown-YAML-passes-check law holds by construction),
-         and each copy is sha256-pinned (the copy-fidelity law: a copy is
-         re-provable, never trusted). Absent checkout → the committed catalog
-         stands (capability-honest: CI builds never need the sibling).
+     1 · SPEC PACK → public/templates/catalog.json — read AT THE SPEC PIN
+         with `git show <spec_commit>:templates/<file>` against the sibling
+         checkout, so a moving sibling HEAD can never leak in (the
+         build-adr-bodies discipline · this script used to readFileSync the
+         LIVING worktree, and a pnpm check on the monorepo machine silently
+         re-vendored the catalog from unreleased spec HEAD — caught by the
+         graph's own byte gate, 2026-08-03). templates/README.md carries the
+         intent-routing table, each *.nika.yaml is a COMPLETE valid workflow
+         (conformance-gated on every spec push), each copy sha256-pinned.
+         No sibling git → the committed catalog stands (capability-honest:
+         CI builds never need the sibling). NIKA_SPEC_ROOT stays as the
+         EXPLICIT live-read override — pointing it at a checkout is a
+         deliberate act (pre-release rehearsal), never the default.
      2 · catalog.json → src/content/templates.generated.ts — the compiled
          typed projection the /templates pages read.
 
@@ -21,6 +25,7 @@
    Run: node scripts/build-templates.mjs
    Output: public/templates/catalog.json + src/content/templates.generated.ts */
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -29,21 +34,41 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const CATALOG = join(ROOT, 'public', 'templates', 'catalog.json')
 const OUT = join(ROOT, 'src', 'content', 'templates.generated.ts')
 
-/* ── stage 1 · sibling spec pack → catalog (dev machines only) ── */
-const specRoot =
-  process.env.NIKA_SPEC_ROOT ||
-  [join(ROOT, '..', 'spec', 'repo'), join(ROOT, '..', '..', 'spec', 'repo')].find((p) =>
-    existsSync(join(p, 'templates', 'README.md')),
-  )
+/* ── stage 1 · spec pack AT THE PIN → catalog (dev machines only) ── */
+const SPEC_PIN = JSON.parse(readFileSync(join(ROOT, '.github/nika-spec-pin.json'), 'utf8'))
+const liveRoot = process.env.NIKA_SPEC_ROOT
+const siblingGitRoot = [join(ROOT, '..', 'spec', 'repo'), join(ROOT, '..', '..', 'spec', 'repo')].find(
+  (p) => {
+    if (!existsSync(join(p, '.git'))) return false
+    try {
+      execFileSync('git', ['-C', p, 'cat-file', '-e', SPEC_PIN.spec_commit], { stdio: 'ignore' })
+      return true
+    } catch {
+      return false
+    }
+  },
+)
+/* the ONE reader: NIKA_SPEC_ROOT (explicit) reads the live tree; the sibling
+   default reads the PINNED bytes via git show — a moving HEAD cannot leak */
+const readSpec = liveRoot
+  ? (rel) => readFileSync(join(liveRoot, rel), 'utf8')
+  : (rel) =>
+      execFileSync('git', ['-C', siblingGitRoot, 'show', `${SPEC_PIN.spec_commit}:${rel}`], {
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
+      })
+const specReachable = liveRoot
+  ? existsSync(join(liveRoot, 'templates', 'README.md'))
+  : Boolean(siblingGitRoot)
 
-if (!process.argv.includes('--from-catalog') && specRoot && existsSync(join(specRoot, 'templates'))) {
-  const readme = readFileSync(join(specRoot, 'templates', 'README.md'), 'utf8')
+if (!process.argv.includes('--from-catalog') && specReachable) {
+  const readme = readSpec('templates/README.md')
   /* the routing table rows: | « intent » | [`name`](file) | patterns | */
   const rows = [...readme.matchAll(/^\|\s*«\s*(.+?)\s*»\s*\|\s*\[`(.+?)`\]\((.+?)\)\s*\|\s*(.+?)\s*\|$/gm)]
   const templates = rows.map(([, rawIntent, name, file, patterns]) => {
     /* a row may carry two phrases (« a » / « b ») — normalize the join */
     const intent = rawIntent.replace(/\s*»\s*\/\s*«\s*/g, ' · ')
-    const yaml = readFileSync(join(specRoot, 'templates', file), 'utf8')
+    const yaml = readSpec(`templates/${file}`)
     return {
       name,
       file,
@@ -54,13 +79,13 @@ if (!process.argv.includes('--from-catalog') && specRoot && existsSync(join(spec
       yaml,
     }
   })
-  const version = readFileSync(join(specRoot, 'VERSION'), 'utf8').trim()
+  const version = readSpec('VERSION').trim()
   writeFileSync(CATALOG, `${JSON.stringify({ version, templates }, null, 2)}\n`)
   console.log(
     `wrote public/templates/catalog.json (${templates.length} templates · spec ${version})`,
   )
 } else if (!process.argv.includes('--from-catalog')) {
-  console.log('no nika-spec sibling reachable — the committed catalog stands')
+  console.log('no nika-spec sibling with the pinned commit — the committed catalog stands')
 }
 
 /* ── stage 2 · catalog → typed projection (always) ── */

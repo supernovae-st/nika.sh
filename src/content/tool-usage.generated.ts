@@ -30,7 +30,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 108
+      "firstLine": 107
     },
     "templates": [
       "agent-loop",
@@ -107,7 +107,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 71
+      "firstLine": 70
     },
     "templates": [
       "agent-loop"
@@ -148,7 +148,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 55
+      "firstLine": 54
     },
     "templates": [
       "gate-and-act",
@@ -167,7 +167,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 60
+      "firstLine": 56
     },
     "templates": [
       "fanout"
@@ -219,7 +219,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 67
+      "firstLine": 66
     },
     "templates": [
       "media-asset-pack"
@@ -247,7 +247,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 105
+      "firstLine": 79
     },
     "templates": [
       "fanout",
@@ -266,7 +266,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 109
+      "firstLine": 108
     },
     "templates": [
       "etl-state"
@@ -306,7 +306,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 69
+      "firstLine": 68
     },
     "templates": [
       "gate-and-act",
@@ -323,7 +323,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 59
+      "firstLine": 58
     },
     "templates": [
       "etl-state",
@@ -335,16 +335,15 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 49
+      "firstLine": 48
     },
     "templates": [
       "chain",
-      "fanout",
       "etl-state"
     ],
     "errorCodes": [
@@ -406,7 +405,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 79
+      "firstLine": 75
     },
     "templates": [
       "chain",

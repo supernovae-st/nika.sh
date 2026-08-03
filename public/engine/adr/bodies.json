@@ -1,7 +1,7 @@
 {
   "adr_bodies_format": 1,
-  "engine_commit": "5d61b7e13f1f6a10c17414f61146648f76bcf2bd",
-  "release_tag": "v0.107.0",
+  "engine_commit": "57673f61c411d801f49c48c4accef31f9d4bf90c",
+  "release_tag": "v0.107.2",
   "law": "roomed = every status except `proposed` — a proposal published as an indexed page invites citation as though it were settled",
   "bodies": [
     {

@@ -19,8 +19,8 @@ export interface AdrBody {
 
 /** the engine release these bodies were read at */
 export const ADR_BODIES_PIN = {
- "release_tag": "v0.107.0",
- "engine_commit": "5d61b7e13f1f6a10c17414f61146648f76bcf2bd"
+ "release_tag": "v0.107.2",
+ "engine_commit": "57673f61c411d801f49c48c4accef31f9d4bf90c"
 } as const
 
 /** the roomed decisions, in decision order */
