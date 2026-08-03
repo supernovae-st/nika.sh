@@ -221,9 +221,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  /* the columns are NAMED, never implicit: below 900px the rail goes
-     display:none, which removes it from the grid entirely, and an implicit
-     placement then slides the actions into the middle column. */
+  /* the columns are NAMED, never implicit: below the rail breakpoint the
+     rail goes display:none, which removes it from the grid entirely, and an
+     implicit placement then slides the actions into the middle column. */
   grid-column: 1;
   justify-self: start;
   min-width: 0;
@@ -238,7 +238,14 @@
   grid-column: 2;
   justify-self: center;
 }
-@media (min-width: 900px) {
+/* 1120, not 900 (a pinned inventory value — the census ratchet): at
+   900-1119 the centered rail is WIDER than its middle column (6 links ≈
+   640px + brand + tools ≈ 1000px) and justify-self lets it overflow ONTO
+   the brand — « nika » wore « How it works » on every 1024 screen. The
+   rail appears only where it fits (the version pill yields its seat to
+   1280 to make the arithmetic true at 1120); the burger sheet covers the
+   gap exactly as it covers phones. */
+@media (min-width: 1120px) {
   .v4nav-rail {
     display: flex;
   }
@@ -461,7 +468,7 @@
 .v4nav-burger {
   flex-direction: column;
 }
-@media (min-width: 900px) {
+@media (min-width: 1120px) {
   .v4nav-burger {
     display: none;
   }
@@ -675,7 +682,9 @@ button.v4sheet-search {
   border-color: var(--v4-line-strong);
 }
 
-@media (min-width: 1120px) {
+/* 1280 (pinned): at 1120-1279 the pill's ~90px would put the rail back
+   onto the brand — the release signal waits for the wide bench */
+@media (min-width: 1280px) {
   .v4nav-vpill {
     display: inline-flex;
   }

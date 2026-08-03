@@ -1503,6 +1503,13 @@
   text-transform: uppercase;
   color: var(--v4-text-faint);
 }
+/* the blueprint figure index · HUD ink, decorative (aria-hidden) — the six
+   worlds carry their number the way every v4 section carries its FIG */
+.sitefoot-kick-idx {
+  margin-right: 8px;
+  color: var(--v4-hud-faint);
+  letter-spacing: 0.08em;
+}
 .sitefoot-list {
   margin: 10px 0 0;
   padding: 0;
@@ -1517,8 +1524,14 @@
   text-decoration: none;
   transition: color var(--dur-ui) var(--ease-ui);
 }
-.sitefoot-link:hover {
+.sitefoot-link:hover,
+.sitefoot-link:focus-visible {
+  /* the machine-links' door grammar, everywhere in the plate: ink lifts AND
+     the underline names the door (never colour alone) */
   color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--v4-text) 45%, transparent);
 }
 .sitefoot-ext {
   margin-left: 4px;
@@ -1545,8 +1558,11 @@
   text-align: left;
 }
 .sitefoot-maplink {
-  font-size: var(--type-ui);
+  /* the cover line steps up one seat (type-ui → body-sm): the plate opens
+     on a title, not another row */
+  font-size: var(--type-body-sm);
   font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
   color: var(--v4-text);
   text-decoration: none;
 }
@@ -1586,7 +1602,12 @@
 .sitefoot-registers {
   margin-top: 0;
 }
-@media (max-width: 980px) {
+/* 1280, not 980 (a pinned inventory value): the wrap caps at 72rem, so six
+   1fr tracks only ever regain their full 168px seat once the viewport
+   clears the cap — below that they shrank to ~150px, the gutters vanished
+   and long labels kissed the next kick (the 1024 « mal affiché »). Three
+   columns of two rows read as one plate on every laptop. */
+@media (max-width: 1280px) {
   .sitefoot-cols--five,
   .sitefoot-cols--six {
     grid-template-columns: repeat(3, minmax(0, 1fr));

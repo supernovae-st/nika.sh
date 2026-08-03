@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router'
 import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
+import { useRevealOnce } from '../sections/use-reveal-once'
 import { prefersLiteData } from '../lib/save-data'
 import { REPO, SPEC, DOCS, ENGINE_VERSION } from '../content'
 import type { FunnelEvent } from '../lib/track'
@@ -51,7 +52,7 @@ function LocaleSwitcher() {
   const variants = variantsFor(pathname)
   if (variants.length < 2) return null
   return (
-    <nav className="sitefoot-langs" aria-label="Languages">
+    <nav className="sitefoot-langs" aria-label="Languages" data-rise style={{ ['--rise-delay' as string]: '230ms' }}>
       <span className="sitefoot-machines-kick">languages</span>
       <span className="sitefoot-machine-links">
         {variants.map(({ locale, path }) => (
@@ -144,10 +145,16 @@ export function SignatureMark() {
 }
 
 export default function SiteFooter({ signature = true }: { signature?: boolean }) {
+  /* the shared entrance · the plate's bands rise once as the footer scrolls
+     into view (the site's ONE reveal grammar — observer + safety net; SSR,
+     no-JS and reduced-motion stay fully visible by the same laws as every
+     other v4 section) */
+  const ref = useRevealOnce<HTMLElement>()
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
     <footer
+      ref={ref}
       className={`theme-dark v4sec sitefoot${signature ? ' sitefoot--melt' : ''}`}
       aria-label="Site footer"
       lang="en"
@@ -166,7 +173,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
         {signature && <SignatureMark />}
 
         {/* THE MAP ROW · the complete card opens on its cover (§4.12) */}
-        <div className="sitefoot-maprow">
+        <div className="sitefoot-maprow" data-rise>
           <Link to="/map" className="sitefoot-maplink">
             <span aria-hidden className="sitefoot-mapstar">
               ★
@@ -181,9 +188,20 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             twice; the panels died with the nav table rase (2026-08-02) and the
             footer carries its own rows now — one source, one map. */}
         <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map">
-          {FOOTER_COLS.map((col) => (
-            <div className="sitefoot-col" key={col.kick}>
-              <p className="sitefoot-kick">{col.kick}</p>
+          {FOOTER_COLS.map((col, i) => (
+            <div
+              className="sitefoot-col"
+              key={col.kick}
+              data-rise
+              style={{ ['--rise-delay' as string]: `${60 + i * 40}ms` }}
+            >
+              <p className="sitefoot-kick">
+                {/* the blueprint index · the world's figure number, HUD ink */}
+                <span aria-hidden className="sitefoot-kick-idx">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {col.kick}
+              </p>
               <ul className="sitefoot-list">
                 {col.items.map((l) => (
                   <li key={l.label}>
@@ -197,7 +215,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
 
         {/* THE REGISTERS · every roomed family's root, derived — the strip a
             new family joins by descriptor flip (the coverage gate's floor) */}
-        <p className="sitefoot-machines sitefoot-registers">
+        <p className="sitefoot-machines sitefoot-registers" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
           <span className="sitefoot-machines-kick">the registers</span>
           <span className="sitefoot-machine-links">
             {Object.keys(MEMBER_ROOM_FAMILIES).map((f) => (
@@ -209,7 +227,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
         </p>
 
         {/* FOR MACHINES · the site names its own machine surfaces */}
-        <p className="sitefoot-machines">
+        <p className="sitefoot-machines" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
           <span className="sitefoot-machines-kick">for machines</span>
           <span className="sitefoot-machine-links">
             {FOOTER_MACHINE.map((m) => (
@@ -235,6 +253,8 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           rel="noreferrer"
           className="supernovae-type mt-10 block w-full transition-opacity hover:opacity-90"
           aria-label="SuperNovae Studio"
+          data-rise
+          style={{ ['--rise-delay' as string]: '280ms' }}
         >
           {'SUPERNOVAE'.split('').map((ch, i) => (
             <span key={i} style={{ '--i': i } as React.CSSProperties}>

@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 4e3ad617ae5d1f30c8497825db8af1a6b7487a671958b0ea0dd8513a2dab3d21
+  aggregate_sha256: 46d24c6e06839ecb004f5c9ac1e8064c690e8b67aff359114cd63061a061c7a3
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 442
-  aggregate_sha256: 83ceebf9712314088f2b3bb77ce0f76f5cba22f69fb0bb61d5ae8a9c330d3077
+  aggregate_sha256: a44ba234b4fba4a87c54ceacf27775828d4d34b7ea434697e6143d4525e1c411
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: b3b1c7dab9298b3ca72e1f82286aca40b1da5cb10c5e445a26dcc8f81c08131c
+  aggregate_sha256: f10b35ffaf85d6210b14765b36e7969ed6ee7f143425245bab8e2aacc4900c69
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

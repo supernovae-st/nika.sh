@@ -289,6 +289,15 @@
      signature seat. ~0.5 KB is the whole footer cost; the union measured
      420.4. Margin ~0.6 (the bite-on-growth grammar holds).
 
+   2026-08-03 · 421 → 423 · THE SAME EVENING, THIRD CONVERGENCE. The learn
+     page took its teaching gate's real verdict into the entry (~1.4 KB of
+     lesson truth — content growth, the corpus-flatten precedent) while the
+     footer's polish pass added its reveal wiring + world indices (~0.2 KB:
+     the shared useRevealOnce was already in the entry — only attributes
+     and one span per column). Union measured 422.0; a 421 ceiling died on
+     main within the hour it was set (the gate's red WAS this line's proof).
+     Margin ~1.0 (the bite-on-growth grammar holds).
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -296,7 +305,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 421
+const BUDGET_KB = 423
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
