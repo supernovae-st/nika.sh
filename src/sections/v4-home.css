@@ -1476,16 +1476,44 @@
 .sitefoot-kick {
   font-family: var(--mono);
   font-size: var(--type-micro);
-  letter-spacing: 0.16em;
+  /* 0.12em, not the eyebrow 0.16: the glyph+index+word lockup must hold one
+     line inside a 163px drawer — « GET IT RUNNING » is the ruler */
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--v4-text-faint);
 }
 /* the blueprint figure index · HUD ink, decorative (aria-hidden) — the six
    worlds carry their number the way every v4 section carries its FIG */
 .sitefoot-kick-idx {
-  margin-right: 8px;
+  margin-right: 6px;
   color: var(--v4-hud-faint);
   letter-spacing: 0.08em;
+}
+/* the world's glyph · ontology icon in HUD ink, seated on the kick's
+   baseline; the drawer hover lifts it to text ink (below) */
+.sitefoot-kick-ic {
+  display: inline-flex;
+  vertical-align: -3px;
+  margin-right: 6px;
+  color: var(--v4-hud-faint);
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.sitefoot-kick-ic svg {
+  width: 13px;
+  height: 13px;
+}
+/* drawer hover · the whole world answers the pointer: its rule warms, its
+   glyph lifts to ink — the cabinet tells you which drawer your hand is on */
+.sitefoot-cols--six .sitefoot-col,
+.sitefoot-cols--five .sitefoot-col {
+  transition: border-color var(--dur-ui) var(--ease-ui);
+}
+.sitefoot-col:hover {
+  border-left-color: rgb(79 134 255 / 0.4);
+}
+.sitefoot-col:hover .sitefoot-kick-ic {
+  color: var(--v4-text);
 }
 .sitefoot-list {
   margin: 10px 0 0;
@@ -1493,6 +1521,7 @@
   list-style: none;
 }
 .sitefoot-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   min-height: 32px;
@@ -1501,14 +1530,45 @@
   text-decoration: none;
   transition: color var(--dur-ui) var(--ease-ui);
 }
+/* the door choreography · a struck tick slides in from the drawer's rule
+   and the label steps toward it — motion + ink + the tick (never colour
+   alone). Compositor-only (transform/opacity); reduced-motion keeps the
+   ink and the tick, no travel. */
+.sitefoot-link::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 8px;
+  height: 1px;
+  background: var(--v4-accent);
+  opacity: 0;
+  transform: translateX(-5px);
+}
 .sitefoot-link:hover,
 .sitefoot-link:focus-visible {
-  /* the machine-links' door grammar, everywhere in the plate: ink lifts AND
-     the underline names the door (never colour alone) */
   color: var(--v4-text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklch, var(--v4-text) 45%, transparent);
+}
+.sitefoot-link:hover::before,
+.sitefoot-link:focus-visible::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sitefoot-link {
+    transition:
+      color var(--dur-ui) var(--ease-ui),
+      transform 0.18s cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+  .sitefoot-link::before {
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+  .sitefoot-link:hover,
+  .sitefoot-link:focus-visible {
+    transform: translateX(5px);
+  }
 }
 .sitefoot-ext {
   margin-left: 4px;
@@ -1727,6 +1787,60 @@
     align-items: center;
     gap: 2px 16px;
   }
+}
+
+/* ── the social rail · the studio's doors as machined seats ──────────────────
+   The ontology's social/* icons (the desktop set) in hairline seats: the
+   capsule idiom (border + radius + the machined dip on press). Founders
+   keep their visible handles beside the mark — the altar loses nothing. */
+.sitefoot-social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 0;
+}
+.sitefoot-social-seat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  color: var(--v4-text-dim);
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition:
+    color var(--dur-ui) var(--ease-ui),
+    border-color var(--dur-ui) var(--ease-ui);
+}
+.sitefoot-social-seat:hover,
+.sitefoot-social-seat:focus-visible {
+  color: var(--v4-text);
+  border-color: rgb(79 134 255 / 0.45);
+}
+.sitefoot-social-seat:active {
+  transform: translateY(0.5px); /* the machined dip */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sitefoot-social-seat {
+    transition:
+      color var(--dur-ui) var(--ease-ui),
+      border-color var(--dur-ui) var(--ease-ui),
+      transform 0.14s var(--ease-ui);
+  }
+  .sitefoot-social-seat:hover {
+    transform: translateY(-1px); /* the seat lifts to meet the hand */
+  }
+}
+.sitefoot-social-handle {
+  color: inherit;
 }
 
 .v4cta-title {

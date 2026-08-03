@@ -15,6 +15,8 @@ import {
   FOOTER_MACHINE,
   type NavItem,
 } from '../content/lens-nav.generated'
+import { NikaIcon } from '../icons/Icon'
+import type { NikaIconId } from '../icons/manifest'
 /* the registers strip DERIVES from the same generated registry the rooms
    render — a new family lands its footer door with its descriptor flip,
    never a hand edit (the complete-card law, mechanised) */
@@ -43,6 +45,30 @@ const FooterSignature = lazy(() => import('../fx/FooterSignature'))
    RootLayout reads [data-track]): which routes are funnel doors is a SHELL
    concern, so the map lives here — the nav descriptor stays structure-only. */
 const FOOTER_TRACK: Record<string, FunnelEvent> = { '/convert': 'convert-open' }
+
+/* each world wears its glyph from the icon ontology (design/icons.yaml →
+   NK_ICONS · ink law: currentColor, never a verb hue on static chrome).
+   Order = FOOTER_COLS order — the descriptor stays structure-only, the
+   shell owns the dressing (the FOOTER_TRACK precedent). */
+const WORLD_ICONS: NikaIconId[] = [
+  'ui/run', // how it works · the loop
+  'ui/book', // the language · the spec
+  'ui/tiles', // workflows · the corpus
+  'builtin/inspect', // what it knows · the catalog lens
+  'ui/terminal', // get it running
+  'ui/butterfly', // the project · the mark itself
+]
+
+/* the social rail · the studio's REAL doors only (no invented handles):
+   the repo, the docs, the two founders. Icons from the ontology's
+   social/* set — the desktop SVGs, finally seated. The founders keep
+   their visible handles (the altar lock: nothing lost, icons added). */
+const SOCIAL_RAIL: { icon: NikaIconId; label: string; href: string; text?: string }[] = [
+  { icon: 'social/github', label: 'GitHub · supernovae-st/nika', href: REPO },
+  { icon: 'social/documentation', label: 'Documentation', href: DOCS },
+  { icon: 'social/x', label: 'X · @ThibautMelen', href: 'https://x.com/ThibautMelen', text: '@ThibautMelen' },
+  { icon: 'social/x', label: 'X · @ncella_', href: 'https://x.com/ncella_', text: '@ncella_' },
+]
 
 /* the locale switcher row · SSR-identical (variants derive from the pathname
    + the static i18n registry, no client state) — pages without variants
@@ -196,7 +222,11 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
               style={{ ['--rise-delay' as string]: `${60 + i * 40}ms` }}
             >
               <p className="sitefoot-kick">
-                {/* the blueprint index · the world's figure number, HUD ink */}
+                {/* the world's glyph + its figure number · HUD ink, lights on
+                    drawer hover */}
+                <span aria-hidden className="sitefoot-kick-ic">
+                  <NikaIcon id={WORLD_ICONS[i] ?? 'ui/tiles'} size={14} />
+                </span>
                 <span aria-hidden className="sitefoot-kick-idx">
                   {String(i + 1).padStart(2, '0')}
                 </span>
@@ -265,26 +295,25 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
         <p className="mono -mt-2 text-[11px] tracking-[0.42em] text-[var(--fg-ghost)] uppercase">
           a SuperNovae Studio creation
         </p>
-        <p className="mono mt-5 flex flex-wrap items-center justify-center gap-x-6 text-[12px] text-[var(--fg-dim)]">
-          <a
-            href="https://x.com/ThibautMelen"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-          >
-            𝕏 @ThibautMelen
-          </a>
-          <span aria-hidden className="text-[var(--fg-ghost)]">
-            ·
-          </span>
-          <a
-            href="https://x.com/ncella_"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-[44px] items-center px-1 transition-colors hover:text-[var(--fg-mute)]"
-          >
-            𝕏 @ncella_
-          </a>
+        {/* the social rail · the studio's doors as machined icon seats (the
+            ontology's social/* set — the desktop SVGs). Replaces the bare
+            text handles: same two founders, plus the repo and the docs,
+            each seat a real ≥44px target with its name for the tree. */}
+        <p className="sitefoot-social mt-5" data-rise style={{ ['--rise-delay' as string]: '320ms' }}>
+          {SOCIAL_RAIL.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              className="sitefoot-social-seat"
+              aria-label={s.text ? undefined : s.label}
+              title={s.label}
+            >
+              <NikaIcon id={s.icon} size={17} />
+              {s.text ? <span className="sitefoot-social-handle">{s.text}</span> : null}
+            </a>
+          ))}
         </p>
 
         <div className="mono mt-12 flex w-full flex-wrap items-center justify-between gap-3 pt-6 text-[12px] text-[var(--fg-ghost)]">

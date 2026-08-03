@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 5ba5948394ea077440e030538c64f72f555f286ceadb10fbe73a0a63f51b6708
+  aggregate_sha256: 0835839bde6ee9dbb31f4ae274a5e9987ae5cb0f86b4eaafecabff85f4fe0d96
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 442
-  aggregate_sha256: c6c1e00b4a01c4f3ffb6da766fb18eecc7811661f760d364db1e59a81af817ba
+  aggregate_sha256: 555d4534ac44ef9793822c65c959a25f9a869b89d7bce6dfb13406df265cb18d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
