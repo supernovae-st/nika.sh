@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: db03f3de14d9519333b677480c9fb91a70ccfa7c3e324ae5eb09c36e6560817a
+  sha256: 78cb9b8a967851150aab810c14e3a2ee2b608ae0d210c98da101dc85c4a5aace
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 442
-  aggregate_sha256: 48e7ccf3b0a095eea61bebba188f958b70034244c1773a72ba7fe7e9bc61becb
+  aggregate_sha256: 092858f7d37efbad50b980288506cca314cf226ec9809b78dc8dbc46ff77811e
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
