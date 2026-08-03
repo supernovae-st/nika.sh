@@ -289,6 +289,16 @@
      signature seat. ~0.5 KB is the whole footer cost; the union measured
      420.4. Margin ~0.6 (the bite-on-growth grammar holds).
 
+   2026-08-03 · 421 → 422 · THE GATE THAT GATES. /learn takes the
+     registered weekly-radar (nika-spec examples/snippets) and a FRESH
+     verbatim transcript: the old one swore « passes check » over text
+     today's binary refuses (NIKA-SEC-014 · the consent gate never
+     gated). The consent bindings + the 0.107 voice (ENERGY · WRITES ·
+     JOURNEY lanes, the headless-prompt hint that is the price of a real
+     gate) are ~1.5 KB of teaching truth — content, not code. Measured
+     421.8 · margin 0.2, deliberately thin: the next growth faces the
+     gate immediately (the bite-on-growth grammar holds).
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -296,7 +306,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 421
+const BUDGET_KB = 422
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
