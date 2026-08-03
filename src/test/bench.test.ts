@@ -78,6 +78,20 @@ describe('the bench · receipts and their projection', () => {
     ).toBe(true)
   })
 
+  it('the witness record stays inside its chrome allowance (the door ratchet)', () => {
+    /* bench.generated rides the ENTRY (CatalogModels + CatalogModelRoom are
+       sync-routed) and the record ACCUMULATES by design — one row per
+       published receipt. This ratchet goes red BEFORE the size budget does
+       (a red test, not a budget surprise · review finding 2026-08-03), and
+       names the remedy: past the allowance, give the record the access door
+       (the releases-access recipe) and move this gate to the walk-test form. */
+    const bytes = statSync(join(ROOT, 'src/content/bench.generated.ts')).size
+    expect(
+      bytes,
+      `bench.generated.ts is ${bytes}B — past the 8KB chrome allowance: build bench-access.ts (the releases-access recipe) before the entry pays it`,
+    ).toBeLessThan(8 * 1024)
+  })
+
   it('the served copy is byte-identical to the source of record', () => {
     for (const rel of walk(SRC)) {
       const pub = join(ROOT, 'public', 'bench', rel)

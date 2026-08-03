@@ -55,10 +55,16 @@ function vendor() {
   const releases = raw
     .filter((r) => !r.draft && !r.prerelease && /^v\d+\.\d+\.\d+$/.test(r.tag_name))
     .map((r) => ({
+      /* the full publish instant ORDERS the record (fixed-width ISO · a
+         string compare IS a time compare); only the day is PUBLISHED.
+         The old tie-break compared TAGS as strings, and unpadded semver
+         breaks at every digit-count boundary: "v0.107.10" < "v0.107.2"
+         in codepoints, so a same-day double-digit patch would misorder
+         the register AND redden the newest-room gate on a legitimate
+         train (review finding · 2026-08-03). */
+      published_at: r.published_at ?? r.created_at,
       tag: r.tag_name,
       name: r.name ?? r.tag_name,
-      /* day-true: the record's own publish timestamp, date part */
-      date: (r.published_at ?? r.created_at).slice(0, 10),
       url: r.html_url,
       assets: (r.assets ?? []).map((a) => ({
         name: a.name,
@@ -68,7 +74,15 @@ function vendor() {
         ...(a.digest ? { sha256: a.digest.replace(/^sha256:/, '') } : {}),
       })),
     }))
-    .sort((a, b) => (a.date === b.date ? byCp(b.tag, a.tag) : byCp(b.date, a.date)))
+    .sort((a, b) => byCp(b.published_at, a.published_at))
+    .map(({ published_at, ...r }) => ({
+      tag: r.tag,
+      name: r.name,
+      /* day-true: the record's own publish timestamp, date part */
+      date: published_at.slice(0, 10),
+      url: r.url,
+      assets: r.assets,
+    }))
   const doc = {
     releases_format: 1,
     source: `gh api repos/${REPO}/releases (published, non-draft, non-prerelease)`,

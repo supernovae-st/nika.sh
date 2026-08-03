@@ -77,9 +77,16 @@ describe('/releases · the record and its rooms', () => {
         if (statSync(full).isDirectory()) walk(rel)
         else if (/\.(ts|tsx)$/.test(name) && !allowed.has(rel)) {
           const src = readFileSync(full, 'utf8')
-          /* `import type` erases at compile time — only VALUE imports weigh */
-          if (/^import (?!type\b)[^;\n]*from '[^']*content\/releases\.generated'/m.test(src))
-            offenders.push(rel)
+          /* the adrs.test form: line-based and PREFIX-AGNOSTIC, so it also
+             catches `export { RELEASES } from '…'` re-exports (a barrel
+             would bypass an ^import-anchored regex · review finding
+             2026-08-03) · `import type` erases at compile time */
+          const hit = src.split('\n').some(
+            (l) =>
+              /from '[^']*content\/releases\.generated'/.test(l) &&
+              !/^\s*import type\b/.test(l),
+          )
+          if (hit) offenders.push(rel)
         }
       }
     }
