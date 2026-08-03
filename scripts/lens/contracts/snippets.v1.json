@@ -800,12 +800,12 @@
     },
     {
       "path": "src/pages/CatalogMcpRoom.tsx",
-      "source_blob": "e834e990d4874be4cb3091d9ad65c4f6d7d1367d",
+      "source_blob": "b16e59cb1047442ba0df865d8526bb751992d6da",
       "blocks": [
         {
           "selector": "src/pages/CatalogMcpRoom.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 96,
+          "line": 87,
           "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]
