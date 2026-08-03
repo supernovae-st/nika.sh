@@ -18,8 +18,8 @@ export const LENS_PROVENANCE: {
   "canon_schema_version": 1,
   "engine_version": "v0.107.2",
   "catalogs": {
-    "tools": "0.107.0",
-    "providers": "0.107.0"
+    "tools": "0.107.2",
+    "providers": "0.107.2"
   }
 }
 

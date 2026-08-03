@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.107.0"
+export const TERMINAL_ENGINE = "0.107.2"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.107.0"
+        "text": "nika 0.107.2"
       }
     ]
   },

@@ -46,6 +46,20 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-02',
+    tag: 'release',
+    title: 'v0.107.2 · the adversarial pass',
+    body: 'An adversary was set on 0.107.1’s six boundaries with one instruction, break it. Three of six claims fell, and hunting what the first repairs still let through found four more · every fix proven on the binary before the code was touched, each carrying the mutation that makes it fail. Two doors were open: a permit could name a system root by shouting it (/ROOT/x* passed where /root/./x* refused: macOS folds case, so the comparison does now, and the Linux side can only ever refuse a path that does not exist), and a secret redacted in the trace was printed on stdout (outputs: rides RunOutcome past the event lane · the map is scrubbed at any depth now). Three guards judged less than they claimed: the dangerous-environment floor is proven entry by entry (forty names, both halves pinned), a tainted nika:notify target is judged whatever channel carries it, and the run guard speaks only about runs (an unreadable payload no longer blocks ls). And one law had two implementations: the MCP spawn now composes its child environment through the same function as the exec runner · the copy was equivalent, and equivalence was exactly what nothing guaranteed.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.107.2',
+  },
+  {
+    date: '2026-08-02',
+    tag: 'release',
+    title: 'v0.107.1 · the composition wave',
+    body: 'The 0.107 train shipped the trust objects; an outside checkpoint then measured what a stranger actually meets and found the composition missing. Three synthetic personas (novice FR · senior dev · privacy-first) walked the binary end to end, and every fix carries the transcript line that found it. One door catalog, one ratchet: DoorId{Discover,Create,Project} is the single source behind every taught first-contact command: the five workspace states, the chat-only JSON mirror and the kit’s allowed-tools all derive from it, and a test replays EVERY command welcome can teach against the live clap tree. The dead nika examples the concierge kept teaching is gone from text, JSON, kit and docs, and hygiene vector 45 sweeps three rendered surfaces so the class cannot return. nika try opens on three jobs, not thirty-nine: one contrasted trade each (support · meetings · release), every row a taught try <slug>, while a pipe still gets the full parsable shelf byte-for-byte.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.107.1',
+  },
+  {
     date: '2026-08-01',
     tag: 'release',
     title: 'v0.107.0 · the trust release',
