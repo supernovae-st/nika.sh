@@ -345,7 +345,12 @@ function WorkflowCard({ card, fig }: { card: PersonaCard; fig: string }) {
             </a>
           </div>
           <div className="ucp-wf-code">
-            <CodeFile yaml={yaml} wrap tips />
+            <CodeFile
+              yaml={yaml}
+              sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/${uc.slug}.nika.yaml`}
+              wrap
+              tips
+            />
           </div>
         </div>
 

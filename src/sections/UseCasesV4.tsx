@@ -219,7 +219,16 @@ export default function UseCasesV4() {
 
             <div className="v4uc-panel-code">
               <div className="v4uc-scroll">
-                <CodeFile yaml={yaml} wrap tips minimap={false} /* the card carries its own PlanMap */ />
+                {/* the FULL corner, everywhere — one yaml design is the site's law.
+                    The PlanMap above tells the section's story; the panel still
+                    wears the same corner as every other panel (operator ruling
+                    2026-08-03: no surface opts out of the minimap or the source). */}
+                <CodeFile
+                  yaml={yaml}
+                  sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/${active.slug}.nika.yaml`}
+                  wrap
+                  tips
+                />
               </div>
             </div>
 

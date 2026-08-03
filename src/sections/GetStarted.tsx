@@ -112,7 +112,13 @@ export default function GetStarted({ flagship }: { flagship: FlagshipEntry }) {
                 file the page just ran, opened at its first step.
               </p>
               <div className="v4start-frame v4-frame-canvas">
-                <CodeFile yaml={writeYaml} filename={`${flagship.filename} · excerpt`} wrap tips />
+                <CodeFile
+                  yaml={writeYaml}
+                  filename={`${flagship.filename} · excerpt`}
+                  sourceHref={`/library/${flagship.filename}`}
+                  wrap
+                  tips
+                />
               </div>
               <p className="v4start-readonly">
                 real lines, sliced from the file above · read-only
