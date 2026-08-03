@@ -18,6 +18,8 @@ export const NOT_FOUND_YAML = `nika: v1
 workflow:
   id: not-found
   description: "404 · nothing at this path parses"
+permits:
+  tools: ["nika:log"]
 tasks:
   recover:
     invoke: { tool: "nika:log", args: { message: "go home ↓" } }`
@@ -44,6 +46,7 @@ export function Component() {
         <CodeFile
           yaml={NOT_FOUND_YAML}
           filename="not-found.nika.yaml"
+          sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/not-found.nika.yaml"
           wrap
         />
       </div>

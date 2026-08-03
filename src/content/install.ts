@@ -52,6 +52,7 @@ export const DOCTOR_CMD = 'nika doctor'
 export const HELLO_YAML = `nika: v1
 workflow:
   id: hello
+  description: "first file after install · one exec, zero setup, zero keys"
 permits:
   exec: ["echo"]
 tasks:
@@ -63,11 +64,17 @@ tasks:
 export const HELLO_AI_YAML = `nika: v1
 workflow:
   id: hello-ai
-model: ollama/llama3.2:3b   # local · free · swap for any provider in the catalog
+  description: "first model call · one local seat, one bounded sentence"
+model: ollama/llama3.2:3b   # local · zero key · swap for any provider in the catalog
+permits: {}
 tasks:
   greet:
     infer:
-      prompt: "Say hello in one sentence."`
+      prompt: "Say hello in one sentence."
+      max_tokens: 64
+
+outputs:
+  greeting: \${{ tasks.greet.output }}`
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
    Captured 2026-07-28 against nika 0.107.2 (the verified release binary)

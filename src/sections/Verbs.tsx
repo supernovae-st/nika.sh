@@ -115,7 +115,14 @@ function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
 
       {/* RIGHT · the verb's task in the product surface (hue lives HERE only) */}
       <div className="v4chap-frame v4-frame-canvas">
-        <CodeFile yaml={c.yaml} filename={c.filename} className="v4chap-code" wrap tips />
+        <CodeFile
+          yaml={c.yaml}
+          filename={c.filename}
+          sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/${c.filename}`}
+          className="v4chap-code"
+          wrap
+          tips
+        />
       </div>
     </article>
   )

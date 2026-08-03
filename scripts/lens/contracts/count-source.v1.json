@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 300,
-    "set_sha256": "1c8dbd20c2cbcb25fbb75f58a3e0cd51a53c7c3d9459f58ac5a669f4a4c9cb73",
-    "rendered_count": 1028,
-    "rendered_set_sha256": "fde5fbd7fa44a6976cd07831719941cc40252f4a025501429df32b2e667445cc"
+    "count": 302,
+    "set_sha256": "d04ae7498d8cbf8476acfc25ed810c2637c232be8d7e6d911bcfb3945586ad3a",
+    "rendered_count": 1030,
+    "rendered_set_sha256": "4bf8c8094dbaa325c295a2ba8d9d95c67ba5ff6072cbfadda18e616a6c7ed57b"
   },
   "claim_count": 130,
   "bindings": [
@@ -916,7 +916,7 @@
     {
       "selector": "src/pages/FamilyRoot.tsx#count:1",
       "path": "src/pages/FamilyRoot.tsx",
-      "line": 37,
+      "line": 38,
       "text": "nine read-only tools",
       "source": "nine",
       "field": "mcpTools",
@@ -1073,7 +1073,7 @@
     {
       "selector": "src/pages/SpecHub.tsx#count:2",
       "path": "src/pages/SpecHub.tsx",
-      "line": 71,
+      "line": 74,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1278,7 +1278,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:12",
       "path": "src/pages/VerbPage.tsx",
-      "line": 377,
+      "line": 381,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1520,7 +1520,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:4",
       "path": "src/sections/Verbs.tsx",
-      "line": 133,
+      "line": 140,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1532,7 +1532,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:5",
       "path": "src/sections/Verbs.tsx",
-      "line": 137,
+      "line": 144,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",

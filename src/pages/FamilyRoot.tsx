@@ -5,6 +5,7 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { TruthLine } from '../components/TruthLine'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
+import { FAMILY_OG } from './family-og'
 import { ssrReadout, loadReadout } from '../lib/member-room-access'
 import type { Readout } from '../shell/inspector-readout'
 import { SITE, routeHead } from '../content'
@@ -76,6 +77,7 @@ export function Component() {
     ? `${readout?.opener ?? fam.title}. ${fam.members.length} members, one room each; the teaching lives at ${fam.hub}.`
     : `${family} is not a register this site keeps.`
 
+  const og = FAMILY_OG[family]
   useHead({
     title,
     link: routeHead(`/${family}`).link,
@@ -84,6 +86,12 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      ...(og
+        ? [
+            { property: 'og:image', content: `https://nika.sh/${og.img}.png` },
+            { property: 'og:image:alt', content: og.alt },
+          ]
+        : []),
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],

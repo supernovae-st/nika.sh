@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 import Ajv2020 from 'ajv/dist/2020'
 import { parse } from 'yaml'
 import { describe, expect, it } from 'vitest'
-import { mcpTryBlock } from '../pages/catalog-lib'
+import { mcpTryBlock } from '../pages/mcp-try-block'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const pinSchema = JSON.parse(
@@ -24,9 +24,10 @@ const pinSchema = JSON.parse(
 const ajv = new Ajv2020({ strict: false, validateFormats: false, allowUnionTypes: true })
 const validate = ajv.compile(pinSchema)
 
-/* a real registry server + a plausible tool name stand in for the
-   placeholder — the shape under judgment is the builder's, not the name */
-const concrete = mcpTryBlock('github', 'github').replaceAll('<tool>', 'search_issues')
+/* ahrefs IS in the vendored registry (verified against catalog.generated) ·
+   a plausible tool name stands in for the placeholder — the shape under
+   judgment is the builder's, the ref only has to ride the grammar */
+const concrete = mcpTryBlock('ahrefs', 'ahrefs').replaceAll('<tool>', 'keywords_explorer')
 
 describe('mcp try-block · the taught file is the checkable file', () => {
   it('parses and validates against the pinned workflow schema', () => {
@@ -41,13 +42,13 @@ describe('mcp try-block · the taught file is the checkable file', () => {
     }
     const invoke = doc.tasks.work.invoke as Record<string, unknown>
     expect(typeof invoke, 'invoke body must be a YAML mapping').toBe('object')
-    expect(invoke.tool).toBe('mcp:github/search_issues')
+    expect(invoke.tool).toBe('mcp:ahrefs/keywords_explorer')
     expect(String(invoke.tool)).not.toMatch(/^mcp:[a-z0-9-]+\./)
   })
 
   it('the grant lives in permits.tools with the full ref · permits.mcp stays dead', () => {
     const doc = parse(concrete) as { permits: Record<string, unknown> }
-    expect(doc.permits.tools).toEqual(['mcp:github/search_issues'])
+    expect(doc.permits.tools).toEqual(['mcp:ahrefs/keywords_explorer'])
     expect('mcp' in doc.permits, 'permits.mcp is not a field the engine knows').toBe(false)
   })
 })

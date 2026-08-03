@@ -31,11 +31,17 @@ export const CHAPTERS: Chapter[] = [
     yaml: `nika: v1
 workflow:
   id: think
+  description: "the infer verb alone · one bounded model call"
 model: ollama/llama3.2:3b
+permits: {}
 tasks:
   summarize:
     infer:
-      prompt: "Three risks in this release, ranked"`,
+      prompt: "Three risks in this release, ranked"
+      max_tokens: 256
+
+outputs:
+  summary: \${{ tasks.summarize.output }}`,
     sub: [
       { n: '5.1.1', label: 'providers', to: '/catalog/providers' },
       { n: '5.1.2', label: 'structured output', to: '/language/spec/errors#structured-output-validation' },
@@ -51,6 +57,9 @@ tasks:
     yaml: `nika: v1
 workflow:
   id: run
+  description: "the exec verb alone · one program, argv form, allowlisted"
+permits:
+  exec: ["cargo"]
 tasks:
   build:
     exec:
@@ -70,6 +79,10 @@ tasks:
     yaml: `nika: v1
 workflow:
   id: use-a-tool
+  description: "the invoke verb alone · one tool call under the two-part grant"
+permits:
+  tools: ["nika:fetch"]
+  net: { http: ["nika.sh"] }
 tasks:
   page:
     invoke:
@@ -90,12 +103,22 @@ tasks:
     yaml: `nika: v1
 workflow:
   id: delegate
+  description: "the agent verb alone · goal + tool whitelist, loop bounded"
 model: ollama/llama3.2:3b
+permits:
+  tools: ["nika:read", "nika:fetch"]
+  net: { http: ["nika.sh"] }
+  fs:
+    read: ["./docs/*"]
 tasks:
   audit:
     agent:
       prompt: "Find every dead link in ./docs"
-      tools: [ "nika:read", "nika:fetch" ]`,
+      tools: [ "nika:read", "nika:fetch" ]
+      max_tokens_total: 8192
+
+outputs:
+  report: \${{ tasks.audit.output }}`,
     sub: [
       { n: '5.4.1', label: 'tool allow-list', to: '/language/permits' },
       { n: '5.4.2', label: 'max turns' },

@@ -775,15 +775,14 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
     "gate": "served byte-pin + recorded traces (see library_heroes_gates)"
   },
   {
-    "file": "src/pages/catalog-lib.ts",
-    "kind": "crafted-room",
-    "gate": "mcp-try-block.test.ts (the ONE builder AJV-judged against the pinned schema with a real ref · slash law · permits.tools law)",
-    "note": "the builder moved out of CatalogMcpRoom.tsx by the react-refresh law (a component file exports only components)"
-  },
-  {
     "file": "src/pages/Convert.tsx",
     "kind": "crafted-room",
     "gate": "convert PROOF export + AJV"
+  },
+  {
+    "file": "src/pages/mcp-try-block.ts",
+    "kind": "crafted-room",
+    "gate": "mcp-try-block.test.ts (the ONE builder AJV-judged against the pinned schema with a real ref · slash law · permits.tools law)"
   },
   {
     "file": "src/pages/NotFound.tsx",

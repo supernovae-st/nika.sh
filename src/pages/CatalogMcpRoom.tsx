@@ -6,8 +6,9 @@ import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { MCP_SLUGS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
-import { mcpTryBlock, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { appLd, crumbLd } from '../lib/ld'
+import { mcpTryBlock } from './mcp-try-block'
 import './catalog-models.css'
 
 type McpServerEntry = import('../content/catalog.generated').McpServerEntry

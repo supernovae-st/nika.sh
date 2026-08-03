@@ -242,7 +242,11 @@ export function Component() {
                   YAML gate re-validates it on every test run).
                 </p>
                 <div className="td-usage">
-                  <CodeFile yaml={chapter.yaml} filename={chapter.filename} />
+                  <CodeFile
+                    yaml={chapter.yaml}
+                    filename={chapter.filename}
+                    sourceHref={`https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/${chapter.filename}`}
+                  />
                 </div>
               </div>
 
