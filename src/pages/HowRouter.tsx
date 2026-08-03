@@ -32,8 +32,11 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: 'https://nika.sh/og-how.png' },
+      { property: 'og:image:alt', content: 'How Nika works: the agent writes the file, the router routes it, the judge reads it back, the run leaves a trace.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://nika.sh/og-how.png' },
     ],
   })
 

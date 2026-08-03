@@ -18,13 +18,13 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1587
+  classified_files: 1592
   file_rows: 101
   pattern_rows: 29
   by_class:
     authored: 1219
     authored-pin: 3
-    generated: 306
+    generated: 311
     pinned-copy: 21
     testimonial: 38
     foreign: 0
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 8b53f44d40f4fdf8a20ee8768a357270456eb6a403f54040dff3f752db894c53
+  sha256: a0033137d7b367a95bec740bc20a23c448a57c917e941bcd63f28a4896e5590a
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 50a914340bee3cc1ac1a830a171b75a501bb2e0cd823ebfa7c02479a70853dcf
+  sha256: 95ac92f24ec3072d839d66d6a66510bcef71faa119f0c0ec6a21673246448140
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: a51da1bd5bcc4bad76215a0f8ddaa2e7c17570edd71168422bb66d92d5b3e79d
+  sha256: f629f7066b5ff6c3edd164d67fe1e7c5fa90be6cd89eadb1316d12cb2bd65e87
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -768,8 +768,8 @@ patterns:
   evidence: "studio brand artwork exports (logo · mark · tile suite) — no in-repo generator; THIRD_PARTY_NOTICES.md declares the set house-owned"
 - glob: "public/og*.png"
   class: generated
-  match_count: 58
-  aggregate_sha256: 0a043a5541dfa7b3d6de5fe76bb903df238669bfef42cc3204f22e49cf6067dc
+  match_count: 63
+  aggregate_sha256: 20ebf7e97dd7ed3985b9f7a1e2df7aa38b7272012ea7756c66151b1c9cb9be69
   evidence: "the OG card set — scripts/build-og-card.mjs shoots scripts/og-card.html per route/post deck (build-og-card.mjs header lists the plates)"
   derivation:
     tool: "node scripts/build-og-card.mjs (headless Chrome shot)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: bf31dd8d13a94a3b08ac20460601fa61538da945ff90a6ee3e4d91c0b1e337a0
+  aggregate_sha256: 1bab2dd10557ad5671b3c946f21866c1949c1fa4012ff40803e2639307ce3d62
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 429
-  aggregate_sha256: 73e47fc7eaefff0017c2e3a6b5e5c9969988c4867fdfcd0d97a67608584ff19b
+  aggregate_sha256: 2601c960bd78553bcbe1cda45d0cccdbd2f6e011cb33723f238203b691dc8756
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: 749520d081f58d03d210278332e4bf38317c622477b70b7fe9079870bca36716
+  aggregate_sha256: c73e70efa445f27a62f81bd0837515d9081cd9bf4b0349a5a10ecb1df10b1ff6
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

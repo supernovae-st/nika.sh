@@ -47,8 +47,18 @@ export function useCatalogHead(
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      /* the world card (2026-08-03 · the og-providers precedent): every
+         catalog page shares the world's own share card — the providers
+         pages keep their older dedicated card via their own heads */
+      { property: 'og:image', content: 'https://nika.sh/og-catalog.png' },
+      {
+        property: 'og:image:alt',
+        content:
+          'What the released binary knows: models, exact prices, measured energy, MCP servers · the Nika catalog.',
+      },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://nika.sh/og-catalog.png' },
     ],
   })
 }

@@ -56,8 +56,11 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: 'https://nika.sh/og-workflows.png' },
+      { property: 'og:image:alt', content: 'The Nika corpus: the path that teaches, the jobs that prove, the skeletons that start yours.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://nika.sh/og-workflows.png' },
     ],
     /* a step is a FILE a reader can run · it declares itself as source, the
        way the jobs and the skeletons already do (2026-08-02: all 13 bare) */

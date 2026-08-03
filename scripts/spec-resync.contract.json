@@ -219,7 +219,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/vendor-gate-matrix.mjs",
-   "sha256": "2ddefb09223483ccbb52fdb44d3600fb071f6c01b2cbfda28856903d3400e4b1",
+   "sha256": "241c45279c9eae1efecfbb743d0f6e20b6c605e4d4b4dc6684853940aad5ce42",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -265,7 +265,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/vendor-timeline.mjs",
-   "sha256": "2bd741424fbb8dc2108588c166c07f5e4fa6176860505802351ffa2a3ecba0b4",
+   "sha256": "c0b0c752c2a7996519f664439b98b5e3391e26c7c52eaaeeb4368ff4ded276e2",
    "args": [],
    "depends_on": [],
    "outputs": [

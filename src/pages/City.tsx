@@ -87,8 +87,11 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: 'https://nika.sh/og-city.png' },
+      { property: 'og:image:alt', content: 'The Nika city: which repo ships each piece of the ecosystem, and at which pin this site read it.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://nika.sh/og-city.png' },
     ],
     script: [ldScript([crumbLd([{ name: 'The city' }])])],
   })

@@ -628,6 +628,55 @@ const CARDS = [
     detail:
       '<span class="arrow">▸</span><span>your&nbsp;task<span class="sep">·</span>a&nbsp;file&nbsp;you&nbsp;<b>own</b></span>',
   },
+  // ── the eight-worlds cards (2026-08-03) · one card per world the migration
+  //    built, in each world's own opening voice — the per-room ask resolved
+  //    as per-WORLD (the og-providers precedent): the default og.png already
+  //    roofs every room, a world card says which world you are entering.
+  {
+    // /how — the récit world. The loop, told once.
+    out: 'og-how.png',
+    fig: 'FIG H.0',
+    headline: 'How it<br><span class="b">works.</span>',
+    sub: 'The loop, told once: your agent writes the file, the router routes it, the judge reads it back, the run leaves a&nbsp;trace.',
+    detail:
+      '<span class="arrow">▸</span><span>router<span class="sep">·</span>flow<span class="sep">·</span>boundary<span class="sep">·</span><b>proof</b></span>',
+  },
+  {
+    // /workflows — the corpus world. The path, the jobs, the skeletons.
+    out: 'og-workflows.png',
+    fig: 'FIG W.0',
+    headline: 'The<br><span class="b">corpus.</span>',
+    sub: 'The path that teaches, the jobs that prove, the skeletons that start yours: every file conformance-gated, sha-pinned, runnable.',
+    detail:
+      '<span class="arrow">▸</span><span>the&nbsp;path<span class="sep">·</span>real&nbsp;jobs<span class="sep">·</span><b>skeletons</b></span>',
+  },
+  {
+    // /catalog — the engine-release world. What the released binary knows.
+    out: 'og-catalog.png',
+    fig: 'FIG C.0',
+    headline: 'What the binary<br><span class="b">knows.</span>',
+    sub: 'Models, exact prices, measured energy, MCP servers, capability rules: vendored from the released engine, never&nbsp;typed.',
+    detail:
+      '<span class="arrow">▸</span><span>models<span class="sep">·</span>pricing<span class="sep">·</span>energy<span class="sep">·</span><b>mcp</b></span>',
+  },
+  {
+    // /releases — the record world. Every version, its assets, its digests.
+    out: 'og-releases.png',
+    fig: 'FIG R.0',
+    headline: 'Every version,<br><span class="b">its digests.</span>',
+    sub: 'The release record: every published version with the sha256 GitHub wrote at upload. Verify a download, never trust&nbsp;it.',
+    detail:
+      '<span class="arrow">▸</span><span>assets<span class="sep">·</span>sha256<span class="sep">·</span><b>re-provable</b></span>',
+  },
+  {
+    // /city — the belvédère. Which repo each piece lives in, at which pin.
+    out: 'og-city.png',
+    fig: 'FIG B.0',
+    headline: 'Where every<br><span class="b">piece lives.</span>',
+    sub: 'The city: which repo ships each part of Nika, what it ships, and at which commit this site read it. Two clocks, named.',
+    detail:
+      '<span class="arrow">▸</span><span>15&nbsp;buildings<span class="sep">·</span>decisions<span class="sep">·</span><b>pins</b></span>',
+  },
 ];
 
 // ── the card template (a function of one card spec) ─────────────────────────

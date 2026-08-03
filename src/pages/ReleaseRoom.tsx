@@ -68,8 +68,11 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:image', content: 'https://nika.sh/og-releases.png' },
+      { property: 'og:image:alt', content: 'The Nika release record: every published version with the sha256 digests recorded at upload.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://nika.sh/og-releases.png' },
     ],
     script: known
       ? [
