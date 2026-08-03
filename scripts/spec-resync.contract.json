@@ -233,7 +233,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-palette.mjs",
-   "sha256": "c3f9255243c2d9e3309e1d53db0ebe675d4e404e23ad26ba02c2c6745629edde",
+   "sha256": "932b0cb263d0d31a8ec8ab5fab63f7f6a7c1e75014a4125e0d16f5fd68c89828",
    "args": [],
    "depends_on": [
     "website-errors",
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "46348958fbdc69177517811b9e9bb455df609eb962c2b8769c3a404de737c36c",
+   "sha256": "e86dd84f10f5c9154207d7ac5dc606de2d2164bacf62f33cd36d7157ab607bc8",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

@@ -89,6 +89,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "page",
+    "label": "Releases",
+    "href": "/releases",
+    "hint": "every version, its assets, its digests"
+  },
+  {
+    "kind": "page",
     "label": "Standard library",
     "href": "/language/stdlib",
     "hint": "every nika: builtin the engine ships"

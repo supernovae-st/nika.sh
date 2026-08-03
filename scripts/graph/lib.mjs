@@ -187,6 +187,12 @@ export function pathsCensus() {
   const SPEC_PROVIDERS = [
     ...read('src/content/providers.generated.ts').matchAll(/^ {4}"id": "([a-z0-9-]+)"/gm),
   ].map((m) => ({ id: m[1] }))
+  /* the release register (2026-08-03): RELEASE_PATHS derives from the
+     vendored record's tag list — inject it like the others */
+  const relm = read('src/content/releases.generated.ts').match(
+    /RELEASE_TAGS: string\[\] = (\[[^\]]*\])/s,
+  )
+  const RELEASE_TAGS = relm ? JSON.parse(relm[1]) : []
   const body = cfg
     .replace(/^import[^\n]*$/gm, '')
     .replace(/^export \{ PENDING_ERROR_CODES \}[^\n]*$/m, '')
@@ -200,7 +206,8 @@ export function pathsCensus() {
     'MARKET_PROVIDER_IDS',
     'CLIENT_IDS',
     'SPEC_PROVIDERS',
+    'RELEASE_TAGS',
     `${body}; return PATHS;`,
-  )(ERROR_CODES, PENDING_ERROR_CODES, MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS, CLIENT_IDS, SPEC_PROVIDERS)
+  )(ERROR_CODES, PENDING_ERROR_CODES, MODEL_SLUGS, MCP_SLUGS, MARKET_PROVIDER_IDS, CLIENT_IDS, SPEC_PROVIDERS, RELEASE_TAGS)
   return new Set(out)
 }

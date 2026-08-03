@@ -251,6 +251,10 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
         "to": "/truth"
       },
       {
+        "label": "Releases",
+        "to": "/releases"
+      },
+      {
         "label": "Changelog",
         "to": "/changelog"
       },

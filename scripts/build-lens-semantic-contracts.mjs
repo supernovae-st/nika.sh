@@ -218,6 +218,9 @@ const COMPONENT_FEATURE = {
   City: 'registry.map',
   CityDecisions: 'registry.map',
   AdrRoom: 'registry.map',
+  /* the release record (world ⑦ · 2026-08-03) · register + one room per version */
+  Releases: 'registry.map',
+  ReleaseRoom: 'registry.map',
   Governance: 'site.spec',
   NepRoom: 'site.spec',
   /* the /how world (V1 · 2026-08-02) · the récit world's own pages */

@@ -4,6 +4,7 @@ import { CLIENT_DOOR_IDS } from './client-doors'
 import { ADR_ROOM_IDS } from './adr-ids.generated'
 import { NEP_SLUGS } from './nep-ids.generated'
 import { ERROR_CODES } from './errors.generated'
+import { RELEASE_TAGS } from './releases.generated'
 import { LESSONS } from './lessons.generated'
 import { CHAPTERS as SPEC_CHAPTERS } from './chapters.generated'
 import { MARKET_PROVIDER_IDS } from './catalog-paths.generated'
@@ -89,6 +90,10 @@ export const SITE_MAP: MapGroup[] = [
       /* the settled decisions each own a room · the map lists them the way it
          lists every other roomed family, from the record itself */
       ...ADR_ROOM_IDS.map((id) => ({ label: id, href: `/city/decisions/${id.toLowerCase()}` })),
+      { label: 'Releases', href: '/releases', hint: 'every version, its assets, its digests' },
+      /* one room per published release · from the vendored record (tags only,
+         tree-shaken · the record itself stays behind releases-access) */
+      ...RELEASE_TAGS.map((t) => ({ label: t, href: `/releases/${t}` })),
       { label: 'How it works', href: '/how', hint: 'the loop · try · new · check · run · trace' },
       { label: 'Workflows', href: '/workflows', hint: 'the path · the jobs · the skeletons' },
       { label: 'The router', href: '/how/router', hint: 'plain words in, a real workflow out · no model' },

@@ -488,6 +488,17 @@ function deriveClientDoorPaths(root) {
     .map((id) => `/integrations/${id}`)
 }
 
+/* RELEASE_PATHS derives like CATALOG_PATHS does (second-producer law): one
+   room per tag in releases.generated — itself projected from the vendored
+   public/releases/catalog.json, drift-gated by build-releases --check in
+   pnpm check + src/test/releases.test.ts. */
+function deriveReleasePaths(root) {
+  const gen = readFileSync(join(root, 'src/content/releases.generated.ts'), 'utf8')
+  const m = gen.match(/export const RELEASE_TAGS: string\[\] = (\[[\s\S]*?\])/)
+  if (!m) throw new Error('release tag array missing: RELEASE_TAGS')
+  return JSON.parse(m[1]).map((t) => `/releases/${t}`)
+}
+
 export function discoverPrerenderPaths(root) {
   const source = readFileSync(join(root, 'site.config.ts'), 'utf8')
   const arrays = new Map()
@@ -495,6 +506,7 @@ export function discoverPrerenderPaths(root) {
     'BLOG_PATHS', 'BLOG_TAG_PATHS', 'BLOG_SERIES_PATHS', 'MANIFESTO_PATHS', 'INSTALL_PATHS', 'ERROR_PATHS', 'TOOL_PATHS',
     'PROVIDER_PATHS', 'VERB_PATHS', 'LANGUAGE_PATHS', 'TEMPLATE_PATHS', 'LIBRARY_PATHS', 'INTEGRATION_PATHS', 'FAMILY_ROOT_PATHS',
     'LENS_PATHS', 'CATALOG_PATHS', 'CLIENT_DOOR_PATHS', 'ADR_PATHS', 'NEP_PATHS', 'HOW_PATHS', 'LESSON_PATHS', 'CHAPTER_PATHS',
+    'RELEASE_PATHS',
   ]) {
     // A registry page can fuse away (its path array leaves the file with it);
     // only arrays still declared join the map — an unknown SPREAD stays fatal.
@@ -503,6 +515,7 @@ export function discoverPrerenderPaths(root) {
     if (name === 'ERROR_PATHS') arrays.set(name, deriveErrorPaths(root, source))
     else if (name === 'CATALOG_PATHS') arrays.set(name, deriveCatalogPaths(root))
     else if (name === 'CLIENT_DOOR_PATHS') arrays.set(name, deriveClientDoorPaths(root))
+    else if (name === 'RELEASE_PATHS') arrays.set(name, deriveReleasePaths(root))
     else if (new RegExp(`export const ${name} = \\[`).test(source)) {
       arrays.set(name, literalArray(source, name))
     }

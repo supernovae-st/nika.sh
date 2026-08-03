@@ -37,6 +37,7 @@ const CORE = [
   ['Manifesto', '/manifesto', 'the drum of liberation'],
   ['Convert', '/convert', 'send us a workflow'],
   ['Errors', '/language/errors', 'the typed error registry'],
+  ['Releases', '/releases', 'every version, its assets, its digests'],
   ['Standard library', '/language/stdlib', 'every nika: builtin the engine ships'],
   ['The four verbs', '/language/verbs', 'infer · exec · invoke · agent'],
   ['The language', '/language', 'every word the schema declares'],

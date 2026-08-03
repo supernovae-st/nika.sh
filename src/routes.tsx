@@ -30,6 +30,8 @@ import { Component as MapPage } from './pages/Map'
 import { Component as City } from './pages/City'
 import { Component as CityDecisions } from './pages/CityDecisions'
 import { Component as AdrRoom } from './pages/AdrRoom'
+import { Component as Releases } from './pages/Releases'
+import { Component as ReleaseRoom } from './pages/ReleaseRoom'
 import { Component as Governance } from './pages/Governance'
 import { Component as NepRoom } from './pages/NepRoom'
 import { Component as How } from './pages/How'
@@ -193,6 +195,12 @@ export const routes: RouteObject[] = [
       { path: 'city/decisions', Component: CityDecisions },
       /* one room per SETTLED decision · the 12 proposals keep their row */
       { path: 'city/decisions/:id', Component: AdrRoom },
+      /* the release record (world ⑦ · born 2026-08-03): /changelog stays the
+         NARRATIVE twin, these rooms are the RECORD — every published version
+         with its assets and the digests GitHub wrote at upload. Rooms ride
+         RELEASE_PATHS (derived from the vendored record, never typed). */
+      { path: 'releases', Component: Releases },
+      { path: 'releases/:tag', Component: ReleaseRoom },
       /* the lens-born hubs (WO-4) · their routes ride LENS_PATHS (the
          compiler's site.config section) — descriptor flip + recompile is
          how a hub is born */
