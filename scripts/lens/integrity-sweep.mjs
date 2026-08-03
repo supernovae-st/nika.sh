@@ -101,9 +101,15 @@ for (const r of sitemap) {
 }
 for (const [t, routes] of titles) if (routes.length > 1) fails.push(`title-dup "${t}" ← ${routes.join(' ')}`)
 
-/* 7 · rss carries exactly the blog pages */
+/* 7 · rss carries exactly the blog POSTS · a doorway stub under /blog is a
+   redirect, never a post (the parent-cover rows for /blog/tags and
+   /blog/series landed as rendered stubs and this counter read them as two
+   phantom posts · 2026-08-03 — the structural filter is the stub's own
+   generator marker, so any future doorway stays excluded) */
 const rssItems = (readFileSync(join(DIST, 'rss.xml'), 'utf8').match(/<item>/g) ?? []).length
-const blogPages = Object.keys(html).filter((r) => /^\/blog\/[^/]+$/.test(r)).length
+const blogPages = Object.entries(html).filter(
+  ([r, h]) => /^\/blog\/[^/]+$/.test(r) && !h.includes('nika-lens-doorway'),
+).length
 if (rssItems !== blogPages) fails.push(`rss ${rssItems} != blog ${blogPages}`)
 
 /* 8 · waiver liquidation (G.12): anchors_exist:false while the served page
