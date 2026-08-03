@@ -1366,10 +1366,50 @@
   align-items: center;
   text-align: center;
 }
-/* the shared site footer (F7) · its own v4sec-wrap would stack a full section
-   rhythm on top of the page's closing padding — keep the seam tight */
+/* ── the shared site footer (F7) · THE CABINET (recomposed 2026-08-03) ───────
+   One plate, one grid, one field. The page MELTS into the footer: the grain
+   blooms in over the signature zone (page sections carry no grain — the old
+   element-wide snap WAS the visible seam), then the ground deepens under the
+   SUPERNOVAE altar. Every band below the map row sits on the SAME six-column
+   grid as the link columns — no stacked section rhythms, no floating strips. */
+.v4sec.sitefoot {
+  /* the element-wide grain snap → the masked bloom on .sitefoot-field */
+  background-image: none;
+}
+.sitefoot-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    var(--v4-grain-img),
+    linear-gradient(180deg, transparent 55%, var(--v4-bg-deep) 100%);
+  background-size:
+    var(--v4-grain-size, 4px) var(--v4-grain-size, 4px),
+    100% 100%;
+}
+/* the melt · ROUTED pages only (the footer opens on a grainless section —
+   texture eases in across the signature zone instead of cutting at the
+   hairline; mask alpha only, the color is irrelevant). Home's footer lives
+   INSIDE the grained CTA section: no mask, the field stays continuous. */
+.sitefoot--melt .sitefoot-field {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 320px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 320px);
+}
 .sitefoot-wrap {
-  padding-top: 48px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+/* the signature · the threshold device on non-home routes: seated smaller
+   than the home altar (280 → 200 — the glyph space stays 280, the seat
+   scales), tight under the seam, 40px onto the plate */
+.sitefoot .fsig {
+  --fsig-size: 200px;
+  margin: 0 0 40px;
+}
+.sitefoot .fsig-fallback {
+  width: 122px;
+  height: 122px;
 }
 /* the signature OPENS the close (operator call) · lifted above the CTA, the
    butterfly lands first — the section's own padding carries the air above it
@@ -1436,7 +1476,9 @@
    footer's living particle butterfly. Bake script + generated file removed;
    git is the archive.) */
 
-/* ── WO-3 · the five-column projection + the machine row (§4.12) ── */
+/* ── WO-3 · the six-column projection + the index bands (§4.12) ──────────────
+   The map row OPENS the plate (its rule is the one strong line); the columns
+   and every index band below share its grid. */
 .sitefoot-maprow {
   width: 100%;
   display: flex;
@@ -1444,9 +1486,9 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 8px 24px;
-  margin-top: 48px;
-  padding-top: 22px;
-  border-top: 1px solid var(--v4-line);
+  margin-top: 0;
+  padding-block: 16px 12px;
+  border-top: 1px solid var(--v4-line-strong);
   text-align: left;
 }
 .sitefoot-maplink {
@@ -1475,7 +1517,9 @@
 .sitefoot-cols--six {
   margin-top: 0;
   border-top: none;
-  padding-top: 18px;
+  gap: 28px 24px;
+  padding-top: 4px;
+  padding-bottom: 36px;
 }
 .sitefoot-cols--five {
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1483,9 +1527,11 @@
 .sitefoot-cols--six {
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
-/* the registers strip · the machine-row grammar, its own hue seat */
+/* the index bands (registers · machines · languages) ride the SAME grid as
+   the columns above: label in column 1, entries filling 2 → end — the strip
+   stops being a free-wrapping cloud and reads as one tabular plate */
 .sitefoot-registers {
-  margin-top: 10px;
+  margin-top: 0;
 }
 @media (max-width: 980px) {
   .sitefoot-cols--five,
@@ -1494,7 +1540,9 @@
   }
 }
 @media (max-width: 640px) {
-  .sitefoot-cols--five {
+  /* two columns on phones — three squeezes the kicks into wraps */
+  .sitefoot-cols--five,
+  .sitefoot-cols--six {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -1514,22 +1562,31 @@
 }
 .sitefoot-machines {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 18px;
-  margin: 10px 0 0;
-  padding: 12px 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: baseline;
+  margin: 0;
+  padding: 10px 0;
   border-top: 1px solid var(--v4-line);
   font-family: var(--mono);
   font-size: var(--type-mini);
   text-align: left;
+  flex-wrap: wrap; /* the ≤640 flex fallback wraps */
 }
 .sitefoot-machines-kick {
+  grid-column: 1;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: var(--type-micro);
   color: var(--v4-text-faint);
+}
+.sitefoot-machine-links {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 18px;
 }
 .sitefoot-machine-link {
   color: var(--v4-text-dim);
@@ -1544,19 +1601,20 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-/* the languages row (WO-9a) · same register as the machines row above */
+/* the languages row (WO-9a) · same index-band grid as the machines row */
 .sitefoot-langs {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 14px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: baseline;
   margin: 0;
-  padding: 12px 0;
+  padding: 10px 0;
   border-top: 1px solid var(--v4-line);
   font-family: var(--mono);
   font-size: var(--type-mini);
   text-align: left;
+  flex-wrap: wrap; /* the ≤640 flex fallback wraps */
 }
 .sitefoot-lang-link {
   color: var(--v4-text-dim);
@@ -1576,6 +1634,24 @@
   text-decoration: underline;
   text-decoration-color: var(--v4-accent, #4f86ff);
   text-underline-offset: 3px;
+}
+/* the index bands follow the column grid down the breakpoints (these live
+   BELOW the base blocks — same specificity, source order decides) */
+@media (max-width: 980px) {
+  .sitefoot-machines,
+  .sitefoot-langs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  /* the label flows inline with its entries — a gutter column would eat
+     half a phone screen */
+  .sitefoot-machines,
+  .sitefoot-langs {
+    display: flex;
+    align-items: center;
+    gap: 2px 16px;
+  }
 }
 
 .v4cta-title {

@@ -53,17 +53,19 @@ function LocaleSwitcher() {
   return (
     <nav className="sitefoot-langs" aria-label="Languages">
       <span className="sitefoot-machines-kick">languages</span>
-      {variants.map(({ locale, path }) => (
-        <Link
-          key={locale.bcp47}
-          to={path}
-          lang={locale.bcp47}
-          aria-current={path === pathname ? 'page' : undefined}
-          className="sitefoot-lang-link"
-        >
-          {locale.label}
-        </Link>
-      ))}
+      <span className="sitefoot-machine-links">
+        {variants.map(({ locale, path }) => (
+          <Link
+            key={locale.bcp47}
+            to={path}
+            lang={locale.bcp47}
+            aria-current={path === pathname ? 'page' : undefined}
+            className="sitefoot-lang-link"
+          >
+            {locale.label}
+          </Link>
+        ))}
+      </span>
     </nav>
   )
 }
@@ -123,9 +125,13 @@ export function SignatureMark() {
   /* W-H: the particle chunk is decoration — a lite-data visitor keeps the
      static butterfly (the SSG/no-JS truth), zero extra bytes */
   const fxReady = useHydrated() && !prefersLiteData()
+  /* the static mark mirrors the live layout (stage + centered fallback):
+     the hydration swap moves ZERO pixels — no CLS when the canvas takes over */
   const staticSig = (
     <div className="fsig">
-      <img src="/nika.svg" alt="" width={170} height={170} loading="lazy" />
+      <div className="fsig-stage">
+        <img src="/nika.svg" alt="" className="fsig-fallback" width={170} height={170} loading="lazy" />
+      </div>
       <p className="fsig-caption">the noise becomes the file.</p>
     </div>
   )
@@ -141,7 +147,18 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
-    <footer className="theme-dark v4sec" aria-label="Site footer" lang="en">
+    <footer
+      className={`theme-dark v4sec sitefoot${signature ? ' sitefoot--melt' : ''}`}
+      aria-label="Site footer"
+      lang="en"
+    >
+      {/* the melt field · on routed pages (signature=true) the grain BLOOMS in
+          over the signature zone instead of snapping at the seam (page
+          sections carry no grain — the old element-wide tile WAS the visible
+          cut), then the ground deepens under the altar. Home (signature=false)
+          sits INSIDE the grained CTA section: its grain stays continuous from
+          the first pixel — masking it there would cut the field the other way. */}
+      <div aria-hidden className="sitefoot-field" />
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
         {/* THE SIGNATURE · the continuous living butterfly (F3) — Home
             renders it above the final CTA instead (signature={false}:
@@ -182,21 +199,25 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             new family joins by descriptor flip (the coverage gate's floor) */}
         <p className="sitefoot-machines sitefoot-registers">
           <span className="sitefoot-machines-kick">the registers</span>
-          {Object.keys(MEMBER_ROOM_FAMILIES).map((f) => (
-            <Link key={f} to={`/${f}`} className="sitefoot-machine-link">
-              {f}
-            </Link>
-          ))}
+          <span className="sitefoot-machine-links">
+            {Object.keys(MEMBER_ROOM_FAMILIES).map((f) => (
+              <Link key={f} to={`/${f}`} className="sitefoot-machine-link">
+                {f}
+              </Link>
+            ))}
+          </span>
         </p>
 
         {/* FOR MACHINES · the site names its own machine surfaces */}
         <p className="sitefoot-machines">
           <span className="sitefoot-machines-kick">for machines</span>
-          {FOOTER_MACHINE.map((m) => (
-            <a key={m.href} href={m.href} className="sitefoot-machine-link">
-              {m.label}
-            </a>
-          ))}
+          <span className="sitefoot-machine-links">
+            {FOOTER_MACHINE.map((m) => (
+              <a key={m.href} href={m.href} className="sitefoot-machine-link">
+                {m.label}
+              </a>
+            ))}
+          </span>
         </p>
 
         {/* THE LANGUAGES ROW · rendered ONLY when this page ships variants
@@ -206,12 +227,13 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
 
         {/* ─── SUPERNOVAE · the footer — KEPT INTACT (operator lock). The per-letter
              float wave + hover lift wordmark, the studio line, the founders, and
-             the free-software footer rule. Verbatim from the v3 close. ─── */}
+             the free-software footer rule. Verbatim from the v3 close; only the
+             band rhythm around it was recomposed (2026-08-03 cabinet pass). ─── */}
         <a
           href="https://supernovae.studio"
           target="_blank"
           rel="noreferrer"
-          className="supernovae-type mt-32 block w-full transition-opacity hover:opacity-90"
+          className="supernovae-type mt-10 block w-full transition-opacity hover:opacity-90"
           aria-label="SuperNovae Studio"
         >
           {'SUPERNOVAE'.split('').map((ch, i) => (
@@ -246,7 +268,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
         </p>
 
         <div
-          className="mono mt-20 flex w-full flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px] text-[var(--fg-ghost)]"
+          className="mono mt-12 flex w-full flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px] text-[var(--fg-ghost)]"
           style={{ borderColor: 'var(--hair)' }}
         >
           {/* the exposed-state line (usgraphics register): what's deployed, in

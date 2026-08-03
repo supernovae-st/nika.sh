@@ -293,12 +293,19 @@ export default function FooterSignature() {
     }
   }, [start])
 
-  /* pointer smear · move/leave on the stage (mouse + touch drag) */
+  /* pointer smear · move/leave on the stage (mouse + touch drag). Coords map
+     into GLYPH space (SIZE), not CSS px — the stage renders at any CSS size
+     (the site footer seats it at 200px; home keeps 280), the repel field must
+     follow the drawn pixels, not the box. */
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const r = canvas.getBoundingClientRect()
-    pointerRef.current = { x: e.clientX - r.left, y: e.clientY - r.top }
+    if (r.width === 0 || r.height === 0) return
+    pointerRef.current = {
+      x: ((e.clientX - r.left) * SIZE) / r.width,
+      y: ((e.clientY - r.top) * SIZE) / r.height,
+    }
   }, [])
   const onPointerLeave = useCallback(() => {
     pointerRef.current = null
