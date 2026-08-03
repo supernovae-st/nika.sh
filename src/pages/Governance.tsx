@@ -60,6 +60,10 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      /* the governance register shares the LANGUAGE card — the NEPs are the
+         language's own law (2026-08-04 og arbitrage: family, never home) */
+      { property: 'og:image', content: 'https://nika.sh/og-language.png' },
+      { property: 'og:image:alt', content: 'The Nika language register: every schema-declared word, one page.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],

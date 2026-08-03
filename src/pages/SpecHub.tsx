@@ -49,6 +49,9 @@ export function Component() {
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      /* the reference hub wears the reference card (2026-08-04 og arbitrage) */
+      { property: 'og:image', content: 'https://nika.sh/og-spec.png' },
+      { property: 'og:image:alt', content: 'The nika language reference: the contract an agent must satisfy before it acts.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ],

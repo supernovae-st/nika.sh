@@ -24,10 +24,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 300,
-    "set_sha256": "1c8dbd20c2cbcb25fbb75f58a3e0cd51a53c7c3d9459f58ac5a669f4a4c9cb73",
-    "rendered_count": 1028,
-    "rendered_set_sha256": "fde5fbd7fa44a6976cd07831719941cc40252f4a025501429df32b2e667445cc"
+    "count": 301,
+    "set_sha256": "5b3fde7ea69bb68dfd54d3e61f5a32dac5af09f0daa5a3c8ecda7a4c9fdfdfb3",
+    "rendered_count": 1029,
+    "rendered_set_sha256": "806ce832dd007da3f87a40445d07ada6fd7721e2e4fdb487388d6b3fcede010d"
   },
   "claim_count": 130,
   "bindings": [
@@ -916,7 +916,7 @@
     {
       "selector": "src/pages/FamilyRoot.tsx#count:1",
       "path": "src/pages/FamilyRoot.tsx",
-      "line": 37,
+      "line": 38,
       "text": "nine read-only tools",
       "source": "nine",
       "field": "mcpTools",
@@ -1073,7 +1073,7 @@
     {
       "selector": "src/pages/SpecHub.tsx#count:2",
       "path": "src/pages/SpecHub.tsx",
-      "line": 71,
+      "line": 74,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
