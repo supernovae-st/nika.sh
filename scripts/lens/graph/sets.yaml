@@ -668,6 +668,25 @@ legacy_moves:
   - { from: /error-categories/:id, to: /language/error-categories/:id, applied: language-world-v3 }
   - { from: /verbs, to: /language/verbs, applied: language-world-v3 }
   - { from: /verbs/:name, to: /language/verbs/:name, applied: language-world-v3 }
+  # ── parent covers (the trimmed-URL law · operator ruling 2026-08-03: « si
+  #    y'a des pages, leurs parents slug doivent exister — et ça tout le
+  #    temps »). Not retirements: these prefixes NEVER served, but their
+  #    children do, and a URL is an address people trim —
+  #    /language/words/config lived over a 404 parent. Each row roofs a
+  #    lineage with the living page that owns it; the parent-cover gate
+  #    (src/test/parent-cover.test.ts) holds the law for every FUTURE family.
+  - { from: /language/words, to: /language, applied: parent-cover }
+  - { from: /workflows/path, to: /workflows, applied: parent-cover }
+  - { from: /blog/tags, to: /blog, applied: parent-cover }
+  - { from: /blog/series, to: /blog, applied: parent-cover }
+  # the locale roots roof their clusters IN the reader's language
+  - { from: /fr, to: /fr/manifesto, applied: parent-cover }
+  - { from: /es, to: /es/manifesto, applied: parent-cover }
+  - { from: /de, to: /de/manifesto, applied: parent-cover }
+  - { from: /pt-br, to: /pt-br/manifesto, applied: parent-cover }
+  - { from: /ja, to: /ja/manifesto, applied: parent-cover }
+  - { from: /ko, to: /ko/manifesto, applied: parent-cover }
+  - { from: /zh-hans, to: /zh-hans/manifesto, applied: parent-cover }
   # ── the refusals re-home (2026-08-03 · operator ruling) · the LAST register
   #    at the root joins /language. These doorways are PERMANENT, not a
   #    migration aid: every released binary at or before the engine flip

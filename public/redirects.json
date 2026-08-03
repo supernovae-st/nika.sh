@@ -2,6 +2,20 @@
   "redirects_format": 1,
   "redirects": [
     {
+      "from": "/blog/series",
+      "to": "/blog",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
+      "from": "/blog/tags",
+      "to": "/blog",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
       "from": "/boundary",
       "to": "/how/boundary",
       "status": 301,
@@ -133,6 +147,13 @@
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
+    },
+    {
+      "from": "/de",
+      "to": "/de/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
     },
     {
       "from": "/edges",
@@ -1136,6 +1157,13 @@
       "applies": "errors-rehome"
     },
     {
+      "from": "/es",
+      "to": "/es/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
       "from": "/families",
       "to": "/language/families",
       "status": 301,
@@ -1190,6 +1218,27 @@
       "status": 301,
       "live": true,
       "applies": "how-world-v1"
+    },
+    {
+      "from": "/fr",
+      "to": "/fr/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
+      "from": "/ja",
+      "to": "/ja/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
+      "from": "/ko",
+      "to": "/ko/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
     },
     {
       "from": "/language/after",
@@ -1596,6 +1645,13 @@
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/words",
+      "to": "/language",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
     },
     {
       "from": "/language/words/depends_on",
@@ -2242,6 +2298,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/pt-br",
+      "to": "/pt-br/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
       "from": "/secrets",
       "to": "/language/secrets",
       "status": 301,
@@ -2870,6 +2933,20 @@
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
+    },
+    {
+      "from": "/workflows/path",
+      "to": "/workflows",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
+    },
+    {
+      "from": "/zh-hans",
+      "to": "/zh-hans/manifesto",
+      "status": 301,
+      "live": true,
+      "applies": "parent-cover"
     }
   ]
 }

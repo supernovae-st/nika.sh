@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1575
+  classified_files: 1587
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1209
+    authored: 1219
     authored-pin: 3
-    generated: 304
+    generated: 306
     pinned-copy: 21
     testimonial: 38
     foreign: 0
-  unverified-default: 411
+  unverified-default: 420
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 65721426751f2bbc09f4b0710669c827ad1f6ddf22b41852eab81837af4c1c22
+  sha256: 8b53f44d40f4fdf8a20ee8768a357270456eb6a403f54040dff3f752db894c53
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -351,7 +351,7 @@ files:
     - "nika 0.107.2 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
-  sha256: 847d9a03c0755fb33382e70397cd2d6e4e05a702d2d2df7bbe812500d2d9a1bc
+  sha256: 4e70890305438ee6d0483fc75f599e1bf6f8b95983c4d0d13189a7d94d428808
   evidence: "written by build-lens.mjs:1736 (redirects_format shape) — the append-only redirect registry (a published URL never 404s)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: c76ec9c9e9309e249f2cf4e3066de3096bee475799f42c9f7e6b7651f32fc370
+  sha256: fe92f6f5b358e5feba56af7f61a6920138a1ab33cfdf55867cc557d1a112b02e
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: c2dfab80206a781969c0252c81aef7c43db2fd822e5a5ab3d5ba05ea66ea505f
+  sha256: 50a914340bee3cc1ac1a830a171b75a501bb2e0cd823ebfa7c02479a70853dcf
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -780,8 +780,8 @@ patterns:
     - "public/fonts/*"
 - glob: "public/blog/**"
   class: generated
-  match_count: 33
-  aggregate_sha256: c2fd0d93def4df57a93e67f266e73bef5d89295c1deb4be57554a186a0b90496
+  match_count: 35
+  aggregate_sha256: 6c5369ec866d25ef605dfab892f8d385b965a699de37a37e9bb51fa5c5828167
   evidence: "the markdown twins scripts/build-blog.mjs projects from content/blog/*.md (build-blog.mjs:316 — 'public/blog/<slug>.md' with canon markers applied)"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 2f3c1775d12e2c5278b9c620b0c20d0e82e2ae91a303dc8328e92cd45d1133b7
+  aggregate_sha256: bf31dd8d13a94a3b08ac20460601fa61538da945ff90a6ee3e4d91c0b1e337a0
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 428
-  aggregate_sha256: 29cc773087dce21ad17b7932d927d0e138bb845a9feaa41e9e50b319309efe72
+  match_count: 429
+  aggregate_sha256: 73e47fc7eaefff0017c2e3a6b5e5c9969988c4867fdfcd0d97a67608584ff19b
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: 1e53a609408dab63cef1cfea53eba27f1efd3c0b170f372d67691f7ba78e09d7
+  aggregate_sha256: 749520d081f58d03d210278332e4bf38317c622477b70b7fe9079870bca36716
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 410
-  aggregate_sha256: b13a184abf5e31d892451c92a7b34f0c5f6140601444e9f10328cfca47a0ea50
+  match_count: 419
+  aggregate_sha256: 1078e8b1912224babb4558f510bb2c92a1be1e128ff9e9e2a01ac02f89e52d6e
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -972,6 +972,7 @@ unverified:
 - "public/conformance/index.html"
 - "public/conformance/runtime/index.html"
 - "public/conformance/stdlib/index.html"
+- "public/de/index.html"
 - "public/edges/control/index.html"
 - "public/edges/failure-observation/index.html"
 - "public/edges/finally/index.html"
@@ -1116,6 +1117,7 @@ unverified:
 - "public/errors/NIKA-VAR-020/index.html"
 - "public/errors/NIKA-VAR-021/index.html"
 - "public/errors/index.html"
+- "public/es/index.html"
 - "public/families/core/index.html"
 - "public/families/data/index.html"
 - "public/families/file/index.html"
@@ -1124,6 +1126,9 @@ unverified:
 - "public/families/media/index.html"
 - "public/families/network/index.html"
 - "public/flow/index.html"
+- "public/fr/index.html"
+- "public/ja/index.html"
+- "public/ko/index.html"
 - "public/language/after/index.html"
 - "public/language/agent/index.html"
 - "public/language/args/index.html"
@@ -1182,6 +1187,7 @@ unverified:
 - "public/language/vision/index.html"
 - "public/language/when/index.html"
 - "public/language/with/index.html"
+- "public/language/words/index.html"
 - "public/language/workflow/index.html"
 - "public/library/daily_brief/index.html"
 - "public/library/deep-research-brief/index.html"
@@ -1273,6 +1279,7 @@ unverified:
 - "public/providers/writer/index.html"
 - "public/providers/xai/index.html"
 - "public/providers/zhipu/index.html"
+- "public/pt-br/index.html"
 - "public/releases/catalog.json"
 - "public/secrets/env/index.html"
 - "public/secrets/file/index.html"
@@ -1366,3 +1373,5 @@ unverified:
 - "public/verbs/infer/index.html"
 - "public/verbs/invoke/index.html"
 - "public/workflows/lessons.json"
+- "public/workflows/path/index.html"
+- "public/zh-hans/index.html"

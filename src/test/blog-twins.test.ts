@@ -31,6 +31,9 @@ describe('/blog/<slug>.md · the served twins are the resolved sources', () => {
   it('every twin belongs to a live post (no orphan twin survives a rename)', () => {
     const slugs = new Set(BLOG_POSTS.map((p) => p.slug))
     for (const f of readdirSync(join(ROOT, 'public/blog'))) {
+      /* a twin is a .md FILE · the tags/series parent-cover doorway stubs
+         (directories · 2026-08-03) live here too and are not twins */
+      if (!f.endsWith('.md')) continue
       expect(slugs.has(f.replace(/\.md$/, '')), `orphan twin: ${f}`).toBe(true)
     }
   })
