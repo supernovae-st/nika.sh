@@ -137,7 +137,7 @@
 /* the CodeMirror well · clamp its height + own scroll, inside the chrome */
 .play-editor-body {
   position: relative;
-  background: var(--cf-bg, #0d0e12);
+  background: var(--cf-bg, #0a0d12);
 }
 .play-editor-body .cm-editor {
   /* FIXED height (was max-height · the /play CLS 0.143 finding): the well is
@@ -156,7 +156,7 @@
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--cf-gutter-ink, #555b67);
-  background: var(--cf-bg, #0d0e12);
+  background: var(--cf-bg, #0a0d12);
 }
 
 /* ── the verdict rail · the validator read-out + the verb legend ──────────────
@@ -682,4 +682,22 @@
 .play-embed-link:focus-visible {
   color: var(--v4-text);
   text-decoration-color: currentColor;
+}
+
+/* ── the corner minimap · the SAME .cf-minimap element every panel wears ─────
+   The well anchors it to the CODE area (under the chrome bar, exactly like a
+   CodeFile body); mid-edit the drawing dims to the last valid plan — the
+   DagView stale law, worn by the corner too. */
+.play-minimap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* only the drawing's own nodes take the pointer */
+}
+.play-minimap .cf-minimap {
+  pointer-events: auto;
+}
+.play-minimap[data-stale] {
+  opacity: 0.45;
+  filter: saturate(0.6);
+  transition: opacity 0.2s ease;
 }
