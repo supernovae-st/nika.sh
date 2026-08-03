@@ -123,7 +123,7 @@ export function Component() {
               rails={[
                 { kind: 'room', label: 'with', href: '/language/with' },
                 { kind: 'room', label: 'after', href: '/language/after' },
-                { kind: 'teaching', label: 'depends_on does not exist · NIKA-PARSE-024', href: '/errors/NIKA-PARSE-024' },
+                { kind: 'teaching', label: 'depends_on does not exist · NIKA-PARSE-024', href: '/language/errors/NIKA-PARSE-024' },
               ]}
             />
           </section>

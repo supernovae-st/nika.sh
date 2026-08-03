@@ -70,7 +70,7 @@ function CodeRow({
   return (
     <li id={entry.code} className={`er-row${active ? ' er-row--active' : ''}`}>
       <div className="er-row-head">
-        <a className="er-code" href={`/errors/${entry.code}`}>
+        <a className="er-code" href={`/language/errors/${entry.code}`}>
           {entry.code}
         </a>
         <Link
@@ -154,9 +154,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(code ? `/errors/${code}` : '/errors').link,
+    link: routeHead(code ? `/language/errors/${code}` : '/language/errors').link,
     meta: [
-      ...routeHead(code ? `/errors/${code}` : '/errors').meta,
+      ...routeHead(code ? `/language/errors/${code}` : '/language/errors').meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

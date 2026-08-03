@@ -314,7 +314,7 @@ export function Component() {
                     <ul className="td-chips">
                       {codes.map((c) => (
                         <li key={c}>
-                          <Link className="td-chip" to={`/errors/${c}`}>
+                          <Link className="td-chip" to={`/language/errors/${c}`}>
                             {c}
                           </Link>
                         </li>
@@ -363,7 +363,7 @@ export function Component() {
                       <p className="td-ref-k">errors of this verb</p>
                       <ul className="td-chips">
                         <li>
-                          <a className="td-chip" href="/errors">
+                          <a className="td-chip" href="/language/errors">
                             {VERB_ERR_NS[name]}
                           </a>
                         </li>

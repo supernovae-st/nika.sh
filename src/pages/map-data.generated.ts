@@ -224,7 +224,7 @@ export const MAP_LAYERS: MapLayer[] = [
   {
     "id": "refusals",
     "title": "The refusals",
-    "hub": "/errors",
+    "hub": "/language/errors",
     "exists": true,
     "lands": null,
     "opener": "Every refusal has a name. Errors are data: stable codes with a category, a transient flag and a documented fix shape · never prose exceptions.",
@@ -232,7 +232,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "error-codes",
         "title": "The error codes",
-        "url": "/errors",
+        "url": "/language",
         "count": 96,
         "surface": "rooms",
         "slot": null,
@@ -243,7 +243,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "error-namespaces",
         "title": "The error namespaces",
-        "url": "/errors",
+        "url": "/language/errors",
         "count": 25,
         "surface": "anchors",
         "slot": null,
@@ -254,7 +254,7 @@ export const MAP_LAYERS: MapLayer[] = [
       {
         "id": "error-categories",
         "title": "The error categories",
-        "url": "/errors",
+        "url": "/language/errors",
         "count": 12,
         "surface": "anchors",
         "slot": null,

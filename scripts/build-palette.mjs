@@ -36,7 +36,7 @@ const CORE = [
   ['Timeline', '/timeline', 'the one verifiable record'],
   ['Manifesto', '/manifesto', 'the drum of liberation'],
   ['Convert', '/convert', 'send us a workflow'],
-  ['Errors', '/errors', 'the typed error registry'],
+  ['Errors', '/language/errors', 'the typed error registry'],
   ['Standard library', '/language/stdlib', 'every nika: builtin the engine ships'],
   ['The four verbs', '/language/verbs', 'infer · exec · invoke · agent'],
   ['The language', '/language', 'every word the schema declares'],
@@ -127,7 +127,7 @@ export function compilePalette() {
   /* error codes · the registry's flat list (code + its one-line failure) */
   const catalog = JSON.parse(readFileSync(join(ROOT, 'public/errors/catalog.json'), 'utf8'))
   for (const e of catalog.codes ?? [])
-    entries.push({ kind: 'error', label: e.code, href: `/errors/${e.code}`, hint: e.failure })
+    entries.push({ kind: 'error', label: e.code, href: `/language/errors/${e.code}`, hint: e.failure })
 
   /* builtins · the stdlib register (full ref + the binary's one-liner) */
   const tools = JSON.parse(readFileSync(join(ROOT, 'public/tools/catalog.json'), 'utf8'))

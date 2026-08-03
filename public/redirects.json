@@ -457,6 +457,685 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/errors",
+      "to": "/language/errors",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AGENT-001",
+      "to": "/language/errors/NIKA-AGENT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AGENT-002",
+      "to": "/language/errors/NIKA-AGENT-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AGENT-003",
+      "to": "/language/errors/NIKA-AGENT-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AGENT-004",
+      "to": "/language/errors/NIKA-AGENT-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-ASSERT-001",
+      "to": "/language/errors/NIKA-ASSERT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AUTH-006",
+      "to": "/language/errors/NIKA-AUTH-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AUTH-007",
+      "to": "/language/errors/NIKA-AUTH-007",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AUTH-008",
+      "to": "/language/errors/NIKA-AUTH-008",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AUTH-009",
+      "to": "/language/errors/NIKA-AUTH-009",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-AUTH-010",
+      "to": "/language/errors/NIKA-AUTH-010",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-BUILTIN-001",
+      "to": "/language/errors/NIKA-BUILTIN-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-BUILTIN-DONE-001",
+      "to": "/language/errors/NIKA-BUILTIN-DONE-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-CANCEL-001",
+      "to": "/language/errors/NIKA-CANCEL-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-COMP-001",
+      "to": "/language/errors/NIKA-COMP-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-COMP-002",
+      "to": "/language/errors/NIKA-COMP-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-COMP-003",
+      "to": "/language/errors/NIKA-COMP-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-COMP-004",
+      "to": "/language/errors/NIKA-COMP-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-001",
+      "to": "/language/errors/NIKA-DAG-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-002",
+      "to": "/language/errors/NIKA-DAG-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-004",
+      "to": "/language/errors/NIKA-DAG-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-005",
+      "to": "/language/errors/NIKA-DAG-005",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-006",
+      "to": "/language/errors/NIKA-DAG-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-007",
+      "to": "/language/errors/NIKA-DAG-007",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DECIDE-001",
+      "to": "/language/errors/NIKA-DECIDE-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DECIDE-002",
+      "to": "/language/errors/NIKA-DECIDE-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DEFAULT-001",
+      "to": "/language/errors/NIKA-DEFAULT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DRIFT-001",
+      "to": "/language/errors/NIKA-DRIFT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-EXEC-001",
+      "to": "/language/errors/NIKA-EXEC-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-EXEC-002",
+      "to": "/language/errors/NIKA-EXEC-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-INFER-001",
+      "to": "/language/errors/NIKA-INFER-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-INFER-002",
+      "to": "/language/errors/NIKA-INFER-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-INVOKE-001",
+      "to": "/language/errors/NIKA-INVOKE-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-INVOKE-002",
+      "to": "/language/errors/NIKA-INVOKE-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-LOCK-001",
+      "to": "/language/errors/NIKA-LOCK-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-MCP-001",
+      "to": "/language/errors/NIKA-MCP-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-MCP-002",
+      "to": "/language/errors/NIKA-MCP-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-001",
+      "to": "/language/errors/NIKA-PARSE-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-002",
+      "to": "/language/errors/NIKA-PARSE-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-003",
+      "to": "/language/errors/NIKA-PARSE-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-004",
+      "to": "/language/errors/NIKA-PARSE-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-005",
+      "to": "/language/errors/NIKA-PARSE-005",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-006",
+      "to": "/language/errors/NIKA-PARSE-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-007",
+      "to": "/language/errors/NIKA-PARSE-007",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-008",
+      "to": "/language/errors/NIKA-PARSE-008",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-009",
+      "to": "/language/errors/NIKA-PARSE-009",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-010",
+      "to": "/language/errors/NIKA-PARSE-010",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-011",
+      "to": "/language/errors/NIKA-PARSE-011",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-012",
+      "to": "/language/errors/NIKA-PARSE-012",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-013",
+      "to": "/language/errors/NIKA-PARSE-013",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-014",
+      "to": "/language/errors/NIKA-PARSE-014",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-017",
+      "to": "/language/errors/NIKA-PARSE-017",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-018",
+      "to": "/language/errors/NIKA-PARSE-018",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-019",
+      "to": "/language/errors/NIKA-PARSE-019",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-020",
+      "to": "/language/errors/NIKA-PARSE-020",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-021",
+      "to": "/language/errors/NIKA-PARSE-021",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-022",
+      "to": "/language/errors/NIKA-PARSE-022",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-023",
+      "to": "/language/errors/NIKA-PARSE-023",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-024",
+      "to": "/language/errors/NIKA-PARSE-024",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-025",
+      "to": "/language/errors/NIKA-PARSE-025",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-026",
+      "to": "/language/errors/NIKA-PARSE-026",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-027",
+      "to": "/language/errors/NIKA-PARSE-027",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PARSE-028",
+      "to": "/language/errors/NIKA-PARSE-028",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-POLICY-001",
+      "to": "/language/errors/NIKA-POLICY-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PORT-001",
+      "to": "/language/errors/NIKA-PORT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-PORT-002",
+      "to": "/language/errors/NIKA-PORT-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-001",
+      "to": "/language/errors/NIKA-SEC-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-002",
+      "to": "/language/errors/NIKA-SEC-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-003",
+      "to": "/language/errors/NIKA-SEC-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-004",
+      "to": "/language/errors/NIKA-SEC-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-005",
+      "to": "/language/errors/NIKA-SEC-005",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-006",
+      "to": "/language/errors/NIKA-SEC-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-007",
+      "to": "/language/errors/NIKA-SEC-007",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-008",
+      "to": "/language/errors/NIKA-SEC-008",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-SEC-009",
+      "to": "/language/errors/NIKA-SEC-009",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TIMEOUT-001",
+      "to": "/language/errors/NIKA-TIMEOUT-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-001",
+      "to": "/language/errors/NIKA-TYPE-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-002",
+      "to": "/language/errors/NIKA-TYPE-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-003",
+      "to": "/language/errors/NIKA-TYPE-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-004",
+      "to": "/language/errors/NIKA-TYPE-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-005",
+      "to": "/language/errors/NIKA-TYPE-005",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-006",
+      "to": "/language/errors/NIKA-TYPE-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-TYPE-101",
+      "to": "/language/errors/NIKA-TYPE-101",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VALUES-001",
+      "to": "/language/errors/NIKA-VALUES-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VALUES-002",
+      "to": "/language/errors/NIKA-VALUES-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VALUES-003",
+      "to": "/language/errors/NIKA-VALUES-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-001",
+      "to": "/language/errors/NIKA-VAR-001",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-002",
+      "to": "/language/errors/NIKA-VAR-002",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-003",
+      "to": "/language/errors/NIKA-VAR-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-004",
+      "to": "/language/errors/NIKA-VAR-004",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-005",
+      "to": "/language/errors/NIKA-VAR-005",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-006",
+      "to": "/language/errors/NIKA-VAR-006",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-007",
+      "to": "/language/errors/NIKA-VAR-007",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-008",
+      "to": "/language/errors/NIKA-VAR-008",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-009",
+      "to": "/language/errors/NIKA-VAR-009",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-020",
+      "to": "/language/errors/NIKA-VAR-020",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-VAR-021",
+      "to": "/language/errors/NIKA-VAR-021",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
       "from": "/families",
       "to": "/language/families",
       "status": 301,
@@ -1297,6 +1976,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/ai21",
+      "to": "/catalog/providers/ai21",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/anthropic",
       "to": "/catalog/providers/anthropic",
       "status": 301,
@@ -1304,8 +1990,64 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/azure",
+      "to": "/catalog/providers/azure",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/bedrock",
+      "to": "/catalog/providers/bedrock",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/cerebras",
+      "to": "/catalog/providers/cerebras",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/cloudflare",
+      "to": "/catalog/providers/cloudflare",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/cohere",
+      "to": "/catalog/providers/cohere",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/databricks",
+      "to": "/catalog/providers/databricks",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/deepinfra",
+      "to": "/catalog/providers/deepinfra",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/deepseek",
       "to": "/catalog/providers/deepseek",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/fireworks",
+      "to": "/catalog/providers/fireworks",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
@@ -1332,6 +2074,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/hyperbolic",
+      "to": "/catalog/providers/hyperbolic",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/llamacpp",
       "to": "/catalog/providers/llamacpp",
       "status": 301,
@@ -1353,6 +2102,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/minimax",
+      "to": "/catalog/providers/minimax",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/mistral",
       "to": "/catalog/providers/mistral",
       "status": 301,
@@ -1369,6 +2125,13 @@
     {
       "from": "/providers/moonshot",
       "to": "/catalog/providers/moonshot",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/native",
+      "to": "/catalog/providers/native",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
@@ -1402,6 +2165,48 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/perplexity",
+      "to": "/catalog/providers/perplexity",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/qwen",
+      "to": "/catalog/providers/qwen",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/replicate",
+      "to": "/catalog/providers/replicate",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/sambanova",
+      "to": "/catalog/providers/sambanova",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/together",
+      "to": "/catalog/providers/together",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/vertex",
+      "to": "/catalog/providers/vertex",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/vllm",
       "to": "/catalog/providers/vllm",
       "status": 301,
@@ -1409,8 +2214,29 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/providers/voyage",
+      "to": "/catalog/providers/voyage",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/writer",
+      "to": "/catalog/providers/writer",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/providers/xai",
       "to": "/catalog/providers/xai",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/providers/zhipu",
+      "to": "/catalog/providers/zhipu",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"

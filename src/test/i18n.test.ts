@@ -99,7 +99,7 @@ describe('i18n · locale resolution', () => {
         expect(baseOf(v.path)).toBe(base)
       }
     }
-    expect(localeOf('/errors').prefix).toBe('') // a root page is EN
+    expect(localeOf('/language/errors').prefix).toBe('') // a root page is EN
     expect(baseOf('/fr/manifesto')).toBe('/manifesto')
   })
 

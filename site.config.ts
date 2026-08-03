@@ -188,8 +188,8 @@ export const INSTALL_PATHS = ['/fr/install', '/es/install', '/de/install', '/pt-
    never by editing this expression. */
 export const ERROR_PATHS: string[] = [
   ...new Set([
-    ...ERROR_CODES.map((e) => `/errors/${e.code}`),
-    ...PENDING_ERROR_CODES.map((c) => `/errors/${c}`),
+    ...ERROR_CODES.map((e) => `/language/errors/${e.code}`),
+    ...PENDING_ERROR_CODES.map((c) => `/language/errors/${c}`),
   ]),
 ].sort()
 
@@ -372,4 +372,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/language/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/install', ...INSTALL_PATHS, '/convert', '/brand']

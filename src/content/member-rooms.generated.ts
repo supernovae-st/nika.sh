@@ -521,7 +521,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "language/error-namespaces": {
     "set": "error-namespaces",
     "title": "The error namespaces",
-    "hub": "/errors",
+    "hub": "/language/errors",
     "members": [
       {
         "id": "NIKA-AGENT",
@@ -692,7 +692,7 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
   "language/error-categories": {
     "set": "error-categories",
     "title": "The error categories",
-    "hub": "/errors",
+    "hub": "/language/errors",
     "members": [
       {
         "id": "budget_error",

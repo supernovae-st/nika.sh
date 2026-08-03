@@ -169,7 +169,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AGENT-001",
-    "url": "/errors/NIKA-AGENT-001",
+    "url": "/language/errors/NIKA-AGENT-001",
     "status": "ratified",
     "opener": "max_turns exhausted before completion",
     "meta": {
@@ -183,7 +183,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AGENT-002",
-    "url": "/errors/NIKA-AGENT-002",
+    "url": "/language/errors/NIKA-AGENT-002",
     "status": "ratified",
     "opener": "max_tokens_total exhausted before completion",
     "meta": {
@@ -197,7 +197,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AGENT-003",
-    "url": "/errors/NIKA-AGENT-003",
+    "url": "/language/errors/NIKA-AGENT-003",
     "status": "ratified",
     "opener": "a skills: path does not resolve (file missing/unreadable at compose time)",
     "meta": {
@@ -211,7 +211,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AGENT-004",
-    "url": "/errors/NIKA-AGENT-004",
+    "url": "/language/errors/NIKA-AGENT-004",
     "status": "ratified",
     "opener": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)",
     "meta": {
@@ -225,7 +225,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-ASSERT-001",
-    "url": "/errors/NIKA-ASSERT-001",
+    "url": "/language/errors/NIKA-ASSERT-001",
     "status": "ratified",
     "opener": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)",
     "meta": {
@@ -239,7 +239,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AUTH-006",
-    "url": "/errors/NIKA-AUTH-006",
+    "url": "/language/errors/NIKA-AUTH-006",
     "status": "ratified",
     "opener": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)",
     "meta": {
@@ -253,7 +253,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AUTH-007",
-    "url": "/errors/NIKA-AUTH-007",
+    "url": "/language/errors/NIKA-AUTH-007",
     "status": "ratified",
     "opener": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)",
     "meta": {
@@ -267,7 +267,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AUTH-008",
-    "url": "/errors/NIKA-AUTH-008",
+    "url": "/language/errors/NIKA-AUTH-008",
     "status": "ratified",
     "opener": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)",
     "meta": {
@@ -281,7 +281,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AUTH-009",
-    "url": "/errors/NIKA-AUTH-009",
+    "url": "/language/errors/NIKA-AUTH-009",
     "status": "ratified",
     "opener": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)",
     "meta": {
@@ -295,7 +295,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-AUTH-010",
-    "url": "/errors/NIKA-AUTH-010",
+    "url": "/language/errors/NIKA-AUTH-010",
     "status": "ratified",
     "opener": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)",
     "meta": {
@@ -309,7 +309,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-BUILTIN-001",
-    "url": "/errors/NIKA-BUILTIN-001",
+    "url": "/language/errors/NIKA-BUILTIN-001",
     "status": "ratified",
     "opener": "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)",
     "meta": {
@@ -323,7 +323,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-BUILTIN-DONE-001",
-    "url": "/errors/NIKA-BUILTIN-DONE-001",
+    "url": "/language/errors/NIKA-BUILTIN-DONE-001",
     "status": "ratified",
     "opener": "nika:done invoked outside an agent: loop",
     "meta": {
@@ -337,7 +337,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-CANCEL-001",
-    "url": "/errors/NIKA-CANCEL-001",
+    "url": "/language/errors/NIKA-CANCEL-001",
     "status": "ratified",
     "opener": "task cancelled (workflow failure gate · user cancellation)",
     "meta": {
@@ -351,7 +351,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-COMP-001",
-    "url": "/errors/NIKA-COMP-001",
+    "url": "/language/errors/NIKA-COMP-001",
     "status": "ratified",
     "opener": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)",
     "meta": {
@@ -365,7 +365,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-COMP-002",
-    "url": "/errors/NIKA-COMP-002",
+    "url": "/language/errors/NIKA-COMP-002",
     "status": "ratified",
     "opener": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)",
     "meta": {
@@ -379,7 +379,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-COMP-003",
-    "url": "/errors/NIKA-COMP-003",
+    "url": "/language/errors/NIKA-COMP-003",
     "status": "ratified",
     "opener": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)",
     "meta": {
@@ -393,7 +393,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-COMP-004",
-    "url": "/errors/NIKA-COMP-004",
+    "url": "/language/errors/NIKA-COMP-004",
     "status": "ratified",
     "opener": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)",
     "meta": {
@@ -407,7 +407,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-001",
-    "url": "/errors/NIKA-DAG-001",
+    "url": "/language/errors/NIKA-DAG-001",
     "status": "ratified",
     "opener": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)",
     "meta": {
@@ -421,7 +421,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-002",
-    "url": "/errors/NIKA-DAG-002",
+    "url": "/language/errors/NIKA-DAG-002",
     "status": "ratified",
     "opener": "with:/after: references an undeclared task",
     "meta": {
@@ -435,7 +435,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-004",
-    "url": "/errors/NIKA-DAG-004",
+    "url": "/language/errors/NIKA-DAG-004",
     "status": "ratified",
     "opener": "on_error.recover references a task downstream of the declaring task (await would deadlock)",
     "meta": {
@@ -449,7 +449,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-005",
-    "url": "/errors/NIKA-DAG-005",
+    "url": "/language/errors/NIKA-DAG-005",
     "status": "ratified",
     "opener": "after: predicate outside the closed set (success · failure · skipped · terminal)",
     "meta": {
@@ -463,7 +463,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-006",
-    "url": "/errors/NIKA-DAG-006",
+    "url": "/language/errors/NIKA-DAG-006",
     "status": "ratified",
     "opener": "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)",
     "meta": {
@@ -477,7 +477,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DAG-007",
-    "url": "/errors/NIKA-DAG-007",
+    "url": "/language/errors/NIKA-DAG-007",
     "status": "ratified",
     "opener": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds",
     "meta": {
@@ -491,7 +491,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DECIDE-001",
-    "url": "/errors/NIKA-DECIDE-001",
+    "url": "/language/errors/NIKA-DECIDE-001",
     "status": "ratified",
     "opener": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)",
     "meta": {
@@ -505,7 +505,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DECIDE-002",
-    "url": "/errors/NIKA-DECIDE-002",
+    "url": "/language/errors/NIKA-DECIDE-002",
     "status": "ratified",
     "opener": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)",
     "meta": {
@@ -519,7 +519,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DEFAULT-001",
-    "url": "/errors/NIKA-DEFAULT-001",
+    "url": "/language/errors/NIKA-DEFAULT-001",
     "status": "ratified",
     "opener": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)",
     "meta": {
@@ -533,7 +533,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-DRIFT-001",
-    "url": "/errors/NIKA-DRIFT-001",
+    "url": "/language/errors/NIKA-DRIFT-001",
     "status": "ratified",
     "opener": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)",
     "meta": {
@@ -547,7 +547,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-EXEC-001",
-    "url": "/errors/NIKA-EXEC-001",
+    "url": "/language/errors/NIKA-EXEC-001",
     "status": "ratified",
     "opener": "non-zero exit code (default capture modes)",
     "meta": {
@@ -561,7 +561,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-EXEC-002",
-    "url": "/errors/NIKA-EXEC-002",
+    "url": "/language/errors/NIKA-EXEC-002",
     "status": "ratified",
     "opener": "spawn failure (command not found · permission)",
     "meta": {
@@ -575,7 +575,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-INFER-001",
-    "url": "/errors/NIKA-INFER-001",
+    "url": "/language/errors/NIKA-INFER-001",
     "status": "ratified",
     "opener": "provider call failed (HTTP error · provider refusal)",
     "meta": {
@@ -589,7 +589,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-INFER-002",
-    "url": "/errors/NIKA-INFER-002",
+    "url": "/language/errors/NIKA-INFER-002",
     "status": "ratified",
     "opener": "structured output failed schema validation (after any engine-internal retries)",
     "meta": {
@@ -603,7 +603,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-INVOKE-001",
-    "url": "/errors/NIKA-INVOKE-001",
+    "url": "/language/errors/NIKA-INVOKE-001",
     "status": "ratified",
     "opener": "unknown tool (unresolvable nika:/mcp: id)",
     "meta": {
@@ -617,7 +617,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-INVOKE-002",
-    "url": "/errors/NIKA-INVOKE-002",
+    "url": "/language/errors/NIKA-INVOKE-002",
     "status": "ratified",
     "opener": "tool args failed the tool's schema",
     "meta": {
@@ -631,7 +631,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-LOCK-001",
-    "url": "/errors/NIKA-LOCK-001",
+    "url": "/language/errors/NIKA-LOCK-001",
     "status": "ratified",
     "opener": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)",
     "meta": {
@@ -645,7 +645,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-MCP-001",
-    "url": "/errors/NIKA-MCP-001",
+    "url": "/language/errors/NIKA-MCP-001",
     "status": "ratified",
     "opener": "MCP server not configured / not reachable at call time",
     "meta": {
@@ -659,7 +659,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-MCP-002",
-    "url": "/errors/NIKA-MCP-002",
+    "url": "/language/errors/NIKA-MCP-002",
     "status": "ratified",
     "opener": "MCP tool call failed (transport · tool-side error)",
     "meta": {
@@ -673,7 +673,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-001",
-    "url": "/errors/NIKA-PARSE-001",
+    "url": "/language/errors/NIKA-PARSE-001",
     "status": "ratified",
     "opener": "the YAML itself does not parse (syntax error)",
     "meta": {
@@ -687,7 +687,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-002",
-    "url": "/errors/NIKA-PARSE-002",
+    "url": "/language/errors/NIKA-PARSE-002",
     "status": "ratified",
     "opener": "missing envelope field (nika: / workflow: / non-empty tasks:)",
     "meta": {
@@ -701,7 +701,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-003",
-    "url": "/errors/NIKA-PARSE-003",
+    "url": "/language/errors/NIKA-PARSE-003",
     "status": "ratified",
     "opener": "nika: version marker is not exactly v1",
     "meta": {
@@ -715,7 +715,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-004",
-    "url": "/errors/NIKA-PARSE-004",
+    "url": "/language/errors/NIKA-PARSE-004",
     "status": "ratified",
     "opener": "workflow: id violates ^[a-z][a-z0-9-]*$",
     "meta": {
@@ -729,7 +729,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-005",
-    "url": "/errors/NIKA-PARSE-005",
+    "url": "/language/errors/NIKA-PARSE-005",
     "status": "ratified",
     "opener": "unknown field — strict mode rejects anything outside the closed v1 set",
     "meta": {
@@ -743,7 +743,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-006",
-    "url": "/errors/NIKA-PARSE-006",
+    "url": "/language/errors/NIKA-PARSE-006",
     "status": "ratified",
     "opener": "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)",
     "meta": {
@@ -757,7 +757,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-007",
-    "url": "/errors/NIKA-PARSE-007",
+    "url": "/language/errors/NIKA-PARSE-007",
     "status": "ratified",
     "opener": "duplicate task id within the workflow",
     "meta": {
@@ -771,7 +771,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-008",
-    "url": "/errors/NIKA-PARSE-008",
+    "url": "/language/errors/NIKA-PARSE-008",
     "status": "ratified",
     "opener": "task declares no verb — exactly one of infer/exec/invoke/agent required",
     "meta": {
@@ -785,7 +785,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-009",
-    "url": "/errors/NIKA-PARSE-009",
+    "url": "/language/errors/NIKA-PARSE-009",
     "status": "ratified",
     "opener": "task declares multiple verbs — exactly one required",
     "meta": {
@@ -799,7 +799,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-010",
-    "url": "/errors/NIKA-PARSE-010",
+    "url": "/language/errors/NIKA-PARSE-010",
     "status": "ratified",
     "opener": "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)",
     "meta": {
@@ -813,7 +813,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-011",
-    "url": "/errors/NIKA-PARSE-011",
+    "url": "/language/errors/NIKA-PARSE-011",
     "status": "ratified",
     "opener": "retry: block violates the spec shape",
     "meta": {
@@ -827,7 +827,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-012",
-    "url": "/errors/NIKA-PARSE-012",
+    "url": "/language/errors/NIKA-PARSE-012",
     "status": "ratified",
     "opener": "on_error: block violates the spec shape (fields mutually exclusive)",
     "meta": {
@@ -841,7 +841,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-013",
-    "url": "/errors/NIKA-PARSE-013",
+    "url": "/language/errors/NIKA-PARSE-013",
     "status": "ratified",
     "opener": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)",
     "meta": {
@@ -855,7 +855,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-014",
-    "url": "/errors/NIKA-PARSE-014",
+    "url": "/language/errors/NIKA-PARSE-014",
     "status": "ratified",
     "opener": "secrets: entry is not a store reference — inline literals forbidden",
     "meta": {
@@ -869,7 +869,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-017",
-    "url": "/errors/NIKA-PARSE-017",
+    "url": "/language/errors/NIKA-PARSE-017",
     "status": "ratified",
     "opener": "duplicate mapping key — no silent last-wins",
     "meta": {
@@ -883,7 +883,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-018",
-    "url": "/errors/NIKA-PARSE-018",
+    "url": "/language/errors/NIKA-PARSE-018",
     "status": "ratified",
     "opener": "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)",
     "meta": {
@@ -897,7 +897,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-019",
-    "url": "/errors/NIKA-PARSE-019",
+    "url": "/language/errors/NIKA-PARSE-019",
     "status": "ratified",
     "opener": "generic structural validation — wrong YAML shape for a field",
     "meta": {
@@ -911,7 +911,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-020",
-    "url": "/errors/NIKA-PARSE-020",
+    "url": "/language/errors/NIKA-PARSE-020",
     "status": "ratified",
     "opener": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)",
     "meta": {
@@ -925,7 +925,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-021",
-    "url": "/errors/NIKA-PARSE-021",
+    "url": "/language/errors/NIKA-PARSE-021",
     "status": "ratified",
     "opener": "top-level description: — it moved into workflow.description",
     "meta": {
@@ -939,7 +939,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-022",
-    "url": "/errors/NIKA-PARSE-022",
+    "url": "/language/errors/NIKA-PARSE-022",
     "status": "ratified",
     "opener": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)",
     "meta": {
@@ -953,7 +953,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-023",
-    "url": "/errors/NIKA-PARSE-023",
+    "url": "/language/errors/NIKA-PARSE-023",
     "status": "ratified",
     "opener": "a task carries an id: field — the map key is the identity, the field is gone",
     "meta": {
@@ -967,7 +967,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-024",
-    "url": "/errors/NIKA-PARSE-024",
+    "url": "/language/errors/NIKA-PARSE-024",
     "status": "ratified",
     "opener": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)",
     "meta": {
@@ -981,7 +981,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-025",
-    "url": "/errors/NIKA-PARSE-025",
+    "url": "/language/errors/NIKA-PARSE-025",
     "status": "ratified",
     "opener": "decode: with capture: structured — that capture already IS an object · type it with returns:",
     "meta": {
@@ -995,7 +995,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-026",
-    "url": "/errors/NIKA-PARSE-026",
+    "url": "/language/errors/NIKA-PARSE-026",
     "status": "ratified",
     "opener": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)",
     "meta": {
@@ -1009,7 +1009,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-027",
-    "url": "/errors/NIKA-PARSE-027",
+    "url": "/language/errors/NIKA-PARSE-027",
     "status": "ratified",
     "opener": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)",
     "meta": {
@@ -1023,7 +1023,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PARSE-028",
-    "url": "/errors/NIKA-PARSE-028",
+    "url": "/language/errors/NIKA-PARSE-028",
     "status": "ratified",
     "opener": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)",
     "meta": {
@@ -1037,7 +1037,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-POLICY-001",
-    "url": "/errors/NIKA-POLICY-001",
+    "url": "/language/errors/NIKA-POLICY-001",
     "status": "ratified",
     "opener": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)",
     "meta": {
@@ -1051,7 +1051,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PORT-001",
-    "url": "/errors/NIKA-PORT-001",
+    "url": "/language/errors/NIKA-PORT-001",
     "status": "ratified",
     "opener": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)",
     "meta": {
@@ -1065,7 +1065,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-PORT-002",
-    "url": "/errors/NIKA-PORT-002",
+    "url": "/language/errors/NIKA-PORT-002",
     "status": "ratified",
     "opener": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)",
     "meta": {
@@ -1079,7 +1079,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-001",
-    "url": "/errors/NIKA-SEC-001",
+    "url": "/language/errors/NIKA-SEC-001",
     "status": "ratified",
     "opener": "exec: blocklist hit",
     "meta": {
@@ -1093,7 +1093,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-002",
-    "url": "/errors/NIKA-SEC-002",
+    "url": "/language/errors/NIKA-SEC-002",
     "status": "ratified",
     "opener": "agent tool call outside the tools: whitelist",
     "meta": {
@@ -1107,7 +1107,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-003",
-    "url": "/errors/NIKA-SEC-003",
+    "url": "/language/errors/NIKA-SEC-003",
     "status": "ratified",
     "opener": "run-recursion bound — nested-run depth exceeded OR self-launching workflow",
     "meta": {
@@ -1121,7 +1121,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-004",
-    "url": "/errors/NIKA-SEC-004",
+    "url": "/language/errors/NIKA-SEC-004",
     "status": "ratified",
     "opener": "effect outside the declared permits: capability boundary (fs/net/exec/tool)",
     "meta": {
@@ -1135,7 +1135,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-005",
-    "url": "/errors/NIKA-SEC-005",
+    "url": "/language/errors/NIKA-SEC-005",
     "status": "ratified",
     "opener": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)",
     "meta": {
@@ -1149,7 +1149,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-006",
-    "url": "/errors/NIKA-SEC-006",
+    "url": "/language/errors/NIKA-SEC-006",
     "status": "ratified",
     "opener": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)",
     "meta": {
@@ -1163,7 +1163,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-007",
-    "url": "/errors/NIKA-SEC-007",
+    "url": "/language/errors/NIKA-SEC-007",
     "status": "ratified",
     "opener": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)",
     "meta": {
@@ -1177,7 +1177,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-008",
-    "url": "/errors/NIKA-SEC-008",
+    "url": "/language/errors/NIKA-SEC-008",
     "status": "ratified",
     "opener": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)",
     "meta": {
@@ -1191,7 +1191,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-SEC-009",
-    "url": "/errors/NIKA-SEC-009",
+    "url": "/language/errors/NIKA-SEC-009",
     "status": "ratified",
     "opener": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)",
     "meta": {
@@ -1205,7 +1205,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TIMEOUT-001",
-    "url": "/errors/NIKA-TIMEOUT-001",
+    "url": "/language/errors/NIKA-TIMEOUT-001",
     "status": "ratified",
     "opener": "task (or for_each iteration) exceeded timeout:",
     "meta": {
@@ -1219,7 +1219,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-001",
-    "url": "/errors/NIKA-TYPE-001",
+    "url": "/language/errors/NIKA-TYPE-001",
     "status": "ratified",
     "opener": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close",
     "meta": {
@@ -1233,7 +1233,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-002",
-    "url": "/errors/NIKA-TYPE-002",
+    "url": "/language/errors/NIKA-TYPE-002",
     "status": "ratified",
     "opener": "recursive type reference — the types: graph must be acyclic",
     "meta": {
@@ -1247,7 +1247,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-003",
-    "url": "/errors/NIKA-TYPE-003",
+    "url": "/language/errors/NIKA-TYPE-003",
     "status": "ratified",
     "opener": "returns: and schema: on the same task — one contract, one spelling",
     "meta": {
@@ -1261,7 +1261,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-004",
-    "url": "/errors/NIKA-TYPE-004",
+    "url": "/language/errors/NIKA-TYPE-004",
     "status": "ratified",
     "opener": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)",
     "meta": {
@@ -1275,7 +1275,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-005",
-    "url": "/errors/NIKA-TYPE-005",
+    "url": "/language/errors/NIKA-TYPE-005",
     "status": "ratified",
     "opener": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)",
     "meta": {
@@ -1289,7 +1289,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-006",
-    "url": "/errors/NIKA-TYPE-006",
+    "url": "/language/errors/NIKA-TYPE-006",
     "status": "ratified",
     "opener": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)",
     "meta": {
@@ -1303,7 +1303,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-TYPE-101",
-    "url": "/errors/NIKA-TYPE-101",
+    "url": "/language/errors/NIKA-TYPE-101",
     "status": "ratified",
     "opener": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)",
     "meta": {
@@ -1317,7 +1317,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VALUES-001",
-    "url": "/errors/NIKA-VALUES-001",
+    "url": "/language/errors/NIKA-VALUES-001",
     "status": "ratified",
     "opener": "vars: is a dead envelope field (R3a · the E-split)",
     "meta": {
@@ -1331,7 +1331,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VALUES-002",
-    "url": "/errors/NIKA-VALUES-002",
+    "url": "/language/errors/NIKA-VALUES-002",
     "status": "ratified",
     "opener": "env: is a dead envelope field (R3a · the E-split)",
     "meta": {
@@ -1345,7 +1345,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VALUES-003",
-    "url": "/errors/NIKA-VALUES-003",
+    "url": "/language/errors/NIKA-VALUES-003",
     "status": "ratified",
     "opener": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)",
     "meta": {
@@ -1359,7 +1359,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-001",
-    "url": "/errors/NIKA-VAR-001",
+    "url": "/language/errors/NIKA-VAR-001",
     "status": "ratified",
     "opener": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)",
     "meta": {
@@ -1373,7 +1373,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-002",
-    "url": "/errors/NIKA-VAR-002",
+    "url": "/language/errors/NIKA-VAR-002",
     "status": "ratified",
     "opener": "binding cardinality — a jq binding emitted zero or multiple values",
     "meta": {
@@ -1387,7 +1387,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-003",
-    "url": "/errors/NIKA-VAR-003",
+    "url": "/language/errors/NIKA-VAR-003",
     "status": "ratified",
     "opener": "provably-invalid path into a declared schema (static walk)",
     "meta": {
@@ -1401,7 +1401,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-004",
-    "url": "/errors/NIKA-VAR-004",
+    "url": "/language/errors/NIKA-VAR-004",
     "status": "ratified",
     "opener": "jq runtime error while evaluating a binding",
     "meta": {
@@ -1415,7 +1415,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-005",
-    "url": "/errors/NIKA-VAR-005",
+    "url": "/language/errors/NIKA-VAR-005",
     "status": "ratified",
     "opener": "static expression violation — outside cel-subset/0.1 · chained relation · unknown function · non-boolean when: root · jq compile error",
     "meta": {
@@ -1429,7 +1429,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-006",
-    "url": "/errors/NIKA-VAR-006",
+    "url": "/language/errors/NIKA-VAR-006",
     "status": "ratified",
     "opener": "expression type error at evaluation — cross-type compare · non-boolean when: value · for_each over a non-array",
     "meta": {
@@ -1443,7 +1443,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-007",
-    "url": "/errors/NIKA-VAR-007",
+    "url": "/language/errors/NIKA-VAR-007",
     "status": "ratified",
     "opener": "bytes value substituted into a string position",
     "meta": {
@@ -1457,7 +1457,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-008",
-    "url": "/errors/NIKA-VAR-008",
+    "url": "/language/errors/NIKA-VAR-008",
     "status": "ratified",
     "opener": "unclosed ${{ opener",
     "meta": {
@@ -1471,7 +1471,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-009",
-    "url": "/errors/NIKA-VAR-009",
+    "url": "/language/errors/NIKA-VAR-009",
     "status": "ratified",
     "opener": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)",
     "meta": {
@@ -1485,7 +1485,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-020",
-    "url": "/errors/NIKA-VAR-020",
+    "url": "/language/errors/NIKA-VAR-020",
     "status": "ratified",
     "opener": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)",
     "meta": {
@@ -1499,7 +1499,7 @@ export const LENS_NODES: LensNode[] = [
     "set": "error-codes",
     "layer": "refusals",
     "title": "NIKA-VAR-021",
-    "url": "/errors/NIKA-VAR-021",
+    "url": "/language/errors/NIKA-VAR-021",
     "status": "ratified",
     "opener": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)",
     "meta": {
@@ -2272,7 +2272,7 @@ export const LENS_NODES: LensNode[] = [
     "id": "layer:refusals",
     "kind": "layer",
     "title": "The refusals",
-    "url": "/errors",
+    "url": "/language/errors",
     "status": "both",
     "opener": "Every refusal has a name. Errors are data: stable codes with a category, a transient flag and a documented fix shape · never prose exceptions.",
     "exists": true,
@@ -3251,7 +3251,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "refusals",
     "title": "The error categories",
-    "url": "/errors",
+    "url": "/language/errors",
     "status": "ratified",
     "opener": "A category names the kind of failure, orthogonal to the namespace that raised it. Transient categories are retry candidates · the rest are contract refusals that no retry will fix.",
     "closed": false,
@@ -3266,7 +3266,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "refusals",
     "title": "The error codes",
-    "url": "/errors/:code",
+    "url": "/language/errors/:code",
     "status": "ratified",
     "opener": "Every failure the engine can name, as data: a stable code with a category and a transient flag. If the engine can refuse it, the refusal has a name you can retry on, route on and search.",
     "closed": false,
@@ -3281,7 +3281,7 @@ export const LENS_NODES: LensNode[] = [
     "kind": "set",
     "layer": "refusals",
     "title": "The error namespaces",
-    "url": "/errors",
+    "url": "/language/errors",
     "status": "ratified",
     "opener": "Codes group by namespace, one per surface of the engine: parse, DAG, variables, security, each verb and the machine seams. A namespace can exist before its first code ships · the register says so out loud.",
     "closed": false,

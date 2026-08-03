@@ -116,7 +116,7 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
       },
       {
         "label": "Error codes",
-        "to": "/errors"
+        "to": "/language/errors"
       },
       {
         "label": "Standard library",

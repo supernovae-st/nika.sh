@@ -119,7 +119,7 @@ describe('nika-lint · replay: no mislabeling outside the coverage', () => {
 })
 
 describe('nika-lint · every suffixed code opens a real room (the U1 door law)', () => {
-  /* Play links a diagnostic's code to /errors/<code> whenever it carries a
+  /* Play links a diagnostic's code to /language/errors/<code> whenever it carries a
      numeric suffix (bare namespaces are spec-latitude catch-alls, text
      only). This gate holds that claim against the served routes: a lint
      code with a suffix but no room would ship a dead door. */
@@ -128,10 +128,10 @@ describe('nika-lint · every suffixed code opens a real room (the U1 door law)',
       if (!/\d{3}$/.test(code)) continue
       if (SHIPPED_AHEAD_CODES.has(code)) {
         // shipped-ahead of the pin: no room YET · the door renders text-only
-        expect(ERROR_PATHS).not.toContain(`/errors/${code}`)
+        expect(ERROR_PATHS).not.toContain(`/language/errors/${code}`)
         continue
       }
-      expect(ERROR_PATHS, `${code} has no room`).toContain(`/errors/${code}`)
+      expect(ERROR_PATHS, `${code} has no room`).toContain(`/language/errors/${code}`)
     }
   })
 })

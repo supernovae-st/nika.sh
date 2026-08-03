@@ -26,8 +26,8 @@
     ],
     "count": 293,
     "set_sha256": "5b6b82dfdf8d2eb2de7c1afd1431da52aac21d53d72806a46fa0367c867813de",
-    "rendered_count": 871,
-    "rendered_set_sha256": "aae569b580025ea023f3ed9364f950fc14745659fbaba59ced8da4e378066c73"
+    "rendered_count": 989,
+    "rendered_set_sha256": "f81e7775c14c1496a199a05aa1b13aa2bcadc008933183c53e8966e152c56535"
   },
   "claim_count": 130,
   "bindings": [
@@ -1387,7 +1387,7 @@
     {
       "selector": "src/routes.tsx#count:1",
       "path": "src/routes.tsx",
-      "line": 124,
+      "line": 128,
       "text": "four verb",
       "source": "four",
       "field": "verbs",

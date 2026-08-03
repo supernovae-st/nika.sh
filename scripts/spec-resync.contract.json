@@ -233,7 +233,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-palette.mjs",
-   "sha256": "e23b65e2f15f4dfef2fafddf4f98b89e99eec764e51a8d96ac9f00e659f60bdb",
+   "sha256": "c3f9255243c2d9e3309e1d53db0ebe675d4e404e23ad26ba02c2c6745629edde",
    "args": [],
    "depends_on": [
     "website-errors",

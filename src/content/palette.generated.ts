@@ -84,7 +84,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "page",
     "label": "Errors",
-    "href": "/errors",
+    "href": "/language/errors",
     "hint": "the typed error registry"
   },
   {
@@ -216,7 +216,7 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "set",
     "label": "The error codes",
-    "href": "/errors",
+    "href": "/language/errors",
     "hint": "Every failure the engine can name, as data: a stable code with a category and a transient flag. If the engine can refuse it, the refusal has a name you can retry on, route on and search."
   },
   {
@@ -588,577 +588,577 @@ export const PALETTE: PaletteEntry[] = [
   {
     "kind": "error",
     "label": "NIKA-PARSE-001",
-    "href": "/errors/NIKA-PARSE-001",
+    "href": "/language/errors/NIKA-PARSE-001",
     "hint": "the YAML itself does not parse (syntax error)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-002",
-    "href": "/errors/NIKA-PARSE-002",
+    "href": "/language/errors/NIKA-PARSE-002",
     "hint": "missing envelope field (nika: / workflow: / non-empty tasks:)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-003",
-    "href": "/errors/NIKA-PARSE-003",
+    "href": "/language/errors/NIKA-PARSE-003",
     "hint": "nika: version marker is not exactly v1"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-004",
-    "href": "/errors/NIKA-PARSE-004",
+    "href": "/language/errors/NIKA-PARSE-004",
     "hint": "workflow: id violates ^[a-z][a-z0-9-]*$"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-005",
-    "href": "/errors/NIKA-PARSE-005",
+    "href": "/language/errors/NIKA-PARSE-005",
     "hint": "unknown field — strict mode rejects anything outside the closed v1 set"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-006",
-    "href": "/errors/NIKA-PARSE-006",
+    "href": "/language/errors/NIKA-PARSE-006",
     "hint": "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-007",
-    "href": "/errors/NIKA-PARSE-007",
+    "href": "/language/errors/NIKA-PARSE-007",
     "hint": "duplicate task id within the workflow"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-008",
-    "href": "/errors/NIKA-PARSE-008",
+    "href": "/language/errors/NIKA-PARSE-008",
     "hint": "task declares no verb — exactly one of infer/exec/invoke/agent required"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-009",
-    "href": "/errors/NIKA-PARSE-009",
+    "href": "/language/errors/NIKA-PARSE-009",
     "hint": "task declares multiple verbs — exactly one required"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-010",
-    "href": "/errors/NIKA-PARSE-010",
+    "href": "/language/errors/NIKA-PARSE-010",
     "hint": "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-011",
-    "href": "/errors/NIKA-PARSE-011",
+    "href": "/language/errors/NIKA-PARSE-011",
     "hint": "retry: block violates the spec shape"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-012",
-    "href": "/errors/NIKA-PARSE-012",
+    "href": "/language/errors/NIKA-PARSE-012",
     "hint": "on_error: block violates the spec shape (fields mutually exclusive)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-013",
-    "href": "/errors/NIKA-PARSE-013",
+    "href": "/language/errors/NIKA-PARSE-013",
     "hint": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-014",
-    "href": "/errors/NIKA-PARSE-014",
+    "href": "/language/errors/NIKA-PARSE-014",
     "hint": "secrets: entry is not a store reference — inline literals forbidden"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-017",
-    "href": "/errors/NIKA-PARSE-017",
+    "href": "/language/errors/NIKA-PARSE-017",
     "hint": "duplicate mapping key — no silent last-wins"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-018",
-    "href": "/errors/NIKA-PARSE-018",
+    "href": "/language/errors/NIKA-PARSE-018",
     "hint": "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-019",
-    "href": "/errors/NIKA-PARSE-019",
+    "href": "/language/errors/NIKA-PARSE-019",
     "hint": "generic structural validation — wrong YAML shape for a field"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-020",
-    "href": "/errors/NIKA-PARSE-020",
+    "href": "/language/errors/NIKA-PARSE-020",
     "hint": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-021",
-    "href": "/errors/NIKA-PARSE-021",
+    "href": "/language/errors/NIKA-PARSE-021",
     "hint": "top-level description: — it moved into workflow.description"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-022",
-    "href": "/errors/NIKA-PARSE-022",
+    "href": "/language/errors/NIKA-PARSE-022",
     "hint": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-023",
-    "href": "/errors/NIKA-PARSE-023",
+    "href": "/language/errors/NIKA-PARSE-023",
     "hint": "a task carries an id: field — the map key is the identity, the field is gone"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-024",
-    "href": "/errors/NIKA-PARSE-024",
+    "href": "/language/errors/NIKA-PARSE-024",
     "hint": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-025",
-    "href": "/errors/NIKA-PARSE-025",
+    "href": "/language/errors/NIKA-PARSE-025",
     "hint": "decode: with capture: structured — that capture already IS an object · type it with returns:"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-026",
-    "href": "/errors/NIKA-PARSE-026",
+    "href": "/language/errors/NIKA-PARSE-026",
     "hint": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-027",
-    "href": "/errors/NIKA-PARSE-027",
+    "href": "/language/errors/NIKA-PARSE-027",
     "hint": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-028",
-    "href": "/errors/NIKA-PARSE-028",
+    "href": "/language/errors/NIKA-PARSE-028",
     "hint": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
   },
   {
     "kind": "error",
     "label": "NIKA-COMP-001",
-    "href": "/errors/NIKA-COMP-001",
+    "href": "/language/errors/NIKA-COMP-001",
     "hint": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)"
   },
   {
     "kind": "error",
     "label": "NIKA-COMP-002",
-    "href": "/errors/NIKA-COMP-002",
+    "href": "/language/errors/NIKA-COMP-002",
     "hint": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)"
   },
   {
     "kind": "error",
     "label": "NIKA-COMP-003",
-    "href": "/errors/NIKA-COMP-003",
+    "href": "/language/errors/NIKA-COMP-003",
     "hint": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)"
   },
   {
     "kind": "error",
     "label": "NIKA-COMP-004",
-    "href": "/errors/NIKA-COMP-004",
+    "href": "/language/errors/NIKA-COMP-004",
     "hint": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-001",
-    "href": "/errors/NIKA-DAG-001",
+    "href": "/language/errors/NIKA-DAG-001",
     "hint": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-002",
-    "href": "/errors/NIKA-DAG-002",
+    "href": "/language/errors/NIKA-DAG-002",
     "hint": "with:/after: references an undeclared task"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-004",
-    "href": "/errors/NIKA-DAG-004",
+    "href": "/language/errors/NIKA-DAG-004",
     "hint": "on_error.recover references a task downstream of the declaring task (await would deadlock)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-005",
-    "href": "/errors/NIKA-DAG-005",
+    "href": "/language/errors/NIKA-DAG-005",
     "hint": "after: predicate outside the closed set (success · failure · skipped · terminal)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-006",
-    "href": "/errors/NIKA-DAG-006",
+    "href": "/language/errors/NIKA-DAG-006",
     "hint": "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)"
   },
   {
     "kind": "error",
     "label": "NIKA-DAG-007",
-    "href": "/errors/NIKA-DAG-007",
+    "href": "/language/errors/NIKA-DAG-007",
     "hint": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-001",
-    "href": "/errors/NIKA-TYPE-001",
+    "href": "/language/errors/NIKA-TYPE-001",
     "hint": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-002",
-    "href": "/errors/NIKA-TYPE-002",
+    "href": "/language/errors/NIKA-TYPE-002",
     "hint": "recursive type reference — the types: graph must be acyclic"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-003",
-    "href": "/errors/NIKA-TYPE-003",
+    "href": "/language/errors/NIKA-TYPE-003",
     "hint": "returns: and schema: on the same task — one contract, one spelling"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-004",
-    "href": "/errors/NIKA-TYPE-004",
+    "href": "/language/errors/NIKA-TYPE-004",
     "hint": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-005",
-    "href": "/errors/NIKA-TYPE-005",
+    "href": "/language/errors/NIKA-TYPE-005",
     "hint": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-006",
-    "href": "/errors/NIKA-TYPE-006",
+    "href": "/language/errors/NIKA-TYPE-006",
     "hint": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)"
   },
   {
     "kind": "error",
     "label": "NIKA-TYPE-101",
-    "href": "/errors/NIKA-TYPE-101",
+    "href": "/language/errors/NIKA-TYPE-101",
     "hint": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-001",
-    "href": "/errors/NIKA-VAR-001",
+    "href": "/language/errors/NIKA-VAR-001",
     "hint": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-002",
-    "href": "/errors/NIKA-VAR-002",
+    "href": "/language/errors/NIKA-VAR-002",
     "hint": "binding cardinality — a jq binding emitted zero or multiple values"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-003",
-    "href": "/errors/NIKA-VAR-003",
+    "href": "/language/errors/NIKA-VAR-003",
     "hint": "provably-invalid path into a declared schema (static walk)"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-004",
-    "href": "/errors/NIKA-VAR-004",
+    "href": "/language/errors/NIKA-VAR-004",
     "hint": "jq runtime error while evaluating a binding"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-005",
-    "href": "/errors/NIKA-VAR-005",
+    "href": "/language/errors/NIKA-VAR-005",
     "hint": "static expression violation — outside cel-subset/0.1 · chained relation · unknown function · non-boolean when: root · jq compile error"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-006",
-    "href": "/errors/NIKA-VAR-006",
+    "href": "/language/errors/NIKA-VAR-006",
     "hint": "expression type error at evaluation — cross-type compare · non-boolean when: value · for_each over a non-array"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-007",
-    "href": "/errors/NIKA-VAR-007",
+    "href": "/language/errors/NIKA-VAR-007",
     "hint": "bytes value substituted into a string position"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-008",
-    "href": "/errors/NIKA-VAR-008",
+    "href": "/language/errors/NIKA-VAR-008",
     "hint": "unclosed ${{ opener"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-020",
-    "href": "/errors/NIKA-VAR-020",
+    "href": "/language/errors/NIKA-VAR-020",
     "hint": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-021",
-    "href": "/errors/NIKA-VAR-021",
+    "href": "/language/errors/NIKA-VAR-021",
     "hint": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
   },
   {
     "kind": "error",
     "label": "NIKA-VAR-009",
-    "href": "/errors/NIKA-VAR-009",
+    "href": "/language/errors/NIKA-VAR-009",
     "hint": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
   },
   {
     "kind": "error",
     "label": "NIKA-INFER-001",
-    "href": "/errors/NIKA-INFER-001",
+    "href": "/language/errors/NIKA-INFER-001",
     "hint": "provider call failed (HTTP error · provider refusal)"
   },
   {
     "kind": "error",
     "label": "NIKA-INFER-002",
-    "href": "/errors/NIKA-INFER-002",
+    "href": "/language/errors/NIKA-INFER-002",
     "hint": "structured output failed schema validation (after any engine-internal retries)"
   },
   {
     "kind": "error",
     "label": "NIKA-EXEC-001",
-    "href": "/errors/NIKA-EXEC-001",
+    "href": "/language/errors/NIKA-EXEC-001",
     "hint": "non-zero exit code (default capture modes)"
   },
   {
     "kind": "error",
     "label": "NIKA-EXEC-002",
-    "href": "/errors/NIKA-EXEC-002",
+    "href": "/language/errors/NIKA-EXEC-002",
     "hint": "spawn failure (command not found · permission)"
   },
   {
     "kind": "error",
     "label": "NIKA-INVOKE-001",
-    "href": "/errors/NIKA-INVOKE-001",
+    "href": "/language/errors/NIKA-INVOKE-001",
     "hint": "unknown tool (unresolvable nika:/mcp: id)"
   },
   {
     "kind": "error",
     "label": "NIKA-INVOKE-002",
-    "href": "/errors/NIKA-INVOKE-002",
+    "href": "/language/errors/NIKA-INVOKE-002",
     "hint": "tool args failed the tool's schema"
   },
   {
     "kind": "error",
     "label": "NIKA-AGENT-001",
-    "href": "/errors/NIKA-AGENT-001",
+    "href": "/language/errors/NIKA-AGENT-001",
     "hint": "max_turns exhausted before completion"
   },
   {
     "kind": "error",
     "label": "NIKA-AGENT-002",
-    "href": "/errors/NIKA-AGENT-002",
+    "href": "/language/errors/NIKA-AGENT-002",
     "hint": "max_tokens_total exhausted before completion"
   },
   {
     "kind": "error",
     "label": "NIKA-AGENT-003",
-    "href": "/errors/NIKA-AGENT-003",
+    "href": "/language/errors/NIKA-AGENT-003",
     "hint": "a skills: path does not resolve (file missing/unreadable at compose time)"
   },
   {
     "kind": "error",
     "label": "NIKA-AGENT-004",
-    "href": "/errors/NIKA-AGENT-004",
+    "href": "/language/errors/NIKA-AGENT-004",
     "hint": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
   },
   {
     "kind": "error",
     "label": "NIKA-MCP-001",
-    "href": "/errors/NIKA-MCP-001",
+    "href": "/language/errors/NIKA-MCP-001",
     "hint": "MCP server not configured / not reachable at call time"
   },
   {
     "kind": "error",
     "label": "NIKA-MCP-002",
-    "href": "/errors/NIKA-MCP-002",
+    "href": "/language/errors/NIKA-MCP-002",
     "hint": "MCP tool call failed (transport · tool-side error)"
   },
   {
     "kind": "error",
     "label": "NIKA-DECIDE-001",
-    "href": "/errors/NIKA-DECIDE-001",
+    "href": "/language/errors/NIKA-DECIDE-001",
     "hint": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)"
   },
   {
     "kind": "error",
     "label": "NIKA-DECIDE-002",
-    "href": "/errors/NIKA-DECIDE-002",
+    "href": "/language/errors/NIKA-DECIDE-002",
     "hint": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
   },
   {
     "kind": "error",
     "label": "NIKA-POLICY-001",
-    "href": "/errors/NIKA-POLICY-001",
+    "href": "/language/errors/NIKA-POLICY-001",
     "hint": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
   },
   {
     "kind": "error",
     "label": "NIKA-PORT-001",
-    "href": "/errors/NIKA-PORT-001",
+    "href": "/language/errors/NIKA-PORT-001",
     "hint": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
   },
   {
     "kind": "error",
     "label": "NIKA-PORT-002",
-    "href": "/errors/NIKA-PORT-002",
+    "href": "/language/errors/NIKA-PORT-002",
     "hint": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-001",
-    "href": "/errors/NIKA-SEC-001",
+    "href": "/language/errors/NIKA-SEC-001",
     "hint": "exec: blocklist hit"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-002",
-    "href": "/errors/NIKA-SEC-002",
+    "href": "/language/errors/NIKA-SEC-002",
     "hint": "agent tool call outside the tools: whitelist"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-003",
-    "href": "/errors/NIKA-SEC-003",
+    "href": "/language/errors/NIKA-SEC-003",
     "hint": "run-recursion bound — nested-run depth exceeded OR self-launching workflow"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-004",
-    "href": "/errors/NIKA-SEC-004",
+    "href": "/language/errors/NIKA-SEC-004",
     "hint": "effect outside the declared permits: capability boundary (fs/net/exec/tool)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-005",
-    "href": "/errors/NIKA-SEC-005",
+    "href": "/language/errors/NIKA-SEC-005",
     "hint": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-006",
-    "href": "/errors/NIKA-SEC-006",
+    "href": "/language/errors/NIKA-SEC-006",
     "hint": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-007",
-    "href": "/errors/NIKA-SEC-007",
+    "href": "/language/errors/NIKA-SEC-007",
     "hint": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-008",
-    "href": "/errors/NIKA-SEC-008",
+    "href": "/language/errors/NIKA-SEC-008",
     "hint": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
   },
   {
     "kind": "error",
     "label": "NIKA-SEC-009",
-    "href": "/errors/NIKA-SEC-009",
+    "href": "/language/errors/NIKA-SEC-009",
     "hint": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
   },
   {
     "kind": "error",
     "label": "NIKA-TIMEOUT-001",
-    "href": "/errors/NIKA-TIMEOUT-001",
+    "href": "/language/errors/NIKA-TIMEOUT-001",
     "hint": "task (or for_each iteration) exceeded timeout:"
   },
   {
     "kind": "error",
     "label": "NIKA-CANCEL-001",
-    "href": "/errors/NIKA-CANCEL-001",
+    "href": "/language/errors/NIKA-CANCEL-001",
     "hint": "task cancelled (workflow failure gate · user cancellation)"
   },
   {
     "kind": "error",
     "label": "NIKA-ASSERT-001",
-    "href": "/errors/NIKA-ASSERT-001",
+    "href": "/language/errors/NIKA-ASSERT-001",
     "hint": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
   },
   {
     "kind": "error",
     "label": "NIKA-LOCK-001",
-    "href": "/errors/NIKA-LOCK-001",
+    "href": "/language/errors/NIKA-LOCK-001",
     "hint": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)"
   },
   {
     "kind": "error",
     "label": "NIKA-BUILTIN-001",
-    "href": "/errors/NIKA-BUILTIN-001",
+    "href": "/language/errors/NIKA-BUILTIN-001",
     "hint": "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)"
   },
   {
     "kind": "error",
     "label": "NIKA-BUILTIN-DONE-001",
-    "href": "/errors/NIKA-BUILTIN-DONE-001",
+    "href": "/language/errors/NIKA-BUILTIN-DONE-001",
     "hint": "nika:done invoked outside an agent: loop"
   },
   {
     "kind": "error",
     "label": "NIKA-DRIFT-001",
-    "href": "/errors/NIKA-DRIFT-001",
+    "href": "/language/errors/NIKA-DRIFT-001",
     "hint": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)"
   },
   {
     "kind": "error",
     "label": "NIKA-AUTH-006",
-    "href": "/errors/NIKA-AUTH-006",
+    "href": "/language/errors/NIKA-AUTH-006",
     "hint": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)"
   },
   {
     "kind": "error",
     "label": "NIKA-AUTH-007",
-    "href": "/errors/NIKA-AUTH-007",
+    "href": "/language/errors/NIKA-AUTH-007",
     "hint": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)"
   },
   {
     "kind": "error",
     "label": "NIKA-AUTH-008",
-    "href": "/errors/NIKA-AUTH-008",
+    "href": "/language/errors/NIKA-AUTH-008",
     "hint": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)"
   },
   {
     "kind": "error",
     "label": "NIKA-AUTH-009",
-    "href": "/errors/NIKA-AUTH-009",
+    "href": "/language/errors/NIKA-AUTH-009",
     "hint": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)"
   },
   {
     "kind": "error",
     "label": "NIKA-AUTH-010",
-    "href": "/errors/NIKA-AUTH-010",
+    "href": "/language/errors/NIKA-AUTH-010",
     "hint": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)"
   },
   {
     "kind": "error",
     "label": "NIKA-VALUES-001",
-    "href": "/errors/NIKA-VALUES-001",
+    "href": "/language/errors/NIKA-VALUES-001",
     "hint": "vars: is a dead envelope field (R3a · the E-split)"
   },
   {
     "kind": "error",
     "label": "NIKA-VALUES-002",
-    "href": "/errors/NIKA-VALUES-002",
+    "href": "/language/errors/NIKA-VALUES-002",
     "hint": "env: is a dead envelope field (R3a · the E-split)"
   },
   {
     "kind": "error",
     "label": "NIKA-VALUES-003",
-    "href": "/errors/NIKA-VALUES-003",
+    "href": "/language/errors/NIKA-VALUES-003",
     "hint": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
   },
   {
     "kind": "error",
     "label": "NIKA-DEFAULT-001",
-    "href": "/errors/NIKA-DEFAULT-001",
+    "href": "/language/errors/NIKA-DEFAULT-001",
     "hint": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
   },
   {

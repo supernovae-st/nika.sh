@@ -23,13 +23,13 @@ describe('palette actions · pure whens, derived rows', () => {
   it('copy-twin-url fires everywhere', () => {
     const a = ACTIONS.find((x) => x.id === 'copy-twin-url')!
     expect(a.when(ctx('/'))).toBe(true)
-    expect(a.when(ctx('/errors/NIKA-PARSE-001'))).toBe(true)
+    expect(a.when(ctx('/language/errors/NIKA-PARSE-001'))).toBe(true)
   })
 
   it('copy-snippet fires only where a CodeFile is visible', () => {
     const a = ACTIONS.find((x) => x.id === 'copy-snippet')!
     expect(a.when(ctx('/tools/fetch', true))).toBe(true)
-    expect(a.when(ctx('/errors', false))).toBe(false)
+    expect(a.when(ctx('/language/errors', false))).toBe(false)
   })
 
   it('copy-post-md fires only on a post (§2c made it legal)', () => {
@@ -57,7 +57,7 @@ describe('palette actions · pure whens, derived rows', () => {
     for (const v of expected) {
       expect(rows.some((r) => r.id === `locale:${v.locale.bcp47}` && r.hint.includes(v.path))).toBe(true)
     }
-    expect(actionEntries(ctx('/errors')).filter((e) => e.id.startsWith('locale:'))).toEqual([])
+    expect(actionEntries(ctx('/language/errors')).filter((e) => e.id.startsWith('locale:'))).toEqual([])
   })
 
   it('copy-snippet emits EXACTLY the yaml + the provenance header (byte-tested)', () => {

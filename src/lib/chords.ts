@@ -15,7 +15,7 @@ export interface NavChord {
 export const NAV_CHORDS: NavChord[] = [
   { key: 'm', to: '/map', label: 'the map' },
   { key: 'f', to: '/how/flow', label: 'the flow' },
-  { key: 'e', to: '/errors', label: 'the error register' },
+  { key: 'e', to: '/language/errors', label: 'the error register' },
   { key: 't', to: '/language/stdlib', label: 'the standard library' },
   { key: 'l', to: '/language', label: 'the language register' },
   { key: 's', to: '/truth', label: 'the truth system' },

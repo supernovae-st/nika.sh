@@ -119,7 +119,7 @@ describe('sets.yaml · existing room sets match the routes the site serves', () 
     ['verbs', VERB_PATHS, (p) => p.replace('/language/verbs/', '')],
     ['builtins', TOOL_PATHS, (p) => p.replace('/tools/', '')],
     ['templates', TEMPLATE_PATHS, (p) => p.replace('/workflows/skeletons/', '')],
-    ['error-codes', ERROR_PATHS, (p) => p.replace('/errors/', '')],
+    ['error-codes', ERROR_PATHS, (p) => p.replace('/language/errors/', '')],
   ]
   it.each(cases)('%s rooms exist and the url pattern matches PATHS', (id, paths) => {
     const s = need(id)

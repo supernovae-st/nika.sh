@@ -194,18 +194,18 @@
 <g class="cst-star cst-star--soon"><circle cx="247.43" cy="910.79" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>tool_error</title></g>
 <g class="cst-star cst-star--soon"><circle cx="233.67" cy="894.45" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>validation_error</title></g>
 <g class="cst-star cst-star--soon"><circle cx="220.67" cy="877.5" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>variable_error</title></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-001" tabindex="-1"><circle cx="187.9" cy="825.99" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-002" tabindex="-1"><circle cx="178.05" cy="807.03" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-002</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-003" tabindex="-1"><circle cx="169.08" cy="787.64" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-003</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AGENT-004" tabindex="-1"><circle cx="161" cy="767.87" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-004</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-ASSERT-001" tabindex="-1"><circle cx="153.83" cy="747.75" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-ASSERT-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AUTH-006" tabindex="-1"><circle cx="147.57" cy="727.32" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-006</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AUTH-007" tabindex="-1"><circle cx="142.26" cy="706.63" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-007</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AUTH-008" tabindex="-1"><circle cx="137.88" cy="685.72" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-008</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AUTH-009" tabindex="-1"><circle cx="134.47" cy="664.63" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-009</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-AUTH-010" tabindex="-1"><circle cx="132.01" cy="643.41" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-010</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-BUILTIN-001" tabindex="-1"><circle cx="130.52" cy="622.1" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-001</title></a></g>
-<g class="cst-star"><a href="/errors/NIKA-BUILTIN-DONE-001" tabindex="-1"><circle cx="130" cy="600.75" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-DONE-001</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AGENT-001" tabindex="-1"><circle cx="187.9" cy="825.99" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-001</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AGENT-002" tabindex="-1"><circle cx="178.05" cy="807.03" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-002</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AGENT-003" tabindex="-1"><circle cx="169.08" cy="787.64" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-003</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AGENT-004" tabindex="-1"><circle cx="161" cy="767.87" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT-004</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-ASSERT-001" tabindex="-1"><circle cx="153.83" cy="747.75" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-ASSERT-001</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AUTH-006" tabindex="-1"><circle cx="147.57" cy="727.32" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-006</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AUTH-007" tabindex="-1"><circle cx="142.26" cy="706.63" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-007</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AUTH-008" tabindex="-1"><circle cx="137.88" cy="685.72" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-008</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AUTH-009" tabindex="-1"><circle cx="134.47" cy="664.63" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-009</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-AUTH-010" tabindex="-1"><circle cx="132.01" cy="643.41" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH-010</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-BUILTIN-001" tabindex="-1"><circle cx="130.52" cy="622.1" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-001</title></a></g>
+<g class="cst-star"><a href="/language/errors/NIKA-BUILTIN-DONE-001" tabindex="-1"><circle cx="130" cy="600.75" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-BUILTIN-DONE-001</title></a></g>
 <g class="cst-star cst-star--soon"><circle cx="133.87" cy="539.81" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AGENT</title></g>
 <g class="cst-star cst-star--soon"><circle cx="137.09" cy="518.7" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-ASSERT</title></g>
 <g class="cst-star cst-star--soon"><circle cx="141.26" cy="497.75" r="3.1" fill="#ff5d5d" stroke="#ff5d5d" stroke-width="0"/><title>NIKA-AUTH</title></g>
@@ -249,8 +249,8 @@
 <g class="cst-agg"><a href="/workflows/jobs" tabindex="-1"><text x="558.98" y="131.79" text-anchor="middle">+14</text><title>+14 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/language/stdlib" tabindex="-1"><text x="901.27" y="960.75" text-anchor="middle">+16</text><title>+16 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/catalog/providers" tabindex="-1"><text x="709.8" y="1056.99" text-anchor="middle">+5</text><title>+5 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="130.26" y="584.3" text-anchor="middle">+84</text><title>+84 more · open the register</title></a></g>
-<g class="cst-agg"><a href="/errors" tabindex="-1"><text x="229.69" y="310.57" text-anchor="middle">+13</text><title>+13 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/language/errors" tabindex="-1"><text x="130.26" y="584.3" text-anchor="middle">+84</text><title>+84 more · open the register</title></a></g>
+<g class="cst-agg"><a href="/language/errors" tabindex="-1"><text x="229.69" y="310.57" text-anchor="middle">+13</text><title>+13 more · open the register</title></a></g>
 <g class="cst-agg"><a href="/language" tabindex="-1"><text x="1063.62" y="522.8" text-anchor="middle">+50</text><title>+50 more · open the register</title></a></g>
 <circle class="cst-corering" cx="600" cy="600" r="64"/>
 <text class="cst-core" x="600" y="605" text-anchor="middle">nika: v1</text>

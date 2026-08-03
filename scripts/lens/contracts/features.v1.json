@@ -704,7 +704,7 @@
     },
     {
       "selector": "site.config.ts#page:55",
-      "path": "/errors",
+      "path": "/language/errors",
       "route_selector": "src/routes.tsx#route:24",
       "component": "Errors",
       "feature": "registry.errors",
@@ -712,7 +712,7 @@
     },
     {
       "selector": "site.config.ts#page:56",
-      "path": "/errors/NIKA-AGENT-001",
+      "path": "/language/errors/NIKA-AGENT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -720,7 +720,7 @@
     },
     {
       "selector": "site.config.ts#page:57",
-      "path": "/errors/NIKA-AGENT-002",
+      "path": "/language/errors/NIKA-AGENT-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -728,7 +728,7 @@
     },
     {
       "selector": "site.config.ts#page:58",
-      "path": "/errors/NIKA-AGENT-003",
+      "path": "/language/errors/NIKA-AGENT-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -736,7 +736,7 @@
     },
     {
       "selector": "site.config.ts#page:59",
-      "path": "/errors/NIKA-AGENT-004",
+      "path": "/language/errors/NIKA-AGENT-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -744,7 +744,7 @@
     },
     {
       "selector": "site.config.ts#page:60",
-      "path": "/errors/NIKA-ASSERT-001",
+      "path": "/language/errors/NIKA-ASSERT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -752,7 +752,7 @@
     },
     {
       "selector": "site.config.ts#page:61",
-      "path": "/errors/NIKA-AUTH-006",
+      "path": "/language/errors/NIKA-AUTH-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -760,7 +760,7 @@
     },
     {
       "selector": "site.config.ts#page:62",
-      "path": "/errors/NIKA-AUTH-007",
+      "path": "/language/errors/NIKA-AUTH-007",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -768,7 +768,7 @@
     },
     {
       "selector": "site.config.ts#page:63",
-      "path": "/errors/NIKA-AUTH-008",
+      "path": "/language/errors/NIKA-AUTH-008",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -776,7 +776,7 @@
     },
     {
       "selector": "site.config.ts#page:64",
-      "path": "/errors/NIKA-AUTH-009",
+      "path": "/language/errors/NIKA-AUTH-009",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -784,7 +784,7 @@
     },
     {
       "selector": "site.config.ts#page:65",
-      "path": "/errors/NIKA-AUTH-010",
+      "path": "/language/errors/NIKA-AUTH-010",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -792,7 +792,7 @@
     },
     {
       "selector": "site.config.ts#page:66",
-      "path": "/errors/NIKA-BUILTIN-001",
+      "path": "/language/errors/NIKA-BUILTIN-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -800,7 +800,7 @@
     },
     {
       "selector": "site.config.ts#page:67",
-      "path": "/errors/NIKA-BUILTIN-DONE-001",
+      "path": "/language/errors/NIKA-BUILTIN-DONE-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -808,7 +808,7 @@
     },
     {
       "selector": "site.config.ts#page:68",
-      "path": "/errors/NIKA-CANCEL-001",
+      "path": "/language/errors/NIKA-CANCEL-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -816,7 +816,7 @@
     },
     {
       "selector": "site.config.ts#page:69",
-      "path": "/errors/NIKA-COMP-001",
+      "path": "/language/errors/NIKA-COMP-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -824,7 +824,7 @@
     },
     {
       "selector": "site.config.ts#page:70",
-      "path": "/errors/NIKA-COMP-002",
+      "path": "/language/errors/NIKA-COMP-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -832,7 +832,7 @@
     },
     {
       "selector": "site.config.ts#page:71",
-      "path": "/errors/NIKA-COMP-003",
+      "path": "/language/errors/NIKA-COMP-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -840,7 +840,7 @@
     },
     {
       "selector": "site.config.ts#page:72",
-      "path": "/errors/NIKA-COMP-004",
+      "path": "/language/errors/NIKA-COMP-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -848,7 +848,7 @@
     },
     {
       "selector": "site.config.ts#page:73",
-      "path": "/errors/NIKA-DAG-001",
+      "path": "/language/errors/NIKA-DAG-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -856,7 +856,7 @@
     },
     {
       "selector": "site.config.ts#page:74",
-      "path": "/errors/NIKA-DAG-002",
+      "path": "/language/errors/NIKA-DAG-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -864,7 +864,7 @@
     },
     {
       "selector": "site.config.ts#page:75",
-      "path": "/errors/NIKA-DAG-004",
+      "path": "/language/errors/NIKA-DAG-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -872,7 +872,7 @@
     },
     {
       "selector": "site.config.ts#page:76",
-      "path": "/errors/NIKA-DAG-005",
+      "path": "/language/errors/NIKA-DAG-005",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -880,7 +880,7 @@
     },
     {
       "selector": "site.config.ts#page:77",
-      "path": "/errors/NIKA-DAG-006",
+      "path": "/language/errors/NIKA-DAG-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -888,7 +888,7 @@
     },
     {
       "selector": "site.config.ts#page:78",
-      "path": "/errors/NIKA-DAG-007",
+      "path": "/language/errors/NIKA-DAG-007",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -896,7 +896,7 @@
     },
     {
       "selector": "site.config.ts#page:79",
-      "path": "/errors/NIKA-DECIDE-001",
+      "path": "/language/errors/NIKA-DECIDE-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -904,7 +904,7 @@
     },
     {
       "selector": "site.config.ts#page:80",
-      "path": "/errors/NIKA-DECIDE-002",
+      "path": "/language/errors/NIKA-DECIDE-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -912,7 +912,7 @@
     },
     {
       "selector": "site.config.ts#page:81",
-      "path": "/errors/NIKA-DEFAULT-001",
+      "path": "/language/errors/NIKA-DEFAULT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -920,7 +920,7 @@
     },
     {
       "selector": "site.config.ts#page:82",
-      "path": "/errors/NIKA-DRIFT-001",
+      "path": "/language/errors/NIKA-DRIFT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -928,7 +928,7 @@
     },
     {
       "selector": "site.config.ts#page:83",
-      "path": "/errors/NIKA-EXEC-001",
+      "path": "/language/errors/NIKA-EXEC-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -936,7 +936,7 @@
     },
     {
       "selector": "site.config.ts#page:84",
-      "path": "/errors/NIKA-EXEC-002",
+      "path": "/language/errors/NIKA-EXEC-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -944,7 +944,7 @@
     },
     {
       "selector": "site.config.ts#page:85",
-      "path": "/errors/NIKA-INFER-001",
+      "path": "/language/errors/NIKA-INFER-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -952,7 +952,7 @@
     },
     {
       "selector": "site.config.ts#page:86",
-      "path": "/errors/NIKA-INFER-002",
+      "path": "/language/errors/NIKA-INFER-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -960,7 +960,7 @@
     },
     {
       "selector": "site.config.ts#page:87",
-      "path": "/errors/NIKA-INVOKE-001",
+      "path": "/language/errors/NIKA-INVOKE-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -968,7 +968,7 @@
     },
     {
       "selector": "site.config.ts#page:88",
-      "path": "/errors/NIKA-INVOKE-002",
+      "path": "/language/errors/NIKA-INVOKE-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -976,7 +976,7 @@
     },
     {
       "selector": "site.config.ts#page:89",
-      "path": "/errors/NIKA-LOCK-001",
+      "path": "/language/errors/NIKA-LOCK-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -984,7 +984,7 @@
     },
     {
       "selector": "site.config.ts#page:90",
-      "path": "/errors/NIKA-MCP-001",
+      "path": "/language/errors/NIKA-MCP-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -992,7 +992,7 @@
     },
     {
       "selector": "site.config.ts#page:91",
-      "path": "/errors/NIKA-MCP-002",
+      "path": "/language/errors/NIKA-MCP-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1000,7 +1000,7 @@
     },
     {
       "selector": "site.config.ts#page:92",
-      "path": "/errors/NIKA-PARSE-001",
+      "path": "/language/errors/NIKA-PARSE-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1008,7 +1008,7 @@
     },
     {
       "selector": "site.config.ts#page:93",
-      "path": "/errors/NIKA-PARSE-002",
+      "path": "/language/errors/NIKA-PARSE-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1016,7 +1016,7 @@
     },
     {
       "selector": "site.config.ts#page:94",
-      "path": "/errors/NIKA-PARSE-003",
+      "path": "/language/errors/NIKA-PARSE-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1024,7 +1024,7 @@
     },
     {
       "selector": "site.config.ts#page:95",
-      "path": "/errors/NIKA-PARSE-004",
+      "path": "/language/errors/NIKA-PARSE-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1032,7 +1032,7 @@
     },
     {
       "selector": "site.config.ts#page:96",
-      "path": "/errors/NIKA-PARSE-005",
+      "path": "/language/errors/NIKA-PARSE-005",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1040,7 +1040,7 @@
     },
     {
       "selector": "site.config.ts#page:97",
-      "path": "/errors/NIKA-PARSE-006",
+      "path": "/language/errors/NIKA-PARSE-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1048,7 +1048,7 @@
     },
     {
       "selector": "site.config.ts#page:98",
-      "path": "/errors/NIKA-PARSE-007",
+      "path": "/language/errors/NIKA-PARSE-007",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1056,7 +1056,7 @@
     },
     {
       "selector": "site.config.ts#page:99",
-      "path": "/errors/NIKA-PARSE-008",
+      "path": "/language/errors/NIKA-PARSE-008",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1064,7 +1064,7 @@
     },
     {
       "selector": "site.config.ts#page:100",
-      "path": "/errors/NIKA-PARSE-009",
+      "path": "/language/errors/NIKA-PARSE-009",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1072,7 +1072,7 @@
     },
     {
       "selector": "site.config.ts#page:101",
-      "path": "/errors/NIKA-PARSE-010",
+      "path": "/language/errors/NIKA-PARSE-010",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1080,7 +1080,7 @@
     },
     {
       "selector": "site.config.ts#page:102",
-      "path": "/errors/NIKA-PARSE-011",
+      "path": "/language/errors/NIKA-PARSE-011",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1088,7 +1088,7 @@
     },
     {
       "selector": "site.config.ts#page:103",
-      "path": "/errors/NIKA-PARSE-012",
+      "path": "/language/errors/NIKA-PARSE-012",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1096,7 +1096,7 @@
     },
     {
       "selector": "site.config.ts#page:104",
-      "path": "/errors/NIKA-PARSE-013",
+      "path": "/language/errors/NIKA-PARSE-013",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1104,7 +1104,7 @@
     },
     {
       "selector": "site.config.ts#page:105",
-      "path": "/errors/NIKA-PARSE-014",
+      "path": "/language/errors/NIKA-PARSE-014",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1112,7 +1112,7 @@
     },
     {
       "selector": "site.config.ts#page:106",
-      "path": "/errors/NIKA-PARSE-017",
+      "path": "/language/errors/NIKA-PARSE-017",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1120,7 +1120,7 @@
     },
     {
       "selector": "site.config.ts#page:107",
-      "path": "/errors/NIKA-PARSE-018",
+      "path": "/language/errors/NIKA-PARSE-018",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1128,7 +1128,7 @@
     },
     {
       "selector": "site.config.ts#page:108",
-      "path": "/errors/NIKA-PARSE-019",
+      "path": "/language/errors/NIKA-PARSE-019",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1136,7 +1136,7 @@
     },
     {
       "selector": "site.config.ts#page:109",
-      "path": "/errors/NIKA-PARSE-020",
+      "path": "/language/errors/NIKA-PARSE-020",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1144,7 +1144,7 @@
     },
     {
       "selector": "site.config.ts#page:110",
-      "path": "/errors/NIKA-PARSE-021",
+      "path": "/language/errors/NIKA-PARSE-021",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1152,7 +1152,7 @@
     },
     {
       "selector": "site.config.ts#page:111",
-      "path": "/errors/NIKA-PARSE-022",
+      "path": "/language/errors/NIKA-PARSE-022",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1160,7 +1160,7 @@
     },
     {
       "selector": "site.config.ts#page:112",
-      "path": "/errors/NIKA-PARSE-023",
+      "path": "/language/errors/NIKA-PARSE-023",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1168,7 +1168,7 @@
     },
     {
       "selector": "site.config.ts#page:113",
-      "path": "/errors/NIKA-PARSE-024",
+      "path": "/language/errors/NIKA-PARSE-024",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1176,7 +1176,7 @@
     },
     {
       "selector": "site.config.ts#page:114",
-      "path": "/errors/NIKA-PARSE-025",
+      "path": "/language/errors/NIKA-PARSE-025",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1184,7 +1184,7 @@
     },
     {
       "selector": "site.config.ts#page:115",
-      "path": "/errors/NIKA-PARSE-026",
+      "path": "/language/errors/NIKA-PARSE-026",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1192,7 +1192,7 @@
     },
     {
       "selector": "site.config.ts#page:116",
-      "path": "/errors/NIKA-PARSE-027",
+      "path": "/language/errors/NIKA-PARSE-027",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1200,7 +1200,7 @@
     },
     {
       "selector": "site.config.ts#page:117",
-      "path": "/errors/NIKA-PARSE-028",
+      "path": "/language/errors/NIKA-PARSE-028",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1208,7 +1208,7 @@
     },
     {
       "selector": "site.config.ts#page:118",
-      "path": "/errors/NIKA-POLICY-001",
+      "path": "/language/errors/NIKA-POLICY-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1216,7 +1216,7 @@
     },
     {
       "selector": "site.config.ts#page:119",
-      "path": "/errors/NIKA-PORT-001",
+      "path": "/language/errors/NIKA-PORT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1224,7 +1224,7 @@
     },
     {
       "selector": "site.config.ts#page:120",
-      "path": "/errors/NIKA-PORT-002",
+      "path": "/language/errors/NIKA-PORT-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1232,7 +1232,7 @@
     },
     {
       "selector": "site.config.ts#page:121",
-      "path": "/errors/NIKA-SEC-001",
+      "path": "/language/errors/NIKA-SEC-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1240,7 +1240,7 @@
     },
     {
       "selector": "site.config.ts#page:122",
-      "path": "/errors/NIKA-SEC-002",
+      "path": "/language/errors/NIKA-SEC-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1248,7 +1248,7 @@
     },
     {
       "selector": "site.config.ts#page:123",
-      "path": "/errors/NIKA-SEC-003",
+      "path": "/language/errors/NIKA-SEC-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1256,7 +1256,7 @@
     },
     {
       "selector": "site.config.ts#page:124",
-      "path": "/errors/NIKA-SEC-004",
+      "path": "/language/errors/NIKA-SEC-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1264,7 +1264,7 @@
     },
     {
       "selector": "site.config.ts#page:125",
-      "path": "/errors/NIKA-SEC-005",
+      "path": "/language/errors/NIKA-SEC-005",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1272,7 +1272,7 @@
     },
     {
       "selector": "site.config.ts#page:126",
-      "path": "/errors/NIKA-SEC-006",
+      "path": "/language/errors/NIKA-SEC-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1280,7 +1280,7 @@
     },
     {
       "selector": "site.config.ts#page:127",
-      "path": "/errors/NIKA-SEC-007",
+      "path": "/language/errors/NIKA-SEC-007",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1288,7 +1288,7 @@
     },
     {
       "selector": "site.config.ts#page:128",
-      "path": "/errors/NIKA-SEC-008",
+      "path": "/language/errors/NIKA-SEC-008",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1296,7 +1296,7 @@
     },
     {
       "selector": "site.config.ts#page:129",
-      "path": "/errors/NIKA-SEC-009",
+      "path": "/language/errors/NIKA-SEC-009",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1304,7 +1304,7 @@
     },
     {
       "selector": "site.config.ts#page:130",
-      "path": "/errors/NIKA-TIMEOUT-001",
+      "path": "/language/errors/NIKA-TIMEOUT-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1312,7 +1312,7 @@
     },
     {
       "selector": "site.config.ts#page:131",
-      "path": "/errors/NIKA-TYPE-001",
+      "path": "/language/errors/NIKA-TYPE-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1320,7 +1320,7 @@
     },
     {
       "selector": "site.config.ts#page:132",
-      "path": "/errors/NIKA-TYPE-002",
+      "path": "/language/errors/NIKA-TYPE-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1328,7 +1328,7 @@
     },
     {
       "selector": "site.config.ts#page:133",
-      "path": "/errors/NIKA-TYPE-003",
+      "path": "/language/errors/NIKA-TYPE-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1336,7 +1336,7 @@
     },
     {
       "selector": "site.config.ts#page:134",
-      "path": "/errors/NIKA-TYPE-004",
+      "path": "/language/errors/NIKA-TYPE-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1344,7 +1344,7 @@
     },
     {
       "selector": "site.config.ts#page:135",
-      "path": "/errors/NIKA-TYPE-005",
+      "path": "/language/errors/NIKA-TYPE-005",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1352,7 +1352,7 @@
     },
     {
       "selector": "site.config.ts#page:136",
-      "path": "/errors/NIKA-TYPE-006",
+      "path": "/language/errors/NIKA-TYPE-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1360,7 +1360,7 @@
     },
     {
       "selector": "site.config.ts#page:137",
-      "path": "/errors/NIKA-TYPE-101",
+      "path": "/language/errors/NIKA-TYPE-101",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1368,7 +1368,7 @@
     },
     {
       "selector": "site.config.ts#page:138",
-      "path": "/errors/NIKA-VALUES-001",
+      "path": "/language/errors/NIKA-VALUES-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1376,7 +1376,7 @@
     },
     {
       "selector": "site.config.ts#page:139",
-      "path": "/errors/NIKA-VALUES-002",
+      "path": "/language/errors/NIKA-VALUES-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1384,7 +1384,7 @@
     },
     {
       "selector": "site.config.ts#page:140",
-      "path": "/errors/NIKA-VALUES-003",
+      "path": "/language/errors/NIKA-VALUES-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1392,7 +1392,7 @@
     },
     {
       "selector": "site.config.ts#page:141",
-      "path": "/errors/NIKA-VAR-001",
+      "path": "/language/errors/NIKA-VAR-001",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1400,7 +1400,7 @@
     },
     {
       "selector": "site.config.ts#page:142",
-      "path": "/errors/NIKA-VAR-002",
+      "path": "/language/errors/NIKA-VAR-002",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1408,7 +1408,7 @@
     },
     {
       "selector": "site.config.ts#page:143",
-      "path": "/errors/NIKA-VAR-003",
+      "path": "/language/errors/NIKA-VAR-003",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1416,7 +1416,7 @@
     },
     {
       "selector": "site.config.ts#page:144",
-      "path": "/errors/NIKA-VAR-004",
+      "path": "/language/errors/NIKA-VAR-004",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1424,7 +1424,7 @@
     },
     {
       "selector": "site.config.ts#page:145",
-      "path": "/errors/NIKA-VAR-005",
+      "path": "/language/errors/NIKA-VAR-005",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1432,7 +1432,7 @@
     },
     {
       "selector": "site.config.ts#page:146",
-      "path": "/errors/NIKA-VAR-006",
+      "path": "/language/errors/NIKA-VAR-006",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1440,7 +1440,7 @@
     },
     {
       "selector": "site.config.ts#page:147",
-      "path": "/errors/NIKA-VAR-007",
+      "path": "/language/errors/NIKA-VAR-007",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1448,7 +1448,7 @@
     },
     {
       "selector": "site.config.ts#page:148",
-      "path": "/errors/NIKA-VAR-008",
+      "path": "/language/errors/NIKA-VAR-008",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1456,7 +1456,7 @@
     },
     {
       "selector": "site.config.ts#page:149",
-      "path": "/errors/NIKA-VAR-009",
+      "path": "/language/errors/NIKA-VAR-009",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1464,7 +1464,7 @@
     },
     {
       "selector": "site.config.ts#page:150",
-      "path": "/errors/NIKA-VAR-020",
+      "path": "/language/errors/NIKA-VAR-020",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",
@@ -1472,7 +1472,7 @@
     },
     {
       "selector": "site.config.ts#page:151",
-      "path": "/errors/NIKA-VAR-021",
+      "path": "/language/errors/NIKA-VAR-021",
       "route_selector": "src/routes.tsx#route:25",
       "component": "ErrorPage",
       "feature": "registry.errors",

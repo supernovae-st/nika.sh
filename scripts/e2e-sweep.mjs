@@ -219,10 +219,10 @@ const settle = async (maxMs = 15000) => {
 }
 
 /* ── PASS 1 · every route: console/network clean + harvest ids/links ─────────
-   The 50 /errors/<code> pages are template-identical — CDP-load a SAMPLE
+   The 50 /language/errors/<code> pages are template-identical — CDP-load a SAMPLE
    (first per namespace) for console/network; link integrity (pass 2) still
    fetches every one over HTTP (cheap). */
-const errDetail = ROUTES.filter((r) => /^\/errors\/.+/.test(r))
+const errDetail = ROUTES.filter((r) => /^\/language\/errors\/.+/.test(r))
 const errSample = new Set()
 {
   const seen = new Set()
@@ -247,7 +247,7 @@ const regSample = new Set()
 }
 const NAV_ROUTES = ROUTES.filter(
   (r) =>
-    (!/^\/errors\/.+/.test(r) || errSample.has(r)) &&
+    (!/^\/language\/errors\/.+/.test(r) || errSample.has(r)) &&
     (!/^\/(tools|verbs|language|providers|templates)\/.+/.test(r) || regSample.has(r)),
 )
 const idsByRoute = new Map()
@@ -382,7 +382,7 @@ const until = async (fn, tries = 12, gap = 400) => {
 const REGISTER_PINS = [
   /* the error rooms graduated to DEDICATED pages: the pin asserts the room
      mounted for the right code with its namespace walk served */
-  { route: '/errors/NIKA-SEC-001', row: 'section[data-code="NIKA-SEC-001"]', extra: '#err-title' },
+  { route: '/language/errors/NIKA-SEC-001', row: 'section[data-code="NIKA-SEC-001"]', extra: '#err-title' },
   { route: '/language/stdlib/fetch', row: 'section[data-tool="fetch"]', extra: '.td-usage .cf-panel' },
   /* the provider rooms graduated to DEDICATED pages (the ToolPage path):
      the pin asserts the room mounted for the right provider with its
@@ -416,7 +416,7 @@ for (const pin of REGISTER_PINS) {
    injection family; a missing script or an empty @graph goes red here. */
 await check('jsonld · the register pages carry their DefinedTermSets (post-build injection)', async () => {
   const want = [
-    ['/errors', 'set-error-codes'],
+    ['/language/errors', 'set-error-codes'],
     ['/language', 'set-words'],
     ['/language/stdlib', 'set-builtins'],
     ['/verbs', 'set-verbs'],

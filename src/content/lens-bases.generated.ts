@@ -8,7 +8,7 @@
  * literal keeps pointing at the doorway the move left behind. */
 export const ROOM_BASES: Record<string, string> = {
  "builtins": "/language/stdlib",
- "error-codes": "/errors",
+ "error-codes": "/language/errors",
  "showcases": "/workflows/jobs",
  "templates": "/workflows/skeletons",
  "verbs": "/language/verbs",

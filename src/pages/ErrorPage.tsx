@@ -71,9 +71,9 @@ export function Component() {
 
   useHead({
     title,
-    link: routeHead(`/errors/${code}`).link,
+    link: routeHead(`/language/errors/${code}`).link,
     meta: [
-      ...routeHead(`/errors/${code}`).meta,
+      ...routeHead(`/language/errors/${code}`).meta,
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
@@ -94,21 +94,21 @@ export function Component() {
                 '@context': 'https://schema.org',
                 '@type': 'BreadcrumbList',
                 itemListElement: [
-                  { '@type': 'ListItem', position: 1, name: 'The error register', item: `${SITE}/errors` },
+                  { '@type': 'ListItem', position: 1, name: 'The error register', item: `${SITE}/language/errors` },
                   { '@type': 'ListItem', position: 2, name: hit.code },
                 ],
               },
               {
                 '@context': 'https://schema.org',
                 '@type': 'DefinedTerm',
-                '@id': `${SITE}/errors/${hit.code}`,
+                '@id': `${SITE}/language/errors/${hit.code}`,
                 name: hit.code,
                 description,
-                url: `${SITE}/errors/${hit.code}`,
+                url: `${SITE}/language/errors/${hit.code}`,
                 inDefinedTermSet: {
                   '@type': 'DefinedTermSet',
                   name: 'The Nika error register',
-                  url: `${SITE}/errors`,
+                  url: `${SITE}/language/errors`,
                 },
               },
             ]),
@@ -126,7 +126,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="err-title" className="v4sec v4-in" data-code={hit?.code}>
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/errors" className="td-crumb-link">
+            <Link to="/language/errors" className="td-crumb-link">
               ← the error register
             </Link>
             {hit && (
@@ -158,7 +158,7 @@ export function Component() {
                 never repurposed. If nika raised it, your binary and{' '}
                 <a href="/errors/catalog.json">the served catalog</a> differ (
                 <code>nika --version</code> tells you which). Walk{' '}
-                <Link to="/errors">the register</Link> or <a href={`${SPEC}/blob/main/spec/05-errors.md`}>read spec 05</a>.
+                <Link to="/language/errors">the register</Link> or <a href={`${SPEC}/blob/main/spec/05-errors.md`}>read spec 05</a>.
               </p>
             </div>
           )}
@@ -303,7 +303,7 @@ export function Component() {
                           {e.code}
                         </span>
                       ) : (
-                        <Link className="td-chip" to={`/errors/${e.code}`}>
+                        <Link className="td-chip" to={`/language/errors/${e.code}`}>
                           {e.code}
                         </Link>
                       )}
@@ -315,19 +315,19 @@ export function Component() {
               {/* ── the walk ── */}
               <nav className="td-nav" aria-label="Error register walk" data-rise>
                 {prev ? (
-                  <Link className="td-nav-link" to={`/errors/${prev.code}`}>
+                  <Link className="td-nav-link" to={`/language/errors/${prev.code}`}>
                     <span className="td-nav-label">← previous</span>
                     {prev.code}
                   </Link>
                 ) : (
                   <span />
                 )}
-                <Link className="td-nav-link td-nav-link--all" to="/errors">
+                <Link className="td-nav-link td-nav-link--all" to="/language/errors">
                   <span className="td-nav-label">all {ERROR_CODES.length}</span>
                   the register
                 </Link>
                 {next ? (
-                  <Link className="td-nav-link td-nav-link--next" to={`/errors/${next.code}`}>
+                  <Link className="td-nav-link td-nav-link--next" to={`/language/errors/${next.code}`}>
                     <span className="td-nav-label">next →</span>
                     {next.code}
                   </Link>

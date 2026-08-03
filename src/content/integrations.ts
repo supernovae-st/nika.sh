@@ -281,7 +281,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     install: [{ text: 'Install', code: 'npm install @supernovae-st/nika-client' }],
     doors: [
       { label: 'the machine catalogs it mirrors', href: '/map' },
-      { label: 'the error codes it types', href: '/errors' },
+      { label: 'the error codes it types', href: '/language/errors' },
     ],
   },
   {

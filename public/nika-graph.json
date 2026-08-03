@@ -4269,7 +4269,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-001",
-   "url": "/errors/NIKA-AGENT-001"
+   "url": "/language/errors/NIKA-AGENT-001"
   },
   {
    "data": {
@@ -4282,7 +4282,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-002",
-   "url": "/errors/NIKA-AGENT-002"
+   "url": "/language/errors/NIKA-AGENT-002"
   },
   {
    "data": {
@@ -4295,7 +4295,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-003",
-   "url": "/errors/NIKA-AGENT-003"
+   "url": "/language/errors/NIKA-AGENT-003"
   },
   {
    "data": {
@@ -4308,7 +4308,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-004",
-   "url": "/errors/NIKA-AGENT-004"
+   "url": "/language/errors/NIKA-AGENT-004"
   },
   {
    "data": {
@@ -4321,7 +4321,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-ASSERT-001",
-   "url": "/errors/NIKA-ASSERT-001"
+   "url": "/language/errors/NIKA-ASSERT-001"
   },
   {
    "data": {
@@ -4334,7 +4334,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-006",
-   "url": "/errors/NIKA-AUTH-006"
+   "url": "/language/errors/NIKA-AUTH-006"
   },
   {
    "data": {
@@ -4347,7 +4347,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-007",
-   "url": "/errors/NIKA-AUTH-007"
+   "url": "/language/errors/NIKA-AUTH-007"
   },
   {
    "data": {
@@ -4360,7 +4360,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-008",
-   "url": "/errors/NIKA-AUTH-008"
+   "url": "/language/errors/NIKA-AUTH-008"
   },
   {
    "data": {
@@ -4373,7 +4373,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-009",
-   "url": "/errors/NIKA-AUTH-009"
+   "url": "/language/errors/NIKA-AUTH-009"
   },
   {
    "data": {
@@ -4386,7 +4386,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-010",
-   "url": "/errors/NIKA-AUTH-010"
+   "url": "/language/errors/NIKA-AUTH-010"
   },
   {
    "data": {
@@ -4399,7 +4399,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-BUILTIN-001",
-   "url": "/errors/NIKA-BUILTIN-001"
+   "url": "/language/errors/NIKA-BUILTIN-001"
   },
   {
    "data": {
@@ -4412,7 +4412,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-BUILTIN-DONE-001",
-   "url": "/errors/NIKA-BUILTIN-DONE-001"
+   "url": "/language/errors/NIKA-BUILTIN-DONE-001"
   },
   {
    "data": {
@@ -4425,7 +4425,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-CANCEL-001",
-   "url": "/errors/NIKA-CANCEL-001"
+   "url": "/language/errors/NIKA-CANCEL-001"
   },
   {
    "data": {
@@ -4438,7 +4438,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-001",
-   "url": "/errors/NIKA-COMP-001"
+   "url": "/language/errors/NIKA-COMP-001"
   },
   {
    "data": {
@@ -4451,7 +4451,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-002",
-   "url": "/errors/NIKA-COMP-002"
+   "url": "/language/errors/NIKA-COMP-002"
   },
   {
    "data": {
@@ -4464,7 +4464,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-003",
-   "url": "/errors/NIKA-COMP-003"
+   "url": "/language/errors/NIKA-COMP-003"
   },
   {
    "data": {
@@ -4477,7 +4477,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-004",
-   "url": "/errors/NIKA-COMP-004"
+   "url": "/language/errors/NIKA-COMP-004"
   },
   {
    "data": {
@@ -4490,7 +4490,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-001",
-   "url": "/errors/NIKA-DAG-001"
+   "url": "/language/errors/NIKA-DAG-001"
   },
   {
    "data": {
@@ -4503,7 +4503,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-002",
-   "url": "/errors/NIKA-DAG-002"
+   "url": "/language/errors/NIKA-DAG-002"
   },
   {
    "data": {
@@ -4516,7 +4516,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-004",
-   "url": "/errors/NIKA-DAG-004"
+   "url": "/language/errors/NIKA-DAG-004"
   },
   {
    "data": {
@@ -4529,7 +4529,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-005",
-   "url": "/errors/NIKA-DAG-005"
+   "url": "/language/errors/NIKA-DAG-005"
   },
   {
    "data": {
@@ -4542,7 +4542,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-006",
-   "url": "/errors/NIKA-DAG-006"
+   "url": "/language/errors/NIKA-DAG-006"
   },
   {
    "data": {
@@ -4555,7 +4555,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-007",
-   "url": "/errors/NIKA-DAG-007"
+   "url": "/language/errors/NIKA-DAG-007"
   },
   {
    "data": {
@@ -4568,7 +4568,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DECIDE-001",
-   "url": "/errors/NIKA-DECIDE-001"
+   "url": "/language/errors/NIKA-DECIDE-001"
   },
   {
    "data": {
@@ -4581,7 +4581,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DECIDE-002",
-   "url": "/errors/NIKA-DECIDE-002"
+   "url": "/language/errors/NIKA-DECIDE-002"
   },
   {
    "data": {
@@ -4594,7 +4594,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DEFAULT-001",
-   "url": "/errors/NIKA-DEFAULT-001"
+   "url": "/language/errors/NIKA-DEFAULT-001"
   },
   {
    "data": {
@@ -4607,7 +4607,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DRIFT-001",
-   "url": "/errors/NIKA-DRIFT-001"
+   "url": "/language/errors/NIKA-DRIFT-001"
   },
   {
    "data": {
@@ -4620,7 +4620,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-EXEC-001",
-   "url": "/errors/NIKA-EXEC-001"
+   "url": "/language/errors/NIKA-EXEC-001"
   },
   {
    "data": {
@@ -4633,7 +4633,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-EXEC-002",
-   "url": "/errors/NIKA-EXEC-002"
+   "url": "/language/errors/NIKA-EXEC-002"
   },
   {
    "data": {
@@ -4646,7 +4646,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INFER-001",
-   "url": "/errors/NIKA-INFER-001"
+   "url": "/language/errors/NIKA-INFER-001"
   },
   {
    "data": {
@@ -4659,7 +4659,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INFER-002",
-   "url": "/errors/NIKA-INFER-002"
+   "url": "/language/errors/NIKA-INFER-002"
   },
   {
    "data": {
@@ -4672,7 +4672,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INVOKE-001",
-   "url": "/errors/NIKA-INVOKE-001"
+   "url": "/language/errors/NIKA-INVOKE-001"
   },
   {
    "data": {
@@ -4685,7 +4685,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INVOKE-002",
-   "url": "/errors/NIKA-INVOKE-002"
+   "url": "/language/errors/NIKA-INVOKE-002"
   },
   {
    "data": {
@@ -4698,7 +4698,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-LOCK-001",
-   "url": "/errors/NIKA-LOCK-001"
+   "url": "/language/errors/NIKA-LOCK-001"
   },
   {
    "data": {
@@ -4711,7 +4711,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-MCP-001",
-   "url": "/errors/NIKA-MCP-001"
+   "url": "/language/errors/NIKA-MCP-001"
   },
   {
    "data": {
@@ -4724,7 +4724,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-MCP-002",
-   "url": "/errors/NIKA-MCP-002"
+   "url": "/language/errors/NIKA-MCP-002"
   },
   {
    "data": {
@@ -4737,7 +4737,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-001",
-   "url": "/errors/NIKA-PARSE-001"
+   "url": "/language/errors/NIKA-PARSE-001"
   },
   {
    "data": {
@@ -4750,7 +4750,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-002",
-   "url": "/errors/NIKA-PARSE-002"
+   "url": "/language/errors/NIKA-PARSE-002"
   },
   {
    "data": {
@@ -4763,7 +4763,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-003",
-   "url": "/errors/NIKA-PARSE-003"
+   "url": "/language/errors/NIKA-PARSE-003"
   },
   {
    "data": {
@@ -4776,7 +4776,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-004",
-   "url": "/errors/NIKA-PARSE-004"
+   "url": "/language/errors/NIKA-PARSE-004"
   },
   {
    "data": {
@@ -4789,7 +4789,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-005",
-   "url": "/errors/NIKA-PARSE-005"
+   "url": "/language/errors/NIKA-PARSE-005"
   },
   {
    "data": {
@@ -4802,7 +4802,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-006",
-   "url": "/errors/NIKA-PARSE-006"
+   "url": "/language/errors/NIKA-PARSE-006"
   },
   {
    "data": {
@@ -4815,7 +4815,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-007",
-   "url": "/errors/NIKA-PARSE-007"
+   "url": "/language/errors/NIKA-PARSE-007"
   },
   {
    "data": {
@@ -4828,7 +4828,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-008",
-   "url": "/errors/NIKA-PARSE-008"
+   "url": "/language/errors/NIKA-PARSE-008"
   },
   {
    "data": {
@@ -4841,7 +4841,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-009",
-   "url": "/errors/NIKA-PARSE-009"
+   "url": "/language/errors/NIKA-PARSE-009"
   },
   {
    "data": {
@@ -4854,7 +4854,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-010",
-   "url": "/errors/NIKA-PARSE-010"
+   "url": "/language/errors/NIKA-PARSE-010"
   },
   {
    "data": {
@@ -4867,7 +4867,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-011",
-   "url": "/errors/NIKA-PARSE-011"
+   "url": "/language/errors/NIKA-PARSE-011"
   },
   {
    "data": {
@@ -4880,7 +4880,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-012",
-   "url": "/errors/NIKA-PARSE-012"
+   "url": "/language/errors/NIKA-PARSE-012"
   },
   {
    "data": {
@@ -4893,7 +4893,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-013",
-   "url": "/errors/NIKA-PARSE-013"
+   "url": "/language/errors/NIKA-PARSE-013"
   },
   {
    "data": {
@@ -4906,7 +4906,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-014",
-   "url": "/errors/NIKA-PARSE-014"
+   "url": "/language/errors/NIKA-PARSE-014"
   },
   {
    "data": {
@@ -4919,7 +4919,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-017",
-   "url": "/errors/NIKA-PARSE-017"
+   "url": "/language/errors/NIKA-PARSE-017"
   },
   {
    "data": {
@@ -4932,7 +4932,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-018",
-   "url": "/errors/NIKA-PARSE-018"
+   "url": "/language/errors/NIKA-PARSE-018"
   },
   {
    "data": {
@@ -4945,7 +4945,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-019",
-   "url": "/errors/NIKA-PARSE-019"
+   "url": "/language/errors/NIKA-PARSE-019"
   },
   {
    "data": {
@@ -4958,7 +4958,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-020",
-   "url": "/errors/NIKA-PARSE-020"
+   "url": "/language/errors/NIKA-PARSE-020"
   },
   {
    "data": {
@@ -4971,7 +4971,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-021",
-   "url": "/errors/NIKA-PARSE-021"
+   "url": "/language/errors/NIKA-PARSE-021"
   },
   {
    "data": {
@@ -4984,7 +4984,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-022",
-   "url": "/errors/NIKA-PARSE-022"
+   "url": "/language/errors/NIKA-PARSE-022"
   },
   {
    "data": {
@@ -4997,7 +4997,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-023",
-   "url": "/errors/NIKA-PARSE-023"
+   "url": "/language/errors/NIKA-PARSE-023"
   },
   {
    "data": {
@@ -5010,7 +5010,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-024",
-   "url": "/errors/NIKA-PARSE-024"
+   "url": "/language/errors/NIKA-PARSE-024"
   },
   {
    "data": {
@@ -5023,7 +5023,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-025",
-   "url": "/errors/NIKA-PARSE-025"
+   "url": "/language/errors/NIKA-PARSE-025"
   },
   {
    "data": {
@@ -5036,7 +5036,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-026",
-   "url": "/errors/NIKA-PARSE-026"
+   "url": "/language/errors/NIKA-PARSE-026"
   },
   {
    "data": {
@@ -5049,7 +5049,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-027",
-   "url": "/errors/NIKA-PARSE-027"
+   "url": "/language/errors/NIKA-PARSE-027"
   },
   {
    "data": {
@@ -5062,7 +5062,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-028",
-   "url": "/errors/NIKA-PARSE-028"
+   "url": "/language/errors/NIKA-PARSE-028"
   },
   {
    "data": {
@@ -5075,7 +5075,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-POLICY-001",
-   "url": "/errors/NIKA-POLICY-001"
+   "url": "/language/errors/NIKA-POLICY-001"
   },
   {
    "data": {
@@ -5088,7 +5088,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PORT-001",
-   "url": "/errors/NIKA-PORT-001"
+   "url": "/language/errors/NIKA-PORT-001"
   },
   {
    "data": {
@@ -5101,7 +5101,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PORT-002",
-   "url": "/errors/NIKA-PORT-002"
+   "url": "/language/errors/NIKA-PORT-002"
   },
   {
    "data": {
@@ -5114,7 +5114,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-001",
-   "url": "/errors/NIKA-SEC-001"
+   "url": "/language/errors/NIKA-SEC-001"
   },
   {
    "data": {
@@ -5127,7 +5127,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-002",
-   "url": "/errors/NIKA-SEC-002"
+   "url": "/language/errors/NIKA-SEC-002"
   },
   {
    "data": {
@@ -5140,7 +5140,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-003",
-   "url": "/errors/NIKA-SEC-003"
+   "url": "/language/errors/NIKA-SEC-003"
   },
   {
    "data": {
@@ -5153,7 +5153,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-004",
-   "url": "/errors/NIKA-SEC-004"
+   "url": "/language/errors/NIKA-SEC-004"
   },
   {
    "data": {
@@ -5166,7 +5166,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-005",
-   "url": "/errors/NIKA-SEC-005"
+   "url": "/language/errors/NIKA-SEC-005"
   },
   {
    "data": {
@@ -5179,7 +5179,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-006",
-   "url": "/errors/NIKA-SEC-006"
+   "url": "/language/errors/NIKA-SEC-006"
   },
   {
    "data": {
@@ -5192,7 +5192,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-007",
-   "url": "/errors/NIKA-SEC-007"
+   "url": "/language/errors/NIKA-SEC-007"
   },
   {
    "data": {
@@ -5205,7 +5205,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-008",
-   "url": "/errors/NIKA-SEC-008"
+   "url": "/language/errors/NIKA-SEC-008"
   },
   {
    "data": {
@@ -5218,7 +5218,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-009",
-   "url": "/errors/NIKA-SEC-009"
+   "url": "/language/errors/NIKA-SEC-009"
   },
   {
    "data": {
@@ -5231,7 +5231,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TIMEOUT-001",
-   "url": "/errors/NIKA-TIMEOUT-001"
+   "url": "/language/errors/NIKA-TIMEOUT-001"
   },
   {
    "data": {
@@ -5244,7 +5244,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-001",
-   "url": "/errors/NIKA-TYPE-001"
+   "url": "/language/errors/NIKA-TYPE-001"
   },
   {
    "data": {
@@ -5257,7 +5257,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-002",
-   "url": "/errors/NIKA-TYPE-002"
+   "url": "/language/errors/NIKA-TYPE-002"
   },
   {
    "data": {
@@ -5270,7 +5270,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-003",
-   "url": "/errors/NIKA-TYPE-003"
+   "url": "/language/errors/NIKA-TYPE-003"
   },
   {
    "data": {
@@ -5283,7 +5283,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-004",
-   "url": "/errors/NIKA-TYPE-004"
+   "url": "/language/errors/NIKA-TYPE-004"
   },
   {
    "data": {
@@ -5296,7 +5296,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-005",
-   "url": "/errors/NIKA-TYPE-005"
+   "url": "/language/errors/NIKA-TYPE-005"
   },
   {
    "data": {
@@ -5309,7 +5309,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-006",
-   "url": "/errors/NIKA-TYPE-006"
+   "url": "/language/errors/NIKA-TYPE-006"
   },
   {
    "data": {
@@ -5322,7 +5322,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-101",
-   "url": "/errors/NIKA-TYPE-101"
+   "url": "/language/errors/NIKA-TYPE-101"
   },
   {
    "data": {
@@ -5335,7 +5335,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-001",
-   "url": "/errors/NIKA-VALUES-001"
+   "url": "/language/errors/NIKA-VALUES-001"
   },
   {
    "data": {
@@ -5348,7 +5348,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-002",
-   "url": "/errors/NIKA-VALUES-002"
+   "url": "/language/errors/NIKA-VALUES-002"
   },
   {
    "data": {
@@ -5361,7 +5361,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-003",
-   "url": "/errors/NIKA-VALUES-003"
+   "url": "/language/errors/NIKA-VALUES-003"
   },
   {
    "data": {
@@ -5374,7 +5374,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-001",
-   "url": "/errors/NIKA-VAR-001"
+   "url": "/language/errors/NIKA-VAR-001"
   },
   {
    "data": {
@@ -5387,7 +5387,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-002",
-   "url": "/errors/NIKA-VAR-002"
+   "url": "/language/errors/NIKA-VAR-002"
   },
   {
    "data": {
@@ -5400,7 +5400,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-003",
-   "url": "/errors/NIKA-VAR-003"
+   "url": "/language/errors/NIKA-VAR-003"
   },
   {
    "data": {
@@ -5413,7 +5413,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-004",
-   "url": "/errors/NIKA-VAR-004"
+   "url": "/language/errors/NIKA-VAR-004"
   },
   {
    "data": {
@@ -5426,7 +5426,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-005",
-   "url": "/errors/NIKA-VAR-005"
+   "url": "/language/errors/NIKA-VAR-005"
   },
   {
    "data": {
@@ -5439,7 +5439,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-006",
-   "url": "/errors/NIKA-VAR-006"
+   "url": "/language/errors/NIKA-VAR-006"
   },
   {
    "data": {
@@ -5452,7 +5452,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-007",
-   "url": "/errors/NIKA-VAR-007"
+   "url": "/language/errors/NIKA-VAR-007"
   },
   {
    "data": {
@@ -5465,7 +5465,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-008",
-   "url": "/errors/NIKA-VAR-008"
+   "url": "/language/errors/NIKA-VAR-008"
   },
   {
    "data": {
@@ -5478,7 +5478,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-009",
-   "url": "/errors/NIKA-VAR-009"
+   "url": "/language/errors/NIKA-VAR-009"
   },
   {
    "data": {
@@ -5491,7 +5491,7 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-020",
-   "url": "/errors/NIKA-VAR-020"
+   "url": "/language/errors/NIKA-VAR-020"
   },
   {
    "data": {
@@ -5504,20 +5504,20 @@
    "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-021",
-   "url": "/errors/NIKA-VAR-021"
+   "url": "/language/errors/NIKA-VAR-021"
   },
   {
    "data": {
     "by_class": {
-     "authored": 1069,
+     "authored": 1187,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 301,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1432,
-    "unverified": 280
+    "classified_files": 1550,
+    "unverified": 398
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",

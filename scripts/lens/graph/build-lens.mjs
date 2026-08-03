@@ -26,6 +26,7 @@ import { writeFileSync, mkdirSync, readFileSync, readdirSync, unlinkSync, rmdirS
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSources } from './lib/read-sources.mjs'
+import { discoverPrerenderPaths } from '../../lens-semantics-lib.mjs'
 import { layoutConstellation } from './lib/radial-layout.mjs'
 import { renderConstellation } from './lib/render-constellation.mjs'
 
@@ -45,6 +46,7 @@ const verbBase = (S) => roomBase(S, 'verbs', '/verbs/:name')
 const wordBase = (S) => roomBase(S, 'words', '/language/:word')
 const providerBase = (S) => roomBase(S, 'providers', '/providers/:id')
 const templateBase = (S) => roomBase(S, 'templates', '/templates/:name')
+const errorBase = (S) => roomBase(S, 'error-codes', '/language/errors/:code')
 /* the standard library moved out of the root 2026-08-02 · it was the last
    base still written as a literal in two places, which is exactly the
    « a base that lives in three literals moves in two of them » case */
@@ -196,7 +198,7 @@ function membersOf(set) {
         member: c.code,
         title: c.code,
         opener: c.failure,
-        url: `/errors/${c.code}`,
+        url: `${errorBase(S)}/${c.code}`,
         status: 'ratified',
         meta: { category: c.category, transient: c.transient === 'true' || c.transient === true },
       }))
@@ -449,7 +451,7 @@ const postMentions = {}
 const MEMBER_ROOM = {
   tool: (id) => ({ label: `nika:${id}`, url: `${builtinBase(S)}/${id}` }),
   word: (id) => ({ label: id, url: `${wordBase(S)}/${id}` }),
-  code: (id) => ({ label: id, url: `/errors/${id}` }),
+  code: (id) => ({ label: id, url: `${errorBase(S)}/${id}` }),
   provider: (id) => ({ label: id, url: `${providerBase(S)}/${id}` }),
 }
 for (const e of edges) {
@@ -1575,6 +1577,13 @@ const servedPaths = [
   ...new Set([
     ...lensPaths,
     ...[...readFileSync(join(ROOT, 'site.config.ts'), 'utf8').matchAll(/'(\/[^']*)'/g)].map((m) => m[1]),
+    /* the quote-scan only sees LITERAL entries — ERROR_PATHS is the one
+       DERIVED array (catalog ∪ PENDING · site.config evaluates it, never
+       lists it), so the errors-rehome parametric expansion found ZERO
+       members here. The semantics discovery already resolves every derived
+       array from the same sources ("three readers, two sources, one
+       list") — reuse it, never grow a fourth reader. */
+    ...discoverPrerenderPaths(ROOT),
   ]),
 ]
 /* DEDUPED, and it must be: LENS_PATHS is written IN PLACE inside

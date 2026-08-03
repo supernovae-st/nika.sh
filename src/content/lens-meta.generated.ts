@@ -16,7 +16,7 @@ export const LENS_PROVENANCE: {
   "language_graph": 1,
   "spec_pin": null,
   "canon_schema_version": 1,
-  "engine_version": "v0.107.0",
+  "engine_version": "v0.107.2",
   "catalogs": {
     "tools": "0.107.0",
     "providers": "0.107.0"
@@ -42,17 +42,17 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
   },
   "error-categories": {
     "count": 12,
-    "url": "/errors",
+    "url": "/language/errors",
     "title": "The error categories"
   },
   "error-codes": {
     "count": 96,
-    "url": "/errors",
+    "url": "/language/errors",
     "title": "The error codes"
   },
   "error-namespaces": {
     "count": 25,
-    "url": "/errors",
+    "url": "/language/errors",
     "title": "The error namespaces"
   },
   "extract-modes": {
@@ -166,7 +166,7 @@ export const LENS_HUBS = [
   {
     "id": "refusals",
     "title": "The refusals",
-    "hub": "/errors",
+    "hub": "/language/errors",
     "exists": true,
     "lands": null
   },

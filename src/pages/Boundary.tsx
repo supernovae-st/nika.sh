@@ -119,7 +119,7 @@ export function Component() {
             <Rails
               rails={[
                 { kind: 'room', label: 'permits', href: '/language/permits' },
-                { kind: 'named by', label: 'NIKA-SEC-004 · body outside the boundary', href: '/errors/NIKA-SEC-004' },
+                { kind: 'named by', label: 'NIKA-SEC-004 · body outside the boundary', href: '/language/errors/NIKA-SEC-004' },
                 { kind: 'try it', label: 'break a boundary on /play', href: '/play' },
               ]}
             />
@@ -180,7 +180,7 @@ export function Component() {
             </p>
             <Rails
               rails={[
-                { kind: 'named by', label: 'NIKA-SEC-005 · SSRF refused', href: '/errors/NIKA-SEC-005' },
+                { kind: 'named by', label: 'NIKA-SEC-005 · SSRF refused', href: '/language/errors/NIKA-SEC-005' },
                 { kind: 'proof', label: 'static vs runtime enforcement · /proof', href: '/how/proof#conformance' },
               ]}
             />
@@ -234,7 +234,7 @@ export function Component() {
 
           <p className="bd-foot" data-rise>
             Permits are checked before anything runs, and the floor keeps refusing while it does:
-            every refusal lands in the <Link to="/errors">error register</Link> with a stable
+            every refusal lands in the <Link to="/language/errors">error register</Link> with a stable
             code. Break a boundary in the <Link to="/play">playground</Link>, or{' '}
             <Link to="/install">install</Link> and let <code>nika check --infer-permits</code>{' '}
             write yours. <Link to="/language/spec">Read the spec →</Link>

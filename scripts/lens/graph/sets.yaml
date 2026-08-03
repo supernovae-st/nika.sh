@@ -109,7 +109,12 @@ layers:
 
   - id: refusals
     title: The refusals
-    hub: /errors
+    # RE-HOMED 2026-08-03 (operator ruling) · the last register at the root
+    # joins /language. The rooms are cited by docs_url in every finding a
+    # released binary prints (ERROR_DOCS_BASE · nika-schema spec_code.rs), so
+    # the OLD address lives on as PERMANENT doorways — the engine wagon
+    # (train/errors-docs-url) flips the base at the next release train.
+    hub: /language/errors
     hub_exists: true
     opener: >-
       Every refusal has a name. Errors are data: stable codes with a
@@ -437,7 +442,7 @@ sets:
     counted_in_canon: true
     closed: false
     surface: rooms
-    rooms_url: /errors/:code
+    rooms_url: /language/errors/:code
     rooms_exist: true
     unique_data: "canonical failure line + category + transient flag · the vendored explain teaching (cause · fix form) when the release-gated vendor lands"
     defined_by: [spec/05-errors.md]
@@ -458,7 +463,7 @@ sets:
     closed: false
     surface: anchors
     rooms_url: /language/error-namespaces   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /errors
+    anchor_page: /language/errors
     anchor_prefix: ns-
     defined_by: [spec/05-errors.md]
     # two truths, both rendered: the catalog DECLARES the namespaces (14
@@ -481,7 +486,7 @@ sets:
     closed: false
     surface: anchors
     rooms_url: /language/error-categories   # verdict 2026-07-18 · chaque élément sa page
-    anchor_page: /errors
+    anchor_page: /language/errors
     anchor_prefix: cat-
     defined_by: [spec/05-errors.md]
     opener: >-
@@ -663,6 +668,16 @@ legacy_moves:
   - { from: /error-categories/:id, to: /language/error-categories/:id, applied: language-world-v3 }
   - { from: /verbs, to: /language/verbs, applied: language-world-v3 }
   - { from: /verbs/:name, to: /language/verbs/:name, applied: language-world-v3 }
+  # ── the refusals re-home (2026-08-03 · operator ruling) · the LAST register
+  #    at the root joins /language. These doorways are PERMANENT, not a
+  #    migration aid: every released binary at or before the engine flip
+  #    (wagon train/errors-docs-url · ERROR_DOCS_BASE in nika-schema
+  #    spec_code.rs) stamps docs_url = /errors/<CODE> in its findings, and an
+  #    installed binary never re-learns an address. /errors/catalog.json does
+  #    NOT move — a machine contract keeps its address (the
+  #    /tools/catalog.json precedent).
+  - { from: /errors, to: /language/errors, applied: errors-rehome }
+  - { from: /errors/:code, to: /language/errors/:code, applied: errors-rehome }
   # the WORD collision the target sitemap names: permits · secrets · types are
   # both words AND families, so the word segment becomes explicit. The old
   # bare form keeps working for every word that is not a family name.
@@ -772,9 +787,9 @@ nav:
           - { label: The four verbs, to: /language/verbs }
           - { label: The specification, to: /language/spec }
           - { label: Governance, to: /language/governance }
-          # /errors has NOT re-homed: its rooms are cited by docs_url in every
-          # finding the binary prints, so it moves with the engine wagon
-          - { label: Error codes, to: /errors }
+          # re-homed 2026-08-03 · the docs_url citations ride the PERMANENT
+          # /errors doorways until the engine wagon flips ERROR_DOCS_BASE
+          - { label: Error codes, to: /language/errors }
           - { label: Standard library, to: /language/stdlib }
           - { label: Types, to: /language/types }
           - { label: Permits, to: /language/permits }

@@ -28,7 +28,7 @@ export function extract({ census, specRef, engineRef }) {
   const errors = readJson('public/errors/catalog.json')
   const errProv = `${specRef} · public/errors/catalog.json (catalog v${errors.version})`
   for (const c of errors.codes) {
-    const url = `/errors/${c.code}`
+    const url = `/language/errors/${c.code}`
     nodes.push(
       node({
         id: `error/${c.code}`,

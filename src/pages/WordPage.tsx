@@ -449,7 +449,7 @@ export function Component() {
                       <ul className="td-chips">
                         {use.codes.map((c) => (
                           <li key={c}>
-                            <Link className="td-chip" to={`/errors/${c}`}>
+                            <Link className="td-chip" to={`/language/errors/${c}`}>
                               {c}
                             </Link>
                           </li>

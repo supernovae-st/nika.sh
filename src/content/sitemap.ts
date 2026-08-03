@@ -125,7 +125,7 @@ export const SITE_MAP: MapGroup[] = [
       },
       {
         label: 'Error registry',
-        href: '/errors',
+        href: '/language/errors',
         hint: `every typed check finding (${ERROR_CODES.length})`,
       },
       {
@@ -158,7 +158,7 @@ export const SITE_MAP: MapGroup[] = [
       })),
       ...CHAPTERS.map((c) => ({ label: `verb: ${c.verb}`, href: `/language/verbs/${c.verb}` })),
       ...LANGUAGE_WORDS.map((w) => ({ label: w.word, href: wordRoom(w.word) })),
-      ...ERROR_CODES.map((e) => ({ label: e.code, href: `/errors/${e.code}` })),
+      ...ERROR_CODES.map((e) => ({ label: e.code, href: `/language/errors/${e.code}` })),
       /* the pending rooms (minted in the canon, awaiting the resync pin —
          pending-error-codes.ts, the leaf site.config derives ERROR_PATHS
          from): the room prerenders the day the code is minted, so the map
@@ -168,7 +168,7 @@ export const SITE_MAP: MapGroup[] = [
          the errors gate's red, not this one's). */
       ...PENDING_ERROR_CODES.filter((c) => !ERROR_CODES.some((e) => e.code === c)).map((c) => ({
         label: c,
-        href: `/errors/${c}`,
+        href: `/language/errors/${c}`,
       })),
       ...TEMPLATES.map((t) => ({ label: t.file, href: `/workflows/skeletons/${t.name}` })),
       /* rooms universelles (verdict 2026-07-18): every member of every

@@ -107,11 +107,15 @@ export const routes: RouteObject[] = [
       { path: 'changelog', Component: Changelog },
       /* the error register · the human twin of /errors/catalog.json — and
          one ROOM per code (ErrorPage: the refusal · named-by rails · the
-         namespace walked). The engine's check findings stamp
-         docs_url = /errors/<CODE>; every code page prerenders its own
-         static landing (ERROR_PATHS in site.config.ts). */
-      { path: 'errors', Component: Errors },
-      { path: 'errors/:code', Component: ErrorPage },
+         namespace walked). Re-homed under /language 2026-08-03 (operator
+         ruling · the last root register). Released binaries stamp
+         docs_url = /errors/<CODE> until the engine wagon flips
+         ERROR_DOCS_BASE, so the old address is a PERMANENT doorway
+         (legacy_moves · errors-rehome); the catalog.json keeps its address —
+         a machine contract never re-learns a URL. Every code page prerenders
+         its own static landing (ERROR_PATHS in site.config.ts). */
+      { path: 'language/errors', Component: Errors },
+      { path: 'language/errors/:code', Component: ErrorPage },
       /* the stdlib register · the human twin of /tools/catalog.json — and one
          ROOM per builtin (ToolPage: contract · usage · cross-refs). Every
          room prerenders its own static landing (TOOL_PATHS in site.config.ts). */
@@ -122,7 +126,7 @@ export const routes: RouteObject[] = [
       { path: 'language/stdlib', Component: Tools },
       { path: 'language/stdlib/:name', Component: ToolPage },
       /* the language surfaces · the four verb ROOMS + the keyword register
-         (every schema-declared word, /errors-style anchored rows). All
+         (every schema-declared word, error-register-style anchored rows). All
          prerender (VERB_PATHS + LANGUAGE_PATHS in site.config.ts). */
       { path: 'language/verbs', Component: Verbs },
       { path: 'language/verbs/:name', Component: VerbPage },

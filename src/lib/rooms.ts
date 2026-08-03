@@ -22,8 +22,8 @@ export const verbRoom = (name: string) => `${base('verbs', '/language/verbs')}/$
 /** a nika: builtin · /language/stdlib/<bare> */
 export const builtinRoom = (bare: string) => `${base('builtins', '/language/stdlib')}/${bare}`
 
-/** an error code · /errors/<CODE> */
-export const errorRoom = (code: string) => `${base('error-codes', '/errors')}/${code}`
+/** an error code · /language/errors/<CODE> */
+export const errorRoom = (code: string) => `${base('error-codes', '/language/errors')}/${code}`
 
 /** a skeleton · /workflows/skeletons/<name> */
 export const skeletonRoom = (name: string) => `${base('templates', '/workflows/skeletons')}/${name}`

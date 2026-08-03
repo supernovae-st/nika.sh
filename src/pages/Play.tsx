@@ -624,7 +624,7 @@ export function Component() {
                           >
                             Break it · {PLAY_BREAKS[seed].label.toLowerCase()}
                           </button>
-                          <a className="play-break-code" href={`/errors/${PLAY_BREAKS[seed].fires}`}>
+                          <a className="play-break-code" href={`/language/errors/${PLAY_BREAKS[seed].fires}`}>
                             {PLAY_BREAKS[seed].fires}
                           </a>
                         </p>
@@ -642,7 +642,7 @@ export function Component() {
                               the suffixed⊆ERROR_PATHS claim so this can't 404 */}
                           L{d.line} ·{' '}
                           {/\d{3}$/.test(d.code) && !SHIPPED_AHEAD_CODES.has(d.code) ? (
-                            <Link className="play-diag-room" to={`/errors/${d.code}`}>
+                            <Link className="play-diag-room" to={`/language/errors/${d.code}`}>
                               {d.code}
                             </Link>
                           ) : (

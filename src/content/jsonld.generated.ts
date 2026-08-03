@@ -13,7 +13,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the namespaces",
       "description": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -59,7 +59,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the types",
       "description": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -129,7 +129,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the language words",
       "description": "Every key an author can type in a workflow file, each scoped to the surface where it speaks. The schema declares them · the register lists them all · each room shows the word at work.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -567,7 +567,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the edge kinds",
       "description": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -619,7 +619,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the gate predicates",
       "description": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -659,7 +659,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the four verbs",
       "description": "infer thinks, exec runs, invoke calls a tool, agent loops with judgment. A verb is a distinct native execution model and the set is closed · everything callable is a tool under invoke.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -695,7 +695,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the standard library",
       "description": "Every nika tool the engine ships, each with a JSON Schema for its args. No plugin store · capability is versioned with the engine and granted per file by the boundary.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -901,7 +901,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the templates",
       "description": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -981,7 +981,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the tool families",
       "description": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1029,7 +1029,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the providers",
       "description": "Model access is provider-agnostic and local-first: the same file runs on a laptop runtime or a cloud API. Each provider declares its env var, its dialect and its models · the file picks, never the vendor.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1160,7 +1160,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the extract modes",
       "description": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1226,7 +1226,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the permit families",
       "description": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1271,7 +1271,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the secret sources",
       "description": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1297,14 +1297,14 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       ]
     }
   ],
-  "/errors": [
+  "/language/errors": [
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/errors#set-error-categories",
+      "@id": "https://nika.sh/language/errors#set-error-categories",
       "name": "Nika the error categories",
       "description": "A category names the kind of failure, orthogonal to the namespace that raised it. Transient categories are retry candidates · the rest are contract refusals that no retry will fix.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1382,680 +1382,680 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/errors#set-error-codes",
+      "@id": "https://nika.sh/language/errors#set-error-codes",
       "name": "Nika the error codes",
       "description": "Every failure the engine can name, as data: a stable code with a category and a transient flag. If the engine can refuse it, the refusal has a name you can retry on, route on and search.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AGENT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-AGENT-001",
           "termCode": "NIKA-AGENT-001",
           "name": "NIKA-AGENT-001",
           "description": "max_turns exhausted before completion"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AGENT-002",
+          "@id": "https://nika.sh/language/errors/NIKA-AGENT-002",
           "termCode": "NIKA-AGENT-002",
           "name": "NIKA-AGENT-002",
           "description": "max_tokens_total exhausted before completion"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AGENT-003",
+          "@id": "https://nika.sh/language/errors/NIKA-AGENT-003",
           "termCode": "NIKA-AGENT-003",
           "name": "NIKA-AGENT-003",
           "description": "a skills: path does not resolve (file missing/unreadable at compose time)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AGENT-004",
+          "@id": "https://nika.sh/language/errors/NIKA-AGENT-004",
           "termCode": "NIKA-AGENT-004",
           "name": "NIKA-AGENT-004",
           "description": "a skills: file is not a valid Agent Skill (frontmatter shape · missing/empty name/description)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-ASSERT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-ASSERT-001",
           "termCode": "NIKA-ASSERT-001",
           "name": "NIKA-ASSERT-001",
           "description": "an assert: claims a level the evidence does not support (a StaticProof the IR cannot decide · a mis-leveled obligation · spec 15)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AUTH-006",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-006",
           "termCode": "NIKA-AUTH-006",
           "name": "NIKA-AUTH-006",
           "description": "no permits: block declared and the body has effects — absent = zero authority (F-O8 · NEP-0003)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AUTH-007",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-007",
           "termCode": "NIKA-AUTH-007",
           "name": "NIKA-AUTH-007",
           "description": "an interpolation reaches a permit bound (host · glob · program · env name) — a bound MUST be a literal, the boundary would be self-serve (F-O1 · NEP-0004 · env per NEP-0005)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AUTH-008",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-008",
           "termCode": "NIKA-AUTH-008",
           "name": "NIKA-AUTH-008",
           "description": "an untrusted value reaches a permitted verb's argument and its canonical resolved form escapes the step's permit — re-gate refused (F-O1 · NEP-0004)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AUTH-009",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-009",
           "termCode": "NIKA-AUTH-009",
           "name": "NIKA-AUTH-009",
           "description": "a permits env: entry names a dangerous-floor variable · the engine strips the name unconditionally, the grant can never take effect: an inert dead grant (F-O4 · NEP-0005)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-AUTH-010",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-010",
           "termCode": "NIKA-AUTH-010",
           "name": "NIKA-AUTH-010",
           "description": "a permits net.http: entry carries the *. subdomain wildcard · the grant delegates the boundary to the zone operator (every host under the suffix, present and future) — refused: name exact hosts, or the bare * when allow-all is genuinely intended (F-P5 · NEP-0008)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-BUILTIN-001",
+          "@id": "https://nika.sh/language/errors/NIKA-BUILTIN-001",
           "termCode": "NIKA-BUILTIN-001",
           "name": "NIKA-BUILTIN-001",
           "description": "builtin invoke violates its statically-checkable arg contract (e.g. nika:fetch without url: · nika:jq arg shape)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-BUILTIN-DONE-001",
+          "@id": "https://nika.sh/language/errors/NIKA-BUILTIN-DONE-001",
           "termCode": "NIKA-BUILTIN-DONE-001",
           "name": "NIKA-BUILTIN-DONE-001",
           "description": "nika:done invoked outside an agent: loop"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-CANCEL-001",
+          "@id": "https://nika.sh/language/errors/NIKA-CANCEL-001",
           "termCode": "NIKA-CANCEL-001",
           "name": "NIKA-CANCEL-001",
           "description": "task cancelled (workflow failure gate · user cancellation)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-COMP-001",
+          "@id": "https://nika.sh/language/errors/NIKA-COMP-001",
           "termCode": "NIKA-COMP-001",
           "name": "NIKA-COMP-001",
           "description": "invoke.workflow: target is not statically resolvable (templated · malformed · unpinned registry ref) — a call graph you cannot draw before the run cannot be bounded (spec 14)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-COMP-002",
+          "@id": "https://nika.sh/language/errors/NIKA-COMP-002",
           "termCode": "NIKA-COMP-002",
           "name": "NIKA-COMP-002",
           "description": "the child workflow's effect boundary exceeds the parent capped by the call-site declaration (Authority(child) subset of Authority(parent) intersect declared · spec 14 laws 3/4)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-COMP-003",
+          "@id": "https://nika.sh/language/errors/NIKA-COMP-003",
           "termCode": "NIKA-COMP-003",
           "name": "NIKA-COMP-003",
           "description": "the static call graph is not acyclic (self-launch · cycle · spec 14 law 7 · NIKA-SEC-003 is the runtime depth backstop)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-COMP-004",
+          "@id": "https://nika.sh/language/errors/NIKA-COMP-004",
           "termCode": "NIKA-COMP-004",
           "name": "NIKA-COMP-004",
           "description": "the typed call does not compose — parent args do not fit child inputs, or child outputs do not fit parent returns (spec 14 law 2)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-001",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-001",
           "termCode": "NIKA-DAG-001",
           "name": "NIKA-DAG-001",
           "description": "cycle in the precedence graph G_p = E_d ∪ E_c (incl. self-dependency · via with:/after:)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-002",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-002",
           "termCode": "NIKA-DAG-002",
           "name": "NIKA-DAG-002",
           "description": "with:/after: references an undeclared task"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-004",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-004",
           "termCode": "NIKA-DAG-004",
           "name": "NIKA-DAG-004",
           "description": "on_error.recover references a task downstream of the declaring task (await would deadlock)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-005",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-005",
           "termCode": "NIKA-DAG-005",
           "name": "NIKA-DAG-005",
           "description": "after: predicate outside the closed set (success · failure · skipped · terminal)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-006",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-006",
           "termCode": "NIKA-DAG-006",
           "name": "NIKA-DAG-006",
           "description": "statically dead task — an incoming edge's pass-set excludes every reachable producer state, or the when: gate is false under every reachable upstream combination (gate algebra v2)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DAG-007",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-007",
           "termCode": "NIKA-DAG-007",
           "name": "NIKA-DAG-007",
           "description": "status compared against a literal outside the vocabulary (success · failure · skipped · cancelled) — == never matches, != always holds"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DECIDE-001",
+          "@id": "https://nika.sh/language/errors/NIKA-DECIDE-001",
           "termCode": "NIKA-DECIDE-001",
           "name": "NIKA-DECIDE-001",
           "description": "the decision bundle is malformed or violates its own laws (float weight · undeclared evidence key in rules · identity key feeding a technical dimension · missing contradictory fixture · monotonicity violated by the bundle's own fixtures) (spec 11)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DECIDE-002",
+          "@id": "https://nika.sh/language/errors/NIKA-DECIDE-002",
           "termCode": "NIKA-DECIDE-002",
           "name": "NIKA-DECIDE-002",
           "description": "the evidence snapshot does not satisfy the bundle's evidence schema (type misfit · unauthorized source · integrity below the declared floor · undeclared key) (spec 11)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DEFAULT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-DEFAULT-001",
           "termCode": "NIKA-DEFAULT-001",
           "name": "NIKA-DEFAULT-001",
           "description": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-DRIFT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-DRIFT-001",
           "termCode": "NIKA-DRIFT-001",
           "name": "NIKA-DRIFT-001",
           "description": "declared-but-unused — a vars:/env:/secrets: name or a permits: entry (exec program · tool glob · net host · fs path) that nothing in the body references (advisory check hint · never fails the audit — the reverse direction, used-but-undeclared, is the hard NIKA-VAR-001/NIKA-DAG-002/NIKA-SEC-004 surface)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-EXEC-001",
+          "@id": "https://nika.sh/language/errors/NIKA-EXEC-001",
           "termCode": "NIKA-EXEC-001",
           "name": "NIKA-EXEC-001",
           "description": "non-zero exit code (default capture modes)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-EXEC-002",
+          "@id": "https://nika.sh/language/errors/NIKA-EXEC-002",
           "termCode": "NIKA-EXEC-002",
           "name": "NIKA-EXEC-002",
           "description": "spawn failure (command not found · permission)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-INFER-001",
+          "@id": "https://nika.sh/language/errors/NIKA-INFER-001",
           "termCode": "NIKA-INFER-001",
           "name": "NIKA-INFER-001",
           "description": "provider call failed (HTTP error · provider refusal)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-INFER-002",
+          "@id": "https://nika.sh/language/errors/NIKA-INFER-002",
           "termCode": "NIKA-INFER-002",
           "name": "NIKA-INFER-002",
           "description": "structured output failed schema validation (after any engine-internal retries)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-INVOKE-001",
+          "@id": "https://nika.sh/language/errors/NIKA-INVOKE-001",
           "termCode": "NIKA-INVOKE-001",
           "name": "NIKA-INVOKE-001",
           "description": "unknown tool (unresolvable nika:/mcp: id)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-INVOKE-002",
+          "@id": "https://nika.sh/language/errors/NIKA-INVOKE-002",
           "termCode": "NIKA-INVOKE-002",
           "name": "NIKA-INVOKE-002",
           "description": "tool args failed the tool's schema"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-LOCK-001",
+          "@id": "https://nika.sh/language/errors/NIKA-LOCK-001",
           "termCode": "NIKA-LOCK-001",
           "name": "NIKA-LOCK-001",
           "description": "a dependency resolved that nika.lock does not pin, or a hand-edited lock digest does not match (pin-by-default · the lock's own hash catches the edit · spec 15)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-MCP-001",
+          "@id": "https://nika.sh/language/errors/NIKA-MCP-001",
           "termCode": "NIKA-MCP-001",
           "name": "NIKA-MCP-001",
           "description": "MCP server not configured / not reachable at call time"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-MCP-002",
+          "@id": "https://nika.sh/language/errors/NIKA-MCP-002",
           "termCode": "NIKA-MCP-002",
           "name": "NIKA-MCP-002",
           "description": "MCP tool call failed (transport · tool-side error)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-001",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-001",
           "termCode": "NIKA-PARSE-001",
           "name": "NIKA-PARSE-001",
           "description": "the YAML itself does not parse (syntax error)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-002",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-002",
           "termCode": "NIKA-PARSE-002",
           "name": "NIKA-PARSE-002",
           "description": "missing envelope field (nika: / workflow: / non-empty tasks:)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-003",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-003",
           "termCode": "NIKA-PARSE-003",
           "name": "NIKA-PARSE-003",
           "description": "nika: version marker is not exactly v1"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-004",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-004",
           "termCode": "NIKA-PARSE-004",
           "name": "NIKA-PARSE-004",
           "description": "workflow: id violates ^[a-z][a-z0-9-]*$"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-005",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-005",
           "termCode": "NIKA-PARSE-005",
           "name": "NIKA-PARSE-005",
           "description": "unknown field — strict mode rejects anything outside the closed v1 set"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-006",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-006",
           "termCode": "NIKA-PARSE-006",
           "name": "NIKA-PARSE-006",
           "description": "task id violates ^[a-z][a-z0-9_]*$ (snake_case · CEL-safe · no hyphens)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-007",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-007",
           "termCode": "NIKA-PARSE-007",
           "name": "NIKA-PARSE-007",
           "description": "duplicate task id within the workflow"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-008",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-008",
           "termCode": "NIKA-PARSE-008",
           "name": "NIKA-PARSE-008",
           "description": "task declares no verb — exactly one of infer/exec/invoke/agent required"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-009",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-009",
           "termCode": "NIKA-PARSE-009",
           "name": "NIKA-PARSE-009",
           "description": "task declares multiple verbs — exactly one required"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-010",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-010",
           "termCode": "NIKA-PARSE-010",
           "name": "NIKA-PARSE-010",
           "description": "timeout: violates the quoted Go-duration contract (positive · max 24h · descending units)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-011",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-011",
           "termCode": "NIKA-PARSE-011",
           "name": "NIKA-PARSE-011",
           "description": "retry: block violates the spec shape"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-012",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-012",
           "termCode": "NIKA-PARSE-012",
           "name": "NIKA-PARSE-012",
           "description": "on_error: block violates the spec shape (fields mutually exclusive)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-013",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-013",
           "termCode": "NIKA-PARSE-013",
           "name": "NIKA-PARSE-013",
           "description": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-014",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-014",
           "termCode": "NIKA-PARSE-014",
           "name": "NIKA-PARSE-014",
           "description": "secrets: entry is not a store reference — inline literals forbidden"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-017",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-017",
           "termCode": "NIKA-PARSE-017",
           "name": "NIKA-PARSE-017",
           "description": "duplicate mapping key — no silent last-wins"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-018",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-018",
           "termCode": "NIKA-PARSE-018",
           "name": "NIKA-PARSE-018",
           "description": "missing required field in a verb body (infer.prompt · exec.command · invoke.tool)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-019",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-019",
           "termCode": "NIKA-PARSE-019",
           "name": "NIKA-PARSE-019",
           "description": "generic structural validation — wrong YAML shape for a field"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-020",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-020",
           "termCode": "NIKA-PARSE-020",
           "name": "NIKA-PARSE-020",
           "description": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-021",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-021",
           "termCode": "NIKA-PARSE-021",
           "name": "NIKA-PARSE-021",
           "description": "top-level description: — it moved into workflow.description"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-022",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-022",
           "termCode": "NIKA-PARSE-022",
           "name": "NIKA-PARSE-022",
           "description": "tasks: is a sequence — it became a map keyed by task id (drop `- id:`, the key IS the identity)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-023",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-023",
           "termCode": "NIKA-PARSE-023",
           "name": "NIKA-PARSE-023",
           "description": "a task carries an id: field — the map key is the identity, the field is gone"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-024",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-024",
           "termCode": "NIKA-PARSE-024",
           "name": "NIKA-PARSE-024",
           "description": "a task carries depends_on: — dead since W2 (data → with: bindings · control → after: predicates · check --fix migrates)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-025",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-025",
           "termCode": "NIKA-PARSE-025",
           "name": "NIKA-PARSE-025",
           "description": "decode: with capture: structured — that capture already IS an object · type it with returns:"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-026",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-026",
           "termCode": "NIKA-PARSE-026",
           "name": "NIKA-PARSE-026",
           "description": "a declared entropy x clock contradiction · entropy: ambient paired with clock: virtual — the ambient declaration contradicts the determinism demand (NEP-0010 · F-P3)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-027",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-027",
           "termCode": "NIKA-PARSE-027",
           "name": "NIKA-PARSE-027",
           "description": "a declared entropy x clock contradiction · entropy: none | seeded paired with clock: system — deterministic journals cannot ride the wall clock (NEP-0010 · F-P3)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PARSE-028",
+          "@id": "https://nika.sh/language/errors/NIKA-PARSE-028",
           "termCode": "NIKA-PARSE-028",
           "name": "NIKA-PARSE-028",
           "description": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-POLICY-001",
+          "@id": "https://nika.sh/language/errors/NIKA-POLICY-001",
           "termCode": "NIKA-POLICY-001",
           "name": "NIKA-POLICY-001",
           "description": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PORT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-PORT-001",
           "termCode": "NIKA-PORT-001",
           "name": "NIKA-PORT-001",
           "description": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-PORT-002",
+          "@id": "https://nika.sh/language/errors/NIKA-PORT-002",
           "termCode": "NIKA-PORT-002",
           "name": "NIKA-PORT-002",
           "description": "policy lowering is permissive_unsafe — the backend would allow what the policy forbids · refused with the divergence witness (spec 12)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-001",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-001",
           "termCode": "NIKA-SEC-001",
           "name": "NIKA-SEC-001",
           "description": "exec: blocklist hit"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-002",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-002",
           "termCode": "NIKA-SEC-002",
           "name": "NIKA-SEC-002",
           "description": "agent tool call outside the tools: whitelist"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-003",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-003",
           "termCode": "NIKA-SEC-003",
           "name": "NIKA-SEC-003",
           "description": "run-recursion bound — nested-run depth exceeded OR self-launching workflow"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-004",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-004",
           "termCode": "NIKA-SEC-004",
           "name": "NIKA-SEC-004",
           "description": "effect outside the declared permits: capability boundary (fs/net/exec/tool)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-005",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-005",
           "termCode": "NIKA-SEC-005",
           "name": "NIKA-SEC-005",
           "description": "SSRF block — a nika:fetch/nika:notify URL resolves to a loopback/private/link-local/metadata target (always-on engine floor · independent of permits:)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-006",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-006",
           "termCode": "NIKA-SEC-006",
           "name": "NIKA-SEC-006",
           "description": "secret flow — a secrets.<name> value reaches an unsanctioned sink (exec argument · invoke payload · infer/agent prompt) · the diagnostic carries the taint path + the egress clause that would sanction it (spec 10 · flow rules in 01 §egress)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-007",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-007",
           "termCode": "NIKA-SEC-007",
           "name": "NIKA-SEC-007",
           "description": "secret egress — a tainted value reaches the workflow boundary (outputs:) · the diagnostic carries the taint path (spec 10 · the to: outputs sanction in 01 §egress)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-008",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-008",
           "termCode": "NIKA-SEC-008",
           "name": "NIKA-SEC-008",
           "description": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-SEC-009",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-009",
           "termCode": "NIKA-SEC-009",
           "name": "NIKA-SEC-009",
           "description": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TIMEOUT-001",
+          "@id": "https://nika.sh/language/errors/NIKA-TIMEOUT-001",
           "termCode": "NIKA-TIMEOUT-001",
           "name": "NIKA-TIMEOUT-001",
           "description": "task (or for_each iteration) exceeded timeout:"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-001",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-001",
           "termCode": "NIKA-TYPE-001",
           "name": "NIKA-TYPE-001",
           "description": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-002",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-002",
           "termCode": "NIKA-TYPE-002",
           "name": "NIKA-TYPE-002",
           "description": "recursive type reference — the types: graph must be acyclic"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-003",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-003",
           "termCode": "NIKA-TYPE-003",
           "name": "NIKA-TYPE-003",
           "description": "returns: and schema: on the same task — one contract, one spelling"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-004",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-004",
           "termCode": "NIKA-TYPE-004",
           "name": "NIKA-TYPE-004",
           "description": "returns: type unreachable from the declared decode: (an object contract over decode: text · …)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-005",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-005",
           "termCode": "NIKA-TYPE-005",
           "name": "NIKA-TYPE-005",
           "description": "a secret-carrying type in a lowered position (reserved with secret<T> · W4)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-006",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-006",
           "termCode": "NIKA-TYPE-006",
           "name": "NIKA-TYPE-006",
           "description": "regex pattern outside the locked dialect (backreference · lookaround · named group · inline flags · lazy/possessive · word-boundary · unicode-class — spec 09 §the regex dialect)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-TYPE-101",
+          "@id": "https://nika.sh/language/errors/NIKA-TYPE-101",
           "termCode": "NIKA-TYPE-101",
           "name": "NIKA-TYPE-101",
           "description": "run-time contract violation — the decoded value does not fit returns: (exec:/invoke: lane)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VALUES-001",
+          "@id": "https://nika.sh/language/errors/NIKA-VALUES-001",
           "termCode": "NIKA-VALUES-001",
           "name": "NIKA-VALUES-001",
           "description": "vars: is a dead envelope field (R3a · the E-split)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VALUES-002",
+          "@id": "https://nika.sh/language/errors/NIKA-VALUES-002",
           "termCode": "NIKA-VALUES-002",
           "name": "NIKA-VALUES-002",
           "description": "env: is a dead envelope field (R3a · the E-split)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VALUES-003",
+          "@id": "https://nika.sh/language/errors/NIKA-VALUES-003",
           "termCode": "NIKA-VALUES-003",
           "name": "NIKA-VALUES-003",
           "description": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-001",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-001",
           "termCode": "NIKA-VAR-001",
           "name": "NIKA-VAR-001",
           "description": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-002",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-002",
           "termCode": "NIKA-VAR-002",
           "name": "NIKA-VAR-002",
           "description": "binding cardinality — a jq binding emitted zero or multiple values"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-003",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-003",
           "termCode": "NIKA-VAR-003",
           "name": "NIKA-VAR-003",
           "description": "provably-invalid path into a declared schema (static walk)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-004",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-004",
           "termCode": "NIKA-VAR-004",
           "name": "NIKA-VAR-004",
           "description": "jq runtime error while evaluating a binding"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-005",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-005",
           "termCode": "NIKA-VAR-005",
           "name": "NIKA-VAR-005",
           "description": "static expression violation — outside cel-subset/0.1 · chained relation · unknown function · non-boolean when: root · jq compile error"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-006",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-006",
           "termCode": "NIKA-VAR-006",
           "name": "NIKA-VAR-006",
           "description": "expression type error at evaluation — cross-type compare · non-boolean when: value · for_each over a non-array"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-007",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-007",
           "termCode": "NIKA-VAR-007",
           "name": "NIKA-VAR-007",
           "description": "bytes value substituted into a string position"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-008",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-008",
           "termCode": "NIKA-VAR-008",
           "name": "NIKA-VAR-008",
           "description": "unclosed ${{ opener"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-009",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-009",
           "termCode": "NIKA-VAR-009",
           "name": "NIKA-VAR-009",
           "description": "typed outputs value did not match its declared type: at run end (the output half of the callable contract)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-020",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-020",
           "termCode": "NIKA-VAR-020",
           "name": "NIKA-VAR-020",
           "description": "bare tasks.X is the envelope, not a value — the projection set (.output/.status/.error/.duration_ms) is closed and required (04 §namespaces · 0.103 · #75 D2)"
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/errors/NIKA-VAR-021",
+          "@id": "https://nika.sh/language/errors/NIKA-VAR-021",
           "termCode": "NIKA-VAR-021",
           "name": "NIKA-VAR-021",
           "description": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
@@ -2064,11 +2064,11 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
     },
     {
       "@type": "DefinedTermSet",
-      "@id": "https://nika.sh/errors#set-error-namespaces",
+      "@id": "https://nika.sh/language/errors#set-error-namespaces",
       "name": "Nika the error namespaces",
       "description": "Codes group by namespace, one per surface of the engine: parse, DAG, variables, security, each verb and the machine seams. A namespace can exist before its first code ships · the register says so out loud.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2244,7 +2244,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the conformance levels",
       "description": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2275,7 +2275,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the oracle tools",
       "description": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2339,7 +2339,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the showcases",
       "description": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2507,7 +2507,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the truth words",
       "description": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, lens. Each word has exactly one meaning · confusing two of them is a prose bug.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.107.0",
+      "version": "v0.107.2",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",

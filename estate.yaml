@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1432
+  classified_files: 1550
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1069
+    authored: 1187
     authored-pin: 3
     generated: 301
     pinned-copy: 21
     testimonial: 38
     foreign: 0
-  unverified-default: 280
+  unverified-default: 398
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 65171007c773548893033ed3cc76756f772bf88951e5fa56ab6ae9fb1913290b
+  sha256: 2af146e88ee9b80a2d5dd824f561bd8062d7637ccc9b92b42afd2c16a53e0e13
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -286,7 +286,7 @@ files:
   evidence: "hand-written PWA manifest"
 - path: "public/map/constellation.svg"
   class: generated
-  sha256: 37d78502f1566f9500128ec5cbf189472027068b7528f4af73c6b887472cda3d
+  sha256: a2dd2cb0fe9a91bad835daf43ebb1e1c792998cd1a87382c433b76646aa661f7
   evidence: "written by build-lens.mjs:1730 — the served twin of src/assets/constellation.generated.svg"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 0247b1cff47c2e2544ea472a5997e3db8eb833c6eb6e80d18821b15f799bb909
+  sha256: 5236e3aa7970aa6b230b189f7f77b63ceefd48afacdcfc46a3ebbf190e783730
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -331,7 +331,7 @@ files:
   note: "unverified-default"
 - path: "public/ontology/language.json"
   class: generated
-  sha256: 4b161ec5ba3622e6e30573c93cbf4ec759ec188c98bd15f243d362e2f399c1aa
+  sha256: 31069e3d8e5426c0c316744a925149d460d6728d21068601b26bfd5aacc942fa
   evidence: "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -351,7 +351,7 @@ files:
     - "nika 0.107.0 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
-  sha256: 5368677f99f28e82dde911a6fc1c5787d50dd1fa555b3d379d43d31050b0856e
+  sha256: 847d9a03c0755fb33382e70397cd2d6e4e05a702d2d2df7bbe812500d2d9a1bc
   evidence: "written by build-lens.mjs:1736 (redirects_format shape) — the append-only redirect registry (a published URL never 404s)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 7ae3e3172b9bb8c9fede89df52fea16298d021cbd54ef45a11a29225c09ce139
+  sha256: 1c3e679ebff2428c8b003be371e50ed9f3e90148da29669d33b7bf35e64f7d38
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 6aca8d31dc19cb271c18a86ff8de800989dc96d4bb33f6f0d7e95a5489dd99b9
+  sha256: 7989a6e6a5c6db5810dc48a2c5a61c8c03fa58f2af88c2baae35cfd63a026aee
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 63b582bf184c4d56a9bc567bad849e6955cd899938abd6a88cea1b0679cb424b
+  sha256: a592e5c517e10c48dde9e7e0e9c9e9fd36e64a79191033bf13300a7ac4143583
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -525,12 +525,12 @@ files:
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 049ac111d621555b89f4c28af4a33cbf43ba0a8ab7c83f27c7d3798fb495a0ec
+  sha256: 37f72e25061a23e35ec68e405d12e79ebba8eb98a7ecd328f83e495cc814c771
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
   class: generated
-  sha256: 37d78502f1566f9500128ec5cbf189472027068b7528f4af73c6b887472cda3d
+  sha256: a2dd2cb0fe9a91bad835daf43ebb1e1c792998cd1a87382c433b76646aa661f7
   evidence: "written by build-lens.mjs:1716 (.generated. basename · no textual marker inside the SVG)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -620,7 +620,7 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
   class: generated
-  sha256: bec7e88a165df895e7275f15084a744cf637f87f1ae4b287876003ca8e2ad9c2
+  sha256: 46348958fbdc69177517811b9e9bb455df609eb962c2b8769c3a404de737c36c
   evidence: "declared output of resync contract generator 'website-palette' (supernovae-st/nika.sh scripts/build-palette.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-palette.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: bf5f92d7f994986e10126ae193bf65b8c6bc33c51ed76b46ba4cc267be0bfe2e
+  aggregate_sha256: 47d5bb5a1e4888f803d8269db1f826827475ca0460bf6f6c8ba2f76414f6d3dc
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 42
-  aggregate_sha256: 24b2259286f25639806002854088af8d88ac6ae1154239230c80cf85200bc9a5
+  aggregate_sha256: 8772b1e59a34cc3caafc109f524db115fabe9f5402e6c7d1367edbaf937189fd
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 423
-  aggregate_sha256: 6c0e06587300a4cdf3081d164e7c2d2ad8a942c14342732f57386e275fd71712
+  aggregate_sha256: b613968ed79c3e86e8754fd0710f52adf7535ca12bfac35e3e8090d3407765db
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 91
-  aggregate_sha256: 1439e3eefc5d5132a53724f4ab33e06d3fdbea8576778fbae3a84135d5782b9f
+  aggregate_sha256: 606df55edc4c52dbeaa33bd4b9cc4a074779fc7bc6bcbc1300819fceabb05d28
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 279
-  aggregate_sha256: 79275c6e5972dee1f324a07ec15a0c3a181e4fec724b84fcc51ec6fe4ca43201
+  match_count: 397
+  aggregate_sha256: 99cff315d0113dd2f84b83b909f80b3bc12897c867104f3a1e91d32a70f1beaf
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -1007,6 +1007,103 @@ unverified:
 - "public/error-namespaces/NIKA-VALUES/index.html"
 - "public/error-namespaces/NIKA-VAR/index.html"
 - "public/error-namespaces/index.html"
+- "public/errors/NIKA-AGENT-001/index.html"
+- "public/errors/NIKA-AGENT-002/index.html"
+- "public/errors/NIKA-AGENT-003/index.html"
+- "public/errors/NIKA-AGENT-004/index.html"
+- "public/errors/NIKA-ASSERT-001/index.html"
+- "public/errors/NIKA-AUTH-006/index.html"
+- "public/errors/NIKA-AUTH-007/index.html"
+- "public/errors/NIKA-AUTH-008/index.html"
+- "public/errors/NIKA-AUTH-009/index.html"
+- "public/errors/NIKA-AUTH-010/index.html"
+- "public/errors/NIKA-BUILTIN-001/index.html"
+- "public/errors/NIKA-BUILTIN-DONE-001/index.html"
+- "public/errors/NIKA-CANCEL-001/index.html"
+- "public/errors/NIKA-COMP-001/index.html"
+- "public/errors/NIKA-COMP-002/index.html"
+- "public/errors/NIKA-COMP-003/index.html"
+- "public/errors/NIKA-COMP-004/index.html"
+- "public/errors/NIKA-DAG-001/index.html"
+- "public/errors/NIKA-DAG-002/index.html"
+- "public/errors/NIKA-DAG-004/index.html"
+- "public/errors/NIKA-DAG-005/index.html"
+- "public/errors/NIKA-DAG-006/index.html"
+- "public/errors/NIKA-DAG-007/index.html"
+- "public/errors/NIKA-DECIDE-001/index.html"
+- "public/errors/NIKA-DECIDE-002/index.html"
+- "public/errors/NIKA-DEFAULT-001/index.html"
+- "public/errors/NIKA-DRIFT-001/index.html"
+- "public/errors/NIKA-EXEC-001/index.html"
+- "public/errors/NIKA-EXEC-002/index.html"
+- "public/errors/NIKA-INFER-001/index.html"
+- "public/errors/NIKA-INFER-002/index.html"
+- "public/errors/NIKA-INVOKE-001/index.html"
+- "public/errors/NIKA-INVOKE-002/index.html"
+- "public/errors/NIKA-LOCK-001/index.html"
+- "public/errors/NIKA-MCP-001/index.html"
+- "public/errors/NIKA-MCP-002/index.html"
+- "public/errors/NIKA-PARSE-001/index.html"
+- "public/errors/NIKA-PARSE-002/index.html"
+- "public/errors/NIKA-PARSE-003/index.html"
+- "public/errors/NIKA-PARSE-004/index.html"
+- "public/errors/NIKA-PARSE-005/index.html"
+- "public/errors/NIKA-PARSE-006/index.html"
+- "public/errors/NIKA-PARSE-007/index.html"
+- "public/errors/NIKA-PARSE-008/index.html"
+- "public/errors/NIKA-PARSE-009/index.html"
+- "public/errors/NIKA-PARSE-010/index.html"
+- "public/errors/NIKA-PARSE-011/index.html"
+- "public/errors/NIKA-PARSE-012/index.html"
+- "public/errors/NIKA-PARSE-013/index.html"
+- "public/errors/NIKA-PARSE-014/index.html"
+- "public/errors/NIKA-PARSE-017/index.html"
+- "public/errors/NIKA-PARSE-018/index.html"
+- "public/errors/NIKA-PARSE-019/index.html"
+- "public/errors/NIKA-PARSE-020/index.html"
+- "public/errors/NIKA-PARSE-021/index.html"
+- "public/errors/NIKA-PARSE-022/index.html"
+- "public/errors/NIKA-PARSE-023/index.html"
+- "public/errors/NIKA-PARSE-024/index.html"
+- "public/errors/NIKA-PARSE-025/index.html"
+- "public/errors/NIKA-PARSE-026/index.html"
+- "public/errors/NIKA-PARSE-027/index.html"
+- "public/errors/NIKA-PARSE-028/index.html"
+- "public/errors/NIKA-POLICY-001/index.html"
+- "public/errors/NIKA-PORT-001/index.html"
+- "public/errors/NIKA-PORT-002/index.html"
+- "public/errors/NIKA-SEC-001/index.html"
+- "public/errors/NIKA-SEC-002/index.html"
+- "public/errors/NIKA-SEC-003/index.html"
+- "public/errors/NIKA-SEC-004/index.html"
+- "public/errors/NIKA-SEC-005/index.html"
+- "public/errors/NIKA-SEC-006/index.html"
+- "public/errors/NIKA-SEC-007/index.html"
+- "public/errors/NIKA-SEC-008/index.html"
+- "public/errors/NIKA-SEC-009/index.html"
+- "public/errors/NIKA-TIMEOUT-001/index.html"
+- "public/errors/NIKA-TYPE-001/index.html"
+- "public/errors/NIKA-TYPE-002/index.html"
+- "public/errors/NIKA-TYPE-003/index.html"
+- "public/errors/NIKA-TYPE-004/index.html"
+- "public/errors/NIKA-TYPE-005/index.html"
+- "public/errors/NIKA-TYPE-006/index.html"
+- "public/errors/NIKA-TYPE-101/index.html"
+- "public/errors/NIKA-VALUES-001/index.html"
+- "public/errors/NIKA-VALUES-002/index.html"
+- "public/errors/NIKA-VALUES-003/index.html"
+- "public/errors/NIKA-VAR-001/index.html"
+- "public/errors/NIKA-VAR-002/index.html"
+- "public/errors/NIKA-VAR-003/index.html"
+- "public/errors/NIKA-VAR-004/index.html"
+- "public/errors/NIKA-VAR-005/index.html"
+- "public/errors/NIKA-VAR-006/index.html"
+- "public/errors/NIKA-VAR-007/index.html"
+- "public/errors/NIKA-VAR-008/index.html"
+- "public/errors/NIKA-VAR-009/index.html"
+- "public/errors/NIKA-VAR-020/index.html"
+- "public/errors/NIKA-VAR-021/index.html"
+- "public/errors/index.html"
 - "public/families/core/index.html"
 - "public/families/data/index.html"
 - "public/families/file/index.html"
@@ -1125,24 +1222,45 @@ unverified:
 - "public/predicates/success/index.html"
 - "public/predicates/terminal/index.html"
 - "public/proof/index.html"
+- "public/providers/ai21/index.html"
 - "public/providers/anthropic/index.html"
+- "public/providers/azure/index.html"
+- "public/providers/bedrock/index.html"
+- "public/providers/cerebras/index.html"
+- "public/providers/cloudflare/index.html"
+- "public/providers/cohere/index.html"
+- "public/providers/databricks/index.html"
+- "public/providers/deepinfra/index.html"
 - "public/providers/deepseek/index.html"
+- "public/providers/fireworks/index.html"
 - "public/providers/gemini/index.html"
 - "public/providers/groq/index.html"
 - "public/providers/huggingface/index.html"
+- "public/providers/hyperbolic/index.html"
 - "public/providers/index.html"
 - "public/providers/llamacpp/index.html"
 - "public/providers/lmstudio/index.html"
 - "public/providers/localai/index.html"
+- "public/providers/minimax/index.html"
 - "public/providers/mistral/index.html"
 - "public/providers/mock/index.html"
 - "public/providers/moonshot/index.html"
+- "public/providers/native/index.html"
 - "public/providers/nvidia/index.html"
 - "public/providers/ollama/index.html"
 - "public/providers/openai/index.html"
 - "public/providers/openrouter/index.html"
+- "public/providers/perplexity/index.html"
+- "public/providers/qwen/index.html"
+- "public/providers/replicate/index.html"
+- "public/providers/sambanova/index.html"
+- "public/providers/together/index.html"
+- "public/providers/vertex/index.html"
 - "public/providers/vllm/index.html"
+- "public/providers/voyage/index.html"
+- "public/providers/writer/index.html"
 - "public/providers/xai/index.html"
+- "public/providers/zhipu/index.html"
 - "public/secrets/env/index.html"
 - "public/secrets/file/index.html"
 - "public/secrets/index.html"

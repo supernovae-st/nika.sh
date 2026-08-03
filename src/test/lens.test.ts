@@ -143,8 +143,8 @@ describe('lens · rooms and routes cover each other', () => {
        the code in the catalog (build-lens derives members from it), so
        until then the pending declaration is the room's known-to-the-graph
        proof — served with a gated declaration, never an orphan. */
-    const pending = new Set(PENDING_ERROR_CODES.map((c) => `/errors/${c}`))
-    const lensRoots = ['/language/', '/language/verbs/', '/workflows/skeletons/', '/errors/', '/catalog/providers/']
+    const pending = new Set(PENDING_ERROR_CODES.map((c) => `/language/errors/${c}`))
+    const lensRoots = ['/language/', '/language/verbs/', '/workflows/skeletons/', '/language/errors/', '/catalog/providers/']
     /* the specification's chapter rooms are AUTHORED pages (the pack is
        vendored by scripts/build-chapters.mjs), not lens member nodes — the
        lens never claimed them and the /language/ prefix now sweeps them in. */

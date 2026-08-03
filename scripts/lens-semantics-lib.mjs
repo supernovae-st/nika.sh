@@ -420,8 +420,8 @@ function deriveErrorPaths(root, source) {
   const pending = literalArray(readFileSync(join(root, 'pending-error-codes.ts'), 'utf8'), 'PENDING_ERROR_CODES')
   return [
     ...new Set([
-      ...catalog.codes.map((entry) => `/errors/${entry.code}`),
-      ...pending.map((code) => `/errors/${code}`),
+      ...catalog.codes.map((entry) => `/language/errors/${entry.code}`),
+      ...pending.map((code) => `/language/errors/${code}`),
     ]),
   ].sort()
 }

@@ -15,7 +15,7 @@ import { ERROR_PATHS, PATHS, PENDING_ERROR_CODES } from '../../site.config'
 
 const ROOT = join(__dirname, '../..')
 
-describe('/errors · the compiled projection matches the served catalog', () => {
+describe('/language/errors · the compiled projection matches the served catalog', () => {
   /* BOTH halves, or the gate guards the one that cannot grow. The compiler
      emits the light index AND the refusal prose; gating only the index would
      let 96 sentences drift unwatched — the half that changes every time the
@@ -77,8 +77,8 @@ describe('/errors · the compiled projection matches the served catalog', () => 
     expect(ERROR_NAMESPACES.every((ns) => ns.startsWith('NIKA-'))).toBe(true)
   })
 
-  it('/errors prerenders (PATHS carries the register page)', () => {
-    expect(PATHS).toContain('/errors')
+  it('/language/errors prerenders (PATHS carries the register page)', () => {
+    expect(PATHS).toContain('/language/errors')
   })
 
   it('every code prerenders its deep page (the engine stamps docs_url on findings)', () => {
@@ -96,8 +96,8 @@ describe('/errors · the compiled projection matches the served catalog', () => 
     }
     const expected = [
       ...new Set([
-        ...catalog.codes.map((c) => `/errors/${c.code}`),
-        ...PENDING_ERROR_CODES.map((c) => `/errors/${c}`),
+        ...catalog.codes.map((c) => `/language/errors/${c.code}`),
+        ...PENDING_ERROR_CODES.map((c) => `/language/errors/${c}`),
       ]),
     ].sort()
     expect(ERROR_PATHS).toEqual(expected)

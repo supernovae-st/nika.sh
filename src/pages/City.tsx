@@ -44,7 +44,7 @@ const FEEDS: Record<string, { label: string; to: string }[]> = {
   ],
   engine: [
     { label: 'The catalog', to: '/catalog' },
-    { label: 'Error codes', to: '/errors' },
+    { label: 'Error codes', to: '/language/errors' },
     { label: 'Client coverage', to: '/integrations' },
     { label: 'The ship log', to: '/changelog' },
   ],

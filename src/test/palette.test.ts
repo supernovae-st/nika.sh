@@ -25,7 +25,7 @@ describe('/palette · the ⌘K corpus matches its sources', () => {
 
   it('every error code is reachable from the palette', () => {
     const hrefs = new Set(PALETTE.map((e) => e.href))
-    for (const e of ERROR_CODES) expect(hrefs.has(`/errors/${e.code}`), e.code).toBe(true)
+    for (const e of ERROR_CODES) expect(hrefs.has(`/language/errors/${e.code}`), e.code).toBe(true)
   })
 
   it('every palette href is a real route (fragments judge their page · the WO-6 fusion)', () => {
