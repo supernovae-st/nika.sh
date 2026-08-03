@@ -85,7 +85,7 @@ function buildGraph(): { stars: Star[]; clusters: Cluster[] } {
       const r = (0.35 + rng() * 0.65) * CLUSTER_R
       stars.push({
         hx: cx + Math.cos(a) * r,
-        hy: cy + Math.sin(a) * r * 1.9, // the stage is wide — breathe vertically
+        hy: cy + Math.sin(a) * r * 1.45, // compact band — a tighter breath
         x: 0,
         y: 0,
         ph: rng() * Math.PI * 2,
@@ -160,7 +160,7 @@ export default function FooterConstellation() {
       const c = clusters[w]
       const lit = w === hot
       ctx.strokeStyle = lit ? ACCENT : INK
-      ctx.globalAlpha = lit ? 0.34 : 0.1
+      ctx.globalAlpha = lit ? 0.36 : 0.13
       ctx.lineWidth = 1
       ctx.beginPath()
       ctx.moveTo(specX, specY)
@@ -175,7 +175,7 @@ export default function FooterConstellation() {
       const c = clusters[s.world]
       const lit = s.world === hot
       ctx.strokeStyle = lit ? ACCENT : INK
-      ctx.globalAlpha = lit ? 0.22 : 0.055
+      ctx.globalAlpha = lit ? 0.24 : 0.075
       ctx.beginPath()
       ctx.moveTo(c.cx * W, c.cy * H)
       ctx.lineTo(s.x, s.y)
@@ -215,7 +215,7 @@ export default function FooterConstellation() {
       const lit = s.world === hot
       const tw = !reducedRef.current && wave > s.b ? 0.25 : 0
       ctx.fillStyle = lit ? ACCENT : INK
-      ctx.globalAlpha = Math.min(1, (lit ? 0.95 : 0.55) + tw)
+      ctx.globalAlpha = Math.min(1, (lit ? 0.95 : 0.62) + tw)
       ctx.fillRect(s.x - 1, s.y - 1, 2, 2)
     }
 

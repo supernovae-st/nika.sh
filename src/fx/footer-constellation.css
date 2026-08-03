@@ -5,7 +5,9 @@
 .sitefoot-sky-stage {
   position: relative;
   width: 100%;
-  height: clamp(220px, 24vw, 300px);
+  /* one compact band (operator: the footer grew too tall) — the scene is a
+     skyline over the drawers, not a second landscape */
+  height: clamp(160px, 17vw, 210px);
 }
 .sitefoot-sky-stage canvas {
   position: absolute;
@@ -17,6 +19,6 @@
 @media (max-width: 640px) {
   /* phones read the columns; the sky compresses to a band */
   .sitefoot-sky-stage {
-    height: 170px;
+    height: 140px;
   }
 }

@@ -1397,23 +1397,11 @@
   position: relative;
   z-index: 0;
 }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .v4sec.sitefoot--melt {
-      animation: sitefoot-quai linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 100%;
-    }
-  }
-}
-@keyframes sitefoot-quai {
-  from {
-    transform: translateY(-22%);
-  }
-  to {
-    transform: none;
-  }
-}
+/* (the parallax quai lived here for an hour — animation-timeline: view()
+   translating the whole footer. On real glass the ~1.7-screen footer is
+   one enormous layer re-rastered through every scroll frame: « ça
+   galère ». An effect that costs more than it wows, dies. The z-order
+   curtain stays — it is free. Git keeps the recipe.) */
 .sitefoot-field {
   position: absolute;
   inset: 0;

@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1617
+  classified_files: 1618
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1242
+    authored: 1243
     authored-pin: 3
     generated: 311
     pinned-copy: 21
     testimonial: 40
     foreign: 0
-  unverified-default: 427
+  unverified-default: 428
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 26337629bcfa5cbfdbb166d65aa1659b855687300c85a833e0a53921287a14e1
+  sha256: 8690c36bf2041c93d731acf2d9083b8301307f5034d8c7ca3acd0e148f0302f2
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 82e078808f698ace465d6bc19223f8aa86956c2aec5dfe7d33f084e9915b9d6b
+  aggregate_sha256: 5802d22a2356f4d33d13d987a0303c81fc3570e49a43420ac6b47c703507ad5e
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: 72957faa5481c32efab9b98e8b75c132b38decedd4002f089545902982099746
+  aggregate_sha256: 5be3382336b6366b1362b5ab6e5211b3a09a37b35dfd71149d1c97f9d9bcbe3f
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 426
-  aggregate_sha256: 0ac3bf99b7e28ef3f3e8ec2f2409c25af2c0aefee28ebd1bbef73ff294ab56bc
+  match_count: 427
+  aggregate_sha256: 210cf3f3898edc79ce322d4413ce35c4cf9b0a6a30cf6aa45ee749fd8ece0856
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -1382,3 +1382,4 @@ unverified:
 - "public/workflows/lessons.json"
 - "public/workflows/path/index.html"
 - "public/zh-hans/index.html"
+- "shots/compact.png"
