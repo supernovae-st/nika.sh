@@ -195,7 +195,10 @@ function TokenSpan({ token }: { token: Token }) {
 /* the file's OFFICIAL source, beside the copy (operator 2026-07-13):
    every yaml on the site is registered — the corner link takes you to the
    registration (the spec pack blob, or the served /library file). */
-function SourceLink({ href }: { href: string }) {
+/* Exported: the corner cluster (source ↗ · Copy) is ONE design element —
+   /play's hand-assembled cf-chrome consumes these same pieces (operator
+   2026-08-03: the top-right of every yaml panel is one source of truth). */
+export function SourceLink({ href }: { href: string }) {
   const external = href.startsWith('http')
   return (
     <a
@@ -210,7 +213,7 @@ function SourceLink({ href }: { href: string }) {
   )
 }
 
-function CopyButton({ value }: { value: string }) {
+export function CopyButton({ value }: { value: string }) {
   const { copied, copy } = useCopy(value) // shared state · one reset delay · unmount-safe
   return (
     <button

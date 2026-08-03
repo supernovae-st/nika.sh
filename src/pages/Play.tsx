@@ -2,6 +2,9 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { parsePlan, type ParsedPlan } from '../lib/parse-plan'
 import { DagView } from '../components/DagView'
+import { CopyButton, SourceLink } from '../components/CodeFile'
+/* the SAME lazy corner CodeFile mounts — one drawing, one chunk */
+const PlayMiniDag = lazy(() => import('../components/CodeMiniDag'))
 /* lz-string is CJS — named ESM imports break the Node prerender (SSG);
    the default-import + destructure form works in both worlds */
 import lz from 'lz-string'
@@ -96,6 +99,13 @@ export function Component() {
   )
   const [seed, setSeed] = useState('chain')
   const [code, setCode] = useState(seeds['chain'] ?? '')
+  /* the corner cluster's honesty: `source ↗` shows only while the buffer
+     still IS the registered file it loaded from — one edit and the file
+     is the reader's, not ours (the registered-source law). */
+  const [appliedSrc, setAppliedSrc] = useState(seeds['chain'] ?? '')
+  /* the corner minimap rides the LAST VALID source, same law as the live
+     plan beside it — the drawing never flickers mid-edit */
+  const [goodYaml, setGoodYaml] = useState(seeds['chain'] ?? '')
   const [diags, setDiags] = useState<LintDiag[]>(() => checkNika(seeds['chain'] ?? ''))
   /* the REAL checker, when it lands: the wasm artifact registers the oracle
      (nika-lint's own seam) and the current file is re-judged once — later
@@ -271,6 +281,8 @@ export function Component() {
       }
       setSeed('shared')
       setCode(src)
+      setAppliedSrc('') /* a shared buffer names no registered source */
+      setGoodYaml(src)
       setDiags(checkNika(src))
       setPlan(parsePlan(src))
       setStale(false)
@@ -296,6 +308,7 @@ export function Component() {
       const next = parsePlan(v)
       if (next) {
         setPlan(next)
+        setGoodYaml(v)
         setStale(false)
       } else {
         setStale(true)
@@ -348,6 +361,8 @@ export function Component() {
     const apply = (src: string) => {
       setSeed(slug)
       setCode(src)
+      setAppliedSrc(src)
+      setGoodYaml(src)
       setDiags(checkNika(src))
       setPlan(parsePlan(src))
       setStale(false)
@@ -458,6 +473,21 @@ export function Component() {
                     embed this checker
                   </a>
                 ) : null}
+                {/* the corner cluster — the SAME element every yaml panel
+                    wears (CodeFile's own SourceLink + CopyButton): source ↗
+                    while the buffer IS the registered file, Copy always. */}
+                <span className="cf-chrome-right">
+                  {code === appliedSrc && appliedSrc ? (
+                    <SourceLink
+                      href={
+                        seeds[seed] !== undefined
+                          ? `https://github.com/supernovae-st/nika-spec/blob/main/templates/${seed}.nika.yaml`
+                          : `https://github.com/supernovae-st/nika-spec/blob/main/examples/${seed}.nika.yaml`
+                      }
+                    />
+                  ) : null}
+                  <CopyButton value={code} />
+                </span>
                 <span
                   className="play-editor-status"
                   data-valid={valid}
@@ -485,6 +515,16 @@ export function Component() {
                 ) : (
                   EditorFallback
                 )}
+                {/* the corner minimap — the drawing every panel carries,
+                    riding the LAST VALID source (dimmed while the buffer is
+                    mid-edit, the DagView law) */}
+                {mounted && goodYaml ? (
+                  <div className="play-minimap" data-stale={stale || undefined}>
+                    <Suspense fallback={null}>
+                      <PlayMiniDag yaml={goodYaml} />
+                    </Suspense>
+                  </div>
+                ) : null}
               </div>
             </div>
 
