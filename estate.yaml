@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 6441ef1dcb1a01f92c4b6cba5d4a2b05a0b556953468315971da533a9b7ece3f
+  aggregate_sha256: 3b21198bd41f9279faa7a5858f0423c55e646e7d3005e0df6da73d8b56599d6a
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,7 +941,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 94
-  aggregate_sha256: 3c41aa73100919cfda262a9e84d2a41f4e820d712a3c7dda78dafe1511722c37
+  aggregate_sha256: 351cce1436d335e52725c8631d7a4bc6effd90b8f2024d6a99158f612aebc031
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
