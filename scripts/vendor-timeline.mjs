@@ -5,25 +5,58 @@
    (timeline/verify.py). This script projects it into a typed module;
    the /timeline page renders the projection, never local prose.
 
-   Run: NIKA_SPEC_ROOT=../spec/repo node scripts/vendor-timeline.mjs */
+   Run: node scripts/vendor-timeline.mjs
+   Default read: the PINNED spec commit via `git show` against the sibling
+   checkout, so a moving sibling HEAD can never leak into the projection.
+   NIKA_SPEC_ROOT stays the EXPLICIT live-read override: pointing it at a
+   checkout is a deliberate act (pre-release rehearsal), never the default.
+   Neither reachable: die loudly (the projection must never go stale in
+   silence). */
+import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parse } from 'yaml'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const SPEC_ROOT =
-  process.env.NIKA_SPEC_ROOT ??
-  [
-    join(ROOT, '..', 'spec', 'repo'),
-    join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo'),
-  ].find((p) => existsSync(join(p, 'timeline/timeline.yaml')))
-if (!SPEC_ROOT) {
-  console.error('vendor-timeline: no spec checkout with timeline/ found — set NIKA_SPEC_ROOT')
+
+/* ── pin-read resolution (the build-templates pin-read discipline · 2026-08-03) ──
+   readFileSync against the LIVING sibling let an unreleased spec HEAD silently
+   re-vendor committed projections on the monorepo machine; the default reader
+   now takes the bytes AT the pin, and only an explicit env var reads live. */
+const SPEC_PIN = JSON.parse(readFileSync(join(ROOT, '.github/nika-spec-pin.json'), 'utf8'))
+const liveRoot = process.env.NIKA_SPEC_ROOT
+const siblingGitRoot = [join(ROOT, '..', 'spec', 'repo'), join(ROOT, '..', '..', 'spec', 'repo')].find(
+  (p) => {
+    if (!existsSync(join(p, '.git'))) return false
+    try {
+      execFileSync('git', ['-C', p, 'cat-file', '-e', SPEC_PIN.spec_commit], { stdio: 'ignore' })
+      return true
+    } catch {
+      return false
+    }
+  },
+)
+/* the ONE reader: NIKA_SPEC_ROOT (explicit) reads the live tree; the sibling
+   default reads the PINNED bytes via git show · a moving HEAD cannot leak */
+const readSpec = liveRoot
+  ? (rel) => readFileSync(join(liveRoot, rel), 'utf8')
+  : (rel) =>
+      execFileSync('git', ['-C', siblingGitRoot, 'show', `${SPEC_PIN.spec_commit}:${rel}`], {
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
+      })
+const specReachable = liveRoot
+  ? existsSync(join(liveRoot, 'timeline/timeline.yaml'))
+  : Boolean(siblingGitRoot)
+if (!specReachable) {
+  console.error(
+    'vendor-timeline: no readable spec · neither a sibling carrying the pinned commit nor a usable NIKA_SPEC_ROOT · cannot read timeline/timeline.yaml',
+  )
   process.exit(1)
 }
 
-const doc = parse(readFileSync(join(SPEC_ROOT, 'timeline/timeline.yaml'), 'utf8'))
+const doc = parse(readSpec('timeline/timeline.yaml'))
 
 /* evidence → a public proof href (null for labeled-unprovable classes) */
 function proofHref(ev) {

@@ -6,25 +6,65 @@
    REPLAYS this module — legal form (a): precomputed engine/model truth,
    zero local semantics. Spec-time clock; the resync cron re-vendors.
 
-   Run: NIKA_SPEC_ROOT=../spec node scripts/vendor-gate-matrix.mjs */
+   Run: node scripts/vendor-gate-matrix.mjs
+   Default read: the PINNED spec commit (git ls-tree for the fixture list ·
+   git show for each file) against the sibling checkout, so a moving sibling
+   HEAD can never leak into the matrix. NIKA_SPEC_ROOT stays the EXPLICIT
+   live-read override (pre-release rehearsal) · neither reachable: die loudly. */
+import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-/* env override first, then the sibling clone, then the monorepo layout
-   (the build-templates.mjs probe pattern) — no checkout, die loudly */
-const SPEC_ROOT =
-  process.env.NIKA_SPEC_ROOT ??
-  [
-    join(ROOT, '..', 'spec', 'repo'),
-    join(ROOT, '../../../../..', 'ventures/nika/02-engineering/repos/spec/repo'),
-  ].find((p) => existsSync(join(p, 'conformance/tests/runtime/gates')))
-if (!SPEC_ROOT) {
-  console.error('vendor-gate-matrix: no spec checkout found — set NIKA_SPEC_ROOT')
+const GATES_REL = 'conformance/tests/runtime/gates'
+
+/* ── pin-read resolution (the build-templates pin-read discipline · 2026-08-03) ──
+   readdirSync + readFileSync against the LIVING sibling let an unreleased spec
+   HEAD silently re-vendor the committed matrix on the monorepo machine; the
+   default now lists and reads AT the pin, and only an explicit env reads live. */
+const SPEC_PIN = JSON.parse(readFileSync(join(ROOT, '.github/nika-spec-pin.json'), 'utf8'))
+const liveRoot = process.env.NIKA_SPEC_ROOT
+const siblingGitRoot = [join(ROOT, '..', 'spec', 'repo'), join(ROOT, '..', '..', 'spec', 'repo')].find(
+  (p) => {
+    if (!existsSync(join(p, '.git'))) return false
+    try {
+      execFileSync('git', ['-C', p, 'cat-file', '-e', SPEC_PIN.spec_commit], { stdio: 'ignore' })
+      return true
+    } catch {
+      return false
+    }
+  },
+)
+/* the TWO readers: NIKA_SPEC_ROOT (explicit) reads the live tree; the sibling
+   default reads the PINNED tree via git · a moving HEAD cannot leak.
+   ls-tree with a trailing slash lists the directory's entries (full paths
+   from the repo root, hence the basename strip). */
+const readSpec = liveRoot
+  ? (rel) => readFileSync(join(liveRoot, rel), 'utf8')
+  : (rel) =>
+      execFileSync('git', ['-C', siblingGitRoot, 'show', `${SPEC_PIN.spec_commit}:${rel}`], {
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
+      })
+const listSpecDir = liveRoot
+  ? (rel) => readdirSync(join(liveRoot, rel))
+  : (rel) =>
+      execFileSync(
+        'git',
+        ['-C', siblingGitRoot, 'ls-tree', '--name-only', SPEC_PIN.spec_commit, '--', `${rel}/`],
+        { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 },
+      )
+        .split('\n')
+        .filter(Boolean)
+        .map((line) => line.split('/').pop())
+const specReachable = liveRoot ? existsSync(join(liveRoot, GATES_REL)) : Boolean(siblingGitRoot)
+if (!specReachable) {
+  console.error(
+    'vendor-gate-matrix: no readable spec · neither a sibling carrying the pinned commit nor a usable NIKA_SPEC_ROOT · cannot read the gate fixtures',
+  )
   process.exit(1)
 }
-const GATES = join(SPEC_ROOT, 'conformance/tests/runtime/gates')
 
 const PRODUCERS = ['success', 'failure', 'skipped', 'cancelled']
 const FORMS = [
@@ -50,7 +90,7 @@ const DEAD = new Set([
   'cancelled/after-skipped',
 ])
 
-const dirs = readdirSync(GATES).filter((d) => /^\d{3}-/.test(d))
+const dirs = listSpecDir(GATES_REL).filter((d) => /^\d{3}-/.test(d))
 const byKey = new Map()
 for (const d of dirs) {
   const m = /^\d{3}-([a-z]+)-x-([a-z-]+)$/.exec(d)
@@ -77,8 +117,8 @@ for (const producer of PRODUCERS) {
     }
     const dir = byKey.get(key)
     if (!dir) throw new Error(`gate matrix: missing runnable cell ${key}`)
-    const expected = JSON.parse(readFileSync(join(GATES, dir, 'expected-run.json'), 'utf8'))
-    const yaml = readFileSync(join(GATES, dir, 'input.nika.yaml'), 'utf8')
+    const expected = JSON.parse(readSpec(`${GATES_REL}/${dir}/expected-run.json`))
+    const yaml = readSpec(`${GATES_REL}/${dir}/input.nika.yaml`)
     const consumer = expected.tasks?.c
     if (!consumer?.status) throw new Error(`gate matrix: ${dir} has no consumer verdict`)
     cells.push({
@@ -87,7 +127,7 @@ for (const producer of PRODUCERS) {
       dead: false,
       verdict: consumer.status,
       code: null,
-      fixture: `conformance/tests/runtime/gates/${dir}`,
+      fixture: `${GATES_REL}/${dir}`,
       yaml,
       note: expected.note ?? null,
     })
