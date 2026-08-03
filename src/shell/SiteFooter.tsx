@@ -287,18 +287,34 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           </a>
         </p>
 
-        <div
-          className="mono mt-12 flex w-full flex-wrap items-center justify-between gap-3 border-t pt-6 text-[12px] text-[var(--fg-ghost)]"
-          style={{ borderColor: 'var(--hair)' }}
-        >
+        <div className="mono mt-12 flex w-full flex-wrap items-center justify-between gap-3 pt-6 text-[12px] text-[var(--fg-ghost)]">
           {/* the exposed-state line (usgraphics register): what's deployed, in
               mono — the ONE hand-maintained version const + the real license +
               the ship log. No build SHA: the deploy SHA isn't knowable
-              statically, and we don't fake state. */}
+              statically, and we don't fake state. Every state word is a door
+              (operator 2026-08-03): the version opens its release room, the
+              license opens the LICENSE file itself. The rule above the bar
+              died the same evening as the seam hairline — the altar's void
+              is the separation. */}
           <span className="flex items-center gap-2">
             <img src="/nika.svg" alt="" width={13} height={13} style={{ opacity: 0.7 }} />
             <span>
-              PROD {ENGINE_VERSION} · AGPL-3.0-or-later ·{' '}
+              <Link
+                to={`/releases/${ENGINE_VERSION}`}
+                className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
+              >
+                PROD {ENGINE_VERSION}
+              </Link>{' '}
+              ·{' '}
+              <a
+                href={`${REPO}/blob/main/LICENSE`}
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
+              >
+                AGPL-3.0-or-later
+              </a>{' '}
+              ·{' '}
               <Link
                 to="/changelog"
                 className="underline decoration-1 underline-offset-2 transition-colors hover:text-[var(--fg-mute)]"
