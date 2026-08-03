@@ -1278,7 +1278,7 @@
     {
       "selector": "src/pages/VerbPage.tsx#count:12",
       "path": "src/pages/VerbPage.tsx",
-      "line": 377,
+      "line": 381,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1520,7 +1520,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:4",
       "path": "src/sections/Verbs.tsx",
-      "line": 133,
+      "line": 140,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -1532,7 +1532,7 @@
     {
       "selector": "src/sections/Verbs.tsx#count:5",
       "path": "src/sections/Verbs.tsx",
-      "line": 137,
+      "line": 144,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",
