@@ -49,14 +49,17 @@ describe('/learn · every teaching fragment parses', () => {
       with?: Record<string, unknown>
     }
     const doc = parse(step.yaml) as { tasks: Record<string, Task> }
-    // the drawn plan: 5 tasks · 3 sources with no wires in · digest waits for
-    // all three · save waits for digest (the SVG in Learn.tsx draws THIS)
+    // the drawn plan: 6 tasks · one human gate opens the run · the three
+    // sources bind its answer (with: go → an edge, when: the gate that
+    // bites) · digest waits for all three · save closes (the SVG in
+    // Learn.tsx draws THIS, gate column included)
     const entries = Object.entries(doc.tasks)
-    expect(entries.length).toBe(5)
+    expect(entries.length).toBe(6)
     const deps = Object.fromEntries(entries.map(([id, t]) => [id, producersOf(t)]))
-    expect(deps.fetch_news).toEqual([])
-    expect(deps.repo_log).toEqual([])
-    expect(deps.read_notes).toEqual([])
+    expect(deps.approve).toEqual([])
+    expect(deps.fetch_news).toEqual(['approve'])
+    expect(deps.repo_log).toEqual(['approve'])
+    expect(deps.read_notes).toEqual(['approve'])
     expect(deps.digest).toEqual(['fetch_news', 'repo_log', 'read_notes'])
     expect(deps.save).toEqual(['digest'])
   })
@@ -102,7 +105,7 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     /* the envelope (01) · the value split (02) · the model (03) */
     expect(doc.nika).toBe('v1')
     expect(doc.workflow.id).toBe('weekly-radar')
-    expect(Object.keys(doc.inputs)).toEqual(['topic'])
+    expect(Object.keys(doc.inputs)).toEqual(['topic', 'notes_path'])
     expect(Object.keys(doc.const)).toEqual(['output_dir'])
     expect(doc.model).toBe('ollama/llama3.2:3b')
     /* 0.106 · the authority speaks: the file declares its boundary, and the

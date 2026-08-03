@@ -47,7 +47,15 @@ import './learn-page.css'
    and touch readers (focus a chip · the tooltip is a polite live region, so
    the gloss is announced). Terms come from the tokenizer itself — a chip
    exists only for a key that really appears in the fragment. */
-function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
+function LearnFile({
+  yaml,
+  filename,
+  sourceHref,
+}: {
+  yaml: string
+  filename?: string
+  sourceHref?: string
+}) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [tip, setTip] = useState<{ term: string; x: number; y: number } | null>(null)
 
@@ -103,7 +111,7 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
       onPointerMove={onMove}
       onPointerLeave={() => setTip(null)}
     >
-      <CodeFile yaml={yaml} filename={filename} wrap tips />
+      <CodeFile yaml={yaml} filename={filename} sourceHref={sourceHref} wrap tips />
       {terms.length > 0 && (
         <ul className="lrn-dict" aria-label="plain words for the keys in this file">
           {terms.map((term) => (
@@ -140,26 +148,33 @@ function LearnFile({ yaml, filename }: { yaml: string; filename?: string }) {
 }
 
 /* ── the weekly-radar mini-DAG · the 2D comprehension anchor (step 06) ────────
-   HONEST: node-for-node the YAML fragment beside it — five tasks, the three
-   sources (no wires in) sharing one wave, digest joining them, save closing.
+   HONEST: node-for-node the YAML fragment beside it · six tasks: one human
+   gate opens the run, the three sources bind its answer (and run only on
+   yes) sharing one wave, digest joins them, save closes.
    Hand-authored static SVG (no runtime), verb-hued node dots, thin accent
    dependency arrows, a wave bracket reading « run together ×3 ». Text is real
    SVG text (crisp at every DPR); on narrow screens the plate scrolls inside
    its well exactly like a code panel. */
 const DAG_NODES: { id: string; verb: string; x: number; y: number; w: number }[] = [
-  { id: 'fetch_news', verb: 'invoke', x: 22, y: 34, w: 172 },
-  { id: 'repo_log', verb: 'exec', x: 22, y: 98, w: 172 },
-  { id: 'read_notes', verb: 'invoke', x: 22, y: 162, w: 172 },
-  { id: 'digest', verb: 'infer', x: 318, y: 98, w: 146 },
-  { id: 'save', verb: 'invoke', x: 546, y: 98, w: 118 },
+  { id: 'approve', verb: 'invoke', x: 12, y: 98, w: 158 },
+  { id: 'fetch_news', verb: 'invoke', x: 230, y: 34, w: 172 },
+  { id: 'repo_log', verb: 'exec', x: 230, y: 98, w: 172 },
+  { id: 'read_notes', verb: 'invoke', x: 230, y: 162, w: 172 },
+  { id: 'digest', verb: 'infer', x: 512, y: 98, w: 146 },
+  { id: 'save', verb: 'invoke', x: 736, y: 98, w: 118 },
 ]
 
-/* one dependency arrow per with: wire in the fragment · nothing more */
+/* one dependency arrow per wire in the fragment · nothing more · the three
+   approve fans are the `with: go` bindings (the gate that gates), the rest
+   are the data wires into digest and save */
 const DAG_ARROWS = [
-  'M196 54 C 246 54, 262 106, 312 108', // fetch_news → digest
-  'M196 118 H 312', //                     repo_log   → digest
-  'M196 182 C 246 182, 262 130, 312 128', // read_notes → digest
-  'M464 118 H 540', //                     digest     → save
+  'M170 108 C 196 108, 200 56, 224 54', //  approve    → fetch_news
+  'M170 118 H 224', //                      approve    → repo_log
+  'M170 128 C 196 128, 200 180, 224 182', // approve   → read_notes
+  'M404 54 C 448 54, 464 106, 506 108', //  fetch_news → digest
+  'M404 118 H 506', //                      repo_log   → digest
+  'M404 182 C 448 182, 464 130, 506 128', // read_notes → digest
+  'M658 118 H 730', //                      digest     → save
 ]
 
 function WeeklyRadarDag() {
@@ -168,14 +183,15 @@ function WeeklyRadarDag() {
       <div className="lrn-dag-scroll" tabIndex={0} role="group" aria-label="the drawn plan (scrolls sideways on small screens)">
         <svg
           className="lrn-dag-svg"
-          viewBox="0 0 680 248"
+          viewBox="0 0 872 248"
           role="img"
           aria-labelledby="lrn-dag-t lrn-dag-d"
         >
           <title id="lrn-dag-t">The weekly-radar plan, drawn as a graph</title>
           <desc id="lrn-dag-d">
-            fetch_news, repo_log and read_notes wait on nothing, so all three run at the same
-            time. digest waits for all three. save waits for digest. Time flows left to right.
+            approve asks one human question. fetch_news, repo_log and read_notes each bind its
+            answer, so all three start together once it is yes. digest waits for all three.
+            save waits for digest. Time flows left to right.
           </desc>
           <defs>
             <marker
@@ -192,18 +208,21 @@ function WeeklyRadarDag() {
           </defs>
 
           {/* the column captions · what each wave means, in anyone-words */}
-          <text className="lrn-dag-cap" x="108" y="18" textAnchor="middle">
-            run together ×3
+          <text className="lrn-dag-cap" x="91" y="18" textAnchor="middle">
+            one human question
           </text>
-          <text className="lrn-dag-cap" x="391" y="18" textAnchor="middle">
+          <text className="lrn-dag-cap" x="316" y="18" textAnchor="middle">
+            on yes · run together ×3
+          </text>
+          <text className="lrn-dag-cap" x="585" y="18" textAnchor="middle">
             waits for all three
           </text>
-          <text className="lrn-dag-cap" x="605" y="18" textAnchor="middle">
+          <text className="lrn-dag-cap" x="795" y="18" textAnchor="middle">
             then
           </text>
 
           {/* the wave bracket · the three steps that share a start line */}
-          <path className="lrn-dag-bracket" d="M13 36 H8 V200 H13" />
+          <path className="lrn-dag-bracket" d="M221 36 H216 V200 H221" />
 
           {/* the dependency arrows · one per with: wire */}
           {DAG_ARROWS.map((d) => (
@@ -231,7 +250,7 @@ function WeeklyRadarDag() {
           ))}
 
           {/* the time axis whisper · left to right is the only direction */}
-          <text className="lrn-dag-cap" x="658" y="242" textAnchor="end">
+          <text className="lrn-dag-cap" x="850" y="242" textAnchor="end">
             time →
           </text>
         </svg>
@@ -376,7 +395,7 @@ export function Component() {
                   {s.note && <p className="lrn-step-note">{s.note}</p>}
                 </div>
                 <div className="lrn-step-code">
-                  <LearnFile yaml={s.yaml} filename={s.file} />
+                  <LearnFile yaml={s.yaml} filename={s.file} sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/weekly-radar.nika.yaml" />
                 </div>
                 {s.dag && <WeeklyRadarDag />}
                 {/* I7 · the inline check — one per step MAX, only where a
@@ -421,14 +440,20 @@ export function Component() {
             <p className="lrn-full-fig mono">10 · the whole file</p>
             <h2 className="lrn-full-title">Every idea above, in one file</h2>
             <p className="lrn-full-body">
-              The nine fragments compose into the workflow this page has been teaching. This
-              exact text passes the engine&apos;s audit; the verdict below is{' '}
+              The nine fragments compose into the workflow this page has been teaching ·
+              the registered file itself, byte for byte. This exact text passes the
+              engine&apos;s audit; the verdict below is{' '}
               <code className="mono">nika check</code>&apos;s real answer, and its hints are
-              your next three lessons.
+              your next lessons (one of them is the price of a human gate that actually
+              gates).
             </p>
             <div className="lrn-full-pair">
               <div className="lrn-frame v4-frame-canvas">
-                <LearnFile yaml={FULL_FILE} filename="weekly-radar.nika.yaml" />
+                <LearnFile
+                  yaml={FULL_FILE}
+                  filename="weekly-radar.nika.yaml"
+                  sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/weekly-radar.nika.yaml"
+                />
               </div>
               <TermCapture title="what the engine says" lines={FULL_FILE_TRANSCRIPT} command="nika check weekly-radar.nika.yaml" />
             </div>

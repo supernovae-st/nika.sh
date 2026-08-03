@@ -94,12 +94,12 @@ workflow:
     yaml: `inputs:
   topic:
     type: string
-    required: true
-    description: "Subject to research"
+    default: "local-first AI tooling"
+    description: "Subject to research · --var topic=… overrides"
 
 const:
   output_dir: "./radar"`,
-    note: 'Use it anywhere as ${{ inputs.topic }}. Change the input, not the file.',
+    note: 'Use it anywhere as ${{ inputs.topic }}. A default makes the file runnable bare; --var overrides it per run.',
     check: {
       q: 'Next week the topic changes. What do you edit?',
       options: ['The file, then re-save it', 'Nothing: pass the new value on the command line', 'A separate config file'],
@@ -129,10 +129,9 @@ model: ollama/llama3.2:3b
     file: 'tasks',
     yaml: `tasks:
   digest:
-    after:
-      fetch_news: success
     infer:
-      prompt: "Summarize in 5 bullets: \${{ tasks.fetch_news.output }}"`,
+      prompt: "One weekly radar on \${{ inputs.topic }}, five bullets"
+      max_tokens: 1024`,
     note: 'infer thinks · exec runs a command · invoke uses a tool · agent delegates.',
   },
   {
@@ -172,20 +171,28 @@ digest:
       'A workflow is a to-do list where some steps wait for others. Steps that wait on nothing all start at the same time, automatically; you never schedule anything. Before anything runs, the runtime reads every with: wire and draws the plan: here, three sources start together, the digest waits for all three, and the save waits for the digest.',
     file: 'tasks · the whole plan',
     yaml: `tasks:
+  approve:
+    invoke:
+      tool: "nika:prompt"    # one human question opens the run
   fetch_news:
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:fetch"
   repo_log:
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     exec:
       command: ["git", "log", "--since=1 week"]
   read_notes:
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:read"
   digest:
-    after:
-      fetch_news: success
-      repo_log: success
-      read_notes: success
     with:
       news: \${{ tasks.fetch_news.output }}
       log: \${{ tasks.repo_log.output }}
@@ -193,13 +200,11 @@ digest:
     infer:
       prompt: "One weekly radar, five bullets"
   save:
-    after:
-      digest: success
     with:
       brief: \${{ tasks.digest.output }}
     invoke:
       tool: "nika:write"`,
-    note: 'Nothing in this file says parallel. The picture below is the plan drawn from these five steps: follow the arrows, not the line order.',
+    note: 'Nothing in this file says parallel. One human question opens the run · each source binds the answer and runs only on yes (a gate you merely order after would fire on « no »). The picture below is the plan drawn from these six steps: follow the arrows, not the line order.',
     dag: true,
   },
   {
@@ -207,7 +212,7 @@ digest:
     topic: 'the branch',
     title: 'Branch like an adult',
     plain:
-      'when: makes a task conditional, a yes/no test over what it imports. The wiring already orders it; when: decides whether an admitted step runs, and it reads the step’s own bindings, never the graph.',
+      'when: makes a task conditional, a yes/no test over what it imports. The wiring already orders it; when: decides whether an admitted step runs, and it reads the step’s own bindings, never the graph. The radar’s human gate is exactly this: bind the answer, run on true.',
     file: 'when',
     yaml: `alert:
   with:
@@ -265,64 +270,85 @@ outputs:
 ]
 
 /* ── the whole file · the nine fragments, assembled ───────────────────────────
-   Every idea above, composed into the ONE workflow the page teaches, plus
-   what 0.106 demands of it: the file declares its authority (`permits:`
-   absent is the EMPTY boundary now) and, because it reads private notes,
-   ingests an untrusted feed AND writes a file, a blocking human gate opens
-   the run (NIKA-SEC-009 · the lethal-trifecta judge · the gate must
-   dominate every path to the write). This exact text passes `nika check`
-   on the shipping binary — the transcript below is that run, VERBATIM
-   (captured 2026-07-28 · nika 0.107.2). The honesty law: re-capture when
-   the CLI's voice changes, never hand-edit. */
+   THE REGISTERED BYTES · nika-spec examples/snippets/weekly-radar.nika.yaml
+   minus its comment header · one source, this panel is a reading of it.
+   The file declares its authority (`permits:` · default-deny once present),
+   and because it reads private notes, ingests an untrusted feed AND writes
+   a file, a blocking human gate opens the run · one that actually GATES:
+   each effect binds the answer and runs only on true. `after: approve:
+   success` alone would fire on « no » (a refused confirm settles success
+   with value false · NIKA-SEC-014), and giving the gate a `default:` wakes
+   NIKA-SEC-009 instead · a gate with a default is not a gate; its one
+   [headless-prompt] hint is the price of a real one. This exact text passes
+   `nika check` on the shipping binary — the transcript below is that run,
+   VERBATIM (captured 2026-08-03 from a bare directory holding just this
+   file, exactly like a reader's first copy · nika 0.107.2). The honesty law:
+   re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow:
   id: weekly-radar
+  description: "gate → parallel gather (fetch · git log · notes) → one synthesis → save"
 inputs:
   topic:
     type: string
-    required: true
-    description: "Subject to research"
+    default: "local-first AI tooling"
+    description: "Subject to research · --var topic=… overrides"
+  notes_path:
+    type: string
+    default: "examples/fixtures/notes.md"
+    description: "Your own notes file · the permits below grant the default"
 const:
   output_dir: "./radar"
 
 model: ollama/llama3.2:3b
 
 permits:
-  fs:
-    read: ["./notes.md"]
-    write: ["./radar/*"]
-  net: { http: ["hnrss.org"] }
   exec: ["git"]
   tools: ["nika:fetch", "nika:read", "nika:write", "nika:prompt"]
+  net: { http: ["hnrss.org"] }
+  fs:
+    read: ["examples/fixtures/notes.md"]
+    write: ["./radar/*"]
 
 tasks:
   approve:
     invoke:
+      # blocking · no \`default:\` · a gate with a default is not a gate · the
+      # checker enforces both directions: \`default: false\` here turns this
+      # file RED with NIKA-SEC-009, because a defaulted prompt dominates
+      # nothing. Blocking costs one [headless-prompt] hint instead · that
+      # hint is the price of a real gate, not a defect to paper over.
+      # Unattended the run pauses (exit 4) · answer and resume with
+      #   nika run <file> --resume <trace> --answer approve=true
       tool: "nika:prompt"
       args:
-        message: "Run the weekly radar? It fetches hnrss.org, reads ./notes.md and writes ./radar/."
+        mode: confirm
+        message: "Run the weekly radar? It fetches hnrss.org, reads the notes file and writes ./radar/."
 
   fetch_news:
-    after:
-      approve: success
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:fetch"
       args:
         url: "https://hnrss.org/frontpage"
 
   repo_log:
-    after:
-      approve: success
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     exec:
       command: ["git", "log", "--since=1 week"]
 
   read_notes:
-    after:
-      approve: success
+    with:
+      go: "\${{ tasks.approve.output }}"
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:read"
       args:
-        path: "./notes.md"
+        path: "\${{ inputs.notes_path }}"
 
   digest:
     with:
@@ -334,6 +360,7 @@ tasks:
       backoff_ms: 1000
     infer:
       prompt: "One weekly radar on \${{ inputs.topic }}, five bullets: \${{ with.news }} \${{ with.log }} \${{ with.notes }}"
+      max_tokens: 1024
 
   save:
     with:
@@ -348,28 +375,30 @@ outputs:
   brief: \${{ tasks.digest.output }}`
 
 export const FULL_FILE_TRANSCRIPT: TermLine[] = [
-  { kind: 'cmd', text: 'nika check weekly-radar.nika.yaml' },
-  { kind: 'out', text: 'nika check · weekly-radar.nika.yaml' },
-  { kind: 'ok', text: ' ✔ PLAN     4 waves · 6 tasks · max parallelism 3' },
-  { kind: 'dim', text: '      wave 1 approve (invoke · nika:prompt)' },
-  { kind: 'dim', text: '      wave 2 fetch_news (invoke · nika:fetch) · repo_log (exec · git) · read_notes (invoke · nika:read)' },
-  { kind: 'dim', text: '      wave 3 digest (infer · ollama/llama3.2:3b)' },
-  { kind: 'dim', text: '      wave 4 save (invoke · nika:write)' },
-  { kind: 'ok', text: ' ✔ MODELS   1 model resolves in this binary' },
-  { kind: 'warn', text: ' ⚠  COST     $0.0000 – $0.0000 FLOOR (unbounded tasks present)' },
-  { kind: 'dim', text: '   digest  ollama/llama3.2:3b  UNBOUNDED — no max_tokens declared' },
-  { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
-  { kind: 'ok', text: ' ✔ TYPES    every deep output reference fits its declared shape' },
-  { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
-  { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
-  { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
-  { kind: 'ok', text: ' ✔ GATES    every task is statically reachable · status literals in vocabulary' },
-  { kind: 'ok', text: ' ✔ PERMITS  body fits the declared boundary' },
-  { kind: 'ok', text: ' ✔ TRIFECTA no lethal trifecta without a dominating human gate' },
-  { kind: 'soft', text: ' ↳ HINT     [cost] declare `max_tokens` on `digest` — the cost report becomes a hard ceiling instead of UNBOUNDED' },
-  { kind: 'soft', text: ' ↳ HINT     [inputs] `read_notes` reads `./notes.md` which does not exist here — create it (or point its var elsewhere) · the run would fail at that wave' },
-  { kind: 'soft', text: ' ↳ HINT     [inputs] required input(s) with no default · pass at run time: --var topic=…' },
-  { kind: 'ok', text: ' ✔ audited · 6 tasks · 4 waves · permits declared · est ≥$0.0000 · 3 hints' },
+  { kind: 'cmd', text: "nika check weekly-radar.nika.yaml" },
+  { kind: 'out', text: "nika check \u00b7 weekly-radar.nika.yaml" },
+  { kind: 'ok', text: " \u2714 PLAN     4 waves \u00b7 6 tasks \u00b7 max parallelism 3" },
+  { kind: 'dim', text: "      wave 1 approve (invoke \u00b7 nika:prompt)" },
+  { kind: 'dim', text: "      wave 2 fetch_news (invoke \u00b7 nika:fetch) \u00b7 repo_log (exec \u00b7 git) \u00b7 read_notes (invoke \u00b7 nika:read)" },
+  { kind: 'dim', text: "      wave 3 digest (infer \u00b7 ollama/llama3.2:3b)" },
+  { kind: 'dim', text: "      wave 4 save (invoke \u00b7 nika:write)" },
+  { kind: 'ok', text: " \u2714 MODELS   1 model resolves in this binary \u00b7 local servers not probed (nika doctor --ping)" },
+  { kind: 'warn', text: " \u26a0  COST     bounded portion $0.0000 no total ceiling \u00b7 1 unpriced task \u00b7 prompts, exec + mcp unpriced \u00b7 prices 2026-07-28" },
+  { kind: 'dim', text: "   digest  ollama/llama3.2:3b  UNBOUNDED \u2014 no catalog price (local/unknown model)" },
+  { kind: 'dim', text: " \u25cb ENERGY   unpriced \u2014 no sourced Wh figure for any task model \u00b7 a local model draws your watts \u00b7 never 0 Wh (NEP-0018)" },
+  { kind: 'ok', text: " \u2714 SECRETS  no declared secret reaches an effect \u00b7 model echo untracked" },
+  { kind: 'ok', text: " \u2714 TYPES    deep references fit the shapes tasks declare \u00b7 builtin output has none" },
+  { kind: 'ok', text: " \u2714 TOOLS    every named nika: tool is canonical \u00b7 globs + mcp: not checked" },
+  { kind: 'ok', text: " \u2714 ARGS     every builtin invoke arg key is declared + required args present" },
+  { kind: 'ok', text: " \u2714 SCHEMA   no known-unsatisfiable form in an authored schema: \u00b7 $ref opaque" },
+  { kind: 'ok', text: " \u2714 GATES    no task proven dead \u00b7 status literals in vocabulary" },
+  { kind: 'ok', text: " \u2714 WRITES   no two unordered tasks write the same static path \u00b7 computed paths at run" },
+  { kind: 'ok', text: " \u2714 PERMITS  literal + const: args fit the boundary \u00b7 computed paths + symlinks are the RUN's verdict \u00b7 exec outside the fs bounds" },
+  { kind: 'ok', text: " \u2714 TRIFECTA no lethal trifecta over the declared permits: without a human gate" },
+  { kind: 'ok', text: " \u2714 JOURNEY internal \u00b7 0 sources \u00b7 2 destinations \u00b7 6 model endpoints \u00b7 no secret reaches a cloud destination" },
+  { kind: 'soft', text: " \u21b3 HINT     [headless-prompt] `nika:prompt` on `approve` declares no `default:` \u2014 unattended (CI, or an agent handing it over) the run pauses at this gate awaiting a human (exit 4 \u00b7 the resume line taught on the frame); at a terminal it asks directly. Answer it in one pass with `nika run <file> --answer approve=<value>`, or declare the `default:` the unattended path should take" },
+  { kind: 'soft', text: " \u21b3 HINT     [inputs] `read_notes` reads `examples/fixtures/notes.md` which does not exist here \u2014 create it (or point its var elsewhere) \u00b7 the run would fail at that wave" },
+  { kind: 'warn', text: " \u26a0 audited \u00b7 6 tasks \u00b7 4 waves \u00b7 permits declared \u00b7 est unbounded \u00b7 1 unpriced task \u00b7 2 hints \u00b7 risk unbounded \u2014 no dollar meter for a local/unknown model \u00b7 cap a cloud seat on the run: `nika run <file> --max-cost-usd <usd>`" },
 ]
 
 export const ERROR_JSON = `{
