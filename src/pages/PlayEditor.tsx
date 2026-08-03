@@ -276,7 +276,21 @@ export default function PlayEditor({ value, onChange, onDiags, focusRange, onHov
         wrapHang /* …and continuations hang at the line's indent (static law) */,
         cfTheme,
       ]}
-      basicSetup={{ foldGutter: false, autocompletion: false, highlightActiveLine: true }}
+      basicSetup={{
+        foldGutter: false,
+        autocompletion: false,
+        highlightActiveLine: true,
+        /* OFF, and load-bearing: basicSetup ships lezer's
+           defaultHighlightStyle as a fallback, which nested a second
+           colored span inside every nika mark — blue keys #0000cc,
+           brick strings #aa1111, brown comments #994400 (the light-theme
+           defaults, on a dark editor). The inner span wins the cascade,
+           so /play read in colors no other yaml on the site wears while
+           every probe of `.cm-cf-*` swore the palette was canon. The
+           nika marks cover every token (tokenize() is lossless per
+           line); nothing else may hold a brush. */
+        syntaxHighlighting: false,
+      }}
       style={{ minHeight: 480 }}
     />
   )

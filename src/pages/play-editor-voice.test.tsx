@@ -218,3 +218,37 @@ describe('the palette · var() over the registry, fallback pinned to it', () => 
     }
   })
 })
+
+/* ─── one brush · the mounted editor carries no second highlighter ────────────
+   The 2026-08-03 red playground: react-codemirror's basicSetup ships lezer's
+   defaultHighlightStyle as a FALLBACK, which nested a colored span (ͼ-class ·
+   light-theme blue/brick/brown) inside every nika mark. The inner span wins
+   the cascade, so the page read in foreign colors while every `.cm-cf-*`
+   probe swore the palette was canon — the class you query is not the ink you
+   see. The regression lives in the WRAPPER's props, so only mounting the real
+   component can catch it: `syntaxHighlighting: false` off again → ͼ spans
+   return → this goes red. */
+describe('one brush · no lezer fallback ink inside the mounted editor', () => {
+  it('renders yaml with zero ͼ-class spans under the nika marks', async () => {
+    const { render, waitFor, cleanup } = await import('@testing-library/react')
+    const { default: PlayEditor } = await import('./PlayEditor')
+    const { container } = render(
+      <PlayEditor
+        value={'nika: v1\nworkflow:\n  id: probe # a comment\n'}
+        onChange={() => {}}
+        onDiags={() => {}}
+      />,
+    )
+    await waitFor(() => {
+      expect(container.querySelector('.cm-cf-key')).toBeTruthy()
+    })
+    const foreign = [...container.querySelectorAll('.cm-content [class]')].filter((el) =>
+      [...el.classList].some((c) => c.startsWith('ͼ')),
+    )
+    expect(
+      foreign.map((el) => `${el.className} "${el.textContent?.slice(0, 16)}"`),
+      'lezer’s default highlight style is painting again — keep basicSetup.syntaxHighlighting off',
+    ).toHaveLength(0)
+    cleanup()
+  })
+})
