@@ -220,6 +220,20 @@ export const LENS_NODES: LensNode[] = [
     }
   },
   {
+    "id": "code:NIKA-AGENT-005",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-AGENT-005",
+    "url": "/language/errors/NIKA-AGENT-005",
+    "status": "ratified",
+    "opener": "the provider reported no token usage for a priced model — every budget and ledger reads the turn as free, so the loop fails closed (R3-F1 · the usage-absence gate)",
+    "meta": {
+      "category": "budget_error",
+      "transient": false
+    }
+  },
+  {
     "id": "code:NIKA-ASSERT-001",
     "kind": "member",
     "set": "error-codes",
@@ -592,6 +606,20 @@ export const LENS_NODES: LensNode[] = [
     "url": "/language/errors/NIKA-INFER-002",
     "status": "ratified",
     "opener": "structured output failed schema validation (after any engine-internal retries)",
+    "meta": {
+      "category": "validation_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-INFER-003",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-INFER-003",
+    "url": "/language/errors/NIKA-INFER-003",
+    "status": "ratified",
+    "opener": "the provider reported no token usage for a priced model — the ledger cannot bill the call honestly (fail-closed · R3-F1)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -1081,7 +1109,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "NIKA-SEC-001",
     "url": "/language/errors/NIKA-SEC-001",
     "status": "ratified",
-    "opener": "exec: blocklist hit",
+    "opener": "exec refused before the child spawns — either the shell floor (a destructive/privilege pattern · always-on · independent of permits:) or the mock plane under `nika test`, which refuses EVERY command by design (it simulates the model, not effects) · under test the exit is `nika run` for real effects, or an `on_error: recover` rehearsal on the task",
     "meta": {
       "category": "security_error",
       "transient": false
@@ -1194,6 +1222,76 @@ export const LENS_NODES: LensNode[] = [
     "url": "/language/errors/NIKA-SEC-009",
     "status": "ratified",
     "opener": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-010",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-010",
+    "url": "/language/errors/NIKA-SEC-010",
+    "status": "ratified",
+    "opener": "the approval-capability law is violated · a rate-limited approval burst (the N+1th distinct mint of a run) · an approval whose resolved content hash differs from the shown hash (content_mismatch) · a ticket replayed across runs or steps (scope_mismatch) · or the static heterogeneous-batch refusal (one prompt unleashing two or more effect classes) — the 6th invariant (NEP-0013 · F-P4)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-011",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-011",
+    "url": "/language/errors/NIKA-SEC-011",
+    "status": "ratified",
+    "opener": "preview-commit divergence — the commit digest recomputed at the sink over the exact bytes about to fire differs from the preview digest computed at resolution (one bit of rendered argv · a permuted context field · a mutated tool argument) · the step refuses fail-closed and the receipt carries divergence:{preview, commit} — judged = executed at the action scale (NEP-0015 · F-P6)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-012",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-012",
+    "url": "/language/errors/NIKA-SEC-012",
+    "status": "ratified",
+    "opener": "unordered shared writes — two tasks incomparable in the DAG closure whose literal nika:write/nika:edit paths collide with no ordering edge (after: · with:) to serialize them, or a for_each fan writing one constant path · parallelism is safe exactly where the writes are provably disjoint (NEP-0014 law 1 · F-P15)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-013",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-013",
+    "url": "/language/errors/NIKA-SEC-013",
+    "status": "ratified",
+    "opener": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)",
+    "meta": {
+      "category": "security_error",
+      "transient": false
+    }
+  },
+  {
+    "id": "code:NIKA-SEC-014",
+    "kind": "member",
+    "set": "error-codes",
+    "layer": "refusals",
+    "title": "NIKA-SEC-014",
+    "url": "/language/errors/NIKA-SEC-014",
+    "status": "ratified",
+    "opener": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)",
     "meta": {
       "category": "security_error",
       "transient": false
@@ -3681,7 +3779,7 @@ export const LENS_NODES: LensNode[] = [
     "opener": null,
     "meta": {
       "tier": null,
-      "waves": 3
+      "waves": 4
     }
   },
   {
@@ -3723,7 +3821,7 @@ export const LENS_NODES: LensNode[] = [
     "opener": null,
     "meta": {
       "tier": null,
-      "waves": 6
+      "waves": 7
     }
   },
   {
@@ -3751,7 +3849,7 @@ export const LENS_NODES: LensNode[] = [
     "opener": null,
     "meta": {
       "tier": null,
-      "waves": 4
+      "waves": 5
     }
   },
   {
@@ -3765,7 +3863,7 @@ export const LENS_NODES: LensNode[] = [
     "opener": null,
     "meta": {
       "tier": null,
-      "waves": 3
+      "waves": 5
     }
   },
   {
@@ -3936,7 +4034,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "research / review / open-ended",
     "meta": {
-      "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1",
+      "sha256": "1c594179c46ff834cd38fbc6dc870018677cc83cb71f846846747741254d0afa",
       "file": "agent-loop.nika.yaml"
     }
   },
@@ -3950,7 +4048,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "call a product API: upload a file and create from it",
     "meta": {
-      "sha256": "da5c953bb5302442365a18316e418c2f72a40025f67bf521460639d835b33a49",
+      "sha256": "3e94a2682deb4c75031d4e4d0fb722fa64ce561dd227607fdb0b92191704bee9",
       "file": "api-upload-and-create.nika.yaml"
     }
   },
@@ -3964,7 +4062,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "take data, produce words, save them",
     "meta": {
-      "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231",
+      "sha256": "5562b3844a54d21041b85ab36ce8722df3e62e721e77b424fbcb3a342f2dd885",
       "file": "chain.nika.yaml"
     }
   },
@@ -3978,7 +4076,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "read a system's state (docker · kubectl · gh), explain it, keep the report",
     "meta": {
-      "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd",
+      "sha256": "c0ddf5aae1492a50d643c3547db42b305adf192b94822a9c9400ea0e7191b5c7",
       "file": "docker-report.nika.yaml"
     }
   },
@@ -3992,7 +4090,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "only what changed since last run · survive bad input",
     "meta": {
-      "sha256": "b285da8add87df1a1e43d2f0584dc87b8d71da3c8f8def9a94f9806c6294e580",
+      "sha256": "ad6e6f394d38600fd7fca0c1db0a3a76239d74256bfdedd40f1cc7e014671068",
       "file": "etl-state.nika.yaml"
     }
   },
@@ -4006,7 +4104,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "do this for EVERY item",
     "meta": {
-      "sha256": "7474d4603f1fcc126fae79e7aaafeaa431ce48350a00cf175cef316a63a7a063",
+      "sha256": "96e4c9e077f7c74803464f627a617c612133e373d74da82dbe233d9878cc7b80",
       "file": "fanout.nika.yaml"
     }
   },
@@ -4020,7 +4118,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "watch X, act when Y",
     "meta": {
-      "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6",
+      "sha256": "a548c0e551f7efb585df1922b26cf51cc9497e47d8f9c9afc7ed3d974efc62d9",
       "file": "gate-and-act.nika.yaml"
     }
   },
@@ -4034,7 +4132,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "anything irreversible (deploy · send · publish)",
     "meta": {
-      "sha256": "c540d6b0f84fcef0994bad8165ff9dd8610202cac2eeb5f3c23c63c18284b47b",
+      "sha256": "1894157ff7d04d6ac57deb4958de9ab4f4c501ebf56d5d0176c974ff83cbbb0c",
       "file": "human-gated-ship.nika.yaml"
     }
   },
@@ -4048,7 +4146,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "generate image/audio assets from a brief",
     "meta": {
-      "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def",
+      "sha256": "7c7186264f281719ba20b5a36a36737a8ed305fcff663924c2612aa5722c4205",
       "file": "media-asset-pack.nika.yaml"
     }
   },
@@ -4062,7 +4160,7 @@ export const LENS_NODES: LensNode[] = [
     "status": "ratified",
     "opener": "understand a site (domain · theme · assets) from a URL",
     "meta": {
-      "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845",
+      "sha256": "75396c6873c48fe0925738d7f7d577f54418ca1241a16b5ce92b188ad6c56c54",
       "file": "website-brief.nika.yaml"
     }
   },
@@ -5333,7 +5431,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "policy",
     "url": "/language/words/policy",
     "status": "ratified",
-    "opener": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits (NIKA-POLICY-001) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md).",
+    "opener": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md).",
     "meta": {
       "scopes": [
         "envelope"
@@ -5895,6 +5993,16 @@ const LENS_EDGES_0: LensEdge[] = [
     "kind": "belongs-to"
   },
   {
+    "from": "code:NIKA-AGENT-005",
+    "to": "errcat:budget_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-AGENT-005",
+    "to": "errns:NIKA-AGENT",
+    "kind": "belongs-to"
+  },
+  {
     "from": "code:NIKA-ASSERT-001",
     "to": "errcat:validation_error",
     "kind": "belongs-to"
@@ -6161,6 +6269,16 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "code:NIKA-INFER-002",
+    "to": "errns:NIKA-INFER",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-INFER-003",
+    "to": "errcat:validation_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-INFER-003",
     "to": "errns:NIKA-INFER",
     "kind": "belongs-to"
   },
@@ -6591,6 +6709,56 @@ const LENS_EDGES_0: LensEdge[] = [
   },
   {
     "from": "code:NIKA-SEC-009",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-010",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-010",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-011",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-011",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "errns:NIKA-SEC",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "errcat:security_error",
+    "kind": "belongs-to"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
     "to": "errns:NIKA-SEC",
     "kind": "belongs-to"
   },
@@ -7648,7 +7816,10 @@ const LENS_EDGES_0: LensEdge[] = [
     "from": "template:gate-and-act",
     "to": "word:tools",
     "kind": "carries"
-  },
+  }
+]
+
+const LENS_EDGES_1: LensEdge[] = [
   {
     "from": "template:gate-and-act",
     "to": "word:when",
@@ -7718,10 +7889,7 @@ const LENS_EDGES_0: LensEdge[] = [
     "from": "template:human-gated-ship",
     "to": "word:outputs",
     "kind": "carries"
-  }
-]
-
-const LENS_EDGES_1: LensEdge[] = [
+  },
   {
     "from": "template:human-gated-ship",
     "to": "word:permits",
@@ -7819,6 +7987,11 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "template:media-asset-pack",
+    "to": "word:on_error",
+    "kind": "carries"
+  },
+  {
+    "from": "template:media-asset-pack",
     "to": "word:outputs",
     "kind": "carries"
   },
@@ -7830,6 +8003,11 @@ const LENS_EDGES_1: LensEdge[] = [
   {
     "from": "template:media-asset-pack",
     "to": "word:prompt",
+    "kind": "carries"
+  },
+  {
+    "from": "template:media-asset-pack",
+    "to": "word:recover",
     "kind": "carries"
   },
   {
@@ -8188,6 +8366,11 @@ const LENS_EDGES_1: LensEdge[] = [
     "kind": "grants"
   },
   {
+    "from": "template:fanout",
+    "to": "tool:read",
+    "kind": "grants"
+  },
+  {
     "from": "template:gate-and-act",
     "to": "tool:fetch",
     "kind": "grants"
@@ -8254,6 +8437,11 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "code:NIKA-AGENT-004",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-AGENT-005",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -8389,6 +8577,11 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "code:NIKA-INFER-002",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-INFER-003",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -8604,6 +8797,31 @@ const LENS_EDGES_1: LensEdge[] = [
   },
   {
     "from": "code:NIKA-SEC-009",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-010",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-011",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "set:error-codes",
+    "kind": "member-of"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
     "to": "set:error-codes",
     "kind": "member-of"
   },
@@ -9601,7 +9819,10 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "tool:inspect",
     "to": "set:builtins",
     "kind": "member-of"
-  },
+  }
+]
+
+const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "tool:jq",
     "to": "set:builtins",
@@ -9721,10 +9942,7 @@ const LENS_EDGES_1: LensEdge[] = [
     "from": "type:bytes",
     "to": "set:types",
     "kind": "member-of"
-  }
-]
-
-const LENS_EDGES_2: LensEdge[] = [
+  },
   {
     "from": "type:duration",
     "to": "set:types",
@@ -10336,6 +10554,11 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "names"
   },
   {
+    "from": "code:NIKA-AGENT-005",
+    "to": "word:model",
+    "kind": "names"
+  },
+  {
     "from": "code:NIKA-AUTH-006",
     "to": "word:permits",
     "kind": "names"
@@ -10661,6 +10884,11 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "names"
   },
   {
+    "from": "code:NIKA-INFER-003",
+    "to": "word:model",
+    "kind": "names"
+  },
+  {
     "from": "code:NIKA-INVOKE-001",
     "to": "word:nika",
     "kind": "names"
@@ -10867,7 +11095,32 @@ const LENS_EDGES_2: LensEdge[] = [
   },
   {
     "from": "code:NIKA-SEC-001",
-    "to": "word:exec",
+    "to": "word:command",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-001",
+    "to": "word:model",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-001",
+    "to": "word:on_error",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-001",
+    "to": "word:permits",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-001",
+    "to": "word:recover",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-001",
+    "to": "word:shell",
     "kind": "names"
   },
   {
@@ -10963,6 +11216,86 @@ const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "code:NIKA-SEC-009",
     "to": "word:prompt",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-010",
+    "to": "word:prompt",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "word:after",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "word:for_each",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "word:tasks",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-012",
+    "to": "word:with",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "word:invoke",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "word:policy",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "word:prompt",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-013",
+    "to": "word:workflow",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "word:after",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "word:invoke",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "word:nika",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "word:prompt",
+    "kind": "names"
+  },
+  {
+    "from": "code:NIKA-SEC-014",
+    "to": "word:when",
     "kind": "names"
   },
   {
@@ -11489,7 +11822,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:etl-quarantine",
     "to": "verb:invoke",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:image-fx-batch",
     "to": "tool:glob",
@@ -11692,6 +12028,11 @@ const LENS_EDGES_2: LensEdge[] = [
   },
   {
     "from": "showcase:pr-review-fanout",
+    "to": "tool:prompt",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:pr-review-fanout",
     "to": "tool:write",
     "kind": "witnesses"
   },
@@ -11724,10 +12065,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:price-watch",
     "to": "tool:notify",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:price-watch",
     "to": "verb:invoke",
@@ -11741,6 +12079,11 @@ const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:release-notes",
     "to": "tool:notify",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-notes",
+    "to": "tool:prompt",
     "kind": "witnesses"
   },
   {
@@ -11781,6 +12124,11 @@ const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:release-radar",
     "to": "tool:json_diff",
+    "kind": "witnesses"
+  },
+  {
+    "from": "showcase:release-radar",
+    "to": "tool:prompt",
     "kind": "witnesses"
   },
   {

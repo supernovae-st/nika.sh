@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "fe92f6f5b358e5feba56af7f61a6920138a1ab33cfdf55867cc557d1a112b02e"
+   "sha256": "f78458e80cac89edee2b28e1d980408efafc604d1021fff85139a4f85b0fb92c"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "4bc5f201cf96c951603506d46f75e124cbfbf0eab7603d0a9f8e5449d921291c"
+   "sha256": "9390972419b2c91788b8f7281fcb9a9739a173411bcbfddb5bf5ede97ecfa7ff"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "dedc9e3344077dc0ba4802adf1461eec028fd612aed7ca7726f707d23d02a547"
+   "sha256": "a5e16057c29035fd131e4ea2b37885698e452214ad50884e044f491bec87ff0a"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "75740ca5c08a4c908b5ca70e8607f7330d63b58ce4f515192b26df9c2cb76c80"
+   "sha256": "0648fdf6c336e74ab8e28e26082fb5b482110fd26c68b1ceba3ab232f1abe2f1"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "129541018bd2d3e56f180f844f59743a8b3b9fb6197005c31ddafaa00d3aed39"
+   "sha256": "154752fb0f84b26c38a5c0791749e32e1bc5df716e4caea80c7cb840a6938746"
   },
   {
    "path": "src/routes.tsx",

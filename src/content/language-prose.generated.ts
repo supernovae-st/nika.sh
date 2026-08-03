@@ -110,7 +110,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004)."
   ],
   "policy": [
-    "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits (NIKA-POLICY-001) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
+    "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
   ],
   "recover": [
     "Recovery output · a `${{ }}` ref OR a literal (merges the former fallback/value per spec/05-errors.md)."

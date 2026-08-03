@@ -32,7 +32,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "etl-state",
         "file": "etl-state.nika.yaml",
-        "firstLine": 108
+        "firstLine": 114
       }
     },
     "templates": [
@@ -45,7 +45,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-DAG-002",
       "NIKA-DAG-005",
       "NIKA-VAR-021",
-      "NIKA-INFER-002"
+      "NIKA-INFER-002",
+      "NIKA-SEC-012",
+      "NIKA-SEC-014"
     ]
   },
   "agent": {
@@ -65,12 +67,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "args": {
     "word": "args",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 48
+        "firstLine": 49
       }
     },
     "templates": [
@@ -116,12 +118,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "backoff_strategy": {
     "word": "backoff_strategy",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      read: ${{ tasks.read.output }}\n    # The quiet-day guard: an EMPTY discovery skips the `read` fan, and a\n    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).\n    # The ternary keeps the no-items day green end to end.\n    for_each: \"${{ with.read == null ? [] : with.read }}\"\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 84
       }
     },
     "templates": [
@@ -132,12 +134,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "capture": {
     "word": "capture",
     "usage": {
-      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
+      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured\n    on_error:\n      # Golden rehearsal · `nika test` refuses exec (NIKA-SEC-001 · the mock\n      # plane simulates the model, not effects). Catch-all ON PURPOSE — never\n      # `on_codes: [NIKA-SEC-001]`: that code is also a real blocklist stop,\n      # and a narrow forgiveness would swallow a security refusal. The shape\n      # matches `capture: structured` so the gates expression reads it.\n      # Delete once the gate runs a real check.\n      recover: { exit_code: 0, stdout: \"REHEARSAL\", stderr: \"\" }",
       "source": {
         "kind": "template",
         "name": "human-gated-ship",
         "file": "human-gated-ship.nika.yaml",
-        "firstLine": 55
+        "firstLine": 59
       }
     },
     "templates": [
@@ -151,12 +153,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "command": {
     "word": "command",
     "usage": {
-      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured",
+      "yaml": "  # ── the verification wave · all checks run in parallel ──\n  check_a:\n    exec:\n      command: [\"echo\", \"ok\"]        # SLOT: gate 1 (argv form · injection-safe)\n      capture: structured\n    on_error:\n      # Golden rehearsal · `nika test` refuses exec (NIKA-SEC-001 · the mock\n      # plane simulates the model, not effects). Catch-all ON PURPOSE — never\n      # `on_codes: [NIKA-SEC-001]`: that code is also a real blocklist stop,\n      # and a narrow forgiveness would swallow a security refusal. The shape\n      # matches `capture: structured` so the gates expression reads it.\n      # Delete once the gate runs a real check.\n      recover: { exit_code: 0, stdout: \"REHEARSAL\", stderr: \"\" }",
       "source": {
         "kind": "template",
         "name": "human-gated-ship",
         "file": "human-gated-ship.nika.yaml",
-        "firstLine": 55
+        "firstLine": 59
       }
     },
     "templates": [
@@ -165,7 +167,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-EXEC-002"
+      "NIKA-EXEC-002",
+      "NIKA-SEC-001"
     ]
   },
   "config": {
@@ -184,7 +187,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 34
+        "firstLine": 35
       }
     },
     "templates": [
@@ -230,7 +233,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "description": {
     "word": "description",
     "usage": {
-      "yaml": "  description: \"gather → think → persist\"   # SLOT: one honest sentence",
+      "yaml": "  # SLOT: one honest sentence — `nika new` matches intents against these words\n  description: \"gather → think → persist\"",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -280,19 +283,18 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-TYPE-101",
-      "NIKA-SEC-001"
+      "NIKA-TYPE-101"
     ]
   },
   "fail_fast": {
     "word": "fail_fast",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  # `discover` hands back PATH STRINGS — a prompt that interpolates the raw\n  # item shows the model a FILENAME, never the file (measured: a green run\n  # whose fluent « report » was invented from the names alone — check, mock\n  # rehearsal and run all green around it). Reading the item is its own fan.\n  # Delete this task — and fan `process` over `discover` — when your items\n  # already ARE the content (an inline list · fetched records). Need each\n  # content paired with its path? `resume-screener` shows the transpose.\n  read:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 8\n    fail_fast: false\n    on_error:\n      recover: null                 # an unreadable item yields null · the batch lives\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ item }}\" }",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -316,12 +318,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "for_each": {
     "word": "for_each",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  # `discover` hands back PATH STRINGS — a prompt that interpolates the raw\n  # item shows the model a FILENAME, never the file (measured: a green run\n  # whose fluent « report » was invented from the names alone — check, mock\n  # rehearsal and run all green around it). Reading the item is its own fan.\n  # Delete this task — and fan `process` over `discover` — when your items\n  # already ARE the content (an inline list · fetched records). Need each\n  # content paired with its path? `resume-screener` shows the transpose.\n  read:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 8\n    fail_fast: false\n    on_error:\n      recover: null                 # an unreadable item yields null · the batch lives\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ item }}\" }",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -329,6 +331,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-VAR-006",
+      "NIKA-SEC-012",
       "NIKA-TIMEOUT-001"
     ]
   },
@@ -393,7 +396,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 38
+        "firstLine": 39
       }
     },
     "templates": [
@@ -426,18 +429,20 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-TYPE-101",
       "NIKA-SEC-006",
       "NIKA-SEC-009",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014",
       "NIKA-BUILTIN-001"
     ]
   },
   "jitter": {
     "word": "jitter",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      read: ${{ tasks.read.output }}\n    # The quiet-day guard: an EMPTY discovery skips the `read` fan, and a\n    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).\n    # The ternary keeps the no-items day green end to end.\n    for_each: \"${{ with.read == null ? [] : with.read }}\"\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 84
       }
     },
     "templates": [
@@ -450,12 +455,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_attempts": {
     "word": "max_attempts",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      read: ${{ tasks.read.output }}\n    # The quiet-day guard: an EMPTY discovery skips the `read` fan, and a\n    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).\n    # The ternary keeps the no-items day green end to end.\n    for_each: \"${{ with.read == null ? [] : with.read }}\"\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 84
       }
     },
     "templates": [
@@ -466,12 +471,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "max_parallel": {
     "word": "max_parallel",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  # `discover` hands back PATH STRINGS — a prompt that interpolates the raw\n  # item shows the model a FILENAME, never the file (measured: a green run\n  # whose fluent « report » was invented from the names alone — check, mock\n  # rehearsal and run all green around it). Reading the item is its own fan.\n  # Delete this task — and fan `process` over `discover` — when your items\n  # already ARE the content (an inline list · fetched records). Need each\n  # content paired with its path? `resume-screener` shows the transpose.\n  read:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 8\n    fail_fast: false\n    on_error:\n      recover: null                 # an unreadable item yields null · the batch lives\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"${{ item }}\" }",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -487,7 +492,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -508,7 +513,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 70
+        "firstLine": 71
       }
     },
     "templates": [
@@ -526,7 +531,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 70
+        "firstLine": 71
       }
     },
     "templates": [
@@ -544,7 +549,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 32
+        "firstLine": 33
       }
     },
     "templates": [
@@ -555,7 +560,11 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "media-asset-pack",
       "docker-report"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-INFER-003",
+      "NIKA-AGENT-005",
+      "NIKA-SEC-001"
+    ]
   },
   "nika": {
     "word": "nika",
@@ -588,6 +597,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-SEC-005",
       "NIKA-SEC-008",
       "NIKA-SEC-009",
+      "NIKA-SEC-012",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014",
       "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
@@ -596,12 +608,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_codes": {
     "word": "on_codes",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 48
+        "firstLine": 49
       }
     },
     "templates": [
@@ -613,12 +625,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "on_error": {
     "word": "on_error",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 48
+        "firstLine": 49
       }
     },
     "templates": [
@@ -628,13 +640,15 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "etl-state",
       "human-gated-ship",
       "website-brief",
+      "media-asset-pack",
       "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
       "NIKA-PARSE-012",
       "NIKA-DAG-004",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-001"
     ]
   },
   "on_finally": {
@@ -660,7 +674,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 54
+        "firstLine": 55
       }
     },
     "templates": [
@@ -681,7 +695,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 84
+        "firstLine": 95
       }
     },
     "templates": [
@@ -712,7 +726,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 38
+        "firstLine": 39
       }
     },
     "templates": [
@@ -728,6 +742,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "docker-report"
     ],
     "codes": [
+      "NIKA-SEC-001",
       "NIKA-SEC-004",
       "NIKA-SEC-005",
       "NIKA-DRIFT-001",
@@ -744,7 +759,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "etl-state",
         "file": "etl-state.nika.yaml",
-        "firstLine": 54
+        "firstLine": 60
       }
     },
     "templates": [
@@ -753,7 +768,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     ],
     "codes": [
       "NIKA-POLICY-001",
-      "NIKA-PORT-002"
+      "NIKA-PORT-002",
+      "NIKA-SEC-013"
     ]
   },
   "prompt": {
@@ -764,7 +780,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -778,18 +794,21 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     "codes": [
       "NIKA-PARSE-018",
       "NIKA-SEC-006",
-      "NIKA-SEC-009"
+      "NIKA-SEC-009",
+      "NIKA-SEC-010",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014"
     ]
   },
   "recover": {
     "word": "recover",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 48
+        "firstLine": 49
       }
     },
     "templates": [
@@ -799,23 +818,25 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "etl-state",
       "human-gated-ship",
       "website-brief",
+      "media-asset-pack",
       "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
       "NIKA-DAG-004",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-001"
     ]
   },
   "retry": {
     "word": "retry",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      read: ${{ tasks.read.output }}\n    # The quiet-day guard: an EMPTY discovery skips the `read` fan, and a\n    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).\n    # The ternary keeps the no-items day green end to end.\n    for_each: \"${{ with.read == null ? [] : with.read }}\"\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 84
       }
     },
     "templates": [
@@ -846,7 +867,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 34
+        "firstLine": 35
       }
     },
     "templates": [
@@ -862,7 +883,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 54
+        "firstLine": 55
       }
     },
     "templates": [
@@ -886,7 +907,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 45
+        "firstLine": 46
       }
     },
     "templates": [
@@ -912,7 +933,9 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       }
     },
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-SEC-001"
+    ]
   },
   "skills": {
     "word": "skills",
@@ -964,7 +987,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "agent-loop",
         "file": "agent-loop.nika.yaml",
-        "firstLine": 70
+        "firstLine": 71
       }
     },
     "templates": [
@@ -977,12 +1000,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tasks": {
     "word": "tasks",
     "usage": {
-      "yaml": "tasks:\n  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "tasks:\n  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 47
+        "firstLine": 48
       }
     },
     "templates": [
@@ -1001,7 +1024,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-002",
       "NIKA-PARSE-022",
       "NIKA-VAR-020",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-012"
     ]
   },
   "temperature": {
@@ -1033,12 +1057,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "timeout": {
     "word": "timeout",
     "usage": {
-      "yaml": "  process:\n    with:\n      discover: ${{ tasks.discover.output }}\n    for_each: ${{ with.discover }}\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
+      "yaml": "  process:\n    with:\n      read: ${{ tasks.read.output }}\n    # The quiet-day guard: an EMPTY discovery skips the `read` fan, and a\n    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).\n    # The ternary keeps the no-items day green end to end.\n    for_each: \"${{ with.read == null ? [] : with.read }}\"\n    max_parallel: 4                 # SLOT: the polite ceiling\n    fail_fast: false\n    timeout: \"60s\"                  # SLOT: per-iteration bound\n    retry:\n      max_attempts: 3\n      backoff_strategy: exponential\n      jitter: true\n    on_error:\n      recover: null                 # a failed item yields null at its index · the batch lives\n    infer:                          # SLOT: the per-item job (any verb)\n      max_tokens: 500               # SLOT: the per-ITEM ceiling · multiply by the fan width\n      prompt: |\n        Process this item · ${{ item }}",
       "source": {
         "kind": "template",
         "name": "fanout",
         "file": "fanout.nika.yaml",
-        "firstLine": 61
+        "firstLine": 84
       }
     },
     "templates": [
@@ -1052,12 +1076,12 @@ export const WORD_USAGE: Record<string, WordUsage> = {
   "tool": {
     "word": "tool",
     "usage": {
-      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+      "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
       "source": {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 48
+        "firstLine": 49
       }
     },
     "templates": [
@@ -1082,7 +1106,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 39
+        "firstLine": 40
       }
     },
     "templates": [
@@ -1130,7 +1154,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "gate-and-act",
         "file": "gate-and-act.nika.yaml",
-        "firstLine": 68
+        "firstLine": 69
       }
     },
     "templates": [
@@ -1141,7 +1165,8 @@ export const WORD_USAGE: Record<string, WordUsage> = {
     "codes": [
       "NIKA-DAG-006",
       "NIKA-VAR-005",
-      "NIKA-VAR-006"
+      "NIKA-VAR-006",
+      "NIKA-SEC-014"
     ]
   },
   "with": {
@@ -1152,7 +1177,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
         "kind": "template",
         "name": "chain",
         "file": "chain.nika.yaml",
-        "firstLine": 61
+        "firstLine": 65
       }
     },
     "templates": [
@@ -1171,13 +1196,14 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-PARSE-024",
       "NIKA-DAG-001",
       "NIKA-DAG-002",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-012"
     ]
   },
   "workflow": {
     "word": "workflow",
     "usage": {
-      "yaml": "workflow:\n  id: chain-template            # SLOT: kebab-case workflow id\n  description: \"gather → think → persist\"   # SLOT: one honest sentence",
+      "yaml": "workflow:\n  id: chain-template            # SLOT: kebab-case workflow id\n  # SLOT: one honest sentence — `nika new` matches intents against these words\n  description: \"gather → think → persist\"",
       "source": {
         "kind": "template",
         "name": "chain",
@@ -1208,6 +1234,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "NIKA-VAR-021",
       "NIKA-SEC-003",
       "NIKA-SEC-007",
+      "NIKA-SEC-013",
       "NIKA-CANCEL-001"
     ]
   }

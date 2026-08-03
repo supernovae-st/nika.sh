@@ -23,7 +23,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-DAG-002",
       "NIKA-DAG-005",
       "NIKA-VAR-021",
-      "NIKA-INFER-002"
+      "NIKA-INFER-002",
+      "NIKA-SEC-012",
+      "NIKA-SEC-014"
     ]
   },
   "agent": {
@@ -84,7 +86,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-EXEC-002"
+      "NIKA-EXEC-002",
+      "NIKA-SEC-001"
     ]
   },
   "config": {
@@ -157,8 +160,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-TYPE-101",
-      "NIKA-SEC-001"
+      "NIKA-TYPE-101"
     ]
   },
   "fail_fast": {
@@ -177,6 +179,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-VAR-006",
+      "NIKA-SEC-012",
       "NIKA-TIMEOUT-001"
     ]
   },
@@ -251,6 +254,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-TYPE-101",
       "NIKA-SEC-006",
       "NIKA-SEC-009",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014",
       "NIKA-BUILTIN-001"
     ]
   },
@@ -310,7 +315,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "media-asset-pack",
       "docker-report"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-INFER-003",
+      "NIKA-AGENT-005",
+      "NIKA-SEC-001"
+    ]
   },
   "nika": {
     "templates": [
@@ -333,6 +342,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-005",
       "NIKA-SEC-008",
       "NIKA-SEC-009",
+      "NIKA-SEC-012",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014",
       "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
@@ -353,13 +365,15 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "etl-state",
       "human-gated-ship",
       "website-brief",
+      "media-asset-pack",
       "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
       "NIKA-PARSE-012",
       "NIKA-DAG-004",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-001"
     ]
   },
   "on_finally": {
@@ -414,6 +428,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "docker-report"
     ],
     "codes": [
+      "NIKA-SEC-001",
       "NIKA-SEC-004",
       "NIKA-SEC-005",
       "NIKA-DRIFT-001",
@@ -429,7 +444,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-POLICY-001",
-      "NIKA-PORT-002"
+      "NIKA-PORT-002",
+      "NIKA-SEC-013"
     ]
   },
   "prompt": {
@@ -444,7 +460,10 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-PARSE-018",
       "NIKA-SEC-006",
-      "NIKA-SEC-009"
+      "NIKA-SEC-009",
+      "NIKA-SEC-010",
+      "NIKA-SEC-013",
+      "NIKA-SEC-014"
     ]
   },
   "recover": {
@@ -455,12 +474,14 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "etl-state",
       "human-gated-ship",
       "website-brief",
+      "media-asset-pack",
       "api-upload-and-create",
       "docker-report"
     ],
     "codes": [
       "NIKA-DAG-004",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-001"
     ]
   },
   "retry": {
@@ -518,7 +539,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "shell": {
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-SEC-001"
+    ]
   },
   "skills": {
     "templates": [],
@@ -560,7 +583,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-002",
       "NIKA-PARSE-022",
       "NIKA-VAR-020",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-012"
     ]
   },
   "temperature": {
@@ -632,7 +656,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "codes": [
       "NIKA-DAG-006",
       "NIKA-VAR-005",
-      "NIKA-VAR-006"
+      "NIKA-VAR-006",
+      "NIKA-SEC-014"
     ]
   },
   "with": {
@@ -652,7 +677,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-024",
       "NIKA-DAG-001",
       "NIKA-DAG-002",
-      "NIKA-VAR-021"
+      "NIKA-VAR-021",
+      "NIKA-SEC-012"
     ]
   },
   "workflow": {
@@ -679,6 +705,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-VAR-021",
       "NIKA-SEC-003",
       "NIKA-SEC-007",
+      "NIKA-SEC-013",
       "NIKA-CANCEL-001"
     ]
   }

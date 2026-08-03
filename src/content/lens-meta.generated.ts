@@ -46,7 +46,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
     "title": "The error categories"
   },
   "error-codes": {
-    "count": 96,
+    "count": 103,
     "url": "/language/errors",
     "title": "The error codes"
   },

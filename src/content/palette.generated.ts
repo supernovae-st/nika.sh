@@ -929,6 +929,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-INFER-003",
+    "href": "/language/errors/NIKA-INFER-003",
+    "hint": "the provider reported no token usage for a priced model — the ledger cannot bill the call honestly (fail-closed · R3-F1)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-EXEC-001",
     "href": "/language/errors/NIKA-EXEC-001",
     "hint": "non-zero exit code (default capture modes)"
@@ -977,6 +983,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-AGENT-005",
+    "href": "/language/errors/NIKA-AGENT-005",
+    "hint": "the provider reported no token usage for a priced model — every budget and ledger reads the turn as free, so the loop fails closed (R3-F1 · the usage-absence gate)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-MCP-001",
     "href": "/language/errors/NIKA-MCP-001",
     "hint": "MCP server not configured / not reachable at call time"
@@ -1021,7 +1033,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-SEC-001",
     "href": "/language/errors/NIKA-SEC-001",
-    "hint": "exec: blocklist hit"
+    "hint": "exec refused before the child spawns — either the shell floor (a destructive/privilege pattern · always-on · independent of permits:) or the mock plane under `nika test`, which refuses EVERY command by design (it simulates the model, not effects) · under test the exit is `nika run` for real effects, or an `on_error: recover` rehearsal on the task"
   },
   {
     "kind": "error",
@@ -1070,6 +1082,36 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-SEC-009",
     "href": "/language/errors/NIKA-SEC-009",
     "hint": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-010",
+    "href": "/language/errors/NIKA-SEC-010",
+    "hint": "the approval-capability law is violated · a rate-limited approval burst (the N+1th distinct mint of a run) · an approval whose resolved content hash differs from the shown hash (content_mismatch) · a ticket replayed across runs or steps (scope_mismatch) · or the static heterogeneous-batch refusal (one prompt unleashing two or more effect classes) — the 6th invariant (NEP-0013 · F-P4)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-011",
+    "href": "/language/errors/NIKA-SEC-011",
+    "hint": "preview-commit divergence — the commit digest recomputed at the sink over the exact bytes about to fire differs from the preview digest computed at resolution (one bit of rendered argv · a permuted context field · a mutated tool argument) · the step refuses fail-closed and the receipt carries divergence:{preview, commit} — judged = executed at the action scale (NEP-0015 · F-P6)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-012",
+    "href": "/language/errors/NIKA-SEC-012",
+    "hint": "unordered shared writes — two tasks incomparable in the DAG closure whose literal nika:write/nika:edit paths collide with no ordering edge (after: · with:) to serialize them, or a for_each fan writing one constant path · parallelism is safe exactly where the writes are provably disjoint (NEP-0014 law 1 · F-P15)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-013",
+    "href": "/language/errors/NIKA-SEC-013",
+    "hint": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-014",
+    "href": "/language/errors/NIKA-SEC-014",
+    "hint": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)"
   },
   {
     "kind": "error",

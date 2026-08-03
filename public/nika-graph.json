@@ -2794,7 +2794,7 @@
   },
   {
    "clock": "spec-pin",
-   "count": 96,
+   "count": 103,
    "family": "error",
    "note": "the pin-clock truth — codes minted after the pin land at the next train (the escrow list names them)",
    "rooms_exist": true,
@@ -4381,6 +4381,19 @@
   },
   {
    "data": {
+    "category": "budget_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-AGENT-005",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-AGENT-005",
+   "url": "/language/errors/NIKA-AGENT-005"
+  },
+  {
+   "data": {
     "category": "validation_error",
     "transient": "false"
    },
@@ -4729,6 +4742,19 @@
    "served": true,
    "title": "NIKA-INFER-002",
    "url": "/language/errors/NIKA-INFER-002"
+  },
+  {
+   "data": {
+    "category": "validation_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-INFER-003",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-INFER-003",
+   "url": "/language/errors/NIKA-INFER-003"
   },
   {
    "data": {
@@ -5291,6 +5317,71 @@
   },
   {
    "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-010",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-010",
+   "url": "/language/errors/NIKA-SEC-010"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-011",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-011",
+   "url": "/language/errors/NIKA-SEC-011"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-012",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-012",
+   "url": "/language/errors/NIKA-SEC-012"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-013",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-013",
+   "url": "/language/errors/NIKA-SEC-013"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-014",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-014",
+   "url": "/language/errors/NIKA-SEC-014"
+  },
+  {
+   "data": {
     "category": "timeout_error",
     "transient": "false"
    },
@@ -5578,15 +5669,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 1219,
+     "authored": 1226,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 311,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1592,
-    "unverified": 420
+    "classified_files": 1599,
+    "unverified": 427
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",
@@ -20136,7 +20227,7 @@
   {
    "data": {
     "intent": "research / review / open-ended",
-    "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1"
+    "sha256": "1c594179c46ff834cd38fbc6dc870018677cc83cb71f846846747741254d0afa"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20149,7 +20240,7 @@
   {
    "data": {
     "intent": "call a product API: upload a file and create from it",
-    "sha256": "da5c953bb5302442365a18316e418c2f72a40025f67bf521460639d835b33a49"
+    "sha256": "3e94a2682deb4c75031d4e4d0fb722fa64ce561dd227607fdb0b92191704bee9"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20162,7 +20253,7 @@
   {
    "data": {
     "intent": "take data, produce words, save them",
-    "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231"
+    "sha256": "5562b3844a54d21041b85ab36ce8722df3e62e721e77b424fbcb3a342f2dd885"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20175,7 +20266,7 @@
   {
    "data": {
     "intent": "read a system's state (docker · kubectl · gh), explain it, keep the report",
-    "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd"
+    "sha256": "c0ddf5aae1492a50d643c3547db42b305adf192b94822a9c9400ea0e7191b5c7"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20188,7 +20279,7 @@
   {
    "data": {
     "intent": "only what changed since last run · survive bad input",
-    "sha256": "b285da8add87df1a1e43d2f0584dc87b8d71da3c8f8def9a94f9806c6294e580"
+    "sha256": "ad6e6f394d38600fd7fca0c1db0a3a76239d74256bfdedd40f1cc7e014671068"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20201,7 +20292,7 @@
   {
    "data": {
     "intent": "do this for EVERY item",
-    "sha256": "7474d4603f1fcc126fae79e7aaafeaa431ce48350a00cf175cef316a63a7a063"
+    "sha256": "96e4c9e077f7c74803464f627a617c612133e373d74da82dbe233d9878cc7b80"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20214,7 +20305,7 @@
   {
    "data": {
     "intent": "watch X, act when Y",
-    "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6"
+    "sha256": "a548c0e551f7efb585df1922b26cf51cc9497e47d8f9c9afc7ed3d974efc62d9"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20227,7 +20318,7 @@
   {
    "data": {
     "intent": "anything irreversible (deploy · send · publish)",
-    "sha256": "c540d6b0f84fcef0994bad8165ff9dd8610202cac2eeb5f3c23c63c18284b47b"
+    "sha256": "1894157ff7d04d6ac57deb4958de9ab4f4c501ebf56d5d0176c974ff83cbbb0c"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20240,7 +20331,7 @@
   {
    "data": {
     "intent": "generate image/audio assets from a brief",
-    "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def"
+    "sha256": "7c7186264f281719ba20b5a36a36737a8ed305fcff663924c2612aa5722c4205"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
@@ -20253,7 +20344,7 @@
   {
    "data": {
     "intent": "understand a site (domain · theme · assets) from a URL",
-    "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845"
+    "sha256": "75396c6873c48fe0925738d7f7d577f54418ca1241a16b5ce92b188ad6c56c54"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",

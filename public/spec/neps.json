@@ -1,7 +1,7 @@
 {
   "neps_format": 1,
-  "spec_commit": "6ac29351a878e3dfab43c0f4f6599f9f8a46fe27",
-  "spec_tree": "5f7143362bc14595489f98cced96605ec0044ea8",
+  "spec_commit": "08116079bc0ac237f6dae7fcbbdcf918a3fc3e63",
+  "spec_tree": "060d3fa86b81b1308d5d47fa872441f661565662",
   "neps": [
     {
       "n": "0000",
@@ -40,8 +40,8 @@
           "anchor": "compatibility-impact"
         }
       ],
-      "words": 870,
-      "sha256": "891dbe82fd5d050d00fc81ce66718e55be4292c9f3d7f4d68a3b521c9c4557b5",
+      "words": 924,
+      "sha256": "95f0d7b763d6203ea0fd447a1c23da1a6e9382cbb90bd5149206066155111d46",
       "tokens": [
         {
           "k": "h",
@@ -126,7 +126,60 @@
           "inline": [
             {
               "k": "text",
-              "text": "A NEP (Nika Enhancement Proposal) is the public, numbered document through\nwhich every evolution of the Nika standard is proposed, discussed and\ndecided. Nobody amends the standard directly, the maintainers included.\nThis document defines the process itself: the lifecycle, the template, who\ndecides, and how the process evolves."
+              "text": "A NEP (Nika Enhancement Proposal) is the public, numbered document through\nwhich every evolution of the Nika standard is proposed, discussed and\ndecided. This document defines the process itself: the lifecycle, the\ntemplate, who decides, and how the process evolves."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "Pre-ratification clause."
+            },
+            {
+              "k": "text",
+              "text": " Until "
+            },
+            {
+              "k": "code",
+              "text": "1.0.0"
+            },
+            {
+              "k": "text",
+              "text": " ratifies the language, the\nspec on "
+            },
+            {
+              "k": "code",
+              "text": "main"
+            },
+            {
+              "k": "text",
+              "text": " is the draft and the draft evolves directly — the NEPs of\nthis era are "
+            },
+            {
+              "k": "strong",
+              "text": "design records of the draft"
+            },
+            {
+              "k": "text",
+              "text": " (all Standards-Track NEPs\ncarry "
+            },
+            {
+              "k": "code",
+              "text": "Status: Draft"
+            },
+            {
+              "k": "text",
+              "text": " accordingly), their numbers already load-bearing\nin engine code and traces. "
+            },
+            {
+              "k": "strong",
+              "text": "From 1.0 on, this process is binding"
+            },
+            {
+              "k": "text",
+              "text": ":\nnobody amends the standard directly, the maintainers included."
             }
           ]
         },
@@ -611,8 +664,8 @@
           "anchor": "rejected-alternatives"
         }
       ],
-      "words": 1650,
-      "sha256": "bf54b94c1aeb614c6e765e92d30ecb69158acf87589940c38e4d942da4f2c19c",
+      "words": 1863,
+      "sha256": "a4757b4dd582c9289a475848a9d27d80e3bc1947b66fbd43c5379939cf111b1c",
       "tokens": [
         {
           "k": "h",
@@ -699,7 +752,15 @@
               },
               {
                 "k": "text",
-                "text": ": v2.0 · 2026-07-20 (realized-flow judgment · agent whitelist\nrefinement · the infer/agent integrity inversion) · v2.1 · 2026-07-29\n(over-approximation posture written · the finding names its disjunct)"
+                "text": ": v2.0 · 2026-07-20 (realized-flow judgment · agent whitelist\nrefinement · the infer/agent integrity inversion) · v2.1 · 2026-07-29\n(over-approximation posture written · the finding names its disjunct) ·\nv2.2 · 2026-07-30 (the "
+              },
+              {
+                "k": "code",
+                "text": "exec:"
+              },
+              {
+                "k": "text",
+                "text": " verb is born-ingress — the subprocess\ntrust boundary · leg ② counts the exec permit as an ingress channel)"
               }
             ]
           ]
@@ -830,11 +891,11 @@
             [
               {
                 "k": "strong",
-                "text": "② untrusted ingress (amended v2.0)"
+                "text": "② untrusted ingress (amended v2.0 · v2.2)"
               },
               {
                 "k": "text",
-                "text": ": the boundary grants an ingress-capable\ntool AND the task graph "
+                "text": ": the boundary grants an ingress\nchannel AND the task graph "
               },
               {
                 "k": "strong",
@@ -882,7 +943,7 @@
               },
               {
                 "k": "text",
-                "text": " mark is the follow-on refinement, absent = untrusted), or an\n"
+                "text": " mark is the follow-on refinement, absent = untrusted), an\n"
               },
               {
                 "k": "code",
@@ -898,7 +959,63 @@
               },
               {
                 "k": "text",
-                "text": " whitelist admits an ingress-capable tool (a browsing\nagent's final message is attacker-influenced even with a statically clean\nprompt). First-party LOCAL builtins ("
+                "text": " whitelist admits an ingress-capable tool (a browsing\nagent's final message is attacker-influenced even with a statically clean\nprompt), or — "
+              },
+              {
+                "k": "strong",
+                "text": "v2.2"
+              },
+              {
+                "k": "text",
+                "text": " — an "
+              },
+              {
+                "k": "code",
+                "text": "exec:"
+              },
+              {
+                "k": "text",
+                "text": " task, with "
+              },
+              {
+                "k": "code",
+                "text": "permits.exec"
+              },
+              {
+                "k": "text",
+                "text": " itself\ncounting as the ingress grant. A subprocess is a trust boundary: its\nstdout is content the workflow did not author (a curled page · a "
+              },
+              {
+                "k": "code",
+                "text": "git log"
+              },
+              {
+                "k": "text",
+                "text": " with hostile subjects · a compromised binary), exactly the class\n"
+              },
+              {
+                "k": "code",
+                "text": "nika:fetch"
+              },
+              {
+                "k": "text",
+                "text": " is judged for. Until v2.2 the SAME flow drew "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-SEC-009"
+              },
+              {
+                "k": "text",
+                "text": "\nover the native fetch and a ✔ over "
+              },
+              {
+                "k": "code",
+                "text": "exec curl"
+              },
+              {
+                "k": "text",
+                "text": " — a measured perverse\nincentive to leave the native, defensible path (audit run 5 · F2 ·\n2026-07-30). First-party LOCAL builtins ("
               },
               {
                 "k": "code",
@@ -914,7 +1031,7 @@
               },
               {
                 "k": "text",
-                "text": " · …) are NOT\ningress: a private read is ①'s domain, a write ③'s. Untrusted content\n"
+                "text": " · …)\nare NOT ingress: a private read is ①'s domain, a write ③'s. Untrusted\ncontent "
               },
               {
                 "k": "strong",
@@ -938,7 +1055,7 @@
               },
               {
                 "k": "text",
-                "text": " items, "
+                "text": " items,\n"
               },
               {
                 "k": "code",
@@ -946,7 +1063,7 @@
               },
               {
                 "k": "text",
-                "text": "\nreads, and "
+                "text": " reads, and "
               },
               {
                 "k": "code",
@@ -958,11 +1075,11 @@
               },
               {
                 "k": "strong",
-                "text": "`infer:`/`agent:` outputs carry it when\ntheir prompt sees it"
+                "text": "`infer:`/`agent:`\noutputs carry it when their prompt sees it"
               },
               {
                 "k": "text",
-                "text": " — the integrity direction, where the \"model output is\nnot a verbatim echo\" carve-out (confidentiality-only) does not apply: a\nsummary of an attacker's page carries the attacker's payload. An "
+                "text": " — the integrity direction,\nwhere the \"model output is not a verbatim echo\" carve-out\n(confidentiality-only) does not apply: a summary of an attacker's page\ncarries the attacker's payload. An "
               },
               {
                 "k": "code",
@@ -970,7 +1087,7 @@
               },
               {
                 "k": "text",
-                "text": " task\nis content-tainted when it has a tainted data ancestor OR ("
+                "text": " task is ALSO content-tainted\nwhen it has a tainted data ancestor OR ("
               },
               {
                 "k": "code",
@@ -978,7 +1095,7 @@
               },
               {
                 "k": "text",
-                "text": " non-empty\n∧ a tainted task "
+                "text": " non-empty ∧ a tainted\ntask "
               },
               {
                 "k": "strong",
@@ -986,7 +1103,7 @@
               },
               {
                 "k": "text",
-                "text": " — an fs-write builtin or another exec —\nran earlier in the run order): the filesystem-mediated flow a static argv scan\ncannot see. (v1.1 note: the coarse any-grant reading flagged the spec's own\npermits-fit fixture "
+                "text": " — an fs-write builtin or another exec — ran\nearlier in the run order): the filesystem-mediated flow a static argv\nscan cannot see. (v1.1 note: the coarse any-grant reading flagged the\nspec's own permits-fit fixture "
               },
               {
                 "k": "code",
@@ -994,7 +1111,7 @@
               },
               {
                 "k": "text",
-                "text": " — "
+                "text": " —\n"
               },
               {
                 "k": "code",
@@ -1504,6 +1621,59 @@
             {
               "k": "text",
               "text": ": v2.0 findings are a strict subset of v1.1 findings — every v2.0\nfinding is a realized flow v1.1 already flagged. No previously-refused workflow\nneeds changes; workflows flagged under v1.1 solely by granted-but-never-invoked\ningress (or by egress tasks no untrusted content reaches) become clean.\nPreviously-passing workflows are unaffected in both directions (a gate that\ndominated still dominates; a narrowed permit still drops a leg)."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "v2.2"
+            },
+            {
+              "k": "text",
+              "text": ": v2.2 findings are a SUPERSET of v2.0 findings on exactly one axis —\nan "
+            },
+            {
+              "k": "code",
+              "text": "exec:"
+            },
+            {
+              "k": "text",
+              "text": " task is now a born source, so a workflow whose untrusted content\nentered ONLY through a subprocess (the "
+            },
+            {
+              "k": "code",
+              "text": "exec curl"
+            },
+            {
+              "k": "text",
+              "text": " rewrite of a judged\n"
+            },
+            {
+              "k": "code",
+              "text": "nika:fetch"
+            },
+            {
+              "k": "text",
+              "text": " flow) is flagged like its native twin. The migration is the\nNEP's own: one dominating "
+            },
+            {
+              "k": "code",
+              "text": "invoke: nika:prompt"
+            },
+            {
+              "k": "text",
+              "text": " gate, or narrow a leg. The\nspec's showcase "
+            },
+            {
+              "k": "code",
+              "text": "examples/pr-review-fanout.nika.yaml"
+            },
+            {
+              "k": "text",
+              "text": " took the gate (it\ndescends every task from the prompt — dominance is structural, a sibling\nbranch bypass re-opens the finding). A workflow whose exec tasks never feed\nan egress-capable task is unaffected."
             }
           ]
         },
@@ -12909,6 +13079,1512 @@
               {
                 "k": "text",
                 "text": " — rejected: gpu-vs-fleet differ ~2× on\nthe same model; a scopeless figure makes two truths incomparable and\nevery comparison a lie."
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "n": "0019",
+      "slug": "nep-0019-workflow-token-budget",
+      "file": "nep-0019-workflow-token-budget.md",
+      "headline": "The workflow token budget — the portable cap leaves the agent verb",
+      "title": "Generalize the one normative in-language cap (`max_tokens_total`) from the `agent:` verb to the workflow, in the only unit that survives the freeze",
+      "status": "Draft",
+      "type": "Standards Track",
+      "created": "2026-07-30",
+      "author": "Thibaut Melen (SuperNovae Studio)",
+      "lede": "Today the language carries exactly one normative spend cap:\nagent.max_tokens_total (02 §agent) — and it is\nconfined to one verb of four.",
+      "sections": [
+        {
+          "title": "Abstract",
+          "anchor": "abstract"
+        },
+        {
+          "title": "Motivation",
+          "anchor": "motivation"
+        },
+        {
+          "title": "Specification (sketch — the Discussion shapes the final grammar)",
+          "anchor": "specification-sketch--the-discussion-shapes-the-final-grammar"
+        },
+        {
+          "title": "Compatibility",
+          "anchor": "compatibility"
+        },
+        {
+          "title": "Open questions (for Discussion)",
+          "anchor": "open-questions-for-discussion"
+        }
+      ],
+      "words": 574,
+      "sha256": "6108a98d6e782c02a20e6d2291a44db40af993e9abe37adfb148cae1d87cd453",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "NEP-0019 · The workflow token budget — the portable cap leaves the agent verb",
+          "id": "nep-0019--the-workflow-token-budget--the-portable-cap-leaves-the-agent-verb"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "NEP"
+              },
+              {
+                "k": "text",
+                "text": ": 0019"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Title"
+              },
+              {
+                "k": "text",
+                "text": ": Generalize the one normative in-language cap ("
+              },
+              {
+                "k": "code",
+                "text": "max_tokens_total"
+              },
+              {
+                "k": "text",
+                "text": ") from the "
+              },
+              {
+                "k": "code",
+                "text": "agent:"
+              },
+              {
+                "k": "text",
+                "text": " verb to the workflow, in the only unit that survives the freeze"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Author"
+              },
+              {
+                "k": "text",
+                "text": ": Thibaut Melen (SuperNovae Studio)"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Status"
+              },
+              {
+                "k": "text",
+                "text": ": Draft"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Type"
+              },
+              {
+                "k": "text",
+                "text": ": Standards Track"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Created"
+              },
+              {
+                "k": "text",
+                "text": ": 2026-07-30"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Abstract",
+          "id": "abstract"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Today the language carries exactly one normative spend cap:\n"
+            },
+            {
+              "k": "code",
+              "text": "agent.max_tokens_total"
+            },
+            {
+              "k": "text",
+              "text": " ("
+            },
+            {
+              "k": "link",
+              "text": "02 §agent",
+              "href": "../spec/02-verbs.md"
+            },
+            {
+              "k": "text",
+              "text": ") — and it is\nconfined to one verb of four. This NEP proposes the workflow-level twin:\na declared, statically-checkable token budget the whole run must fit\ninside, refusable at check when the static ceiling already exceeds it.\n"
+            },
+            {
+              "k": "strong",
+              "text": "Tokens, never currency"
+            },
+            {
+              "k": "text",
+              "text": ": a dollar cap in a durable file rots with\nevery price change and is meaningless on a local provider, while a token\ncap is portable across providers, hardware and years — money stays what\nit already is in the engine, a "
+            },
+            {
+              "k": "em",
+              "text": "projection"
+            },
+            {
+              "k": "text",
+              "text": " of tokens through the\nversioned pricing snapshot the trace pins (NEP-0017). This closes the\ngap "
+            },
+            {
+              "k": "link",
+              "text": "08 §H7",
+              "href": "../spec/08-out-of-scope.md"
+            },
+            {
+              "k": "text",
+              "text": " names (« reading IS\nin-language · enforcement is NOT ») in the one unit that deserves to be\nnormative — the deferred "
+            },
+            {
+              "k": "code",
+              "text": "budget: max_cost_usd"
+            },
+            {
+              "k": "text",
+              "text": " block stays deferred,\nand stays denominated in the wrong unit."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Motivation",
+          "id": "motivation"
+        },
+        {
+          "k": "list",
+          "ordered": true,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "The product promise is a bounded run; the standard promises\nnothing."
+              },
+              {
+                "k": "text",
+                "text": " "
+              },
+              {
+                "k": "code",
+                "text": "nika check"
+              },
+              {
+                "k": "text",
+                "text": " renders cost floors and ceilings, but a\nthird-party engine can claim conformance without counting anything.\nThe audit-before-run story deserves at least one normative,\nverifiable cap at the workflow boundary."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "The right unit already won, locally."
+              },
+              {
+                "k": "text",
+                "text": " "
+              },
+              {
+                "k": "code",
+                "text": "max_tokens_total"
+              },
+              {
+                "k": "text",
+                "text": " is\nnormative today — but only inside "
+              },
+              {
+                "k": "code",
+                "text": "agent:"
+              },
+              {
+                "k": "text",
+                "text": ". An "
+              },
+              {
+                "k": "code",
+                "text": "infer:"
+              },
+              {
+                "k": "text",
+                "text": "-only\nworkflow, the majority shape, has no in-language spend bound at all."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "The resource doctrine says the dimensionless invariant must\nlead"
+              },
+              {
+                "k": "text",
+                "text": " (the resource-algebra ratification, 2026-07-28): tokens\ncompose additively under both "
+              },
+              {
+                "k": "code",
+                "text": ";"
+              },
+              {
+                "k": "text",
+                "text": " and "
+              },
+              {
+                "k": "code",
+                "text": "‖"
+              },
+              {
+                "k": "text",
+                "text": ", need no exchange rate,\nand are the denominator money and energy are projected from."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Specification (sketch — the Discussion shapes the final grammar)",
+          "id": "specification-sketch--the-discussion-shapes-the-final-grammar"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "A workflow-level declaration, e.g. under the existing "
+              },
+              {
+                "k": "code",
+                "text": "policy:"
+              },
+              {
+                "k": "text",
+                "text": "\nsurface ("
+              },
+              {
+                "k": "code",
+                "text": "policy.limits.max_tokens_total: <integer>"
+              },
+              {
+                "k": "text",
+                "text": "), judged HARD at\ncheck: if the static token ceiling of the plan (the same arithmetic\nthe COST rung already performs · "
+              },
+              {
+                "k": "code",
+                "text": "Σ max_tokens × max_attempts"
+              },
+              {
+                "k": "text",
+                "text": " per\ntask, iterations counted) provably exceeds the budget, check refuses\nwith a taught error; otherwise the run enforces it cumulatively and a\nbreach terminates with the budget error code."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "UNBOUNDED stays honest: a plan whose ceiling cannot be bounded\nstatically (dynamic fan-out) is not refused for the budget alone —\nthe check names the unbounded contributor, and the runtime cap still\nbinds (defense in depth, the NEP-0003 shape)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "agent.max_tokens_total"
+              },
+              {
+                "k": "text",
+                "text": " is unchanged and nests: the verb cap bounds\nits task, the workflow cap bounds the sum (limits MEET · budgets\nescrow — the composition ruling)."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Error family: the existing budget namespace; exact codes assigned at\nAccepted."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Compatibility",
+          "id": "compatibility"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Purely additive. No existing workflow changes meaning; absence of the\nfield means today's behavior. The deferred "
+            },
+            {
+              "k": "code",
+              "text": "budget:"
+            },
+            {
+              "k": "text",
+              "text": " block of\n"
+            },
+            {
+              "k": "link",
+              "text": "08 §Cost tracking annotations",
+              "href": "../spec/08-out-of-scope.md"
+            },
+            {
+              "k": "text",
+              "text": " is\nsuperseded-in-direction by this token-denominated form if accepted —\nthe currency-denominated cap stays out of the language."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Open questions (for Discussion)",
+          "id": "open-questions-for-discussion"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "Home: "
+              },
+              {
+                "k": "code",
+                "text": "policy.limits"
+              },
+              {
+                "k": "text",
+                "text": " (judged, closed vocabulary today:\n"
+              },
+              {
+                "k": "code",
+                "text": "max_tasks"
+              },
+              {
+                "k": "text",
+                "text": ") vs a sibling — the one-obvious-way call."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Does the cap cover "
+              },
+              {
+                "k": "code",
+                "text": "infer"
+              },
+              {
+                "k": "text",
+                "text": " + "
+              },
+              {
+                "k": "code",
+                "text": "agent"
+              },
+              {
+                "k": "text",
+                "text": " only, or also tokenized tool\nsurfaces ("
+              },
+              {
+                "k": "code",
+                "text": "nika:jq"
+              },
+              {
+                "k": "text",
+                "text": " is free; MCP tools are not tokens)?"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Conformance: one fixture pair minimum (a provable over-budget refusal\n· a boundary pass), runtime fixtures for the cumulative breach."
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "n": "0020",
+      "slug": "nep-0020-affirmative-consent",
+      "file": "nep-0020-affirmative-consent.md",
+      "headline": "The affirmative-consent law — a refused confirm must not reach an effect",
+      "title": "The affirmative-consent law — `false` triggers exactly zero effects, judged at check",
+      "status": "Draft",
+      "type": "Standards Track",
+      "created": "2026-07-31",
+      "author": "Thibaut Melen (SuperNovae Studio)",
+      "lede": "A REFUSED confirm-mode nika:prompt settles the task success with\nvalue `false` — the Deny lives in the approval attestation\n(NEP-0013), never in the task status.",
+      "sections": [
+        {
+          "title": "Abstract",
+          "anchor": "abstract"
+        },
+        {
+          "title": "Motivation",
+          "anchor": "motivation"
+        },
+        {
+          "title": "Specification",
+          "anchor": "specification"
+        },
+        {
+          "title": "Conformance test",
+          "anchor": "conformance-test"
+        },
+        {
+          "title": "Compatibility impact",
+          "anchor": "compatibility-impact"
+        },
+        {
+          "title": "Migration plan",
+          "anchor": "migration-plan"
+        },
+        {
+          "title": "Rejected alternatives",
+          "anchor": "rejected-alternatives"
+        }
+      ],
+      "words": 1237,
+      "sha256": "0edb5a81b2ced66c42d6d08bb6a090b7724a96c6a1a5bb626098a8e3d29d8d98",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "NEP-0020 · The affirmative-consent law — a refused confirm must not reach an effect",
+          "id": "nep-0020--the-affirmative-consent-law--a-refused-confirm-must-not-reach-an-effect"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "NEP"
+              },
+              {
+                "k": "text",
+                "text": ": 0020 (next free integer · 0001 reserved for the v1 surface · 0002 the trifecta gate · 0003 absent permits · 0004 the parameterization taint · 0005 the environment permit · 0006 the data-as-code sink · 0007 the trace and the equivalence oracle · 0008 the egress projection · 0009 the effective path identity · 0010 the run declaration · 0011 the run lifecycle · 0012 the receipt as untrusted input · 0013 the approval ticket · 0014 the thin-laws lot 3a · 0015 preview-commit · 0016 the provenance tiers · 0017 the thin-laws lot 3b · 0018 the energy honesty · 0019 the workflow token budget)"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Title"
+              },
+              {
+                "k": "text",
+                "text": ": The affirmative-consent law — "
+              },
+              {
+                "k": "code",
+                "text": "false"
+              },
+              {
+                "k": "text",
+                "text": " triggers exactly zero effects, judged at check"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Author"
+              },
+              {
+                "k": "text",
+                "text": ": Thibaut Melen (SuperNovae Studio)"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Status"
+              },
+              {
+                "k": "text",
+                "text": ": Draft"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Type"
+              },
+              {
+                "k": "text",
+                "text": ": Standards Track"
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Created"
+              },
+              {
+                "k": "text",
+                "text": ": 2026-07-31"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Abstract",
+          "id": "abstract"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "A REFUSED confirm-mode "
+            },
+            {
+              "k": "code",
+              "text": "nika:prompt"
+            },
+            {
+              "k": "text",
+              "text": " settles the task "
+            },
+            {
+              "k": "strong",
+              "text": "success with\nvalue `false`"
+            },
+            {
+              "k": "text",
+              "text": " — the Deny lives in the approval attestation\n(NEP-0013), never in the task status. Every route that does not consume\nthe answer therefore passes the effect through. This NEP makes that a\ncheck-time refusal: an egress-capable task reachable from a confirm\ngate over a route no affirmative gate closes is "
+            },
+            {
+              "k": "strong",
+              "text": "`NIKA-SEC-014`"
+            },
+            {
+              "k": "text",
+              "text": "\n("
+            },
+            {
+              "k": "code",
+              "text": "security_error"
+            },
+            {
+              "k": "text",
+              "text": " · before any token). The advisory hint of 2026-07-30\nescalates to the law it was measuring."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Motivation",
+          "id": "motivation"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The 2026-07-30 UX audit (P0-2) measured the hole on the house's own\ncorpus: a confirm whose "
+            },
+            {
+              "k": "code",
+              "text": "default:"
+            },
+            {
+              "k": "text",
+              "text": " answers "
+            },
+            {
+              "k": "code",
+              "text": "false"
+            },
+            {
+              "k": "text",
+              "text": " unattended, followed\nby "
+            },
+            {
+              "k": "code",
+              "text": "after: { ask: success }"
+            },
+            {
+              "k": "text",
+              "text": " into an irreversible "
+            },
+            {
+              "k": "code",
+              "text": "exec:"
+            },
+            {
+              "k": "text",
+              "text": " — the refusal\nsettles "
+            },
+            {
+              "k": "code",
+              "text": "success"
+            },
+            {
+              "k": "text",
+              "text": ", the edge admits it, the push fires. The author wrote\na gate; the file contains a rubber stamp. Two of this repo's own\nexamples were exactly this defect ("
+            },
+            {
+              "k": "code",
+              "text": "release-notes"
+            },
+            {
+              "k": "text",
+              "text": " · "
+            },
+            {
+              "k": "code",
+              "text": "pr-review-fanout"
+            },
+            {
+              "k": "text",
+              "text": "\n— both repaired in this PR, which is the census). A gate that cannot\nblock is worse than no gate: it spends the reviewer's trust and returns\nnothing. The hint named the defect; a hint is a plea, and the audit's\nclosure condition is a refusal — "
+            },
+            {
+              "k": "em",
+              "text": "false déclenche exactement zéro\neffet"
+            },
+            {
+              "k": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Specification",
+          "id": "specification"
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The law",
+          "id": "the-law"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "For every confirm-mode human gate — an "
+            },
+            {
+              "k": "code",
+              "text": "invoke:"
+            },
+            {
+              "k": "text",
+              "text": " of "
+            },
+            {
+              "k": "code",
+              "text": "nika:prompt"
+            },
+            {
+              "k": "text",
+              "text": " whose\n"
+            },
+            {
+              "k": "code",
+              "text": "mode:"
+            },
+            {
+              "k": "text",
+              "text": " is absent (the runtime default) or the literal "
+            },
+            {
+              "k": "code",
+              "text": "confirm"
+            },
+            {
+              "k": "text",
+              "text": " — and\nevery "
+            },
+            {
+              "k": "strong",
+              "text": "egress-capable"
+            },
+            {
+              "k": "text",
+              "text": " task (the ONE effect table: "
+            },
+            {
+              "k": "code",
+              "text": "exec:"
+            },
+            {
+              "k": "text",
+              "text": " · a net or\nfs-"
+            },
+            {
+              "k": "strong",
+              "text": "write"
+            },
+            {
+              "k": "text",
+              "text": " builtin · "
+            },
+            {
+              "k": "code",
+              "text": "mcp:*"
+            },
+            {
+              "k": "text",
+              "text": " · an "
+            },
+            {
+              "k": "code",
+              "text": "agent:"
+            },
+            {
+              "k": "text",
+              "text": " whose whitelist admits an\negress tool), judged over the derived graph every judge reads\n("
+            },
+            {
+              "k": "link",
+              "text": "03",
+              "href": "../spec/03-dag.md"
+            },
+            {
+              "k": "text",
+              "text": "): "
+            },
+            {
+              "k": "strong",
+              "text": "every route from the gate to the task must\nbe closed."
+            },
+            {
+              "k": "text",
+              "text": " A route is closed by —"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": true,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "an "
+              },
+              {
+                "k": "strong",
+                "text": "affirmative gate"
+              },
+              {
+                "k": "text",
+                "text": ": a "
+              },
+              {
+                "k": "code",
+                "text": "when:"
+              },
+              {
+                "k": "text",
+                "text": " that evaluates to FALSE under the\nrefusal substitution (below) — the house pattern\n"
+              },
+              {
+                "k": "code",
+                "text": "with: { go: \"${{ tasks.ask.output }}\" }"
+              },
+              {
+                "k": "text",
+                "text": " + "
+              },
+              {
+                "k": "code",
+                "text": "when: ${{ with.go == true }}"
+              },
+              {
+                "k": "text",
+                "text": ";"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "when: false"
+              },
+              {
+                "k": "text",
+                "text": " — the documented never-pattern: no route THROUGH the\ntask carries the refusal anywhere;"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "a "
+              },
+              {
+                "k": "strong",
+                "text": "closer confirm gate"
+              },
+              {
+                "k": "text",
+                "text": " — the nearest gate owns its closure (the\napproval-batch precedent, NEP-0013 law 3): the walk stops, and the\nbare route past the second gate is the second gate's own obligation."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "An egress-capable task reached on a route closed by none of these is\n"
+            },
+            {
+              "k": "strong",
+              "text": "`NIKA-SEC-014`"
+            },
+            {
+              "k": "text",
+              "text": " ("
+            },
+            {
+              "k": "code",
+              "text": "security_error"
+            },
+            {
+              "k": "text",
+              "text": " · check-time · the diagnostic names\nthe gate AND the sink and teaches the affirmative pattern)."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The refusal substitution (normative · the decidable fragment)",
+          "id": "the-refusal-substitution-normative--the-decidable-fragment"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The gate's settled facts under a refusal are substituted into each\n"
+            },
+            {
+              "k": "code",
+              "text": "when:"
+            },
+            {
+              "k": "text",
+              "text": " on the route: "
+            },
+            {
+              "k": "code",
+              "text": "tasks.<gate>.output"
+            },
+            {
+              "k": "text",
+              "text": " → "
+            },
+            {
+              "k": "code",
+              "text": "false"
+            },
+            {
+              "k": "text",
+              "text": " ·\n"
+            },
+            {
+              "k": "code",
+              "text": "tasks.<gate>.status"
+            },
+            {
+              "k": "text",
+              "text": " → "
+            },
+            {
+              "k": "code",
+              "text": "\"success\""
+            },
+            {
+              "k": "text",
+              "text": " (a refusal settles success — a\nstatus read is NOT consent, and is decidable exactly). The expression\nis evaluated in Kleene-3 over the consent fragment (boolean literals ·\n"
+            },
+            {
+              "k": "code",
+              "text": "=="
+            },
+            {
+              "k": "text",
+              "text": "/"
+            },
+            {
+              "k": "code",
+              "text": "!="
+            },
+            {
+              "k": "text",
+              "text": "/"
+            },
+            {
+              "k": "code",
+              "text": "in"
+            },
+            {
+              "k": "text",
+              "text": " on resolved literals · "
+            },
+            {
+              "k": "code",
+              "text": "!"
+            },
+            {
+              "k": "text",
+              "text": "/"
+            },
+            {
+              "k": "code",
+              "text": "&&"
+            },
+            {
+              "k": "text",
+              "text": "/"
+            },
+            {
+              "k": "code",
+              "text": "||"
+            },
+            {
+              "k": "text",
+              "text": "/ternary · the exact\nsingle-island "
+            },
+            {
+              "k": "code",
+              "text": "with:"
+            },
+            {
+              "k": "text",
+              "text": " binding carries its target's value):"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "FALSE"
+              },
+              {
+                "k": "text",
+                "text": " — the gate closes the route (affirmative)."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "TRUE"
+              },
+              {
+                "k": "text",
+                "text": " — the gate is PROVEN open under the refusal\n("
+              },
+              {
+                "k": "code",
+                "text": "go == true || go == false"
+              },
+              {
+                "k": "text",
+                "text": " blocks nothing): the route stands."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Unknown"
+              },
+              {
+                "k": "text",
+                "text": " — the gate cannot be decided statically: a nested\ntemplate binding ("
+              },
+              {
+                "k": "code",
+                "text": "\"go: ${{ tasks.ask.output }}\""
+              },
+              {
+                "k": "text",
+                "text": " inside a larger\nstring), an expression beyond the fragment. The route is NOT a\nrefusal — the defect is unproven, and an unproven defect is the\nadvisory hint's ground, never a code's ("
+              },
+              {
+                "k": "strong",
+                "text": "sound: no false red"
+              },
+              {
+                "k": "text",
+                "text": ")."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "A task with no "
+            },
+            {
+              "k": "code",
+              "text": "when:"
+            },
+            {
+              "k": "text",
+              "text": " forwards the refusal by construction. A "
+            },
+            {
+              "k": "code",
+              "text": "when:"
+            },
+            {
+              "k": "text",
+              "text": "\nthat never reads the answer (directly or through a binding) and cannot\nbe proven false under the substitution is Unknown, not affirmative —\nmere adjacency to a gate is not consent."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "mode: choice"
+            },
+            {
+              "k": "text",
+              "text": " is out of scope: its answer is a string, the affirmative\npattern differs, and the lane claims nothing there (silence, never\nwrong)."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The code",
+          "id": "the-code"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "NIKA-SEC-014"
+            },
+            {
+              "k": "text",
+              "text": " joins the SEC family (the check-plane security refusals\n· SEC-009 the trifecta · SEC-012 the write-write law · SEC-013 the\nendorsement mode) — registry row in "
+            },
+            {
+              "k": "code",
+              "text": "canon/diagnostics/registry.yaml"
+            },
+            {
+              "k": "text",
+              "text": ",\nsummary row in "
+            },
+            {
+              "k": "link",
+              "text": "05 §the error table",
+              "href": "../spec/05-errors.md"
+            },
+            {
+              "k": "text",
+              "text": ", normative\nprose in "
+            },
+            {
+              "k": "link",
+              "text": "10 §the affirmative-consent law",
+              "href": "../spec/10-authority.md"
+            },
+            {
+              "k": "text",
+              "text": ".\nNot POLICY: the law binds with or without a "
+            },
+            {
+              "k": "code",
+              "text": "policy:"
+            },
+            {
+              "k": "text",
+              "text": " block, and\n"
+            },
+            {
+              "k": "code",
+              "text": "NIKA-POLICY-001"
+            },
+            {
+              "k": "text",
+              "text": " is reserved to violations OF a declared "
+            },
+            {
+              "k": "code",
+              "text": "policy:"
+            },
+            {
+              "k": "text",
+              "text": "\nrule."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Conformance test",
+          "id": "conformance-test"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Three fixtures land with this NEP in "
+            },
+            {
+              "k": "code",
+              "text": "conformance/tests/core/policy/"
+            },
+            {
+              "k": "text",
+              "text": "\n(the human-gate family) —"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "011-consent-bare-after-refused"
+              },
+              {
+                "k": "text",
+                "text": " — confirm + bare\n"
+              },
+              {
+                "k": "code",
+                "text": "after: { ask: success }"
+              },
+              {
+                "k": "text",
+                "text": " into an "
+              },
+              {
+                "k": "code",
+                "text": "exec:"
+              },
+              {
+                "k": "text",
+                "text": " → "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-SEC-014"
+              },
+              {
+                "k": "text",
+                "text": "."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "012-consent-affirmative-clean"
+              },
+              {
+                "k": "text",
+                "text": " — the human-gated-ship pattern →\nvalid (whole-spec legal: the affirmative gate closes the one route)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "013-consent-status-gate-is-not-consent"
+              },
+              {
+                "k": "text",
+                "text": " — a "
+              },
+              {
+                "k": "code",
+                "text": "when:"
+              },
+              {
+                "k": "text",
+                "text": " reading\n"
+              },
+              {
+                "k": "code",
+                "text": "tasks.ask.status"
+              },
+              {
+                "k": "text",
+                "text": " instead of the answer → "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-SEC-014"
+              },
+              {
+                "k": "text",
+                "text": " (the status\nprovably reads "
+              },
+              {
+                "k": "code",
+                "text": "\"success\""
+              },
+              {
+                "k": "text",
+                "text": " on the refusal; nothing consumed)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The reference oracle ("
+            },
+            {
+              "k": "code",
+              "text": "conformance/deep_static.py"
+            },
+            {
+              "k": "text",
+              "text": ") implements the same\nwalk, so the fixtures bind both oracles."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Compatibility impact",
+          "id": "compatibility-impact"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Not none, and argued: a workflow that was GREEN with a confirm gate and\na "
+            },
+            {
+              "k": "strong",
+              "text": "provably"
+            },
+            {
+              "k": "text",
+              "text": " non-affirmative route to an effect now refuses at check.\nThe census is this repo: every "
+            },
+            {
+              "k": "code",
+              "text": "examples/"
+            },
+            {
+              "k": "text",
+              "text": " and "
+            },
+            {
+              "k": "code",
+              "text": "templates/"
+            },
+            {
+              "k": "text",
+              "text": " file was\nvalidated — exactly two carried the defect ("
+            },
+            {
+              "k": "code",
+              "text": "release-notes"
+            },
+            {
+              "k": "text",
+              "text": " ·\n"
+            },
+            {
+              "k": "code",
+              "text": "pr-review-fanout"
+            },
+            {
+              "k": "text",
+              "text": "), both repaired to the affirmative pattern in this\nPR; the rest already consume the answer ("
+            },
+            {
+              "k": "code",
+              "text": "invoice-chaser"
+            },
+            {
+              "k": "text",
+              "text": " ·\n"
+            },
+            {
+              "k": "code",
+              "text": "ceo-monday-brief"
+            },
+            {
+              "k": "text",
+              "text": " · "
+            },
+            {
+              "k": "code",
+              "text": "incident-war-room"
+            },
+            {
+              "k": "text",
+              "text": " · "
+            },
+            {
+              "k": "code",
+              "text": "release-train"
+            },
+            {
+              "k": "text",
+              "text": " ·\n"
+            },
+            {
+              "k": "code",
+              "text": "human-gated-ship"
+            },
+            {
+              "k": "text",
+              "text": " · "
+            },
+            {
+              "k": "code",
+              "text": "etl-state"
+            },
+            {
+              "k": "text",
+              "text": "). Workflows the substitution cannot\ndecide see the same advisory hint as before — the escalation changes\nverdicts only where the defect is proven."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Migration plan",
+          "id": "migration-plan"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The repair is mechanical and the diagnostic teaches it verbatim: bind\nthe answer ("
+            },
+            {
+              "k": "code",
+              "text": "with: { go: \"${{ tasks.<gate>.output }}\" }"
+            },
+            {
+              "k": "text",
+              "text": ") and gate on\nit ("
+            },
+            {
+              "k": "code",
+              "text": "when: ${{ with.go == true }}"
+            },
+            {
+              "k": "text",
+              "text": "). The codemod is the author's one\nline pair per route root; the teaching string names both the gate and\nthe sink."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Rejected alternatives",
+          "id": "rejected-alternatives"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "`NIKA-POLICY-002`."
+              },
+              {
+                "k": "text",
+                "text": " The POLICY family judges violations of a\nDECLARED "
+              },
+              {
+                "k": "code",
+                "text": "policy:"
+              },
+              {
+                "k": "text",
+                "text": " block; this law binds without one. A second policy\ncode would also mint the first family with two members for one\nsentence — the SEC family is where check-plane security laws live."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Keep the hint, never refuse."
+              },
+              {
+                "k": "text",
+                "text": " The audit's closure condition is\nblocking; a hint is measurable ignorance, and the measured defect\nclass is a rubber-stamp gate on irreversible effects."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Refuse on undecidable gates too."
+              },
+              {
+                "k": "text",
+                "text": " Unsound: a gate the fragment\ncannot evaluate may well close the route (a nested binding carrying\nthe answer into a comparison). A false red on a correct file teaches\nauthors to dismiss the code — the Unknown case stays advisory,\nforever."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Judge at run, not check."
+              },
+              {
+                "k": "text",
+                "text": " The run already records the Deny\n(NEP-0013); the defect is static (the route's shape, not the answer's\nvalue) and the spec's standing promise is judgment before any token."
               }
             ]
           ]

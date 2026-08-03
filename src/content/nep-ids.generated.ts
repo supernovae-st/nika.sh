@@ -22,5 +22,7 @@ export const NEP_SLUGS: string[] = [
  "nep-0015-preview-commit",
  "nep-0016-provenance-tiers",
  "nep-0017-thin-laws-3b",
- "nep-0018-energy-honesty"
+ "nep-0018-energy-honesty",
+ "nep-0019-workflow-token-budget",
+ "nep-0020-affirmative-consent"
 ]

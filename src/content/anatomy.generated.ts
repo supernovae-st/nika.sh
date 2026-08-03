@@ -190,7 +190,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "rows",
         "verb": "invoke",
         "tool": "nika:convert",
-        "when": "${{ with.csv != null }}",
+        "when": "${{ with.csv != null && size(with.csv) > 0 }}",
         "permits": [
           "tool: nika:convert"
         ]
@@ -199,7 +199,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "revenue",
         "verb": "invoke",
         "tool": "nika:jq",
-        "when": "${{ with.rows != null }}",
+        "when": "${{ with.rows != null && size(with.rows) > 0 }}",
         "permits": [
           "tool: nika:jq"
         ]
@@ -440,7 +440,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "save",
         "verb": "invoke",
         "tool": "nika:write",
-        "when": "${{ with.digest != null }}",
+        "when": "${{ with.digest != null && size(with.digest) > 0 }}",
         "permits": [
           "fs.write: ./radar/competitor-brief.md",
           "tool: nika:write"
@@ -578,7 +578,7 @@ export const ANATOMY: Record<string, Anatomy> = {
       {
         "id": "explain",
         "verb": "infer",
-        "model": "ollama/qwen3.5:4b",
+        "model": "ollama/llama3.2:3b",
         "when": "${{ size(with.patch) > 0 }}",
         "permits": []
       },
@@ -1277,6 +1277,17 @@ export const ANATOMY: Record<string, Anatomy> = {
         ]
       },
       {
+        "id": "read",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "fan_out": {
+          "kind": "expression"
+        },
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
         "id": "process",
         "verb": "infer",
         "model": "ollama/llama3.2:3b",
@@ -1303,12 +1314,17 @@ export const ANATOMY: Record<string, Anatomy> = {
     "edges": [
       {
         "from": "discover",
-        "to": "process",
+        "to": "read",
         "kind": "value"
       },
       {
         "from": "process",
         "to": "survivors",
+        "kind": "value"
+      },
+      {
+        "from": "read",
+        "to": "process",
         "kind": "value"
       },
       {
@@ -1519,7 +1535,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "timeline",
         "verb": "infer",
         "model": "ollama/qwen3.5:4b",
-        "when": "${{ with.runbook != null }}",
+        "when": "${{ with.runbook != null && size(with.runbook) > 0 }}",
         "permits": []
       },
       {
@@ -1688,7 +1704,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "approve",
         "verb": "invoke",
         "tool": "nika:prompt",
-        "when": "${{ with.drafts != null }}",
+        "when": "${{ with.drafts != null && size(with.drafts) > 0 }}",
         "permits": [
           "tool: nika:prompt"
         ]
@@ -1697,7 +1713,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "save",
         "verb": "invoke",
         "tool": "nika:write",
-        "when": "${{ with.drafts != null && with.approved == true }}",
+        "when": "${{ with.drafts != null && size(with.drafts) > 0 && with.approved == true }}",
         "permits": [
           "fs.write: out/reminders-to-send.md",
           "tool: nika:write"
@@ -1936,7 +1952,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "kind": "value"
       },
       {
-        "from": "extract",
+        "from": "save",
         "to": "trace",
         "kind": "control"
       },
@@ -2046,8 +2062,17 @@ export const ANATOMY: Record<string, Anatomy> = {
     "workflow": "pr-review-fanout",
     "nodes": [
       {
+        "id": "approve",
+        "verb": "invoke",
+        "tool": "nika:prompt",
+        "permits": [
+          "tool: nika:prompt"
+        ]
+      },
+      {
         "id": "changed",
         "verb": "exec",
+        "when": "${{ with.go == true }}",
         "permits": [
           "exec: git"
         ]
@@ -2056,6 +2081,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "todo_sweep",
         "verb": "invoke",
         "tool": "nika:grep",
+        "when": "${{ with.go == true }}",
         "permits": [
           "fs.read: ./src/**",
           "tool: nika:grep"
@@ -2065,6 +2091,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "files",
         "verb": "invoke",
         "tool": "nika:jq",
+        "when": "${{ with.changed != null && size(with.changed) > 0 }}",
         "permits": [
           "tool: nika:jq"
         ]
@@ -2093,12 +2120,14 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "summary",
         "verb": "infer",
         "model": "ollama/qwen3.5:4b",
+        "when": "${{ with.todo_sweep != null && size(with.todo_sweep) > 0 }}",
         "permits": []
       },
       {
         "id": "save",
         "verb": "invoke",
         "tool": "nika:write",
+        "when": "${{ with.summary != null && size(with.summary) > 0 }}",
         "permits": [
           "fs.write: ./REVIEW.md",
           "tool: nika:write"
@@ -2106,6 +2135,26 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ],
     "edges": [
+      {
+        "from": "approve",
+        "to": "changed",
+        "kind": "control"
+      },
+      {
+        "from": "approve",
+        "to": "changed",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "todo_sweep",
+        "kind": "control"
+      },
+      {
+        "from": "approve",
+        "to": "todo_sweep",
+        "kind": "value"
+      },
       {
         "from": "changed",
         "to": "files",
@@ -2237,8 +2286,17 @@ export const ANATOMY: Record<string, Anatomy> = {
     "workflow": "release-notes",
     "nodes": [
       {
+        "id": "approve",
+        "verb": "invoke",
+        "tool": "nika:prompt",
+        "permits": [
+          "tool: nika:prompt"
+        ]
+      },
+      {
         "id": "history",
         "verb": "exec",
+        "when": "${{ with.go == true }}",
         "permits": [
           "exec: git"
         ]
@@ -2247,6 +2305,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "existing",
         "verb": "invoke",
         "tool": "nika:read",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:read"
         ]
@@ -2255,12 +2314,14 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "notes",
         "verb": "infer",
         "model": "ollama/llama3.2:3b",
+        "when": "${{ with.history != null && size(with.history) > 0 }}",
         "permits": []
       },
       {
         "id": "copy",
         "verb": "invoke",
         "tool": "nika:write",
+        "when": "${{ with.existing != null && size(with.existing) > 0 }}",
         "permits": [
           "tool: nika:write"
         ]
@@ -2284,6 +2345,26 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ],
     "edges": [
+      {
+        "from": "approve",
+        "to": "existing",
+        "kind": "control"
+      },
+      {
+        "from": "approve",
+        "to": "existing",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "history",
+        "kind": "control"
+      },
+      {
+        "from": "approve",
+        "to": "history",
+        "kind": "value"
+      },
       {
         "from": "changelog",
         "to": "announce",
@@ -2326,9 +2407,18 @@ export const ANATOMY: Record<string, Anatomy> = {
     "workflow": "release-radar",
     "nodes": [
       {
+        "id": "approve",
+        "verb": "invoke",
+        "tool": "nika:prompt",
+        "permits": [
+          "tool: nika:prompt"
+        ]
+      },
+      {
         "id": "no_state",
         "verb": "invoke",
         "tool": "nika:jq",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:jq"
         ]
@@ -2337,6 +2427,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "previous",
         "verb": "invoke",
         "tool": "nika:read",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:read"
         ]
@@ -2345,35 +2436,76 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "feed",
         "verb": "invoke",
         "tool": "nika:fetch",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:fetch"
         ]
       },
       {
-        "id": "fresh",
+        "id": "previous_parsed",
         "verb": "invoke",
-        "tool": "nika:json_diff",
+        "tool": "nika:jq",
         "permits": [
-          "tool: nika:json_diff"
+          "tool: nika:jq"
         ]
       },
       {
         "id": "save_state",
         "verb": "invoke",
         "tool": "nika:write",
+        "when": "${{ with.go == true }}",
         "permits": [
           "tool: nika:write"
+        ]
+      },
+      {
+        "id": "fresh",
+        "verb": "invoke",
+        "tool": "nika:json_diff",
+        "when": "${{ with.go == true }}",
+        "permits": [
+          "tool: nika:json_diff"
         ]
       },
       {
         "id": "digest",
         "verb": "infer",
         "model": "ollama/qwen3.5:4b",
-        "when": "${{ size(with.fresh) > 0 }}",
+        "when": "${{ with.go == true && size(with.fresh) > 0 }}",
         "permits": []
       }
     ],
     "edges": [
+      {
+        "from": "approve",
+        "to": "digest",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "feed",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "fresh",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "no_state",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "previous",
+        "kind": "value"
+      },
+      {
+        "from": "approve",
+        "to": "save_state",
+        "kind": "value"
+      },
       {
         "from": "feed",
         "to": "digest",
@@ -2401,6 +2533,11 @@ export const ANATOMY: Record<string, Anatomy> = {
       },
       {
         "from": "previous",
+        "to": "previous_parsed",
+        "kind": "value"
+      },
+      {
+        "from": "previous_parsed",
         "to": "fresh",
         "kind": "value"
       }
@@ -2701,7 +2838,7 @@ export const ANATOMY: Record<string, Anatomy> = {
         "id": "save",
         "verb": "invoke",
         "tool": "nika:write",
-        "when": "${{ with.brief != null }}",
+        "when": "${{ with.brief != null && size(with.brief) > 0 }}",
         "permits": [
           "fs.write: ./hiring/shortlist-brief.md",
           "tool: nika:write"

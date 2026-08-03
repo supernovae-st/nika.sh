@@ -71,9 +71,11 @@ const BROWSE: {
   {
     slug: 'invoice-chaser',
     blurb: 'finds the overdue, drafts reminders, waits for your yes',
-    /* the lit lines: the approve task — a human answer gates the save */
+    /* the lit lines: the approve task — a human answer gates the save
+       (re-anchored at the 0811607 pin · the corpus re-projection moved
+       the block two lines down and the old range lit an empty line) */
     gloss: 'invoke: a human yes sits before anything is saved',
-    highlight: [56, 64],
+    highlight: [58, 66],
   },
   {
     slug: 'deep-research-brief',

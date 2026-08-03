@@ -45,8 +45,10 @@ export const PLAY_BREAKS: Record<string, PlayBreak> = {
   },
   fanout: {
     label: 'Type a predicate the set refuses',
-    find: '    fail_fast: false\n',
-    replace: '    fail_fast: false\n    after: { discover: succeeded }\n',
+    /* anchored to the PROCESS fan: the 0811607 pin's template grew a second
+       fan (read) with its own fail_fast — the timeout line is the unique tail */
+    find: '    fail_fast: false\n    timeout: "60s"',
+    replace: '    fail_fast: false\n    after: { discover: succeeded }\n    timeout: "60s"',
     fires: 'NIKA-DAG-005',
     lesson: 'the predicate set is CLOSED · success · failure · skipped · terminal · `succeeded` is yesterday’s name, not a state',
   },
