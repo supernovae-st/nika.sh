@@ -976,7 +976,7 @@
     {
       "selector": "src/pages/Learn.tsx#count:1",
       "path": "src/pages/Learn.tsx",
-      "line": 461,
+      "line": 486,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -988,7 +988,7 @@
     {
       "selector": "src/pages/Learn.tsx#count:2",
       "path": "src/pages/Learn.tsx",
-      "line": 529,
+      "line": 554,
       "text": "4 verbs",
       "source": "4",
       "field": "verbs",
