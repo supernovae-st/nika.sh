@@ -272,7 +272,7 @@ outputs:
    the run (NIKA-SEC-009 · the lethal-trifecta judge · the gate must
    dominate every path to the write). This exact text passes `nika check`
    on the shipping binary — the transcript below is that run, VERBATIM
-   (captured 2026-07-28 · nika 0.107.0). The honesty law: re-capture when
+   (captured 2026-07-28 · nika 0.107.2). The honesty law: re-capture when
    the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: v1
 workflow:
