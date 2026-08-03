@@ -11,6 +11,7 @@ import { CanonCount } from '../components/CanonCount'
 import { TruthLine } from '../components/TruthLine'
 import { mapLensOn, subscribeMapLens } from '../lib/map-lens'
 import { SITE, routeHead } from '../content'
+import { BelvedereRail } from '../components/BelvedereRail'
 import '../sections/v4-home.css'
 import './tool-detail.css'
 import './map-page.css'
@@ -177,6 +178,7 @@ export function Component() {
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="mp-title" className="v4sec v4-in">
         <div className="v4sec-wrap mp-wrap">
+          <BelvedereRail at="/map" />
           <header className="mp-head">
             <p className="v4sec-fig" data-rise>
               the map

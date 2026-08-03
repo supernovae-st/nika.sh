@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1604
+  classified_files: 1606
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1231
+    authored: 1233
     authored-pin: 3
     generated: 311
     pinned-copy: 21
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: dbe3ee1f68aa86e2f461380b589e0a3f559880fdd4df9ec441d3b8929ed73a47
+  sha256: ac7e1cf6801a0fcfa7ce17b2c390b7e81f4daf34be38a71f7a77556ba08a72e8
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: e45ebeb7e76849d5b5b72df756b621814278a8d16644f30d7232336fbc5540c9
+  sha256: 2d5e1f6c9d936acb691d581f0483fbec3cef251173ff6893ad8aed6b948b1069
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 7ba65ef262dd6bf5d1966bebe99c1ee7746f25df9ae691b143f080bbfb32887c
+  sha256: 2f62f5d38e6a3c02ec09d28d9219bc7eef927ad249aa6c69993dc48a1ed22d32
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 69120baae21ac0ea0316e4a4d8b515114935ad6ebd13b139009436b2406c067c
+  aggregate_sha256: ca3f06c67fa84796b28f0e39abcddfa5ea0cb25aae22cd3764ae8c193ba4c9df
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -935,8 +935,8 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 434
-  aggregate_sha256: c6aa20670f13cc6491294933e39e652ec153a250ce9923727daa95ab77c40e3a
+  match_count: 436
+  aggregate_sha256: 64be3adbf038c9dc0981fa32ccc38a98f51827eaf8235113ac920867ab2cb694
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

@@ -11,6 +11,7 @@ import type { IntegrationEntry } from '../content/integrations'
 import { CATALOG_ENGINE } from '../content/catalog-paths.generated'
 import { LESSONS_PIN } from '../content/lessons.generated'
 import { crumbLd, ldScript } from '../lib/ld'
+import { BelvedereRail } from '../components/BelvedereRail'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './how-page.css'
@@ -101,6 +102,7 @@ export function Component() {
       <section ref={ref} aria-labelledby="city-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <Island id="city" payload={payload ?? ''} />
+          <BelvedereRail at="/city" />
           <p className="v4sec-fig" data-rise>
             the city
           </p>

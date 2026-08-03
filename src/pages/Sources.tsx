@@ -12,6 +12,7 @@ import {
   LENS_CLOCK_DIFF,
   TRUTH_WORDS,
 } from '../content/lens-meta.generated'
+import { BelvedereRail } from '../components/BelvedereRail'
 import { CLOCK_REGISTERS } from '../lib/clock-diff'
 import { CANON } from '../canon.generated'
 import '../sections/v4-home.css'
@@ -143,6 +144,7 @@ export function Component() {
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="src-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
+          <BelvedereRail at="/truth" />
           <p className="v4sec-fig" data-rise>
             the truth register
           </p>
