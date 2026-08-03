@@ -36,6 +36,11 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "transient": false
   },
   {
+    "code": "NIKA-AGENT-005",
+    "category": "budget_error",
+    "transient": false
+  },
+  {
     "code": "NIKA-ASSERT-001",
     "category": "validation_error",
     "transient": false
@@ -167,6 +172,11 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   },
   {
     "code": "NIKA-INFER-002",
+    "category": "validation_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-INFER-003",
     "category": "validation_error",
     "transient": false
   },
@@ -382,6 +392,31 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   },
   {
     "code": "NIKA-SEC-009",
+    "category": "security_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-SEC-010",
+    "category": "security_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-SEC-011",
+    "category": "security_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-SEC-012",
+    "category": "security_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-SEC-013",
+    "category": "security_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-SEC-014",
     "category": "security_error",
     "transient": false
   },

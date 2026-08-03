@@ -233,7 +233,7 @@ export const MAP_LAYERS: MapLayer[] = [
         "id": "error-codes",
         "title": "The error codes",
         "url": "/language",
-        "count": 96,
+        "count": 103,
         "surface": "rooms",
         "slot": null,
         "closed": false,

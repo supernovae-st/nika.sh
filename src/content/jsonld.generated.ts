@@ -395,7 +395,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/words/policy",
           "termCode": "policy",
           "name": "policy",
-          "description": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits (NIKA-POLICY-001) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
+          "description": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
         },
         {
           "@type": "DefinedTerm",
@@ -1418,6 +1418,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-AGENT-005",
+          "termCode": "NIKA-AGENT-005",
+          "name": "NIKA-AGENT-005",
+          "description": "the provider reported no token usage for a priced model — every budget and ledger reads the turn as free, so the loop fails closed (R3-F1 · the usage-absence gate)"
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-ASSERT-001",
           "termCode": "NIKA-ASSERT-001",
           "name": "NIKA-ASSERT-001",
@@ -1604,6 +1611,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-INFER-002",
           "name": "NIKA-INFER-002",
           "description": "structured output failed schema validation (after any engine-internal retries)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-INFER-003",
+          "termCode": "NIKA-INFER-003",
+          "name": "NIKA-INFER-003",
+          "description": "the provider reported no token usage for a priced model — the ledger cannot bill the call honestly (fail-closed · R3-F1)"
         },
         {
           "@type": "DefinedTerm",
@@ -1848,7 +1862,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-SEC-001",
           "termCode": "NIKA-SEC-001",
           "name": "NIKA-SEC-001",
-          "description": "exec: blocklist hit"
+          "description": "exec refused before the child spawns — either the shell floor (a destructive/privilege pattern · always-on · independent of permits:) or the mock plane under `nika test`, which refuses EVERY command by design (it simulates the model, not effects) · under test the exit is `nika run` for real effects, or an `on_error: recover` rehearsal on the task"
         },
         {
           "@type": "DefinedTerm",
@@ -1905,6 +1919,41 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-SEC-009",
           "name": "NIKA-SEC-009",
           "description": "lethal trifecta complete — the declared boundary grants private read (fs.read non-empty) + untrusted ingress (a nika:fetch builtin invoked · an mcp:* tool invoked · an agent: whose whitelist admits ingress) + external egress (net.http non-empty · an escaping fs.write glob · exec enabled), the untrusted content REACHES an egress-capable task's effect surface (a realized flow), and no blocking invoke: nika:prompt (no default:) dominates it (NEP-0002 v2.0 · the Rule of Two as a static check)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-010",
+          "termCode": "NIKA-SEC-010",
+          "name": "NIKA-SEC-010",
+          "description": "the approval-capability law is violated · a rate-limited approval burst (the N+1th distinct mint of a run) · an approval whose resolved content hash differs from the shown hash (content_mismatch) · a ticket replayed across runs or steps (scope_mismatch) · or the static heterogeneous-batch refusal (one prompt unleashing two or more effect classes) — the 6th invariant (NEP-0013 · F-P4)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-011",
+          "termCode": "NIKA-SEC-011",
+          "name": "NIKA-SEC-011",
+          "description": "preview-commit divergence — the commit digest recomputed at the sink over the exact bytes about to fire differs from the preview digest computed at resolution (one bit of rendered argv · a permuted context field · a mutated tool argument) · the step refuses fail-closed and the receipt carries divergence:{preview, commit} — judged = executed at the action scale (NEP-0015 · F-P6)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-012",
+          "termCode": "NIKA-SEC-012",
+          "name": "NIKA-SEC-012",
+          "description": "unordered shared writes — two tasks incomparable in the DAG closure whose literal nika:write/nika:edit paths collide with no ordering edge (after: · with:) to serialize them, or a for_each fan writing one constant path · parallelism is safe exactly where the writes are provably disjoint (NEP-0014 law 1 · F-P15)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-013",
+          "termCode": "NIKA-SEC-013",
+          "name": "NIKA-SEC-013",
+          "description": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-014",
+          "termCode": "NIKA-SEC-014",
+          "name": "NIKA-SEC-014",
+          "description": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)"
         },
         {
           "@type": "DefinedTerm",

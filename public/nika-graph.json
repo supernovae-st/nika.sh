@@ -18,7 +18,7 @@
  "built_from": {
   "nika_engine": "supernovae-st/nika@57673f61c411d801f49c48c4accef31f9d4bf90c (v0.107.2)",
   "nika_estate": "supernovae-st/nika-estate@74287c75f3d52ee5cd328b6faaa5fb7eacf171f6",
-  "nika_spec": "supernovae-st/nika-spec@6ac29351a878e3dfab43c0f4f6599f9f8a46fe27"
+  "nika_spec": "supernovae-st/nika-spec@08116079bc0ac237f6dae7fcbbdcf918a3fc3e63"
  },
  "edges": [
   {
@@ -2794,7 +2794,7 @@
   },
   {
    "clock": "spec-pin",
-   "count": 96,
+   "count": 103,
    "family": "error",
    "note": "the pin-clock truth — codes minted after the pin land at the next train (the escrow list names them)",
    "rooms_exist": true,
@@ -4335,7 +4335,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AGENT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-001",
    "url": "/language/errors/NIKA-AGENT-001"
@@ -4348,7 +4348,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AGENT-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-002",
    "url": "/language/errors/NIKA-AGENT-002"
@@ -4361,7 +4361,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AGENT-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-003",
    "url": "/language/errors/NIKA-AGENT-003"
@@ -4374,10 +4374,23 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AGENT-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AGENT-004",
    "url": "/language/errors/NIKA-AGENT-004"
+  },
+  {
+   "data": {
+    "category": "budget_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-AGENT-005",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-AGENT-005",
+   "url": "/language/errors/NIKA-AGENT-005"
   },
   {
    "data": {
@@ -4387,7 +4400,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-ASSERT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-ASSERT-001",
    "url": "/language/errors/NIKA-ASSERT-001"
@@ -4400,7 +4413,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AUTH-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-006",
    "url": "/language/errors/NIKA-AUTH-006"
@@ -4413,7 +4426,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AUTH-007",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-007",
    "url": "/language/errors/NIKA-AUTH-007"
@@ -4426,7 +4439,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AUTH-008",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-008",
    "url": "/language/errors/NIKA-AUTH-008"
@@ -4439,7 +4452,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AUTH-009",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-009",
    "url": "/language/errors/NIKA-AUTH-009"
@@ -4452,7 +4465,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-AUTH-010",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-AUTH-010",
    "url": "/language/errors/NIKA-AUTH-010"
@@ -4465,7 +4478,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-BUILTIN-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-BUILTIN-001",
    "url": "/language/errors/NIKA-BUILTIN-001"
@@ -4478,7 +4491,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-BUILTIN-DONE-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-BUILTIN-DONE-001",
    "url": "/language/errors/NIKA-BUILTIN-DONE-001"
@@ -4491,7 +4504,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-CANCEL-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-CANCEL-001",
    "url": "/language/errors/NIKA-CANCEL-001"
@@ -4504,7 +4517,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-COMP-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-001",
    "url": "/language/errors/NIKA-COMP-001"
@@ -4517,7 +4530,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-COMP-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-002",
    "url": "/language/errors/NIKA-COMP-002"
@@ -4530,7 +4543,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-COMP-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-003",
    "url": "/language/errors/NIKA-COMP-003"
@@ -4543,7 +4556,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-COMP-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-COMP-004",
    "url": "/language/errors/NIKA-COMP-004"
@@ -4556,7 +4569,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-001",
    "url": "/language/errors/NIKA-DAG-001"
@@ -4569,7 +4582,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-002",
    "url": "/language/errors/NIKA-DAG-002"
@@ -4582,7 +4595,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-004",
    "url": "/language/errors/NIKA-DAG-004"
@@ -4595,7 +4608,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-005",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-005",
    "url": "/language/errors/NIKA-DAG-005"
@@ -4608,7 +4621,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-006",
    "url": "/language/errors/NIKA-DAG-006"
@@ -4621,7 +4634,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DAG-007",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DAG-007",
    "url": "/language/errors/NIKA-DAG-007"
@@ -4634,7 +4647,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DECIDE-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DECIDE-001",
    "url": "/language/errors/NIKA-DECIDE-001"
@@ -4647,7 +4660,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DECIDE-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DECIDE-002",
    "url": "/language/errors/NIKA-DECIDE-002"
@@ -4660,7 +4673,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DEFAULT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DEFAULT-001",
    "url": "/language/errors/NIKA-DEFAULT-001"
@@ -4673,7 +4686,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-DRIFT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-DRIFT-001",
    "url": "/language/errors/NIKA-DRIFT-001"
@@ -4686,7 +4699,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-EXEC-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-EXEC-001",
    "url": "/language/errors/NIKA-EXEC-001"
@@ -4699,7 +4712,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-EXEC-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-EXEC-002",
    "url": "/language/errors/NIKA-EXEC-002"
@@ -4712,7 +4725,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-INFER-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INFER-001",
    "url": "/language/errors/NIKA-INFER-001"
@@ -4725,7 +4738,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-INFER-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INFER-002",
    "url": "/language/errors/NIKA-INFER-002"
@@ -4737,8 +4750,21 @@
    },
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
+   "id": "error/NIKA-INFER-003",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-INFER-003",
+   "url": "/language/errors/NIKA-INFER-003"
+  },
+  {
+   "data": {
+    "category": "validation_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
    "id": "error/NIKA-INVOKE-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INVOKE-001",
    "url": "/language/errors/NIKA-INVOKE-001"
@@ -4751,7 +4777,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-INVOKE-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-INVOKE-002",
    "url": "/language/errors/NIKA-INVOKE-002"
@@ -4764,7 +4790,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-LOCK-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-LOCK-001",
    "url": "/language/errors/NIKA-LOCK-001"
@@ -4777,7 +4803,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-MCP-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-MCP-001",
    "url": "/language/errors/NIKA-MCP-001"
@@ -4790,7 +4816,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-MCP-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-MCP-002",
    "url": "/language/errors/NIKA-MCP-002"
@@ -4803,7 +4829,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-001",
    "url": "/language/errors/NIKA-PARSE-001"
@@ -4816,7 +4842,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-002",
    "url": "/language/errors/NIKA-PARSE-002"
@@ -4829,7 +4855,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-003",
    "url": "/language/errors/NIKA-PARSE-003"
@@ -4842,7 +4868,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-004",
    "url": "/language/errors/NIKA-PARSE-004"
@@ -4855,7 +4881,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-005",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-005",
    "url": "/language/errors/NIKA-PARSE-005"
@@ -4868,7 +4894,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-006",
    "url": "/language/errors/NIKA-PARSE-006"
@@ -4881,7 +4907,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-007",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-007",
    "url": "/language/errors/NIKA-PARSE-007"
@@ -4894,7 +4920,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-008",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-008",
    "url": "/language/errors/NIKA-PARSE-008"
@@ -4907,7 +4933,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-009",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-009",
    "url": "/language/errors/NIKA-PARSE-009"
@@ -4920,7 +4946,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-010",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-010",
    "url": "/language/errors/NIKA-PARSE-010"
@@ -4933,7 +4959,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-011",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-011",
    "url": "/language/errors/NIKA-PARSE-011"
@@ -4946,7 +4972,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-012",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-012",
    "url": "/language/errors/NIKA-PARSE-012"
@@ -4959,7 +4985,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-013",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-013",
    "url": "/language/errors/NIKA-PARSE-013"
@@ -4972,7 +4998,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-014",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-014",
    "url": "/language/errors/NIKA-PARSE-014"
@@ -4985,7 +5011,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-017",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-017",
    "url": "/language/errors/NIKA-PARSE-017"
@@ -4998,7 +5024,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-018",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-018",
    "url": "/language/errors/NIKA-PARSE-018"
@@ -5011,7 +5037,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-019",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-019",
    "url": "/language/errors/NIKA-PARSE-019"
@@ -5024,7 +5050,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-020",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-020",
    "url": "/language/errors/NIKA-PARSE-020"
@@ -5037,7 +5063,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-021",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-021",
    "url": "/language/errors/NIKA-PARSE-021"
@@ -5050,7 +5076,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-022",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-022",
    "url": "/language/errors/NIKA-PARSE-022"
@@ -5063,7 +5089,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-023",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-023",
    "url": "/language/errors/NIKA-PARSE-023"
@@ -5076,7 +5102,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-024",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-024",
    "url": "/language/errors/NIKA-PARSE-024"
@@ -5089,7 +5115,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-025",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-025",
    "url": "/language/errors/NIKA-PARSE-025"
@@ -5102,7 +5128,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-026",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-026",
    "url": "/language/errors/NIKA-PARSE-026"
@@ -5115,7 +5141,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-027",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-027",
    "url": "/language/errors/NIKA-PARSE-027"
@@ -5128,7 +5154,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PARSE-028",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PARSE-028",
    "url": "/language/errors/NIKA-PARSE-028"
@@ -5141,7 +5167,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-POLICY-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-POLICY-001",
    "url": "/language/errors/NIKA-POLICY-001"
@@ -5154,7 +5180,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PORT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PORT-001",
    "url": "/language/errors/NIKA-PORT-001"
@@ -5167,7 +5193,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-PORT-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-PORT-002",
    "url": "/language/errors/NIKA-PORT-002"
@@ -5180,7 +5206,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-001",
    "url": "/language/errors/NIKA-SEC-001"
@@ -5193,7 +5219,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-002",
    "url": "/language/errors/NIKA-SEC-002"
@@ -5206,7 +5232,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-003",
    "url": "/language/errors/NIKA-SEC-003"
@@ -5219,7 +5245,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-004",
    "url": "/language/errors/NIKA-SEC-004"
@@ -5232,7 +5258,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-005",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-005",
    "url": "/language/errors/NIKA-SEC-005"
@@ -5245,7 +5271,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-006",
    "url": "/language/errors/NIKA-SEC-006"
@@ -5258,7 +5284,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-007",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-007",
    "url": "/language/errors/NIKA-SEC-007"
@@ -5271,7 +5297,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-008",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-008",
    "url": "/language/errors/NIKA-SEC-008"
@@ -5284,10 +5310,75 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-SEC-009",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-SEC-009",
    "url": "/language/errors/NIKA-SEC-009"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-010",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-010",
+   "url": "/language/errors/NIKA-SEC-010"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-011",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-011",
+   "url": "/language/errors/NIKA-SEC-011"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-012",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-012",
+   "url": "/language/errors/NIKA-SEC-012"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-013",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-013",
+   "url": "/language/errors/NIKA-SEC-013"
+  },
+  {
+   "data": {
+    "category": "security_error",
+    "transient": "false"
+   },
+   "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
+   "family": "error",
+   "id": "error/NIKA-SEC-014",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
+   "served": true,
+   "title": "NIKA-SEC-014",
+   "url": "/language/errors/NIKA-SEC-014"
   },
   {
    "data": {
@@ -5297,7 +5388,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TIMEOUT-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TIMEOUT-001",
    "url": "/language/errors/NIKA-TIMEOUT-001"
@@ -5310,7 +5401,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-001",
    "url": "/language/errors/NIKA-TYPE-001"
@@ -5323,7 +5414,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-002",
    "url": "/language/errors/NIKA-TYPE-002"
@@ -5336,7 +5427,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-003",
    "url": "/language/errors/NIKA-TYPE-003"
@@ -5349,7 +5440,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-004",
    "url": "/language/errors/NIKA-TYPE-004"
@@ -5362,7 +5453,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-005",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-005",
    "url": "/language/errors/NIKA-TYPE-005"
@@ -5375,7 +5466,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-006",
    "url": "/language/errors/NIKA-TYPE-006"
@@ -5388,7 +5479,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-TYPE-101",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-TYPE-101",
    "url": "/language/errors/NIKA-TYPE-101"
@@ -5401,7 +5492,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VALUES-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-001",
    "url": "/language/errors/NIKA-VALUES-001"
@@ -5414,7 +5505,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VALUES-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-002",
    "url": "/language/errors/NIKA-VALUES-002"
@@ -5427,7 +5518,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VALUES-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VALUES-003",
    "url": "/language/errors/NIKA-VALUES-003"
@@ -5440,7 +5531,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-001",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-001",
    "url": "/language/errors/NIKA-VAR-001"
@@ -5453,7 +5544,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-002",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-002",
    "url": "/language/errors/NIKA-VAR-002"
@@ -5466,7 +5557,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-003",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-003",
    "url": "/language/errors/NIKA-VAR-003"
@@ -5479,7 +5570,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-004",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-004",
    "url": "/language/errors/NIKA-VAR-004"
@@ -5492,7 +5583,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-005",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-005",
    "url": "/language/errors/NIKA-VAR-005"
@@ -5505,7 +5596,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-006",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-006",
    "url": "/language/errors/NIKA-VAR-006"
@@ -5518,7 +5609,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-007",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-007",
    "url": "/language/errors/NIKA-VAR-007"
@@ -5531,7 +5622,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-008",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-008",
    "url": "/language/errors/NIKA-VAR-008"
@@ -5544,7 +5635,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-009",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-009",
    "url": "/language/errors/NIKA-VAR-009"
@@ -5557,7 +5648,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-020",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-020",
    "url": "/language/errors/NIKA-VAR-020"
@@ -5570,7 +5661,7 @@
    "evidence": "public/errors/catalog.json codes[] row (generated from the pinned spec canon · spec/05-errors.md)",
    "family": "error",
    "id": "error/NIKA-VAR-021",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/errors/catalog.json (catalog v3)",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/errors/catalog.json (catalog v3)",
    "served": true,
    "title": "NIKA-VAR-021",
    "url": "/language/errors/NIKA-VAR-021"
@@ -5578,15 +5669,15 @@
   {
    "data": {
     "by_class": {
-     "authored": 1219,
+     "authored": 1226,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 311,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1592,
-    "unverified": 420
+    "classified_files": 1599,
+    "unverified": 427
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",
    "family": "estate-manifest",
@@ -20136,12 +20227,12 @@
   {
    "data": {
     "intent": "research / review / open-ended",
-    "sha256": "d39f0662751c1581ac20cf04eceee6d943f2ad304203fb114c859afb3b9fcbe1"
+    "sha256": "1c594179c46ff834cd38fbc6dc870018677cc83cb71f846846747741254d0afa"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/agent-loop",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "agent-loop",
    "url": "/workflows/skeletons/agent-loop"
@@ -20149,12 +20240,12 @@
   {
    "data": {
     "intent": "call a product API: upload a file and create from it",
-    "sha256": "da5c953bb5302442365a18316e418c2f72a40025f67bf521460639d835b33a49"
+    "sha256": "3e94a2682deb4c75031d4e4d0fb722fa64ce561dd227607fdb0b92191704bee9"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/api-upload-and-create",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "api-upload-and-create",
    "url": "/workflows/skeletons/api-upload-and-create"
@@ -20162,12 +20253,12 @@
   {
    "data": {
     "intent": "take data, produce words, save them",
-    "sha256": "b9b6c4ae5cc863f1cf7bdf791d95ca1d9b041a40c2df6ebef21bf9a984e14231"
+    "sha256": "5562b3844a54d21041b85ab36ce8722df3e62e721e77b424fbcb3a342f2dd885"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/chain",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "chain",
    "url": "/workflows/skeletons/chain"
@@ -20175,12 +20266,12 @@
   {
    "data": {
     "intent": "read a system's state (docker · kubectl · gh), explain it, keep the report",
-    "sha256": "9c52181c23240ed03d67cf5651dd51e3a5dbcb8aac6aed2f208e5461ea48d2dd"
+    "sha256": "c0ddf5aae1492a50d643c3547db42b305adf192b94822a9c9400ea0e7191b5c7"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/docker-report",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "docker-report",
    "url": "/workflows/skeletons/docker-report"
@@ -20188,12 +20279,12 @@
   {
    "data": {
     "intent": "only what changed since last run · survive bad input",
-    "sha256": "b285da8add87df1a1e43d2f0584dc87b8d71da3c8f8def9a94f9806c6294e580"
+    "sha256": "ad6e6f394d38600fd7fca0c1db0a3a76239d74256bfdedd40f1cc7e014671068"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/etl-state",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "etl-state",
    "url": "/workflows/skeletons/etl-state"
@@ -20201,12 +20292,12 @@
   {
    "data": {
     "intent": "do this for EVERY item",
-    "sha256": "7474d4603f1fcc126fae79e7aaafeaa431ce48350a00cf175cef316a63a7a063"
+    "sha256": "96e4c9e077f7c74803464f627a617c612133e373d74da82dbe233d9878cc7b80"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/fanout",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "fanout",
    "url": "/workflows/skeletons/fanout"
@@ -20214,12 +20305,12 @@
   {
    "data": {
     "intent": "watch X, act when Y",
-    "sha256": "aa9b6a2aee12e4065055480560dc79d567fb870a76eb83e9c0478b691056f7c6"
+    "sha256": "a548c0e551f7efb585df1922b26cf51cc9497e47d8f9c9afc7ed3d974efc62d9"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/gate-and-act",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "gate-and-act",
    "url": "/workflows/skeletons/gate-and-act"
@@ -20227,12 +20318,12 @@
   {
    "data": {
     "intent": "anything irreversible (deploy · send · publish)",
-    "sha256": "c540d6b0f84fcef0994bad8165ff9dd8610202cac2eeb5f3c23c63c18284b47b"
+    "sha256": "1894157ff7d04d6ac57deb4958de9ab4f4c501ebf56d5d0176c974ff83cbbb0c"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/human-gated-ship",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "human-gated-ship",
    "url": "/workflows/skeletons/human-gated-ship"
@@ -20240,12 +20331,12 @@
   {
    "data": {
     "intent": "generate image/audio assets from a brief",
-    "sha256": "53a5b2e9fd1066999cbd940a24951e5d3b4f38adc4c736dd376185570da70def"
+    "sha256": "7c7186264f281719ba20b5a36a36737a8ed305fcff663924c2612aa5722c4205"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/media-asset-pack",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "media-asset-pack",
    "url": "/workflows/skeletons/media-asset-pack"
@@ -20253,12 +20344,12 @@
   {
    "data": {
     "intent": "understand a site (domain · theme · assets) from a URL",
-    "sha256": "00a9f04b9f4d73d2f63f25a05a9e803e999e3e1eb362b79b4a951da548bcd845"
+    "sha256": "75396c6873c48fe0925738d7f7d577f54418ca1241a16b5ce92b188ad6c56c54"
    },
    "evidence": "public/templates/catalog.json templates[] row (pack 0.1.0-draft · sha256-pinned per file)",
    "family": "skeleton",
    "id": "skeleton/website-brief",
-   "provenance": "supernovae-st/nika-spec@6ac29351a878 · public/templates/catalog.json",
+   "provenance": "supernovae-st/nika-spec@08116079bc0a · public/templates/catalog.json",
    "served": true,
    "title": "website-brief",
    "url": "/workflows/skeletons/website-brief"

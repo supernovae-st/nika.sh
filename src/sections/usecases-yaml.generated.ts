@@ -30,11 +30,14 @@ const:
 
 permits:
   exec: false
+  tools: ["nika:fetch", "nika:jq", "nika:write"]
   net:
     http: ["example.com", "github.com", "this-domain-does-not-exist-0000.invalid"]
   fs:
-    write: ["out/**"]
-  tools: ["nika:fetch", "nika:jq", "nika:write"]
+    # One report, one literal: the body's only write is this exact static path,
+    # so the grant names it — the audit line reads \`risk supervised\` where
+    # \`out/**\` read \`risk unbounded\`.
+    write: ["out/bookmarks.md"]
 
 tasks:
   # The fan-out · one metadata fetch per URL · a dead link recovers to a
@@ -142,6 +145,8 @@ permits:
     # segment and never crosses \`/\`, so nothing here can steer the write into a
     # subtree — which is why this is not \`./briefs/**\`.
     write: ["./briefs/*-monday.md"]
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   # ── the human gate · FIRST, before anything untrusted enters ──
@@ -230,7 +235,7 @@ tasks:
     # nothing and the run FAILS (NIKA-BUILTIN-CONVERT-002) instead of landing
     # nothing — a refusal must be a quiet no-op, never an error. Every task
     # downstream of a gated one carries its own admission test.
-    when: \${{ with.csv != null }}
+    when: \${{ with.csv != null && size(with.csv) > 0 }}   # skipped read (null) or an empty sheet · nothing to parse
     invoke:
       tool: "nika:convert"
       args:
@@ -242,7 +247,7 @@ tasks:
   revenue:
     with:
       rows: \${{ tasks.rows.output }}
-    when: \${{ with.rows != null }}
+    when: \${{ with.rows != null && size(with.rows) > 0 }}   # zero parsed rows · nothing to summarize
     invoke:
       tool: "nika:jq"
       args:
@@ -339,7 +344,7 @@ outputs:
   'competitor-radar': `nika: v1
 workflow:
   id: competitor-radar
-  description: "sitemap → what changed this window → parallel page reads → one brief"
+  description: "competitor watch · their sitemap says what shipped or changed this week → parallel page reads → one Monday brief"
 
 model: ollama/qwen3.5:4b   # local · zero key · swap for anthropic/claude-sonnet-4-6 for a sharper read
 
@@ -496,7 +501,7 @@ tasks:
   save:
     with:
       digest: \${{ tasks.digest.output }}
-    when: \${{ with.digest != null }}   # a skipped task reads null downstream · gate on the VALUE
+    when: \${{ with.digest != null && size(with.digest) > 0 }}   # skipped (null) or an EMPTY answer · gate on the VALUE, both ways
     invoke:
       tool: "nika:write"
       args:
@@ -538,7 +543,12 @@ workflow:
   id: config-drift-sentinel
   description: "live config vs sanctioned baseline → typed drift → triaged, explained alert"
 
-model: ollama/qwen3.5:4b   # local · zero key · swap for anthropic/claude-haiku-4-5 (explain is cheap)
+# A NON-thinking seat, deliberately. Measured with qwen3.5:4b: \`explain\`'s
+# 600-token ceiling was spent entirely inside the think block, the run stayed
+# green, and the journal's \`explanation\` field recorded EMPTY — the engine
+# flags it (« a thinking model may have spent the budget inside its think
+# block »). llama3.2:3b answers the three bullets inside the same ceiling.
+model: ollama/llama3.2:3b   # local · zero key · swap for any catalog provider (explain is cheap)
 
 inputs:
   config_url:
@@ -871,7 +881,7 @@ outputs:
   'csv-chart-report': `nika: v1
 workflow:
   id: csv-chart-report
-  description: "CSV → aggregate → rendered bar chart + markdown report · offline · deterministic"
+  description: "CSV / spreadsheet → aggregate → rendered bar chart + markdown report · offline · deterministic"
 
 const:
   sales_csv: "examples/fixtures/sales.csv" # columns · region,revenue (revenue a plain number)
@@ -1195,6 +1205,9 @@ tasks:
         create_dirs: true
 
 outputs:
+  # The gate's verdict rows · [] on a clean batch, the validator's error
+  # objects on a dirty one (measured both ways · never null).
+  rejected: \${{ tasks.check.output.errors }}
   # Deliberately untyped · on the quarantine path \`good\` is SKIPPED and
   # this is null — a declared \`type: array\` would refuse the branch the
   # file exists to demonstrate.
@@ -1325,6 +1338,8 @@ permits:
     # permit bound IS the wall and cannot interpolate (NIKA-AUTH-007).
     read: ["./examples/fixtures/checkout-api-runbook.md"]
     write: ["./incidents/checkout-api-postmortem.md"]
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   # ── the human gate · FIRST, before any evidence is gathered ──
@@ -1408,7 +1423,7 @@ tasks:
       deploys: \${{ tasks.deploys.output }}
       history: \${{ tasks.status_history.output }}
       runbook: \${{ tasks.runbook.output }}
-    when: \${{ with.runbook != null }}   # « no » at the gate → nothing to reconstruct
+    when: \${{ with.runbook != null && size(with.runbook) > 0 }}   # « no » at the gate (null) or an empty answer · nothing to reconstruct
     infer:
       max_tokens: 1500
       prompt: |
@@ -1536,7 +1551,7 @@ outputs:
   'invoice-chaser': `nika: v1
 workflow:
   id: invoice-chaser
-  description: "Ledger CSV → overdue filter → drafted reminders → human gate → drafts file"
+  description: "chase unpaid invoices · ledger CSV → overdue filter → drafted reminder emails → human gate → drafts file"
 
 model: ollama/qwen3.5:4b   # local · zero key · swap for groq/llama-3.3-70b (drafting is a fast-model job)
 
@@ -1550,6 +1565,8 @@ permits:
     # exact: no glob, and nothing else on disk is reachable either way.
     read: ["examples/fixtures/invoices.csv"]
     write: ["out/reminders-to-send.md"]
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   ledger:
@@ -1584,14 +1601,14 @@ tasks:
     infer:
       max_tokens: 900       # a ceiling makes the cost report a number, not UNBOUNDED
       prompt: |
-        Draft one short, polite payment reminder per overdue invoice ·
+        Draft one short, polite payment reminder email per overdue invoice ·
         \${{ with.overdue }}
         Markdown · one section per client · firm but warm.
 
   approve:
     with:
       drafts: \${{ tasks.drafts.output }}
-    when: \${{ with.drafts != null }}   # nothing drafted · nothing to approve
+    when: \${{ with.drafts != null && size(with.drafts) > 0 }}   # nothing drafted — OR an empty answer (a thinking seat can spend the budget in its think block) · nothing to approve
     invoke:
       tool: "nika:prompt"
       args:
@@ -1602,7 +1619,7 @@ tasks:
     with:
       drafts: \${{ tasks.drafts.output }}
       approved: \${{ tasks.approve.output }}
-    when: \${{ with.drafts != null && with.approved == true }}   # zero overdue → drafts skipped (null) · don't write nothing
+    when: \${{ with.drafts != null && size(with.drafts) > 0 && with.approved == true }}   # skipped (null) OR empty drafts → never write a 0-byte deliverable under a green run
     invoke:
       tool: "nika:write"
       args:
@@ -1734,7 +1751,7 @@ outputs:
   'meeting-actions': `nika: v1
 workflow:
   id: meeting-actions
-  description: "Transcript → typed action items {owner, task, due}"
+  description: "Transcript → typed action items {owner, task, due} · ready to paste into an email or tracker"
 
 # A NON-thinking local model, deliberately: a thinking model can spend the
 # whole \`max_tokens\` budget in its think block and return before the JSON
@@ -1804,7 +1821,7 @@ tasks:
 
   trace:
     after:
-      extract: success
+      save: success
     invoke:
       tool: "nika:log"
       args:
@@ -1819,7 +1836,7 @@ outputs:
   'model-bench': `nika: v1
 workflow:
   id: model-bench
-  description: "One question → three local models → a measured comparison table"
+  description: "benchmark and compare local models — the same question to each seat → one measured table (latency · length)"
 
 model: ollama/qwen3.5:4b # the house default · contenders below pick their own seats
 
@@ -1941,7 +1958,7 @@ outputs:
   'pr-review-fanout': `nika: v1
 workflow:
   id: pr-review-fanout
-  description: "changed files → one read-only review agent each → merged REVIEW.md"
+  description: "review a pull request · changed files → one read-only review agent per file → merged REVIEW.md"
 
 model: ollama/qwen3.5:4b   # local tool-calling model · swap for anthropic/claude-sonnet-4-6 for depth
 
@@ -1950,7 +1967,6 @@ const:
   review_root: "src/"      # the swarm's territory · keep in step with permits.fs.read
 
 permits:
-  tools: ["nika:done", "nika:grep", "nika:jq", "nika:read", "nika:write"]
   # The argv form (\`exec.command:\`) runs one named program with its arguments
   # and no shell between them, which is what makes a program allowlist mean
   # something. A \`exec.shell:\` task is refused against a list — measured:
@@ -1963,6 +1979,7 @@ permits:
   # \`fs:\` boundary below, which is why the header's second \`Needs ·\` line is
   # about git's global config rather than about git.
   exec: ["git"]
+  tools: ["nika:done", "nika:grep", "nika:jq", "nika:prompt", "nika:read", "nika:write"]
   fs:
     # \`./src/**\` covers the directory AND every descendant at any depth, which
     # is what both consumers need: \`nika:grep\` opens \`./src\` itself, and the
@@ -1977,15 +1994,37 @@ permits:
     write: ["./REVIEW.md"]
 
 tasks:
+  # The human gate (NEP-0002 · v2.2). \`git diff\` output is UNTRUSTED
+  # content — a hostile branch names its own files — and this workflow
+  # pairs it with a private \`fs.read\` and egress-capable tasks: the
+  # lethal trifecta, unless a human dominates the path. The gate comes
+  # FIRST so every task the diff output reaches descends from it (a gate
+  # on a sibling branch dominates nothing — the data edge would bypass
+  # it), and each root CONSUMES the answer affirmatively (NEP-0020 — a
+  # bare \`after:\` admits the refusal: it settles success with value
+  # false). Under \`--answer approve=true\` the CI one-pass answers it here.
+  # The one [headless-prompt] hint is the price of a real gate — pay it here.
+  approve:
+    invoke:
+      tool: "nika:prompt"
+      args:
+        mode: "confirm"
+        message: "diff \${{ const.base_ref }}...HEAD and fan out one review agent per changed file?"
+
   # \`--diff-filter=d\` drops deletions: a file that no longer exists cannot be
   # reviewed, and asking an agent to read it just burns a turn on an error.
   changed:
+    after: { approve: success }
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}     # « no » at the gate → no diff, no swarm
     exec:
       command: ["git", "diff", "--name-only", "--diff-filter=d", "\${{ const.base_ref }}...HEAD"]
 
   files:
     with:
       changed: \${{ tasks.changed.output }}
+    when: \${{ with.changed != null && size(with.changed) > 0 }}  # a refused gate skips the diff (null) · an empty diff has nothing to split
     invoke:
       tool: "nika:jq"
       args:
@@ -1996,8 +2035,14 @@ tasks:
           | map(select(startswith("\${{ const.review_root }}")))
 
   # The deterministic pass. Debt does not need a model to be found, and this
-  # runs whether or not anything changed.
+  # runs whether or not anything changed. It too descends from the gate —
+  # dominance is structural: a sibling branch that bypasses \`approve\`
+  # would re-open the trifecta no matter how clean its own content is.
   todo_sweep:
+    after: { approve: success }
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}     # the same « no » closes this branch too
     invoke:
       tool: "nika:grep"
       args:
@@ -2069,6 +2114,7 @@ tasks:
     with:
       merged: \${{ tasks.merged.output }}
       todo_sweep: \${{ tasks.todo_sweep.output }}
+    when: \${{ with.todo_sweep != null && size(with.todo_sweep) > 0 }}  # skipped (null) or an empty sweep · no page to write
     infer:
       max_tokens: 2500                 # a review page · not the whole diff back
       prompt: |
@@ -2081,6 +2127,7 @@ tasks:
   save:
     with:
       summary: \${{ tasks.summary.output }}
+    when: \${{ with.summary != null && size(with.summary) > 0 }}   # skipped (null) or an EMPTY answer · never a 0-byte REVIEW.md
     invoke:
       tool: "nika:write"
       args:
@@ -2190,8 +2237,14 @@ secrets:
       - to: "nika:notify"
         host_from_self: true
 permits:
-  tools: ["nika:edit", "nika:notify", "nika:read", "nika:write"]
   exec: ["git"]                   # the ONE program this workflow may run
+  tools: ["nika:edit", "nika:notify", "nika:prompt", "nika:read", "nika:write"]
+  net:
+    # \`host_from_self:\` above sanctions the FLOW (the secret may be the URL) —
+    # it does not grant the capability. The host stays unknown at check, so it
+    # is judged at RUN against this bound: name the announce host here or the
+    # send is refused mid-run, after the tokens are already spent.
+    http: ["hooks.slack.com"]
   fs:
     # The workflow never edits your changelog in place — it copies it and
     # edits the copy, so you move the result when the diff looks right.
@@ -2202,15 +2255,30 @@ permits:
     # builtin owes both halves.
     read: ["examples/fixtures/CHANGELOG.md", "out/CHANGELOG.md"]
     write: ["out/CHANGELOG.md"]
-  net:
-    # \`host_from_self:\` above sanctions the FLOW (the secret may be the URL) —
-    # it does not grant the capability. The host stays unknown at check, so it
-    # is judged at RUN against this bound: name the announce host here or the
-    # send is refused mid-run, after the tokens are already spent.
-    http: ["hooks.slack.com"]
 
 tasks:
+  # The human gate (NEP-0002 · v2.2). \`git log\` output is UNTRUSTED content —
+  # a hostile branch writes its own commit subjects — and this workflow pairs
+  # it with a private \`fs.read\` and a webhook: the lethal trifecta, unless a
+  # human dominates the path. The gate comes FIRST and BOTH roots hang off it
+  # (\`history\` carries the untrusted content, \`existing\` carries the private
+  # read); a gate on a sibling branch dominates nothing. And each root
+  # CONSUMES the answer affirmatively (NEP-0020 — a bare \`after:\` admits the
+  # refusal: it settles success with value false), the downstream null-guards
+  # passing the « no » along the value edges. Non-interactive runs answer it
+  # in one pass with \`--answer approve=true\`.
+  approve:
+    invoke:
+      tool: "nika:prompt"
+      args:
+        mode: "confirm"
+        message: "read the git history since \${{ const.since_tag }}, rewrite the changelog copy, and ping the team if announce is on?"
+
   history:
+    after: { approve: success }
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}       # « no » at the gate → no history read at all
     exec:
       command: ["git", "log", "\${{ const.since_tag }}..HEAD", "--oneline", "--no-merges"]
     on_error:
@@ -2224,6 +2292,7 @@ tasks:
   notes:
     with:
       history: \${{ tasks.history.output }}
+    when: \${{ with.history != null && size(with.history) > 0 }}  # a refused gate skips history (null) · an empty log has nothing to draft either
     infer:
       max_tokens: 1000
       prompt: |
@@ -2243,6 +2312,10 @@ tasks:
   # matches nothing (NIKA-BUILTIN-EDIT-001), so its target must exist and must
   # carry the anchor. Read yours, write the working copy, edit THAT.
   existing:
+    after: { approve: success }
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}       # the same « no » closes the private-read branch
     invoke:
       tool: "nika:read"
       args: { path: "\${{ const.changelog_src }}" }
@@ -2250,6 +2323,7 @@ tasks:
   copy:
     with:
       existing: \${{ tasks.existing.output }}
+    when: \${{ with.existing != null && size(with.existing) > 0 }}  # a refused gate skips the read (null) · an empty file has nothing to copy
     invoke:
       tool: "nika:write"
       args:
@@ -2306,7 +2380,9 @@ const:
   releases_feed: "https://github.com/tokio-rs/tokio/releases.atom"
   state_path: "out/release-radar.json"
 permits:
-  tools: ["nika:fetch", "nika:jq", "nika:json_diff", "nika:read", "nika:write"]
+  tools: ["nika:fetch", "nika:jq", "nika:json_diff", "nika:prompt", "nika:read", "nika:write"]
+  net:
+    http: ["github.com"]   # the feed's host · net entries are exact names, never globs
   fs:
     # The state-file pattern touches exactly ONE path, on both sides: read
     # last run's state, write the next. \`const.state_path\` names it and a run
@@ -2314,17 +2390,33 @@ permits:
     # \`create_dirs:\` makes out/ underneath it on the first run.
     read: ["out/release-radar.json"]
     write: ["out/release-radar.json"]
-  net:
-    http: ["github.com"]   # the feed's host · net entries are exact names, never globs
 
 tasks:
+  # The human gate first (NIKA-SEC-009 · NEP-0002, the Rule of Two as a
+  # static check). This boundary permits all three legs — private read
+  # (the state file) + untrusted ingress (the release feed) + egress
+  # (the state write) — so a blocking prompt (no default:) dominates the
+  # flow before a byte moves. Headless surfaces pause durably and resume
+  # with \`--resume <trace> --answer approve=true\`.
+  approve:
+    invoke:
+      tool: "nika:prompt"
+      args:
+        message: "This run fetches \${{ const.releases_feed }}, diffs against \${{ const.state_path }}, and rewrites that state file. Proceed?"
+
   # First run has no state file · recover to an empty list.
   no_state:
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:jq"
       args: { input: [], expression: "." }
 
   previous:
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:read"
       args: { path: "\${{ const.state_path }}" }
@@ -2333,28 +2425,49 @@ tasks:
       recover: \${{ tasks.no_state.output }}
 
   feed:
+    with:
+      go: \${{ tasks.approve.output }}
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:fetch"
       args:
         url: "\${{ const.releases_feed }}"
         mode: feed
     output:
-      entries: "[.items[] | {title, url, published}]"
+      entries: "[.items[] | {title, link}]"
     on_error:
-      # No network → this sample stands in for the RAW feed response, so it
-      # carries \`items:\` exactly as \`mode: feed\` returns it and the \`output:\`
-      # jq above runs over it unchanged. Recovering the BINDING's shape
-      # instead makes the jq throw NIKA-VAR-004 — the recovery must mirror the
-      # response, never the binding.
+      # No network → this sample stands in for the RAW feed response: it
+      # carries \`items:\` under the keys \`mode: feed\` actually returns
+      # (probed live on this feed: title · link · id · author · content —
+      # there is no \`published\` field), so the \`output:\` jq above runs over
+      # it unchanged. Recovering the BINDING's shape instead makes the jq
+      # throw NIKA-VAR-004 — the recovery must mirror the response, never
+      # the binding.
       recover:
         items:
-          - { title: "tokio 1.48.0", url: "https://github.com/tokio-rs/tokio/releases/tag/tokio-1.48.0", published: "2026-07-21T09:14:00Z" }
-          - { title: "tokio 1.47.1", url: "https://github.com/tokio-rs/tokio/releases/tag/tokio-1.47.1", published: "2026-07-02T16:40:00Z" }
+          - { title: "tokio 1.48.0", link: "https://github.com/tokio-rs/tokio/releases/tag/tokio-1.48.0" }
+          - { title: "tokio 1.47.1", link: "https://github.com/tokio-rs/tokio/releases/tag/tokio-1.47.1" }
+
+  # \`nika:read\` hands back a STRING — a file is text until you parse it.
+  # Measured: diffing the unparsed read against the entries array emits ONE
+  # whole-document \`replace\` op at path "" on every run after the first,
+  # so everything is reported as new, forever. The first-run recovery is
+  # already an array; the guard keeps both shapes.
+  previous_parsed:
+    with:
+      previous: \${{ tasks.previous.output }}
+    invoke:
+      tool: "nika:jq"
+      args:
+        input: "\${{ with.previous }}"
+        expression: 'if type == "string" then fromjson else . end'
 
   fresh:
     with:
-      previous: \${{ tasks.previous.output }}
+      go: \${{ tasks.approve.output }}
+      previous: \${{ tasks.previous_parsed.output }}
       entries: \${{ tasks.feed.entries }}
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:json_diff"
       args:
@@ -2363,9 +2476,10 @@ tasks:
 
   digest:
     with:
+      go: \${{ tasks.approve.output }}
       fresh: \${{ tasks.fresh.output }}
       entries: \${{ tasks.feed.entries }}
-    when: \${{ size(with.fresh) > 0 }}
+    when: \${{ with.go == true && size(with.fresh) > 0 }}
     infer:
       max_tokens: 500
       prompt: |
@@ -2378,7 +2492,9 @@ tasks:
 
   save_state:
     with:
+      go: \${{ tasks.approve.output }}
       entries: \${{ tasks.feed.entries }}
+    when: \${{ with.go == true }}
     invoke:
       tool: "nika:write"
       args:
@@ -2441,6 +2557,8 @@ permits:
       - "./VERSION"
       - "./CHANGELOG.md"
       - "./schemas/workflow.schema.json"
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   t0:
@@ -2646,7 +2764,7 @@ tasks:
   # such a task can egress, NIKA-SEC-009 fires (measured: hanging a
   # \`nika:notify\` here turns this file RED, and moving the prompt to the root
   # does not save it). If you want the outcome on a webhook, put the send under
-  # the signature — \`t4-ceo-monday-brief\` shows that shape — and leave the
+  # the signature — \`ceo-monday-brief\` shows that shape — and leave the
   # unconditional record to \`emit\`.
   record:
     after:
@@ -2674,7 +2792,7 @@ outputs:
   'resume-screener': `nika: v1
 workflow:
   id: resume-screener
-  description: "glob CVs → local-model rubric per candidate → deterministic shortlist"
+  description: "screen resumes · glob CVs → local-model rubric per candidate → deterministic hiring shortlist"
 
 model: ollama/qwen3.5:4b   # PII stays on the machine · the whole screen is offline
 
@@ -2819,7 +2937,7 @@ tasks:
   save:
     with:
       brief: \${{ tasks.brief.output }}
-    when: \${{ with.brief != null }}    # a skipped task reads null downstream · gate on the VALUE
+    when: \${{ with.brief != null && size(with.brief) > 0 }}    # skipped (null) or an EMPTY answer · gate on the VALUE, both ways
     invoke:
       tool: "nika:write"
       args:
@@ -2858,18 +2976,18 @@ const:
   competitor_sitemap: "https://competitor.example.com/sitemap.xml"
 permits:
   tools: ["nika:fetch", "nika:write"]
-  fs:
-    # One brief per topic, written DIRECTLY in out/briefs/. \`*\` matches a
-    # single path segment and never crosses \`/\`, so a topic carrying a slash
-    # is refused instead of steering the write into a subtree — which is
-    # exactly why this is \`out/briefs/*.json\` and not \`out/briefs/**\`.
-    write: ["out/briefs/*.json"]
   net:
     # Both fetches stay on the competitor's own host: the sitemap, then a URL
     # that same sitemap listed. Net entries are exact host names, never globs —
     # add YOUR competitor's host here when you point the const at it, or the
     # fetch is refused at run and the recover path quietly takes over.
     http: ["competitor.example.com"]
+  fs:
+    # One brief per topic, written DIRECTLY in out/briefs/. \`*\` matches a
+    # single path segment and never crosses \`/\`, so a topic carrying a slash
+    # is refused instead of steering the write into a subtree — which is
+    # exactly why this is \`out/briefs/*.json\` and not \`out/briefs/**\`.
+    write: ["out/briefs/*.json"]
 
 tasks:
   map:
@@ -2941,6 +3059,15 @@ tasks:
         path: "out/briefs/\${{ inputs.topic }}.json"
         content: "\${{ with.brief }}"
         create_dirs: true
+    # The topic names the output file, and an input is UNTRUSTED by default —
+    # NEP-0004 law 2 re-gates the composed path at check (NIKA-AUTH-008). The
+    # authored door says why THIS value is safe: the receipt records the taint
+    # path · this because · the value digest, and the declassified value must
+    # STILL fit fs.write ["out/briefs/*.json"] — a door, never a bypass.
+    declassify:
+      - from: inputs.topic
+        to: trusted
+        because: "the operator's own brief subject, typed at launch — it names the output file, nothing else"
 
 outputs:
   brief:
@@ -3029,8 +3156,8 @@ workflow:
 model: ollama/qwen3.5:4b   # local · zero key · swap for groq/llama-3.3-70b (a fast one-liner job)
 
 permits:
-  tools: ["nika:date", "nika:write"]
   exec: ["git"]              # the ONE program this workflow may run
+  tools: ["nika:date", "nika:write"]
   fs: { write: ["out/standup-note.md"] }
 
 tasks:
@@ -3093,18 +3220,18 @@ secrets:
         host_from_self: true
 permits:
   tools: ["nika:jq", "nika:notify", "nika:read", "nika:uuid", "nika:write"]
-  fs:
-    read: ["examples/fixtures/support-queue.json"]
-    # One board per batch id. \`*\` matches a single segment and never crosses
-    # \`/\`, so the uuid can never steer the write out of out/ — \`out/**\` would
-    # let it.
-    write: ["out/triage-*.json"]
   net:
     # \`host_from_self:\` above sanctions the FLOW (the secret may be the URL) —
     # it does not grant the capability. The host stays unknown at check, so it
     # is judged at RUN against this bound: name the escalation host here or the
     # send is refused mid-run, after the tokens are already spent.
     http: ["hooks.slack.com"]
+  fs:
+    read: ["examples/fixtures/support-queue.json"]
+    # One board per batch id. \`*\` matches a single segment and never crosses
+    # \`/\`, so the uuid can never steer the write out of out/ — \`out/**\` would
+    # let it.
+    write: ["out/triage-*.json"]
 
 tasks:
   batch:
@@ -3305,28 +3432,28 @@ export interface ShowcaseDag {
 }
 
 export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
-  'bookmark-triage': {"tasks": [{"id": "pages", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤3 in flight", "collects errors", "retry"], "line0": 33, "line1": 46}, {"id": "table", "verb": "invoke", "deps": ["pages"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 47, "line1": 63}, {"id": "report", "verb": "invoke", "deps": ["table"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 65, "line1": 82}], "outputs": ["table"], "waves": 3},
-  'ceo-monday-brief': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 62, "line1": 83}, {"id": "news", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional"], "line0": 84, "line1": 100}, {"id": "pulse", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 101, "line1": 118}, {"id": "sheet", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 119, "line1": 125}, {"id": "rows", "verb": "invoke", "deps": ["sheet"], "wave": 2, "gate": "when", "gloss": "call `nika:convert` · only if its condition holds", "flags": ["conditional"], "line0": 127, "line1": 142}, {"id": "revenue", "verb": "invoke", "deps": ["rows"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 144, "line1": 156}, {"id": "brief", "verb": "infer", "deps": ["approve", "news", "pulse", "rows", "revenue"], "wave": 4, "gate": "when", "gloss": "ask the model · thinking budget · only if its condition holds", "flags": ["conditional"], "line0": 157, "line1": 185}, {"id": "stamp", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 187, "line1": 195}, {"id": "save", "verb": "invoke", "deps": ["approve", "stamp", "brief"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 197, "line1": 218}, {"id": "alert", "verb": "invoke", "deps": ["save", "stamp"], "wave": 6, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 219, "line1": 233}], "outputs": ["brief", "revenue"], "waves": 7},
+  'bookmark-triage': {"tasks": [{"id": "pages", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤3 in flight", "collects errors", "retry"], "line0": 36, "line1": 49}, {"id": "table", "verb": "invoke", "deps": ["pages"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 50, "line1": 66}, {"id": "report", "verb": "invoke", "deps": ["table"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 68, "line1": 85}], "outputs": ["table"], "waves": 3},
+  'ceo-monday-brief': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 64, "line1": 85}, {"id": "news", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional"], "line0": 86, "line1": 102}, {"id": "pulse", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 103, "line1": 120}, {"id": "sheet", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 121, "line1": 127}, {"id": "rows", "verb": "invoke", "deps": ["sheet"], "wave": 2, "gate": "when", "gloss": "call `nika:convert` · only if its condition holds", "flags": ["conditional"], "line0": 129, "line1": 144}, {"id": "revenue", "verb": "invoke", "deps": ["rows"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 146, "line1": 158}, {"id": "brief", "verb": "infer", "deps": ["approve", "news", "pulse", "rows", "revenue"], "wave": 4, "gate": "when", "gloss": "ask the model · thinking budget · only if its condition holds", "flags": ["conditional"], "line0": 159, "line1": 187}, {"id": "stamp", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 189, "line1": 197}, {"id": "save", "verb": "invoke", "deps": ["approve", "stamp", "brief"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 199, "line1": 220}, {"id": "alert", "verb": "invoke", "deps": ["save", "stamp"], "wave": 6, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 221, "line1": 235}], "outputs": ["brief", "revenue"], "waves": 7},
   'competitor-radar': {"tasks": [{"id": "now", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 54, "line1": 57}, {"id": "cutoff", "verb": "invoke", "deps": ["now"], "wave": 1, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 59, "line1": 67}, {"id": "cutoff_day", "verb": "invoke", "deps": ["cutoff"], "wave": 2, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 69, "line1": 79}, {"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 80, "line1": 90}, {"id": "recent", "verb": "invoke", "deps": ["map", "cutoff_day"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 91, "line1": 107}, {"id": "pages", "verb": "invoke", "deps": ["recent"], "wave": 4, "gate": "default", "gloss": "for each item · call `nika:fetch`", "flags": ["fan-out · ≤4 in flight", "collects errors", "retry", "timeout 30s"], "line0": 108, "line1": 129}, {"id": "readable", "verb": "invoke", "deps": ["recent", "pages"], "wave": 5, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 130, "line1": 141}, {"id": "digest", "verb": "infer", "deps": ["readable", "cutoff_day"], "wave": 6, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 143, "line1": 155}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 7, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 157, "line1": 171}, {"id": "record", "verb": "invoke", "deps": ["recent", "readable", "cutoff_day"], "wave": 6, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 172, "line1": 184}], "outputs": ["since", "pages", "brief"], "waves": 8},
-  'config-drift-sentinel': {"tasks": [{"id": "live_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 74, "line1": 86}, {"id": "baseline_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 87, "line1": 96}, {"id": "fingerprint", "verb": "invoke", "deps": ["live_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:hash`", "flags": [], "line0": 97, "line1": 112}, {"id": "parsed", "verb": "invoke", "deps": ["live_raw", "baseline_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 113, "line1": 121}, {"id": "expected", "verb": "invoke", "deps": ["parsed"], "wave": 2, "gate": "default", "gloss": "call `nika:json_merge_patch`", "flags": [], "line0": 123, "line1": 132}, {"id": "drift", "verb": "invoke", "deps": ["expected", "parsed"], "wave": 3, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 133, "line1": 146}, {"id": "paging", "verb": "invoke", "deps": ["drift"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 147, "line1": 157}, {"id": "explain", "verb": "infer", "deps": ["drift"], "wave": 4, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 159, "line1": 181}, {"id": "alert", "verb": "invoke", "deps": ["paging"], "wave": 5, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 182, "line1": 198}, {"id": "record", "verb": "invoke", "deps": ["drift", "paging", "fingerprint", "explain"], "wave": 5, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 199, "line1": 213}], "outputs": ["drift", "paging", "live_hash"], "waves": 6},
+  'config-drift-sentinel': {"tasks": [{"id": "live_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 79, "line1": 91}, {"id": "baseline_raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 92, "line1": 101}, {"id": "fingerprint", "verb": "invoke", "deps": ["live_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:hash`", "flags": [], "line0": 102, "line1": 117}, {"id": "parsed", "verb": "invoke", "deps": ["live_raw", "baseline_raw"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 118, "line1": 126}, {"id": "expected", "verb": "invoke", "deps": ["parsed"], "wave": 2, "gate": "default", "gloss": "call `nika:json_merge_patch`", "flags": [], "line0": 128, "line1": 137}, {"id": "drift", "verb": "invoke", "deps": ["expected", "parsed"], "wave": 3, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 138, "line1": 151}, {"id": "paging", "verb": "invoke", "deps": ["drift"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 152, "line1": 162}, {"id": "explain", "verb": "infer", "deps": ["drift"], "wave": 4, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 164, "line1": 186}, {"id": "alert", "verb": "invoke", "deps": ["paging"], "wave": 5, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 187, "line1": 203}, {"id": "record", "verb": "invoke", "deps": ["drift", "paging", "fingerprint", "explain"], "wave": 5, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 204, "line1": 218}], "outputs": ["drift", "paging", "live_hash"], "waves": 6},
   'contract-guard': {"tasks": [{"id": "contract", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 26, "line1": 29}, {"id": "clauses", "verb": "infer", "deps": ["contract"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 31, "line1": 54}, {"id": "check", "verb": "invoke", "deps": ["clauses"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 56, "line1": 70}, {"id": "gate", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 72, "line1": 79}, {"id": "memo", "verb": "infer", "deps": ["clauses", "gate"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 81, "line1": 91}, {"id": "save", "verb": "invoke", "deps": ["memo"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 93, "line1": 101}], "outputs": ["clauses", "memo"], "waves": 6},
   'csv-chart-report': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 21, "line1": 24}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 26, "line1": 37}, {"id": "by_region", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 38, "line1": 47}, {"id": "chart", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:chart`", "flags": [], "line0": 48, "line1": 60}, {"id": "rows_md", "verb": "invoke", "deps": ["by_region"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 61, "line1": 72}, {"id": "report", "verb": "invoke", "deps": ["rows_md", "chart"], "wave": 4, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 73, "line1": 91}], "outputs": ["by_region"], "waves": 5},
   'deep-research-brief': {"tasks": [{"id": "slug", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 40, "line1": 45}, {"id": "plan", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 47, "line1": 62}, {"id": "investigate", "verb": "agent", "deps": ["plan"], "wave": 1, "gate": "default", "gloss": "run an agent loop · 2 tools granted", "flags": ["typed output"], "line0": 64, "line1": 95}, {"id": "brief", "verb": "infer", "deps": ["investigate"], "wave": 2, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 97, "line1": 113}, {"id": "save", "verb": "invoke", "deps": ["slug", "brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 115, "line1": 124}], "outputs": ["brief", "sources", "slug"], "waves": 4},
-  'etl-quarantine': {"tasks": [{"id": "empty_batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 18, "line1": 21}, {"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 23, "line1": 26}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 28, "line1": 39}, {"id": "check", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 41, "line1": 57}, {"id": "good", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 59, "line1": 68}, {"id": "quarantine", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 70, "line1": 80}, {"id": "report", "verb": "invoke", "deps": ["good"], "wave": 4, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 82, "line1": 91}], "outputs": ["totals"], "waves": 5},
+  'etl-quarantine': {"tasks": [{"id": "empty_batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 18, "line1": 21}, {"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 23, "line1": 26}, {"id": "rows", "verb": "invoke", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 28, "line1": 39}, {"id": "check", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:validate`", "flags": [], "line0": 41, "line1": 57}, {"id": "good", "verb": "invoke", "deps": ["rows", "check"], "wave": 3, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 59, "line1": 68}, {"id": "quarantine", "verb": "invoke", "deps": ["check"], "wave": 3, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 70, "line1": 80}, {"id": "report", "verb": "invoke", "deps": ["good"], "wave": 4, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 82, "line1": 91}], "outputs": ["rejected", "totals"], "waves": 5},
   'image-fx-batch': {"tasks": [{"id": "shots", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 32, "line1": 37}, {"id": "jobs", "verb": "invoke", "deps": ["shots"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 38, "line1": 47}, {"id": "stylize", "verb": "invoke", "deps": ["jobs"], "wave": 2, "gate": "default", "gloss": "for each item · call `nika:image_fx`", "flags": ["fan-out · ≤4 in flight"], "line0": 48, "line1": 62}], "outputs": ["rendered"], "waves": 3},
-  'incident-war-room': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 67, "line1": 90}, {"id": "deploys", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 91, "line1": 101}, {"id": "status_history", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional", "retry"], "line0": 103, "line1": 121}, {"id": "runbook", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 123, "line1": 131}, {"id": "timeline", "verb": "infer", "deps": ["deploys", "status_history", "runbook"], "wave": 2, "gate": "when", "gloss": "ask the model for typed JSON · only if its condition holds", "flags": ["conditional", "typed output"], "line0": 132, "line1": 168}, {"id": "settle", "verb": "invoke", "deps": ["timeline"], "wave": 3, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 169, "line1": 174}, {"id": "recheck", "verb": "invoke", "deps": ["approve", "settle"], "wave": 4, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional"], "line0": 176, "line1": 193}, {"id": "confirmed", "verb": "invoke", "deps": ["recheck"], "wave": 5, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 195, "line1": 204}, {"id": "postmortem", "verb": "infer", "deps": ["timeline", "confirmed"], "wave": 6, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 205, "line1": 220}, {"id": "save", "verb": "invoke", "deps": ["postmortem"], "wave": 7, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 222, "line1": 240}, {"id": "alert", "verb": "invoke", "deps": ["save"], "wave": 8, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 241, "line1": 254}], "outputs": ["timeline", "postmortem"], "waves": 9},
-  'invoice-chaser': {"tasks": [{"id": "ledger", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 19, "line1": 22}, {"id": "rows", "verb": "invoke", "deps": ["ledger"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 24, "line1": 33}, {"id": "overdue", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 35, "line1": 42}, {"id": "drafts", "verb": "infer", "deps": ["overdue"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 44, "line1": 53}, {"id": "approve", "verb": "invoke", "deps": ["drafts"], "wave": 4, "gate": "when", "gloss": "call `nika:prompt` · only if its condition holds", "flags": ["conditional"], "line0": 55, "line1": 63}, {"id": "save", "verb": "invoke", "deps": ["drafts", "approve"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 65, "line1": 75}], "outputs": ["overdue"], "waves": 6},
+  'incident-war-room': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 69, "line1": 92}, {"id": "deploys", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 93, "line1": 103}, {"id": "status_history", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional", "retry"], "line0": 105, "line1": 123}, {"id": "runbook", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 125, "line1": 133}, {"id": "timeline", "verb": "infer", "deps": ["deploys", "status_history", "runbook"], "wave": 2, "gate": "when", "gloss": "ask the model for typed JSON · only if its condition holds", "flags": ["conditional", "typed output"], "line0": 134, "line1": 170}, {"id": "settle", "verb": "invoke", "deps": ["timeline"], "wave": 3, "gate": "default", "gloss": "call `nika:wait`", "flags": [], "line0": 171, "line1": 176}, {"id": "recheck", "verb": "invoke", "deps": ["approve", "settle"], "wave": 4, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional"], "line0": 178, "line1": 195}, {"id": "confirmed", "verb": "invoke", "deps": ["recheck"], "wave": 5, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 197, "line1": 206}, {"id": "postmortem", "verb": "infer", "deps": ["timeline", "confirmed"], "wave": 6, "gate": "default", "gloss": "ask the model · thinking budget", "flags": [], "line0": 207, "line1": 222}, {"id": "save", "verb": "invoke", "deps": ["postmortem"], "wave": 7, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 224, "line1": 242}, {"id": "alert", "verb": "invoke", "deps": ["save"], "wave": 8, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 243, "line1": 256}], "outputs": ["timeline", "postmortem"], "waves": 9},
+  'invoice-chaser': {"tasks": [{"id": "ledger", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 21, "line1": 24}, {"id": "rows", "verb": "invoke", "deps": ["ledger"], "wave": 1, "gate": "default", "gloss": "call `nika:convert`", "flags": [], "line0": 26, "line1": 35}, {"id": "overdue", "verb": "invoke", "deps": ["rows"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 37, "line1": 44}, {"id": "drafts", "verb": "infer", "deps": ["overdue"], "wave": 3, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 46, "line1": 55}, {"id": "approve", "verb": "invoke", "deps": ["drafts"], "wave": 4, "gate": "when", "gloss": "call `nika:prompt` · only if its condition holds", "flags": ["conditional"], "line0": 57, "line1": 65}, {"id": "save", "verb": "invoke", "deps": ["drafts", "approve"], "wave": 5, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 67, "line1": 77}], "outputs": ["overdue"], "waves": 6},
   'localization-factory': {"tasks": [{"id": "files", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 31, "line1": 38}, {"id": "texts", "verb": "invoke", "deps": ["files"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight"], "line0": 39, "line1": 51}, {"id": "pairs", "verb": "invoke", "deps": ["files", "texts"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 52, "line1": 64}, {"id": "translated", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model", "flags": ["fan-out · ≤3 in flight", "collects errors"], "line0": 65, "line1": 84}, {"id": "bundle", "verb": "invoke", "deps": ["pairs", "translated"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 85, "line1": 98}, {"id": "mirror", "verb": "invoke", "deps": ["bundle"], "wave": 5, "gate": "default", "gloss": "for each item · call `nika:write`", "flags": ["fan-out · ≤8 in flight"], "line0": 99, "line1": 109}], "outputs": ["translated"], "waves": 6},
-  'meeting-actions': {"tasks": [{"id": "transcript", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 27, "line1": 30}, {"id": "extract", "verb": "infer", "deps": ["transcript"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 32, "line1": 56}, {"id": "save", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 58, "line1": 69}, {"id": "trace", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:log`", "flags": [], "line0": 71, "line1": 78}], "outputs": ["actions"], "waves": 3},
+  'meeting-actions': {"tasks": [{"id": "transcript", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 27, "line1": 30}, {"id": "extract", "verb": "infer", "deps": ["transcript"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 32, "line1": 56}, {"id": "save", "verb": "invoke", "deps": ["extract"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 58, "line1": 69}, {"id": "trace", "verb": "invoke", "deps": ["save"], "wave": 3, "gate": "default", "gloss": "call `nika:log`", "flags": [], "line0": 71, "line1": 78}], "outputs": ["actions"], "waves": 4},
   'model-bench': {"tasks": [{"id": "ask_incumbent", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 21, "line1": 25}, {"id": "ask_challenger", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 27, "line1": 31}, {"id": "ask_tiny", "verb": "infer", "deps": [], "wave": 0, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 33, "line1": 37}, {"id": "tabulate", "verb": "invoke", "deps": ["ask_incumbent", "ask_challenger", "ask_tiny"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 39, "line1": 66}, {"id": "persist", "verb": "invoke", "deps": ["tabulate"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 68, "line1": 82}], "outputs": ["table"], "waves": 3},
   'og-images': {"tasks": [{"id": "hero", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:image_generate`", "flags": [], "line0": 17, "line1": 27}], "outputs": ["paths", "manifest"], "waves": 1},
-  'pr-review-fanout': {"tasks": [{"id": "changed", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 41, "line1": 43}, {"id": "files", "verb": "invoke", "deps": ["changed"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 45, "line1": 58}, {"id": "todo_sweep", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:grep`", "flags": [], "line0": 59, "line1": 64}, {"id": "reviews", "verb": "agent", "deps": ["files"], "wave": 2, "gate": "default", "gloss": "for each item · run an agent loop · 2 tools granted", "flags": ["fan-out · ≤4 in flight", "collects errors", "typed output"], "line0": 66, "line1": 113}, {"id": "merged", "verb": "invoke", "deps": ["reviews"], "wave": 3, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 114, "line1": 125}, {"id": "summary", "verb": "infer", "deps": ["merged", "todo_sweep"], "wave": 4, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 127, "line1": 138}, {"id": "save", "verb": "invoke", "deps": ["summary"], "wave": 5, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 140, "line1": 147}], "outputs": ["findings", "review"], "waves": 6},
+  'pr-review-fanout': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 49, "line1": 57}, {"id": "changed", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 58, "line1": 64}, {"id": "files", "verb": "invoke", "deps": ["changed"], "wave": 2, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 66, "line1": 82}, {"id": "todo_sweep", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:grep` · only if its condition holds", "flags": ["conditional"], "line0": 83, "line1": 92}, {"id": "reviews", "verb": "agent", "deps": ["files"], "wave": 3, "gate": "default", "gloss": "for each item · run an agent loop · 2 tools granted", "flags": ["fan-out · ≤4 in flight", "collects errors", "typed output"], "line0": 94, "line1": 141}, {"id": "merged", "verb": "invoke", "deps": ["reviews"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 142, "line1": 153}, {"id": "summary", "verb": "infer", "deps": ["merged", "todo_sweep"], "wave": 5, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 155, "line1": 167}, {"id": "save", "verb": "invoke", "deps": ["summary"], "wave": 6, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 169, "line1": 177}], "outputs": ["findings", "review"], "waves": 7},
   'price-watch': {"tasks": [{"id": "check", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 33, "line1": 48}, {"id": "alert", "verb": "invoke", "deps": ["check"], "wave": 1, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 50, "line1": 61}], "outputs": ["price"], "waves": 2},
-  'release-notes': {"tasks": [{"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 49, "line1": 58}, {"id": "notes", "verb": "infer", "deps": ["history"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 60, "line1": 80}, {"id": "existing", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 81, "line1": 84}, {"id": "copy", "verb": "invoke", "deps": ["existing"], "wave": 1, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 86, "line1": 95}, {"id": "changelog", "verb": "invoke", "deps": ["notes", "copy"], "wave": 2, "gate": "default", "gloss": "call `nika:edit`", "flags": [], "line0": 97, "line1": 114}, {"id": "announce", "verb": "invoke", "deps": ["notes", "changelog"], "wave": 3, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 116, "line1": 128}], "outputs": ["headline", "body"], "waves": 4},
-  'release-radar': {"tasks": [{"id": "no_state", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 24, "line1": 27}, {"id": "previous", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 29, "line1": 35}, {"id": "feed", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 37, "line1": 54}, {"id": "fresh", "verb": "invoke", "deps": ["previous", "feed"], "wave": 1, "gate": "default", "gloss": "call `nika:json_diff`", "flags": [], "line0": 56, "line1": 64}, {"id": "digest", "verb": "infer", "deps": ["fresh", "feed"], "wave": 2, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 66, "line1": 79}, {"id": "save_state", "verb": "invoke", "deps": ["feed"], "wave": 1, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 81, "line1": 90}], "outputs": ["new_entries", "briefing"], "waves": 3},
-  'release-train': {"tasks": [{"id": "t0", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 46, "line1": 51}, {"id": "declared", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 52, "line1": 55}, {"id": "notes", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 57, "line1": 60}, {"id": "schema", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 62, "line1": 67}, {"id": "board", "verb": "invoke", "deps": ["declared", "notes", "schema"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 68, "line1": 89}, {"id": "gates_green", "verb": "invoke", "deps": ["board"], "wave": 2, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 91, "line1": 100}, {"id": "t1", "verb": "invoke", "deps": ["gates_green"], "wave": 3, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 102, "line1": 107}, {"id": "gate_time", "verb": "invoke", "deps": ["t0", "t1"], "wave": 4, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 109, "line1": 124}, {"id": "conductor", "verb": "invoke", "deps": ["gate_time", "board"], "wave": 5, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 125, "line1": 155}, {"id": "signed_at", "verb": "invoke", "deps": ["conductor"], "wave": 6, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 156, "line1": 162}, {"id": "window", "verb": "invoke", "deps": ["signed_at"], "wave": 7, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 164, "line1": 173}, {"id": "hold", "verb": "invoke", "deps": ["window"], "wave": 8, "gate": "when", "gloss": "call `nika:wait` · only if its condition holds", "flags": ["conditional"], "line0": 175, "line1": 190}, {"id": "ship", "verb": "exec", "deps": ["hold"], "wave": 9, "gate": "when", "gloss": "run `./scripts/release.sh` · only if its condition holds", "flags": ["conditional", "timeout 30m"], "line0": 191, "line1": 208}, {"id": "verify", "verb": "invoke", "deps": ["ship"], "wave": 10, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 210, "line1": 224}, {"id": "live", "verb": "invoke", "deps": ["verify"], "wave": 11, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 226, "line1": 250}, {"id": "record", "verb": "invoke", "deps": ["live"], "wave": 12, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 251, "line1": 266}], "outputs": ["board", "shipped"], "waves": 13},
+  'release-notes': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 59, "line1": 64}, {"id": "history", "verb": "exec", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "run `git` · only if its condition holds", "flags": ["conditional"], "line0": 66, "line1": 79}, {"id": "notes", "verb": "infer", "deps": ["history"], "wave": 2, "gate": "when", "gloss": "ask the model for typed JSON · only if its condition holds", "flags": ["conditional", "typed output"], "line0": 81, "line1": 102}, {"id": "existing", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 103, "line1": 110}, {"id": "copy", "verb": "invoke", "deps": ["existing"], "wave": 2, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 112, "line1": 122}, {"id": "changelog", "verb": "invoke", "deps": ["notes", "copy"], "wave": 3, "gate": "default", "gloss": "call `nika:edit`", "flags": [], "line0": 124, "line1": 141}, {"id": "announce", "verb": "invoke", "deps": ["notes", "changelog"], "wave": 4, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 143, "line1": 155}], "outputs": ["headline", "body"], "waves": 5},
+  'release-radar': {"tasks": [{"id": "approve", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 29, "line1": 35}, {"id": "no_state", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:jq` · only if its condition holds", "flags": ["conditional"], "line0": 36, "line1": 42}, {"id": "previous", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:read` · only if its condition holds", "flags": ["conditional"], "line0": 44, "line1": 53}, {"id": "feed", "verb": "invoke", "deps": ["approve"], "wave": 1, "gate": "when", "gloss": "call `nika:fetch` · only if its condition holds", "flags": ["conditional"], "line0": 55, "line1": 83}, {"id": "previous_parsed", "verb": "invoke", "deps": ["previous"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 84, "line1": 91}, {"id": "fresh", "verb": "invoke", "deps": ["approve", "previous_parsed", "feed"], "wave": 3, "gate": "when", "gloss": "call `nika:json_diff` · only if its condition holds", "flags": ["conditional"], "line0": 93, "line1": 103}, {"id": "digest", "verb": "infer", "deps": ["approve", "fresh", "feed"], "wave": 4, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 105, "line1": 119}, {"id": "save_state", "verb": "invoke", "deps": ["approve", "feed"], "wave": 2, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 121, "line1": 132}], "outputs": ["new_entries", "briefing"], "waves": 5},
+  'release-train': {"tasks": [{"id": "t0", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 48, "line1": 53}, {"id": "declared", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 54, "line1": 57}, {"id": "notes", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 59, "line1": 62}, {"id": "schema", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 64, "line1": 69}, {"id": "board", "verb": "invoke", "deps": ["declared", "notes", "schema"], "wave": 1, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 70, "line1": 91}, {"id": "gates_green", "verb": "invoke", "deps": ["board"], "wave": 2, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 93, "line1": 102}, {"id": "t1", "verb": "invoke", "deps": ["gates_green"], "wave": 3, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 104, "line1": 109}, {"id": "gate_time", "verb": "invoke", "deps": ["t0", "t1"], "wave": 4, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 111, "line1": 126}, {"id": "conductor", "verb": "invoke", "deps": ["gate_time", "board"], "wave": 5, "gate": "default", "gloss": "call `nika:prompt`", "flags": [], "line0": 127, "line1": 157}, {"id": "signed_at", "verb": "invoke", "deps": ["conductor"], "wave": 6, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 158, "line1": 164}, {"id": "window", "verb": "invoke", "deps": ["signed_at"], "wave": 7, "gate": "when", "gloss": "call `nika:date` · only if its condition holds", "flags": ["conditional"], "line0": 166, "line1": 175}, {"id": "hold", "verb": "invoke", "deps": ["window"], "wave": 8, "gate": "when", "gloss": "call `nika:wait` · only if its condition holds", "flags": ["conditional"], "line0": 177, "line1": 192}, {"id": "ship", "verb": "exec", "deps": ["hold"], "wave": 9, "gate": "when", "gloss": "run `./scripts/release.sh` · only if its condition holds", "flags": ["conditional", "timeout 30m"], "line0": 193, "line1": 210}, {"id": "verify", "verb": "invoke", "deps": ["ship"], "wave": 10, "gate": "default", "gloss": "call `nika:fetch`", "flags": ["retry"], "line0": 212, "line1": 226}, {"id": "live", "verb": "invoke", "deps": ["verify"], "wave": 11, "gate": "default", "gloss": "call `nika:assert`", "flags": [], "line0": 228, "line1": 252}, {"id": "record", "verb": "invoke", "deps": ["live"], "wave": 12, "gate": "default", "gloss": "call `nika:emit`", "flags": [], "line0": 253, "line1": 268}], "outputs": ["board", "shipped"], "waves": 13},
   'resume-screener': {"tasks": [{"id": "pool", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:glob`", "flags": [], "line0": 39, "line1": 42}, {"id": "cvs", "verb": "invoke", "deps": ["pool"], "wave": 1, "gate": "default", "gloss": "for each item · call `nika:read`", "flags": ["fan-out · ≤8 in flight", "collects errors"], "line0": 44, "line1": 57}, {"id": "pairs", "verb": "invoke", "deps": ["pool", "cvs"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 58, "line1": 74}, {"id": "screened", "verb": "infer", "deps": ["pairs"], "wave": 3, "gate": "default", "gloss": "for each item · ask the model for typed JSON", "flags": ["fan-out · ≤2 in flight", "collects errors", "typed output"], "line0": 75, "line1": 111}, {"id": "ranked", "verb": "invoke", "deps": ["screened"], "wave": 4, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 112, "line1": 122}, {"id": "shortlist", "verb": "invoke", "deps": ["ranked"], "wave": 5, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 124, "line1": 131}, {"id": "brief", "verb": "infer", "deps": ["shortlist"], "wave": 6, "gate": "when", "gloss": "ask the model · only if its condition holds", "flags": ["conditional"], "line0": 133, "line1": 143}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 7, "gate": "when", "gloss": "call `nika:write` · only if its condition holds", "flags": ["conditional"], "line0": 145, "line1": 154}], "outputs": ["ranked", "shortlist"], "waves": 8},
-  'seo-content-brief': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 37, "line1": 54}, {"id": "top_page", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 56, "line1": 70}, {"id": "brief", "verb": "infer", "deps": ["map", "top_page"], "wave": 2, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 72, "line1": 94}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 96, "line1": 105}], "outputs": ["brief"], "waves": 4},
+  'seo-content-brief': {"tasks": [{"id": "map", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 37, "line1": 54}, {"id": "top_page", "verb": "invoke", "deps": ["map"], "wave": 1, "gate": "default", "gloss": "call `nika:fetch`", "flags": [], "line0": 56, "line1": 70}, {"id": "brief", "verb": "infer", "deps": ["map", "top_page"], "wave": 2, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 72, "line1": 94}, {"id": "save", "verb": "invoke", "deps": ["brief"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 96, "line1": 114}], "outputs": ["brief"], "waves": 4},
   'social-repurpose': {"tasks": [{"id": "post", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 19, "line1": 24}, {"id": "thread", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 25, "line1": 30}, {"id": "linkedin", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 32, "line1": 37}, {"id": "newsletter", "verb": "infer", "deps": ["post"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 39, "line1": 44}, {"id": "bundle", "verb": "invoke", "deps": ["thread", "linkedin", "newsletter"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 46, "line1": 69}], "outputs": ["bundle_path"], "waves": 3},
   'standup-digest': {"tasks": [{"id": "today", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:date`", "flags": [], "line0": 14, "line1": 17}, {"id": "history", "verb": "exec", "deps": [], "wave": 0, "gate": "default", "gloss": "run `git`", "flags": [], "line0": 19, "line1": 21}, {"id": "digest", "verb": "infer", "deps": ["today", "history"], "wave": 1, "gate": "default", "gloss": "ask the model", "flags": [], "line0": 23, "line1": 35}, {"id": "save", "verb": "invoke", "deps": ["digest"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 37, "line1": 45}], "outputs": ["note"], "waves": 3},
   'support-triage': {"tasks": [{"id": "batch", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:uuid`", "flags": [], "line0": 36, "line1": 39}, {"id": "queue", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 41, "line1": 44}, {"id": "triage", "verb": "infer", "deps": ["queue"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 46, "line1": 70}, {"id": "urgent", "verb": "invoke", "deps": ["triage"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 72, "line1": 79}, {"id": "escalate", "verb": "invoke", "deps": ["urgent", "batch"], "wave": 3, "gate": "when", "gloss": "call `nika:notify` · only if its condition holds", "flags": ["conditional"], "line0": 81, "line1": 92}, {"id": "board", "verb": "invoke", "deps": ["triage", "batch"], "wave": 2, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 94, "line1": 106}], "outputs": ["tickets"], "waves": 4},
@@ -3339,7 +3466,8 @@ export const TEMPLATES_YAML: Record<string, string> = {
   'agent-loop': `nika: v1
 workflow:
   id: agent-loop-template       # SLOT: kebab-case workflow id
-  description: "plan → budgeted agent → typed result"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "open-ended research / review / triage · plan → budgeted agent → typed result"
 
 # SLOT: a TOOL-CALLING model · local by default. This seat is measured, not
 # assumed: \`ollama/qwen2.5:14b\` completes the planning call in ~65s under the
@@ -3434,7 +3562,8 @@ outputs:
   'api-upload-and-create': `nika: v1
 workflow:
   id: api-upload-and-create-template  # SLOT: kebab-case workflow id
-  description: "upload + create in one authenticated call"   # SLOT: one honest sentence
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "upload + create in one authenticated call"
 
 const:
   api_base: "https://api.example.com"     # SLOT: the product API base
@@ -3459,13 +3588,9 @@ permits:                            # the blast radius · default-deny once pres
     # A \`multipart:\` file part names a path, and that read crosses the boundary
     # like any other: measured, without this entry the call dies \`NIKA-SEC-004 ·
     # ./out/assets/asset-1.png resolves outside the declared permits.fs.read
-    # boundary\`. One exact file, never the tree it sits in.
-    #
-    # HONEST HINT · \`check\` reports NIKA-DRIFT-001 here ("matches no path the
-    # body reads") because its drift detector does not model a multipart part as
-    # a read. The runtime does. Following that hint deletes the entry and kills
-    # the run — keep it. Coverage decision:
-    # the nika engine repo · docs/plans/2026-07-28-verdict-coverage.md
+    # boundary\`. One exact file, never the tree it sits in. The drift detector
+    # models a multipart part as a read (2026-07-29) — the former NIKA-DRIFT-001
+    # false hint is closed.
     read: ["./out/assets/asset-1.png"]   # SLOT: keep in step with const.asset_path
 
 tasks:
@@ -3497,7 +3622,8 @@ outputs:
   'chain': `nika: v1
 workflow:
   id: chain-template            # SLOT: kebab-case workflow id
-  description: "gather → think → persist"   # SLOT: one honest sentence
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "gather → think → persist"
 
 # SLOT: provider/model · local · zero key. Measured seat — \`ollama/llama3.2:3b\`
 # answers this prompt in ~50s. \`--model mock/echo\` needs no seat at all and is
@@ -3528,6 +3654,9 @@ tasks:
       # recovers into a literal standing in for the real document. \`on_codes:\`
       # keeps that narrow: ONLY not-found is forgiven, a permission error
       # still fails loudly. Delete this block once the source really exists.
+      # In an EMPTY directory check prints one [inputs] hint that this read
+      # would fail — the run does not: this recover carries it (measured ·
+      # rc=0 · « 1 recovered »). The hint retires once your source exists.
       on_codes: [NIKA-BUILTIN-READ-001]
       recover: "REHEARSAL · no source document here yet."
 
@@ -3553,6 +3682,13 @@ tasks:
       args:
         path: "\${{ const.destination }}"   # SLOT: destination · same path as permits.fs.write
         content: "\${{ with.think }}"       # ALWAYS pass content · a write without it writes nothing
+    on_error:
+      # Golden rehearsal. Under \`nika test\` the mock plane simulates the
+      # MODEL, not effects — this write is refused (NIKA-452) so the pin
+      # lane needs this recover to walk its own scaffold. \`nika run\` never
+      # fires it on success (a recover only runs on failure). Delete this
+      # block once pointed at real data, so a genuine write failure is loud.
+      recover: "REHEARSAL · write refused under nika test — the real run persists to the destination"
 
 outputs:
   result: \${{ tasks.think.output }}  # SLOT: the callable contract
@@ -3560,7 +3696,8 @@ outputs:
   'docker-report': `nika: v1
 workflow:
   id: docker-report-template    # SLOT: kebab-case workflow id
-  description: "read the daemon's state · explain it · keep the report"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "read the daemon's state · explain it · keep the report"
 
 # SLOT: local-first · \`--model mock/echo\` for the offline rehearsal. Measured
 # seat — \`ollama/llama3.2:3b\` answers this prose prompt in well under a minute.
@@ -3624,25 +3761,36 @@ tasks:
       args:
         path: "./docker-health.md"  # SLOT: same path as permits.fs.write
         content: "\${{ with.diagnose }}"
+    on_error:
+      # Golden rehearsal · \`nika test\` refuses effects (NIKA-452) — the pin
+      # lane recovers into this marker (outputs.report pins it · honest and
+      # deterministic). Never fires on a successful real write. Delete once
+      # the report really lands, so a genuine write failure is loud.
+      recover: "REHEARSAL · write refused under nika test — the real run lands ./docker-health.md"
 
 outputs:
-  report: \${{ tasks.keep.output }}
+  report:
+    value: \${{ tasks.keep.output }}
+    description: "Where the report landed — nika:write hands back the path it wrote"
 `,
   'etl-state': `nika: v1
 workflow:
   id: etl-state-template        # SLOT: kebab-case workflow id
-  description: "read state · fetch fresh · diff · process the delta · save state"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "only what changed since last run · read state · fetch fresh · diff · process the delta · save state"
 
 const:
   source_url: "https://api.example.com/v1/records"   # SLOT: the data source
   state_path: "./state/etl-state.json"               # SLOT: the cursor file
 
 permits:                            # the blast radius · default-deny once present
-  tools: ["nika:read", "nika:write", "nika:fetch", "nika:jq", "nika:json_diff", "nika:prompt"]
+  tools: ["nika:fetch", "nika:jq", "nika:json_diff", "nika:prompt", "nika:read", "nika:write"]
+  net: { http: ["api.example.com"] }    # SLOT: the source host from const.source_url
   fs:                               # the cursor file, read then rewritten — one path, both ways
     read: ["./state/etl-state.json"]    # SLOT: keep in step with const.state_path
     write: ["./state/etl-state.json"]   # SLOT: idem — the job writes nothing else
-  net: { http: ["api.example.com"] }    # SLOT: the source host from const.source_url
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   # NEP-0002 · the Rule of Two, as a check. This run holds all three legs at
@@ -3737,7 +3885,8 @@ outputs:
   'fanout': `nika: v1
 workflow:
   id: fanout-template           # SLOT: kebab-case workflow id
-  description: "discover N items · process in parallel · merge"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "do the same step for each item · discover the collection · process in parallel · merge"
 
 # SLOT: provider/model · local · zero key. Measured seat — \`ollama/llama3.2:3b\`.
 # \`--model mock/echo\` needs no seat and is the path this file guarantees.
@@ -3753,21 +3902,19 @@ const:
   collection_source: "./items"      # SLOT: where the collection comes from
 
 permits:
-  tools: ["nika:glob", "nika:jq"]
+  tools: ["nika:glob", "nika:jq", "nika:read"]
   fs:
-    # \`nika:glob\` is gated on the DIRECTORY it walks, not on the files it
-    # returns — measured: with \`./items/*.md\` here (the pattern) the run dies
-    # \`NIKA-SEC-004 · ./items resolves outside the declared permits.fs.read
-    # boundary\`, because \`*\` never crosses \`/\` and so never matches \`./items\`
-    # itself. Grant the directory. A deeper pattern (\`./items/**/*.md\`) walks
-    # deeper and needs \`./items/**\`.
-    #
-    # HONEST HINT · \`check\` reports NIKA-DRIFT-001 here ("matches no path the
-    # body reads") because its drift detector does not model a glob as a read.
-    # The runtime does. Following that hint deletes the entry and kills the run
-    # — keep it. Coverage decision:
-    # the nika engine repo · docs/plans/2026-07-28-verdict-coverage.md
-    read: ["./items"]
+    # TWO entries, and both earn their place. \`nika:glob\` is gated on the
+    # DIRECTORY it walks, not on the files it returns — measured: with
+    # \`./items/*.md\` here (the pattern) the run dies \`NIKA-SEC-004 ·
+    # ./items resolves outside the declared permits.fs.read boundary\`,
+    # because \`*\` never crosses \`/\` and so never matches \`./items\` itself.
+    # And \`nika:read\` is gated on the FILES — a directory grant does not
+    # cover its children (measured: dir-only here made every per-item read
+    # die SEC-004, \`recover: null\` swallowed each, and the model was
+    # handed nulls — a green run inventing content). A deeper pattern
+    # (\`./items/**/*.md\`) walks deeper and needs \`./items/**\` for both.
+    read: ["./items", "./items/*"]
 
 tasks:
   discover:
@@ -3775,10 +3922,32 @@ tasks:
       tool: "nika:glob"
       args: { pattern: "\${{ const.collection_source }}/*.md" }
 
-  process:
+  # \`discover\` hands back PATH STRINGS — a prompt that interpolates the raw
+  # item shows the model a FILENAME, never the file (measured: a green run
+  # whose fluent « report » was invented from the names alone — check, mock
+  # rehearsal and run all green around it). Reading the item is its own fan.
+  # Delete this task — and fan \`process\` over \`discover\` — when your items
+  # already ARE the content (an inline list · fetched records). Need each
+  # content paired with its path? \`resume-screener\` shows the transpose.
+  read:
     with:
       discover: \${{ tasks.discover.output }}
     for_each: \${{ with.discover }}
+    max_parallel: 8
+    fail_fast: false
+    on_error:
+      recover: null                 # an unreadable item yields null · the batch lives
+    invoke:
+      tool: "nika:read"
+      args: { path: "\${{ item }}" }
+
+  process:
+    with:
+      read: \${{ tasks.read.output }}
+    # The quiet-day guard: an EMPTY discovery skips the \`read\` fan, and a
+    # skipped task hands NULL — which a bare for_each refuses (NIKA-VAR-006).
+    # The ternary keeps the no-items day green end to end.
+    for_each: "\${{ with.read == null ? [] : with.read }}"
     max_parallel: 4                 # SLOT: the polite ceiling
     fail_fast: false
     timeout: "60s"                  # SLOT: per-iteration bound
@@ -3820,7 +3989,8 @@ outputs:
   'gate-and-act': `nika: v1
 workflow:
   id: gate-and-act-template     # SLOT: kebab-case workflow id
-  description: "watch a value · act only when the condition holds"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "watch a value · act only when the condition holds"
 
 const:
   source_url: "https://api.example.com/v1/value"   # SLOT: what to watch
@@ -3878,7 +4048,8 @@ outputs:
   'human-gated-ship': `nika: v1
 workflow:
   id: human-gated-ship-template  # SLOT: kebab-case workflow id
-  description: "verify in parallel · human GO · act · record"   # SLOT
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "verify in parallel · human GO · act · record"
 
 permits:                            # SLOT: the blast radius · default-deny once present
   exec: ["echo"]                    # SLOT: ONLY the programs the gates + act run (argv form)
@@ -3896,6 +4067,8 @@ secrets:
     egress:
       - to: "nika:notify"
         host_from_self: true        # the secret value IS the destination URL
+policy:                              # NEP-0014 · the gate runs under a NAMED endorsement mode
+  endorsement: solo
 
 tasks:
   # ── the verification wave · all checks run in parallel ──
@@ -3903,11 +4076,22 @@ tasks:
     exec:
       command: ["echo", "ok"]        # SLOT: gate 1 (argv form · injection-safe)
       capture: structured
+    on_error:
+      # Golden rehearsal · \`nika test\` refuses exec (NIKA-SEC-001 · the mock
+      # plane simulates the model, not effects). Catch-all ON PURPOSE — never
+      # \`on_codes: [NIKA-SEC-001]\`: that code is also a real blocklist stop,
+      # and a narrow forgiveness would swallow a security refusal. The shape
+      # matches \`capture: structured\` so the gates expression reads it.
+      # Delete once the gate runs a real check.
+      recover: { exit_code: 0, stdout: "REHEARSAL", stderr: "" }
 
   check_b:
     exec:
       command: ["echo", "ok"]        # SLOT: gate 2
       capture: structured
+    on_error:
+      # Same rehearsal armor as check_a · delete once real.
+      recover: { exit_code: 0, stdout: "REHEARSAL", stderr: "" }
 
   gates:
     with:
@@ -3922,10 +4106,11 @@ tasks:
     after:
       gates: success              # state, no data · no question until the board is green
     invoke:
-      # On a terminal this ASKS. Headless, it answers with \`default:\` below.
-      # Under \`--output json\` the run PAUSES durably (exit 4 · not a failure)
-      # and prints its own resume line:
-      #   nika run <file> --resume <trace> --answer human=true
+      # On a terminal this ASKS. Headless, it answers with \`default:\` below —
+      # the run completes, it does not pause (measured · act settles skipped).
+      # The durable pause belongs to a prompt with NO default: headless it
+      # PAUSES (exit 4 · not a failure) and prints its own resume line:
+      #   nika run <file> --resume <trace> --answer human=true · or false
       tool: "nika:prompt"
       args:
         message: "All gates GREEN. Proceed?"   # SLOT: the decision, fully informed
@@ -3969,7 +4154,8 @@ outputs:
   'media-asset-pack': `nika: v1
 workflow:
   id: media-asset-pack-template # SLOT: kebab-case workflow id
-  description: "brief → render → manifest"  # SLOT: one honest sentence
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "brief → generate image assets → manifest"
 
 # SLOT: provider/model · local · zero key. Measured seat — \`ollama/qwen2.5:14b\`
 # holds the small schema below. \`--model mock/echo\` needs no seat at all.
@@ -4019,6 +4205,12 @@ tasks:
         prompt: "\${{ with.brief_image_prompt }}"
         output_dir: "\${{ const.out_dir }}"
         filename_prefix: "asset"    # SLOT: filename stem
+    on_error:
+      # Golden rehearsal · the image tool is an EFFECT, refused under
+      # \`nika test\` even on \`provider: mock\` (the plane simulates the
+      # model, not effects). The literal keeps the manifest jq's shape
+      # (\`.images\`) intact. Delete once a real seat renders.
+      recover: { images: [] }
 
   manifest:
     with:
@@ -4044,6 +4236,10 @@ tasks:
         # serializes. \`nika:jq\` above BUILT that value; hand-typing braces
         # around an interpolation emits unquoted fields and breaks the artifact.
         content: "\${{ with.manifest }}"
+    on_error:
+      # Golden rehearsal · same NIKA-452 refusal as \`render\` above. Never
+      # fires on a successful real write. Delete once wired.
+      recover: "REHEARSAL · write refused under nika test — the real run lands the manifest"
 
 outputs:
   manifest: \${{ tasks.manifest.output }}  # SLOT: the callable contract
@@ -4051,7 +4247,8 @@ outputs:
   'website-brief': `nika: v1
 workflow:
   id: website-brief-template    # SLOT: kebab-case workflow id
-  description: "crawl → brief → persist"   # SLOT: one honest sentence
+  # SLOT: one honest sentence — \`nika new\` matches intents against these words
+  description: "crawl → brief → persist"
 
 # SLOT: provider/model · local · zero key. The schema below has five required
 # fields, so give it a seat that holds structure — \`ollama/qwen2.5:14b\` is
@@ -4118,6 +4315,12 @@ tasks:
         # the engine serializes. Typing \`{ "domain": \${{ … }} }\` by hand emits
         # unquoted fields and the artifact stops being JSON.
         content: "\${{ with.brief }}"
+    on_error:
+      # Golden rehearsal · \`nika test\` refuses effects (NIKA-452 · the mock
+      # plane simulates the model, not effects) — this recover lets the pin
+      # lane walk the scaffold. Never fires on a successful real write.
+      # Delete once wired, so a genuine write failure is loud.
+      recover: "REHEARSAL · write refused under nika test — the real run persists the brief"
 
 outputs:
   brief: \${{ tasks.brief.output }}   # SLOT: the callable contract

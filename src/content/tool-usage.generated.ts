@@ -30,7 +30,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 107
+      "firstLine": 108
     },
     "templates": [
       "agent-loop",
@@ -107,7 +107,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "agent-loop",
       "file": "agent-loop.nika.yaml",
-      "firstLine": 70
+      "firstLine": 71
     },
     "templates": [
       "agent-loop"
@@ -148,7 +148,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 54
+      "firstLine": 55
     },
     "templates": [
       "gate-and-act",
@@ -167,7 +167,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 56
+      "firstLine": 60
     },
     "templates": [
       "fanout"
@@ -214,12 +214,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "image_generate": {
     "bare": "image_generate",
-    "yaml": "  render:\n    with:\n      brief_image_prompt: ${{ tasks.brief.output.image_prompt }}\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ with.brief_image_prompt }}\"\n        output_dir: \"${{ const.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem",
+    "yaml": "  render:\n    with:\n      brief_image_prompt: ${{ tasks.brief.output.image_prompt }}\n    invoke:\n      tool: \"nika:image_generate\"\n      args:\n        provider: mock              # SLOT: local | openai | gemini | xai (local/mock first)\n        prompt: \"${{ with.brief_image_prompt }}\"\n        output_dir: \"${{ const.out_dir }}\"\n        filename_prefix: \"asset\"    # SLOT: filename stem\n    on_error:\n      # Golden rehearsal · the image tool is an EFFECT, refused under\n      # `nika test` even on `provider: mock` (the plane simulates the\n      # model, not effects). The literal keeps the manifest jq's shape\n      # (`.images`) intact. Delete once a real seat renders.\n      recover: { images: [] }",
     "source": {
       "kind": "template",
       "template": "media-asset-pack",
       "file": "media-asset-pack.nika.yaml",
-      "firstLine": 66
+      "firstLine": 67
     },
     "templates": [
       "media-asset-pack"
@@ -247,7 +247,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "fanout",
       "file": "fanout.nika.yaml",
-      "firstLine": 79
+      "firstLine": 105
     },
     "templates": [
       "fanout",
@@ -266,7 +266,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 108
+      "firstLine": 114
     },
     "templates": [
       "etl-state"
@@ -306,7 +306,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "gate-and-act",
       "file": "gate-and-act.nika.yaml",
-      "firstLine": 68
+      "firstLine": 69
     },
     "templates": [
       "gate-and-act",
@@ -323,7 +323,7 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
       "kind": "template",
       "template": "etl-state",
       "file": "etl-state.nika.yaml",
-      "firstLine": 58
+      "firstLine": 64
     },
     "templates": [
       "etl-state",
@@ -335,15 +335,16 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "read": {
     "bare": "read",
-    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
+    "yaml": "  gather:\n    invoke:                         # SLOT: the fact source · nika:read / nika:fetch / exec\n      tool: \"nika:read\"\n      args: { path: \"${{ const.source }}\" }\n    on_error:\n      # Offline rehearsal. A freshly scaffolded directory has no README, and a\n      # skeleton that dies on its first run teaches nothing — so a not-found\n      # recovers into a literal standing in for the real document. `on_codes:`\n      # keeps that narrow: ONLY not-found is forgiven, a permission error\n      # still fails loudly. Delete this block once the source really exists.\n      # In an EMPTY directory check prints one [inputs] hint that this read\n      # would fail — the run does not: this recover carries it (measured ·\n      # rc=0 · « 1 recovered »). The hint retires once your source exists.\n      on_codes: [NIKA-BUILTIN-READ-001]\n      recover: \"REHEARSAL · no source document here yet.\"",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 48
+      "firstLine": 49
     },
     "templates": [
       "chain",
+      "fanout",
       "etl-state"
     ],
     "errorCodes": [
@@ -400,12 +401,12 @@ export const TOOL_USAGE: Record<string, ToolUsageEntry> = {
   },
   "write": {
     "bare": "write",
-    "yaml": "  persist:\n    with:\n      think: ${{ tasks.think.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"${{ const.destination }}\"   # SLOT: destination · same path as permits.fs.write\n        content: \"${{ with.think }}\"       # ALWAYS pass content · a write without it writes nothing",
+    "yaml": "  persist:\n    with:\n      think: ${{ tasks.think.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"${{ const.destination }}\"   # SLOT: destination · same path as permits.fs.write\n        content: \"${{ with.think }}\"       # ALWAYS pass content · a write without it writes nothing\n    on_error:\n      # Golden rehearsal. Under `nika test` the mock plane simulates the\n      # MODEL, not effects — this write is refused (NIKA-452) so the pin\n      # lane needs this recover to walk its own scaffold. `nika run` never\n      # fires it on success (a recover only runs on failure). Delete this\n      # block once pointed at real data, so a genuine write failure is loud.\n      recover: \"REHEARSAL · write refused under nika test — the real run persists to the destination\"",
     "source": {
       "kind": "template",
       "template": "chain",
       "file": "chain.nika.yaml",
-      "firstLine": 75
+      "firstLine": 79
     },
     "templates": [
       "chain",
