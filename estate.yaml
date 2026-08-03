@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1557
+  classified_files: 1564
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1193
+    authored: 1200
     authored-pin: 3
     generated: 302
     pinned-copy: 21
     testimonial: 38
     foreign: 0
-  unverified-default: 399
+  unverified-default: 404
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: f7c8ec9b9a354498c89a3d5782fc41cd948a3062d6d8b9b3c8e42ef7bc2ec743
+  sha256: f619dfd0e8e7af04f652697cef221293a75ab8a2ba02656c599cda11592c55e6
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -909,8 +909,8 @@ patterns:
   evidence: "hand-maintained pnpm patches (vite-plugin-react-ssg) — applied by pnpm at install, authored diff, no generator"
 - glob: ".github/workflows/*.yml"
   class: authored
-  match_count: 8
-  aggregate_sha256: cbf2cbd1008be6c2b0dd941e2ccabc23d478eda64873b1c5bc56fa1b12d6d26b
+  match_count: 9
+  aggregate_sha256: 50ecba910207c7673c133c7c23596ac5444e3db73a1b57ca0392831bef575cf2
   evidence: "hand-written CI trust model (comments narrate design decisions); release-heal.yml + spec-resync.yml edit OTHER files, nothing writes these"
 - glob: "src/lib/check-wasm/pkg/**"
   class: pinned-copy
@@ -940,8 +940,8 @@ patterns:
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 92
-  aggregate_sha256: eb6f990d5854f2176d8ba0e9ce49300d6f9da1897b4879f517d10e1d66cb7919
+  match_count: 93
+  aggregate_sha256: 4d175cda6d69687381c0b97f12e25f9694bded377c11a7f269836c90efe45db7
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,11 +950,16 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 398
-  aggregate_sha256: 3c14742ae48af93970b4357d76aaff72b596f47727b6a2ab5df9f408a3b340e1
+  match_count: 403
+  aggregate_sha256: 42878f064e93bddd809cd09b375bc28e2e674bbd077a1d1e7eb491d08295dc88
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
+- "content/bench/2026-08-03-model-bench/PROVENANCE.md"
+- "content/bench/2026-08-03-model-bench/evidence/VERIFY.md"
+- "content/bench/2026-08-03-model-bench/evidence/journal.ndjson"
+- "content/bench/2026-08-03-model-bench/evidence/pack.json"
+- "content/bench/2026-08-03-model-bench/table.md"
 - "public/boundary/index.html"
 - "public/conformance/core/index.html"
 - "public/conformance/index.html"

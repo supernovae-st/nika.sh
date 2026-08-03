@@ -1,0 +1,44 @@
+name: nika-receipts
+
+# Dogfooding (R8a · the total-map plan's owed row): the site that teaches
+# « audit before a token is spent » audits its OWN workflows the same way.
+# When a PR touches a .nika.yaml, every flow below gets its receipt — the
+# nika check verdict, the honest cost floor, models/secrets, the DAG — as
+# a sticky comment. Check-only and zero-secret by design: the action has
+# no execution mode, and this repo grants it none.
+#
+# SECURITY: no `run:` step and no github.event data anywhere — a static
+# matrix and two SHA-pinned actions are the whole surface.
+#
+# The matrix names the LIVING ambassadors, not the whole corpus: the
+# served library heroes (byte-pinned, check-green at the release the
+# site advertises) and the graph-enrichment workflow the site runs on
+# itself. A new ambassador = a new matrix row, deliberately.
+
+on:
+  pull_request:
+    paths:
+      - '**/*.nika.yaml'
+      - '.github/workflows/nika-receipts.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        flow:
+          - scripts/graph/enrich.nika.yaml
+          - public/library/price-watch.nika.yaml
+          - public/library/daily-brief.nika.yaml
+          - public/library/pr-risk-review.nika.yaml
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: supernovae-st/nika-action@92dd93ef1599003e747722f36b2a1fe9b47dec5c # v1.0.10
+        with:
+          workflow: ${{ matrix.flow }}

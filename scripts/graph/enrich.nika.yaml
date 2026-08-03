@@ -1,0 +1,152 @@
+# yaml-language-server: $schema=https://nika.sh/spec/v1/workflow.schema.json
+#
+# scripts/graph/enrich.nika.yaml — D7 ③ · the assisted half of the graph loop.
+#
+# The site enriches itself WITH Nika (dogfooding): the deterministic doctor
+# (D7 ②) PROPOSES edges by heuristics — advisory, never mutating — and this
+# workflow TRIAGES those proposals with a bounded LOCAL model, then lands a
+# PR brief. The model sorts, it never invents: an edge the doctor did not
+# propose does not exist for it. Nothing here writes the graph; a HUMAN
+# reviews the brief and merges — PR-only, at trains.
+#
+#   run   · nika run scripts/graph/enrich.nika.yaml            (from repo root)
+#   spend · bounded: one local infer (unpriced compute), max_tokens capped
+#   out   · .nika/out/graph-enrich/PROPOSALS.md
+#
+# EXEC LEDGER ·
+# | task    | command                                | why no native path                                                                                     | unlock that removes it                          |
+# | propose | node scripts/graph/doctor.mjs --propose | the doctor is this repo's deterministic graph judge (monotone refusal ledger + advisory heuristics      | an MCP surface for the repo toolchain, or a     |
+# |         |                                        | over the compiled artifact) — no builtin re-derives and diagnoses the site graph                       | nika-native graph doctor                        |
+
+nika: v1
+workflow:
+  id: graph-enrich
+  description: "Doctor proposes → bounded local model triages → PR brief lands. Advisory: a human merges."
+
+run:
+  # timeouts below ride a clock — say which one out loud.
+  clock: system
+
+# The triage seat is a LITERAL below, not a config interpolation: the
+# 2026-08-03 smoke run proved a check<->run gap on `${{ config.model }}`
+# inside `infer.model:` (check resolves it, the runtime handed the raw
+# string to the provider · NIKA-INFER-001 · trace 2026-08-03T13-55-14Z-690c).
+# Reported engine-side; when the gap closes, the seat may move back to
+# config. Until then: to redeploy on another seat, edit the model line.
+# Seat choice: a NON-thinking local model — the first smoke (trace 7677)
+# watched qwen3.5:4b spend all 2000 tokens inside its think block and
+# hand back an empty triage; llama3.2:3b answers in the open.
+
+permits:
+  # argv-array execs only, so the tight allowlist form applies: node, nothing else.
+  exec: ["node"]
+  tools: ["nika:date", "nika:write"]
+  # NO fs.read: no engine-mediated task reads a file (the doctor's own reads
+  # ride the exec verb, outside the fs bounds — a grant here would be dead
+  # authority, and dead read authority completes the lethal trifecta
+  # NIKA-SEC-009). For the reviewer, the doctor's read surface — cadastred by
+  # public/nika-graph.json .inputs[] — is: public/nika-graph.json ·
+  # public/engine/catalog/*.toml · public/{errors,providers,templates,tools}/
+  # catalog.json · .github/nika-{spec,engine}-pin.json · estate.yaml ·
+  # site.config.ts · pending-error-codes.ts · src/content/*.generated.ts ·
+  # scripts/graph/**.
+  fs:
+    # The ONLY file authority this workflow holds (the exact artifact, per
+    # --infer-permits — tighter than the .nika/out/graph-enrich/** bound it
+    # sits inside). No net axis: nothing egresses.
+    write:
+      - ".nika/out/graph-enrich/PROPOSALS.md"
+
+tasks:
+  propose:
+    timeout: "3m"
+    exec:
+      # Advisory judge: proposals ride stdout; a non-zero exit (3 holes ·
+      # 5 drift) is a NUMBER the brief reports, never a workflow failure —
+      # `capture: structured` is what turns the exit code into data.
+      command: ["node", "scripts/graph/doctor.mjs", "--propose"]
+      cwd: "."
+      capture: structured
+
+  stamp:
+    # Provenance date comes from the RUNTIME, never hardcoded.
+    invoke:
+      tool: "nika:date"
+      args: { op: "now" }
+
+  triage:
+    with:
+      doctor_report: ${{ tasks.propose.output.stdout }}
+    timeout: "10m" # a cold local model loads before it speaks
+    infer:
+      model: "ollama/llama3.2:3b"
+      max_tokens: 2000
+      prompt: |
+        You are the triage half of the nika.sh graph enrichment loop.
+        The deterministic graph doctor has already spoken. Its full report is
+        below. Its proposals are ONLY the lines starting with the ◇ mark under
+        the "proposals" heading — everything else is context, not a proposal.
+
+        Your job: for each ◇ proposal line, decide KEEP or REJECT.
+
+        Hard rules:
+        - Triage ONLY the doctor's ◇ proposal lines. Never invent, merge,
+          extend or reword an edge, a node id, or a hole the doctor did not
+          print — a proposal absent from the report does not exist for you.
+        - Exactly one line of justification per decision, anchored in the
+          proposal's own text: quote the ids it names.
+        - If the report contains no ◇ proposal lines, reply with exactly:
+          No proposals from the doctor — nothing to triage.
+
+        Answer in plain markdown, exactly two sections:
+
+        ## Keep
+        - <the proposal, shortened> — <one-line anchored reason>
+
+        ## Reject
+        - <the proposal, shortened> — <one-line anchored reason>
+
+        An empty section stays present, holding "- none".
+
+        Doctor report:
+        ${{ with.doctor_report }}
+
+  brief:
+    with:
+      stamp: ${{ tasks.stamp.output }}
+      exit_code: ${{ tasks.propose.output.exit_code }}
+      doctor_report: ${{ tasks.propose.output.stdout }}
+      triage: ${{ tasks.triage.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: ".nika/out/graph-enrich/PROPOSALS.md"
+        create_dirs: true
+        content: |
+          # Graph enrichment — triaged proposals (advisory)
+
+          > Provenance: written by workflow `graph-enrich`
+          > (`scripts/graph/enrich.nika.yaml`) on ${{ with.stamp }}.
+          > The doctor proposes · a bounded local model triages · **a human
+          > reviews and merges — PR-only**. Nothing here mutated the graph.
+
+          Doctor exit code: ${{ with.exit_code }}
+          (0 in-sync · 3 structural holes · 5 drift — advisory either way)
+
+          ## Triage
+
+          ${{ with.triage }}
+
+          ## Raw doctor report
+
+          ~~~
+          ${{ with.doctor_report }}
+          ~~~
+
+outputs:
+  doctor_exit_code:
+    value: ${{ tasks.propose.output.exit_code }}
+    description: "The doctor's own verdict on the committed graph (0 in-sync · 3 holes · 5 drift)"
+  triage:
+    value: ${{ tasks.triage.output }}
+    description: "The model's keep/reject sort of the doctor's proposals — advisory"
