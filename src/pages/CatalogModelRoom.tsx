@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { MODEL_SLUGS } from '../content/catalog-paths.generated'
 import { MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
+import { BENCH_BY_MODEL } from '../content/bench.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { crumbLd, termLd } from '../lib/ld'
@@ -149,6 +150,33 @@ export function Component() {
                   </span>
                 </div>
                 <p className="pv-desc">{e.source ?? ''}</p>
+              </li>
+            ))}
+          </ol>
+        </CatalogSection>
+      )}
+      {/* the bench · testimonial-gated by law (the R7 row): a measured claim
+          exists ONLY as the projection of a PUBLISHED receipt — a model with
+          no receipt gets NO section, never a fabricated number. Rows join by
+          the model id the workflow itself named. */}
+      {m && (BENCH_BY_MODEL[m.id] ?? []).length > 0 && (
+        <CatalogSection id="bench" title="The bench">
+          <ol className="tp-list">
+            {(BENCH_BY_MODEL[m.id] ?? []).map((b) => (
+              <li key={`${b.witness}/${b.seat}`} className="tp-row">
+                <div className="pv-row-head">
+                  <span className="pv-id">{(b.latency_ms / 1000).toFixed(1)}s to answer</span>
+                  <span className="tp-cat">
+                    {b.seat} · {b.chars} chars · {b.date}
+                  </span>
+                </div>
+                <p className="pv-desc">
+                  One run, one machine: a witness, never a benchmark suite.{' '}
+                  <a href={b.href}>The receipt</a> carries the artifact pin, the evidence pack
+                  (chain-verified) and the spend under its announced ceiling · or run it yourself:
+                  the <code>model-bench</code> workflow in the public registry, swap the seats for
+                  the models you have.
+                </p>
               </li>
             ))}
           </ol>

@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1564
+  classified_files: 1574
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1200
+    authored: 1209
     authored-pin: 3
-    generated: 302
+    generated: 303
     pinned-copy: 21
     testimonial: 38
     foreign: 0
-  unverified-default: 404
+  unverified-default: 411
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 7d4d709bedf17bec2ebfaa90dfcdc5faee3001443e731001784bc52b86d9c778
+  sha256: ce2eaeb7c8c48135578a805a42ddca75ddd0601810cf2ce85211809a28493998
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: f619dfd0e8e7af04f652697cef221293a75ab8a2ba02656c599cda11592c55e6
+  sha256: 2fe5a69b257fefa8b87afb4be17531cea1fdb92a65a5bb7c60fa76df41c16c3c
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 1a0f4ff6b185d2e911e4ac94a5a894d173cc5d75550d8a426b19f990919c264f
+  sha256: 48028059f9196a59fcb56e02d30b82e644b1968c51b3facfa46f4c99b802c58c
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 4645c6cfbe420024737ecf5c593dbb51cc3f1f1d2f20beac35c7f1680da09acb
+  sha256: 94b9b5e44b7eb87ddad2273f97709f86dbcef8427328bd0ab94c2467beeda8a2
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 5dedf8104dba16d006f65e9a687b013f40706e7cb5403e3da6da5d875129490a
+  aggregate_sha256: e6ebe80ed75434b934f91ca481694c5c081751390107a2e536bc89f60904919e
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -925,8 +925,8 @@ patterns:
     - "the release asset supernovae-st-nika-check-wasm-<v>.tgz"
 - glob: "src/**.generated.*"
   class: generated
-  match_count: 43
-  aggregate_sha256: ab2ce8ac85e1d278c71fe75488dfecf24f9607cc37d849fe390337806097e4b5
+  match_count: 44
+  aggregate_sha256: 1f68c1963b6d0f30b5a37e8383ff1da1167956c06a97112bdac7de3dd66e03aa
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -935,13 +935,13 @@ patterns:
     - "the gated sources each member's header declares (sets.yaml · content/ · public/ catalogs · the spec pin)"
 - glob: "src/**"
   class: authored
-  match_count: 427
-  aggregate_sha256: 08d376e6bfde6f5595c12697ac2293b8e37ad824d0c2e952e60e1bcd65215575
+  match_count: 428
+  aggregate_sha256: 7483fa673801d50ba9cdff9c02bf7bca18a0a7dc614638155fc727330499e6a7
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 93
-  aggregate_sha256: 4d175cda6d69687381c0b97f12e25f9694bded377c11a7f269836c90efe45db7
+  match_count: 94
+  aggregate_sha256: ce644640040f092c617c3b66501c147b475c59ad95928cd5df8e5923cec67c8d
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 403
-  aggregate_sha256: 42878f064e93bddd809cd09b375bc28e2e674bbd077a1d1e7eb491d08295dc88
+  match_count: 410
+  aggregate_sha256: ea64c423e758b396d8c42dcfd4aaee41d28d72628b15bea34cc7d3eeef9a5d3b
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -960,6 +960,13 @@ unverified:
 - "content/bench/2026-08-03-model-bench/evidence/journal.ndjson"
 - "content/bench/2026-08-03-model-bench/evidence/pack.json"
 - "content/bench/2026-08-03-model-bench/table.md"
+- "content/bench/2026-08-03-model-bench/witness.json"
+- "public/bench/2026-08-03-model-bench/PROVENANCE.md"
+- "public/bench/2026-08-03-model-bench/evidence/VERIFY.md"
+- "public/bench/2026-08-03-model-bench/evidence/journal.ndjson"
+- "public/bench/2026-08-03-model-bench/evidence/pack.json"
+- "public/bench/2026-08-03-model-bench/table.md"
+- "public/bench/2026-08-03-model-bench/witness.json"
 - "public/boundary/index.html"
 - "public/conformance/core/index.html"
 - "public/conformance/index.html"

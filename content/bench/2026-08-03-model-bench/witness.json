@@ -1,0 +1,26 @@
+{
+  "witness_format": 1,
+  "$comment": "The machine twin of PROVENANCE.md (the human prose stays the story, this file is the joinable facts). AUTHORED once per published run, from the run's own artifacts: the seats table must equal table.md row for row (bench.test.ts holds the two together), the trace facts must equal evidence/pack.json (same gate).",
+  "id": "2026-08-03-model-bench",
+  "date": "2026-08-03",
+  "artifact": {
+    "name": "model-bench",
+    "publisher": "supernovae-st",
+    "version": "0.1.0",
+    "source_repo": "supernovae-st/nika-spec",
+    "source_rev": "699ebb08585da2b4b908e8dac6ca584332fe0783",
+    "source_path": "examples/model-bench.nika.yaml",
+    "sha256": "beb1a3e86976636453211dd95f520a89ceed5d3087633a7b7ec21dc99582d298"
+  },
+  "engine": "0.107.2",
+  "platform": "macos/aarch64",
+  "machine": "operator dev machine · ollama · warm caches not controlled",
+  "ceiling_usd": 0.5,
+  "spent_usd": 0,
+  "trace_head": "01d62b824090421e9faafd3fdaafc93b3209d6ba7f14b01723e92d7b2c7efd34",
+  "seats": [
+    { "model": "ollama/qwen2.5:14b", "latency_ms": 29495, "chars": 298 },
+    { "model": "ollama/llama3.2:3b", "latency_ms": 36432, "chars": 355 },
+    { "model": "ollama/qwen2.5:0.5b", "latency_ms": 30862, "chars": 1517 }
+  ]
+}

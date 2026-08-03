@@ -812,12 +812,12 @@
     },
     {
       "path": "src/pages/CatalogModelRoom.tsx",
-      "source_blob": "e435651513f27b05ecc97c8315ca41a58280bb31",
+      "source_blob": "6ce0c2de80db349cd2564eb81800ad8ed6363a93",
       "blocks": [
         {
           "selector": "src/pages/CatalogModelRoom.tsx#pre:1",
           "kind": "jsx-pre",
-          "line": 86,
+          "line": 87,
           "sha256": "1cbded9b9d947b26e7ce25e107fd134e14a5274461650fa141352938c82bba79"
         }
       ]

@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "7d4d709bedf17bec2ebfaa90dfcdc5faee3001443e731001784bc52b86d9c778"
+   "sha256": "ce2eaeb7c8c48135578a805a42ddca75ddd0601810cf2ce85211809a28493998"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "1a0f4ff6b185d2e911e4ac94a5a894d173cc5d75550d8a426b19f990919c264f"
+   "sha256": "48028059f9196a59fcb56e02d30b82e644b1968c51b3facfa46f4c99b802c58c"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "0e7c461c7320eafcd8ddefa9577f4704ee44a12fd7245543dc09d573a34d55c6"
+   "sha256": "7eecc8e7ec333390b4946de0ff670e2c98da01bc852b94584ed562f5fb8fb2c4"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "3d5fafdd821089f6a76259b01f6ac174784314d2aac651b8e85deb8a0583177d"
+   "sha256": "fa3c92ae39a7f418f4a2aa081c531d55a1555ceda6236b98bf20e13bf52f17d8"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",

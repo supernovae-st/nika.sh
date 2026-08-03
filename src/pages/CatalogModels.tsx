@@ -5,6 +5,7 @@
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
+import { BENCH_WITNESSES } from '../content/bench.generated'
 import { ModelAxis } from './ModelAxis'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, useCatalogCargo, useCatalogHead } from './catalog-lib'
@@ -41,6 +42,20 @@ export function Component() {
       }
       crumb={{ to: '/catalog', label: 'The catalog' }}
     >
+      <CatalogSection id="bench" title="The bench">
+        {/* testimonial-gated (the R7 law): the count below is the count of
+            PUBLISHED receipts, projected from content/bench/ — never a
+            leaderboard of numbers nobody can re-derive */}
+        <p className="pv-desc">
+          {BENCH_WITNESSES.length} published{' '}
+          {BENCH_WITNESSES.length === 1 ? 'receipt' : 'receipts'}: a room shows a measured answer
+          only when a receipt names its model, with the evidence pack served beside it. Every other
+          seat: run it yourself · the <code>model-bench</code> workflow in the public registry
+          measures YOUR machine, and{' '}
+          <a href={`/bench/${BENCH_WITNESSES[0]?.id}/PROVENANCE.md`}>the first receipt</a> shows
+          what an honest one looks like.
+        </p>
+      </CatalogSection>
       <CatalogSection id="axis" title="The context axis">
         {/* the axis and the register COUNT DIFFERENT FACETS on purpose · say
             so, or the page reads as a contradiction (64 up top, 29 below) */}

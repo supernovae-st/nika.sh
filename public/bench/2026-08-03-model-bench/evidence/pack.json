@@ -1,0 +1,54 @@
+{
+  "boundary": {
+    "declared": true,
+    "permits": {
+      "fs": {
+        "read": [],
+        "write": [
+          "out/model-bench.md"
+        ]
+      },
+      "tools": [
+        "nika:jq",
+        "nika:write"
+      ]
+    },
+    "source": "journal"
+  },
+  "engine": {
+    "platform": "macos/aarch64",
+    "version": "0.107.2"
+  },
+  "evidence_format": 1,
+  "exported_at": 1785765047222,
+  "exported_by": "nika 0.107.2",
+  "inputs": null,
+  "receipt": {
+    "present": false,
+    "reason": "the receipt's certificate is a check-time artifact — pass --workflow <file> — the pack hash-checks it against the journal before trusting it"
+  },
+  "sandbox": {
+    "mode": "seatbelt",
+    "source": "journal"
+  },
+  "seal": {
+    "present": false
+  },
+  "trace": {
+    "chain": "intact",
+    "events": 19,
+    "head": "01d62b824090421e9faafd3fdaafc93b3209d6ba7f14b01723e92d7b2c7efd34",
+    "journal_sha256": "a73fb7a2ab88e7641c53d75a0c9a167d0085b7dbeab51c607eb4334c581e8a2a",
+    "note": null
+  },
+  "trifecta": null,
+  "unavailable": {
+    "inputs": "this journal predates input-origin journaling, or the workflow declares no inputs",
+    "trifecta": "the static verdict is computed at check time — pass --workflow <file> — the pack hash-checks it against the journal before trusting it"
+  },
+  "workflow": {
+    "name": "model-bench",
+    "semantic_hash": "96888184845052dceb7324ca83ec5d691cc86abe0bc3ffb9643db5cdc7543c30",
+    "semantic_hash_source": "journal"
+  }
+}
