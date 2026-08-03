@@ -41,6 +41,14 @@
    not an interactive control) — only the link itself carries the visible ring. */
 .skip-target {
   outline: none;
+  /* LE QUAI (the revealing footer) · the page rides ABOVE the pinned footer
+     and lifts off as you scroll — this wrapper is the curtain. Only z-order
+     here (no background: home + manifesto carry fixed hero canvases INSIDE
+     #main that a paint would bury; every page's own sections are opaque and
+     do the covering). relative+z-index never re-anchors fixed children —
+     only transform/filter would (the route-enter law below). */
+  position: relative;
+  z-index: 1;
 }
 .skip-target:focus,
 .skip-target:focus-visible {

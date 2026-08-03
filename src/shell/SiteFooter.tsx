@@ -41,6 +41,11 @@ import '../sections/v4-home.css'
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
+/* LA CONSTELLATION · the map's thesis as a living scene (lazy — the same
+   zero-entry law; the SSR truth is the height-reserved sky, the columns
+   below stay the readable index) */
+const FooterConstellation = lazy(() => import('../fx/FooterConstellation'))
+
 /* the funnel wiring the projection must not drop (the delegated listener in
    RootLayout reads [data-track]): which routes are funnel doors is a SHELL
    concern, so the map lives here — the nav descriptor stays structure-only. */
@@ -176,6 +181,10 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
      no-JS and reduced-motion stay fully visible by the same laws as every
      other v4 section) */
   const ref = useRevealOnce<HTMLElement>()
+  /* the sky mounts post-hydration only (the FooterSignature law) and never
+     for a lite-data visitor — the reserved band of grain is the honest
+     fallback either way */
+  const skyReady = useHydrated() && !prefersLiteData()
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
@@ -209,6 +218,21 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           <span className="sitefoot-doctrine">Every claim on this site derives from the spec</span>
         </div>
 
+        {/* THE SKY · the same graph seen from above: spec → six worlds →
+            every door a star (post-hydration; the band is height-reserved
+            sky in SSR — the grain field IS the empty state; lite-data keeps
+            it). The columns below remain the readable index — the scene is
+            a second projection, never the only door. */}
+        <div className="sitefoot-sky" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
+          {skyReady ? (
+            <Suspense fallback={<div className="sitefoot-sky-stage" aria-hidden />}>
+              <FooterConstellation />
+            </Suspense>
+          ) : (
+            <div className="sitefoot-sky-stage" aria-hidden />
+          )}
+        </div>
+
         {/* THE COLUMNS · one per WORLD, authored in the descriptor. They used
             to MIRROR the Reference panel's columns to avoid serializing them
             twice; the panels died with the nav table rase (2026-08-02) and the
@@ -219,6 +243,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
               className="sitefoot-col"
               key={col.kick}
               data-rise
+              data-world={i}
               style={{ ['--rise-delay' as string]: `${60 + i * 40}ms` }}
             >
               <p className="sitefoot-kick">
