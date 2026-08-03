@@ -343,14 +343,14 @@
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "129bc712693b76193e85b11757f2b76506d7fa1ec1348cb7ead7a042745f51a6",
+   "sha256": "0d35bcd709620c0b1aad991814e051cc07c19753b905ca42a67a61d4a4a2b95a",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "6643dc92042a19316a5be71612f5b84db11135d5bd5ef6a8ea24994c7a1d9faf",
+   "sha256": "e684dd3224af29345e264e081c88e55d63271dd731b55c08d0553c27b5ad73ae",
    "consumers": [
     "src/pages/Tools.tsx"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "bec7e88a165df895e7275f15084a744cf637f87f1ae4b287876003ca8e2ad9c2",
+   "sha256": "46348958fbdc69177517811b9e9bb455df609eb962c2b8769c3a404de737c36c",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]
