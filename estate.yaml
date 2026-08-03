@@ -219,7 +219,7 @@ files:
   evidence: "studio brand asset — exported artwork, no in-repo generator"
 - path: "public/humans.txt"
   class: authored
-  sha256: fed3ae45e20ef4c64e3ca9fd302bb6d60ef16b61db7fe708dab40a3e19ee8cf1
+  sha256: c0ba7ee0fd9dc29cd5a5861e97759645e070e2bc7728dfcf827615cd1586078c
   evidence: "hand-written humans.txt"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "public/i18n/untranslatables.json"
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 6339ba06eb7efb6b0950597e309de6c34ae95851b946924c321910aeddb702bb
+  sha256: 65171007c773548893033ed3cc76756f772bf88951e5fa56ab6ae9fb1913290b
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -555,7 +555,7 @@ files:
     - "supernovae-st/nika-spec@6ac29351a878 (tree 5f7143362bc1)"
 - path: "src/content.ts"
   class: authored
-  sha256: 5f0087a1893f1dab70668037a19523f434a889c6e4ec2a7af5a25fa593daf659
+  sha256: 4e2d2e1dd26d20631056979a9cc0141a921ca763d33df75642b8609d4ab81a41
   evidence: "hand-written content constants"
   note: "the ENGINE_VERSION constant is bot-healed on engine releases (.github/workflows/release-heal.yml → scripts/sync-version.mjs) — a bot-maintained field inside an authored file"
 - path: "src/content/errors.generated.ts"
@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@6ac29351a878 (tree 5f7143362bc1)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: 55916a1a1b717f4f3b172a8379ca15cb9b8b51d690ba93147071ea9da3688a0b
+  sha256: db03f3de14d9519333b677480c9fb91a70ccfa7c3e324ae5eb09c36e6560817a
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -615,7 +615,7 @@ files:
     - "supernovae-st/nika-spec@6ac29351a878 (tree 5f7143362bc1)"
 - path: "src/content/learn.ts"
   class: authored
-  sha256: d3efb6a8097662c9e9fba1987f82181206beb05406fd02903d2f2b7e6b21208d
+  sha256: 054004e218643d3963606014eaa82db23ec0fba538bc82568d095c7be65a12cc
   evidence: "hand-written learn-track copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
