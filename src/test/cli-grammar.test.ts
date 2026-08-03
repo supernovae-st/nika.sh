@@ -1,13 +1,8 @@
 // cli-grammar.test.ts — the site never teaches a command that exits rc=2.
 //
-// The recurring failure (the user gauntlet's dominant class, 2026-07-31:
-// « the tool teaches a command that breaks »): a verb dies upstream, the
-// site keeps printing it, and a first-time reader copies a line that the
-// shipped binary refuses. Three lived examples, all found on prod:
-//
-//   nika examples run 01-hello …   rc=2  unrecognized subcommand (V5 killed it)
-//   nika new <dest> --from <tpl>   rc=2  unexpected argument (V5 killed --from)
-//   nika audit                     rc=2  never existed — this site invented it
+// A verb moves upstream, the site keeps printing it, and a first-time
+// reader copies a line the shipped binary refuses. That reader does not
+// debug it; they close the tab.
 //
 // The gate: every `nika <verb>` in a LIVE TEACHING surface must name a verb
 // the pinned release actually has. The set below is AUTHORED and carries the
@@ -49,9 +44,9 @@ const LIVE_VERBS = new Set([
 
 /** verbs and flags MEASURED dead at the pin — each with what to say instead */
 const DEAD: Record<string, string> = {
-  'nika examples': 'the `examples` tree died in V5 — `nika try <slug>` is the showroom',
-  'nika audit': 'never existed — `nika check` prints the cost ceiling',
-  '--from': 'V5 killed `--from` — `nika new <template> <dest>.nika.yaml` is positional',
+  'nika examples': 'say `nika try <slug>` — the showroom door',
+  'nika audit': 'say `nika check` — it prints the cost ceiling',
+  '--from': 'say `nika new <template> <dest>.nika.yaml` — the template is positional',
 }
 
 /* live teaching surfaces · dated records and generated projections excluded */
