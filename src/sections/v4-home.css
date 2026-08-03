@@ -1523,15 +1523,8 @@
   width: 13px;
   height: 13px;
 }
-/* drawer hover · the whole world answers the pointer: its rule warms, its
-   glyph lifts to ink — the cabinet tells you which drawer your hand is on */
-.sitefoot-cols--six .sitefoot-col,
-.sitefoot-cols--five .sitefoot-col {
-  transition: border-color var(--dur-ui) var(--ease-ui);
-}
-.sitefoot-col:hover {
-  border-left-color: rgb(79 134 255 / 0.4);
-}
+/* card hover · the world answers the hand: its glyph lifts to ink (the
+   spotlight + ring + lift live in the card block above) */
 .sitefoot-col:hover .sitefoot-kick-ic {
   color: var(--v4-text);
 }
@@ -1651,32 +1644,48 @@
 .sitefoot-cols--six {
   margin-top: 0;
   border-top: none;
-  gap: 28px 0; /* the drawer rules own the horizontal rhythm now */
+  gap: 28px 24px;
   padding-top: 4px;
   padding-bottom: 36px;
 }
-/* THE CABINET · each world is a drawer: a vertical hairline opens it and
-   the content indents inside. The rules turn six floating lists into one
-   architectural plate (the blueprint made visible — same ink as every
-   horizontal rule). Phones drop the rules with the indent: two columns
-   of drawers would spend a third of the screen on furniture. */
+/* THE CARDS · the drawer hairlines die (operator: no rules) — the worlds
+   become card seats whose border EXISTS ONLY UNDER THE HAND: a cursor
+   spotlight (struck blue, the --mx/--my vars a delegated listener writes)
+   + an inset ring + a lift. The seat is PURE OVERLAY: negative margins
+   equal the padding, so the text sits exactly where the bare grid put it —
+   zero layout shift, the goldens' p-frames stay seated. Touch screens
+   keep the quiet plate (hover: hover gate). */
 .sitefoot-cols--six .sitefoot-col,
 .sitefoot-cols--five .sitefoot-col {
-  border-left: 1px solid var(--v4-line);
-  padding-left: 16px;
-  padding-right: 12px;
   min-width: 0;
+  margin: -12px -14px;
+  padding: 12px 14px;
+  border-radius: calc(var(--v4-radius) + 2px);
 }
-@media (max-width: 640px) {
+@media (hover: hover) and (pointer: fine) {
   .sitefoot-cols--six .sitefoot-col,
   .sitefoot-cols--five .sitefoot-col {
-    border-left: none;
-    padding-left: 0;
-    padding-right: 0;
+    transition: box-shadow var(--dur-ui) var(--ease-ui);
   }
-  .sitefoot-cols--five,
-  .sitefoot-cols--six {
-    gap: 28px 24px;
+  .sitefoot-col:hover {
+    background:
+      radial-gradient(
+        240px circle at var(--mx, 50%) var(--my, 40%),
+        rgb(79 134 255 / 0.09),
+        transparent 66%
+      );
+    box-shadow: inset 0 0 0 1px rgb(79 134 255 / 0.22);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .sitefoot-cols--six .sitefoot-col,
+    .sitefoot-cols--five .sitefoot-col {
+      transition:
+        box-shadow var(--dur-ui) var(--ease-ui),
+        transform 0.18s cubic-bezier(0.3, 0.7, 0.3, 1);
+    }
+    .sitefoot-col:hover {
+      transform: translateY(-2px);
+    }
   }
 }
 .sitefoot-cols--five {
@@ -1730,8 +1739,7 @@
   column-gap: 24px;
   align-items: baseline;
   margin: 0;
-  padding: 10px 0;
-  border-top: 1px solid var(--v4-line);
+  padding: 12px 0;
   font-family: var(--mono);
   font-size: var(--type-mini);
   text-align: left;
@@ -1772,8 +1780,7 @@
   column-gap: 24px;
   align-items: baseline;
   margin: 0;
-  padding: 10px 0;
-  border-top: 1px solid var(--v4-line);
+  padding: 12px 0;
   font-family: var(--mono);
   font-size: var(--type-mini);
   text-align: left;

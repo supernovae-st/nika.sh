@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { prefersLiteData } from '../lib/save-data'
@@ -185,6 +185,24 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
      for a lite-data visitor — the reserved band of grain is the honest
      fallback either way */
   const skyReady = useHydrated() && !prefersLiteData()
+
+  /* the spotlight's eye · ONE delegated pointermove on the columns nav
+     writes --mx/--my on the hovered card (CSS paints the light; no state,
+     no re-render — the FOOTER_TRACK delegation precedent) */
+  const colsRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const nav = colsRef.current
+    if (!nav || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const onMove = (e: PointerEvent) => {
+      const col = (e.target as Element).closest?.<HTMLElement>('.sitefoot-col')
+      if (!col) return
+      const r = col.getBoundingClientRect()
+      col.style.setProperty('--mx', `${e.clientX - r.left}px`)
+      col.style.setProperty('--my', `${e.clientY - r.top}px`)
+    }
+    nav.addEventListener('pointermove', onMove, { passive: true })
+    return () => nav.removeEventListener('pointermove', onMove)
+  }, [])
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
@@ -237,7 +255,7 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
             to MIRROR the Reference panel's columns to avoid serializing them
             twice; the panels died with the nav table rase (2026-08-02) and the
             footer carries its own rows now — one source, one map. */}
-        <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map">
+        <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map" ref={colsRef}>
           {FOOTER_COLS.map((col, i) => (
             <div
               className="sitefoot-col"
