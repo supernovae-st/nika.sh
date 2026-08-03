@@ -5669,14 +5669,14 @@
   {
    "data": {
     "by_class": {
-     "authored": 1228,
+     "authored": 1229,
      "authored-pin": 3,
      "foreign": 0,
      "generated": 311,
      "pinned-copy": 21,
      "testimonial": 38
     },
-    "classified_files": 1601,
+    "classified_files": 1602,
     "unverified": 427
    },
    "evidence": "estate.yaml summary block — rendered by the shared estate tool (byte-identical mirror at ESTATE_PIN)",

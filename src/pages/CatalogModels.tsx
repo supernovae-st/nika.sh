@@ -8,12 +8,24 @@ import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { BENCH_WITNESSES } from '../content/bench.generated'
 import { ModelAxis } from './ModelAxis'
 import { CatalogSection, CatalogShell } from './catalog-shared'
-import { fmtTokens, useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import './catalog-models.css'
 
 const DESC = `The ${CATALOG_COUNTS.models} models the released binary's wire catalog names · who serves each one, its context window, its exact-match price and its measured energy where the catalog carries them.`
 
-type Row = { id: string; slug: string; providers: string[]; ctx: number | null; priced: boolean; measured: boolean }
+type Row = {
+  id: string
+  slug: string
+  providers: string[]
+  ctx: number | null
+  priced: boolean
+  measured: boolean
+  /** the cheapest recorded OUTPUT seat, $/Mtok · null when unpriced */
+  out: number | null
+  /** any pricing row records open weights */
+  open: boolean
+}
 
 export function Component() {
   useCatalogHead('/catalog/models', 'Models', DESC, [
@@ -27,6 +39,14 @@ export function Component() {
       ctx: x.served_by[0]?.context_window_tokens ?? null,
       priced: x.pricing.length > 0,
       measured: x.energy.length > 0,
+      /* the recorded rows may carry null prices · only REAL numbers seat a tick */
+      out: (() => {
+        const outs = x.pricing
+          .map((r) => r.output_per_million)
+          .filter((v): v is number => v != null && v > 0)
+        return outs.length ? Math.min(...outs) : null
+      })(),
+      open: x.pricing.some((r) => r.open_weights === true),
     })),
   )
   return (
@@ -65,6 +85,64 @@ export function Component() {
         </p>
         <ModelAxis />
       </CatalogSection>
+      <CatalogSection id="price-axis" title="The price axis">
+        {/* the context axis's twin, cut from the /releases cadence cloth: every
+            PRICED model a tick-LINK at its cheapest recorded output seat, log
+            scale (the catalog spans three orders of magnitude), the accent on
+            the open-weights rows · derived from the vendored pricing, never
+            typed */}
+        <p className="pv-desc">
+          Every priced model, seated at its cheapest recorded output seat. The taller accent
+          ticks are open weights: the seats you could also host yourself.
+        </p>
+        {(() => {
+          const priced = (data ?? []).filter((m): m is Row & { out: number } => m.out != null && m.out > 0)
+          if (priced.length < 2) return null
+          const lo = Math.min(...priced.map((m) => m.out))
+          const hi = Math.max(...priced.map((m) => m.out))
+          const span = Math.log10(hi) - Math.log10(lo) || 1
+          const nudge = new Map<number, number>()
+          const openCount = priced.filter((m) => m.open).length
+          return (
+            <>
+              <div
+                className="cm-axis"
+                role="img"
+                aria-label={`${priced.length} priced models from ${fmtUsd(lo)} to ${fmtUsd(hi)} per million output tokens · ${openCount} open weights`}
+              >
+                {priced.map((m) => {
+                  const base = ((Math.log10(m.out) - Math.log10(lo)) / span) * 100
+                  const k = Math.round(base * 2)
+                  const nth = nudge.get(k) ?? 0
+                  nudge.set(k, nth + 1)
+                  return (
+                    <Link
+                      key={m.slug}
+                      to={`/catalog/models/${m.slug}`}
+                      className={m.open ? 'cm-tick cm-tick--open' : 'cm-tick'}
+                      style={{ left: `${Math.min(100, base + nth * 0.7)}%` }}
+                      title={`${m.id} · ${fmtUsd(m.out)} out/Mtok${m.open ? ' · open weights' : ''}`}
+                      aria-label={`${m.id} · ${fmtUsd(m.out)} per million output tokens${m.open ? ' · open weights' : ''}`}
+                    >
+                      <i aria-hidden />
+                    </Link>
+                  )
+                })}
+                <span className="cm-axis-label" style={{ left: '0%' }} aria-hidden>
+                  {fmtUsd(lo)}
+                </span>
+                <span className="cm-axis-label" style={{ left: '100%' }} aria-hidden>
+                  {fmtUsd(hi)}
+                </span>
+              </div>
+              <p className="cm-axis-foot">
+                {priced.length} priced · {fmtUsd(lo)} → {fmtUsd(hi)} out/Mtok · log scale ·{' '}
+                {openCount} open weights
+              </p>
+            </>
+          )
+        })()}
+      </CatalogSection>
       <CatalogSection id="register" title="The register">
         <ol className="tp-list">
           {(data ?? []).map((m) => (
@@ -73,10 +151,12 @@ export function Component() {
                 <Link className="pv-id" to={`/catalog/models/${m.slug}`}>
                   {m.id}
                 </Link>
-                <span className="tp-cat">
+                <span className="tp-cat cm-facts">
                   {m.providers.length} {m.providers.length === 1 ? 'seat' : 'seats'}
-                  {m.priced ? ' · priced' : ''}
+                  {m.ctx ? ` · ${fmtTokens(m.ctx)}` : ''}
+                  {m.out != null ? ` · ${fmtUsd(m.out)} out` : ''}
                   {m.measured ? ' · measured' : ''}
+                  {m.open && <span className="cm-open">⬡ open</span>}
                 </span>
               </div>
               <p className="pv-desc">

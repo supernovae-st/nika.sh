@@ -1,0 +1,96 @@
+/* ─── /catalog/models · the price axis + the seat bars ────────────────────────
+   The models world's second instrument, cut from the same cloth as the
+   /releases cadence (2px ticks · one hairline · anchored labels · the lone
+   accent): here the axis is PRICE (log scale · the cheapest recorded output
+   seat per model) and the accent belongs to the open-weights rows — the
+   sovereignty the catalog can prove. CSS carries no facts. */
+
+.cm-axis {
+  position: relative;
+  height: 64px;
+  margin-top: clamp(18px, 3vh, 28px);
+  border-bottom: 1px solid color-mix(in srgb, var(--v4-text) 14%, transparent);
+}
+.cm-tick {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  text-decoration: none;
+  outline-offset: 2px;
+}
+.cm-tick i {
+  display: block;
+  width: 2px;
+  height: 18px;
+  background: color-mix(in srgb, var(--v4-text) 32%, transparent);
+  transition: background var(--dur-ui) var(--ease-ui);
+}
+.cm-tick:hover i,
+.cm-tick:focus-visible i {
+  background: color-mix(in srgb, var(--v4-text) 78%, transparent);
+}
+/* open weights wear the accent · the register row seconds it with ⬡ + word */
+.cm-tick--open i {
+  height: 26px;
+  background: color-mix(in srgb, var(--v4-accent) 78%, var(--v4-text-dim));
+}
+.cm-tick--open:hover i,
+.cm-tick--open:focus-visible i {
+  background: var(--v4-accent);
+}
+.cm-axis-label {
+  position: absolute;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--v4-text) 46%, transparent);
+  white-space: nowrap;
+}
+.cm-axis-foot {
+  margin-top: 34px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--v4-text) 42%, transparent);
+}
+
+/* ── the register row's fact line · tabular, never prose ───────────────────── */
+.cm-facts {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cm-open {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  margin-left: 8px;
+  border: 1px solid color-mix(in srgb, var(--v4-accent) 34%, transparent);
+  color: color-mix(in srgb, var(--v4-accent) 72%, var(--v4-text));
+  white-space: nowrap;
+}
+
+/* ── the room's seat bars · window as a proportion of the model's widest ──── */
+.cm-bar {
+  position: relative;
+  height: 3px;
+  margin-top: 7px;
+  background: color-mix(in srgb, var(--v4-text) 8%, transparent);
+  overflow: hidden;
+}
+.cm-bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w, 100%);
+  background: color-mix(in srgb, var(--v4-text) 34%, transparent);
+}
+.cm-bar--widest i {
+  background: color-mix(in srgb, var(--v4-accent) 62%, var(--v4-text-dim));
+}

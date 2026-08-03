@@ -12,6 +12,7 @@ import { BENCH_BY_MODEL } from '../content/bench.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { crumbLd, termLd } from '../lib/ld'
+import './catalog-models.css'
 
 type CatalogModel = import('../content/catalog.generated').CatalogModel
 
@@ -89,29 +90,52 @@ export function Component() {
         </pre>
       </CatalogSection>
       <CatalogSection id="seats" title={`The seats · ${m?.served_by.length ?? '·'}`}>
-        <ol className="tp-list">
-          {(m?.served_by ?? []).map((s) => (
-            <li key={`${s.provider}/${s.alias}`} className="tp-row">
-              <div className="pv-row-head">
-                <span className="pv-id">
-                  {s.provider}/{s.alias}
-                </span>
-                <span className="tp-cat">
-                  {fmtTokens(s.context_window_tokens)} context · {fmtTokens(s.max_output_tokens)} out
-                </span>
-              </div>
-              <p className="pv-desc">
-                {s.provider_name}
-                {ROOMED_PROVIDERS.has(s.provider) && (
-                  <>
-                    {' · '}
-                    <Link to={`/catalog/providers/${s.provider}`}>the provider room</Link>
-                  </>
-                )}
-              </p>
-            </li>
-          ))}
-        </ol>
+        {/* the window bar (2026-08-03 · the instrument pass): each seat's
+            context as a proportion of the model's WIDEST seat — two seats
+            serving one model rarely read the same window, and a list of
+            numbers hides that; the accent marks the widest. Derived. */}
+        {(() => {
+          const widest = Math.max(0, ...(m?.served_by ?? []).map((s) => s.context_window_tokens ?? 0))
+          return (
+            <ol className="tp-list">
+              {(m?.served_by ?? []).map((s) => (
+                <li key={`${s.provider}/${s.alias}`} className="tp-row">
+                  <div className="pv-row-head">
+                    <span className="pv-id">
+                      {s.provider}/{s.alias}
+                    </span>
+                    <span className="tp-cat cm-facts">
+                      {fmtTokens(s.context_window_tokens)} context · {fmtTokens(s.max_output_tokens)} out
+                    </span>
+                  </div>
+                  {widest > 0 && s.context_window_tokens != null && (
+                    <div
+                      className={
+                        s.context_window_tokens === widest ? 'cm-bar cm-bar--widest' : 'cm-bar'
+                      }
+                      role="img"
+                      aria-label={`${fmtTokens(s.context_window_tokens)} of the widest seat's ${fmtTokens(widest)}`}
+                    >
+                      <i
+                        aria-hidden
+                        style={{ ['--w' as string]: `${Math.max(2, (s.context_window_tokens / widest) * 100)}%` }}
+                      />
+                    </div>
+                  )}
+                  <p className="pv-desc">
+                    {s.provider_name}
+                    {ROOMED_PROVIDERS.has(s.provider) && (
+                      <>
+                        {' · '}
+                        <Link to={`/catalog/providers/${s.provider}`}>the provider room</Link>
+                      </>
+                    )}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          )
+        })()}
       </CatalogSection>
       <CatalogSection id="price" title="The price">
         {m && m.pricing.length === 0 ? (
