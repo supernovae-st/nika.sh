@@ -76,3 +76,14 @@ export function fmtUsd(n: number | null | undefined): string {
   if (n == null) return '·'
   return `$${n}`
 }
+
+/* the MCP try-it block · ONE builder, rendered by CatalogMcpRoom and judged
+   by src/test/mcp-try-block.test.ts (AJV against the pinned schema with a
+   real tool ref — the oracle returned `✔ clean` on this exact shape
+   2026-08-03). invoke takes a MAPPING · the ref separator is `/` · the
+   grant lives in permits.tools with the FULL ref. Lives here, not in the
+   room, by the react-refresh law above (a component file exports only
+   components). */
+export function mcpTryBlock(id: string, slug: string): string {
+  return `nika: v1\nworkflow:\n  id: wire-${slug}\ntasks:\n  work:\n    invoke:\n      tool: "mcp:${id}/<tool>"\npermits:\n  tools: ["mcp:${id}/<tool>"]`
+}

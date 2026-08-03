@@ -6,20 +6,11 @@ import { Link, useLocation } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { MCP_SLUGS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
-import { useCatalogCargo, useCatalogHead } from './catalog-lib'
+import { mcpTryBlock, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { appLd, crumbLd } from '../lib/ld'
 import './catalog-models.css'
 
 type McpServerEntry = import('../content/catalog.generated').McpServerEntry
-
-/* the try-it block · ONE builder, rendered by the room and judged by
-   src/test/mcp-try-block.test.ts (AJV against the pinned schema with a real
-   tool ref — the oracle returned `✔ clean` on this exact shape 2026-08-03).
-   invoke takes a MAPPING · the ref separator is `/` · the grant lives in
-   permits.tools with the FULL ref. */
-export function mcpTryBlock(id: string, slug: string): string {
-  return `nika: v1\nworkflow:\n  id: wire-${slug}\ntasks:\n  work:\n    invoke:\n      tool: "mcp:${id}/<tool>"\npermits:\n  tools: ["mcp:${id}/<tool>"]`
-}
 
 export function Component() {
   const { pathname } = useLocation()

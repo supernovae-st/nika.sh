@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url'
 import Ajv2020 from 'ajv/dist/2020'
 import { parse } from 'yaml'
 import { describe, expect, it } from 'vitest'
-import { mcpTryBlock } from '../pages/CatalogMcpRoom'
+import { mcpTryBlock } from '../pages/catalog-lib'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const pinSchema = JSON.parse(
