@@ -255,13 +255,25 @@ export function Component() {
               </div>
               <div className="ins-step-body ins-step-body--stack">
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_YAML} filename="hello.nika.yaml" wrap tips />
+                  <CodeFile
+                    yaml={HELLO_YAML}
+                    filename="hello.nika.yaml"
+                    sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/hello.nika.yaml"
+                    wrap
+                    tips
+                  />
                 </div>
                 {/* the verdicts this exact file earns · captured from the real
                     binary (content/install.ts · the honesty law) */}
                 <TermCapture title={T.capture_title} lines={FIRST_RUN_TRANSCRIPT} command="nika check hello.nika.yaml" />
                 <div className="ins-frame v4-frame-canvas">
-                  <CodeFile yaml={HELLO_AI_YAML} filename="hello-ai.nika.yaml" wrap tips />
+                  <CodeFile
+                    yaml={HELLO_AI_YAML}
+                    filename="hello-ai.nika.yaml"
+                    sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/hello-ai.nika.yaml"
+                    wrap
+                    tips
+                  />
                 </div>
               </div>
             </li>
