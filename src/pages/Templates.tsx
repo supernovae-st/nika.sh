@@ -62,7 +62,11 @@ function TemplateRow({ entry, active }: { entry: TemplateEntry; active: boolean 
       </ul>
       {active ? (
         <div className="tm-skeleton">
-          <CodeFile yaml={entry.yaml} filename={entry.file} />
+          <CodeFile
+            yaml={entry.yaml}
+            filename={entry.file}
+            sourceHref={`${SPEC}/blob/main/templates/${entry.file}`}
+          />
           <p className="tm-pin" title="the copy-fidelity pin: the drift gate re-hashes this copy">
             sha256 {entry.sha256.slice(0, 16)}… · conformance-gated upstream ·{' '}
             <a href={`${SPEC}/blob/main/templates/${entry.file}`}>source</a>

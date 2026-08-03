@@ -183,11 +183,17 @@ export function Component() {
                   <span className="cl-year-count">conformance-gated upstream on every spec push</span>
                 </div>
                 <div className="td-usage">
+                  {/* The FULL corner, exactly as the home panel wears it —
+                      minimap + source ↗ + Copy. This site renders one yaml
+                      design everywhere; this call used to switch the minimap
+                      off ("the plan is drawn full-size above"), which made
+                      the template pages the one place the file card looked
+                      poorer than the home. Consistency outranks the
+                      redundancy argument: the corner IS the design. */}
                   <CodeFile
                     yaml={hit.yaml}
                     filename={hit.file}
-                    /* the skeleton page already draws this plan full-size */
-                    minimap={false}
+                    sourceHref={`${SPEC}/blob/main/templates/${hit.file}`}
                   />
                 </div>
                 <p className="td-pin">

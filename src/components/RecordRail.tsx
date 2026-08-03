@@ -40,7 +40,7 @@ export function RecordRail({ current }: { current: RecordView }) {
                   <span className="rec-rail-answers mono">{v.answers}</span>
                 </span>
               ) : (
-                <Link to={v.to} className="rec-rail-cell">
+                <Link to={v.to} className="rec-rail-cell" viewTransition>
                   <span className="rec-rail-label">{v.label}</span>
                   <span className="rec-rail-answers mono">{v.answers}</span>
                 </Link>

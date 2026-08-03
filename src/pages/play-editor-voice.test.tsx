@@ -178,3 +178,43 @@ describe('the live editor · rendered voice', () => {
     }
   })
 })
+
+/* ─── the palette reads the registry · the fallback is pinned, never a fork ───
+   The CF_* exports were eleven hand-typed hex values "matching" tokens.css,
+   and they had drifted (CF_BG said #0d0e12 · the canon says #0a0d12) — which
+   is how /play stopped looking like the static panels. They now read
+   `var(--cf-*, fallback)`. The var half is drift-proof by construction; the
+   FALLBACK half is still a copy, so this test holds it to the registry: every
+   fallback must byte-equal the value tokens.css / codefile.css declares.
+   A new hue lands in the registry first, or it does not land. */
+describe('the palette · var() over the registry, fallback pinned to it', () => {
+  it('every CF_ export reads var(--cf-…) and its fallback equals the registry value', async () => {
+    const fs = await import('node:fs')
+    const path = await import('node:path')
+    const voice = await import('./play-editor-voice')
+
+    const read = (rel: string) =>
+      fs.readFileSync(path.join(__dirname, '..', rel), 'utf8')
+    const registry = read('styles/tokens.css') + read('components/codefile.css')
+
+    const registryValue = (name: string) => {
+      // first declaration wins — tokens.css dark base, then codefile.css chrome
+      const m = registry.match(new RegExp(`${name}:\\s*([^;]+);`))
+      return m ? m[1].trim() : null
+    }
+
+    const exports_ = Object.entries(voice).filter(
+      ([k, v]) => k.startsWith('CF_') && typeof v === 'string',
+    ) as [string, string][]
+    expect(exports_.length).toBeGreaterThanOrEqual(11)
+
+    for (const [name, value] of exports_) {
+      const m = value.match(/^var\((--cf-[a-z-]+),\s*(.+)\)$/)
+      expect(m, `${name} must read var(--cf-…, fallback) · got "${value}"`).toBeTruthy()
+      const [, cssVar, fallback] = m!
+      const canon = registryValue(cssVar)
+      expect(canon, `${cssVar} must exist in the registry`).toBeTruthy()
+      expect(fallback, `${name} fallback diverges from the registry's ${cssVar}`).toBe(canon)
+    }
+  })
+})

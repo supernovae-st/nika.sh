@@ -28,17 +28,26 @@ import { tokenize, type Token } from '../components/codefile-highlight'
    heuristic. The lezer yaml language stays mounted for STRUCTURE only —
    indentation and folding — and paints nothing. */
 
-export const CF_BG = '#0d0e12'
-export const CF_LINE = 'rgb(255 255 255 / 0.07)'
-export const CF_GUTTER_INK = '#555b67'
-export const CF_REF = '#5fd3d1' /* the teal live-wiring accent (= --cf-ref) */
-export const CF_KEY = '#e7eaf0'
-export const CF_STR = '#9bd29a'
-export const CF_NUM = '#e6b873'
-export const CF_BOOL = '#c79bf2'
-export const CF_COMMENT = '#757c8a'
-export const CF_PUNCT = '#78808e'
-export const CF_PLAIN = '#aab0bb'
+/* The palette READS the design registry (styles/tokens.css) instead of
+   carrying a copy of it. This block used to be eleven hand-typed hex values
+   "matching" the --cf-* vars — and it had already drifted (CF_BG said
+   #0d0e12 while the canon says #0a0d12), which is exactly how /play stopped
+   looking like the static panels: a hand-typed mirror validates nothing and
+   rots quietly. Every consumer here lands in CSS (the CodeMirror theme is a
+   stylesheet · zero canvas/SVG-attr contexts, grep-verified), so var() is
+   safe everywhere; the fallback keeps a bare test-DOM readable and is NOT a
+   second registry — the parity test pins each fallback to tokens.css. */
+export const CF_BG = 'var(--cf-bg, #0a0d12)'
+export const CF_LINE = 'var(--cf-line, rgb(255 255 255 / 0.07))'
+export const CF_GUTTER_INK = 'var(--cf-gutter-ink, #555b67)'
+export const CF_REF = 'var(--cf-ref, #5fd3d1)' /* the teal live-wiring accent */
+export const CF_KEY = 'var(--cf-key, #e7eaf0)'
+export const CF_STR = 'var(--cf-str, #9bd29a)'
+export const CF_NUM = 'var(--cf-num, #e6b873)'
+export const CF_BOOL = 'var(--cf-bool, #c79bf2)'
+export const CF_COMMENT = 'var(--cf-comment, #757c8a)'
+export const CF_PUNCT = 'var(--cf-punct, #78808e)'
+export const CF_PLAIN = 'var(--cf-plain, #aab0bb)'
 
 /* ── token → decoration class · the ONE mapping ──────────────────────────────
    Mirrors the static panel's KIND_CLASS (CodeFile.tsx): every kind that

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { codeLd, crumbLd, ldScript } from '../lib/ld'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { routeHead } from '../content'
+import { SPEC, routeHead } from '../content'
 import { CodeFile } from '../components/CodeFile'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
@@ -137,7 +137,17 @@ export function Component() {
           {/* the file, whole · the same bytes the conformance gate runs on */}
           <div className="wf-file" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
             {yaml ? (
-              <CodeFile yaml={yaml} filename={lesson?.file} wrap tips />
+              <CodeFile
+                yaml={yaml}
+                filename={lesson?.file}
+                wrap
+                tips
+                sourceHref={
+                  lesson
+                    ? `${SPEC}/blob/${LESSONS_PIN.spec_commit}/examples/${lesson.file}`
+                    : undefined
+                }
+              />
             ) : (
               <p className="how-body">Loading the file…</p>
             )}
