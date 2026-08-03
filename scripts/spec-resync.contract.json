@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "56eff8807917948f3c424b955ee9c87ad165b9a1516a018f9c7cedef37f5d406",
+   "sha256": "d83df7b67ba74b746b1369c1aecb62d22ba256115ae5f729107c1f5abf36fcc0",
    "args": [
     "--write"
    ],
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "524d793337a8c66d2818be81a6f3b38e3c8b22096088e504ea0071a12330bdf6",
+   "sha256": "b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "11110265f74ef221597bfd44725c4883768b783d6242004c7416ce0bd7ccd329",
+   "sha256": "53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43",
    "args": [],
    "depends_on": [
     "website-palette"
