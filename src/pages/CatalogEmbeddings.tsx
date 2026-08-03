@@ -1,8 +1,9 @@
 /* ─── /catalog/embeddings · vector compatibility as compile-time fact ────────
    The embedding models the released binary names: dimensions, windows,
    similarity metric, price · the whole table on one honest page. */
+import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
-import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
+import { CATALOG_COUNTS, MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
@@ -16,6 +17,8 @@ type Row = {
   similarity: string | null
   input_per_million: number | null
 }
+
+const ROOMED_PROVIDERS = new Set(MARKET_PROVIDER_IDS)
 
 const DESC = `The ${CATALOG_COUNTS.embeddings} embedding models the released binary's catalog carries · dimensions, input windows, similarity metrics and price per million input tokens.`
 
@@ -89,7 +92,20 @@ export function Component() {
           {(data ?? []).map((e) => (
             <li key={e.id} className="tp-row">
               <div className="pv-row-head">
-                <span className="pv-id">{e.id}</span>
+                {/* the id's provider half is a door · the model half has no
+                    room (embeddings are rows, not pages) and never fakes one */}
+                {(() => {
+                  const cut = e.id.indexOf('/')
+                  const pv = cut > 0 ? e.id.slice(0, cut) : null
+                  return pv && ROOMED_PROVIDERS.has(pv) ? (
+                    <span className="pv-id">
+                      <Link to={`/catalog/providers/${pv}`}>{pv}</Link>
+                      {e.id.slice(cut)}
+                    </span>
+                  ) : (
+                    <span className="pv-id">{e.id}</span>
+                  )
+                })()}
                 <span className="tp-cat cm-facts">
                   {e.dimensions}d · {fmtTokens(e.max_input_tokens)} in · {e.similarity ?? '·'} ·{' '}
                   {fmtUsd(e.input_per_million)}/M

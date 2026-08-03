@@ -13,6 +13,7 @@ import { TickAxis } from '../components/TickAxis'
 import './catalog-models.css'
 
 type Row = import('../content/catalog.generated').EnergyRow
+type Cargo = { rows: Row[]; rooms: Record<string, string> }
 
 const DESC = `The ${CATALOG_COUNTS.energy_rows} measured energy rows the released binary carries · watt-hours per million output tokens, each with its measurement source printed verbatim.`
 
@@ -20,7 +21,11 @@ export function Component() {
   useCatalogHead('/catalog/energy', 'Energy', DESC, [
     collectionLd({ path: '/catalog/energy', name: 'Energy · Nika', description: DESC, total: CATALOG_COUNTS.energy_rows }),
   ])
-  const { payload, data } = useCatalogCargo<Row[]>('cat-energy', (m) => [...m.ENERGY_ROWS])
+  const { payload, data: cargo } = useCatalogCargo<Cargo>('cat-energy', (m) => ({
+    rows: [...m.ENERGY_ROWS],
+    rooms: Object.fromEntries(m.MODELS.map((x) => [x.id, x.slug])),
+  }))
+  const data = cargo?.rows
   return (
     <CatalogShell
       fig={`the energy · ${CATALOG_COUNTS.energy_rows} rows`}
@@ -83,7 +88,13 @@ export function Component() {
           {(data ?? []).map((e) => (
             <li key={`${e.provider}/${e.model_pattern}`} className="tp-row">
               <div className="pv-row-head">
-                <span className="pv-id">{e.model_pattern}</span>
+                {cargo?.rooms[e.model_pattern] ? (
+                  <Link className="pv-id" to={`/catalog/models/${cargo.rooms[e.model_pattern]}`}>
+                    {e.model_pattern}
+                  </Link>
+                ) : (
+                  <span className="pv-id">{e.model_pattern}</span>
+                )}
                 <span className="tp-cat cm-facts">
                   {e.wh_per_mtok_out} Wh/Mtok ·{' '}
                   {/* the vendor is a door: every one of the 38 has a room */}

@@ -2,13 +2,16 @@
    The rule table behind model_capabilities(provider, model): first match
    wins, in file order. The page shows the rules; the RESOLUTION stays the
    engine's · the site never re-implements it (the join-honesty law). */
+import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
-import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
+import { CATALOG_COUNTS, MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
 
 type Rule = { name: string; match_kind: string | null; providers: string[]; api_dialect: string | null }
+
+const ROOMED_PROVIDERS = new Set(MARKET_PROVIDER_IDS)
 
 const DESC = `The ${CATALOG_COUNTS.capability_rules} capability rules the released binary resolves models against · scope, match kind and order, first match wins.`
 
@@ -38,6 +41,15 @@ export function Component() {
       crumb={{ to: '/catalog', label: 'The catalog' }}
     >
       <CatalogSection id="rules" title="The rules, in resolution order">
+        {/* the derived summary · this table's facts are ORDER and SCOPE, and
+            order is already drawn by the list — the foot says the rest */}
+        {data && data.length > 0 && (
+          <p className="ax-foot" style={{ marginTop: 0 }}>
+            {data.length} rules · {new Set(data.map((r) => r.api_dialect).filter(Boolean)).size}{' '}
+            dialects · {data.filter((r) => r.providers.length > 0).length} provider-scoped · first
+            match wins
+          </p>
+        )}
         <ol className="tp-list">
           {(data ?? []).map((r, i) => (
             <li key={r.name} className="tp-row">
@@ -50,7 +62,21 @@ export function Component() {
                   {r.api_dialect ? ` · ${r.api_dialect}` : ''}
                 </span>
               </div>
-              {r.providers.length > 0 && <p className="pv-desc">scope: {r.providers.join(' · ')}</p>}
+              {r.providers.length > 0 && (
+                <p className="pv-desc">
+                  scope:{' '}
+                  {r.providers.map((pv, j) => (
+                    <span key={pv}>
+                      {j > 0 && ' · '}
+                      {ROOMED_PROVIDERS.has(pv) ? (
+                        <Link to={`/catalog/providers/${pv}`}>{pv}</Link>
+                      ) : (
+                        pv
+                      )}
+                    </span>
+                  ))}
+                </p>
+              )}
             </li>
           ))}
         </ol>
