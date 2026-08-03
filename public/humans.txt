@@ -9,7 +9,7 @@
 /* ORGANISM */
   Name:     Nika
   Kind:     Semantic YAML workflow engine for AI
-  Status:   0.107.0, shipping in the open (real semver toward the 1.0 launch)
+  Status:   0.107.2, shipping in the open (real semver toward the 1.0 launch)
   Mascot:   Butterfly (🦋, reserved for emergence)
 
 /* SITE */
