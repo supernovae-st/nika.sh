@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 8e8ea68717918e616037e82204c95cd8dba3767e03d07025a3a6ce1918a4c604
+  sha256: 893ffafcac1f6382ba8e83481ef79a1bcca3467a2bdeb6bb03a7e7532981bedc
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 9dbc97382f7f48c2dfd3378580ee3100b656164ca824f3a4efa2f3df6920a857
+  sha256: 7f59d457136ede3d563a2f952a9f2f7b3c4575a359091fd95245be4acf89cae1
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: b076f30872e91a9704716f393679f87cbdf2d99bfd2473d04db863d338ba435f
+  sha256: 75740ca5c08a4c908b5ca70e8607f7330d63b58ce4f515192b26df9c2cb76c80
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
