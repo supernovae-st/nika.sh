@@ -3,6 +3,10 @@ workflow:
   id: pin-the-artifact
   description: "content-address a file — the receipt survives the run"
 
+permits:
+  exec: true
+  tools: ["nika:hash"]
+
 tasks:
   artifact:
     exec:
