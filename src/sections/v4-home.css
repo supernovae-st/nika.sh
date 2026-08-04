@@ -1686,36 +1686,9 @@
     display: none;
   }
 }
-/* (the old map row css lived here — the row died into the grove's root
-   plate; git keeps the recipe) */
-.sitefoot-maprow {
-  display: none;
-}
-.sitefoot-maplink {
-  /* the cover line steps up one seat (type-ui → body-sm): the plate opens
-     on a title, not another row */
-  font-size: var(--type-body-sm);
-  font-weight: var(--fw-semibold);
-  letter-spacing: -0.01em;
-  color: var(--v4-text);
-  text-decoration: none;
-}
-.sitefoot-maplink:hover,
-.sitefoot-maplink:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.sitefoot-mapstar {
-  color: var(--v4-accent);
-  margin-right: 7px;
-  font-size: var(--type-plate);
-}
-.sitefoot-doctrine {
-  font-family: var(--mono);
-  font-size: var(--type-mini);
-  letter-spacing: 0.04em;
-  color: var(--v4-text-faint);
-}
+/* (the map row css lived here — the row and its cover/star/doctrine seats
+   died into the grove's root plate; no selector has a consumer left and
+   git keeps the recipe) */
 .sitefoot-cols--five,
 .sitefoot-cols--six {
   margin-top: 0;

@@ -66,7 +66,7 @@ files:
   evidence: "hand-kept node version pin"
 - path: "AGENTS.md"
   class: authored
-  sha256: 79f0ea8700900a9043db39986e6033897182e5f0e65b8f7e3b22df86665299d8
+  sha256: b1ed01db286bf270fb8f16836ceb149849eb20042d09673420e10c0d6102710b
   evidence: "hand-written agent entry per the AGENTS.md convention"
 - path: "BRAND.md"
   class: authored
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: f805e8573182fa77291c7038d16add840bc8621e9ba9b1497e018762ce3143da
+  aggregate_sha256: c6065d650a8236eec81aae10f98b66da504f135b873739081ceb3d4baca0394d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

@@ -145,6 +145,11 @@ said otherwise). Each script documents its flags in its own header.
   (content-visibility estimates — resolve selectors at use time) and
   `html { scroll-behavior: smooth }` hijacks bare programmatic
   `scrollTo` (drivers must pass `behavior: 'instant'`).
+- `probe-quai.mjs` — the footer's eye: scrolls to the DOCUMENT END (minus
+  an optional px offset) and captures. Exists because shoot-routes'
+  `--scroll-to` cannot reach pinned/sticky elements — a stuck element is
+  "already in view", so `scrollIntoView` is a no-op on every footer
+  selector. `node scripts/probe-quai.mjs <route> <out.png> [backPx]`.
 - `build-blog.mjs` / `build-errors.mjs` / `build-og-card.mjs` /
   `build-palette.mjs` — content compilers (blog markdown → generated
   module + RSS · error register · OG cards · the ⌘K corpus). Run
