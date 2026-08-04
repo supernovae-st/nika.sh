@@ -1,0 +1,60 @@
+/* ─── LES BOIS · the grove's DOM layer ───────────────────────────────────────
+   The canvas draws branches/stars/growth; every WORD here is a real link.
+   Leaves hang off their stem's rail: left worlds read right-aligned into
+   the rail, right worlds read left-aligned out of it. */
+.grove {
+  position: absolute;
+  inset: 0;
+}
+.grove canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.grove-head {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--v4-text-faint);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.grove-head:hover,
+.grove-head:focus-visible,
+.grove-head[data-lit] {
+  color: var(--v4-text);
+}
+.grove-leaf {
+  position: absolute;
+  transform: translateY(-50%);
+  max-width: 138px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--type-plate);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  transition: color var(--dur-ui) var(--ease-ui);
+}
+.grove-leaf[data-side='l'] {
+  transform: translate(-100%, -50%) translateX(-14px);
+  text-align: right;
+}
+.grove-leaf[data-side='r'] {
+  transform: translateY(-50%) translateX(14px);
+}
+.grove-leaf:hover,
+.grove-leaf:focus-visible,
+.grove-leaf[data-lit] {
+  color: var(--v4-text);
+}
+.grove-leaf:hover,
+.grove-leaf:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

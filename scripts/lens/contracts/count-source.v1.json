@@ -25,9 +25,9 @@
       "binary public assets"
     ],
     "count": 303,
-    "set_sha256": "7866a14810e88e9954aa7c174386ef2ff13776b0762f8c508a069a4368327da1",
+    "set_sha256": "e8d6fd00aac3aa90d8521263f99337a91fb35cdc41e4354f6cf306311df8509c",
     "rendered_count": 1032,
-    "rendered_set_sha256": "31f874345bad8727436960b0b232e9db2b67c7012ee3b1067f1d24f141c022d6"
+    "rendered_set_sha256": "60d078502c19f1e472ae07b2074158a61fdbfcd9b8f395e0a4ff6c01aa7e1b81"
   },
   "claim_count": 130,
   "bindings": [

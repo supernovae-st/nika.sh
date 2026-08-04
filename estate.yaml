@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 5ca3a7526aba0468ef33026f7cc56ecd9f54f161d195f2b5b379cd06ae389bb7
+  sha256: 326ba5c3c100c01473132ebe2d8351571a4041c8a498fdb74cbab81c9045579d
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: c3a3cbef05d5935e2d3d54d94e1c3956a3caed75b436bde0e4db29858c9eeb2a
+  sha256: f0e233cc5e6ad2f7bb22ff6afa2d177f372409f3a9e914bdc14bcbf44b6b71b4
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: e89bb7f20d3121e3d79ec942c1fe734a081d731e116f2e9c1a1ca2edb87d8385
+  aggregate_sha256: ad4939cb875763c26c944db884046849c735690dc14af6c5c146e048a4826877
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 2ba832a2dafb69527f3b684ed10da4099824a28f151d14856c76bae45b02abd6
+  aggregate_sha256: dca2b99b27b0cee10e578f54711debc1bca72172518de29168d5170d92fc3e80
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: baa8443bc433a45a9ff1c4993e57c2292fca6e73a84c650e51fcc992d039fed6
+  aggregate_sha256: f805e8573182fa77291c7038d16add840bc8621e9ba9b1497e018762ce3143da
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

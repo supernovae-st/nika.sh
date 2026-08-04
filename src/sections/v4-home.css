@@ -1592,28 +1592,104 @@
    footer's living particle butterfly. Bake script + generated file removed;
    git is the archive.) */
 
-/* THE SKY · the constellation band between the cover and the drawers — a
-   full-bleed window in the plate (the stage component reserves its own
-   height; this wrapper only spaces it) */
-.sitefoot-sky {
+/* ── LES BOIS · the grove stage (the map row + sky died into it) ─────────────
+   One scene: the ROOT plate (✦ SPEC · caption · THE MAP door) at the bottom
+   center, the living butterfly as the crown, the chunk's branches + labeled
+   leaf-links filling the antlers. SSR/no-JS truth = crown + root plate +
+   the plain columns below; once the tree stands (`:has(.grove)`), wide
+   screens retire the columns — the grove IS the index. */
+.sitefoot-grove {
+  position: relative;
   width: 100%;
-  margin-bottom: 6px;
+  height: clamp(430px, 38vw, 480px);
+  margin-bottom: 8px;
 }
-
-/* ── WO-3 · the six-column projection + the index bands (§4.12) ──────────────
-   The map row OPENS the plate (its rule is the one strong line); the columns
-   and every index band below share its grid. */
-.sitefoot-maprow {
-  width: 100%;
+.grove-crown {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  transform: translateX(-50%);
+}
+/* the crown keeps only the wings — the ROOT plate speaks the caption */
+.grove-crown .fsig {
+  margin: 0;
+  --fsig-size: 176px;
+}
+.grove-crown .fsig-caption {
+  display: none;
+}
+.grove-root-plate {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 24px;
-  margin-top: 0;
-  padding-block: 16px 12px;
-  border-top: 1px solid var(--v4-line-strong);
-  text-align: left;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
+}
+.grove-spec {
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.14em;
+  color: var(--v4-text);
+}
+.grove-caption {
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: 0.18em;
+  color: var(--v4-text-faint);
+}
+.grove-map {
+  font-family: var(--mono);
+  font-size: var(--type-plate);
+  letter-spacing: 0.1em;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.grove-map:hover,
+.grove-map:focus-visible {
+  color: var(--v4-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.grove-doctrine {
+  position: absolute;
+  right: 0;
+  bottom: 2%;
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: 0.04em;
+  color: var(--v4-text-faint);
+}
+/* wide screens · once the tree stands, the columns retire (no-JS keeps
+   them — honesty in pure CSS). 720/719.98 = the house pair (the census
+   ratchet): the grove is a wide-screen instrument, the 641-719 band reads
+   the lists like phones do. */
+@media (min-width: 720px) {
+  .sitefoot:has(.grove) .sitefoot-cols--six {
+    display: none;
+  }
+}
+@media (max-width: 719.98px) {
+  .sitefoot-grove {
+    height: 330px;
+  }
+  .grove {
+    display: none;
+  }
+  .grove-doctrine {
+    display: none;
+  }
+}
+/* (the old map row css lived here — the row died into the grove's root
+   plate; git keeps the recipe) */
+.sitefoot-maprow {
+  display: none;
 }
 .sitefoot-maplink {
   /* the cover line steps up one seat (type-ui → body-sm): the plate opens

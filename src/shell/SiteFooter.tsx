@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router'
-import { lazy, Suspense, useEffect, useRef } from 'react'
+import { lazy, Suspense } from 'react'
 import { useHydrated } from '../lib/use-hydrated'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { prefersLiteData } from '../lib/save-data'
@@ -41,10 +41,11 @@ import '../sections/v4-home.css'
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
-/* LA CONSTELLATION · the map's thesis as a living scene (lazy — the same
-   zero-entry law; the SSR truth is the height-reserved sky, the columns
-   below stay the readable index) */
-const FooterConstellation = lazy(() => import('../fx/FooterConstellation'))
+/* LES BOIS · the map as a neural tree (lazy — the zero-entry law). The
+   grove's leaves are REAL links rendered by the chunk; until it mounts
+   (or without JS) the plain columns below remain the index — the
+   `:has(.grove)` rule swaps them only when the tree actually stands. */
+const FooterGrove = lazy(() => import('../fx/FooterGrove'))
 
 /* the funnel wiring the projection must not drop (the delegated listener in
    RootLayout reads [data-track]): which routes are funnel doors is a SHELL
@@ -186,23 +187,10 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
      fallback either way */
   const skyReady = useHydrated() && !prefersLiteData()
 
-  /* the spotlight's eye · ONE delegated pointermove on the columns nav
-     writes --mx/--my on the hovered card (CSS paints the light; no state,
-     no re-render — the FOOTER_TRACK delegation precedent) */
-  const colsRef = useRef<HTMLElement>(null)
-  useEffect(() => {
-    const nav = colsRef.current
-    if (!nav || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
-    const onMove = (e: PointerEvent) => {
-      const col = (e.target as Element).closest?.<HTMLElement>('.sitefoot-col')
-      if (!col) return
-      const r = col.getBoundingClientRect()
-      col.style.setProperty('--mx', `${e.clientX - r.left}px`)
-      col.style.setProperty('--my', `${e.clientY - r.top}px`)
-    }
-    nav.addEventListener('pointermove', onMove, { passive: true })
-    return () => nav.removeEventListener('pointermove', onMove)
-  }, [])
+  /* the grove's geometry rides the lazy chunk (computeGrove) — the shell
+     only decides WHEN the tree may stand: post-hydration, wide pointer
+     surfaces, never lite-data */
+  const groveReady = skyReady
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
@@ -220,42 +208,45 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           the first pixel — masking it there would cut the field the other way. */}
       <div aria-hidden className="sitefoot-field" />
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
-        {/* THE SIGNATURE · the continuous living butterfly (F3) — Home
-            renders it above the final CTA instead (signature={false}:
-            one mark, one close) */}
-        {signature && <SignatureMark />}
-
-        {/* THE MAP ROW · the complete card opens on its cover (§4.12) */}
-        <div className="sitefoot-maprow" data-rise>
-          <Link to="/map" className="sitefoot-maplink">
-            <span aria-hidden className="sitefoot-mapstar">
-              ★
-            </span>
-            The map · every page, one graph
-          </Link>
-          <span className="sitefoot-doctrine">Every claim on this site derives from the spec</span>
-        </div>
-
-        {/* THE SKY · the same graph seen from above: spec → six worlds →
-            every door a star (post-hydration; the band is height-reserved
-            sky in SSR — the grain field IS the empty state; lite-data keeps
-            it). The columns below remain the readable index — the scene is
-            a second projection, never the only door. */}
-        <div className="sitefoot-sky" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
-          {skyReady ? (
-            <Suspense fallback={<div className="sitefoot-sky-stage" aria-hidden />}>
-              <FooterConstellation />
+        {/* LES BOIS · the map as a neural tree: the ROOT (✦ SPEC, where the
+            noise becomes the file) at the bottom center, antler branches
+            rising around the living butterfly, every internal door a
+            LABELED leaf — the tree IS the index on wide screens. The
+            wrapper is the SSR truth (root · caption · the map door ·
+            doctrine · butterfly); the branches and leaves stand with the
+            chunk. Home passes signature=false and keeps its butterfly
+            above the CTA — its grove grows leaves around an empty crown. */}
+        <div className="sitefoot-grove" data-rise>
+          {groveReady ? (
+            <Suspense fallback={null}>
+              <FooterGrove />
             </Suspense>
-          ) : (
-            <div className="sitefoot-sky-stage" aria-hidden />
+          ) : null}
+          {signature && (
+            <div className="grove-crown" aria-hidden>
+              <SignatureMark />
+            </div>
           )}
+          <div className="grove-root-plate">
+            <p className="grove-caption" aria-hidden>
+              the noise becomes the file.
+            </p>
+            <Link to="/map" className="grove-map">
+              THE MAP
+              <span aria-hidden className="acue acue--r">
+                {' '}
+                →
+              </span>
+            </Link>
+          </div>
+          <span className="grove-doctrine">Every claim on this site derives from the spec</span>
         </div>
 
         {/* THE COLUMNS · one per WORLD, authored in the descriptor. They used
             to MIRROR the Reference panel's columns to avoid serializing them
             twice; the panels died with the nav table rase (2026-08-02) and the
             footer carries its own rows now — one source, one map. */}
-        <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map" ref={colsRef}>
+        <nav className="sitefoot-cols sitefoot-cols--six" aria-label="Site map">
           {FOOTER_COLS.map((col, i) => (
             <div
               className="sitefoot-col"
