@@ -101,7 +101,7 @@ data language (jq) · workflows are callable · mock-first.
 - Engine source (AGPL): https://github.com/supernovae-st/nika
 - Why the engine is built this way (71 architecture decisions, read at the release pin): https://nika.sh/city/decisions · every decision with its status, the layers it binds and the decisions that cite it · the 59 settled ones open whole (e.g. https://nika.sh/city/decisions/adr-001) and the 12 still proposed keep their row · machine surfaces: https://nika.sh/engine/adr/index.json (every cross-reference edge) and https://nika.sh/engine/adr/bodies.json (the settled decisions, lexed)
 - Where every piece lives (which repo ships what, and at which pin this site read it): https://nika.sh/city · two clocks govern the ecosystem, the spec pin for the language and the engine pin for what the released binary knows
-- Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-agents
+- Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-plugins
 - Editor lane (VS Code · Cursor · Windsurf: syntax, diagnostics, DAG view; files validate against https://nika.sh/spec/v1/workflow.schema.json via the yaml-language-server line): https://github.com/supernovae-st/nika-vscode
 - Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)
 - Docs: https://docs.nika.sh
