@@ -42,7 +42,7 @@ buildings:
     role: "the editor extension (Marketplace + OpenVSX) — lockstepped to engine releases"
     evidence: "engine README city fence (D-2026-07-29-N10)"
   - id: agents
-    repo: supernovae-st/nika-agents
+    repo: supernovae-st/nika-plugins
     root: neither
     role: "the agent-client marketplace kit (skills · MCP doors · subagents)"
     evidence: "engine README city fence (D-2026-07-29-N10)"
