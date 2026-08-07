@@ -216,8 +216,8 @@ export function Component() {
               <a className="pf-ref" href="/ontology/language.json">
                 <span className="pf-ref-k">twin</span>this site as data · /ontology/language.json
               </a>
-              <a className="pf-ref" href="https://github.com/supernovae-st/nika-agents">
-                <span className="pf-ref-k">kit</span>the agents kit · nika-agents
+              <a className="pf-ref" href="https://github.com/supernovae-st/nika-plugins">
+                <span className="pf-ref-k">kit</span>the agents kit · nika-plugins
               </a>
             </p>
           </section>
