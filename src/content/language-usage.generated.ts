@@ -211,7 +211,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 7
+        "firstLine": 11
       }
     },
     "templates": [],
@@ -265,7 +265,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 7
+        "firstLine": 11
       }
     },
     "templates": [],
@@ -929,7 +929,7 @@ export const WORD_USAGE: Record<string, WordUsage> = {
       "source": {
         "kind": "crafted",
         "file": "hash.nika.yaml",
-        "firstLine": 7
+        "firstLine": 11
       }
     },
     "templates": [],

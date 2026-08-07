@@ -357,7 +357,7 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "d733bab11d441497f8286bd928381133f2fd1d6a6de495503f27449ce87a5e02",
+   "sha256": "168ee68770ea4b57bf3ac8c7e73cc6c52ec5434dc52c2efa29443b925b00f426",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -371,7 +371,7 @@
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "57241c55483037505349894be0533e1779969df651ea1058719c5a0e81667c50",
+   "sha256": "3e8bf005e57c94e65120a51b132765f67323a32fc2bb46d2e95b68d777b32253",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]

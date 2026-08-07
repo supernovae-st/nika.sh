@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 8690c36bf2041c93d731acf2d9083b8301307f5034d8c7ca3acd0e148f0302f2
+  sha256: a18ff3b1bb73513f5aa70fe92bb046f4155afae7ad84f1694af3c1098da9d8f0
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: f0e233cc5e6ad2f7bb22ff6afa2d177f372409f3a9e914bdc14bcbf44b6b71b4
+  sha256: a283bd9d2d26b96b07cfe4c80c4d57d1678c88c72d5aafb533bdb87ab8744715
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 0648fdf6c336e74ab8e28e26082fb5b482110fd26c68b1ceba3ab232f1abe2f1
+  sha256: a7f45912d4b2ab0549163267cbf06eb95a77795c6b3c22cab7ad895d504743f7
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -595,7 +595,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/language-usage.generated.ts"
   class: generated
-  sha256: 57241c55483037505349894be0533e1779969df651ea1058719c5a0e81667c50
+  sha256: 3e8bf005e57c94e65120a51b132765f67323a32fc2bb46d2e95b68d777b32253
   evidence: "declared output of resync contract generator 'website-language-usage' (supernovae-st/nika.sh scripts/build-language-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-language-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -670,7 +670,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/tool-usage.generated.ts"
   class: generated
-  sha256: d733bab11d441497f8286bd928381133f2fd1d6a6de495503f27449ce87a5e02
+  sha256: 168ee68770ea4b57bf3ac8c7e73cc6c52ec5434dc52c2efa29443b925b00f426
   evidence: "declared output of resync contract generator 'website-tool-usage' (supernovae-st/nika.sh scripts/build-tool-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-tool-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: c6065d650a8236eec81aae10f98b66da504f135b873739081ceb3d4baca0394d
+  aggregate_sha256: 5b6d0affeafc3d1b5b48b97498d03455eef9e0d948894554608e5a8175cf870b
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
