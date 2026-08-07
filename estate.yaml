@@ -86,7 +86,7 @@ files:
   evidence: "its own header: 'Bump deliberately: edit this' · the rev the shared estate tool is mirrored from, and the INPUT the mirror gate compares against"
 - path: "README.md"
   class: authored
-  sha256: 9e83db74477ab2c5bf6b0243c7425e68f4bf4f2a40ec7fd893f07c164295fe11
+  sha256: 806e44970cbed10b7828217243dc5f2ad353e788240defcecb7d55a60b22f27a
   evidence: "prose entry surface · no generation marker"
 - path: "SECURITY.md"
   class: authored
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 5cc051798176dd28a09f8b86d9a9952ddf361617cc7d3400e671e82a02f82dc6
+  sha256: 10f5519ff149dd79b3042bcd26a3b470c508948139bcc6a46736927e1d687500
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -466,7 +466,7 @@ files:
     - "supernovae-st/nika-estate@<ESTATE_PIN>:scripts/estate.py"
 - path: "scripts/graph/city.yaml"
   class: authored
-  sha256: 9f04d7fff35ef46feb00dee67f57595b2393d6c8723d874f86a25f0783a350d2
+  sha256: 52820c1db2ba954dc896dac2d223b77096acf18518e9af3458154405f9a5cf64
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
@@ -885,7 +885,7 @@ patterns:
 - glob: "content/tool-usage/*.nika.yaml"
   class: authored
   match_count: 17
-  aggregate_sha256: ab52e7c987b733e80516a969ead4a241d8131f4ac109bc5761bd76e4a303c90e
+  aggregate_sha256: fccf165fba37d93d8488ee60fefc44f44874c3fa42f558f66a42fc5071474c2a
   evidence: "crafted minimal usage workflows (nika-check green) — inputs of scripts/build-tool-usage.mjs (its marker cites them)"
 - glob: "content/provider-usage/*.nika.yaml"
   class: authored
