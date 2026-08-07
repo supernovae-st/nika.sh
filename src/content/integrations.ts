@@ -61,7 +61,7 @@ const AGENT_KIT = {
   ],
 }
 
-const AGENTS_REPO = 'https://github.com/supernovae-st/nika-agents'
+const AGENTS_REPO = 'https://github.com/supernovae-st/nika-plugins'
 
 export const INTEGRATIONS: IntegrationEntry[] = [
   /* ── the clients · plug it into what you already run ─────────────────── */
@@ -75,7 +75,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     what: 'One plugin install hands the agent the whole kit: 4 skills, 3 subagents, 6 slash commands, the read-only MCP oracle and the seatbelt hooks.',
     how: 'The agent authors a plain-text workflow it can `nika check` before a token is spent and `nika trace verify` after. The oracle answers read-only (check · inspect · explain · schema · examples · template · canon · catalog · tools); the subagents author, debug and migrate; `/nika:check` is one keystroke. Updating is TWO rungs by design: refresh the marketplace clone, then move the install. The reason is that an install once sat three releases behind, silently, with a fresh clone right next to it.',
     install: [
-      { text: 'Add the marketplace', code: 'claude plugin marketplace add supernovae-st/nika-agents' },
+      { text: 'Add the marketplace', code: 'claude plugin marketplace add supernovae-st/nika-plugins' },
       { text: 'Install the kit', code: 'claude plugin install nika@nika' },
       { text: 'Update, both rungs', code: 'claude plugin marketplace update nika && claude plugin update nika@nika' },
     ],
@@ -101,7 +101,7 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     what: 'Codex installs the identical plugin kit from the identical repo: skills, subagents, commands, the MCP oracle.',
     how: 'One marketplace, every client: the kit is authored once and served to Claude Code and Codex from the same source, so the delegation idiom never forks. The agent drafts the workflow, `nika check` audits it before anything runs, the trace verifies after.',
     install: [
-      { text: 'Add the marketplace', code: 'codex plugin marketplace add supernovae-st/nika-agents' },
+      { text: 'Add the marketplace', code: 'codex plugin marketplace add supernovae-st/nika-plugins' },
       { text: 'Install the kit', code: 'codex plugin add nika@nika' },
       { text: 'Upgrade later', code: 'codex plugin marketplace upgrade nika' },
     ],
@@ -179,14 +179,14 @@ export const INTEGRATIONS: IntegrationEntry[] = [
     what: 'The Hermes-facing skill teaches the delegation idiom: Hermes orchestrates, Nika executes. Repeatable work leaves the chat and becomes a checkable file.',
     how: 'The skill ships in the agentskills.io shape, so any skills.sh-compatible client can install it. The agent keeps the conversation; the workflow file keeps the work: checked before it runs, traced after, reusable forever.',
     install: [
-      { text: 'Tap the marketplace', code: 'hermes skills tap add supernovae-st/nika-agents' },
-      { text: 'Any skills.sh client', code: 'npx skills add supernovae-st/nika-agents' },
+      { text: 'Tap the marketplace', code: 'hermes skills tap add supernovae-st/nika-plugins' },
+      { text: 'Any skills.sh client', code: 'npx skills add supernovae-st/nika-plugins' },
     ],
     doors: [
       { label: 'the skeletons it reaches for', href: '/workflows/skeletons' },
       { label: 'the cost line it respects', href: '/how/boundary' },
     ],
-    external: [{ label: 'skills.sh listing', href: 'https://skills.sh/supernovae-st/nika-agents' }],
+    external: [{ label: 'skills.sh listing', href: 'https://skills.sh/supernovae-st/nika-plugins' }],
   },
   {
     id: 'mcp',
@@ -358,6 +358,6 @@ export const FULL_KIT: { text: string; code: string }[] = [
   { text: 'the editor', code: 'code --install-extension supernovae.nika-lang' },
   {
     text: 'the agent',
-    code: 'claude plugin marketplace add supernovae-st/nika-agents && claude plugin install nika@nika',
+    code: 'claude plugin marketplace add supernovae-st/nika-plugins && claude plugin install nika@nika',
   },
 ]
