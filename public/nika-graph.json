@@ -2970,7 +2970,7 @@
   },
   {
    "data": {
-    "repo": "supernovae-st/nika-agents",
+    "repo": "supernovae-st/nika-plugins",
     "role": "the agent-client marketplace kit (skills · MCP doors · subagents)",
     "root": "neither"
    },
@@ -2979,7 +2979,7 @@
    "id": "building/agents",
    "lands": "casse-wave (train 0.107 · /city/:building · D2)",
    "provenance": "supernovae-st/nika.sh · scripts/graph/city.yaml (site voice · authored against the city canon)",
-   "title": "supernovae-st/nika-agents",
+   "title": "supernovae-st/nika-plugins",
    "url": null
   },
   {
