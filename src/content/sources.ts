@@ -96,7 +96,7 @@ export const SRC = {
   mcp: {
     kind: 'mcp',
     label: 'the MCP oracle',
-    href: 'https://github.com/supernovae-st/nika-agents',
+    href: 'https://github.com/supernovae-st/nika-plugins',
     hint: 'nika_schema · nika_explain · nika_check: read-only tools your agent loads',
   } as SourceLink,
   editor: {
