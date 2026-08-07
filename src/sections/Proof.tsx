@@ -64,7 +64,7 @@ const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
   {
     fig: '9.7',
     claim: 'Replayable trace.',
-    detail: 'Every run leaves a hash-chained NDJSON trace: nika trace verify walks the chain and names the first broken link. Same file, same steps, same order: run it again and diff it like code.',
+    detail: 'Every run leaves a hash-chained NDJSON trace: every task, and every agent tool call, in the same chain · nika trace verify walks it and names the first broken link. Same file, same steps, same order: run it again and diff it like code.',
   },
   {
     fig: '9.8',
@@ -75,6 +75,11 @@ const GUARANTEES: { fig: string; claim: string; detail: string }[] = [
     fig: '9.9',
     claim: 'Priced before it spends.',
     detail: 'nika check prints the plan’s cost floor before a token is spent, and --max-cost-usd is a hard ceiling: a plan whose floor exceeds it never starts.',
+  },
+  {
+    fig: '9.10',
+    claim: 'Crash-resume without a server.',
+    detail: 'The trace a run already writes is the checkpoint · --resume is a reader of a file, not a client of a run-store: no supervisor, no database. Two hashes decide skip-or-rerun, recorded work replays instead of re-calling the model, and a cache hit is never silent.',
   },
 ]
 
@@ -89,7 +94,8 @@ export default function Proof() {
         <SectionHead fig="12" id="proof-title" title={<>The control is the proof.</>}>
           No logos to borrow, no quotes to dress up. Just what the engine{' '}
           <b>guarantees</b>: review before it acts · enforced permissions ·
-          hash-chained trace · priced before it spends · portable off any
+          hash-chained trace · priced before it spends · crash-resume without a
+          server · portable off any
           platform: verifiable in the open spec and the one binary you install.
         </SectionHead>
 
