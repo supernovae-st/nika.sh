@@ -219,7 +219,7 @@ files:
   evidence: "studio brand asset — exported artwork, no in-repo generator"
 - path: "public/humans.txt"
   class: authored
-  sha256: c0ba7ee0fd9dc29cd5a5861e97759645e070e2bc7728dfcf827615cd1586078c
+  sha256: 1470d48c884a458bd62506355d9e45e8b2e62840783fe4bd9d541cfb93f331c3
   evidence: "hand-written humans.txt"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "public/i18n/untranslatables.json"
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 10f5519ff149dd79b3042bcd26a3b470c508948139bcc6a46736927e1d687500
+  sha256: ef4fd3193e984a23983c319a84b8ca971bfd9713d306d622a9d468609d966f05
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: a283bd9d2d26b96b07cfe4c80c4d57d1678c88c72d5aafb533bdb87ab8744715
+  sha256: 925e0271c1f904a22e32ce7cab607a92e9d2d868ad8b5bbbd4b9ae7b4fcac339
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -555,7 +555,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content.ts"
   class: authored
-  sha256: 4e2d2e1dd26d20631056979a9cc0141a921ca763d33df75642b8609d4ab81a41
+  sha256: 6ec3361882f8cd729edb8637a4758e0742f1a0e4ead6f4a85aad20efd69f7ab1
   evidence: "hand-written content constants"
   note: "the ENGINE_VERSION constant is bot-healed on engine releases (.github/workflows/release-heal.yml → scripts/sync-version.mjs) — a bot-maintained field inside an authored file"
 - path: "src/content/errors.generated.ts"
@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: 78cb9b8a967851150aab810c14e3a2ee2b608ae0d210c98da101dc85c4a5aace
+  sha256: 459e5993e934060838c3809937d2493183dbfc04761b33debb1fa78e2a93f59c
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -615,7 +615,7 @@ files:
     - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
 - path: "src/content/learn.ts"
   class: authored
-  sha256: ee3f4724eb7ebdb00082c3456ec6ba41283455ef9838669e5bf7a9cbdcd96401
+  sha256: 65ee8b381d304cf52c8fc65a7b5ffb2d743dc49826d9f1ee4136a2bb936cad49
   evidence: "hand-written learn-track copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: dca2b99b27b0cee10e578f54711debc1bca72172518de29168d5170d92fc3e80
+  aggregate_sha256: e87c5364ff0dd9214bf6c1144276ba848b64cfbf86b9cbac16c5c7ccb1e65e90
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: b3821b1e1fc12fd6d413d934c60be7b9dc0095fd1ea355c791b80c0031d50943
+  aggregate_sha256: 313113a209f869ef6b200ba7b71ab161a20072cb84d9a66860f219604c11354f
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
