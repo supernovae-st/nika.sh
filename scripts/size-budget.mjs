@@ -306,6 +306,13 @@
      as designed. Union measured 422.0 · margin ~1.0 (the bite-on-growth
      grammar holds).
 
+   2026-08-08 · 423 → 424 · THE 0.108 SHIP-LOG ENTRY (the release heal).
+     The access layer's register line joins the entry-resident ship log
+     and the record gains its 23rd room — the changelog-catchup class
+     (370→372) arriving with an engine release, deliberately: content,
+     not code. Measured 423.3 · margin ~0.7 (the bite-on-growth grammar
+     holds).
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -313,7 +320,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 423
+const BUDGET_KB = 424
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
