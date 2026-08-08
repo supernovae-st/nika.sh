@@ -1,5 +1,5 @@
 {
-  "version": "0.107.2",
+  "version": "0.108.0",
   "embedded_extra": 21,
   "providers": [
     {
@@ -204,7 +204,7 @@
       "env_var": "ANTHROPIC_API_KEY",
       "requires_key": true,
       "api_dialect": "anthropic",
-      "default_model": "claude-sonnet-4-20250514",
+      "default_model": "claude-sonnet-4-6",
       "cheap_model": "claude-haiku-4-5-20251001",
       "aliases": [
         "claude"
@@ -222,7 +222,7 @@
       "models": [
         {
           "id": "sonnet",
-          "model": "claude-sonnet-4-20250514",
+          "model": "claude-sonnet-4-6",
           "context_window_tokens": 200000,
           "max_output_tokens": 8192,
           "capabilities": {
@@ -474,7 +474,7 @@
       "env_var": "OPENROUTER_API_KEY",
       "requires_key": true,
       "api_dialect": "openai-chat",
-      "default_model": "anthropic/claude-sonnet-4-20250514",
+      "default_model": "anthropic/claude-sonnet-4-6",
       "cheap_model": "anthropic/claude-haiku-4-5-20251001",
       "aliases": [
         "or"
@@ -486,7 +486,7 @@
       "models": [
         {
           "id": "default",
-          "model": "anthropic/claude-sonnet-4-20250514",
+          "model": "anthropic/claude-sonnet-4-6",
           "context_window_tokens": 128000,
           "max_output_tokens": 4096,
           "capabilities": {

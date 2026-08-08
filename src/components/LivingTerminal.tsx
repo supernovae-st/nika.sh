@@ -25,7 +25,7 @@ interface HistoryItem {
 
 const normalize = (s: string) => s.trim().replace(/\s+/g, ' ')
 
-/* the engine prints its own doors (« full docs: https://nika.sh/errors/… ») —
+/* the engine prints its own doors (« full docs: https://nika.sh/language/errors/… ») —
    the terminal makes them WALKABLE (the U1 door law extended): site URLs
    become internal links, byte-verbatim text around them */
 function linkify(text: string, key: number) {

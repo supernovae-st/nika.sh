@@ -20,7 +20,7 @@ import './errors-page.css'
 import { wordRoom } from '../lib/rooms'
 
 /* ─── /errors/:code · one refusal, one room (theme-dark) ──────────────────────
-   The engine stamps `docs_url: https://nika.sh/errors/<CODE>` on every
+   The engine stamps `docs_url: https://nika.sh/language/errors/<CODE>` on every
    check finding (the rustc --explain move) — THIS page is where that link
    lands now: a room ABOUT the code, not the whole register re-served with
    a highlight (the duplicate-content class the 2026-07-24 audit named).

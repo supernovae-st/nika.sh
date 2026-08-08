@@ -734,7 +734,7 @@
     },
     {
       "path": "src/components/LivingTerminal.tsx",
-      "source_blob": "454f06c4e774411d4e5f948dbb3552ca49f0522e",
+      "source_blob": "b37f07250222203e19bde66cbd9f226743334d4a",
       "blocks": [
         {
           "selector": "src/components/LivingTerminal.tsx#pre:1",

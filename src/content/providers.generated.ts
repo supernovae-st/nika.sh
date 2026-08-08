@@ -36,7 +36,7 @@ export interface ProviderEntry {
   models: ProviderModelEntry[]
 }
 
-/** The spec-named providers, presentation-law order. Engine at generation: "0.107.2". */
+/** The spec-named providers, presentation-law order. Engine at generation: "0.108.0". */
 export const PROVIDERS: ProviderEntry[] = [
   {
     "id": "ollama",
@@ -240,7 +240,7 @@ export const PROVIDERS: ProviderEntry[] = [
     "env_var": "ANTHROPIC_API_KEY",
     "requires_key": true,
     "api_dialect": "anthropic",
-    "default_model": "claude-sonnet-4-20250514",
+    "default_model": "claude-sonnet-4-6",
     "cheap_model": "claude-haiku-4-5-20251001",
     "aliases": [
       "claude"
@@ -258,7 +258,7 @@ export const PROVIDERS: ProviderEntry[] = [
     "models": [
       {
         "id": "sonnet",
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-6",
         "context_window_tokens": 200000,
         "max_output_tokens": 8192,
         "capabilities": {
@@ -510,7 +510,7 @@ export const PROVIDERS: ProviderEntry[] = [
     "env_var": "OPENROUTER_API_KEY",
     "requires_key": true,
     "api_dialect": "openai-chat",
-    "default_model": "anthropic/claude-sonnet-4-20250514",
+    "default_model": "anthropic/claude-sonnet-4-6",
     "cheap_model": "anthropic/claude-haiku-4-5-20251001",
     "aliases": [
       "or"
@@ -522,7 +522,7 @@ export const PROVIDERS: ProviderEntry[] = [
     "models": [
       {
         "id": "default",
-        "model": "anthropic/claude-sonnet-4-20250514",
+        "model": "anthropic/claude-sonnet-4-6",
         "context_window_tokens": 128000,
         "max_output_tokens": 4096,
         "capabilities": {

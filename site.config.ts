@@ -178,7 +178,7 @@ export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto
    i18n gate judges the two equal both ways) */
 export const INSTALL_PATHS = ['/fr/install', '/es/install', '/de/install', '/pt-br/install', '/ja/install', '/ko/install', '/zh-hans/install']
 /* the error register's deep pages — one static landing per registered code
-   (the engine stamps docs_url: https://nika.sh/errors/<CODE> on every check
+   (the engine stamps docs_url: https://nika.sh/language/errors/<CODE> on every check
    finding, and DO's error_document wins over catchall_document in practice:
    un-prerendered deep links 404'd in prod — caught by scripts/e2e-sweep).
 

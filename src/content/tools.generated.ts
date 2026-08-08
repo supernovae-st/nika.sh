@@ -32,7 +32,7 @@ export interface ToolEntry {
   ratified_only?: boolean
 }
 
-/** Every builtin, sorted by bare name. Engine version at generation: "0.107.2". */
+/** Every builtin, sorted by bare name. Engine version at generation: "0.108.0". */
 export const TOOLS: ToolEntry[] = [
   {
     "name": "nika:assert",

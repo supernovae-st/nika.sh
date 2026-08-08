@@ -24,6 +24,54 @@ export interface EngineRelease {
 /** newest-first · published, non-draft, non-prerelease only */
 export const RELEASES: EngineRelease[] = [
   {
+    "tag": "v0.108.0",
+    "name": "v0.108.0",
+    "date": "2026-08-05",
+    "url": "https://github.com/supernovae-st/nika/releases/tag/v0.108.0",
+    "assets": [
+      {
+        "name": "multiple.intoto.jsonl",
+        "size": 23591,
+        "sha256": "edc4bad211f7c877ef84405beae3739e81222a58fdb80c3974fd845d7ecb340b"
+      },
+      {
+        "name": "nika-linux-arm64-0.108.0.tar.gz",
+        "size": 13387226,
+        "sha256": "c22a4e61ee528a553c6b853ba1ffe82534fb7d20b950945829b62e28ddcbeb7d"
+      },
+      {
+        "name": "nika-linux-x64-0.108.0.tar.gz",
+        "size": 14552142,
+        "sha256": "c58a7d4a4924b5801ede5fd2d1a2b68a9bba2fd12f9d15cd3743486ecc9f138f"
+      },
+      {
+        "name": "nika-macos-arm64-0.108.0.tar.gz",
+        "size": 11911786,
+        "sha256": "2111893a1b3d6fdeb03da0fb9b1ce8814fe6a7855101aec2006f1652db095cec"
+      },
+      {
+        "name": "nika-macos-x64-0.108.0.tar.gz",
+        "size": 13501629,
+        "sha256": "2c8bc95ea73ff5cfd9f3e8c63a0c15ca2bbb453fce50995d311c3ae3cc874116"
+      },
+      {
+        "name": "SHA256SUMS",
+        "size": 388,
+        "sha256": "4a0afc4dc16f574a750e347e9efb63c8fe1677ed3c7abd5546e90fa818e6a8d3"
+      },
+      {
+        "name": "supernovae-st-nika-check-wasm-0.108.0.tgz",
+        "size": 1332413,
+        "sha256": "4bfcfd9276d4cc1e1d601c3bc746ed1a08017789069d617992e4dab6529afa12"
+      },
+      {
+        "name": "supernovae-st-nika-check-wasm-0.108.0.tgz.sha256",
+        "size": 108,
+        "sha256": "d20a90fb5ea3b8fea4f88fbab7c807ad386bae84f0f2a979669d3209b7d20cf6"
+      }
+    ]
+  },
+  {
     "tag": "v0.107.2",
     "name": "v0.107.2",
     "date": "2026-08-02",

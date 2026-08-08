@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.107.2"
+export const TERMINAL_ENGINE = "0.108.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.107.2"
+        "text": "nika 0.108.0"
       }
     ]
   },
@@ -144,7 +144,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "full docs: https://nika.sh/errors/NIKA-PARSE-019 — `nika check` catches this before a run ever starts."
+        "text": "full docs: https://nika.sh/language/errors/NIKA-PARSE-019 — `nika check` catches this before a run ever starts."
       }
     ]
   },
@@ -170,7 +170,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "out",
-        "text": "full docs: https://nika.sh/errors/NIKA-VAR-021 — the successor code carries the live page; a retired code's own page is gone with its registry row."
+        "text": "full docs: https://nika.sh/language/errors/NIKA-VAR-021 — the successor code carries the live page; a retired code's own page is gone with its registry row."
       }
     ]
   }
