@@ -61,7 +61,7 @@ describe('hero check · the transaction cannot drift from the binary', () => {
   it('every finding carries what a renderer needs to place it', () => {
     for (const f of HERO_FINDINGS) {
       expect(NIKA_AUDIT_SEVERITY as readonly string[], `${f.code} severity`).toContain(f.severity)
-      expect(f.docsUrl, `${f.code} docs url`).toBe(`https://nika.sh/errors/${f.code}`)
+      expect(f.docsUrl, `${f.code} docs url`).toBe(`https://nika.sh/language/errors/${f.code}`)
       expect(f.message.length, `${f.code} message`).toBeGreaterThan(0)
       /* anchorable, or unplaceable: a span points at a character, a task points
          at a block. A finding with neither has nowhere to render — the engine

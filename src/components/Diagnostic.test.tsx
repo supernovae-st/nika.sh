@@ -15,7 +15,7 @@ const FINDING: Finding = {
   gate: 'CONFORM',
   severity: 'error',
   message: 'unknown dependency: task `judge` depends on `dif`, which does not exist — did you mean `diff`?',
-  docsUrl: 'https://nika.sh/errors/NIKA-DAG-002',
+  docsUrl: 'https://nika.sh/language/errors/NIKA-DAG-002',
   line: 20,
   col: 13,
   source: '      diff: ${{ tasks.dif.output }}',

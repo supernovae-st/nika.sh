@@ -20,7 +20,7 @@ import { ErrorCabinet } from './ErrorCabinet'
 import { wordRoom } from '../lib/rooms'
 
 /* ─── /errors + /errors/:code · the error register (theme-dark) ───────────────
-   The engine stamps `docs_url: https://nika.sh/errors/<CODE>` on every check
+   The engine stamps `docs_url: https://nika.sh/language/errors/<CODE>` on every check
    finding (the rustc --explain move) — THIS is the page those links land on.
    One register page, not 50 thin ones: every registered code as an anchored
    row; the :code deep-link scrolls to its row and highlights it. Unknown

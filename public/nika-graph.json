@@ -19149,7 +19149,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/anthropic",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19163,7 +19163,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/deepseek",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19177,7 +19177,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/gemini",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19191,7 +19191,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/groq",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19205,7 +19205,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/huggingface",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19219,7 +19219,7 @@
     "kind": "local",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/llamacpp",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19233,7 +19233,7 @@
     "kind": "local",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/lmstudio",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19247,7 +19247,7 @@
     "kind": "local",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/localai",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19261,7 +19261,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/mistral",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19275,7 +19275,7 @@
     "kind": "test",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/mock",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19289,7 +19289,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/moonshot",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19303,7 +19303,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/nvidia",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19317,7 +19317,7 @@
     "kind": "local",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/ollama",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19331,7 +19331,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/openai",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19345,7 +19345,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/openrouter",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19359,7 +19359,7 @@
     "kind": "local",
     "requires_key": false
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/vllm",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -19373,7 +19373,7 @@
     "kind": "cloud",
     "requires_key": true
    },
-   "evidence": "public/providers/catalog.json providers[] row (nika 0.107.2 · the canonical set per spec stdlib/providers-v0.1)",
+   "evidence": "public/providers/catalog.json providers[] row (nika 0.108.0 · the canonical set per spec stdlib/providers-v0.1)",
    "family": "provider-canonical",
    "id": "provider-canonical/xai",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/providers/catalog.json",
@@ -20359,7 +20359,7 @@
     "bare": "assert",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:assert",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20372,7 +20372,7 @@
     "bare": "chart",
     "category": "media"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:chart",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20385,7 +20385,7 @@
     "bare": "compose",
     "category": "introspection"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:compose",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20398,7 +20398,7 @@
     "bare": "convert",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:convert",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20411,7 +20411,7 @@
     "bare": "date",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:date",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20424,7 +20424,7 @@
     "bare": "decide",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:decide",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20437,7 +20437,7 @@
     "bare": "done",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:done",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20450,7 +20450,7 @@
     "bare": "edit",
     "category": "file"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:edit",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20463,7 +20463,7 @@
     "bare": "emit",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:emit",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20476,7 +20476,7 @@
     "bare": "fetch",
     "category": "network"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:fetch",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20489,7 +20489,7 @@
     "bare": "glob",
     "category": "file"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:glob",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20502,7 +20502,7 @@
     "bare": "grep",
     "category": "file"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:grep",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20515,7 +20515,7 @@
     "bare": "hash",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:hash",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20528,7 +20528,7 @@
     "bare": "image_fx",
     "category": "media"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:image_fx",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20541,7 +20541,7 @@
     "bare": "image_generate",
     "category": "media"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:image_generate",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20554,7 +20554,7 @@
     "bare": "inspect",
     "category": "introspection"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:inspect",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20567,7 +20567,7 @@
     "bare": "jq",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:jq",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20580,7 +20580,7 @@
     "bare": "json_diff",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:json_diff",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20593,7 +20593,7 @@
     "bare": "json_merge_patch",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:json_merge_patch",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20606,7 +20606,7 @@
     "bare": "log",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:log",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20619,7 +20619,7 @@
     "bare": "notify",
     "category": "network"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:notify",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20632,7 +20632,7 @@
     "bare": "prompt",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:prompt",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20645,7 +20645,7 @@
     "bare": "read",
     "category": "file"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:read",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20658,7 +20658,7 @@
     "bare": "tts_generate",
     "category": "media"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:tts_generate",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20671,7 +20671,7 @@
     "bare": "uuid",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:uuid",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20684,7 +20684,7 @@
     "bare": "validate",
     "category": "data"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:validate",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20697,7 +20697,7 @@
     "bare": "wait",
     "category": "core"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:wait",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",
@@ -20710,7 +20710,7 @@
     "bare": "write",
     "category": "file"
    },
-   "evidence": "public/tools/catalog.json tools[] row (nika 0.107.2 · the released binary's own catalog)",
+   "evidence": "public/tools/catalog.json tools[] row (nika 0.108.0 · the released binary's own catalog)",
    "family": "tool",
    "id": "tool/nika:write",
    "provenance": "supernovae-st/nika@57673f61c411 (v0.107.2) · public/tools/catalog.json",

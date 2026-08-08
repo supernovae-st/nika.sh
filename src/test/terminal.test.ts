@@ -83,7 +83,7 @@ describe('living terminal · whitelist-only is structural', () => {
     expect(explains.length).toBeGreaterThanOrEqual(2)
     for (const c of explains) {
       expect(
-        c.lines.some((l) => /https:\/\/nika\.sh\/errors\/NIKA-[A-Z]+-\d{3}/.test(l.text)),
+        c.lines.some((l) => /https:\/\/nika\.sh\/language\/errors\/NIKA-[A-Z]+-\d{3}/.test(l.text)),
         c.id,
       ).toBe(true)
     }
