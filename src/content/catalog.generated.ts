@@ -9,7 +9,7 @@ export const CATALOG_ENGINE = {
 }
 
 export interface CatalogModelServe { provider: string; provider_name: string; alias: string; context_window_tokens: number | null; max_output_tokens: number | null }
-export interface CatalogModelPrice { provider: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; cache_write_per_million: number | null; context_window_tokens: number | null; max_output_tokens: number | null; open_weights: boolean | null }
+export interface CatalogModelPrice { provider: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; cache_write_per_million: number | null; context_window_tokens: number | null; max_output_tokens: number | null; open_weights: boolean | null; status: string | null }
 export interface CatalogModelEnergy { provider: string; wh_per_mtok_out?: number; provenance?: string; scope?: string; source?: string; measured_at?: string }
 export interface CatalogModel { id: string; slug: string; served_by: CatalogModelServe[]; pricing: CatalogModelPrice[]; energy: CatalogModelEnergy[] }
 export const MODELS: CatalogModel[] = [
@@ -265,7 +265,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": 1.25,
     "context_window_tokens": 200000,
     "max_output_tokens": 64000,
-    "open_weights": false
+    "open_weights": false,
+    "status": null
    }
   ],
   "slug": "claude-haiku-4-5-20251001",
@@ -351,7 +352,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 1000000,
     "max_output_tokens": 384000,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "deepseek-chat",
@@ -503,7 +505,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 400000,
     "max_output_tokens": 128000,
-    "open_weights": false
+    "open_weights": false,
+    "status": null
    }
   ],
   "slug": "gpt-5-mini",
@@ -529,7 +532,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 400000,
     "max_output_tokens": 128000,
-    "open_weights": false
+    "open_weights": false,
+    "status": null
    }
   ],
   "slug": "gpt-5-2",
@@ -555,7 +559,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": null,
     "max_output_tokens": null,
-    "open_weights": null
+    "open_weights": null,
+    "status": null
    }
   ],
   "slug": "grok-3",
@@ -581,7 +586,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": null,
     "max_output_tokens": null,
-    "open_weights": null
+    "open_weights": null,
+    "status": null
    }
   ],
   "slug": "grok-3-mini-fast",
@@ -682,7 +688,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 131072,
     "max_output_tokens": 131072,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "llama-3-1-8b-instant",
@@ -723,7 +730,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 131072,
     "max_output_tokens": 32768,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "llama-3-3-70b-versatile",
@@ -839,7 +847,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 128000,
     "max_output_tokens": 4096,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "meta-llama-3-1-70b-instruct",
@@ -895,7 +904,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 262144,
     "max_output_tokens": 262144,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "mistral-large-latest",
@@ -921,7 +931,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 256000,
     "max_output_tokens": 256000,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "mistral-small-latest",
@@ -962,7 +973,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 131072,
     "max_output_tokens": 131072,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "nvidia-nemotron-3-nano-30b-a3b",
@@ -988,7 +1000,8 @@ export const MODELS: CatalogModel[] = [
     "cache_write_per_million": null,
     "context_window_tokens": 262144,
     "max_output_tokens": 262144,
-    "open_weights": true
+    "open_weights": true,
+    "status": null
    }
   ],
   "slug": "nvidia-nemotron-3-super-120b-a12b",
@@ -2084,7 +2097,7 @@ export const PRICING_META = {
  "source": "https://models.dev/api.json",
  "as_of": "2026-07-28"
 }
-export interface PricingRule { provider: string; model_pattern: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; context_window_tokens: number | null; open_weights: boolean | null }
+export interface PricingRule { provider: string; model_pattern: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; context_window_tokens: number | null; open_weights: boolean | null; status: string | null }
 export const PRICING_RULES: PricingRule[] = [
  {
   "provider": "anthropic",
@@ -2093,7 +2106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2102,7 +2116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2111,7 +2126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 75,
   "cache_read_per_million": 1.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "anthropic",
@@ -2120,7 +2136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2129,7 +2146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2138,7 +2156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2147,7 +2166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2156,7 +2176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 75,
   "cache_read_per_million": 1.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "anthropic",
@@ -2165,7 +2186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2174,7 +2196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2183,7 +2206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2192,7 +2216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2201,7 +2226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": null
+  "open_weights": null,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2210,7 +2236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2219,7 +2246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 50,
   "cache_read_per_million": 1,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "anthropic",
@@ -2228,7 +2256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "deepseek",
@@ -2237,7 +2266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.0028,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "deepseek",
@@ -2246,7 +2276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.0028,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "deepseek",
@@ -2255,7 +2286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.87,
   "cache_read_per_million": 0.003625,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "deepseek",
@@ -2264,7 +2296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.0028,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "google",
@@ -2273,7 +2306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2282,7 +2316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2291,7 +2326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2300,7 +2336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 21,
   "cache_read_per_million": null,
   "context_window_tokens": 16384,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2309,7 +2346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2318,7 +2356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2327,7 +2366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2336,7 +2376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "google",
@@ -2345,7 +2386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.5,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2354,7 +2396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2363,7 +2406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 20,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2372,7 +2416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2381,7 +2426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 20,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2390,7 +2436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 120,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2399,7 +2446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 17.5,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2408,7 +2456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2417,7 +2466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2426,7 +2476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2435,7 +2486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2444,7 +2496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2453,7 +2506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "google",
@@ -2462,7 +2516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2471,7 +2526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2480,7 +2536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2489,7 +2546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "google",
@@ -2498,7 +2556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 2048,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2507,7 +2566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2516,7 +2576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 9,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2525,7 +2586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2534,7 +2596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 120,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2543,7 +2606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2552,7 +2616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "google",
@@ -2561,7 +2626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2570,7 +2636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 9,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2579,7 +2646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "google",
@@ -2588,7 +2656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "groq",
@@ -2597,7 +2666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.34,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": "beta"
  },
  {
   "provider": "groq",
@@ -2606,7 +2676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.03,
   "cache_read_per_million": null,
   "context_window_tokens": 512,
-  "open_weights": true
+  "open_weights": true,
+  "status": "beta"
  },
  {
   "provider": "groq",
@@ -2615,7 +2686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.04,
   "cache_read_per_million": null,
   "context_window_tokens": 512,
-  "open_weights": true
+  "open_weights": true,
+  "status": "beta"
  },
  {
   "provider": "groq",
@@ -2624,7 +2696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": "beta"
  },
  {
   "provider": "groq",
@@ -2633,7 +2706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.79,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "groq",
@@ -2642,7 +2716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.08,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "groq",
@@ -2651,7 +2726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "groq",
@@ -2660,7 +2736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": 0.0375,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "groq",
@@ -2669,7 +2746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.59,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": "beta"
  },
  {
   "provider": "huggingface",
@@ -2678,7 +2756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2687,7 +2766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2696,7 +2776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.26,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2705,7 +2786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.79,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2714,7 +2796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2723,7 +2806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2732,7 +2816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2741,7 +2826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2750,7 +2836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": null,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2759,7 +2846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.87,
   "cache_read_per_million": 0.003625,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2768,7 +2856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2777,7 +2866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2786,7 +2876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2795,7 +2886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2804,7 +2896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2813,7 +2906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2822,7 +2916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.15,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2831,7 +2926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2840,7 +2936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2849,7 +2946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2858,7 +2956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2867,7 +2966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": null,
   "context_window_tokens": 64000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2876,7 +2976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": null,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2885,7 +2986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2894,7 +2996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.06,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2903,7 +3006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2912,7 +3016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.6,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2921,7 +3026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2930,7 +3036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2939,7 +3046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2948,7 +3056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": null,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2957,7 +3066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": null,
   "context_window_tokens": 524288,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2966,7 +3076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": null,
   "context_window_tokens": 40960,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2975,7 +3086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2984,7 +3096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.95,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -2993,7 +3106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3002,7 +3116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3011,7 +3126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": 0.16,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3020,7 +3136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.69,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3029,7 +3146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.85,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3038,7 +3156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3047,7 +3166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.5,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3056,7 +3176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3065,7 +3186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.19,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3074,7 +3196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.8,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3083,7 +3206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.25,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3092,7 +3216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.2,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3101,7 +3226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.2,
   "cache_read_per_million": null,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3110,7 +3236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.2,
   "cache_read_per_million": 0.11,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3119,7 +3246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.2,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 202752,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3128,7 +3256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3137,7 +3266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.59,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "huggingface",
@@ -3146,7 +3276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.2,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 202752,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3155,7 +3286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3164,7 +3296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3173,7 +3306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3182,7 +3316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3191,7 +3326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3200,7 +3336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3209,7 +3346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3218,7 +3356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3227,7 +3366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3236,7 +3376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3245,7 +3386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.04,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3254,7 +3396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3263,7 +3406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3272,7 +3416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3281,7 +3426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3290,7 +3436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3299,7 +3446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3308,7 +3456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3317,7 +3466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3326,7 +3476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": null,
   "context_window_tokens": 64000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3335,7 +3486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3344,7 +3496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.7,
   "cache_read_per_million": null,
   "context_window_tokens": 32000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3353,7 +3506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.9,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3362,7 +3516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3371,7 +3526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3380,7 +3536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.25,
   "cache_read_per_million": null,
   "context_window_tokens": 8000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3389,7 +3546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "mistral",
@@ -3398,7 +3556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3407,7 +3566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "mistral",
@@ -3416,7 +3576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3425,7 +3586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3434,7 +3596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3443,7 +3606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3452,7 +3616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3461,7 +3626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3470,7 +3636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3479,7 +3646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3488,7 +3656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3497,7 +3666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3506,7 +3676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3515,7 +3686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3524,7 +3696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3533,7 +3706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3542,7 +3716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3551,7 +3726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3560,7 +3736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 40960,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3569,7 +3746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3578,7 +3756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3587,7 +3766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3596,7 +3776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3605,7 +3786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3614,7 +3796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3623,7 +3806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3632,7 +3816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3641,7 +3826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3650,7 +3836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 40960,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3659,7 +3846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3668,7 +3856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3677,7 +3866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3686,7 +3876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3695,7 +3886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 77,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3704,7 +3896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3713,7 +3906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "nvidia",
@@ -3722,7 +3916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3731,7 +3926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3740,7 +3936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3749,7 +3946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3758,7 +3956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3767,7 +3966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3776,7 +3976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3785,7 +3986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3794,7 +3996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3803,7 +4006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3812,7 +4016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3821,7 +4026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.0028,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3830,7 +4036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3839,7 +4046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 4096,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3848,7 +4056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3857,7 +4066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3866,7 +4076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.87,
   "cache_read_per_million": 0.003625,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3875,7 +4086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3884,7 +4096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3893,7 +4106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3902,7 +4116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 16000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3911,7 +4126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3920,7 +4136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3929,7 +4146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3938,7 +4156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3947,7 +4166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3956,7 +4176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3965,7 +4186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3974,7 +4196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3983,7 +4206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -3992,7 +4216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4001,7 +4226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4010,7 +4236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4019,7 +4246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4028,7 +4256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4037,7 +4266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4046,7 +4276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4055,7 +4286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4064,7 +4296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4073,7 +4306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4082,7 +4316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4091,7 +4326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4100,7 +4336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4109,7 +4346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4118,7 +4356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4127,7 +4366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4136,7 +4376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4145,7 +4386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "nvidia",
@@ -4154,7 +4396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4163,7 +4406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4172,7 +4416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4181,7 +4426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4190,7 +4436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4199,7 +4446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4208,7 +4456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4217,7 +4466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4226,7 +4476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4235,7 +4486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4244,7 +4496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4253,7 +4506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4262,7 +4516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4271,7 +4526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4280,7 +4536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4289,7 +4546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "nvidia",
@@ -4298,7 +4556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4307,7 +4566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8191,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4316,7 +4576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8191,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4325,7 +4586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4334,7 +4596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4343,7 +4606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4352,7 +4616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4361,7 +4626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4370,7 +4636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4379,7 +4646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4388,7 +4656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 24,
   "cache_read_per_million": 0.4,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4397,7 +4666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0,
   "context_window_tokens": 16385,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4406,7 +4676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4415,7 +4686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.25,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4424,7 +4696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.6,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4433,7 +4706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4442,7 +4716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.5,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4451,7 +4726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": 0.02,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4460,7 +4736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4469,7 +4746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4478,7 +4756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4487,7 +4766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 168,
   "cache_read_per_million": null,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4496,7 +4776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 180,
   "cache_read_per_million": null,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4505,7 +4786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 180,
   "cache_read_per_million": null,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4514,7 +4796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4523,7 +4806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 1.25,
   "context_window_tokens": null,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4532,7 +4816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4541,7 +4826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.005,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4550,7 +4836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 120,
   "cache_read_per_million": null,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4559,7 +4846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4568,7 +4856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4577,7 +4866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4586,7 +4876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.25,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4595,7 +4886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4604,7 +4896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4613,7 +4906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.55,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4622,7 +4916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.275,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4631,7 +4926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4640,7 +4936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 600,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4649,7 +4946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 80,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4658,7 +4956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4667,7 +4966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openai",
@@ -4676,7 +4976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": 7.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": "deprecated"
  },
  {
   "provider": "openai",
@@ -4685,7 +4986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4694,7 +4996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.9,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4703,7 +5006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4712,7 +5016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4721,7 +5026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.08,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4730,7 +5036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.555,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4739,7 +5046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4748,7 +5056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4757,7 +5066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4766,7 +5076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4775,7 +5086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4784,7 +5096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4793,7 +5106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4802,7 +5116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4811,7 +5126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4820,7 +5136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.7,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4829,7 +5146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4838,7 +5156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4847,7 +5166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4856,7 +5176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.78,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4865,7 +5186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4874,7 +5196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4883,7 +5206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4892,7 +5216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4901,7 +5226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4910,7 +5236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.6,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 512288,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4919,7 +5246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.27,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4928,7 +5256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.08,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4937,7 +5266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.201,
   "cache_read_per_million": null,
   "context_window_tokens": 60000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4946,7 +5276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.33,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4955,7 +5286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4964,7 +5296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 32000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4973,7 +5306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4982,7 +5316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.19305,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -4991,7 +5326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.56,
   "cache_read_per_million": null,
   "context_window_tokens": 81920,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5000,7 +5336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.1,
   "cache_read_per_million": 0.07,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5009,7 +5346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.78,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5018,7 +5356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.9,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5027,7 +5366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.6,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5036,7 +5376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.85,
   "cache_read_per_million": 0.06,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5045,7 +5386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.135,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5054,7 +5396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.112,
   "cache_read_per_million": null,
   "context_window_tokens": 131000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5063,7 +5406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5072,7 +5416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5081,7 +5426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5090,7 +5436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.6,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5099,7 +5446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 150,
   "cache_read_per_million": 3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5108,7 +5456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 50,
   "cache_read_per_million": 1,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5117,7 +5466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.12,
   "cache_read_per_million": 0.135,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5126,7 +5476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5135,7 +5486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5144,7 +5496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5153,7 +5506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5162,7 +5516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5171,7 +5526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.56,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5180,7 +5536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 50,
   "cache_read_per_million": 1,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5189,7 +5546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5198,7 +5556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5207,7 +5566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5216,7 +5576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5225,7 +5586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5234,7 +5596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5243,7 +5606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5252,7 +5616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5261,7 +5626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 4095,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5270,7 +5636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5279,7 +5646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.57,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5288,7 +5656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5297,7 +5666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": null,
   "context_window_tokens": 16384,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5306,7 +5676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 50,
   "cache_read_per_million": 1,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5315,7 +5686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": null,
   "context_window_tokens": 123000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5324,7 +5696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5333,7 +5706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5342,7 +5716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5351,7 +5726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5360,7 +5736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5369,7 +5746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5378,7 +5756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.96,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5387,7 +5766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.18,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5396,7 +5776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.2,
   "cache_read_per_million": 0.02,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5405,7 +5786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5414,7 +5796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5423,7 +5806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5432,7 +5816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.04,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5441,7 +5826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.015,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5450,7 +5836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": 0.0375,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5459,7 +5846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5468,7 +5856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.4,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5477,7 +5866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5486,7 +5876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5495,7 +5886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5504,7 +5896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5513,7 +5906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.95,
   "cache_read_per_million": 0.13,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5522,7 +5916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5531,7 +5926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5540,7 +5936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5549,7 +5946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": 0.015,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5558,7 +5956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5567,7 +5966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5576,7 +5976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5585,7 +5986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5594,7 +5996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5603,7 +6006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 5,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5612,7 +6016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5621,7 +6026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.41,
   "cache_read_per_million": null,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5630,7 +6036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.028,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5639,7 +6046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5648,7 +6056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5657,7 +6066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5666,7 +6076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.03,
   "cache_read_per_million": 0.002,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5675,7 +6086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.06,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5684,7 +6096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.62,
   "cache_read_per_million": null,
   "context_window_tokens": 65535,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5693,7 +6106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.04,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5702,7 +6116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5711,7 +6126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5720,7 +6136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5729,7 +6146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5738,7 +6156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.416,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5747,7 +6166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.8,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5756,7 +6176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 2000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5765,7 +6186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 75,
   "cache_read_per_million": 1.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5774,7 +6196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5783,7 +6206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5792,7 +6216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5801,7 +6226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5810,7 +6236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5819,7 +6246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5828,7 +6256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.15,
   "cache_read_per_million": 0.35,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5837,7 +6266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5846,7 +6276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.42,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5855,7 +6286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5864,7 +6296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5873,7 +6306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 4095,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5882,7 +6316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5891,7 +6326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5900,7 +6336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5909,7 +6346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.78,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5918,7 +6356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.55,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5927,7 +6366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.455,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5936,7 +6376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.365,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5945,7 +6386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": 0.25,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5954,7 +6396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5963,7 +6406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5972,7 +6416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.5,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5981,7 +6426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5990,7 +6436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 50,
   "cache_read_per_million": 1,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -5999,7 +6446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.2,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6008,7 +6456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6017,7 +6466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.87,
   "cache_read_per_million": 0.003625,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6026,7 +6476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 1310720,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6035,7 +6486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.9,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6044,7 +6496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": null,
   "context_window_tokens": 16385,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6053,7 +6506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6062,7 +6516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6071,7 +6526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6080,7 +6536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6089,7 +6546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6098,7 +6556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6107,7 +6566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.26,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6116,7 +6576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6.24,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6125,7 +6586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.5,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6134,7 +6596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.05,
   "cache_read_per_million": 0.17,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6143,7 +6606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.65,
   "cache_read_per_million": null,
   "context_window_tokens": 6144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6152,7 +6616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.4,
   "cache_read_per_million": 0.18,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6161,7 +6626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 75,
   "cache_read_per_million": 1.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6170,7 +6636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 25,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6179,7 +6646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6188,7 +6656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6197,7 +6666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6206,7 +6676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 9,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6215,7 +6686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6224,7 +6696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.625,
   "cache_read_per_million": 0.015,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6233,7 +6706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.625,
   "cache_read_per_million": 0.015,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6242,7 +6716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.04,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": "deprecated"
  },
  {
   "provider": "openrouter",
@@ -6251,7 +6726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6260,7 +6736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6269,7 +6746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.25,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6278,7 +6756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6287,7 +6766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6296,7 +6776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 40,
   "cache_read_per_million": 2.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6305,7 +6786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.9,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6314,7 +6796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.56,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6323,7 +6806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.85,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6332,7 +6816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.75,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6341,7 +6826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6350,7 +6836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.5,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6359,7 +6846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 12.5,
   "cache_read_per_million": 0.625,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6368,7 +6856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8001,
   "cache_read_per_million": null,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6377,7 +6866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.1345,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6386,7 +6876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.12,
   "cache_read_per_million": null,
   "context_window_tokens": 32768,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6395,7 +6886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.06,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6404,7 +6896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 65536,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6413,7 +6906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.03,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6422,7 +6916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.02,
   "context_window_tokens": 32768,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6431,7 +6926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 2,
   "context_window_tokens": 272000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6440,7 +6936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6449,7 +6946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6458,7 +6956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.12,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6467,7 +6966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.975,
   "cache_read_per_million": 0.039,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6476,7 +6976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.08,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6485,7 +6986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.34,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6494,7 +6996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.3,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6503,7 +7006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.15,
   "cache_read_per_million": 0.04,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6512,7 +7016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6521,7 +7026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6530,7 +7036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.65,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6539,7 +7046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6548,7 +7056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.45,
   "cache_read_per_million": 0.04,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6557,7 +7066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6566,7 +7076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.4,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6575,7 +7086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.2,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6584,7 +7096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.8,
   "cache_read_per_million": 0.07,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6593,7 +7106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.25,
   "cache_read_per_million": 0.13,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6602,7 +7116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6611,7 +7126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6620,7 +7136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.14,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6629,7 +7146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": null,
   "context_window_tokens": 163840,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6638,7 +7156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6647,7 +7166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.03,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6656,7 +7176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.9,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6665,7 +7186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6674,7 +7196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.85,
   "cache_read_per_million": 0.095,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6683,7 +7206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.72,
   "cache_read_per_million": 0.1088,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6692,7 +7216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.9,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6701,7 +7226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.5,
   "cache_read_per_million": null,
   "context_window_tokens": 16385,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6710,7 +7236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.13,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6719,7 +7246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6728,7 +7256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6737,7 +7266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 7.5,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6746,7 +7276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6755,7 +7286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.82,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6764,7 +7296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6773,7 +7306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6782,7 +7316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6791,7 +7326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.05,
   "cache_read_per_million": null,
   "context_window_tokens": 8192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6800,7 +7336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.87,
   "cache_read_per_million": 0.0036,
   "context_window_tokens": 1050000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6809,7 +7346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.24,
   "cache_read_per_million": null,
   "context_window_tokens": 300000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6818,7 +7356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.75,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6827,7 +7366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.006,
   "context_window_tokens": 1048756,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6836,7 +7376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.25,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 1048576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6845,7 +7386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": null,
   "context_window_tokens": 81920,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6854,7 +7396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": 0.0025,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6863,7 +7406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.6,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6872,7 +7416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6881,7 +7426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.13,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6890,7 +7436,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6899,7 +7446,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6908,7 +7456,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.5,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6917,7 +7466,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.25,
   "cache_read_per_million": 0.02,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6926,7 +7476,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3,
   "cache_read_per_million": 0.05,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6935,7 +7486,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.17,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6944,7 +7496,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.55,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6953,7 +7506,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.275,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6962,7 +7516,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6971,7 +7526,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.2,
   "cache_read_per_million": null,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6980,7 +7536,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.21,
   "cache_read_per_million": 0.021,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6989,7 +7546,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.015,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -6998,7 +7556,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7007,7 +7566,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.6,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7016,7 +7576,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.75,
   "context_window_tokens": 131072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7025,7 +7586,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.2,
   "cache_read_per_million": null,
   "context_window_tokens": 300000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7034,7 +7596,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.1,
   "cache_read_per_million": null,
   "context_window_tokens": 1000192,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7043,7 +7606,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.2,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7052,7 +7616,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.02,
   "cache_read_per_million": null,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7061,7 +7626,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.2,
   "cache_read_per_million": 0.06,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7070,7 +7636,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.3,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7079,7 +7646,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7088,7 +7656,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7097,7 +7666,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7106,7 +7676,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.6,
   "cache_read_per_million": 0.075,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7115,7 +7686,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7124,7 +7696,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7133,7 +7706,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 168,
   "cache_read_per_million": null,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7142,7 +7716,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 180,
   "cache_read_per_million": null,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7151,7 +7726,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 180,
   "cache_read_per_million": null,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7160,7 +7736,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7169,7 +7746,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.14,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7178,7 +7756,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.5,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7187,7 +7766,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.125,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7196,7 +7776,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.13,
   "cache_read_per_million": 0.006,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7205,7 +7786,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.01,
   "context_window_tokens": 202752,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7214,7 +7796,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7223,7 +7806,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7232,7 +7816,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.4,
   "cache_read_per_million": 0.005,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7241,7 +7826,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.95,
   "cache_read_per_million": null,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7250,7 +7836,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.28,
   "cache_read_per_million": 0.064,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7259,7 +7846,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7268,7 +7856,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": null,
   "context_window_tokens": 1040000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7277,7 +7866,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": 0.24,
   "context_window_tokens": 202752,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7286,7 +7876,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 500000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7295,7 +7886,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": null,
   "context_window_tokens": 256000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7304,7 +7896,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 120,
   "cache_read_per_million": null,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7313,7 +7906,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": null,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7322,7 +7916,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": null,
   "context_window_tokens": 127072,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7331,7 +7926,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7340,7 +7936,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.56,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7349,7 +7946,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.15,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7358,7 +7956,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.425,
   "cache_read_per_million": 0.295,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7367,7 +7966,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.1,
   "cache_read_per_million": null,
   "context_window_tokens": 16384,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7376,7 +7976,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": 0.0028,
   "context_window_tokens": 1050000,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7385,7 +7986,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.85,
   "cache_read_per_million": 0.025,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7394,7 +7996,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": 0.24,
   "context_window_tokens": 202752,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7403,7 +8006,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.14,
   "cache_read_per_million": null,
   "context_window_tokens": 16384,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7412,7 +8016,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7421,7 +8026,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.15,
   "cache_read_per_million": null,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7430,7 +8036,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1047576,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7439,7 +8046,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7448,7 +8056,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 14,
   "cache_read_per_million": 0.175,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7457,7 +8066,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": 0.25,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7466,7 +8076,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 30,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 1050000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7475,7 +8086,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.55,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7484,7 +8096,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4.4,
   "cache_read_per_million": 0.275,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7493,7 +8106,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.78,
   "cache_read_per_million": 0.052,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7502,7 +8116,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.91,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7511,7 +8126,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.28,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7520,7 +8136,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.9,
   "cache_read_per_million": 0.156,
   "context_window_tokens": 262144,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7529,7 +8146,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 2000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7538,7 +8156,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.75,
   "cache_read_per_million": null,
   "context_window_tokens": 8000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7547,7 +8166,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 1.25,
   "context_window_tokens": 128000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7556,7 +8176,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 600,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7565,7 +8186,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 80,
   "cache_read_per_million": null,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7574,7 +8196,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.455,
   "cache_read_per_million": null,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7583,7 +8206,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7592,7 +8216,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 500000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7601,7 +8226,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.8,
   "cache_read_per_million": 0.11,
   "context_window_tokens": 65536,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7610,7 +8236,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.9,
   "cache_read_per_million": 0.055,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7619,7 +8246,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": null,
   "context_window_tokens": 8191,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7628,7 +8256,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 10,
   "cache_read_per_million": 0.125,
   "context_window_tokens": 400000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7637,7 +8266,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.2,
   "cache_read_per_million": 0.11,
   "context_window_tokens": 131072,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7646,7 +8276,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.1,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7655,7 +8286,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 1.75,
   "cache_read_per_million": 0.08,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7664,7 +8296,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 3.036,
   "cache_read_per_million": 0.1794,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7673,7 +8306,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.3188,
   "cache_read_per_million": 0.13702,
   "context_window_tokens": 1048576,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7682,7 +8316,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 0.528,
   "cache_read_per_million": 0.033,
   "context_window_tokens": 262144,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7691,7 +8326,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.55,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 204800,
-  "open_weights": true
+  "open_weights": true,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7700,7 +8336,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 60,
   "cache_read_per_million": 7.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "openrouter",
@@ -7709,7 +8346,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 8,
   "cache_read_per_million": 0.5,
   "context_window_tokens": 200000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7718,7 +8356,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7727,7 +8366,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7736,7 +8376,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7745,7 +8386,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 4,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": null
+  "open_weights": null,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7754,7 +8396,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 256000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7763,7 +8406,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 2.5,
   "cache_read_per_million": 0.2,
   "context_window_tokens": 1000000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7772,7 +8416,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 6,
   "cache_read_per_million": 0.3,
   "context_window_tokens": 500000,
-  "open_weights": false
+  "open_weights": false,
+  "status": null
  },
  {
   "provider": "xai",
@@ -7781,7 +8426,8 @@ export const PRICING_RULES: PricingRule[] = [
   "output_per_million": 15,
   "cache_read_per_million": null,
   "context_window_tokens": null,
-  "open_weights": null
+  "open_weights": null,
+  "status": null
  }
 ]
 

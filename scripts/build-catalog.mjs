@@ -66,6 +66,10 @@ for (const r of pricing.rules) {
     context_window_tokens: r.context_window_tokens ?? null,
     max_output_tokens: r.max_output_tokens ?? null,
     open_weights: r.open_weights ?? null,
+    // the upstream lifecycle marker · null on 602 of 633 rules BY DESIGN:
+    // only the exception carries a value (26 deprecated · 5 beta). A field
+    // that never varies is a batch stamp · this one varies, so it means something.
+    status: r.status ?? null,
   }
   ;(m.pricing ??= []).push(row)
   if (r.energy) (m.energy ??= []).push({ provider: r.provider, ...r.energy })
@@ -103,6 +107,7 @@ const PRICING_RULES = pricing.rules.map((r) => ({
   cache_read_per_million: r.cache_read_per_million ?? null,
   context_window_tokens: r.context_window_tokens ?? null,
   open_weights: r.open_weights ?? null,
+  status: r.status ?? null,
 }))
 const PRICING_META = { source: pricing.meta?.source ?? null, as_of: pricing.meta?.as_of ?? null }
 
@@ -176,13 +181,13 @@ const dataModule =
   header('the /catalog world data (engine-release clock)') +
   `export const CATALOG_ENGINE = ${j({ release_tag: pin.release_tag, commit: pin.engine_commit, provenance })}\n\n` +
   `export interface CatalogModelServe { provider: string; provider_name: string; alias: string; context_window_tokens: number | null; max_output_tokens: number | null }\n` +
-  `export interface CatalogModelPrice { provider: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; cache_write_per_million: number | null; context_window_tokens: number | null; max_output_tokens: number | null; open_weights: boolean | null }\n` +
+  `export interface CatalogModelPrice { provider: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; cache_write_per_million: number | null; context_window_tokens: number | null; max_output_tokens: number | null; open_weights: boolean | null; status: string | null }\n` +
   `export interface CatalogModelEnergy { provider: string; wh_per_mtok_out?: number; provenance?: string; scope?: string; source?: string; measured_at?: string }\n` +
   `export interface CatalogModel { id: string; slug: string; served_by: CatalogModelServe[]; pricing: CatalogModelPrice[]; energy: CatalogModelEnergy[] }\n` +
   `export const MODELS: CatalogModel[] = ${j(MODELS)}\n\n` +
   `export const MARKET_PROVIDERS = ${j(MARKET_PROVIDERS)} as const\n\n` +
   `export const PRICING_META = ${j(PRICING_META)}\n` +
-  `export interface PricingRule { provider: string; model_pattern: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; context_window_tokens: number | null; open_weights: boolean | null }\n` +
+  `export interface PricingRule { provider: string; model_pattern: string; input_per_million: number | null; output_per_million: number | null; cache_read_per_million: number | null; context_window_tokens: number | null; open_weights: boolean | null; status: string | null }\n` +
   `export const PRICING_RULES: PricingRule[] = ${j(PRICING_RULES)}\n\n` +
   `export interface EnergyRow { provider: string; model_pattern: string; wh_per_mtok_out?: number; provenance?: string; scope?: string; source?: string; measured_at?: string }\n` +
   `export const ENERGY_ROWS: EnergyRow[] = ${j(ENERGY_ROWS)}\n\n` +
