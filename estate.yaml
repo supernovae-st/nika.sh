@@ -252,7 +252,7 @@ files:
   note: "BYTE-FROZEN input: design/build.mjs READS it (build.mjs:87-100 — 'public/icons.svg is BYTE-FROZEN (the visual goldens shoot the footer)') — never regenerated"
 - path: "public/install.sh"
   class: authored
-  sha256: 16278cbfe12248d84e15b0102bdad48b61fa196aebe8d57f1446c9b2e3b0d016
+  sha256: 20edd9682093ff1999ac65f94f501a449cccf917fe538a22899bff18d1cb70b6
   evidence: "hand-written installer"
   note: "VERSION + VERSION_TRANSCRIPT rewritten by scripts/sync-version.mjs — the transcript is a REAL captured `nika --version` (honesty law: re-capture, never hand-edit)"
 - path: "public/language/words/depends_on/index.html"
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 051ed65463b96ceb7d3642fc51b3ce276cc0916f793d278300e78fece9994178
+  aggregate_sha256: 2351f2ebcdaa537875401cdfdba8459d78627a82fd3f59fcd39d84f5e48c30fe
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: cbc6e5ed6ba2cc16e147ddf872e9a12c36f9a4d06b0200f01a889f4d29a6a7c4
+  aggregate_sha256: 310a1c6d95796cfde0ab2e64c70d0a842f0da07d5c7e2f2661c1b743c3a9fa7a
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: 36353f91a38b39b844c5670aa709fac00119145895d2fc02cb020ef3c810b474
+  aggregate_sha256: cb0a60ec9986ecea554ac497ce71420114dde54207d8f5dc44bb1bae71e2ec73
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
