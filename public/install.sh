@@ -252,6 +252,25 @@ has_welcome_command() {
   "$cmd" --help 2>/dev/null | grep -Eq '^[[:space:]]+welcome([[:space:]]|$)'
 }
 
+# The VPS/headless pointer (#892): a Linux host without bubblewrap runs
+# exec/MCP children unjailed — and a permits-declaring workflow REFUSES
+# (NIKA-1710). One hint pointing at the docs, NEVER a package-manager
+# action: curl|sh installs the binary only (locked non-goal). Silent on
+# macOS (Seatbelt ships with the OS) and where bwrap already answers.
+print_sandbox_hint() {
+  case "${PLATFORM:-}" in
+    linux-*) ;;
+    *) return 0 ;;
+  esac
+  command -v bwrap >/dev/null 2>&1 && return 0
+  cat <<'EOF'
+    sandbox: no bubblewrap on this Linux host — exec/MCP children run
+             unjailed, and permits-declaring workflows refuse (NIKA-1710).
+             one package + the posture knob:
+             https://docs.nika.sh/getting-started/installation#servers-and-headless-linux
+EOF
+}
+
 print_next_steps() {
   local wire_line first_line
   if has_wire_command; then
@@ -279,6 +298,7 @@ $wire_line
     docs: https://docs.nika.sh
     source: https://github.com/$GITHUB_REPO
 EOF
+  print_sandbox_hint
 }
 
 # The receipt: the target WE installed must report the version we pinned.

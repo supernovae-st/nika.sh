@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { spawnSync } from 'node:child_process'
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -113,6 +113,47 @@ describe('install.sh version receipt', () => {
       })
       expect(r.status).toBe(0)
       expect(r.stderr).toContain(join(shadow, 'nika'))
+    })
+  })
+})
+
+/* The VPS/headless pointer (#892): a Linux host without bubblewrap gets ONE
+   docs pointer — never a package-manager action (curl|sh installs the
+   binary only, locked non-goal). The fixture PATH carries exactly the two
+   tools the probe needs (`sh` to spawn · `cat` for the heredoc, symlinked)
+   so the verdict never depends on the host's packages. */
+describe('install.sh sandbox hint (#892)', () => {
+  const minimalPath = (dir: string): string => {
+    mkdirSync(dir, { recursive: true })
+    symlinkSync('/bin/sh', join(dir, 'sh'))
+    symlinkSync('/bin/cat', join(dir, 'cat'))
+    return dir
+  }
+
+  it('points a bwrap-less Linux at the docs — never at a package manager', () => {
+    withFixture(({ install }) => {
+      const r = probe('print_sandbox_hint', { PLATFORM: 'linux-x64', PATH: minimalPath(install) })
+      expect(r.status).toBe(0)
+      expect(r.stdout).toContain('bubblewrap')
+      expect(r.stdout).toContain('docs.nika.sh')
+      expect(r.stdout).not.toMatch(/apt|apt-get|sudo/)
+    })
+  })
+
+  it('stays silent on macOS (Seatbelt ships with the OS)', () => {
+    withFixture(({ install }) => {
+      const r = probe('print_sandbox_hint', { PLATFORM: 'macos-arm64', PATH: minimalPath(install) })
+      expect(r.status).toBe(0)
+      expect(r.stdout).toBe('')
+    })
+  })
+
+  it('stays silent when bwrap already answers', () => {
+    withFixture(({ install }) => {
+      writeFileSync(join(minimalPath(install), 'bwrap'), '#!/bin/sh\nexit 0\n', { mode: 0o755 })
+      const r = probe('print_sandbox_hint', { PLATFORM: 'linux-x64', PATH: install })
+      expect(r.status).toBe(0)
+      expect(r.stdout).toBe('')
     })
   })
 })
