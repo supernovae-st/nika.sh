@@ -13,9 +13,7 @@ A workflow language lives or dies on its tools, and the industry default is a ma
 **One builtin, <!-- canon:extractModes -->9<!-- /canon --> honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 
 ```yaml headlines.nika.yaml
-nika: v1
-workflow:
-  id: headlines
+nika: headlines
 
 tasks:
   page:

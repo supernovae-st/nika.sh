@@ -23,9 +23,7 @@ The usual defense is another model: a guard that reads the output and tries to c
 Nika answers a different way. **The plan is authored before the model runs.** Here is the workflow that summarizes that hostile note:
 
 ```yaml brief.nika.yaml
-nika: v1
-workflow:
-  id: brief
+nika: brief
 # local model · the note below is hostile on purpose
 model: ollama/llama3.2:3b
 

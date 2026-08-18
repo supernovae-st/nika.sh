@@ -268,7 +268,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/llms-full.txt"
   class: generated
-  sha256: 512445767d3c3f6300e0a9ecbaac4109069b2653be76241d1479da3a97bc1d81
+  sha256: 6ea29bae3f3787c27cfcb211b3c65c32f13838dff016125ae4946beb5309b8b2
   evidence: "row of BLOG_GENERATED_MIRRORS in scripts/build-blog.mjs; its own header: 'The complete blog, newest first, as raw markdown (source: content/blog in the site repo)'"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 2a730ab8094a61da479b8acf76fdaff79d87b08ec4b3694d4d2a661a94de2859
+  sha256: 0ad22f8cca5b26cb8601e2361c268234429a814675f07c406834cf43429f891f
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -781,7 +781,7 @@ patterns:
 - glob: "public/blog/**"
   class: generated
   match_count: 35
-  aggregate_sha256: 6c5369ec866d25ef605dfab892f8d385b965a699de37a37e9bb51fa5c5828167
+  aggregate_sha256: 470726eb3dff86a9b4217ab4a001342827f0c9c3f41db7c448f55c7560fee2bb
   evidence: "the markdown twins scripts/build-blog.mjs projects from content/blog/*.md (build-blog.mjs:316 — 'public/blog/<slug>.md' with canon markers applied)"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -870,12 +870,12 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 86d7603a657c4116017314f13b9827e084d488580a9ac62a472a6d00a636a476
+  aggregate_sha256: 64d8fa773a5a68f54ad40ab44a7f2a9bc37ca4470cc90c49344d3cd61a37f425
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
   match_count: 34
-  aggregate_sha256: e88c5e184c7a500596138e7086b58b68abba70d7c5e8db1f9b83f33053855ece
+  aggregate_sha256: 37522e608431a13de94691e738f73ae4089062ec9f1b1fdf33849c9a68499adc
   evidence: "the authored blog sources — the markdown here is the SSOT the public/blog twins and generated modules mirror (+ the lane README)"
 - glob: "content/i18n/**"
   class: authored
@@ -931,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 31e517c562fd84dcad652a0e047713ebbdafa67a7e53b3b8f2120e44ac96cd9a
+  aggregate_sha256: c9ee5f1b1181ea09196b6c1ca8519facaef06d902ce6cfed5c42b0251a1d371c
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"

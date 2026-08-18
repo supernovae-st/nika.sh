@@ -11,9 +11,7 @@ Every workflow language faces the same temptation: keep adding verbs. A verb for
 Nika locks the count at four, forever. The rule that makes this possible is strict: **a verb is a distinct execution model**, not a feature. **infer** generates with a model. **exec** runs a process. **invoke** calls a tool and returns. **agent** loops with tools until the job is done. Four genuinely different ways for a machine to act. There is no fifth.
 
 ```yaml morning-brief.nika.yaml
-nika: v1
-workflow:
-  id: morning-brief
+nika: morning-brief
 
 tasks:
   fetch_news:

@@ -15,10 +15,8 @@ In a glue script, the answer is: it re-runs. The API calls you already paid for 
 Here is a workflow with real work in it: checksum the day's notes, count them, pack a 300 MB asset archive, write a manifest.
 
 ```yaml nightly-archive.nika.yaml
-nika: v1
-workflow:
-  id: nightly-archive
-  description: "Hash, count and pack the day's notes into one manifest"
+# Hash, count and pack the day's notes into one manifest
+nika: nightly-archive
 
 permits:
   fs:

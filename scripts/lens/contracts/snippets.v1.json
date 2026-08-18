@@ -32,58 +32,58 @@
     },
     {
       "path": "content/blog/2026-05-14-standard-library-not-plugin-store.md",
-      "source_blob": "a87f57d8001b3788ace075cbdd0cb35bc1dfe82e",
+      "source_blob": "5937fe4fa36793bc5f71c1f79908e58cc2dcc5ad",
       "blocks": [
         {
           "selector": "content/blog/2026-05-14-standard-library-not-plugin-store.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "9250121239bea672218322a02fe5a7459c14c335051ab423993f917d328c3688"
+          "sha256": "2f0bf1de16ccbd4f7d36700159149899aaa7871a8e714a8c3c24fa88bad91689"
         }
       ]
     },
     {
       "path": "content/blog/2026-06-04-blast-radius-in-the-file.md",
-      "source_blob": "53a65afc3ea66ebea3643d3b6ae15a3eb42a85d5",
+      "source_blob": "78d78a6c8c4f6358486de2bdab99b70b7b02b216",
       "blocks": [
         {
           "selector": "content/blog/2026-06-04-blast-radius-in-the-file.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "955a8e021f1dffd386e0ec5102eac08f948a2cd7c96674f0f03effd8273d1380"
+          "sha256": "5cbb0047188841e7c443c66753c182bdd9d171e2449eb2886932af8fdc6e80a6"
         }
       ]
     },
     {
       "path": "content/blog/2026-06-22-four-verbs.md",
-      "source_blob": "7a5711e35e846ccd104965102ebaa8a334e5247a",
+      "source_blob": "ccef2853bc2f26911ad73e5c3c613405d39f19d9",
       "blocks": [
         {
           "selector": "content/blog/2026-06-22-four-verbs.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "3cb0810ef3b241de4b0a8cb5b0673ee56b676cb986967faf098d53240350efa4"
+          "sha256": "d4e591ae8f25932bb0a6a9776c954c5ca0c9c4f4f07a70d1de08857df16a8327"
         }
       ]
     },
     {
       "path": "content/blog/2026-06-29-dag-for-free.md",
-      "source_blob": "2fe863e12aaab6b72f82c294137ddf919dc5ea8b",
+      "source_blob": "e3c15294b26560a972696736fcbe83f3cfdd6642",
       "blocks": [
         {
           "selector": "content/blog/2026-06-29-dag-for-free.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "9c7534e6c8e721b39d8ac5e62ceeffce1a2542207a02e631caa0565a9e968502"
+          "sha256": "8de23702de282f388e1a0bac0f6eedbeffafc93dc6a608e9592aa9694c013668"
         },
         {
           "selector": "content/blog/2026-06-29-dag-for-free.md#fence:2",
           "kind": "markdown-fence",
-          "line": 41,
+          "line": 39,
           "language": "text",
           "sha256": "11b97ee12b3aceee659be0e61f203e7ca7ea3feecb5b565fb7d159b790386fd2"
         }
@@ -91,32 +91,32 @@
     },
     {
       "path": "content/blog/2026-07-02-own-your-stack.md",
-      "source_blob": "27181421ca234082181fe5f9b55c74747af79530",
+      "source_blob": "d380352c3d75ceae050e47609918d905d6126c6e",
       "blocks": [
         {
           "selector": "content/blog/2026-07-02-own-your-stack.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "9cc2cebfe2007de31153d831938b55d9dcfd3950c4d51845ae29a87e989832b0"
+          "sha256": "c24262d462848f02bff1d3e9addce7395b2fad0f072a7a339a17b5aa2cab3d2b"
         }
       ]
     },
     {
       "path": "content/blog/2026-07-05-anatomy-of-a-verb.md",
-      "source_blob": "77e21be6046da569080e297742b9ba942f13080a",
+      "source_blob": "60c15576d32593f6edf54641243305feea77e7a9",
       "blocks": [
         {
           "selector": "content/blog/2026-07-05-anatomy-of-a-verb.md#fence:1",
           "kind": "markdown-fence",
           "line": 11,
           "language": "yaml",
-          "sha256": "16d93fae7eb97a90d0e97b8143e97c03ccd56c07a6af5cc1e36850e050d05cf0"
+          "sha256": "d6f4c14b3012461e51481a74fa4bfd25a65b5a7279bba5bd75285d8340bc4851"
         },
         {
           "selector": "content/blog/2026-07-05-anatomy-of-a-verb.md#fence:2",
           "kind": "markdown-fence",
-          "line": 47,
+          "line": 45,
           "language": "text",
           "sha256": "99a894e63a8700d93a4f21c79e4489d14d7cb34ee86074f5130e1c95f0b88ae4"
         }
@@ -124,19 +124,19 @@
     },
     {
       "path": "content/blog/2026-07-05-the-cost-line.md",
-      "source_blob": "5ecf5066a287e189abb7bf0235991df6a0fc20c4",
+      "source_blob": "88e2d09f7639ef92a4f1b2c2cd4547714e753eca",
       "blocks": [
         {
           "selector": "content/blog/2026-07-05-the-cost-line.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "60884ad96e2e9610beafd168f9edbe1b738b72ff758c2249f4a1e06b47e1cf68"
+          "sha256": "cfcd4a28470bd2b13508bf7ee8da4c3c632075c7b13a11683e4fa6ca3a1c7d63"
         },
         {
           "selector": "content/blog/2026-07-05-the-cost-line.md#fence:2",
           "kind": "markdown-fence",
-          "line": 31,
+          "line": 29,
           "language": "text",
           "sha256": "12d1d2e4e5acadc75483ad4e05e2da6257c2328c2d084e353a70432471f121d9"
         }
@@ -144,7 +144,7 @@
     },
     {
       "path": "content/blog/2026-07-05-the-secrets-line.md",
-      "source_blob": "16f8e158eb78bc6db8b84b89eca3dacabbc15286",
+      "source_blob": "2540fa8d48cb6699394fd647d6b9d932723a7a21",
       "blocks": [
         {
           "selector": "content/blog/2026-07-05-the-secrets-line.md#fence:1",
@@ -158,12 +158,12 @@
           "kind": "markdown-fence",
           "line": 19,
           "language": "yaml",
-          "sha256": "2d7a4249c70224d0f504a4517dc8208d8dd0e13376d3278e2d9e581a2048b88c"
+          "sha256": "601910438deac7fba8536b2ea154bce5fbc78734f70d94c6e4f8b6772553de3f"
         },
         {
           "selector": "content/blog/2026-07-05-the-secrets-line.md#fence:3",
           "kind": "markdown-fence",
-          "line": 67,
+          "line": 65,
           "language": "text",
           "sha256": "f2a5b8298c3e1fa1a14383c6feb16bc39c547407679c57e15989bf471724adc0"
         }
@@ -191,19 +191,19 @@
     },
     {
       "path": "content/blog/2026-07-06-media-are-workflow-citizens.md",
-      "source_blob": "9e0003b6d13920f6a6470bd7e7981bd90b09dd8f",
+      "source_blob": "9f1c94e716166096ceb169b28cfbff454c190a83",
       "blocks": [
         {
           "selector": "content/blog/2026-07-06-media-are-workflow-citizens.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "6d7549471290de4a32f72e14a10d76f7194f7d1e538c455386029c7a2ec155bd"
+          "sha256": "3dcdba60486c4234acacd5544b2f871360a9044c25baef812b5da5b3fab7d93a"
         },
         {
           "selector": "content/blog/2026-07-06-media-are-workflow-citizens.md#fence:2",
           "kind": "markdown-fence",
-          "line": 41,
+          "line": 39,
           "language": "text",
           "sha256": "18981f76b6d9494834879afc2c23a6ab42a07fd5d1062b9383f659e4395f49c6"
         }
@@ -305,7 +305,7 @@
     },
     {
       "path": "content/blog/2026-07-08-injection-goes-nowhere.md",
-      "source_blob": "fcdefcdf398c97228e3ca37a24dfa30350ebf902",
+      "source_blob": "1da558d20cb4f85bf02560ae8107c63405afbabb",
       "blocks": [
         {
           "selector": "content/blog/2026-07-08-injection-goes-nowhere.md#fence:1",
@@ -319,26 +319,26 @@
           "kind": "markdown-fence",
           "line": 25,
           "language": "yaml",
-          "sha256": "c38a654329b94603ffb42f2d307d9f8a162a09c25153d5531df9f13319037ccb"
+          "sha256": "c3bbbdd53e405ca8da625158fbf0d902a4781b33ab7d61d74b5e6c752b74efe1"
         },
         {
           "selector": "content/blog/2026-07-08-injection-goes-nowhere.md#fence:3",
           "kind": "markdown-fence",
-          "line": 57,
+          "line": 55,
           "language": "text",
           "sha256": "b4101827c6656911ae80dc2ea31a519205e1c840f4c737c3b1dee29878cb7cba"
         },
         {
           "selector": "content/blog/2026-07-08-injection-goes-nowhere.md#fence:4",
           "kind": "markdown-fence",
-          "line": 69,
+          "line": 67,
           "language": "text",
           "sha256": "32681489bdc426732f1e9d1330f01b55cf1beb93719b4780412ebc1ec120ad13"
         },
         {
           "selector": "content/blog/2026-07-08-injection-goes-nowhere.md#fence:5",
           "kind": "markdown-fence",
-          "line": 79,
+          "line": 77,
           "language": "text",
           "sha256": "385cb55f0a84c0a8f31362d36cf08ddacb2dfede4465ce6a514c343152d9f16a"
         }
@@ -346,47 +346,47 @@
     },
     {
       "path": "content/blog/2026-07-08-prompts-are-code.md",
-      "source_blob": "1085f295aa6473a11aef0cb5177ce42fc7460878",
+      "source_blob": "4f56c028548b59315190e6fb6af296d044fa0ccf",
       "blocks": [
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "92065db08f70288238bfb363bc04a48c550b1c767b2da7c3b881a38fc3110e97"
+          "sha256": "afa2b6e4eae4ff82fc24f06b7e9f13b18e1635d4d39e575f3611b99c2bfa610a"
         },
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:2",
           "kind": "markdown-fence",
-          "line": 47,
+          "line": 45,
           "language": "text",
           "sha256": "e531dd2a4d3c80b036a6026fb7ce8f62c6ecdb42f32810949fbe8a0ebd2ced9a"
         },
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:3",
           "kind": "markdown-fence",
-          "line": 68,
+          "line": 66,
           "language": "text",
           "sha256": "5b5f09d4c8bd94503e7dc6724d24fdf6909d3ff4590c28e1e3ddaa9383c74266"
         },
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:4",
           "kind": "markdown-fence",
-          "line": 86,
+          "line": 84,
           "language": "text",
           "sha256": "42412fe56a467f205456a45ea9cca26615041f285ef0eee282e2967dc0cb82e9"
         },
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:5",
           "kind": "markdown-fence",
-          "line": 100,
+          "line": 98,
           "language": "text",
           "sha256": "3e877c17f876398d1fa34ea5e064b52686264e761e787c3713eb51f5c545e274"
         },
         {
           "selector": "content/blog/2026-07-08-prompts-are-code.md#fence:6",
           "kind": "markdown-fence",
-          "line": 115,
+          "line": 113,
           "language": "text",
           "sha256": "c32ae2e6177700a31cb91369f3e472d5007f1633f699de84e31c8522637e6e6e"
         }
@@ -394,26 +394,26 @@
     },
     {
       "path": "content/blog/2026-07-10-the-one-task-rerun.md",
-      "source_blob": "0108083fb2273f360bf7d30399bbf82f34011a5f",
+      "source_blob": "b5413aec426fb56447361fc9e47ec1c01623cb77",
       "blocks": [
         {
           "selector": "content/blog/2026-07-10-the-one-task-rerun.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "816b1a64a5f29274a1893be246700ac1c0d8d5bf08884c873b2241c63b5969ad"
+          "sha256": "b8e1b33ce01a0e098276f18fad46f408fb85451a78d5afcf970c41d7ed543346"
         },
         {
           "selector": "content/blog/2026-07-10-the-one-task-rerun.md#fence:2",
           "kind": "markdown-fence",
-          "line": 55,
+          "line": 53,
           "language": "text",
           "sha256": "3abfdadc3f44bc67febc9015c1e246a15cc9eb36c06c9c0588736a099896554e"
         },
         {
           "selector": "content/blog/2026-07-10-the-one-task-rerun.md#fence:3",
           "kind": "markdown-fence",
-          "line": 70,
+          "line": 68,
           "language": "text",
           "sha256": "fbdf4fe7948b628bffb0ca43a9a7c066fa3a215c4f40cd89cc693e2d0fd192c1"
         }
@@ -421,40 +421,40 @@
     },
     {
       "path": "content/blog/2026-07-10-the-resume-story.md",
-      "source_blob": "d2460a7b39c2d120040b2ffa513b10bf61fe3bb7",
+      "source_blob": "8a4002f7c6e64a5bdffc09215b4d8e825906b232",
       "blocks": [
         {
           "selector": "content/blog/2026-07-10-the-resume-story.md#fence:1",
           "kind": "markdown-fence",
           "line": 17,
           "language": "yaml",
-          "sha256": "2fd24c9da8afc6d2261daaf1d40c409040f0d9c89d83cda633a1bab1fec5ea2e"
+          "sha256": "6f329efff864152ddd8024692865bef326d50051cb054aa0b791be53c00b5036"
         },
         {
           "selector": "content/blog/2026-07-10-the-resume-story.md#fence:2",
           "kind": "markdown-fence",
-          "line": 60,
+          "line": 58,
           "language": "text",
           "sha256": "308b63e5930ac53255f183578861238cb4e74a91b7fcab18a14d379b15a635c9"
         },
         {
           "selector": "content/blog/2026-07-10-the-resume-story.md#fence:3",
           "kind": "markdown-fence",
-          "line": 75,
+          "line": 73,
           "language": "text",
           "sha256": "fbb9a26d8b23aaaadce0ff3d00d2211fd5d32b907af82b571c3b056d0faccbfb"
         },
         {
           "selector": "content/blog/2026-07-10-the-resume-story.md#fence:4",
           "kind": "markdown-fence",
-          "line": 87,
+          "line": 85,
           "language": "text",
           "sha256": "73cbb886e26d6842dbfae9f32fc6ae403471d09c1e98d9ec53baeb453a79e0e7"
         },
         {
           "selector": "content/blog/2026-07-10-the-resume-story.md#fence:5",
           "kind": "markdown-fence",
-          "line": 106,
+          "line": 104,
           "language": "text",
           "sha256": "67bbab57c613a6b7dba2a03b1f9f322c2e6f1054f8e474e68f089ac60d2c9202"
         }
@@ -462,26 +462,26 @@
     },
     {
       "path": "content/blog/2026-07-10-the-run-that-waits.md",
-      "source_blob": "1b89d3607f7ad3f0e15d148bc33c1014e44c40d6",
+      "source_blob": "0c2ce9b95abf3abb6839eb80bdf8b99528de906d",
       "blocks": [
         {
           "selector": "content/blog/2026-07-10-the-run-that-waits.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "10bda58a120465e3796c2fbcbd919490dd20bcaa174aa2b1c8a6b7444e93f169"
+          "sha256": "85fdb7015c781420f26e97a1a83fb9de6cb288699cc8ca1869dad39f308976ca"
         },
         {
           "selector": "content/blog/2026-07-10-the-run-that-waits.md#fence:2",
           "kind": "markdown-fence",
-          "line": 61,
+          "line": 59,
           "language": "text",
           "sha256": "2d5a3f37e15cc1a65f1cc180f2cb9510dadc4bb1dea630b47e620c29abcf9140"
         },
         {
           "selector": "content/blog/2026-07-10-the-run-that-waits.md#fence:3",
           "kind": "markdown-fence",
-          "line": 78,
+          "line": 76,
           "language": "text",
           "sha256": "f352c18ffa6e9ea06d91d0c6e8eeb3c52c48d4448003aaa9775f924db5476bfa"
         }
@@ -489,14 +489,14 @@
     },
     {
       "path": "content/blog/2026-07-11-the-agent-workflow-spectrum.md",
-      "source_blob": "23bf770fc7ddbe3051b631980135567db32a5430",
+      "source_blob": "a2a6e345c698eb08864b4f459ffa9ab8427ee162",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-agent-workflow-spectrum.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "891b17693a6f46f7b2594b53ec636dce84f128b62d45ef359cbcead1b0b53803"
+          "sha256": "2c99d538a54419d14452f9d8a4e75f82f277205aa6c4eca0f9511b273697e03c"
         }
       ]
     },
@@ -529,26 +529,26 @@
     },
     {
       "path": "content/blog/2026-07-11-the-generative-workflow.md",
-      "source_blob": "b4d3991d43cb77cc33632812c8fe280f4c8fc8b9",
+      "source_blob": "b97e0611b30df55f6e2749febeca627001402a05",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-generative-workflow.md#fence:1",
           "kind": "markdown-fence",
           "line": 13,
           "language": "yaml",
-          "sha256": "3bcc0d50c184024862f188c3c2df157a4ecca8610c7b96d2ea8b2c1788e2c50f"
+          "sha256": "616f9ad88f19486f9cf7936746caeb025ffcea5a139834d174a4c8a1c508a8bb"
         },
         {
           "selector": "content/blog/2026-07-11-the-generative-workflow.md#fence:2",
           "kind": "markdown-fence",
-          "line": 86,
+          "line": 84,
           "language": "text",
           "sha256": "c1bf2045a5966efef11154a89cb9da25f492a4fdb53976fae87b52f1e0c6e36c"
         },
         {
           "selector": "content/blog/2026-07-11-the-generative-workflow.md#fence:3",
           "kind": "markdown-fence",
-          "line": 102,
+          "line": 100,
           "language": "json",
           "sha256": "a223c3af119ade9bf4939aad0ef31cd54eec9caab1b0b094d08bdd60d68841eb"
         }
@@ -556,7 +556,7 @@
     },
     {
       "path": "content/blog/2026-07-11-the-local-forecast.md",
-      "source_blob": "55b6d29217230999b1f12ea3ecbf2d41a8f69f91",
+      "source_blob": "dcb2e6af7101280bce074455933b25e76d0fb9bc",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-local-forecast.md#fence:1",
@@ -570,12 +570,12 @@
           "kind": "markdown-fence",
           "line": 32,
           "language": "yaml",
-          "sha256": "48150b409f3b9cfab6a2f6c2257b13e7d84611fcebe54f2604b5530f650c152d"
+          "sha256": "5ec4f4c9129da6d0d1160d1b74b6ebcf304e8655c01999581e9761df62954d18"
         },
         {
           "selector": "content/blog/2026-07-11-the-local-forecast.md#fence:3",
           "kind": "markdown-fence",
-          "line": 75,
+          "line": 73,
           "language": "text",
           "sha256": "2c43885d26525245c1386193d0b3dd9ba17206f12bfb5857fa7175422c2d28f9"
         }
@@ -610,19 +610,19 @@
     },
     {
       "path": "content/blog/2026-07-11-the-pipeline-is-a-file.md",
-      "source_blob": "9d308fc7ddaeebe9c18e01a95611f115c3ef9532",
+      "source_blob": "171c3eabb86407f56ca8b7034f22846160baf278",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-the-pipeline-is-a-file.md#fence:1",
           "kind": "markdown-fence",
           "line": 15,
           "language": "yaml",
-          "sha256": "a81f2b329a785bb1d1479c6d9f14fc69221d65908bc9c1ce014a1cdbf550a182"
+          "sha256": "117073dde88d195fcef0df5f259b0eed4eab8bf33487c1fe68cdbb01c68fa748"
         },
         {
           "selector": "content/blog/2026-07-11-the-pipeline-is-a-file.md#fence:2",
           "kind": "markdown-fence",
-          "line": 69,
+          "line": 67,
           "language": "text",
           "sha256": "163d28e7cd02b47cb849c6201109608cceed230c26460da0674e503913d9d433"
         }
@@ -630,7 +630,7 @@
     },
     {
       "path": "content/blog/2026-07-11-written-by-agents.md",
-      "source_blob": "8d081fbcded046613022d9f1fc51facdcf11ed52",
+      "source_blob": "f19fd2333ddbb8c0a0315349839acaa0afe7dff4",
       "blocks": [
         {
           "selector": "content/blog/2026-07-11-written-by-agents.md#fence:1",
@@ -651,26 +651,26 @@
           "kind": "markdown-fence",
           "line": 42,
           "language": "yaml",
-          "sha256": "2e78f935a95c8dfbbdb7f637fa3d96a4944c209fa3c8ffff77631796a98ad66b"
+          "sha256": "d339e7430dc8d75f388015517b5b5d6cb65ac978c8b9f90d9086a2ea7587ee75"
         },
         {
           "selector": "content/blog/2026-07-11-written-by-agents.md#fence:4",
           "kind": "markdown-fence",
-          "line": 112,
+          "line": 110,
           "language": "text",
           "sha256": "65de2eb4fd2b25456c8747e5ecf214a8e86aa1f28fd0864635196f914f2ddd32"
         },
         {
           "selector": "content/blog/2026-07-11-written-by-agents.md#fence:5",
           "kind": "markdown-fence",
-          "line": 129,
+          "line": 127,
           "language": "text",
           "sha256": "bd7003e10f158a630892669d32f455204dae8115a7ee6f3beb8eb173f9be7408"
         },
         {
           "selector": "content/blog/2026-07-11-written-by-agents.md#fence:6",
           "kind": "markdown-fence",
-          "line": 144,
+          "line": 142,
           "language": "text",
           "sha256": "d0a2729737608b18d1712705c2d9606097e5bb82c276a79ee0380aa9668b3532"
         }

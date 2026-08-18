@@ -11,9 +11,7 @@ Ask an agent framework what its agent may touch, and the honest answer is usuall
 In Nika, the boundary is a block in the file you review:
 
 ```yaml daily-brief.nika.yaml
-nika: v1
-workflow:
-  id: daily-brief
+nika: daily-brief
 
 permits:
   fs:

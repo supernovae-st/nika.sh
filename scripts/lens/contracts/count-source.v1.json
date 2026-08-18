@@ -118,7 +118,7 @@
     {
       "selector": "content/blog/2026-06-29-dag-for-free.md#count:1",
       "path": "content/blog/2026-06-29-dag-for-free.md",
-      "line": 45,
+      "line": 43,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -154,7 +154,7 @@
     {
       "selector": "content/blog/2026-07-05-anatomy-of-a-verb.md#count:3",
       "path": "content/blog/2026-07-05-anatomy-of-a-verb.md",
-      "line": 57,
+      "line": 55,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -190,7 +190,7 @@
     {
       "selector": "content/blog/2026-07-11-the-pipeline-is-a-file.md#count:2",
       "path": "content/blog/2026-07-11-the-pipeline-is-a-file.md",
-      "line": 90,
+      "line": 88,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",

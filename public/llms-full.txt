@@ -112,10 +112,8 @@ Fed the error back, the model *described* a fix, and its own example was still w
 **The frontier agent next**: `claude -p`, headless; one of several, the scaffold does not care which frontier you call. First shot, audit-green. Here is the file it wrote, shown as reviewed. The two lines we ended up changing are the story of the third act:
 
 ```yaml summarize-notes.nika.yaml
-nika: v1
-workflow:
-  id: summarize-notes
-  description: "Summarize the three notes under ./notes/ into ./manifest.md"
+# Summarize the three notes under ./notes/ into ./manifest.md
+nika: summarize-notes
 
 model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5
 
@@ -242,10 +240,8 @@ But look at what a pipeline actually *is* for a second. The model call does not 
 Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on a local model, saves the notes, and, on a separate branch, counts the changelog into a badge. Three verbs, two branches, zero glue:
 
 ```yaml release-notes.nika.yaml
-nika: v1
-workflow:
-  id: release-notes
-  description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
+# Fetch the changelog, summarize it, badge the repo — one reviewable file
+nika: release-notes
 
 model: ollama/llama3.2:3b
 
@@ -392,10 +388,8 @@ The numbers are *earned*, and the table says how much. At two runs you get hones
 It prices inference the same way. Here is a three-task digest that reads a status file, runs one small `infer` on a local model, and writes the result:
 
 ```yaml digest.nika.yaml
-nika: v1
-workflow:
-  id: digest
-  description: "Read the notes, draft a one-line digest, save it"
+# Read the notes, draft a one-line digest, save it
+nika: digest
 
 model: ollama/llama3.2:3b
 
@@ -463,10 +457,8 @@ A generative ai workflow, with the buzzword stripped, is three things: **inputs 
 Declare the triple instead. This workflow came from the engine's own skeleton, `nika new --from media-asset-pack`, whose header states the house rule: *"Native-first · generation is `nika:image_generate` (no provider curl · no OpenAI helper script)"*. Filled, it reads:
 
 ```yaml landing-hero-pack.nika.yaml
-nika: v1
-workflow:
-  id: landing-hero-pack
-  description: "One brief, one rendered hero, one manifest naming what landed where"
+# One brief, one rendered hero, one manifest naming what landed where
+nika: landing-hero-pack
 
 model: ollama/llama3.2:3b
 
@@ -630,10 +622,8 @@ Neither pole is "the right way to build agents." The design question is narrower
 What makes the dynamic end shippable is that the freedom is **contained in a task**. Here is the workflow this post ran, instantiated from the engine's own `agent-loop` template (`nika new --from agent-loop`), whose header states the doctrine outright: *"Three leashes (NEVER ship an unleashed agent): `tools:` default-deny · grant the MINIMUM; `max_turns` + `max_tokens_total` · the worst case is bounded; `schema:` · the final message is TYPED, prose is not a contract."*
 
 ```yaml notes-triage.nika.yaml
-nika: v1
-workflow:
-  id: notes-triage
-  description: "Read the status notes, return a typed triage"
+# Read the status notes, return a typed triage
+nika: notes-triage
 
 model: ollama/llama3.2:3b
 
@@ -717,10 +707,8 @@ Every serious pipeline eventually needs a human in it. Ship the release note, *a
 Nika's answer is the same answer it gives everything else: **the gate is a task in the file.**
 
 ```yaml gated-release.nika.yaml
-nika: v1
-workflow:
-  id: gated-release
-  description: "Draft the release note, wait for a human yes, only then publish"
+# Draft the release note, wait for a human yes, only then publish
+nika: gated-release
 
 permits:
   fs:
@@ -820,10 +808,8 @@ In a glue script, the answer is: it re-runs. The API calls you already paid for 
 Here is a workflow with real work in it: checksum the day's notes, count them, pack a 300 MB asset archive, write a manifest.
 
 ```yaml nightly-archive.nika.yaml
-nika: v1
-workflow:
-  id: nightly-archive
-  description: "Hash, count and pack the day's notes into one manifest"
+# Hash, count and pack the day's notes into one manifest
+nika: nightly-archive
 
 permits:
   fs:
@@ -934,10 +920,8 @@ Make solved this for C files in 1976. Nika gives the same move to AI pipelines, 
 Here is a small build with a diamond in it: fetch feeds render feeds index, and an asset-packing branch that depends on none of them.
 
 ```yaml site-build.nika.yaml
-nika: v1
-workflow:
-  id: site-build
-  description: "Fetch the data, render the page, index it - and pack assets on the side"
+# Fetch the data, render the page, index it - and pack assets on the side
+nika: site-build
 
 permits:
   fs:
@@ -1020,9 +1004,7 @@ Ask a team where their prompts live. A chat window. A doc titled `PROMPT_v2_FINA
 The usual answer is a prompt-management platform: another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter. **The prompt is a line in the workflow file.**
 
 ```yaml release-notes.nika.yaml
-nika: v1
-workflow:
-  id: release-notes
+nika: release-notes
 # local model · nothing leaves this machine
 model: ollama/llama3.2:3b
 
@@ -1160,9 +1142,7 @@ The usual defense is another model: a guard that reads the output and tries to c
 Nika answers a different way. **The plan is authored before the model runs.** Here is the workflow that summarizes that hostile note:
 
 ```yaml brief.nika.yaml
-nika: v1
-workflow:
-  id: brief
+nika: brief
 # local model · the note below is hostile on purpose
 model: ollama/llama3.2:3b
 
@@ -1442,9 +1422,7 @@ Every automation platform bolted image generation on the same way: a node that c
 Nika's stdlib grew two Media builtins this week, `nika:image_generate` and `nika:tts_generate`, and the point is not that they exist. It's that they had to pass the same bar as `read`, `fetch` and `exec` before they could:
 
 ```yaml
-nika: v1
-workflow:
-  id: og-hero
+nika: og-hero
 
 permits:
   fs: { write: ["./assets/**"] }     # saves are boundary-gated, per final path
@@ -1537,9 +1515,7 @@ Nika asks the question before the run exists. The third verdict `nika check` pri
 For that line to be provable, a secret has to be something the language can see:
 
 ```yaml billing-brief.nika.yaml
-nika: v1
-workflow:
-  id: billing-brief
+nika: billing-brief
 model: ollama/llama3.2:3b
 
 # a secret is a reference to a store, never a value
@@ -1607,9 +1583,7 @@ Every AI bill has the same shape: you find out what it cost after it cost it. Th
 Nika moves the question to before. The second verdict `nika check` prints, right under the plan, is the cost line:
 
 ```yaml cost-probe.nika.yaml
-nika: v1
-workflow:
-  id: cost-probe
+nika: cost-probe
 model: mistral/mistral-small
 
 tasks:
@@ -1653,9 +1627,7 @@ date: 2026-07-05 · tag: Language
 The language locks at four verbs, and the [earlier post](/blog/four-verbs) made the case for why. This one is about the *what*: the rule says a verb is a distinct execution model, so it should be possible to point at the engine and show the distinction. Here is one file that uses all four, and what the audit actually says about each.
 
 ```yaml verbs-probe.nika.yaml
-nika: v1
-workflow:
-  id: verbs-probe
+nika: verbs-probe
 model: ollama/llama3.2:3b
 
 tasks:
@@ -1713,9 +1685,7 @@ Local-first gets said a lot, and it means anything from "we cache" to "we sync, 
 **5 of the 17 model providers are local runtimes**: Ollama, LM Studio, llama.cpp, LocalAI, vLLM. The model is one line of the file; swap it and nothing else changes.
 
 ```yaml hello-ai.nika.yaml
-nika: v1
-workflow:
-  id: hello-ai
+nika: hello-ai
 model: ollama/llama3.2:3b
 
 tasks:
@@ -1741,9 +1711,7 @@ Every orchestration tool eventually grows a scheduler dialect: stages, barriers,
 **Nika has two doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
 
 ```yaml release-radar.nika.yaml
-nika: v1
-workflow:
-  id: release-radar
+nika: release-radar
 
 tasks:
   changelog:
@@ -1787,9 +1755,7 @@ Every workflow language faces the same temptation: keep adding verbs. A verb for
 Nika locks the count at four, forever. The rule that makes this possible is strict: **a verb is a distinct execution model**, not a feature. **infer** generates with a model. **exec** runs a process. **invoke** calls a tool and returns. **agent** loops with tools until the job is done. Four genuinely different ways for a machine to act. There is no fifth.
 
 ```yaml morning-brief.nika.yaml
-nika: v1
-workflow:
-  id: morning-brief
+nika: morning-brief
 
 tasks:
   fetch_news:
@@ -1848,9 +1814,7 @@ Ask an agent framework what its agent may touch, and the honest answer is usuall
 In Nika, the boundary is a block in the file you review:
 
 ```yaml daily-brief.nika.yaml
-nika: v1
-workflow:
-  id: daily-brief
+nika: daily-brief
 
 permits:
   fs:
@@ -1896,9 +1860,7 @@ A workflow language lives or dies on its tools, and the industry default is a ma
 **One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 
 ```yaml headlines.nika.yaml
-nika: v1
-workflow:
-  id: headlines
+nika: headlines
 
 tasks:
   page:

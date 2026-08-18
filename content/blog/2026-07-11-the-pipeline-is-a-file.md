@@ -13,10 +13,8 @@ But look at what a pipeline actually *is* for a second. The model call does not 
 Here is a release-notes pipeline, whole. It reads a changelog, summarizes it on a local model, saves the notes, and, on a separate branch, counts the changelog into a badge. Three verbs, two branches, zero glue:
 
 ```yaml release-notes.nika.yaml
-nika: v1
-workflow:
-  id: release-notes
-  description: "Fetch the changelog, summarize it, badge the repo — one reviewable file"
+# Fetch the changelog, summarize it, badge the repo — one reviewable file
+nika: release-notes
 
 model: ollama/llama3.2:3b
 

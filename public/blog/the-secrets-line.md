@@ -17,9 +17,7 @@ Nika asks the question before the run exists. The third verdict `nika check` pri
 For that line to be provable, a secret has to be something the language can see:
 
 ```yaml billing-brief.nika.yaml
-nika: v1
-workflow:
-  id: billing-brief
+nika: billing-brief
 model: ollama/llama3.2:3b
 
 # a secret is a reference to a store, never a value

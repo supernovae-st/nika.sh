@@ -11,10 +11,8 @@ Every serious pipeline eventually needs a human in it. Ship the release note, *a
 Nika's answer is the same answer it gives everything else: **the gate is a task in the file.**
 
 ```yaml gated-release.nika.yaml
-nika: v1
-workflow:
-  id: gated-release
-  description: "Draft the release note, wait for a human yes, only then publish"
+# Draft the release note, wait for a human yes, only then publish
+nika: gated-release
 
 permits:
   fs:

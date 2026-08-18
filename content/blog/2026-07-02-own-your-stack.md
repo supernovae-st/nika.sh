@@ -13,9 +13,7 @@ Local-first gets said a lot, and it means anything from "we cache" to "we sync, 
 **<!-- canon:providersLocal -->5<!-- /canon --> of the <!-- canon:providers -->17<!-- /canon --> model providers are local runtimes**: Ollama, LM Studio, llama.cpp, LocalAI, vLLM. The model is one line of the file; swap it and nothing else changes.
 
 ```yaml hello-ai.nika.yaml
-nika: v1
-workflow:
-  id: hello-ai
+nika: hello-ai
 model: ollama/llama3.2:3b
 
 tasks:
