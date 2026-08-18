@@ -577,7 +577,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "NIKA-DEFAULT-001",
     "url": "/language/errors/NIKA-DEFAULT-001",
     "status": "ratified",
-    "opener": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)",
+    "opener": "a declared inputs default or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -1445,7 +1445,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "NIKA-VALUES-003",
     "url": "/language/errors/NIKA-VALUES-003",
     "status": "ratified",
-    "opener": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)",
+    "opener": "a value-namespace read outside the three-authority family (R3a · LAW-SURFACE-0201)",
     "meta": {
       "category": "validation_error",
       "transient": false
@@ -1459,7 +1459,7 @@ export const LENS_NODES: LensNode[] = [
     "title": "NIKA-VAR-001",
     "url": "/language/errors/NIKA-VAR-001",
     "status": "ratified",
-    "opener": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)",
+    "opener": "unresolved reference (unknown namespace entry · undeclared inputs/const/secrets/with key)",
     "meta": {
       "category": "variable_error",
       "transient": false

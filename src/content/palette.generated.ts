@@ -847,7 +847,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VAR-001",
     "href": "/language/errors/NIKA-VAR-001",
-    "hint": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
+    "hint": "unresolved reference (unknown namespace entry · undeclared inputs/const/secrets/with key)"
   },
   {
     "kind": "error",
@@ -1201,13 +1201,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VALUES-003",
     "href": "/language/errors/NIKA-VALUES-003",
-    "hint": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+    "hint": "a value-namespace read outside the three-authority family (R3a · LAW-SURFACE-0201)"
   },
   {
     "kind": "error",
     "label": "NIKA-DEFAULT-001",
     "href": "/language/errors/NIKA-DEFAULT-001",
-    "hint": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+    "hint": "a declared inputs default or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
   },
   {
     "kind": "tool",

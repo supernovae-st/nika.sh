@@ -1569,7 +1569,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-DEFAULT-001",
           "termCode": "NIKA-DEFAULT-001",
           "name": "NIKA-DEFAULT-001",
-          "description": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+          "description": "a declared inputs default or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
         },
         {
           "@type": "DefinedTerm",
@@ -2003,14 +2003,14 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-VALUES-003",
           "termCode": "NIKA-VALUES-003",
           "name": "NIKA-VALUES-003",
-          "description": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+          "description": "a value-namespace read outside the three-authority family (R3a · LAW-SURFACE-0201)"
         },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-VAR-001",
           "termCode": "NIKA-VAR-001",
           "name": "NIKA-VAR-001",
-          "description": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
+          "description": "unresolved reference (unknown namespace entry · undeclared inputs/const/secrets/with key)"
         },
         {
           "@type": "DefinedTerm",

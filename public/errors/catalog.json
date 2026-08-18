@@ -372,7 +372,7 @@
    "code": "NIKA-VAR-001",
    "category": "variable_error",
    "transient": "false",
-   "failure": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
+   "failure": "unresolved reference (unknown namespace entry · undeclared inputs/const/secrets/with key)"
   },
   {
    "code": "NIKA-VAR-002",
@@ -726,13 +726,13 @@
    "code": "NIKA-VALUES-003",
    "category": "validation_error",
    "transient": "false",
-   "failure": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+   "failure": "a value-namespace read outside the three-authority family (R3a · LAW-SURFACE-0201)"
   },
   {
    "code": "NIKA-DEFAULT-001",
    "category": "validation_error",
    "transient": "false",
-   "failure": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+   "failure": "a declared inputs default or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
   }
  ]
 }

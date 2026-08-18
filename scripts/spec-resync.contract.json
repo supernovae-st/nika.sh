@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "f308fa32e28c4399aad96fc63f09dab4e57a75a7",
-  "tree": "c1ad730730afc877119eee7c7d59d92196edbfde"
+  "commit": "2b3d6ac3e725fd9f4930ad42a48d5c73633544d3",
+  "tree": "7f19997ba742d5586b9cf137c89835b292f779ca"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "8daca90cae6d0948028242d1499d1fa1774620ccb140c3d074c4ea568fcf87f8",
+   "sha256": "be85fb0da41d6d6684dda9d7c64810a500cf1e412d93e7c1f157370b7b167428",
    "args": [
     "--write"
    ],
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0",
+   "sha256": "750d254506a02f8b0a857b979cc3ac766ad0555ded841bf7550dd2491ea36f5f",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,12 +276,12 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0",
+   "sha256": "750d254506a02f8b0a857b979cc3ac766ad0555ded841bf7550dd2491ea36f5f",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
    "path": "public/errors/catalog.json",
-   "sha256": "3e6dab3ca6ba5480e4e15f58c3b5172ed30bd57b100a2ecff93583c66494e40e",
+   "sha256": "0f7de6af72e1d3cf3a6c29c83162f167bac96f98c3d636ceb52d5bf66dbcf575",
    "dist": "errors/catalog.json"
   },
   {
@@ -315,7 +315,7 @@
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "c0176e00da7f163a2b8cb2c4f9ee52167e5c8333f1105b4d6cc70ca17bcb1182",
+   "sha256": "74d2f314e08bbad47425bceecb0f3ca75601802368154bf4add3df80a2783ff1",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]
@@ -399,7 +399,7 @@
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "cbaea2c6e404bbb46849f5360bc1a2f1d79e45a0928d4cc91a95f8c2e0d90990",
+   "sha256": "64ad3099d6476e7eab82c21bb8819d88078e73442e0da6d505470b99833f6308",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

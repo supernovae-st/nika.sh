@@ -3592,7 +3592,7 @@ export const SHOWCASE_DAG: Record<string, ShowcaseDag> = {
   'transcript-shownotes': {"tasks": [{"id": "raw", "verb": "invoke", "deps": [], "wave": 0, "gate": "default", "gloss": "call `nika:read`", "flags": [], "line0": 17, "line1": 22}, {"id": "notes", "verb": "infer", "deps": ["raw"], "wave": 1, "gate": "default", "gloss": "ask the model for typed JSON", "flags": ["typed output"], "line0": 23, "line1": 53}, {"id": "sections", "verb": "invoke", "deps": ["notes"], "wave": 2, "gate": "default", "gloss": "call `nika:jq`", "flags": [], "line0": 54, "line1": 65}, {"id": "page", "verb": "invoke", "deps": ["notes", "sections"], "wave": 3, "gate": "default", "gloss": "call `nika:write`", "flags": [], "line0": 67, "line1": 89}], "outputs": ["notes"], "waves": 4},
 }
 
-/** the 6 instantiable skeletons (spec templates/ · SLOT comments
+/** the instantiable skeletons (spec templates/ · SLOT comments
     kept — they are the instructions) · the playground's seeds */
 export const TEMPLATES_YAML: Record<string, string> = {
   'agent-loop': `nika: agent-loop-template       # SLOT: kebab-case workflow id
