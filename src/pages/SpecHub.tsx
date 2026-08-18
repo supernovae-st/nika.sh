@@ -74,7 +74,7 @@ export function Component() {
             One envelope, four verbs, one graph.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            The whole language, written down and frozen at <code>nika: v1</code>. Each chapter has
+            The whole language, written down: the nine-key envelope and everything under it. Each chapter has
             its own page and its own digest, so you can cite the paragraph you mean instead of
             linking a document and hoping. Read at the pin, never retyped.
           </p>

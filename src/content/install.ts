@@ -49,10 +49,8 @@ export const DOCTOR_CMD = 'nika doctor'
 /* the zero-setup first file — no model, no key (exec only). 0.106: an
    absent permits: is the EMPTY boundary, so even the hello declares its
    touch — two more lines, and the file IS the blast radius from day one. */
-export const HELLO_YAML = `nika: v1
-workflow:
-  id: hello
-  description: "first file after install · one exec, zero setup, zero keys"
+export const HELLO_YAML = `# first file after install · one exec, zero setup, zero keys
+nika: hello
 permits:
   exec: ["echo"]
 tasks:
@@ -61,10 +59,8 @@ tasks:
       command: ["echo", "hello", "from", "nika"]`
 
 /* the first AI step — a free local model, nothing leaves the machine */
-export const HELLO_AI_YAML = `nika: v1
-workflow:
-  id: hello-ai
-  description: "first model call · one local seat, one bounded sentence"
+export const HELLO_AI_YAML = `# first model call · one local seat, one bounded sentence
+nika: hello-ai
 model: ollama/llama3.2:3b   # local · zero key · swap for any provider in the catalog
 permits: {}
 tasks:

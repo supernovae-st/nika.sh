@@ -28,9 +28,7 @@ import './v4-home.css'
    prerendered frame is the idle state (all cards pending, YAML visible);
    no effects run at mount. */
 
-export const EXTENSION_SHOWCASE_YAML = `nika: v1
-workflow:
-  id: release-notes
+export const EXTENSION_SHOWCASE_YAML = `nika: release-notes
 model: ollama/qwen3.5:4b
 
 tasks:

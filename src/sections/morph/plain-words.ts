@@ -24,7 +24,7 @@ export const PERMITS_WORDS = 'what the file may touch'
    a tooltip on every token is noise, not teaching. The three constants above
    stay the single source for their keys. */
 export const KEY_WORDS: Record<string, string> = {
-  nika: 'the envelope · nika: v1, forever',
+  nika: 'the mark and the name · nika: <name>, one line, no version key',
   workflow: 'this run’s name',
   model: 'the model it runs on · local means nothing leaves',
   permits: PERMITS_WORDS,

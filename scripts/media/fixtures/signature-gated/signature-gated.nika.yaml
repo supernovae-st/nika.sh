@@ -2,10 +2,8 @@
 #
 # SIGNATURE DEMO · gated variant — same release-notes pipeline, plus ONE
 # human gate (nika:prompt) between the agent verify and the publish.
-nika: v1
-workflow:
-  id: release-notes-i18n-gated
-  description: "signature pipeline + a human consent gate before publish"
+# signature pipeline + a human consent gate before publish
+nika: release-notes-i18n-gated
 
 model: mock/echo
 
@@ -40,8 +38,9 @@ tasks:
   translate:
     with:
       draft: ${{ tasks.draft.output }}
-    for_each: ${{ const.locales }}
-    max_parallel: 4
+    for_each:
+      items: ${{ const.locales }}
+      max_parallel: 4
     infer:
       max_tokens: 400
       prompt: |

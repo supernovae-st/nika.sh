@@ -46,7 +46,7 @@ const ENVIRONMENTAL = new Set(['inputs'])
 
 let engine
 try {
-  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/).pop()
+  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
 } catch {
   console.error('build-hero-check: `nika` is not on PATH — the capture needs the real binary')
   process.exit(2)

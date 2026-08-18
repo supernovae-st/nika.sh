@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: nim-catalog-call
-  description: "one catalog, many vendors' models — the hosted endpoint and the container match"
+# one catalog, many vendors' models — the hosted endpoint and the container match
+nika: nim-catalog-call
 
 tasks:
   note:

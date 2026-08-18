@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: pin-the-artifact
-  description: "content-address a file — the receipt survives the run"
+# content-address a file — the receipt survives the run
+nika: pin-the-artifact
 
 permits:
   exec: true

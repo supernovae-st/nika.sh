@@ -78,7 +78,7 @@ describe('code roles · POSITION overrules spelling', () => {
      launch (the boundary), under a task it IS the act. A word-list highlighter
      gets exactly one of these right. */
   const both = [
-    'nika: v1',
+    'nika: both',
     'permits:',
     '  exec: [ git ]',
     '  tools: [ "nika:read" ]',
@@ -114,7 +114,7 @@ describe('code roles · POSITION overrules spelling', () => {
   })
 
   it('a plain envelope key keeps frame ink (colour is spent, not sprayed)', () => {
-    const y = ['nika: v1', 'workflow:', '  id: x', '  description: y'].join('\n')
+    const y = ['nika: x', 'model: mock/echo', 'inputs:', '  topic: { type: string }'].join('\n')
     for (const l of [1, 2, 3, 4]) expect(head(y, l)?.role).toBeUndefined()
   })
 })

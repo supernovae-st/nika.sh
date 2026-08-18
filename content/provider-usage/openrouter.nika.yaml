@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: one-key-two-vendors
-  description: "two vendors' models through one endpoint — the router owns the hop"
+# two vendors' models through one endpoint — the router owns the hop
+nika: one-key-two-vendors
 
 tasks:
   first_opinion:

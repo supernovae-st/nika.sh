@@ -1,11 +1,11 @@
-nika: v1
-workflow:
-  id: delegate-a-sub-run
-  description: "the agent drafts a sub-workflow and spawns it through its one doorway"
+# the agent drafts a sub-workflow and spawns it through its one doorway
+nika: delegate-a-sub-run
 
 model: ollama/qwen3.5:4b
 
 permits:
+  fs:
+    read: ["./skills/summarizer/SKILL.md", "./notes.md"]
   exec: false
   tools: ["nika:compose", "nika:done", "nika:read"]
 

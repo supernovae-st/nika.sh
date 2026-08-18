@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: patch-the-config
-  description: "RFC 7396 — set a key, null deletes one"
+# RFC 7396 — set a key, null deletes one
+nika: patch-the-config
 
 tasks:
   merge:

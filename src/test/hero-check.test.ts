@@ -131,7 +131,7 @@ describe('hero check · the transaction cannot drift from the binary', () => {
   })
 
   it.skipIf(!hasNika)('the pinned engine is the engine on PATH', () => {
-    const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/).pop()
+    const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
     expect(HERO_ENGINE).toBe(live)
   })
 })

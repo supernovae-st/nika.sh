@@ -1,12 +1,9 @@
-nika: v1
-workflow:
-  id: instant-fanout
-  description: "four prompts at once on LPU hardware — a failed item yields null, the batch lives"
+# four prompts at once on LPU hardware — a failed item yields null, the batch lives
+nika: instant-fanout
 
 tasks:
   slogan:
-    for_each: ["latency", "cost", "recovery", "provenance"]
-    max_parallel: 4
+    for_each: { items: ["latency", "cost", "recovery", "provenance"], max_parallel: 4 }
     on_error:
       recover: null
     infer:

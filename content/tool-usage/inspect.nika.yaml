@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: watch-the-meter
-  description: "the workflow looks at its own run — cost as data, mid-flight"
+# the workflow looks at its own run — cost as data, mid-flight
+nika: watch-the-meter
 
 tasks:
   spend:

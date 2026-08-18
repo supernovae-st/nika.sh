@@ -118,9 +118,8 @@ describe('the hover resolver · cmTipAt (the static glossary, live)', () => {
 
 describe('the live editor · rendered voice', () => {
   const DOC = [
-    'nika: v1',
-    'workflow:',
-    '  id: chain',
+    'nika: chain',
+    'model: mock/echo',
     'tasks:',
     '  gather:',
     '    invoke:',
@@ -170,7 +169,7 @@ describe('the live editor · rendered voice', () => {
       expect(invoke?.style.paddingLeft).toContain('14px')
       /* flush-left lines carry no device */
       const first = Array.from(view.dom.querySelectorAll<HTMLElement>('.cm-line')).find(
-        (el) => el.textContent === 'nika: v1',
+        (el) => el.textContent === 'nika: chain',
       )
       expect(first?.style.textIndent).toBe('')
     } finally {
@@ -234,7 +233,7 @@ describe('one brush · no lezer fallback ink inside the mounted editor', () => {
     const { default: PlayEditor } = await import('./PlayEditor')
     const { container } = render(
       <PlayEditor
-        value={'nika: v1\nworkflow:\n  id: probe # a comment\n'}
+        value={'nika: probe # a comment\nmodel: mock/echo\n'}
         onChange={() => {}}
         onDiags={() => {}}
       />,

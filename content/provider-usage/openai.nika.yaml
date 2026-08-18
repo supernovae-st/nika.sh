@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: typed-extraction
-  description: "the answer arrives as data, not prose — schema makes the shape a contract"
+# the answer arrives as data, not prose — schema makes the shape a contract
+nika: typed-extraction
 
 tasks:
   extract:

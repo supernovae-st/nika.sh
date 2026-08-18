@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: reasoned-review
-  description: "a careful pass with a visible thinking budget — the key rides ANTHROPIC_API_KEY"
+# a careful pass with a visible thinking budget — the key rides ANTHROPIC_API_KEY
+nika: reasoned-review
 
 tasks:
   review:

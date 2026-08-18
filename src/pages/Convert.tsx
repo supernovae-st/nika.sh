@@ -29,10 +29,8 @@ const PROOF_ASK =
   'Every Friday I paste the week’s merged PRs into a chat and ask for a changelog draft. It can read git log; it may only write CHANGELOG.draft.md.'
 
 export const PROOF_YAML = `# from @your-handle's friday ritual · converted + checked
-nika: v1
-workflow:
-  id: friday-changelog
-  description: "the week's merged PRs become a changelog draft"
+# the week's merged PRs become a changelog draft
+nika: friday-changelog
 model: ollama/llama3.2
 
 permits:

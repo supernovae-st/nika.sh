@@ -14,10 +14,8 @@ import './not-found.css'
 /* the joke file OBEYS the law (operator 2026-07-13: every yaml on the site
    is schema-true — even this one): a complete workflow that would check
    green, gated with the rest in onpage-yaml.test.ts */
-export const NOT_FOUND_YAML = `nika: v1
-workflow:
-  id: not-found
-  description: "404 · nothing at this path parses"
+export const NOT_FOUND_YAML = `# 404 · nothing at this path parses
+nika: not-found
 permits:
   tools: ["nika:log"]
 tasks:

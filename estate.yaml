@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1666
+  classified_files: 1667
   file_rows: 101
-  pattern_rows: 29
+  pattern_rows: 30
   by_class:
-    authored: 1291
+    authored: 1292
     authored-pin: 3
     generated: 311
     pinned-copy: 21
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 77f60f95f36e03ee7357e8b9fe5f31054faa0db52682de902bf65e60c027ea8a
+  sha256: 2a730ab8094a61da479b8acf76fdaff79d87b08ec4b3694d4d2a661a94de2859
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 3c1c5ebf0b0cbefd779b4ce2bc2b3ebbd5ead4582b414617e4ee29653971a7a2
+  sha256: 5c93f1763ad7207307aca7d200e74b854add86718a982ad082da6d5736d906b4
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: 459e5993e934060838c3809937d2493183dbfc04761b33debb1fa78e2a93f59c
+  sha256: e838785d566bab5bbafc9bc410677eb030915092caf5d4ce18f14d888cb65d6d
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -595,7 +595,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/language-usage.generated.ts"
   class: generated
-  sha256: fea4b69b141505cc6457e63ab7d02ea3e79a36f3c9b70fd117dbfbf3f7badb4d
+  sha256: a12825156eb25b5a1578c837dca595b537a4ba7affceaf6ac30eda72bb892b7b
   evidence: "declared output of resync contract generator 'website-language-usage' (supernovae-st/nika.sh scripts/build-language-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-language-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -670,7 +670,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/tool-usage.generated.ts"
   class: generated
-  sha256: 302791f04bc514192e7216bb0a9b5463000773c1bc8af0db7623eccd1cb0f927
+  sha256: efb8935c03d2f1b37ef6237d201a6b5ebc6ba3e7ea37bedcd21604cce8812fc4
   evidence: "declared output of resync contract generator 'website-tool-usage' (supernovae-st/nika.sh scripts/build-tool-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-tool-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -815,7 +815,7 @@ patterns:
 - glob: "public/hero/*.nika.yaml"
   class: authored
   match_count: 2
-  aggregate_sha256: bd9fcd47959df090005abcc12a489900542aface3a8ed33766b6347d6941b3fc
+  aggregate_sha256: 816f892a0f1da0f7c65cc3cdf8a53aa8bd9eb293365f7c4c34e6882836459f19
   evidence: "the hero workflow + its deliberately broken twin — the INPUTS of scripts/build-hero-check.mjs (real `nika check` verdicts captured from the released binary, never invented)"
 - glob: "public/concepts/**"
   class: generated
@@ -865,12 +865,12 @@ patterns:
 - glob: "scripts/media/fixtures/**"
   class: authored
   match_count: 26
-  aggregate_sha256: 829d48c598772f24de94b822d14fb588ba3d9e77e3f887d48a9216f8c22bd47d
+  aggregate_sha256: 757874aeef2730717da47a18a999a7e199d9c30a5ee4c9706c4b1203f2ea7d4d
   evidence: "the runnable fixture workflows + items the captures ran (each dir runnable in place — scripts/media/README.md)"
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 486046484885c39e56e3cb2e08d6680f2220bbf9f8f05805ea204d9df68e6628
+  aggregate_sha256: 86d7603a657c4116017314f13b9827e084d488580a9ac62a472a6d00a636a476
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -885,13 +885,18 @@ patterns:
 - glob: "content/tool-usage/*.nika.yaml"
   class: authored
   match_count: 17
-  aggregate_sha256: fccf165fba37d93d8488ee60fefc44f44874c3fa42f558f66a42fc5071474c2a
-  evidence: "crafted minimal usage workflows (nika-check green) — inputs of scripts/build-tool-usage.mjs (its marker cites them)"
+  aggregate_sha256: a6efaf02f0a7ef8cde3c3782bad5558f444e43630cbb3cba68a66b11067f8a84
+  evidence: "crafted minimal usage workflows (nika-check green on 0.109 · nine-key) — inputs of scripts/build-tool-usage.mjs (its marker cites them)"
+- glob: "content/tool-usage/skills/**"
+  class: authored
+  match_count: 1
+  aggregate_sha256: ecf1324a59830e7702dfbc3cb79237d1fce2f964b19fec073725573bee37a558
+  evidence: "the fixture skill the compose donor reads — since 0.109 a skill read is judged at check (inside permits.fs.read · relative to the workflow file), so the donor is check-green only with the file beside it"
 - glob: "content/provider-usage/*.nika.yaml"
   class: authored
   match_count: 17
-  aggregate_sha256: 57777995128e362117c2c09eda7e702172b9a907c078f2461644286ff3879e12
-  evidence: "crafted per-provider donor workflows (nika: v1 headers · one per canonical provider) — inputs of scripts/build-provider-usage.mjs; the pricing shape they carry is the engine's models.dev-pinned snapshot"
+  aggregate_sha256: fb0ad62c8788b881bf780970d812f5ef4c1f923cf284520bbfb0e009aac1b94e
+  evidence: "crafted per-provider donor workflows (nine-key headers · one per canonical provider) — inputs of scripts/build-provider-usage.mjs; the pricing shape they carry is the engine's models.dev-pinned snapshot"
 - glob: "design/**"
   class: authored
   match_count: 76
@@ -926,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 7fc121a321f799edcde30625b1f93ab32158a6cc6eb3e931d7597ea859f9e3ab
+  aggregate_sha256: 31e517c562fd84dcad652a0e047713ebbdafa67a7e53b3b8f2120e44ac96cd9a
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: aca791924e8373617dc2cc0c3187c15403b0754c3988e483bd77aa7b7eeba60a
+  aggregate_sha256: 267ccbf01ce0566715f1e851f9a29586e6a3bd2d3870ebc93a484e275a7b250f
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: 460856a824ac8c2fd212301c7d5b429556163e8d29db5852beb4cb2a7b11e133
+  aggregate_sha256: 4958d7590fa899f277b6d2f7d1a0a961726c11fb8147e48ddec0456e4c3b09d2
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

@@ -20,10 +20,8 @@
 # | propose | node scripts/graph/doctor.mjs --propose | the doctor is this repo's deterministic graph judge (monotone refusal ledger + advisory heuristics      | an MCP surface for the repo toolchain, or a     |
 # |         |                                        | over the compiled artifact) — no builtin re-derives and diagnoses the site graph                       | nika-native graph doctor                        |
 
-nika: v1
-workflow:
-  id: graph-enrich
-  description: "Doctor proposes → a bounded model triages → PR brief lands. Advisory: a human merges."
+# Doctor proposes → a bounded model triages → PR brief lands. Advisory: a human merges.
+nika: graph-enrich
 
 run:
   # timeouts below ride a clock — say which one out loud.

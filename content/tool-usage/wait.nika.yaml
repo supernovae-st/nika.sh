@@ -1,10 +1,8 @@
-nika: v1
-workflow:
-  id: let-the-index-settle
-  description: "a declared pause — relative duration XOR absolute until"
+# a declared pause — relative duration XOR absolute until
+nika: let-the-index-settle
 
 permits:
-  net: { http: ["docs.example.com"] }
+  net: { http: ["docs.example.com", "hooks.example.com"] }
   exec: false
   tools: ["nika:fetch", "nika:notify", "nika:wait"]
 

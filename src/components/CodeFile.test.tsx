@@ -174,8 +174,8 @@ describe('CodeFile · template ref rendering', () => {
    prerendered HTML for crawlers and paints instantly — NOT a CodeMirror editor. */
 describe('CodeFile (static render)', () => {
   const yaml = [
-    'nika: v1',
-    'workflow: morning-brief',
+    'nika: morning-brief',
+    'model: mock/echo',
     '# a comment',
     'tasks:',
     '  issues:',
@@ -185,8 +185,8 @@ describe('CodeFile (static render)', () => {
 
   it('renders the raw yaml text in the DOM', () => {
     const { container } = render(<CodeFile yaml={yaml} />)
-    expect(container.textContent).toContain('nika: v1')
-    expect(container.textContent).toContain('workflow: morning-brief')
+    expect(container.textContent).toContain('nika: morning-brief')
+    expect(container.textContent).toContain('model: mock/echo')
     expect(container.textContent).toContain('max_steps: 8')
   })
 
@@ -323,7 +323,7 @@ describe('CodeFile (static render)', () => {
 
   it('wrap: the raw yaml text still renders verbatim (the copy stays honest)', () => {
     const { container, getByRole } = render(<CodeFile yaml={yaml} wrap />)
-    expect(container.textContent).toContain('workflow: morning-brief')
+    expect(container.textContent).toContain('model: mock/echo')
     expect(getByRole('button', { name: /copy/i })).toBeTruthy()
   })
 
@@ -336,7 +336,7 @@ describe('CodeFile (static render)', () => {
           &quot; on the server but renders the raw " on the client. The token span
           carrying the value is marked suppressHydrationWarning so React trusts the
           (correct) server text instead of regenerating the subtree. */
-  const yamlWithBlank = ['nika: v1', '', 'tasks:', '  a:'].join('\n')
+  const yamlWithBlank = ['nika: blank', '', 'tasks:', '  a:'].join('\n')
 
   it('renders empty lines without a bare text-node child (hydration-safe)', () => {
     const { container } = render(<CodeFile yaml={yamlWithBlank} lineNumbers={false} />)
@@ -352,7 +352,7 @@ describe('CodeFile (static render)', () => {
 
   it('marks quoted-scalar token spans suppressHydrationWarning (server &quot; ≠ client ")', () => {
     // a double-quoted YAML value: the value token text contains a literal "
-    const yamlQuoted = ['nika: v1', 'description: "a quoted value"'].join('\n')
+    const yamlQuoted = ['nika: quoted', 'model: "a quoted value"'].join('\n')
     const { container } = render(<CodeFile yaml={yamlQuoted} />)
     // the value still renders verbatim (the copy/SEO contract)
     expect(container.textContent).toContain('"a quoted value"')
@@ -367,7 +367,7 @@ describe('CodeFile (static render)', () => {
 
   it('server (renderToStaticMarkup) and client text agree for blank + quoted lines', async () => {
     const { renderToStaticMarkup } = await import('react-dom/server')
-    const yaml = ['nika: v1', '', 'description: "x"'].join('\n')
+    const yaml = ['nika: agree', '', 'model: "x"'].join('\n')
     const server = renderToStaticMarkup(<CodeFile yaml={yaml} />)
     const { container } = render(<CodeFile yaml={yaml} />)
     // server escapes the quote to &quot; (correct), client shows the raw " — both

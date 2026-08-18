@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: loaded-model-notes
-  description: "whatever model LM Studio has loaded answers — localhost:1234, no key"
+# whatever model LM Studio has loaded answers — localhost:1234, no key
+nika: loaded-model-notes
 
 tasks:
   tighten:

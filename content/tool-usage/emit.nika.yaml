@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: announce-the-ship
-  description: "a custom machine event for subscribers — distinct from log"
+# a custom machine event for subscribers — distinct from log
+nika: announce-the-ship
 
 tasks:
   announce:

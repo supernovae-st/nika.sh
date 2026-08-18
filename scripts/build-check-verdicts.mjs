@@ -33,7 +33,7 @@ const ENVIRONMENTAL = new Set(['inputs'])
 
 let engine
 try {
-  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/).pop()
+  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
 } catch {
   console.error('build-check-verdicts: `nika` is not on PATH — the capture needs the real binary')
   process.exit(2)
@@ -57,9 +57,11 @@ for (const name of readdirSync(LIB).sort()) {
     continue
   }
   const yaml = readFileSync(path, 'utf8')
-  const id = /^workflow:\s*\n\s+id:\s*(\S+)/m.exec(yaml)?.[1]
-  if (!id) {
-    console.error(`build-check-verdicts: ${name} has no workflow id — skipped`)
+  /* the nine-key mark IS the id (0.109 · `nika: <name>` · never `v1`) */
+  const id = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(yaml)?.[1]
+  if (!id || id === 'v1') {
+    console.error(`build-check-verdicts: ${name} has no nika: name — skipped`)
+    process.exitCode = 1
     continue
   }
   const hints = (d.hints ?? []).filter((h) => !ENVIRONMENTAL.has(h.kind))

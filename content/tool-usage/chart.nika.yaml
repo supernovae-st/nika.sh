@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: runs-per-month
-  description: "rows in, one deterministic svg out — same bytes every run"
+# rows in, one deterministic svg out — same bytes every run
+nika: runs-per-month
 
 permits:
   fs:

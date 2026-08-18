@@ -7,5 +7,5 @@
    invoke takes a MAPPING · the ref separator is `/` · the grant lives in
    permits.tools with the FULL ref. */
 export function mcpTryBlock(id: string, slug: string): string {
-  return `nika: v1\nworkflow:\n  id: wire-${slug}\ntasks:\n  work:\n    invoke:\n      tool: "mcp:${id}/<tool>"\npermits:\n  tools: ["mcp:${id}/<tool>"]`
+  return `nika: wire-${slug}\ntasks:\n  work:\n    invoke:\n      tool: "mcp:${id}/<tool>"\npermits:\n  tools: ["mcp:${id}/<tool>"]`
 }

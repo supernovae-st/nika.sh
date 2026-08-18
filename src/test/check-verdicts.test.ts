@@ -44,8 +44,10 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
     for (const name of readdirSync(join(ROOT, 'public/library'))) {
       if (!name.endsWith('.nika.yaml')) continue
       const yaml = readFileSync(join(ROOT, 'public/library', name), 'utf8')
-      const id = /^workflow:\s*\n\s+id:\s*(\S+)/m.exec(yaml)?.[1]
-      expect(id, `${name} has no workflow id`).toBeTruthy()
+      /* the nine-key mark IS the id (0.109 · `nika: <name>` · never `v1`) */
+      const id = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(yaml)?.[1]
+      expect(id, `${name} has no nika: name (the seven flagships re-run on the released 0.109 binary as one block: yaml · traces · served copy · this receipt)`).toBeTruthy()
+      expect(id, `${name} still carries the dead v1 marker`).not.toBe('v1')
       ids.push(id!)
     }
     expect(ids.length).toBeGreaterThan(4)
@@ -79,7 +81,7 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
   })
 
   it.skipIf(!hasNika)('the pinned engine is the engine on PATH', () => {
-    const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/).pop()
+    const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
     expect(VERDICT_ENGINE).toBe(live)
   })
 })

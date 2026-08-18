@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: retried-verdict
-  description: "transient network noise is policy, not a crash — backoff rides the file"
+# transient network noise is policy, not a crash — backoff rides the file
+nika: retried-verdict
 
 tasks:
   judge:
