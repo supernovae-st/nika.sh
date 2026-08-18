@@ -11,16 +11,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "@type": "DefinedTermSet",
       "@id": "https://nika.sh/language#set-namespaces",
       "name": "Nika the namespaces",
-      "description": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
+      "description": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies (a deployment default is an input with required: false), const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "version": "v0.108.0",
       "hasDefinedTerm": [
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/namespaces/config",
-          "termCode": "config",
-          "name": "config"
-        },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/namespaces/const",
@@ -57,7 +51,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "@type": "DefinedTermSet",
       "@id": "https://nika.sh/language#set-types",
       "name": "Nika the types",
-      "description": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it.",
+      "description": "Typed contracts for task outputs: returns and decode, written inline · the closed primitive grammar below is the whole register since 0.109 (a named `types:` block resolves to nothing; spec/09-types.md).",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "version": "v0.108.0",
       "hasDefinedTerm": [
@@ -174,6 +168,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/words/because",
+          "termCode": "because",
+          "name": "because",
+          "description": "The non-empty justification · recorded in the run receipt with the taint path and the value digest."
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/capture",
           "termCode": "capture",
           "name": "capture",
@@ -185,13 +186,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "command",
           "name": "command",
           "description": "argv — the program and its arguments, execve, NO shell. Each element substituted independently (the injection-safe form). Shell features (pipes · redirects · globs) live in `shell:`."
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/config",
-          "termCode": "config",
-          "name": "config",
-          "description": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment, and it MAY appear in logs. Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001). Succeeds the dead `env:` block (R3a · LAW-SURFACE-0201)."
         },
         {
           "@type": "DefinedTerm",
@@ -209,24 +203,10 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/declassify",
-          "termCode": "declassify",
-          "name": "declassify",
-          "description": "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass)."
-        },
-        {
-          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/decode",
           "termCode": "decode",
           "name": "decode",
           "description": "How the captured string becomes a value · `text` (default) · `json` · `jsonl` · `bytes`. Illegal with `capture: structured`, which already IS an object (NIKA-PARSE-025) · a non-parsing stream settles the task `failure` inside `on_error:` scope (spec 09 §decode)."
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/description",
-          "termCode": "description",
-          "name": "description",
-          "description": "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md)."
         },
         {
           "@type": "DefinedTerm",
@@ -243,38 +223,38 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/fail_fast",
-          "termCode": "fail_fast",
-          "name": "fail_fast",
-          "description": "Whether a `for_each` fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
+          "@id": "https://nika.sh/language/words/extract",
+          "termCode": "extract",
+          "name": "extract",
+          "description": "Named jq-expression bindings extracted from the verb's raw response · read downstream as `${{ tasks.X.<name> }}`. The field names the OPERATION (run this jq); it does not write `output` — `${{ tasks.X.output }}` stays the raw response (spec/03-dag.md §extract). jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). A binding may not shadow a record projection: output · status · error · started_at · ended_at · duration_ms are forbidden at parse time (spec/04-variables.md §Rules) — enforced via propertyNames."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/fail_workflow",
-          "termCode": "fail_workflow",
-          "name": "fail_workflow",
-          "description": "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`."
+          "@id": "https://nika.sh/language/words/fail_fast",
+          "termCode": "fail_fast",
+          "name": "fail_fast",
+          "description": "Whether the fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
         },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/for_each",
           "termCode": "for_each",
           "name": "for_each",
-          "description": "Map this task over a collection · `${{ ... }}` reference OR a literal array."
+          "description": "Fan this task out over a collection · ONE block, so the concurrency is visible where the fan-out is declared. `max_parallel` and `fail_fast` live here because they have no meaning without it."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/id",
-          "termCode": "id",
-          "name": "id",
-          "description": "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
+          "@id": "https://nika.sh/language/words/from",
+          "termCode": "from",
+          "name": "from",
+          "description": "REQUIRED for law 'taint', forbidden otherwise · the ONE binding this entry raises (e.g. inputs.p · config.region · tasks.fetch.output) · a dotted value-binding path."
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/inert",
-          "termCode": "inert",
-          "name": "inert",
-          "description": "The honest door of the data-as-code sink · declares this task's fetch a code-bearing artifact it will never load or run. The non-empty string IS the justification · it lifts the sink law only, never the net boundary and never the SSRF floor (spec/10-authority.md · NEP-0006 · LAW-AUTH-0327)."
+          "@id": "https://nika.sh/language/words/group",
+          "termCode": "group",
+          "name": "group",
+          "description": "Fan-in MEMBERSHIP · this task joins the named group, and a consumer folds the whole group with one `${{ group.<name> }}` binding in its `with:` (spec/03-dag.md §group). Membership is DECLARED, never matched: a renamed member leaves its group loudly (NIKA-DAG-008 on the reference), where a glob would shrink the fold in silence. A group exists iff at least one task declares it. An `unwind` task may not join one (NIKA-DAG-009 · cleanup never schedules)."
         },
         {
           "@type": "DefinedTerm",
@@ -297,10 +277,31 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/words/items",
+          "termCode": "items",
+          "name": "items",
+          "description": "The collection · a `${{ ... }}` reference OR a literal array. Evaluated EXACTLY ONCE, before the fan-out; no iteration feeds back into it (spec 03 §where this sits)."
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/jitter",
           "termCode": "jitter",
           "name": "jitter",
           "description": "Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. Engines SHOULD use a full-jitter or equal-jitter family — the anti-thundering-herd default (spec/05-errors.md §Retry policy)."
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/words/law",
+          "termCode": "law",
+          "name": "law",
+          "description": "WHICH law this entry lifts · 'taint' raises ONE binding from untrusted to trusted (NEP-0004 · LAW-AUTH-0325) · 'data-as-code' declares this task's fetch a code-bearing artifact it will never load or run (NEP-0006 · LAW-AUTH-0327). Neither ever lifts the net boundary or the SSRF floor."
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/words/lift",
+          "termCode": "lift",
+          "name": "lift",
+          "description": "The authored doors · each entry lifts exactly ONE named law, with a mandatory reason, check-visible and receipt-recorded. A lift is NEVER a permit bypass — the value still sits inside the declared boundary, and no law but the named one moves. The law set is CLOSED and normative (a NEP amends it): this is why a new law costs zero language fields (spec/10-authority.md §the authored doors)."
         },
         {
           "@type": "DefinedTerm",
@@ -314,7 +315,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/words/max_parallel",
           "termCode": "max_parallel",
           "name": "max_parallel",
-          "description": "Cap concurrent for_each iterations · default unbounded · 1 = sequential."
+          "description": "Cap concurrent iterations · default unbounded · 1 = sequential."
         },
         {
           "@type": "DefinedTerm",
@@ -347,7 +348,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/words/nika",
           "termCode": "nika",
           "name": "nika",
-          "description": "Language contract version · exactly `v1` for the v1 lifetime. NOT `v1.0` · `1` · `1.0`."
+          "description": "The file's NAME · kebab-case · and the mark that says « this is a nika file ». One word, one meaning across both document types: `nika.yaml` carries the PROJECT name, a `*.nika.yaml` carries the WORKFLOW name. The document TYPE is read from `tasks:` — present means workflow, absent means project — so it survives a blob, a paste or an HTTP body where the filename does not travel. This key held the literal `v1` until the envelope nuke; it carried zero bits as a version (there is no `nika: v2` — ever) and now carries the file's most necessary field instead."
         },
         {
           "@type": "DefinedTerm",
@@ -364,20 +365,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/on_finally",
-          "termCode": "on_finally",
-          "name": "on_finally",
-          "description": "Cleanup mini-tasks · ALWAYS run (success/fail/timeout/cancel) · sequential · best-effort."
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/output",
-          "termCode": "output",
-          "name": "output",
-          "description": "Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). Reserved names forbidden at parse time (spec/04-variables.md §Rules): output · status · error · started_at · ended_at · duration_ms — enforced via propertyNames."
-        },
-        {
-          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/outputs",
           "termCode": "outputs",
           "name": "outputs",
@@ -389,13 +376,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "permits",
           "name": "permits",
           "description": "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004)."
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/policy",
-          "termCode": "policy",
-          "name": "policy",
-          "description": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
         },
         {
           "@type": "DefinedTerm",
@@ -464,7 +444,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/words/skip",
           "termCode": "skip",
           "name": "skip",
-          "description": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`."
+          "description": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip`."
         },
         {
           "@type": "DefinedTerm",
@@ -524,13 +504,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/words/types",
-          "termCode": "types",
-          "name": "types",
-          "description": "Named type declarations · the workflow's own vocabulary, referenced by name wherever a type is expected. PascalCase · acyclic (spec 09-types.md)."
-        },
-        {
-          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/words/vision",
           "termCode": "vision",
           "name": "vision",
@@ -555,7 +528,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/words/workflow",
           "termCode": "workflow",
           "name": "workflow",
-          "description": "The workflow object · a stable home for identity and metadata (W1 'the map')."
+          "description": "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21)."
         }
       ]
     }
@@ -1467,6 +1440,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-AUTH-011",
+          "termCode": "NIKA-AUTH-011",
+          "name": "NIKA-AUTH-011",
+          "description": "a lift: entry whose named law would not have fired on this task — a trapdoor that lifts nothing is refused, never a silent no-op (10 §the authored doors rule 6)"
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-BUILTIN-001",
           "termCode": "NIKA-BUILTIN-001",
           "name": "NIKA-BUILTIN-001",
@@ -1558,6 +1538,20 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-008",
+          "termCode": "NIKA-DAG-008",
+          "name": "NIKA-DAG-008",
+          "description": "a group.<name> fold names a group no task declares — including a bare group and the group a renamed member left empty"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-DAG-009",
+          "termCode": "NIKA-DAG-009",
+          "name": "NIKA-DAG-009",
+          "description": "an unwind task declares group: — cleanup never enters G_p, so it cannot be a fan-in member"
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-DECIDE-001",
           "termCode": "NIKA-DECIDE-001",
           "name": "NIKA-DECIDE-001",
@@ -1621,6 +1615,13 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-INFER-004",
+          "termCode": "NIKA-INFER-004",
+          "name": "NIKA-INFER-004",
+          "description": "the provider spent tokens yet the visible answer is empty — a thinking model ate the budget on its reasoning trace (fail-closed · #651 · raise max_tokens or use a no-think variant)"
+        },
+        {
+          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-INVOKE-001",
           "termCode": "NIKA-INVOKE-001",
           "name": "NIKA-INVOKE-001",
@@ -1666,14 +1667,14 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-PARSE-002",
           "termCode": "NIKA-PARSE-002",
           "name": "NIKA-PARSE-002",
-          "description": "missing envelope field (nika: / workflow: / non-empty tasks:)"
+          "description": "missing envelope field (nika: / non-empty tasks:)"
         },
         {
           "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-PARSE-003",
           "termCode": "NIKA-PARSE-003",
           "name": "NIKA-PARSE-003",
-          "description": "nika: version marker is not exactly v1"
+          "description": "nika: is not a kebab-case id (^[a-z][a-z0-9-]*$)"
         },
         {
           "@type": "DefinedTerm",
@@ -1743,7 +1744,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-PARSE-013",
           "termCode": "NIKA-PARSE-013",
           "name": "NIKA-PARSE-013",
-          "description": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
+          "description": "with:/extract: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
         },
         {
           "@type": "DefinedTerm",
@@ -1772,20 +1773,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-PARSE-019",
           "name": "NIKA-PARSE-019",
           "description": "generic structural validation — wrong YAML shape for a field"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/errors/NIKA-PARSE-020",
-          "termCode": "NIKA-PARSE-020",
-          "name": "NIKA-PARSE-020",
-          "description": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/errors/NIKA-PARSE-021",
-          "termCode": "NIKA-PARSE-021",
-          "name": "NIKA-PARSE-021",
-          "description": "top-level description: — it moved into workflow.description"
         },
         {
           "@type": "DefinedTerm",
@@ -1835,13 +1822,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-PARSE-028",
           "name": "NIKA-PARSE-028",
           "description": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/errors/NIKA-POLICY-001",
-          "termCode": "NIKA-POLICY-001",
-          "name": "NIKA-POLICY-001",
-          "description": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
         },
         {
           "@type": "DefinedTerm",
@@ -1911,7 +1891,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-SEC-008",
           "termCode": "NIKA-SEC-008",
           "name": "NIKA-SEC-008",
-          "description": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
+          "description": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no door — no lift: entry naming the data-as-code law · the read hides an execution sink (F-O7 · NEP-0006)"
         },
         {
           "@type": "DefinedTerm",
@@ -1943,17 +1923,17 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
         },
         {
           "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/errors/NIKA-SEC-013",
-          "termCode": "NIKA-SEC-013",
-          "name": "NIKA-SEC-013",
-          "description": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)"
-        },
-        {
-          "@type": "DefinedTerm",
           "@id": "https://nika.sh/language/errors/NIKA-SEC-014",
           "termCode": "NIKA-SEC-014",
           "name": "NIKA-SEC-014",
           "description": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/language/errors/NIKA-SEC-015",
+          "termCode": "NIKA-SEC-015",
+          "name": "NIKA-SEC-015",
+          "description": "the order law — an exec: task sits transitively downstream of a net-effecting task (nika:fetch · nika:notify) over the derived graph (with: data edges ∪ after: control edges) · content the workflow did not author must not reach a shell · UNCONDITIONAL: no block declares it and none can disable it"
         },
         {
           "@type": "DefinedTerm",
@@ -1968,13 +1948,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-TYPE-001",
           "name": "NIKA-TYPE-001",
           "description": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/errors/NIKA-TYPE-002",
-          "termCode": "NIKA-TYPE-002",
-          "name": "NIKA-TYPE-002",
-          "description": "recursive type reference — the types: graph must be acyclic"
         },
         {
           "@type": "DefinedTerm",
@@ -2107,7 +2080,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/language/errors/NIKA-VAR-021",
           "termCode": "NIKA-VAR-021",
           "name": "NIKA-VAR-021",
-          "description": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
+          "description": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · an unwind task reading its producer · workflow outputs) — hoist it into with: (check --fix applies it)"
         }
       ]
     },
@@ -2230,12 +2203,6 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "termCode": "NIKA-PARSE",
           "name": "NIKA-PARSE",
           "description": "YAML parse + envelope validation"
-        },
-        {
-          "@type": "DefinedTerm",
-          "@id": "https://nika.sh/language/error-namespaces/NIKA-POLICY",
-          "termCode": "NIKA-POLICY",
-          "name": "NIKA-POLICY"
         },
         {
           "@type": "DefinedTerm",
@@ -2419,6 +2386,12 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
           "@id": "https://nika.sh/workflows/jobs/contract-guard",
           "termCode": "contract-guard",
           "name": "contract-guard"
+        },
+        {
+          "@type": "DefinedTerm",
+          "@id": "https://nika.sh/workflows/jobs/corpus-digest",
+          "termCode": "corpus-digest",
+          "name": "corpus-digest"
         },
         {
           "@type": "DefinedTerm",

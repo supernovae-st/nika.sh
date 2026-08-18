@@ -3,8 +3,8 @@
  "contract_version": 1,
  "spec": {
   "repository": "supernovae-st/nika-spec",
-  "commit": "08116079bc0ac237f6dae7fcbbdcf918a3fc3e63",
-  "tree": "060d3fa86b81b1308d5d47fa872441f661565662"
+  "commit": "f308fa32e28c4399aad96fc63f09dab4e57a75a7",
+  "tree": "c1ad730730afc877119eee7c7d59d92196edbfde"
  },
  "environment": {
   "LANG": "C.UTF-8",
@@ -50,7 +50,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/showcase-projector.py",
-   "sha256": "d83df7b67ba74b746b1369c1aecb62d22ba256115ae5f729107c1f5abf36fcc0",
+   "sha256": "8daca90cae6d0948028242d1499d1fa1774620ccb140c3d074c4ea568fcf87f8",
    "args": [
     "--write"
    ],
@@ -68,7 +68,7 @@
    "root": "spec",
    "runtime": "copy",
    "path": "schemas/workflow.schema.json",
-   "sha256": "b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563",
+   "sha256": "0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -82,7 +82,7 @@
    "root": "spec",
    "runtime": "python3",
    "path": "scripts/design-projector.py",
-   "sha256": "ab9b7d8b2de1ae89f08ecc0cfcfc12aea03fa25538993e8fb193906e6cd9b683",
+   "sha256": "19a97a9153628de8f14ab4eb97633c5ab848b21fe80a94c7f8c07f7abe94c897",
    "args": [
     "--write"
    ],
@@ -127,7 +127,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-language.mjs",
-   "sha256": "cf38c55e5c53be4b2513799656b52fcbb5546504b51072317cccf11bc6933bff",
+   "sha256": "cdc05bd6543af7049d4490347d7200e2bd875bcc405ee23dc8672f919689b341",
    "args": [],
    "depends_on": [
     "spec-showcase"
@@ -251,7 +251,7 @@
    "root": "website",
    "runtime": "copy",
    "path": ".github/nika-spec-pin.json",
-   "sha256": "53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43",
+   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0",
    "args": [],
    "depends_on": [
     "website-palette"
@@ -276,67 +276,67 @@
  "outputs": [
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43",
+   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0",
    "dist": ".well-known/nika-spec-pin.json"
   },
   {
    "path": "public/errors/catalog.json",
-   "sha256": "1c9ff4415a4a48bf0ffd6c30f863e8f58ae2a506a7ec24b4504350d3838806c2",
+   "sha256": "3e6dab3ca6ba5480e4e15f58c3b5172ed30bd57b100a2ecff93583c66494e40e",
    "dist": "errors/catalog.json"
   },
   {
    "path": "public/schema/workflow.json",
-   "sha256": "b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563",
+   "sha256": "0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b",
    "dist": "schema/workflow.json"
   },
   {
    "path": "public/spec/v1/workflow.schema.json",
-   "sha256": "b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563",
+   "sha256": "0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b",
    "dist": "spec/v1/workflow.schema.json"
   },
   {
    "path": "public/templates/catalog.json",
-   "sha256": "8fc0fe9278bbee1c317a3724eb4c407b46b834109bfbfd57e32616c2ecdc4be0",
+   "sha256": "9d130502592a36c70de44b61fc5fa0f4824ceb960fdced2a173a00c0983856b1",
    "dist": "templates/catalog.json"
   },
   {
    "path": "src/canon.generated.ts",
-   "sha256": "69766b75d767bd9f9e1a6a57ac89a8b8b708b8ec52a45d7f0920cabbd0d5a529",
+   "sha256": "caf7f1997e4eebd922c020b398709740823a5ad03736e62e31d9d3fed00521f1",
    "consumers": [
     "src/pages/Verbs.tsx"
    ]
   },
   {
    "path": "src/design-tokens.generated.ts",
-   "sha256": "0b380fb335f38b01f52246ffcf04e12ad90ff9912c3687eab0e12d48fccb923b",
+   "sha256": "cce69a5e094160083b033af32d1891c5c4e872920e592325ee13712ef82f892c",
    "consumers": [
     "src/pages/Brand.tsx"
    ]
   },
   {
    "path": "src/sections/usecases-yaml.generated.ts",
-   "sha256": "506ba292f7cdda7a7b3d7e739b5282627b72d174925a215423909a8bcd5e6bd6",
+   "sha256": "c0176e00da7f163a2b8cb2c4f9ee52167e5c8333f1105b4d6cc70ca17bcb1182",
    "consumers": [
     "src/sections/showcase-yaml-access.ts"
    ]
   },
   {
    "path": "src/content/templates.generated.ts",
-   "sha256": "032fcbadd18f023c4fb98e14a231e68487d2d3e9b5d5b35799f1b2745150a181",
+   "sha256": "881aecdc6e076835ce5e8087776c73a2ae63599ef2c4ddf791684b15e2977d20",
    "consumers": [
     "src/pages/Templates.tsx"
    ]
   },
   {
    "path": "src/content/errors.generated.ts",
-   "sha256": "7ea779ec9fb802c95c087bc5d794af17797c8e4abdebfca55a3eefdf98031db2",
+   "sha256": "45e8ad41fb5eda046cd74b3f944768e65d6a8498f497fa4696af499229c5e763",
    "consumers": [
     "src/pages/Errors.tsx"
    ]
   },
   {
    "path": "src/content/language.generated.ts",
-   "sha256": "0d778e116ed94f17720234f88391aa29d946b988ca808edfeb4a39a8463f4944",
+   "sha256": "981946f456599f33717863a026f3cf39b080d234bd0987c4570141a62c84fcfe",
    "consumers": [
     "src/pages/Language.tsx"
    ]
@@ -357,7 +357,7 @@
   },
   {
    "path": "src/content/tool-usage.generated.ts",
-   "sha256": "168ee68770ea4b57bf3ac8c7e73cc6c52ec5434dc52c2efa29443b925b00f426",
+   "sha256": "302791f04bc514192e7216bb0a9b5463000773c1bc8af0db7623eccd1cb0f927",
    "consumers": [
     "src/pages/ToolPage.tsx"
    ]
@@ -371,35 +371,35 @@
   },
   {
    "path": "src/content/language-usage.generated.ts",
-   "sha256": "3e8bf005e57c94e65120a51b132765f67323a32fc2bb46d2e95b68d777b32253",
+   "sha256": "fea4b69b141505cc6457e63ab7d02ea3e79a36f3c9b70fd117dbfbf3f7badb4d",
    "consumers": [
     "src/pages/WordPage.tsx"
    ]
   },
   {
    "path": "src/content/language-usage-refs.generated.ts",
-   "sha256": "741332c0876956b20614b001aaf7fe22587913e1f0ce38bf4822d9b357c4bdd4",
+   "sha256": "f7cebbecba0e049d8c19f91249129232006929604b597d80faef34e88f7cadc8",
    "consumers": [
     "src/content/graph.ts"
    ]
   },
   {
    "path": "src/lib/lint-fixtures.generated.ts",
-   "sha256": "b0fd344b8e70efcaba541464eb24895b23f265bdafd9a1c8cd343b395c2e8da3",
+   "sha256": "02894f7decf9eca3cef55423a26eeb57b83f2bcb3972b3554ffe4649510baec8",
    "consumers": [
     "src/lib/nika-lint-conformance.test.ts"
    ]
   },
   {
    "path": "src/content/gate-matrix.generated.ts",
-   "sha256": "1ad5fe6c8102c63b0ad7dae8e20d3b873891077164369d7bf24a1e672e240b58",
+   "sha256": "8917e3f85cb41919b0edf1893956250a0f4401823286761cc8a98b0543d5a0ef",
    "consumers": [
     "src/test/gate-matrix.test.ts"
    ]
   },
   {
    "path": "src/content/palette.generated.ts",
-   "sha256": "5349fe0c2c5aa1a192960139e3c6bcb595193c3012a62bcce09e246a08ba5c8b",
+   "sha256": "9c1779bfcc54a7194a10bde7fcaf1bdf1bc3f367bf83af47f873523ebc5043c3",
    "consumers": [
     "src/shell/CommandK.tsx"
    ]

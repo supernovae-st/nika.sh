@@ -18,17 +18,17 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1617
+  classified_files: 1666
   file_rows: 101
   pattern_rows: 29
   by_class:
-    authored: 1242
+    authored: 1291
     authored-pin: 3
     generated: 311
     pinned-copy: 21
     testimonial: 40
     foreign: 0
-  unverified-default: 427
+  unverified-default: 476
 files:
 - path: ".claude/CLAUDE.md"
   class: authored
@@ -49,7 +49,7 @@ files:
   evidence: "the catalog seam INPUT (D1) — the full engine RELEASE commit AND tree the /catalog world derives from; advanced only at release trains, PR-only; its $comment narrates the trust model"
 - path: ".github/nika-spec-pin.json"
   class: authored-pin
-  sha256: 53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43
+  sha256: 1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0
   evidence: "the resync INPUT — a deliberately bumped pin carrying the full nika-spec commit AND tree; its $comment narrates the LENS-011 trust model; advanced by the bot ONE-PR lane only, never HEAD"
   note: "scripts/lens/repin-spec-resync-contract.mjs re-derives the resync contract FROM this pin; public/.well-known/nika-spec-pin.json is its byte-identical generated twin"
 - path: ".gitignore"
@@ -123,7 +123,7 @@ files:
     - "package.json"
 - path: "public/.well-known/nika-spec-pin.json"
   class: pinned-copy
-  sha256: 53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43
+  sha256: 1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0
   evidence: "resync contract generator 'website-spec-pin-twin' (runtime: copy) — byte-copy of .github/nika-spec-pin.json at the resync pin"
   derivation:
     tool: "node scripts/spec-resync-run.mjs (the pinned resync)"
@@ -201,14 +201,14 @@ files:
     - "supernovae-st/nika@57673f61c411 (v0.107.2):crates/nika-cli-host/data/clients.registry.yaml"
 - path: "public/errors/catalog.json"
   class: generated
-  sha256: 1c9ff4415a4a48bf0ffd6c30f863e8f58ae2a506a7ec24b4504350d3838806c2
-  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@08116079bc0a scripts/showcase-projector.py · generator sha256-pinned in the contract)"
+  sha256: 3e6dab3ca6ba5480e4e15f58c3b5172ed30bd57b100a2ecff93583c66494e40e
+  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@f308fa32e28c scripts/showcase-projector.py · generator sha256-pinned in the contract)"
   derivation:
     tool: "python3 scripts/showcase-projector.py (root: spec · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "public/favicon.ico"
   class: authored
   sha256: 1057b17aec08a7191d134000203947f195a8aa7c84c39f1164cee8d01279762a
@@ -224,7 +224,7 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "public/i18n/untranslatables.json"
   class: generated
-  sha256: 9da365c34436fd6152778b1482b56b56ed4aac0902873af63872464429f301c9
+  sha256: 169a50a68a03ea15fd77f973e86286ea0f6e33b58672f043c5202a26ff3de75f
   evidence: "in-file 'derived_from: build-lens (the language graph)' key"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -286,7 +286,7 @@ files:
   evidence: "hand-written PWA manifest"
 - path: "public/map/constellation.svg"
   class: generated
-  sha256: c8e98a280e93fe3424e5d54400c2c2dada118b08f64395f5046dca7d2b2093cf
+  sha256: 8795769eb20fa2778b286fad08d6b926fce7b1caf41f3e259376351231347a32
   evidence: "written by build-lens.mjs:1730 — the served twin of src/assets/constellation.generated.svg"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 29c2dba5f805cabe15df4a24eb1d091830ad174799658a1a8b06af0a24eb4e22
+  sha256: c72160598a8211d6288f624d53744ba9eef700f0ef603aa3d1d018d386f6fd7a
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -331,7 +331,7 @@ files:
   note: "unverified-default"
 - path: "public/ontology/language.json"
   class: generated
-  sha256: 827e39b938f5693ffcdbbb056f51687b971f78c157aba0bd6571eb671ddaa3bd
+  sha256: 42eb8bd8204102c4cd8c40def0bab0680e7cea481e3c544ad1cb5519145ea3ea
   evidence: "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -351,7 +351,7 @@ files:
     - "nika 0.108.0 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
-  sha256: 8482fe82674c2b359364105b71e872e7ed62a90e9ed2ee919976ab31782374f3
+  sha256: a6c7d2d5005f1350fe9cce363e9880961a4242614a38b6c36ee6fdcfecaeb1fa
   evidence: "written by build-lens.mjs:1736 (redirects_format shape) — the append-only redirect registry (a published URL never 404s)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -375,14 +375,14 @@ files:
     - "content/blog/*.md"
 - path: "public/schema/workflow.json"
   class: generated
-  sha256: b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563
-  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@08116079bc0a scripts/showcase-projector.py · generator sha256-pinned in the contract)"
+  sha256: 0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b
+  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@f308fa32e28c scripts/showcase-projector.py · generator sha256-pinned in the contract)"
   derivation:
     tool: "python3 scripts/showcase-projector.py (root: spec · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "public/sitemap/index.html"
   class: generated
   sha256: 214fb3934fee00a62ff504e9de96714fbc04d0b6ad22855fb1bd10e9c062cbc1
@@ -423,24 +423,24 @@ files:
     - "nika 0.108.0 (the released binary)"
 - path: "public/spec/v1/workflow.schema.json"
   class: pinned-copy
-  sha256: b632bc9773b04d391e522cf95db98be6e1b51f878ef9e5d84ef32b4cbbc01563
-  evidence: "resync contract generator 'spec-schema-twin' (runtime: copy) — byte-copy of supernovae-st/nika-spec@08116079bc0a:schemas/workflow.schema.json at the resync pin"
+  sha256: 0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b
+  evidence: "resync contract generator 'spec-schema-twin' (runtime: copy) — byte-copy of supernovae-st/nika-spec@f308fa32e28c:schemas/workflow.schema.json at the resync pin"
   derivation:
     tool: "node scripts/spec-resync-run.mjs (the pinned resync)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a:schemas/workflow.schema.json"
+    - "supernovae-st/nika-spec@f308fa32e28c:schemas/workflow.schema.json"
 - path: "public/templates/catalog.json"
   class: generated
-  sha256: 8fc0fe9278bbee1c317a3724eb4c407b46b834109bfbfd57e32616c2ecdc4be0
+  sha256: 9d130502592a36c70de44b61fc5fa0f4824ceb960fdced2a173a00c0983856b1
   evidence: "declared output of resync contract generator 'website-templates' (supernovae-st/nika.sh scripts/build-templates.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-templates.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "public/tools/catalog.json"
   class: generated
   sha256: 34de9d90bda7d2e429b82f0bc0a1d2f3aaee18f081960130c7d90131c90f9da2
@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 326ba5c3c100c01473132ebe2d8351571a4041c8a498fdb74cbab81c9045579d
+  sha256: 55c8af149143fce8f45ece2764bfe5d377f9e979ce65599a5b2f5933d783c6e2
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 0f0250834932055cdecad07957704c49d56c2f25ad44acea96b28265597682e8
+  sha256: 8f35deb6b8bdc8d7718365941a622c56f6b6e7a4b241f44d235adaec101f3928
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -488,13 +488,13 @@ files:
     - "the tracked publish-input artifacts (digest census)"
 - path: "scripts/lens/contracts/release-attestation.v1.json"
   class: generated
-  sha256: b6cf628001fd5dde2c9e7a4e6a607030a646d4f1b41d5352793e3e7029db1365
-  evidence: "attestation of the pinned spec release closure (release_id spec-08116079bc0a…-stable); sha256-bound into .github/nika-spec-pin.json"
+  sha256: 347248c4d8cccf9a72413c583631639be8e41b5fc57c304e7a1a5c4df3008d43
+  evidence: "attestation of the pinned spec release closure (release_id spec-f308fa32e28c…-stable); sha256-bound into .github/nika-spec-pin.json"
   derivation:
     tool: "the repin lane (spec release closure)"
     gate: "pnpm lens:integrity (scripts/verify-lens-ci.mjs) + .github/workflows/lens-gates.yml"
     inputs:
-    - "supernovae-st/nika-spec@08116079bc0a release identity"
+    - "supernovae-st/nika-spec@f308fa32e28c release identity"
 - path: "scripts/lens/fixtures/negative.v1.json"
   class: authored
   sha256: 9c18123ebcc538bb9babb5f6b90269e34697619af424e81ada84bdc079a67cda
@@ -514,23 +514,23 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 5693a723faee0434dbef8a9c40f83f520e22d2e7d745dda2dc2b96f10875233f
+  sha256: 74cf2ffaf0c2d3ce1688231b568b97e3d44e9e210f79032672a3fc5d0ad90c73
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
     gate: "pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs) + the spec-resync adversarial suite + .github/workflows/spec-resync.yml"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (the pinned spec tree)"
+    - "supernovae-st/nika-spec@f308fa32e28c (the pinned spec tree)"
     - "the generator scripts (sha256-pinned in the contract)"
 - path: "site.config.ts"
   class: authored
-  sha256: 2b8e7d5ee4b38837df14594194625d445f96cebc15f9284820fd60078ab05e5c
+  sha256: e00be5a6cc82c38222374c9c4c42279f324a2edcbc659f53142bf6d34c50154d
   evidence: "hand-written site facts"
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
   class: generated
-  sha256: c8e98a280e93fe3424e5d54400c2c2dada118b08f64395f5046dca7d2b2093cf
+  sha256: 8795769eb20fa2778b286fad08d6b926fce7b1caf41f3e259376351231347a32
   evidence: "written by build-lens.mjs:1716 (.generated. basename · no textual marker inside the SVG)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -545,14 +545,14 @@ files:
   evidence: "studio brand asset — exported artwork, no in-repo generator"
 - path: "src/canon.generated.ts"
   class: generated
-  sha256: 69766b75d767bd9f9e1a6a57ac89a8b8b708b8ec52a45d7f0920cabbd0d5a529
-  evidence: "declared output of resync contract generator 'spec-canon' (supernovae-st/nika-spec@08116079bc0a scripts/canon-projectors.py · generator sha256-pinned in the contract)"
+  sha256: caf7f1997e4eebd922c020b398709740823a5ad03736e62e31d9d3fed00521f1
+  evidence: "declared output of resync contract generator 'spec-canon' (supernovae-st/nika-spec@f308fa32e28c scripts/canon-projectors.py · generator sha256-pinned in the contract)"
   derivation:
     tool: "python3 scripts/canon-projectors.py (root: spec · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content.ts"
   class: authored
   sha256: 6ec3361882f8cd729edb8637a4758e0742f1a0e4ead6f4a85aad20efd69f7ab1
@@ -560,24 +560,24 @@ files:
   note: "the ENGINE_VERSION constant is bot-healed on engine releases (.github/workflows/release-heal.yml → scripts/sync-version.mjs) — a bot-maintained field inside an authored file"
 - path: "src/content/errors.generated.ts"
   class: generated
-  sha256: 7ea779ec9fb802c95c087bc5d794af17797c8e4abdebfca55a3eefdf98031db2
+  sha256: 45e8ad41fb5eda046cd74b3f944768e65d6a8498f497fa4696af499229c5e763
   evidence: "declared output of resync contract generator 'website-errors' (supernovae-st/nika.sh scripts/build-errors.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-errors.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/gate-matrix.generated.ts"
   class: generated
-  sha256: 1ad5fe6c8102c63b0ad7dae8e20d3b873891077164369d7bf24a1e672e240b58
+  sha256: 8917e3f85cb41919b0edf1893956250a0f4401823286761cc8a98b0543d5a0ef
   evidence: "declared output of resync contract generator 'website-gate-matrix' (supernovae-st/nika.sh scripts/vendor-gate-matrix.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/vendor-gate-matrix.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/install.ts"
   class: authored
   sha256: 459e5993e934060838c3809937d2493183dbfc04761b33debb1fa78e2a93f59c
@@ -585,34 +585,34 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
   class: generated
-  sha256: 741332c0876956b20614b001aaf7fe22587913e1f0ce38bf4822d9b357c4bdd4
+  sha256: f7cebbecba0e049d8c19f91249129232006929604b597d80faef34e88f7cadc8
   evidence: "declared output of resync contract generator 'website-language-usage' (supernovae-st/nika.sh scripts/build-language-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-language-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/language-usage.generated.ts"
   class: generated
-  sha256: 3e8bf005e57c94e65120a51b132765f67323a32fc2bb46d2e95b68d777b32253
+  sha256: fea4b69b141505cc6457e63ab7d02ea3e79a36f3c9b70fd117dbfbf3f7badb4d
   evidence: "declared output of resync contract generator 'website-language-usage' (supernovae-st/nika.sh scripts/build-language-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-language-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/language.generated.ts"
   class: generated
-  sha256: 0d778e116ed94f17720234f88391aa29d946b988ca808edfeb4a39a8463f4944
+  sha256: 981946f456599f33717863a026f3cf39b080d234bd0987c4570141a62c84fcfe
   evidence: "declared output of resync contract generator 'website-language' (supernovae-st/nika.sh scripts/build-language.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-language.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/learn.ts"
   class: authored
   sha256: 65ee8b381d304cf52c8fc65a7b5ffb2d743dc49826d9f1ee4136a2bb936cad49
@@ -620,14 +620,14 @@ files:
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
   class: generated
-  sha256: 5349fe0c2c5aa1a192960139e3c6bcb595193c3012a62bcce09e246a08ba5c8b
+  sha256: 9c1779bfcc54a7194a10bde7fcaf1bdf1bc3f367bf83af47f873523ebc5043c3
   evidence: "declared output of resync contract generator 'website-palette' (supernovae-st/nika.sh scripts/build-palette.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-palette.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/providers.generated.ts"
   class: generated
   sha256: fdae12974e65f0e279fc634f7155943daa1b518ea7a446a761a5cd0616564cc0
@@ -637,17 +637,17 @@ files:
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/templates.generated.ts"
   class: generated
-  sha256: 032fcbadd18f023c4fb98e14a231e68487d2d3e9b5d5b35799f1b2745150a181
+  sha256: 881aecdc6e076835ce5e8087776c73a2ae63599ef2c4ddf791684b15e2977d20
   evidence: "declared output of resync contract generator 'website-templates' (supernovae-st/nika.sh scripts/build-templates.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-templates.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/timeline.generated.ts"
   class: generated
   sha256: 9030441fee5159d8d010a4c90715b1bcbbe9d9caff98d8afbf8913431d37e84b
@@ -657,7 +657,7 @@ files:
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/tool-usage-refs.generated.ts"
   class: generated
   sha256: 337aa019b78d3ab318fc2a0ca42cd278e643b025039d86a829dd2d12a80b68fa
@@ -667,17 +667,17 @@ files:
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/tool-usage.generated.ts"
   class: generated
-  sha256: 168ee68770ea4b57bf3ac8c7e73cc6c52ec5434dc52c2efa29443b925b00f426
+  sha256: 302791f04bc514192e7216bb0a9b5463000773c1bc8af0db7623eccd1cb0f927
   evidence: "declared output of resync contract generator 'website-tool-usage' (supernovae-st/nika.sh scripts/build-tool-usage.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-tool-usage.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/content/tools.generated.ts"
   class: generated
   sha256: 2835dc1c00569e7f551be4355ccc528551705c7fee0a720269b329934b90e415
@@ -687,17 +687,17 @@ files:
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/design-tokens.generated.ts"
   class: generated
-  sha256: 0b380fb335f38b01f52246ffcf04e12ad90ff9912c3687eab0e12d48fccb923b
-  evidence: "declared output of resync contract generator 'spec-design' (supernovae-st/nika-spec@08116079bc0a scripts/design-projector.py · generator sha256-pinned in the contract)"
+  sha256: cce69a5e094160083b033af32d1891c5c4e872920e592325ee13712ef82f892c
+  evidence: "declared output of resync contract generator 'spec-design' (supernovae-st/nika-spec@f308fa32e28c scripts/design-projector.py · generator sha256-pinned in the contract)"
   derivation:
     tool: "python3 scripts/design-projector.py (root: spec · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/lib/check-wasm/PROVENANCE.json"
   class: generated
   sha256: 836a7f0140d4ea4bfc76e675d83869498c8c0a9c33e65b812588c3073a5cd635
@@ -709,24 +709,24 @@ files:
     - ".github release asset supernovae-st-nika-check-wasm-<v>.tgz (sha256-verified against its published sidecar)"
 - path: "src/lib/lint-fixtures.generated.ts"
   class: generated
-  sha256: b0fd344b8e70efcaba541464eb24895b23f265bdafd9a1c8cd343b395c2e8da3
+  sha256: 02894f7decf9eca3cef55423a26eeb57b83f2bcb3972b3554ffe4649510baec8
   evidence: "declared output of resync contract generator 'website-lint-fixtures' (supernovae-st/nika.sh scripts/vendor-lint-fixtures.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/vendor-lint-fixtures.mjs (root: website · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "src/sections/usecases-yaml.generated.ts"
   class: generated
-  sha256: 506ba292f7cdda7a7b3d7e739b5282627b72d174925a215423909a8bcd5e6bd6
-  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@08116079bc0a scripts/showcase-projector.py · generator sha256-pinned in the contract)"
+  sha256: c0176e00da7f163a2b8cb2c4f9ee52167e5c8333f1105b4d6cc70ca17bcb1182
+  evidence: "declared output of resync contract generator 'spec-showcase' (supernovae-st/nika-spec@f308fa32e28c scripts/showcase-projector.py · generator sha256-pinned in the contract)"
   derivation:
     tool: "python3 scripts/showcase-projector.py (root: spec · via node scripts/spec-resync-run.mjs)"
     gate: ".github/workflows/spec-resync.yml + pnpm spec-resync:verify (LENS-011 scripts/verify_generated_outputs.mjs — literal path set AND byte digests vs scripts/spec-resync.contract.json)"
     inputs:
     - ".github/nika-spec-pin.json"
-    - "supernovae-st/nika-spec@08116079bc0a (tree 060d3fa86b81)"
+    - "supernovae-st/nika-spec@f308fa32e28c (tree c1ad730730af)"
 - path: "tsconfig.app.json"
   class: authored
   sha256: b1eac9ba6cd1c01d59ebca159805e052c798d9d4ab904680b79ce3e306ea0bbd
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: ae4bfe2dca274d0421c6fc2438573ab51d808e0c64295db42178530f86a40175
+  aggregate_sha256: da72dc0702760e2a237effdd563da09e0f35e995a8d4f7dabbd8929926cb8513
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -926,7 +926,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 2351f2ebcdaa537875401cdfdba8459d78627a82fd3f59fcd39d84f5e48c30fe
+  aggregate_sha256: 2369e1cd8de395b73649ade1be170ac714b51f0f7b6f1773d9731760cf34df8e
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -936,12 +936,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: 310a1c6d95796cfde0ab2e64c70d0a842f0da07d5c7e2f2661c1b743c3a9fa7a
+  aggregate_sha256: c88f467b7002f80741a4a89cde37c63fb07bafa1104830b5fd21d2714b619964
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: cb0a60ec9986ecea554ac497ce71420114dde54207d8f5dc44bb1bae71e2ec73
+  aggregate_sha256: 5276532937f26ae93428f86cd92851e1db2bc9ea890b3f1f0a5eb0574985bd3d
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
@@ -950,8 +950,8 @@ patterns:
   evidence: "root prose + config — no generation markers; the pinned/derived roots are excepted in files:"
 - glob: "**"
   class: authored
-  match_count: 426
-  aggregate_sha256: 3a45298a0cfe6c29a4ae592ca6dd7c88b1bbf92a614679a161b44ceba60783a2
+  match_count: 475
+  aggregate_sha256: 30a80dba35b2d5fac5d45d43279bf207bb1bcd96c92314cf67cdcc8daebcc6c4
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:
@@ -1031,6 +1031,7 @@ unverified:
 - "public/errors/NIKA-AUTH-008/index.html"
 - "public/errors/NIKA-AUTH-009/index.html"
 - "public/errors/NIKA-AUTH-010/index.html"
+- "public/errors/NIKA-AUTH-011/index.html"
 - "public/errors/NIKA-BUILTIN-001/index.html"
 - "public/errors/NIKA-BUILTIN-DONE-001/index.html"
 - "public/errors/NIKA-CANCEL-001/index.html"
@@ -1044,6 +1045,8 @@ unverified:
 - "public/errors/NIKA-DAG-005/index.html"
 - "public/errors/NIKA-DAG-006/index.html"
 - "public/errors/NIKA-DAG-007/index.html"
+- "public/errors/NIKA-DAG-008/index.html"
+- "public/errors/NIKA-DAG-009/index.html"
 - "public/errors/NIKA-DECIDE-001/index.html"
 - "public/errors/NIKA-DECIDE-002/index.html"
 - "public/errors/NIKA-DEFAULT-001/index.html"
@@ -1053,6 +1056,7 @@ unverified:
 - "public/errors/NIKA-INFER-001/index.html"
 - "public/errors/NIKA-INFER-002/index.html"
 - "public/errors/NIKA-INFER-003/index.html"
+- "public/errors/NIKA-INFER-004/index.html"
 - "public/errors/NIKA-INVOKE-001/index.html"
 - "public/errors/NIKA-INVOKE-002/index.html"
 - "public/errors/NIKA-LOCK-001/index.html"
@@ -1101,6 +1105,7 @@ unverified:
 - "public/errors/NIKA-SEC-012/index.html"
 - "public/errors/NIKA-SEC-013/index.html"
 - "public/errors/NIKA-SEC-014/index.html"
+- "public/errors/NIKA-SEC-015/index.html"
 - "public/errors/NIKA-TIMEOUT-001/index.html"
 - "public/errors/NIKA-TYPE-001/index.html"
 - "public/errors/NIKA-TYPE-002/index.html"
@@ -1142,6 +1147,7 @@ unverified:
 - "public/language/backoff_max_ms/index.html"
 - "public/language/backoff_ms/index.html"
 - "public/language/backoff_strategy/index.html"
+- "public/language/because/index.html"
 - "public/language/capture/index.html"
 - "public/language/command/index.html"
 - "public/language/config/index.html"
@@ -1151,22 +1157,54 @@ unverified:
 - "public/language/decode/index.html"
 - "public/language/description/index.html"
 - "public/language/env/index.html"
+- "public/language/error-namespaces/NIKA-POLICY/index.html"
+- "public/language/errors/NIKA-PARSE-020/index.html"
+- "public/language/errors/NIKA-PARSE-021/index.html"
+- "public/language/errors/NIKA-POLICY-001/index.html"
+- "public/language/errors/NIKA-SEC-013/index.html"
+- "public/language/errors/NIKA-TYPE-002/index.html"
 - "public/language/exec/index.html"
+- "public/language/extract/index.html"
 - "public/language/fail_fast/index.html"
 - "public/language/fail_workflow/index.html"
 - "public/language/for_each/index.html"
+- "public/language/from/index.html"
+- "public/language/governance/nep-0002-lethal-trifecta-human-gate/index.html"
+- "public/language/governance/nep-0003-absent-permits-zero-authority/index.html"
+- "public/language/governance/nep-0004-permit-parameterization-taint/index.html"
+- "public/language/governance/nep-0005-env-permit-dimension/index.html"
+- "public/language/governance/nep-0006-data-as-code-sink/index.html"
+- "public/language/governance/nep-0007-trace-format-and-equivalence/index.html"
+- "public/language/governance/nep-0008-egress-permit-bound/index.html"
+- "public/language/governance/nep-0009-effective-path-identity/index.html"
+- "public/language/governance/nep-0010-run-entropy-clock/index.html"
+- "public/language/governance/nep-0011-run-lifecycle-attestation/index.html"
+- "public/language/governance/nep-0012-receipt-untrusted-input/index.html"
+- "public/language/governance/nep-0013-approval-ticket/index.html"
+- "public/language/governance/nep-0014-thin-laws/index.html"
+- "public/language/governance/nep-0015-preview-commit/index.html"
+- "public/language/governance/nep-0016-provenance-tiers/index.html"
+- "public/language/governance/nep-0017-thin-laws-3b/index.html"
+- "public/language/governance/nep-0018-energy-honesty/index.html"
+- "public/language/governance/nep-0019-workflow-token-budget/index.html"
+- "public/language/governance/nep-0020-affirmative-consent/index.html"
+- "public/language/group/index.html"
 - "public/language/id/index.html"
 - "public/language/inert/index.html"
 - "public/language/infer/index.html"
 - "public/language/inputs/index.html"
 - "public/language/invoke/index.html"
+- "public/language/items/index.html"
 - "public/language/jitter/index.html"
+- "public/language/law/index.html"
+- "public/language/lift/index.html"
 - "public/language/max_attempts/index.html"
 - "public/language/max_parallel/index.html"
 - "public/language/max_tokens/index.html"
 - "public/language/max_tokens_total/index.html"
 - "public/language/max_turns/index.html"
 - "public/language/model/index.html"
+- "public/language/namespaces/config/index.html"
 - "public/language/nika/index.html"
 - "public/language/on_codes/index.html"
 - "public/language/on_error/index.html"
@@ -1194,7 +1232,17 @@ unverified:
 - "public/language/vision/index.html"
 - "public/language/when/index.html"
 - "public/language/with/index.html"
+- "public/language/words/config/index.html"
+- "public/language/words/declassify/index.html"
+- "public/language/words/description/index.html"
+- "public/language/words/fail_workflow/index.html"
+- "public/language/words/id/index.html"
 - "public/language/words/index.html"
+- "public/language/words/inert/index.html"
+- "public/language/words/on_finally/index.html"
+- "public/language/words/output/index.html"
+- "public/language/words/policy/index.html"
+- "public/language/words/types/index.html"
 - "public/language/workflow/index.html"
 - "public/library/daily_brief/index.html"
 - "public/library/deep-research-brief/index.html"
@@ -1352,6 +1400,7 @@ unverified:
 - "public/use-cases/competitor-radar/index.html"
 - "public/use-cases/config-drift-sentinel/index.html"
 - "public/use-cases/contract-guard/index.html"
+- "public/use-cases/corpus-digest/index.html"
 - "public/use-cases/csv-chart-report/index.html"
 - "public/use-cases/deep-research-brief/index.html"
 - "public/use-cases/etl-quarantine/index.html"

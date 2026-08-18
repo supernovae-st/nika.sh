@@ -194,9 +194,10 @@ sets:
     defined_by: [spec/04-variables.md]
     opener: >-
       Each namespace scopes where a value lives and who may read it: inputs
-      for what the caller supplies, config and const for fixed values, with
-      for bindings, tasks for outputs, secrets for the boundary. A reference
-      outside its scope is a check finding, never a surprise at runtime.
+      for what the caller supplies (a deployment default is an input with
+      required: false), const for fixed values, with for bindings, tasks for
+      outputs, secrets for the boundary. A reference outside its scope is a
+      check finding, never a surprise at runtime.
 
   - id: types
     layer: shape
@@ -212,8 +213,9 @@ sets:
     anchor_prefix: type-
     defined_by: [spec/09-types.md]   # lands with the types wave · not in the vendored tree yet
     opener: >-
-      Typed contracts for task outputs: types, returns, decode. Ratified with
-      the types wave · this surface fills when the resync brings it.
+      Typed contracts for task outputs: returns and decode, written inline ·
+      the closed primitive grammar below is the whole register since 0.109
+      (a named `types:` block resolves to nothing; spec/09-types.md).
 
   # ── flow ───────────────────────────────────────────────────────────────────
   - id: edge-kinds
@@ -615,7 +617,7 @@ surfaces:
       role: "the linear lens · derives from canon via spec-machine-data (verdict 2026-07-16 · the hand-body premise retired) · residue: gloss-vs-opener voice merge (op-call) + provenance close (contract field)" }
   - { id: governance-lens, url: /language/governance, exists: true,
       title: "How the standard changes",
-      role: "the NEP register · 18 numbered proposals read at the spec pin, beside the specification they amend · every one citable BY DESIGN, which is what numbering a proposal is for (the ADR record took the opposite ruling for the opposite reason: an internal decision published as settled)" }
+      role: "the NEP register · the numbered proposals read at the spec pin, beside the specification they amend · every one citable BY DESIGN, which is what numbering a proposal is for (the ADR record took the opposite ruling for the opposite reason: an internal decision published as settled) · since the 2026-08-13 fold the register carries NEP-0000 alone and the retired numbers are doorways onto the chapters their laws live in" }
   - { id: sitemap-legacy, url: /sitemap, exists: true, moved_live: true,
       moved: { from: /sitemap, to: /map, applied: wo-3 } }
 
@@ -757,6 +759,87 @@ legacy_moves:
   - { from: /concepts/scope-isolation, to: /how/boundary, applied: provider-rooms-arc }
   - { from: /concepts/self-healing, to: /how/flow, applied: provider-rooms-arc }
   - { from: /concepts/shaka-system, to: /manifesto, applied: provider-rooms-arc }
+  # ── the nine-key envelope of 0.109 (the surfaces migration · read at the
+  #    f308fa32 spec pin) · ten words left the served schema and their rooms
+  #    become doorways onto the word that carries the idea now: `config:`
+  #    died into `inputs:` (required: false + default) · `policy:` into
+  #    `permits:` · `types:` into the task's `returns:` (the typed door) ·
+  #    `output:` into `extract:` · `on_finally:` into an `after: {…: unwind}`
+  #    edge · `on_error.fail_workflow` into the default (a task fails loudly
+  #    unless on_error says otherwise) · `declassify:` / `inert:` into the
+  #    authored `lift:` doors · `workflow: {id, description}` into `nika:`.
+  - { from: /language/words/config, to: /language/words/inputs, applied: nine-key-0109 }
+  - { from: /language/words/policy, to: /language/words/permits, applied: nine-key-0109 }
+  - { from: /language/words/types, to: /language/words/returns, applied: nine-key-0109 }
+  - { from: /language/words/output, to: /language/words/extract, applied: nine-key-0109 }
+  - { from: /language/words/on_finally, to: /language/words/after, applied: nine-key-0109 }
+  - { from: /language/words/fail_workflow, to: /language/words/on_error, applied: nine-key-0109 }
+  - { from: /language/words/declassify, to: /language/words/lift, applied: nine-key-0109 }
+  - { from: /language/words/inert, to: /language/words/lift, applied: nine-key-0109 }
+  - { from: /language/words/id, to: /language/words/nika, applied: nine-key-0109 }
+  - { from: /language/words/description, to: /language/words/nika, applied: nine-key-0109 }
+  #    the bare pre-V3 form of each retired word (/language/<word> · served
+  #    until 2026-08-02, then a doorway the parametric row minted while the
+  #    word was still served) lands on the same heir · one hop, never a chain
+  #    (/language/types is NOT here: it is the live root of the types family)
+  - { from: /language/config, to: /language/words/inputs, applied: nine-key-0109 }
+  - { from: /language/policy, to: /language/words/permits, applied: nine-key-0109 }
+  - { from: /language/output, to: /language/words/extract, applied: nine-key-0109 }
+  - { from: /language/on_finally, to: /language/words/after, applied: nine-key-0109 }
+  - { from: /language/fail_workflow, to: /language/words/on_error, applied: nine-key-0109 }
+  - { from: /language/declassify, to: /language/words/lift, applied: nine-key-0109 }
+  - { from: /language/inert, to: /language/words/lift, applied: nine-key-0109 }
+  - { from: /language/id, to: /language/words/nika, applied: nine-key-0109 }
+  - { from: /language/description, to: /language/words/nika, applied: nine-key-0109 }
+  #    five refusal codes were RETIRED with the envelope nuke (spec 05-errors
+  #    §retired · canon/tombstones.yaml · never reused): PARSE-020/021 died
+  #    with `workflow:` · POLICY-001 + SEC-013 with `policy:` · TYPE-002 with
+  #    `types:`. Released binaries up to 0.108 stamp docs_url = /errors/<CODE>
+  #    on these findings, so both addresses stay doorways — onto the errors
+  #    chapter, which is where the retirement is written.
+  - { from: /errors/NIKA-PARSE-020, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /errors/NIKA-PARSE-021, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /errors/NIKA-POLICY-001, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /errors/NIKA-SEC-013, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /errors/NIKA-TYPE-002, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /language/errors/NIKA-PARSE-020, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /language/errors/NIKA-PARSE-021, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /language/errors/NIKA-POLICY-001, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /language/errors/NIKA-SEC-013, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /language/errors/NIKA-TYPE-002, to: /language/spec/errors, applied: nine-key-0109 }
+  #    the `config` value namespace died with the key (inputs carry the
+  #    deployment default now) and the NIKA-POLICY error namespace died with
+  #    `policy:` — their member rooms and the pre-V3 root forms stay doorways
+  - { from: /language/namespaces/config, to: /language/namespaces/inputs, applied: nine-key-0109 }
+  - { from: /namespaces/config, to: /language/namespaces/inputs, applied: nine-key-0109 }
+  - { from: /language/error-namespaces/NIKA-POLICY, to: /language/spec/errors, applied: nine-key-0109 }
+  - { from: /error-namespaces/NIKA-POLICY, to: /language/spec/errors, applied: nine-key-0109 }
+  # ── the NEP fold (spec 2026-08-13 · read at the f308fa32 pin) · the drafts
+  #    stopped being proposals: eighteen became the language, two were buried,
+  #    and governance/ keeps NEP-0000 alone. Each retired room is a doorway
+  #    onto the chapter the fold table names as the law's home (governance/
+  #    README « where each law lives now »); a number the fold retired outright
+  #    (0016 lives in the registry spec · 0019 was never built) lands on the
+  #    register hub, which is where the fold is told.
+  - { from: /language/governance/nep-0002-lethal-trifecta-human-gate, to: /language/spec/errors, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0003-absent-permits-zero-authority, to: /language/spec/envelope, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0004-permit-parameterization-taint, to: /language/spec/authority, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0005-env-permit-dimension, to: /language/spec/envelope, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0006-data-as-code-sink, to: /language/spec/authority, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0007-trace-format-and-equivalence, to: /language/spec/trace, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0008-egress-permit-bound, to: /language/spec/envelope, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0009-effective-path-identity, to: /language/spec/envelope, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0010-run-entropy-clock, to: /language/spec/envelope, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0011-run-lifecycle-attestation, to: /language/spec/trace, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0012-receipt-untrusted-input, to: /language/spec/proof, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0013-approval-ticket, to: /language/spec/authority, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0014-thin-laws, to: /language/spec/errors, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0015-preview-commit, to: /language/spec/errors, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0016-provenance-tiers, to: /language/governance, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0017-thin-laws-3b, to: /language/spec/proof, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0018-energy-honesty, to: /language/spec/conformance, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0019-workflow-token-budget, to: /language/governance, applied: nep-fold-0109 }
+  - { from: /language/governance/nep-0020-affirmative-consent, to: /language/spec/authority, applied: nep-fold-0109 }
 
 # ─── the chrome (§4.11-4.12 · nav + footer as projections) ──────────────────
 # The Reference panel and the footer's anatomy columns DERIVE: items carry a
@@ -885,7 +968,7 @@ capture_registry:
       command: "nika run <flagship>.nika.yaml", gate: "trace.test.ts honesty suite (recorded traces)" }
 
 # ─── the snippet registry (§2bis · the one gate-map of inline YAML) ──────────
-# Every NON-generated source file that carries a `nika: v1` literal, each
+# Every NON-generated source file that carries a `nika:` file literal, each
 # with the gate that already judges it. The no-floating-code lint refuses
 # any file outside this registry (generated modules are the other legal
 # home). Render-time enforcement (CodeFile/TermCapture require a ref)

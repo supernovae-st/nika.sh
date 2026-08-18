@@ -25,7 +25,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-VAR-021",
       "NIKA-INFER-002",
       "NIKA-SEC-012",
-      "NIKA-SEC-014"
+      "NIKA-SEC-014",
+      "NIKA-SEC-015"
     ]
   },
   "agent": {
@@ -70,6 +71,10 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": []
   },
+  "because": {
+    "templates": [],
+    "codes": []
+  },
   "capture": {
     "templates": [
       "human-gated-ship"
@@ -88,13 +93,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-PARSE-018",
       "NIKA-EXEC-002",
       "NIKA-SEC-001"
-    ]
-  },
-  "config": {
-    "templates": [],
-    "codes": [
-      "NIKA-VAR-001",
-      "NIKA-DEFAULT-001"
     ]
   },
   "const": {
@@ -116,33 +114,11 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     "templates": [],
     "codes": []
   },
-  "declassify": {
-    "templates": [],
-    "codes": []
-  },
   "decode": {
     "templates": [],
     "codes": [
       "NIKA-PARSE-025",
       "NIKA-TYPE-004"
-    ]
-  },
-  "description": {
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
-    "codes": [
-      "NIKA-PARSE-021",
-      "NIKA-AGENT-004"
     ]
   },
   "env": {
@@ -160,17 +136,22 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-018",
-      "NIKA-TYPE-101"
+      "NIKA-TYPE-101",
+      "NIKA-SEC-015"
+    ]
+  },
+  "extract": {
+    "templates": [
+      "gate-and-act"
+    ],
+    "codes": [
+      "NIKA-PARSE-013"
     ]
   },
   "fail_fast": {
     "templates": [
       "fanout"
     ],
-    "codes": []
-  },
-  "fail_workflow": {
-    "templates": [],
     "codes": []
   },
   "for_each": {
@@ -183,30 +164,16 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-TIMEOUT-001"
     ]
   },
-  "id": {
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
-    "codes": [
-      "NIKA-PARSE-020",
-      "NIKA-PARSE-022",
-      "NIKA-PARSE-023"
-    ]
+  "from": {
+    "templates": [],
+    "codes": []
   },
-  "inert": {
+  "group": {
     "templates": [],
     "codes": [
-      "NIKA-SEC-008",
-      "NIKA-AUTH-009"
+      "NIKA-DAG-008",
+      "NIKA-DAG-009",
+      "NIKA-TYPE-006"
     ]
   },
   "infer": {
@@ -254,10 +221,15 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-TYPE-101",
       "NIKA-SEC-006",
       "NIKA-SEC-009",
-      "NIKA-SEC-013",
       "NIKA-SEC-014",
       "NIKA-BUILTIN-001"
     ]
+  },
+  "items": {
+    "templates": [
+      "fanout"
+    ],
+    "codes": []
   },
   "jitter": {
     "templates": [
@@ -265,6 +237,17 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-PARSE-028"
+    ]
+  },
+  "law": {
+    "templates": [],
+    "codes": []
+  },
+  "lift": {
+    "templates": [],
+    "codes": [
+      "NIKA-SEC-008",
+      "NIKA-AUTH-011"
     ]
   },
   "max_attempts": {
@@ -288,7 +271,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "media-asset-pack",
       "docker-report"
     ],
-    "codes": []
+    "codes": [
+      "NIKA-INFER-004"
+    ]
   },
   "max_tokens_total": {
     "templates": [
@@ -317,6 +302,7 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
     ],
     "codes": [
       "NIKA-INFER-003",
+      "NIKA-INFER-004",
       "NIKA-AGENT-005",
       "NIKA-SEC-001"
     ]
@@ -343,8 +329,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-008",
       "NIKA-SEC-009",
       "NIKA-SEC-012",
-      "NIKA-SEC-013",
       "NIKA-SEC-014",
+      "NIKA-SEC-015",
       "NIKA-LOCK-001",
       "NIKA-BUILTIN-001",
       "NIKA-BUILTIN-DONE-001"
@@ -374,23 +360,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-DAG-004",
       "NIKA-VAR-021",
       "NIKA-SEC-001"
-    ]
-  },
-  "on_finally": {
-    "templates": [],
-    "codes": [
-      "NIKA-VAR-021"
-    ]
-  },
-  "output": {
-    "templates": [
-      "gate-and-act"
-    ],
-    "codes": [
-      "NIKA-PARSE-013",
-      "NIKA-VAR-020",
-      "NIKA-VAR-009",
-      "NIKA-INFER-002"
     ]
   },
   "outputs": {
@@ -437,17 +406,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-AUTH-010"
     ]
   },
-  "policy": {
-    "templates": [
-      "etl-state",
-      "human-gated-ship"
-    ],
-    "codes": [
-      "NIKA-POLICY-001",
-      "NIKA-PORT-002",
-      "NIKA-SEC-013"
-    ]
-  },
   "prompt": {
     "templates": [
       "chain",
@@ -462,7 +420,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-006",
       "NIKA-SEC-009",
       "NIKA-SEC-010",
-      "NIKA-SEC-013",
       "NIKA-SEC-014"
     ]
   },
@@ -540,7 +497,8 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   "shell": {
     "templates": [],
     "codes": [
-      "NIKA-SEC-001"
+      "NIKA-SEC-001",
+      "NIKA-SEC-015"
     ]
   },
   "skills": {
@@ -593,7 +551,9 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
   },
   "thinking": {
     "templates": [],
-    "codes": []
+    "codes": [
+      "NIKA-INFER-004"
+    ]
   },
   "timeout": {
     "templates": [
@@ -636,13 +596,6 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-SEC-002"
     ]
   },
-  "types": {
-    "templates": [],
-    "codes": [
-      "NIKA-TYPE-001",
-      "NIKA-TYPE-002"
-    ]
-  },
   "vision": {
     "templates": [],
     "codes": []
@@ -678,34 +631,21 @@ export const WORD_USAGE_REFS: Record<string, WordUsageRefs> = {
       "NIKA-DAG-001",
       "NIKA-DAG-002",
       "NIKA-VAR-021",
-      "NIKA-SEC-012"
+      "NIKA-SEC-012",
+      "NIKA-SEC-015"
     ]
   },
   "workflow": {
-    "templates": [
-      "chain",
-      "gate-and-act",
-      "fanout",
-      "etl-state",
-      "agent-loop",
-      "human-gated-ship",
-      "website-brief",
-      "media-asset-pack",
-      "api-upload-and-create",
-      "docker-report"
-    ],
+    "templates": [],
     "codes": [
-      "NIKA-PARSE-002",
       "NIKA-PARSE-004",
       "NIKA-PARSE-007",
-      "NIKA-PARSE-020",
-      "NIKA-PARSE-021",
       "NIKA-COMP-001",
       "NIKA-COMP-002",
       "NIKA-VAR-021",
       "NIKA-SEC-003",
       "NIKA-SEC-007",
-      "NIKA-SEC-013",
+      "NIKA-SEC-015",
       "NIKA-CANCEL-001"
     ]
   }

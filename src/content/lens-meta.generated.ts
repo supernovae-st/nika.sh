@@ -51,7 +51,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
     "title": "The error codes"
   },
   "error-namespaces": {
-    "count": 25,
+    "count": 24,
     "url": "/language/errors",
     "title": "The error namespaces"
   },
@@ -71,7 +71,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
     "title": "The oracle tools"
   },
   "namespaces": {
-    "count": 6,
+    "count": 5,
     "url": "/language",
     "title": "The namespaces"
   },
@@ -91,7 +91,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
     "title": "The secret sources"
   },
   "showcases": {
-    "count": 26,
+    "count": 27,
     "url": "/how/proof",
     "title": "The showcases"
   },
@@ -121,7 +121,7 @@ export const LENS_SET_COUNTS: Record<string, { count: number; url: string; title
     "title": "The four verbs"
   },
   "words": {
-    "count": 62,
+    "count": 59,
     "url": "/language",
     "title": "The language words"
   }

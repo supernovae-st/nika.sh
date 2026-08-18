@@ -267,6 +267,20 @@
       }
     },
     {
+      "id": "code:NIKA-AUTH-011",
+      "kind": "member",
+      "set": "error-codes",
+      "layer": "refusals",
+      "title": "NIKA-AUTH-011",
+      "url": "/language/errors/NIKA-AUTH-011",
+      "status": "ratified",
+      "opener": "a lift: entry whose named law would not have fired on this task — a trapdoor that lifts nothing is refused, never a silent no-op (10 §the authored doors rule 6)",
+      "meta": {
+        "category": "validation_error",
+        "transient": false
+      }
+    },
+    {
       "id": "code:NIKA-BUILTIN-001",
       "kind": "member",
       "set": "error-codes",
@@ -449,6 +463,34 @@
       }
     },
     {
+      "id": "code:NIKA-DAG-008",
+      "kind": "member",
+      "set": "error-codes",
+      "layer": "refusals",
+      "title": "NIKA-DAG-008",
+      "url": "/language/errors/NIKA-DAG-008",
+      "status": "ratified",
+      "opener": "a group.<name> fold names a group no task declares — including a bare group and the group a renamed member left empty",
+      "meta": {
+        "category": "validation_error",
+        "transient": false
+      }
+    },
+    {
+      "id": "code:NIKA-DAG-009",
+      "kind": "member",
+      "set": "error-codes",
+      "layer": "refusals",
+      "title": "NIKA-DAG-009",
+      "url": "/language/errors/NIKA-DAG-009",
+      "status": "ratified",
+      "opener": "an unwind task declares group: — cleanup never enters G_p, so it cannot be a fan-in member",
+      "meta": {
+        "category": "validation_error",
+        "transient": false
+      }
+    },
+    {
       "id": "code:NIKA-DECIDE-001",
       "kind": "member",
       "set": "error-codes",
@@ -575,6 +617,20 @@
       }
     },
     {
+      "id": "code:NIKA-INFER-004",
+      "kind": "member",
+      "set": "error-codes",
+      "layer": "refusals",
+      "title": "NIKA-INFER-004",
+      "url": "/language/errors/NIKA-INFER-004",
+      "status": "ratified",
+      "opener": "the provider spent tokens yet the visible answer is empty — a thinking model ate the budget on its reasoning trace (fail-closed · #651 · raise max_tokens or use a no-think variant)",
+      "meta": {
+        "category": "validation_error",
+        "transient": false
+      }
+    },
+    {
       "id": "code:NIKA-INVOKE-001",
       "kind": "member",
       "set": "error-codes",
@@ -666,7 +722,7 @@
       "title": "NIKA-PARSE-002",
       "url": "/language/errors/NIKA-PARSE-002",
       "status": "ratified",
-      "opener": "missing envelope field (nika: / workflow: / non-empty tasks:)",
+      "opener": "missing envelope field (nika: / non-empty tasks:)",
       "meta": {
         "category": "validation_error",
         "transient": false
@@ -680,7 +736,7 @@
       "title": "NIKA-PARSE-003",
       "url": "/language/errors/NIKA-PARSE-003",
       "status": "ratified",
-      "opener": "nika: version marker is not exactly v1",
+      "opener": "nika: is not a kebab-case id (^[a-z][a-z0-9-]*$)",
       "meta": {
         "category": "parse_error",
         "transient": false
@@ -820,7 +876,7 @@
       "title": "NIKA-PARSE-013",
       "url": "/language/errors/NIKA-PARSE-013",
       "status": "ratified",
-      "opener": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)",
+      "opener": "with:/extract: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)",
       "meta": {
         "category": "validation_error",
         "transient": false
@@ -877,34 +933,6 @@
       "url": "/language/errors/NIKA-PARSE-019",
       "status": "ratified",
       "opener": "generic structural validation — wrong YAML shape for a field",
-      "meta": {
-        "category": "validation_error",
-        "transient": false
-      }
-    },
-    {
-      "id": "code:NIKA-PARSE-020",
-      "kind": "member",
-      "set": "error-codes",
-      "layer": "refusals",
-      "title": "NIKA-PARSE-020",
-      "url": "/language/errors/NIKA-PARSE-020",
-      "status": "ratified",
-      "opener": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)",
-      "meta": {
-        "category": "validation_error",
-        "transient": false
-      }
-    },
-    {
-      "id": "code:NIKA-PARSE-021",
-      "kind": "member",
-      "set": "error-codes",
-      "layer": "refusals",
-      "title": "NIKA-PARSE-021",
-      "url": "/language/errors/NIKA-PARSE-021",
-      "status": "ratified",
-      "opener": "top-level description: — it moved into workflow.description",
       "meta": {
         "category": "validation_error",
         "transient": false
@@ -1005,20 +1033,6 @@
       "opener": "entropy: none declares strict determinism while a structural randomness source is consumed (a live retry jitter · nika:uuid) — the strict declaration cannot hold (NEP-0010 · F-P3 · judged at check)",
       "meta": {
         "category": "validation_error",
-        "transient": false
-      }
-    },
-    {
-      "id": "code:NIKA-POLICY-001",
-      "kind": "member",
-      "set": "error-codes",
-      "layer": "refusals",
-      "title": "NIKA-POLICY-001",
-      "url": "/language/errors/NIKA-POLICY-001",
-      "status": "ratified",
-      "opener": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)",
-      "meta": {
-        "category": "security_error",
         "transient": false
       }
     },
@@ -1156,7 +1170,7 @@
       "title": "NIKA-SEC-008",
       "url": "/language/errors/NIKA-SEC-008",
       "status": "ratified",
-      "opener": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)",
+      "opener": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no door — no lift: entry naming the data-as-code law · the read hides an execution sink (F-O7 · NEP-0006)",
       "meta": {
         "category": "security_error",
         "transient": false
@@ -1219,20 +1233,6 @@
       }
     },
     {
-      "id": "code:NIKA-SEC-013",
-      "kind": "member",
-      "set": "error-codes",
-      "layer": "refusals",
-      "title": "NIKA-SEC-013",
-      "url": "/language/errors/NIKA-SEC-013",
-      "status": "ratified",
-      "opener": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)",
-      "meta": {
-        "category": "security_error",
-        "transient": false
-      }
-    },
-    {
       "id": "code:NIKA-SEC-014",
       "kind": "member",
       "set": "error-codes",
@@ -1241,6 +1241,20 @@
       "url": "/language/errors/NIKA-SEC-014",
       "status": "ratified",
       "opener": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)",
+      "meta": {
+        "category": "security_error",
+        "transient": false
+      }
+    },
+    {
+      "id": "code:NIKA-SEC-015",
+      "kind": "member",
+      "set": "error-codes",
+      "layer": "refusals",
+      "title": "NIKA-SEC-015",
+      "url": "/language/errors/NIKA-SEC-015",
+      "status": "ratified",
+      "opener": "the order law — an exec: task sits transitively downstream of a net-effecting task (nika:fetch · nika:notify) over the derived graph (with: data edges ∪ after: control edges) · content the workflow did not author must not reach a shell · UNCONDITIONAL: no block declares it and none can disable it",
       "meta": {
         "category": "security_error",
         "transient": false
@@ -1269,20 +1283,6 @@
       "url": "/language/errors/NIKA-TYPE-001",
       "status": "ratified",
       "opener": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close",
-      "meta": {
-        "category": "validation_error",
-        "transient": false
-      }
-    },
-    {
-      "id": "code:NIKA-TYPE-002",
-      "kind": "member",
-      "set": "error-codes",
-      "layer": "refusals",
-      "title": "NIKA-TYPE-002",
-      "url": "/language/errors/NIKA-TYPE-002",
-      "status": "ratified",
-      "opener": "recursive type reference — the types: graph must be acyclic",
       "meta": {
         "category": "validation_error",
         "transient": false
@@ -1548,7 +1548,7 @@
       "title": "NIKA-VAR-021",
       "url": "/language/errors/NIKA-VAR-021",
       "status": "ratified",
-      "opener": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)",
+      "opener": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · an unwind task reading its producer · workflow outputs) — hoist it into with: (check --fix applies it)",
       "meta": {
         "category": "validation_error",
         "transient": false
@@ -2065,21 +2065,6 @@
       }
     },
     {
-      "id": "errns:NIKA-POLICY",
-      "kind": "member",
-      "set": "error-namespaces",
-      "layer": "refusals",
-      "title": "NIKA-POLICY",
-      "url": "/language/error-namespaces/NIKA-POLICY",
-      "anchor": "ns-NIKA-POLICY",
-      "own_page": true,
-      "status": "ratified",
-      "opener": null,
-      "meta": {
-        "witnessed": true
-      }
-    },
-    {
       "id": "errns:NIKA-PORT",
       "kind": "member",
       "set": "error-namespaces",
@@ -2585,18 +2570,6 @@
       "title": "text",
       "url": "/language/modes/text",
       "anchor": "mode-text",
-      "own_page": true,
-      "status": "ratified",
-      "opener": null
-    },
-    {
-      "id": "ns:config",
-      "kind": "member",
-      "set": "namespaces",
-      "layer": "shape",
-      "title": "config",
-      "url": "/language/namespaces/config",
-      "anchor": "ns-config",
       "own_page": true,
       "status": "ratified",
       "opener": null
@@ -3390,7 +3363,7 @@
       "title": "The namespaces",
       "url": "/language",
       "status": "ratified",
-      "opener": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
+      "opener": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies (a deployment default is an input with required: false), const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
       "closed": true,
       "counted_in_canon": true,
       "surface": "anchors",
@@ -3510,7 +3483,7 @@
       "title": "The types",
       "url": "/language",
       "status": "ratified",
-      "opener": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it.",
+      "opener": "Typed contracts for task outputs: returns and decode, written inline · the closed primitive grammar below is the whole register since 0.109 (a named `types:` block resolves to nothing; spec/09-types.md).",
       "closed": false,
       "counted_in_canon": false,
       "surface": "anchors",
@@ -3612,6 +3585,20 @@
       "layer": "proof",
       "title": "contract-guard",
       "url": "/workflows/jobs/contract-guard",
+      "status": "ratified",
+      "opener": null,
+      "meta": {
+        "tier": null,
+        "waves": 6
+      }
+    },
+    {
+      "id": "showcase:corpus-digest",
+      "kind": "member",
+      "set": "showcases",
+      "layer": "proof",
+      "title": "corpus-digest",
+      "url": "/workflows/jobs/corpus-digest",
       "status": "ratified",
       "opener": null,
       "meta": {
@@ -3983,7 +3970,7 @@
       "status": "ratified",
       "opener": "research / review / open-ended",
       "meta": {
-        "sha256": "1c594179c46ff834cd38fbc6dc870018677cc83cb71f846846747741254d0afa",
+        "sha256": "5ded8b7dbdc23065d47ed48f32e8072ac74765cdde30101b2b03d6b5a59992da",
         "file": "agent-loop.nika.yaml"
       }
     },
@@ -3997,7 +3984,7 @@
       "status": "ratified",
       "opener": "call a product API: upload a file and create from it",
       "meta": {
-        "sha256": "3e94a2682deb4c75031d4e4d0fb722fa64ce561dd227607fdb0b92191704bee9",
+        "sha256": "e823c5f3d2b8935c31eb69a87ec4367b11cef285a0198c164a213a6801e12f54",
         "file": "api-upload-and-create.nika.yaml"
       }
     },
@@ -4011,7 +3998,7 @@
       "status": "ratified",
       "opener": "take data, produce words, save them",
       "meta": {
-        "sha256": "5562b3844a54d21041b85ab36ce8722df3e62e721e77b424fbcb3a342f2dd885",
+        "sha256": "68c26c13060fce2279634f0640ccacd054f65f04b00a583ae1b73568e494d624",
         "file": "chain.nika.yaml"
       }
     },
@@ -4025,7 +4012,7 @@
       "status": "ratified",
       "opener": "read a system's state (docker · kubectl · gh), explain it, keep the report",
       "meta": {
-        "sha256": "c0ddf5aae1492a50d643c3547db42b305adf192b94822a9c9400ea0e7191b5c7",
+        "sha256": "d90e7384122ba0f78e1b8a97d2c0cc8d506d8d151c5d468eedea580f1d8b6d12",
         "file": "docker-report.nika.yaml"
       }
     },
@@ -4039,7 +4026,7 @@
       "status": "ratified",
       "opener": "only what changed since last run · survive bad input",
       "meta": {
-        "sha256": "ad6e6f394d38600fd7fca0c1db0a3a76239d74256bfdedd40f1cc7e014671068",
+        "sha256": "f58cc453b0441dfe99f12438620dfea0739b26128b9c38f3923588e55953419f",
         "file": "etl-state.nika.yaml"
       }
     },
@@ -4053,7 +4040,7 @@
       "status": "ratified",
       "opener": "do this for EVERY item",
       "meta": {
-        "sha256": "96e4c9e077f7c74803464f627a617c612133e373d74da82dbe233d9878cc7b80",
+        "sha256": "0de58ee20ce82d44815988767e433a340b0c4f2a7b75d8965f6ed3309c269519",
         "file": "fanout.nika.yaml"
       }
     },
@@ -4067,7 +4054,7 @@
       "status": "ratified",
       "opener": "watch X, act when Y",
       "meta": {
-        "sha256": "a548c0e551f7efb585df1922b26cf51cc9497e47d8f9c9afc7ed3d974efc62d9",
+        "sha256": "4870c70f7a6198f86b1da8587e7e1345bbece86ce07446d74e16866cbe514610",
         "file": "gate-and-act.nika.yaml"
       }
     },
@@ -4081,7 +4068,7 @@
       "status": "ratified",
       "opener": "anything irreversible (deploy · send · publish)",
       "meta": {
-        "sha256": "1894157ff7d04d6ac57deb4958de9ab4f4c501ebf56d5d0176c974ff83cbbb0c",
+        "sha256": "e7f233d8d6a016003fef360b80b9ffb4cc21cce19c733f465103b38adb3b6821",
         "file": "human-gated-ship.nika.yaml"
       }
     },
@@ -4095,7 +4082,7 @@
       "status": "ratified",
       "opener": "generate image/audio assets from a brief",
       "meta": {
-        "sha256": "7c7186264f281719ba20b5a36a36737a8ed305fcff663924c2612aa5722c4205",
+        "sha256": "565a0b8080a077435e47474798e4e33fe31ebeea39044455170c765435466a84",
         "file": "media-asset-pack.nika.yaml"
       }
     },
@@ -4109,7 +4096,7 @@
       "status": "ratified",
       "opener": "understand a site (domain · theme · assets) from a URL",
       "meta": {
-        "sha256": "75396c6873c48fe0925738d7f7d577f54418ca1241a16b5ce92b188ad6c56c54",
+        "sha256": "bb0fe02ead87623166cfdd57647346344959ccc622447a7651a2209c52f19d8a",
         "file": "website-brief.nika.yaml"
       }
     },
@@ -4784,8 +4771,7 @@
       "opener": null,
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": true
       }
@@ -4855,6 +4841,22 @@
       }
     },
     {
+      "id": "word:because",
+      "kind": "member",
+      "set": "words",
+      "layer": "shape",
+      "title": "because",
+      "url": "/language/words/because",
+      "status": "ratified",
+      "opener": "The non-empty justification · recorded in the run receipt with the taint path and the value digest.",
+      "meta": {
+        "scopes": [
+          "lift"
+        ],
+        "verb": false
+      }
+    },
+    {
       "id": "word:capture",
       "kind": "member",
       "set": "words",
@@ -4882,22 +4884,6 @@
       "meta": {
         "scopes": [
           "exec"
-        ],
-        "verb": false
-      }
-    },
-    {
-      "id": "word:config",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "config",
-      "url": "/language/words/config",
-      "status": "ratified",
-      "opener": "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment, and it MAY appear in logs. Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001). Succeeds the dead `env:` block (R3a · LAW-SURFACE-0201).",
-      "meta": {
-        "scopes": [
-          "envelope"
         ],
         "verb": false
       }
@@ -4935,22 +4921,6 @@
       }
     },
     {
-      "id": "word:declassify",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "declassify",
-      "url": "/language/words/declassify",
-      "status": "ratified",
-      "opener": "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass).",
-      "meta": {
-        "scopes": [
-          "task"
-        ],
-        "verb": false
-      }
-    },
-    {
       "id": "word:decode",
       "kind": "member",
       "set": "words",
@@ -4962,22 +4932,6 @@
       "meta": {
         "scopes": [
           "exec"
-        ],
-        "verb": false
-      }
-    },
-    {
-      "id": "word:description",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "description",
-      "url": "/language/words/description",
-      "status": "ratified",
-      "opener": "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md).",
-      "meta": {
-        "scopes": [
-          "workflow"
         ],
         "verb": false
       }
@@ -5009,10 +4963,25 @@
       "opener": null,
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": true
+      }
+    },
+    {
+      "id": "word:extract",
+      "kind": "member",
+      "set": "words",
+      "layer": "shape",
+      "title": "extract",
+      "url": "/language/words/extract",
+      "status": "ratified",
+      "opener": "Named jq-expression bindings extracted from the verb's raw response · read downstream as `${{ tasks.X.<name> }}`. The field names the OPERATION (run this jq); it does not write `output` — `${{ tasks.X.output }}` stays the raw response (spec/03-dag.md §extract). jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). A binding may not shadow a record projection: output · status · error · started_at · ended_at · duration_ms are forbidden at parse time (spec/04-variables.md §Rules) — enforced via propertyNames.",
+      "meta": {
+        "scopes": [
+          "task"
+        ],
+        "verb": false
       }
     },
     {
@@ -5023,26 +4992,10 @@
       "title": "fail_fast",
       "url": "/language/words/fail_fast",
       "status": "ratified",
-      "opener": "Whether a `for_each` fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could.",
+      "opener": "Whether the fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could.",
       "meta": {
         "scopes": [
-          "task"
-        ],
-        "verb": false
-      }
-    },
-    {
-      "id": "word:fail_workflow",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "fail_workflow",
-      "url": "/language/words/fail_workflow",
-      "status": "ratified",
-      "opener": "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`.",
-      "meta": {
-        "scopes": [
-          "on_error"
+          "for_each"
         ],
         "verb": false
       }
@@ -5055,7 +5008,7 @@
       "title": "for_each",
       "url": "/language/words/for_each",
       "status": "ratified",
-      "opener": "Map this task over a collection · `${{ ... }}` reference OR a literal array.",
+      "opener": "Fan this task out over a collection · ONE block, so the concurrency is visible where the fan-out is declared. `max_parallel` and `fail_fast` live here because they have no meaning without it.",
       "meta": {
         "scopes": [
           "task"
@@ -5064,30 +5017,30 @@
       }
     },
     {
-      "id": "word:id",
+      "id": "word:from",
       "kind": "member",
       "set": "words",
       "layer": "shape",
-      "title": "id",
-      "url": "/language/words/id",
+      "title": "from",
+      "url": "/language/words/from",
       "status": "ratified",
-      "opener": "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object).",
+      "opener": "REQUIRED for law 'taint', forbidden otherwise · the ONE binding this entry raises (e.g. inputs.p · config.region · tasks.fetch.output) · a dotted value-binding path.",
       "meta": {
         "scopes": [
-          "workflow"
+          "lift"
         ],
         "verb": false
       }
     },
     {
-      "id": "word:inert",
+      "id": "word:group",
       "kind": "member",
       "set": "words",
       "layer": "shape",
-      "title": "inert",
-      "url": "/language/words/inert",
+      "title": "group",
+      "url": "/language/words/group",
       "status": "ratified",
-      "opener": "The honest door of the data-as-code sink · declares this task's fetch a code-bearing artifact it will never load or run. The non-empty string IS the justification · it lifts the sink law only, never the net boundary and never the SSRF floor (spec/10-authority.md · NEP-0006 · LAW-AUTH-0327).",
+      "opener": "Fan-in MEMBERSHIP · this task joins the named group, and a consumer folds the whole group with one `${{ group.<name> }}` binding in its `with:` (spec/03-dag.md §group). Membership is DECLARED, never matched: a renamed member leaves its group loudly (NIKA-DAG-008 on the reference), where a glob would shrink the fold in silence. A group exists iff at least one task declares it. An `unwind` task may not join one (NIKA-DAG-009 · cleanup never schedules).",
       "meta": {
         "scopes": [
           "task"
@@ -5106,8 +5059,7 @@
       "opener": null,
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": true
       }
@@ -5139,10 +5091,25 @@
       "opener": null,
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": true
+      }
+    },
+    {
+      "id": "word:items",
+      "kind": "member",
+      "set": "words",
+      "layer": "shape",
+      "title": "items",
+      "url": "/language/words/items",
+      "status": "ratified",
+      "opener": "The collection · a `${{ ... }}` reference OR a literal array. Evaluated EXACTLY ONCE, before the fan-out; no iteration feeds back into it (spec 03 §where this sits).",
+      "meta": {
+        "scopes": [
+          "for_each"
+        ],
+        "verb": false
       }
     },
     {
@@ -5157,6 +5124,38 @@
       "meta": {
         "scopes": [
           "retry"
+        ],
+        "verb": false
+      }
+    },
+    {
+      "id": "word:law",
+      "kind": "member",
+      "set": "words",
+      "layer": "shape",
+      "title": "law",
+      "url": "/language/words/law",
+      "status": "ratified",
+      "opener": "WHICH law this entry lifts · 'taint' raises ONE binding from untrusted to trusted (NEP-0004 · LAW-AUTH-0325) · 'data-as-code' declares this task's fetch a code-bearing artifact it will never load or run (NEP-0006 · LAW-AUTH-0327). Neither ever lifts the net boundary or the SSRF floor.",
+      "meta": {
+        "scopes": [
+          "lift"
+        ],
+        "verb": false
+      }
+    },
+    {
+      "id": "word:lift",
+      "kind": "member",
+      "set": "words",
+      "layer": "shape",
+      "title": "lift",
+      "url": "/language/words/lift",
+      "status": "ratified",
+      "opener": "The authored doors · each entry lifts exactly ONE named law, with a mandatory reason, check-visible and receipt-recorded. A lift is NEVER a permit bypass — the value still sits inside the declared boundary, and no law but the named one moves. The law set is CLOSED and normative (a NEP amends it): this is why a new law costs zero language fields (spec/10-authority.md §the authored doors).",
+      "meta": {
+        "scopes": [
+          "task"
         ],
         "verb": false
       }
@@ -5185,10 +5184,10 @@
       "title": "max_parallel",
       "url": "/language/words/max_parallel",
       "status": "ratified",
-      "opener": "Cap concurrent for_each iterations · default unbounded · 1 = sequential.",
+      "opener": "Cap concurrent iterations · default unbounded · 1 = sequential.",
       "meta": {
         "scopes": [
-          "task"
+          "for_each"
         ],
         "verb": false
       }
@@ -5267,7 +5266,7 @@
       "title": "nika",
       "url": "/language/words/nika",
       "status": "ratified",
-      "opener": "Language contract version · exactly `v1` for the v1 lifetime. NOT `v1.0` · `1` · `1.0`.",
+      "opener": "The file's NAME · kebab-case · and the mark that says « this is a nika file ». One word, one meaning across both document types: `nika.yaml` carries the PROJECT name, a `*.nika.yaml` carries the WORKFLOW name. The document TYPE is read from `tasks:` — present means workflow, absent means project — so it survives a blob, a paste or an HTTP body where the filename does not travel. This key held the literal `v1` until the envelope nuke; it carried zero bits as a version (there is no `nika: v2` — ever) and now carries the file's most necessary field instead.",
       "meta": {
         "scopes": [
           "envelope"
@@ -5309,38 +5308,6 @@
       }
     },
     {
-      "id": "word:on_finally",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "on_finally",
-      "url": "/language/words/on_finally",
-      "status": "ratified",
-      "opener": "Cleanup mini-tasks · ALWAYS run (success/fail/timeout/cancel) · sequential · best-effort.",
-      "meta": {
-        "scopes": [
-          "task"
-        ],
-        "verb": false
-      }
-    },
-    {
-      "id": "word:output",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "output",
-      "url": "/language/words/output",
-      "status": "ratified",
-      "opener": "Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). Reserved names forbidden at parse time (spec/04-variables.md §Rules): output · status · error · started_at · ended_at · duration_ms — enforced via propertyNames.",
-      "meta": {
-        "scopes": [
-          "task"
-        ],
-        "verb": false
-      }
-    },
-    {
       "id": "word:outputs",
       "kind": "member",
       "set": "words",
@@ -5365,22 +5332,6 @@
       "url": "/language/words/permits",
       "status": "ratified",
       "opener": "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004).",
-      "meta": {
-        "scopes": [
-          "envelope"
-        ],
-        "verb": false
-      }
-    },
-    {
-      "id": "word:policy",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "policy",
-      "url": "/language/words/policy",
-      "status": "ratified",
-      "opener": "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md).",
       "meta": {
         "scopes": [
           "envelope"
@@ -5542,7 +5493,7 @@
       "title": "skip",
       "url": "/language/words/skip",
       "status": "ratified",
-      "opener": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`.",
+      "opener": "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip`.",
       "meta": {
         "scopes": [
           "on_error"
@@ -5643,8 +5594,7 @@
       "opener": "Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h.",
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": false
       }
@@ -5682,22 +5632,6 @@
       }
     },
     {
-      "id": "word:types",
-      "kind": "member",
-      "set": "words",
-      "layer": "shape",
-      "title": "types",
-      "url": "/language/words/types",
-      "status": "ratified",
-      "opener": "Named type declarations · the workflow's own vocabulary, referenced by name wherever a type is expected. PascalCase · acyclic (spec 09-types.md).",
-      "meta": {
-        "scopes": [
-          "envelope"
-        ],
-        "verb": false
-      }
-    },
-    {
       "id": "word:vision",
       "kind": "member",
       "set": "words",
@@ -5724,8 +5658,7 @@
       "opener": "LOCAL business condition · false skips the task · evaluated POST-gate over {vars · env · with · item · index}. Referring to `tasks.*` is illegal here (NIKA-VAR-021 · hoist it into `with:`) · spec/03-dag.md §when.",
       "meta": {
         "scopes": [
-          "task",
-          "on_finally"
+          "task"
         ],
         "verb": false
       }
@@ -5754,10 +5687,9 @@
       "title": "workflow",
       "url": "/language/words/workflow",
       "status": "ratified",
-      "opener": "The workflow object · a stable home for identity and metadata (W1 'the map').",
+      "opener": "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21).",
       "meta": {
         "scopes": [
-          "envelope",
           "invoke"
         ],
         "verb": false
@@ -6011,6 +5943,16 @@
       "kind": "belongs-to"
     },
     {
+      "from": "code:NIKA-AUTH-011",
+      "to": "errcat:validation_error",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-AUTH-011",
+      "to": "errns:NIKA-AUTH",
+      "kind": "belongs-to"
+    },
+    {
       "from": "code:NIKA-BUILTIN-001",
       "to": "errcat:validation_error",
       "kind": "belongs-to"
@@ -6141,6 +6083,26 @@
       "kind": "belongs-to"
     },
     {
+      "from": "code:NIKA-DAG-008",
+      "to": "errcat:validation_error",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-DAG-008",
+      "to": "errns:NIKA-DAG",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-DAG-009",
+      "to": "errcat:validation_error",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-DAG-009",
+      "to": "errns:NIKA-DAG",
+      "kind": "belongs-to"
+    },
+    {
       "from": "code:NIKA-DECIDE-001",
       "to": "errcat:validation_error",
       "kind": "belongs-to"
@@ -6227,6 +6189,16 @@
     },
     {
       "from": "code:NIKA-INFER-003",
+      "to": "errns:NIKA-INFER",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
+      "to": "errcat:validation_error",
+      "kind": "belongs-to"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
       "to": "errns:NIKA-INFER",
       "kind": "belongs-to"
     },
@@ -6451,26 +6423,6 @@
       "kind": "belongs-to"
     },
     {
-      "from": "code:NIKA-PARSE-020",
-      "to": "errcat:validation_error",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-PARSE-020",
-      "to": "errns:NIKA-PARSE",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-PARSE-021",
-      "to": "errcat:validation_error",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-PARSE-021",
-      "to": "errns:NIKA-PARSE",
-      "kind": "belongs-to"
-    },
-    {
       "from": "code:NIKA-PARSE-022",
       "to": "errcat:validation_error",
       "kind": "belongs-to"
@@ -6538,16 +6490,6 @@
     {
       "from": "code:NIKA-PARSE-028",
       "to": "errns:NIKA-PARSE",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-POLICY-001",
-      "to": "errcat:security_error",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-POLICY-001",
-      "to": "errns:NIKA-POLICY",
       "kind": "belongs-to"
     },
     {
@@ -6691,22 +6633,22 @@
       "kind": "belongs-to"
     },
     {
-      "from": "code:NIKA-SEC-013",
+      "from": "code:NIKA-SEC-014",
       "to": "errcat:security_error",
       "kind": "belongs-to"
     },
     {
-      "from": "code:NIKA-SEC-013",
+      "from": "code:NIKA-SEC-014",
       "to": "errns:NIKA-SEC",
       "kind": "belongs-to"
     },
     {
-      "from": "code:NIKA-SEC-014",
+      "from": "code:NIKA-SEC-015",
       "to": "errcat:security_error",
       "kind": "belongs-to"
     },
     {
-      "from": "code:NIKA-SEC-014",
+      "from": "code:NIKA-SEC-015",
       "to": "errns:NIKA-SEC",
       "kind": "belongs-to"
     },
@@ -6727,16 +6669,6 @@
     },
     {
       "from": "code:NIKA-TYPE-001",
-      "to": "errns:NIKA-TYPE",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-TYPE-002",
-      "to": "errcat:validation_error",
-      "kind": "belongs-to"
-    },
-    {
-      "from": "code:NIKA-TYPE-002",
       "to": "errns:NIKA-TYPE",
       "kind": "belongs-to"
     },
@@ -7082,16 +7014,6 @@
     },
     {
       "from": "template:agent-loop",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:agent-loop",
-      "to": "word:id",
-      "kind": "carries"
-    },
-    {
-      "from": "template:agent-loop",
       "to": "word:infer",
       "kind": "carries"
     },
@@ -7176,11 +7098,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:agent-loop",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:api-upload-and-create",
       "to": "word:args",
       "kind": "carries"
@@ -7188,16 +7105,6 @@
     {
       "from": "template:api-upload-and-create",
       "to": "word:const",
-      "kind": "carries"
-    },
-    {
-      "from": "template:api-upload-and-create",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:api-upload-and-create",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -7251,11 +7158,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:api-upload-and-create",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:chain",
       "to": "word:args",
       "kind": "carries"
@@ -7263,16 +7165,6 @@
     {
       "from": "template:chain",
       "to": "word:const",
-      "kind": "carries"
-    },
-    {
-      "from": "template:chain",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:chain",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -7351,11 +7243,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:chain",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:docker-report",
       "to": "word:args",
       "kind": "carries"
@@ -7367,17 +7254,7 @@
     },
     {
       "from": "template:docker-report",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:docker-report",
       "to": "word:exec",
-      "kind": "carries"
-    },
-    {
-      "from": "template:docker-report",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -7448,11 +7325,6 @@
     {
       "from": "template:docker-report",
       "to": "word:with",
-      "kind": "carries"
-    },
-    {
-      "from": "template:docker-report",
-      "to": "word:workflow",
       "kind": "carries"
     },
     {
@@ -7472,16 +7344,6 @@
     },
     {
       "from": "template:etl-state",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:etl-state",
-      "to": "word:id",
-      "kind": "carries"
-    },
-    {
-      "from": "template:etl-state",
       "to": "word:invoke",
       "kind": "carries"
     },
@@ -7508,11 +7370,6 @@
     {
       "from": "template:etl-state",
       "to": "word:permits",
-      "kind": "carries"
-    },
-    {
-      "from": "template:etl-state",
-      "to": "word:policy",
       "kind": "carries"
     },
     {
@@ -7546,11 +7403,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:etl-state",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:fanout",
       "to": "word:args",
       "kind": "carries"
@@ -7567,11 +7419,6 @@
     },
     {
       "from": "template:fanout",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:fanout",
       "to": "word:fail_fast",
       "kind": "carries"
     },
@@ -7582,17 +7429,17 @@
     },
     {
       "from": "template:fanout",
-      "to": "word:id",
-      "kind": "carries"
-    },
-    {
-      "from": "template:fanout",
       "to": "word:infer",
       "kind": "carries"
     },
     {
       "from": "template:fanout",
       "to": "word:invoke",
+      "kind": "carries"
+    },
+    {
+      "from": "template:fanout",
+      "to": "word:items",
       "kind": "carries"
     },
     {
@@ -7686,11 +7533,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:fanout",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:gate-and-act",
       "to": "word:args",
       "kind": "carries"
@@ -7702,12 +7544,7 @@
     },
     {
       "from": "template:gate-and-act",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:gate-and-act",
-      "to": "word:id",
+      "to": "word:extract",
       "kind": "carries"
     },
     {
@@ -7723,11 +7560,6 @@
     {
       "from": "template:gate-and-act",
       "to": "word:on_error",
-      "kind": "carries"
-    },
-    {
-      "from": "template:gate-and-act",
-      "to": "word:output",
       "kind": "carries"
     },
     {
@@ -7773,11 +7605,6 @@
     {
       "from": "template:gate-and-act",
       "to": "word:with",
-      "kind": "carries"
-    },
-    {
-      "from": "template:gate-and-act",
-      "to": "word:workflow",
       "kind": "carries"
     },
     {
@@ -7802,17 +7629,7 @@
     },
     {
       "from": "template:human-gated-ship",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:human-gated-ship",
       "to": "word:exec",
-      "kind": "carries"
-    },
-    {
-      "from": "template:human-gated-ship",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -7838,11 +7655,6 @@
     {
       "from": "template:human-gated-ship",
       "to": "word:permits",
-      "kind": "carries"
-    },
-    {
-      "from": "template:human-gated-ship",
-      "to": "word:policy",
       "kind": "carries"
     },
     {
@@ -7881,11 +7693,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:human-gated-ship",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:media-asset-pack",
       "to": "word:args",
       "kind": "carries"
@@ -7893,16 +7700,6 @@
     {
       "from": "template:media-asset-pack",
       "to": "word:const",
-      "kind": "carries"
-    },
-    {
-      "from": "template:media-asset-pack",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:media-asset-pack",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -7981,11 +7778,6 @@
       "kind": "carries"
     },
     {
-      "from": "template:media-asset-pack",
-      "to": "word:workflow",
-      "kind": "carries"
-    },
-    {
       "from": "template:website-brief",
       "to": "word:args",
       "kind": "carries"
@@ -7993,16 +7785,6 @@
     {
       "from": "template:website-brief",
       "to": "word:const",
-      "kind": "carries"
-    },
-    {
-      "from": "template:website-brief",
-      "to": "word:description",
-      "kind": "carries"
-    },
-    {
-      "from": "template:website-brief",
-      "to": "word:id",
       "kind": "carries"
     },
     {
@@ -8078,11 +7860,6 @@
     {
       "from": "template:website-brief",
       "to": "word:with",
-      "kind": "carries"
-    },
-    {
-      "from": "template:website-brief",
-      "to": "word:workflow",
       "kind": "carries"
     },
     {
@@ -8421,6 +8198,11 @@
       "kind": "member-of"
     },
     {
+      "from": "code:NIKA-AUTH-011",
+      "to": "set:error-codes",
+      "kind": "member-of"
+    },
+    {
       "from": "code:NIKA-BUILTIN-001",
       "to": "set:error-codes",
       "kind": "member-of"
@@ -8486,6 +8268,16 @@
       "kind": "member-of"
     },
     {
+      "from": "code:NIKA-DAG-008",
+      "to": "set:error-codes",
+      "kind": "member-of"
+    },
+    {
+      "from": "code:NIKA-DAG-009",
+      "to": "set:error-codes",
+      "kind": "member-of"
+    },
+    {
       "from": "code:NIKA-DECIDE-001",
       "to": "set:error-codes",
       "kind": "member-of"
@@ -8527,6 +8319,11 @@
     },
     {
       "from": "code:NIKA-INFER-003",
+      "to": "set:error-codes",
+      "kind": "member-of"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
       "to": "set:error-codes",
       "kind": "member-of"
     },
@@ -8641,16 +8438,6 @@
       "kind": "member-of"
     },
     {
-      "from": "code:NIKA-PARSE-020",
-      "to": "set:error-codes",
-      "kind": "member-of"
-    },
-    {
-      "from": "code:NIKA-PARSE-021",
-      "to": "set:error-codes",
-      "kind": "member-of"
-    },
-    {
       "from": "code:NIKA-PARSE-022",
       "to": "set:error-codes",
       "kind": "member-of"
@@ -8682,11 +8469,6 @@
     },
     {
       "from": "code:NIKA-PARSE-028",
-      "to": "set:error-codes",
-      "kind": "member-of"
-    },
-    {
-      "from": "code:NIKA-POLICY-001",
       "to": "set:error-codes",
       "kind": "member-of"
     },
@@ -8761,12 +8543,12 @@
       "kind": "member-of"
     },
     {
-      "from": "code:NIKA-SEC-013",
+      "from": "code:NIKA-SEC-014",
       "to": "set:error-codes",
       "kind": "member-of"
     },
     {
-      "from": "code:NIKA-SEC-014",
+      "from": "code:NIKA-SEC-015",
       "to": "set:error-codes",
       "kind": "member-of"
     },
@@ -8777,11 +8559,6 @@
     },
     {
       "from": "code:NIKA-TYPE-001",
-      "to": "set:error-codes",
-      "kind": "member-of"
-    },
-    {
-      "from": "code:NIKA-TYPE-002",
       "to": "set:error-codes",
       "kind": "member-of"
     },
@@ -9056,11 +8833,6 @@
       "kind": "member-of"
     },
     {
-      "from": "errns:NIKA-POLICY",
-      "to": "set:error-namespaces",
-      "kind": "member-of"
-    },
-    {
       "from": "errns:NIKA-PORT",
       "to": "set:error-namespaces",
       "kind": "member-of"
@@ -9228,11 +9000,6 @@
     {
       "from": "mode:text",
       "to": "set:extract-modes",
-      "kind": "member-of"
-    },
-    {
-      "from": "ns:config",
-      "to": "set:namespaces",
       "kind": "member-of"
     },
     {
@@ -9527,6 +9294,11 @@
     },
     {
       "from": "showcase:contract-guard",
+      "to": "set:showcases",
+      "kind": "member-of"
+    },
+    {
+      "from": "showcase:corpus-digest",
       "to": "set:showcases",
       "kind": "member-of"
     },
@@ -9976,17 +9748,17 @@
       "kind": "member-of"
     },
     {
+      "from": "word:because",
+      "to": "set:words",
+      "kind": "member-of"
+    },
+    {
       "from": "word:capture",
       "to": "set:words",
       "kind": "member-of"
     },
     {
       "from": "word:command",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
-      "from": "word:config",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10001,17 +9773,7 @@
       "kind": "member-of"
     },
     {
-      "from": "word:declassify",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
       "from": "word:decode",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
-      "from": "word:description",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10026,12 +9788,12 @@
       "kind": "member-of"
     },
     {
-      "from": "word:fail_fast",
+      "from": "word:extract",
       "to": "set:words",
       "kind": "member-of"
     },
     {
-      "from": "word:fail_workflow",
+      "from": "word:fail_fast",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10041,12 +9803,12 @@
       "kind": "member-of"
     },
     {
-      "from": "word:id",
+      "from": "word:from",
       "to": "set:words",
       "kind": "member-of"
     },
     {
-      "from": "word:inert",
+      "from": "word:group",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10066,7 +9828,22 @@
       "kind": "member-of"
     },
     {
+      "from": "word:items",
+      "to": "set:words",
+      "kind": "member-of"
+    },
+    {
       "from": "word:jitter",
+      "to": "set:words",
+      "kind": "member-of"
+    },
+    {
+      "from": "word:law",
+      "to": "set:words",
+      "kind": "member-of"
+    },
+    {
+      "from": "word:lift",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10116,27 +9893,12 @@
       "kind": "member-of"
     },
     {
-      "from": "word:on_finally",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
-      "from": "word:output",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
       "from": "word:outputs",
       "to": "set:words",
       "kind": "member-of"
     },
     {
       "from": "word:permits",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
-      "from": "word:policy",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10227,11 +9989,6 @@
     },
     {
       "from": "word:tools",
-      "to": "set:words",
-      "kind": "member-of"
-    },
-    {
-      "from": "word:types",
       "to": "set:words",
       "kind": "member-of"
     },
@@ -10487,11 +10244,6 @@
     },
     {
       "from": "code:NIKA-AGENT-004",
-      "to": "word:description",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-AGENT-004",
       "to": "word:skills",
       "kind": "names"
     },
@@ -10512,17 +10264,17 @@
     },
     {
       "from": "code:NIKA-AUTH-009",
-      "to": "word:inert",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-AUTH-009",
       "to": "word:permits",
       "kind": "names"
     },
     {
       "from": "code:NIKA-AUTH-010",
       "to": "word:permits",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-AUTH-011",
+      "to": "word:lift",
       "kind": "names"
     },
     {
@@ -10766,13 +10518,18 @@
       "kind": "names"
     },
     {
-      "from": "code:NIKA-DECIDE-002",
-      "to": "word:schema",
+      "from": "code:NIKA-DAG-008",
+      "to": "word:group",
       "kind": "names"
     },
     {
-      "from": "code:NIKA-DEFAULT-001",
-      "to": "word:config",
+      "from": "code:NIKA-DAG-009",
+      "to": "word:group",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-DECIDE-002",
+      "to": "word:schema",
       "kind": "names"
     },
     {
@@ -10817,17 +10574,27 @@
     },
     {
       "from": "code:NIKA-INFER-002",
-      "to": "word:output",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-INFER-002",
       "to": "word:schema",
       "kind": "names"
     },
     {
       "from": "code:NIKA-INFER-003",
       "to": "word:model",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
+      "to": "word:max_tokens",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
+      "to": "word:model",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-INFER-004",
+      "to": "word:thinking",
       "kind": "names"
     },
     {
@@ -10853,11 +10620,6 @@
     {
       "from": "code:NIKA-PARSE-002",
       "to": "word:tasks",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-002",
-      "to": "word:workflow",
       "kind": "names"
     },
     {
@@ -10907,7 +10669,7 @@
     },
     {
       "from": "code:NIKA-PARSE-013",
-      "to": "word:output",
+      "to": "word:extract",
       "kind": "names"
     },
     {
@@ -10946,38 +10708,8 @@
       "kind": "names"
     },
     {
-      "from": "code:NIKA-PARSE-020",
-      "to": "word:id",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-020",
-      "to": "word:workflow",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-021",
-      "to": "word:description",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-021",
-      "to": "word:workflow",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-022",
-      "to": "word:id",
-      "kind": "names"
-    },
-    {
       "from": "code:NIKA-PARSE-022",
       "to": "word:tasks",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PARSE-023",
-      "to": "word:id",
       "kind": "names"
     },
     {
@@ -11023,16 +10755,6 @@
     {
       "from": "code:NIKA-PARSE-028",
       "to": "word:retry",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-POLICY-001",
-      "to": "word:policy",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-PORT-002",
-      "to": "word:policy",
       "kind": "names"
     },
     {
@@ -11132,7 +10854,7 @@
     },
     {
       "from": "code:NIKA-SEC-008",
-      "to": "word:inert",
+      "to": "word:lift",
       "kind": "names"
     },
     {
@@ -11191,31 +10913,6 @@
       "kind": "names"
     },
     {
-      "from": "code:NIKA-SEC-013",
-      "to": "word:invoke",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-SEC-013",
-      "to": "word:nika",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-SEC-013",
-      "to": "word:policy",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-SEC-013",
-      "to": "word:prompt",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-SEC-013",
-      "to": "word:workflow",
-      "kind": "names"
-    },
-    {
       "from": "code:NIKA-SEC-014",
       "to": "word:after",
       "kind": "names"
@@ -11241,6 +10938,36 @@
       "kind": "names"
     },
     {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:after",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:exec",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:nika",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:shell",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:with",
+      "kind": "names"
+    },
+    {
+      "from": "code:NIKA-SEC-015",
+      "to": "word:workflow",
+      "kind": "names"
+    },
+    {
       "from": "code:NIKA-TIMEOUT-001",
       "to": "word:for_each",
       "kind": "names"
@@ -11258,16 +10985,6 @@
     {
       "from": "code:NIKA-TYPE-001",
       "to": "word:returns",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-TYPE-001",
-      "to": "word:types",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-TYPE-002",
-      "to": "word:types",
       "kind": "names"
     },
     {
@@ -11291,6 +11008,11 @@
       "kind": "names"
     },
     {
+      "from": "code:NIKA-TYPE-006",
+      "to": "word:group",
+      "kind": "names"
+    },
+    {
       "from": "code:NIKA-TYPE-101",
       "to": "word:exec",
       "kind": "names"
@@ -11308,11 +11030,6 @@
     {
       "from": "code:NIKA-VALUES-002",
       "to": "word:env",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-VAR-001",
-      "to": "word:config",
       "kind": "names"
     },
     {
@@ -11352,17 +11069,7 @@
     },
     {
       "from": "code:NIKA-VAR-009",
-      "to": "word:output",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-VAR-009",
       "to": "word:outputs",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-VAR-020",
-      "to": "word:output",
       "kind": "names"
     },
     {
@@ -11378,11 +11085,6 @@
     {
       "from": "code:NIKA-VAR-021",
       "to": "word:on_error",
-      "kind": "names"
-    },
-    {
-      "from": "code:NIKA-VAR-021",
-      "to": "word:on_finally",
       "kind": "names"
     },
     {
@@ -11677,6 +11379,31 @@
     },
     {
       "from": "showcase:contract-guard",
+      "to": "verb:invoke",
+      "kind": "witnesses"
+    },
+    {
+      "from": "showcase:corpus-digest",
+      "to": "tool:glob",
+      "kind": "witnesses"
+    },
+    {
+      "from": "showcase:corpus-digest",
+      "to": "tool:jq",
+      "kind": "witnesses"
+    },
+    {
+      "from": "showcase:corpus-digest",
+      "to": "tool:read",
+      "kind": "witnesses"
+    },
+    {
+      "from": "showcase:corpus-digest",
+      "to": "verb:infer",
+      "kind": "witnesses"
+    },
+    {
+      "from": "showcase:corpus-digest",
       "to": "verb:invoke",
       "kind": "witnesses"
     },

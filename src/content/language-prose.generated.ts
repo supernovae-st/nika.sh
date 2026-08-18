@@ -28,14 +28,14 @@ export const WORD_PROSE: Record<string, string[]> = {
   "backoff_strategy": [
     "Which curve the delay follows between attempts · `fixed` · `linear` · `exponential` · default `exponential`. Each attempt waits `backoff_ms` flat, `backoff_ms × attempt`, or `backoff_ms × 2^(attempt-1)` capped at `backoff_max_ms`."
   ],
+  "because": [
+    "The non-empty justification · recorded in the run receipt with the taint path and the value digest."
+  ],
   "capture": [
     "Which stream becomes the task's output · `stdout` (default) · `stderr` · `combined` · `structured` = `{ stdout, stderr, exit_code }`. This is the SOURCE; `decode:` is how that string becomes a value."
   ],
   "command": [
     "argv — the program and its arguments, execve, NO shell. Each element substituted independently (the injection-safe form). Shell features (pipes · redirects · globs) live in `shell:`."
-  ],
-  "config": [
-    "Typed non-sensitive runtime config · `${{ config.X }}` · supplied by the deployment, and it MAY appear in logs. Each entry is a typed declaration; a `default:` MUST conform to `type:` (LAW-TYPE-0211 · NIKA-DEFAULT-001). Succeeds the dead `env:` block (R3a · LAW-SURFACE-0201)."
   ],
   "const": [
     "Named constants · `${{ const.X }}` · a fixed value baked into the workflow. Either a bare literal, or a `{ type, value }` typed constant whose `value:` MUST conform to `type:`. The literal half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · everything that is not `required: true` lands here per the E-split total rule."
@@ -43,44 +43,47 @@ export const WORD_PROSE: Record<string, string[]> = {
   "cwd": [
     "Working directory for the subprocess · default = the engine's own cwd."
   ],
-  "declassify": [
-    "The ONLY door through the permit-parameterization taint (spec/10-authority.md §the permit-parameterization taint · NEP-0004 · LAW-AUTH-0325) · each entry raises ONE binding from untrusted to trusted, check-visible and receipt-recorded. Lifts the taint law only — the value is still matched against the declared boundary (never a permit bypass)."
-  ],
   "decode": [
     "How the captured string becomes a value · `text` (default) · `json` · `jsonl` · `bytes`. Illegal with `capture: structured`, which already IS an object (NIKA-PARSE-025) · a non-parsing stream settles the task `failure` inside `on_error:` scope (spec 09 §decode)."
-  ],
-  "description": [
-    "Free-form prose about the workflow · documentation for whoever reads the file, never read by the engine (spec/01-envelope.md)."
   ],
   "env": [
     "OS environment variables for THIS subprocess · a key→value map applied over the composed environment. Nothing is inherited — the ambient environment reaches a task only through `permits.env` (spec/01-envelope.md §permits)."
   ],
-  "fail_fast": [
-    "Whether a `for_each` fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
+  "extract": [
+    "Named jq-expression bindings extracted from the verb's raw response · read downstream as `${{ tasks.X.<name> }}`. The field names the OPERATION (run this jq); it does not write `output` — `${{ tasks.X.output }}` stays the raw response (spec/03-dag.md §extract). jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). A binding may not shadow a record projection: output · status · error · started_at · ended_at · duration_ms are forbidden at parse time (spec/04-variables.md §Rules) — enforced via propertyNames."
   ],
-  "fail_workflow": [
-    "Fail the whole workflow on this error · the written-down form of the default, so a reader sees the choice instead of inferring it. Exactly one of `recover` · `skip` · `fail_workflow`."
+  "fail_fast": [
+    "Whether the fan-out abandons the batch on the first failure · default true. False finishes every item and yields null at a failed index, so the batch reports what it could."
   ],
   "for_each": [
-    "Map this task over a collection · `${{ ... }}` reference OR a literal array."
+    "Fan this task out over a collection · ONE block, so the concurrency is visible where the fan-out is declared. `max_parallel` and `fail_fast` live here because they have no meaning without it."
   ],
-  "id": [
-    "Workflow id · kebab-case · the document-type discriminator (W1: the envelope became an object)."
+  "from": [
+    "REQUIRED for law 'taint', forbidden otherwise · the ONE binding this entry raises (e.g. inputs.p · config.region · tasks.fetch.output) · a dotted value-binding path."
   ],
-  "inert": [
-    "The honest door of the data-as-code sink · declares this task's fetch a code-bearing artifact it will never load or run. The non-empty string IS the justification · it lifts the sink law only, never the net boundary and never the SSRF floor (spec/10-authority.md · NEP-0006 · LAW-AUTH-0327)."
+  "group": [
+    "Fan-in MEMBERSHIP · this task joins the named group, and a consumer folds the whole group with one `${{ group.<name> }}` binding in its `with:` (spec/03-dag.md §group). Membership is DECLARED, never matched: a renamed member leaves its group loudly (NIKA-DAG-008 on the reference), where a glob would shrink the fold in silence. A group exists iff at least one task declares it. An `unwind` task may not join one (NIKA-DAG-009 · cleanup never schedules)."
   ],
   "inputs": [
     "Typed workflow inputs · `${{ inputs.X }}` · the parameters an author declares and a caller supplies. Each entry is a typed declaration whose `type:` speaks the full TypeExpr of 09-types (R3b · LAW-GRAMMAR-0211 · the flat 6-enum is dead · LAW-SURFACE-0211). The typed half of the dead `vars:` block (R3a · LAW-SURFACE-0201) · a `required: true` value lands here per the E-split total rule."
   ],
+  "items": [
+    "The collection · a `${{ ... }}` reference OR a literal array. Evaluated EXACTLY ONCE, before the fan-out; no iteration feeds back into it (spec 03 §where this sits)."
+  ],
   "jitter": [
     "Randomize the computed delay so tasks retrying the same upstream do not synchronize · default TRUE. Engines SHOULD use a full-jitter or equal-jitter family — the anti-thundering-herd default (spec/05-errors.md §Retry policy)."
+  ],
+  "law": [
+    "WHICH law this entry lifts · 'taint' raises ONE binding from untrusted to trusted (NEP-0004 · LAW-AUTH-0325) · 'data-as-code' declares this task's fetch a code-bearing artifact it will never load or run (NEP-0006 · LAW-AUTH-0327). Neither ever lifts the net boundary or the SSRF floor."
+  ],
+  "lift": [
+    "The authored doors · each entry lifts exactly ONE named law, with a mandatory reason, check-visible and receipt-recorded. A lift is NEVER a permit bypass — the value still sits inside the declared boundary, and no law but the named one moves. The law set is CLOSED and normative (a NEP amends it): this is why a new law costs zero language fields (spec/10-authority.md §the authored doors)."
   ],
   "max_attempts": [
     "Total attempts, counting the first try · integer ≥ 1 · the one required field of a `retry:` block. Engines honor it strictly and surface the LAST error if every attempt fails (spec/05-errors.md §Retry policy)."
   ],
   "max_parallel": [
-    "Cap concurrent for_each iterations · default unbounded · 1 = sequential."
+    "Cap concurrent iterations · default unbounded · 1 = sequential."
   ],
   "max_tokens_total": [
     "Cumulative token budget across every turn of the loop · the SPEND ceiling, where `max_turns` is the step ceiling. Default is engine-configurable (spec/02-verbs.md §agent)."
@@ -91,26 +94,17 @@ export const WORD_PROSE: Record<string, string[]> = {
     ""
   ],
   "nika": [
-    "Language contract version · exactly `v1` for the v1 lifetime. NOT `v1.0` · `1` · `1.0`."
+    "The file's NAME · kebab-case · and the mark that says « this is a nika file ». One word, one meaning across both document types: `nika.yaml` carries the PROJECT name, a `*.nika.yaml` carries the WORKFLOW name. The document TYPE is read from `tasks:` — present means workflow, absent means project — so it survives a blob, a paste or an HTTP body where the filename does not travel. This key held the literal `v1` until the envelope nuke; it carried zero bits as a version (there is no `nika: v2` — ever) and now carries the file's most necessary field instead."
   ],
   "on_codes": [
     "Retry ONLY on these canonical `NIKA-<NS>-<NNN>` codes · absent, the engine retries anything transient. Codes, never HTTP status numbers · the retry-side mirror of `on_error.on_codes`.",
     "Optional catch-side filter (mirror of retry.on_codes · same regex) · the action applies ONLY when the final error code is listed · unlisted codes fall through to the default fail (spec/05-errors.md §Fields)."
-  ],
-  "on_finally": [
-    "Cleanup mini-tasks · ALWAYS run (success/fail/timeout/cancel) · sequential · best-effort."
-  ],
-  "output": [
-    "Named jq-expression bindings · `${{ tasks.X.<name> }}`. jq is the single data extraction-and-transform language (the former RFC 9535 JSONPath was dropped · jq is a superset · per spec/04-variables.md §216-225). Reserved names forbidden at parse time (spec/04-variables.md §Rules): output · status · error · started_at · ended_at · duration_ms — enforced via propertyNames."
   ],
   "outputs": [
     "The workflow's return value · symmetric to inputs. Each entry is a `${{ tasks.X.output }}` reference (untyped form · string) OR a typed declaration { value · type · description }. Powers `nika run` result + the output half of the callable-workflow schema."
   ],
   "permits": [
     "The declared capability boundary · once present every category is default-deny unless listed (spec/01-envelope.md §permits · NIKA-SEC-004)."
-  ],
-  "policy": [
-    "Named workflow law · hard families are judged at check, soft families are only recorded. Hard is require/forbid/allow/limits/endorsement (NIKA-POLICY-001 · the endorsement mode speaks NIKA-SEC-013) · soft is prefer/optimize, never judged in v1 (spec/10-authority.md)."
   ],
   "recover": [
     "Recovery output · a `${{ }}` ref OR a literal (merges the former fallback/value per spec/05-errors.md)."
@@ -138,7 +132,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Agent Skill (SKILL.md) file paths · explicit static paths only, no globs and no templates. They follow the agentskills.io shape, and are loaded at compose time and injected into the system context."
   ],
   "skip": [
-    "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip` · `fail_workflow`."
+    "Swallow the error and let the DAG continue · the task produces no output, and the original error stays readable at `tasks.<id>.error`. Exactly one of `recover` · `skip`."
   ],
   "stdin": [
     "Data written to the command's standard input · may interpolate `${{ }}`."
@@ -158,8 +152,7 @@ export const WORD_PROSE: Record<string, string[]> = {
     "Extended thinking · `{ enabled, budget_tokens }` — reasoning the model may spend before it answers (spec/02-verbs.md §infer)."
   ],
   "timeout": [
-    "Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h.",
-    ""
+    "Go-duration string · quoted · e.g. \"30s\" \"5m\" \"1h30m\" \"2.5s\". Max 24h."
   ],
   "tool": [
     "Tool reference · nika:<path> (closed v0.1 builtin set) OR mcp:<server>/<tool> (requires the slash). The namespace set is CLOSED at v1 (spec/02-verbs.md) — an x-<vendor>: prefix is RESERVED, not valid (engine-specific tools route through mcp: · spec/06-stdlib-contract.md §Namespace ownership)."
@@ -167,21 +160,16 @@ export const WORD_PROSE: Record<string, string[]> = {
   "tools": [
     "Whitelist · DEFAULT-DENY (no tools if absent) · gitignore-style globs · `!` negation."
   ],
-  "types": [
-    "Named type declarations · the workflow's own vocabulary, referenced by name wherever a type is expected. PascalCase · acyclic (spec 09-types.md)."
-  ],
   "vision": [
     "Image inputs for the call · each entry `{ source: file | url, path | url }` · the images `prompt:` is allowed to refer to."
   ],
   "when": [
-    "LOCAL business condition · false skips the task · evaluated POST-gate over {vars · env · with · item · index}. Referring to `tasks.*` is illegal here (NIKA-VAR-021 · hoist it into `with:`) · spec/03-dag.md §when.",
-    "Cleanup condition · may read the PARENT task's record (tasks.<parent>.status / .error — the only legal tasks.* target inside on_finally · spec/03-dag.md §on_finally)."
+    "LOCAL business condition · false skips the task · evaluated POST-gate over {vars · env · with · item · index}. Referring to `tasks.*` is illegal here (NIKA-VAR-021 · hoist it into `with:`) · spec/03-dag.md §when."
   ],
   "with": [
     "Task-level scope injection · `${{ with.X }}`."
   ],
   "workflow": [
-    "The workflow object · a stable home for identity and metadata (W1 'the map').",
     "Compose another workflow (spec 14) · a STATIC target: a filesystem path OR registry:owner/name@version (pinned). A templated target is refused at check (NIKA-COMP-001). Exactly one of tool: | workflow: (the invoke tagged union · G21)."
   ]
 }

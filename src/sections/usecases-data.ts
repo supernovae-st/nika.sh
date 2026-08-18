@@ -139,6 +139,14 @@ export const UC_TABS: UCTab[] = [
         tier: 'T4',
         outcome: 'The ping ends with the run’s own cost line. The workflow reports its own bill.',
       },
+      {
+        slug: 'corpus-digest',
+        icon: '🗂️',
+        title: 'Corpus digest',
+        body: 'A fast pass assigns each file a focus from its path, every document is carded in its own fresh window, jq ranks the deck, a thinking pass answers from the cards.',
+        tier: 'T4',
+        outcome: 'A pile of documents becomes one sourced brief, and no model window ever holds two of them.',
+      },
     ],
   },
   {

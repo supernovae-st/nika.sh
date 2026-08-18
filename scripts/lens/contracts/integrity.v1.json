@@ -11,7 +11,7 @@
   },
   {
    "path": ".github/nika-spec-pin.json",
-   "sha256": "53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43"
+   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0"
   },
   {
    "path": ".github/workflows/lens-gates.yml",
@@ -27,7 +27,7 @@
   },
   {
    "path": "public/.well-known/nika-spec-pin.json",
-   "sha256": "53061e5f1c24a17d2896bd7a1bce519645fa0ed1c41715083ccbb50296902f43"
+   "sha256": "1594671e8a399f2d780cd544f5abbcbedc5b6fd78d84338287543191da9da2c0"
   },
   {
    "path": "package.json",
@@ -63,7 +63,7 @@
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
-   "sha256": "326ba5c3c100c01473132ebe2d8351571a4041c8a498fdb74cbab81c9045579d"
+   "sha256": "55c8af149143fce8f45ece2764bfe5d377f9e979ce65599a5b2f5933d783c6e2"
   },
   {
    "path": "scripts/lens/contracts/channels.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "f16dfdcfe718da30f8ceeb952ebef16a7b4b7827a3954b571df07c8db53f2240"
+   "sha256": "903b4fc5b28992a91abe2a73eee34bf5f27a845bd62aae2227de0acf9677a1d3"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "d0694636d8012b842077b26095858c4718ce62ecf4fa7ebf02487831af746062"
+   "sha256": "1d00b215fc94f80577ccee6558ecfe6634d57ce96f0554b6204c2e3c38581cd2"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -87,7 +87,7 @@
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
-   "sha256": "b6cf628001fd5dde2c9e7a4e6a607030a646d4f1b41d5352793e3e7029db1365"
+   "sha256": "347248c4d8cccf9a72413c583631639be8e41b5fc57c304e7a1a5c4df3008d43"
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "5693a723faee0434dbef8a9c40f83f520e22d2e7d745dda2dc2b96f10875233f"
+   "sha256": "74cf2ffaf0c2d3ce1688231b568b97e3d44e9e210f79032672a3fc5d0ad90c73"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "2b8e7d5ee4b38837df14594194625d445f96cebc15f9284820fd60078ab05e5c"
+   "sha256": "e00be5a6cc82c38222374c9c4c42279f324a2edcbc659f53142bf6d34c50154d"
   },
   {
    "path": "src/routes.tsx",

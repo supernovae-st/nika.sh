@@ -423,10 +423,10 @@
     },
     {
       "from": "/error-namespaces/NIKA-POLICY",
-      "to": "/language/error-namespaces/NIKA-POLICY",
+      "to": "/language/spec/errors",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/error-namespaces/NIKA-PORT",
@@ -562,6 +562,13 @@
       "applies": "errors-rehome"
     },
     {
+      "from": "/errors/NIKA-AUTH-011",
+      "to": "/language/errors/NIKA-AUTH-011",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
       "from": "/errors/NIKA-BUILTIN-001",
       "to": "/language/errors/NIKA-BUILTIN-001",
       "status": 301,
@@ -653,6 +660,20 @@
       "applies": "errors-rehome"
     },
     {
+      "from": "/errors/NIKA-DAG-008",
+      "to": "/language/errors/NIKA-DAG-008",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-DAG-009",
+      "to": "/language/errors/NIKA-DAG-009",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
       "from": "/errors/NIKA-DECIDE-001",
       "to": "/language/errors/NIKA-DECIDE-001",
       "status": 301,
@@ -711,6 +732,13 @@
     {
       "from": "/errors/NIKA-INFER-003",
       "to": "/language/errors/NIKA-INFER-003",
+      "status": 301,
+      "live": true,
+      "applies": "errors-rehome"
+    },
+    {
+      "from": "/errors/NIKA-INFER-004",
+      "to": "/language/errors/NIKA-INFER-004",
       "status": 301,
       "live": true,
       "applies": "errors-rehome"
@@ -871,17 +899,17 @@
     },
     {
       "from": "/errors/NIKA-PARSE-020",
-      "to": "/language/errors/NIKA-PARSE-020",
+      "to": "/language/spec/errors",
       "status": 301,
       "live": true,
-      "applies": "errors-rehome"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/errors/NIKA-PARSE-021",
-      "to": "/language/errors/NIKA-PARSE-021",
+      "to": "/language/spec/errors",
       "status": 301,
       "live": true,
-      "applies": "errors-rehome"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/errors/NIKA-PARSE-022",
@@ -934,10 +962,10 @@
     },
     {
       "from": "/errors/NIKA-POLICY-001",
-      "to": "/language/errors/NIKA-POLICY-001",
+      "to": "/language/spec/errors",
       "status": 301,
       "live": true,
-      "applies": "errors-rehome"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/errors/NIKA-PORT-001",
@@ -1039,14 +1067,21 @@
     },
     {
       "from": "/errors/NIKA-SEC-013",
-      "to": "/language/errors/NIKA-SEC-013",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/errors/NIKA-SEC-014",
+      "to": "/language/errors/NIKA-SEC-014",
       "status": 301,
       "live": true,
       "applies": "errors-rehome"
     },
     {
-      "from": "/errors/NIKA-SEC-014",
-      "to": "/language/errors/NIKA-SEC-014",
+      "from": "/errors/NIKA-SEC-015",
+      "to": "/language/errors/NIKA-SEC-015",
       "status": 301,
       "live": true,
       "applies": "errors-rehome"
@@ -1067,10 +1102,10 @@
     },
     {
       "from": "/errors/NIKA-TYPE-002",
-      "to": "/language/errors/NIKA-TYPE-002",
+      "to": "/language/spec/errors",
       "status": 301,
       "live": true,
-      "applies": "errors-rehome"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/errors/NIKA-TYPE-003",
@@ -1332,6 +1367,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/language/because",
+      "to": "/language/words/because",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/language/capture",
       "to": "/language/words/capture",
       "status": 301,
@@ -1347,10 +1389,10 @@
     },
     {
       "from": "/language/config",
-      "to": "/language/words/config",
+      "to": "/language/words/inputs",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/const",
@@ -1368,10 +1410,10 @@
     },
     {
       "from": "/language/declassify",
-      "to": "/language/words/declassify",
+      "to": "/language/words/lift",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/decode",
@@ -1382,10 +1424,10 @@
     },
     {
       "from": "/language/description",
-      "to": "/language/words/description",
+      "to": "/language/words/nika",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/env",
@@ -1395,8 +1437,57 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/language/error-namespaces/NIKA-POLICY",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/errors/NIKA-PARSE-020",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/errors/NIKA-PARSE-021",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/errors/NIKA-POLICY-001",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/errors/NIKA-SEC-013",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/errors/NIKA-TYPE-002",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
       "from": "/language/exec",
       "to": "/language/words/exec",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/extract",
+      "to": "/language/words/extract",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
@@ -1410,10 +1501,10 @@
     },
     {
       "from": "/language/fail_workflow",
-      "to": "/language/words/fail_workflow",
+      "to": "/language/words/on_error",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/for_each",
@@ -1423,18 +1514,165 @@
       "applies": "language-world-v3"
     },
     {
-      "from": "/language/id",
-      "to": "/language/words/id",
+      "from": "/language/from",
+      "to": "/language/words/from",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
     },
     {
-      "from": "/language/inert",
-      "to": "/language/words/inert",
+      "from": "/language/governance/nep-0002-lethal-trifecta-human-gate",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0003-absent-permits-zero-authority",
+      "to": "/language/spec/envelope",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0004-permit-parameterization-taint",
+      "to": "/language/spec/authority",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0005-env-permit-dimension",
+      "to": "/language/spec/envelope",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0006-data-as-code-sink",
+      "to": "/language/spec/authority",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0007-trace-format-and-equivalence",
+      "to": "/language/spec/trace",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0008-egress-permit-bound",
+      "to": "/language/spec/envelope",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0009-effective-path-identity",
+      "to": "/language/spec/envelope",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0010-run-entropy-clock",
+      "to": "/language/spec/envelope",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0011-run-lifecycle-attestation",
+      "to": "/language/spec/trace",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0012-receipt-untrusted-input",
+      "to": "/language/spec/proof",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0013-approval-ticket",
+      "to": "/language/spec/authority",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0014-thin-laws",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0015-preview-commit",
+      "to": "/language/spec/errors",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0016-provenance-tiers",
+      "to": "/language/governance",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0017-thin-laws-3b",
+      "to": "/language/spec/proof",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0018-energy-honesty",
+      "to": "/language/spec/conformance",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0019-workflow-token-budget",
+      "to": "/language/governance",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/governance/nep-0020-affirmative-consent",
+      "to": "/language/spec/authority",
+      "status": 301,
+      "live": true,
+      "applies": "nep-fold-0109"
+    },
+    {
+      "from": "/language/group",
+      "to": "/language/words/group",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/id",
+      "to": "/language/words/nika",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/inert",
+      "to": "/language/words/lift",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/infer",
@@ -1458,8 +1696,29 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/language/items",
+      "to": "/language/words/items",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
       "from": "/language/jitter",
       "to": "/language/words/jitter",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/law",
+      "to": "/language/words/law",
+      "status": 301,
+      "live": true,
+      "applies": "language-world-v3"
+    },
+    {
+      "from": "/language/lift",
+      "to": "/language/words/lift",
       "status": 301,
       "live": true,
       "applies": "language-world-v3"
@@ -1507,6 +1766,13 @@
       "applies": "language-world-v3"
     },
     {
+      "from": "/language/namespaces/config",
+      "to": "/language/namespaces/inputs",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
       "from": "/language/nika",
       "to": "/language/words/nika",
       "status": 301,
@@ -1529,17 +1795,17 @@
     },
     {
       "from": "/language/on_finally",
-      "to": "/language/words/on_finally",
+      "to": "/language/words/after",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/output",
-      "to": "/language/words/output",
+      "to": "/language/words/extract",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/outputs",
@@ -1550,10 +1816,10 @@
     },
     {
       "from": "/language/policy",
-      "to": "/language/words/policy",
+      "to": "/language/words/permits",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/prompt",
@@ -1703,11 +1969,81 @@
       "applies": "parent-cover"
     },
     {
+      "from": "/language/words/config",
+      "to": "/language/words/inputs",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/declassify",
+      "to": "/language/words/lift",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
       "from": "/language/words/depends_on",
       "to": "/language/words/after",
       "status": 301,
       "live": true,
       "applies": "provider-rooms-arc"
+    },
+    {
+      "from": "/language/words/description",
+      "to": "/language/words/nika",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/fail_workflow",
+      "to": "/language/words/on_error",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/id",
+      "to": "/language/words/nika",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/inert",
+      "to": "/language/words/lift",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/on_finally",
+      "to": "/language/words/after",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/output",
+      "to": "/language/words/extract",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/policy",
+      "to": "/language/words/permits",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
+    },
+    {
+      "from": "/language/words/types",
+      "to": "/language/words/returns",
+      "status": 301,
+      "live": true,
+      "applies": "nine-key-0109"
     },
     {
       "from": "/language/workflow",
@@ -1949,10 +2285,10 @@
     },
     {
       "from": "/namespaces/config",
-      "to": "/language/namespaces/config",
+      "to": "/language/namespaces/inputs",
       "status": 301,
       "live": true,
-      "applies": "language-world-v3"
+      "applies": "nine-key-0109"
     },
     {
       "from": "/namespaces/const",
@@ -2797,6 +3133,13 @@
     {
       "from": "/use-cases/contract-guard",
       "to": "/workflows/jobs/contract-guard",
+      "status": 301,
+      "live": true,
+      "applies": "workflows-world-v2"
+    },
+    {
+      "from": "/use-cases/corpus-digest",
+      "to": "/workflows/jobs/corpus-digest",
       "status": 301,
       "live": true,
       "applies": "workflows-world-v2"
