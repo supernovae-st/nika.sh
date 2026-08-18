@@ -1655,8 +1655,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: anthropic.claude-sonnet-4-20250514-v1:0",
-    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514-v1-0",
+    "label": "model: anthropic.claude-sonnet-4-6-v1:0",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-6-v1-0",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {
@@ -1667,8 +1667,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: anthropic/claude-sonnet-4-20250514",
-    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514",
+    "label": "model: anthropic/claude-sonnet-4-6",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-6",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {
@@ -1679,8 +1679,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: claude-sonnet-4-20250514",
-    "href": "/catalog/models/claude-sonnet-4-20250514",
+    "label": "model: claude-sonnet-4-6",
+    "href": "/catalog/models/claude-sonnet-4-6",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {

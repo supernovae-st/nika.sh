@@ -1,7 +1,7 @@
 {
   "adr_bodies_format": 1,
-  "engine_commit": "57673f61c411d801f49c48c4accef31f9d4bf90c",
-  "release_tag": "v0.107.2",
+  "engine_commit": "6cf7c902c6b8c6348f8b75e0074a16edd96d1aea",
+  "release_tag": "v0.109.1",
   "law": "roomed = every status except `proposed` — a proposal published as an indexed page invites citation as though it were settled",
   "bodies": [
     {
@@ -27625,7 +27625,7 @@
         }
       ],
       "words": 1805,
-      "sha256": "68dd8cf361fd1a207cd2b5dd8ff252a8534c553d3b5851393746f5a19ae876cc",
+      "sha256": "843e25ed78235090eb4a1c1692d8875837421431576bdc1391ab873d6a8df719",
       "tokens": [
         {
           "k": "h",
@@ -27687,7 +27687,7 @@
           "inline": [
             {
               "k": "text",
-              "text": "The Diamond memory subsystem architecture (locked separately in private studio doctrine and surfaced publicly via "
+              "text": "The Diamond memory subsystem architecture (locked separately in private DX doctrine and surfaced publicly via "
             },
             {
               "k": "code",
@@ -28468,7 +28468,7 @@
               },
               {
                 "k": "text",
-                "text": " · the Diamond memory architecture (private studio doctrine + public trait surface at "
+                "text": " · the Diamond memory architecture (private DX doctrine + public trait surface at "
               },
               {
                 "k": "code",
@@ -30463,8 +30463,8 @@
           "anchor": "references"
         }
       ],
-      "words": 1245,
-      "sha256": "eb99b99cedaa4ad3a2b4115181b566c38a0918590a6e4612c11ac6c3b75df30d",
+      "words": 1258,
+      "sha256": "a0f74b7aa58d22a03bc3e1644e321bf4d755ad6d9dfbe188cb73bd3257244abd",
       "tokens": [
         {
           "k": "h",
@@ -30536,15 +30536,7 @@
           "inline": [
             {
               "k": "text",
-              "text": "A monorepo-side §2.6 Signal 7 verify-the-auditor catch (2026-05-27 ·\n"
-            },
-            {
-              "k": "code",
-              "text": "studio/architecture/research/2026-05-27-g1-builtins-enum-codegen-design.md"
-            },
-            {
-              "k": "text",
-              "text": "\n§10 BLOCKER) surfaced the drift empirically · engine first-5 names were\n"
+              "text": "A monorepo-side §2.6 Signal 7 verify-the-auditor catch (2026-05-27 ·\ninternal design review · private DX surface ·\n§10 BLOCKER) surfaced the drift empirically · engine first-5 names were\n"
             },
             {
               "k": "code",
@@ -31340,12 +31332,8 @@
             ],
             [
               {
-                "k": "code",
-                "text": "studio/architecture/research/2026-05-27-g1-builtins-enum-codegen-design.md"
-              },
-              {
                 "k": "text",
-                "text": "\n· §10 BLOCKER inventory + reconciliation scope (the design + audit\ntrail · monorepo-side)."
+                "text": "Internal design review · private DX surface\n· §10 BLOCKER inventory + reconciliation scope (the design + audit\ntrail · monorepo-side)."
               }
             ],
             [
@@ -36902,7 +36890,7 @@
         }
       ],
       "words": 1367,
-      "sha256": "b561f6ba1709e92aacfc1ccdd584491cf842e49e61a3599c8f2367d906bd2b06",
+      "sha256": "159978bb3271f117d8714eb16f683cedc9d26b7578b45c9c18b2c52b3eb76ae8",
       "tokens": [
         {
           "k": "h",
@@ -37338,7 +37326,7 @@
         {
           "k": "code",
           "lang": "yaml",
-          "text": "diff:\n  invoke:\n    tool: \"nika:json_diff\"\n    args:\n      base: ${{ vars.original }}\n      patch: ${{ vars.modified }}\n  # output · RFC 6902 JSON Patch array"
+          "text": "diff:\n  invoke:\n    tool: \"nika:json_diff\"\n    args:\n      base: ${{ inputs.original }}\n      patch: ${{ inputs.modified }}\n  # output · RFC 6902 JSON Patch array"
         },
         {
           "k": "p",
@@ -42933,8 +42921,8 @@
           "anchor": "notes"
         }
       ],
-      "words": 2080,
-      "sha256": "756fa69fcbbad3baac35bf157aa4a73a7b4e1a443628e76bc530e8111bd4f5b5",
+      "words": 2598,
+      "sha256": "f0784c6ca87d144fe3ae68ff2bd8e3d0facd15fed6fc9acc953dcff5e5f45ba2",
       "tokens": [
         {
           "k": "h",
@@ -43034,6 +43022,16 @@
               {
                 "k": "text",
                 "text": ")."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Trust amendment (2026-08-08)"
+              },
+              {
+                "k": "text",
+                "text": " — §5. The resume path's trust\nassumption, stated at last and ENFORCED: the chain is walked before\nthe fold. Measured 2026-08-07 on the 0.108.0 binary, a chain-broken\njournal resumed silently (exit 0), propagated a forged output into a\nlive task, and emitted a fresh journal whose own chain verified\nclean — laundering. This ADR held zero occurrences of verify / trust\n/ tamper: the assumption was never stated, which is how it was never\nquestioned."
               }
             ],
             [
@@ -43562,6 +43560,188 @@
         {
           "k": "h",
           "depth": 3,
+          "text": "5 · The resume VERIFIES the chain before trusting the records (trust amendment · 2026-08-08)",
+          "id": "5--the-resume-verifies-the-chain-before-trusting-the-records-trust-amendment--2026-08-08"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The trust assumption this ADR left unstated, stated now: "
+            },
+            {
+              "k": "strong",
+              "text": "a `--resume`\ntrace is an authority claim."
+            },
+            {
+              "k": "text",
+              "text": " Its recorded successes are served as\ncache hits, and live tasks run on the values those records carry — so\nthe journal is one artifact with two roles the literature keeps apart\n(the tamper-evident audit record · the resume checkpoint), and the\nsecond role MUST consult the first. Measured 2026-08-07 on the 0.108.0\nbinary, it did not: a chain-broken journal resumed silently (exit 0),\npropagated a forged output into a live task, and emitted a fresh\njournal whose own chain verified clean — one resume laundering a\njournal that FAILS verification into one that PASSES it."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The law, enforced by the reference engine:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "The trace's tamper-evidence chain is walked BEFORE the fold (the same\nwalk "
+              },
+              {
+                "k": "code",
+                "text": "nika trace verify"
+              },
+              {
+                "k": "text",
+                "text": " runs). "
+              },
+              {
+                "k": "code",
+                "text": "Intact"
+              },
+              {
+                "k": "text",
+                "text": " proceeds; "
+              },
+              {
+                "k": "code",
+                "text": "Incomplete"
+              },
+              {
+                "k": "text",
+                "text": " and\n"
+              },
+              {
+                "k": "code",
+                "text": "TornTail"
+              },
+              {
+                "k": "text",
+                "text": " proceed (a crash leaves an honest journal — crash\nresumption is the use case)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "Broken"
+              },
+              {
+                "k": "text",
+                "text": " — edited, inserted, dropped, reordered, unreadable\nmid-journal, or over the line bound: the run REFUSES (exit 2 · the\nFILE class, one voice with "
+              },
+              {
+                "k": "code",
+                "text": "trace verify"
+              },
+              {
+                "k": "text",
+                "text": "), naming the finding,\n"
+              },
+              {
+                "k": "code",
+                "text": "nika trace verify"
+              },
+              {
+                "k": "text",
+                "text": ", and the opt-out below."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "`--resume-unverified`"
+              },
+              {
+                "k": "text",
+                "text": " is the NAMED opt-out (a trace the operator\nedited or truncated by hand): the run proceeds loudly, and the NEW\nrun's boot manifest journals "
+              },
+              {
+                "k": "code",
+                "text": "resume_unverified: declared"
+              },
+              {
+                "k": "text",
+                "text": " +\n"
+              },
+              {
+                "k": "code",
+                "text": "resume_unverified_finding"
+              },
+              {
+                "k": "text",
+                "text": " (the walk's finding). A laundered trace\ncan never claim a clean ancestry silently. The flag is consumed only\nwhen the walk objects; a verified trace journals no claim."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "A chainless journal (a pre-chain "
+              },
+              {
+                "k": "code",
+                "text": "--json"
+              },
+              {
+                "k": "text",
+                "text": " capture · a pre-0.96\njournal) carries nothing to verify: the resume proceeds with a\nprinted notice — trusted WITHOUT verification, said, never silent —\nAND attested on the new run's boot manifest ("
+              },
+              {
+                "k": "code",
+                "text": "resume_unverified: unchained"
+              },
+              {
+                "k": "text",
+                "text": " + the reason). The strip-the-chain forgery (tamper, then\ndelete every "
+              },
+              {
+                "k": "code",
+                "text": "chain"
+              },
+              {
+                "k": "text",
+                "text": " field) converts the walker's "
+              },
+              {
+                "k": "code",
+                "text": "Broken"
+              },
+              {
+                "k": "text",
+                "text": " into\n"
+              },
+              {
+                "k": "code",
+                "text": "Unchained"
+              },
+              {
+                "k": "text",
+                "text": " and lands exactly here: it cannot convert the refusal\ninto a SILENT proceed. Retired 2026-08-09: the "
+              },
+              {
+                "k": "code",
+                "text": "--json"
+              },
+              {
+                "k": "text",
+                "text": " stream\ncarries the chain (the sinks share one ChainState · the journal file\nis the stream byte for byte), so a fresh capture verifies and its\nforgery is refused — the compat now covers only pre-chain journals\nand stripped forgeries, and it stays attested, never silent."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
           "text": "Rider — the durable human gate (`nika:prompt` pause)",
           "id": "rider--the-durable-human-gate-nikaprompt-pause"
         },
@@ -44005,6 +44185,20 @@
               {
                 "k": "text",
                 "text": " record fields resume reads (definition hash ·\ninput hash · output) become a compatibility surface: they MUST evolve\nadditively, and an engine facing a trace it cannot read MUST say so\nand re-run fully — never guess a partial skip."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "The trust amendment (§5) turns a previously silent acceptance into a\nrefusal: a chain-broken trace no longer resumes (exit 2), so an\noperator who hand-edits or truncates a journal MUST name\n"
+              },
+              {
+                "k": "code",
+                "text": "--resume-unverified"
+              },
+              {
+                "k": "text",
+                "text": " — attested on the new run's boot manifest. A\ndeliberate behavior change, landed with its conformance fixture."
               }
             ],
             [
@@ -47525,7 +47719,7 @@
         }
       ],
       "words": 2358,
-      "sha256": "c88c7deebc755b7edab41aaa29670cf18b144b24700c133ef365b11c580d75ec",
+      "sha256": "6f631ec3a62a849767b26227ee0fa3272ed628778086dd45824de92fa1cd3073",
       "tokens": [
         {
           "k": "h",
@@ -48151,7 +48345,7 @@
             [
               {
                 "k": "code",
-                "text": "crates/nika-cli/src/verbs/trace_verify.rs"
+                "text": "crates/nika-trace/src/trace_verify.rs"
               },
               {
                 "k": "text",
@@ -48868,6 +49062,3177 @@
             {
               "k": "text",
               "text": " deps; the re-export shim keeps the surface stable in both\ndirections."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ADR-111",
+      "file": "adr-111-outbound-pause-delivery.md",
+      "sections": [
+        {
+          "title": "Context",
+          "anchor": "context"
+        },
+        {
+          "title": "Decision",
+          "anchor": "decision"
+        },
+        {
+          "title": "Consequences",
+          "anchor": "consequences"
+        },
+        {
+          "title": "Tests (ship with the implementation — e2e unless noted)",
+          "anchor": "tests-ship-with-the-implementation--e2e-unless-noted"
+        },
+        {
+          "title": "Alternatives considered",
+          "anchor": "alternatives-considered"
+        }
+      ],
+      "words": 1505,
+      "sha256": "051a0eb963476f8e3b7ca83adea4a263bb538fa9b116894b30f56f1e5798c752",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "ADR-111: Deliver the pause event outward — operator-configured CloudEvents webhook",
+          "id": "adr-111-deliver-the-pause-event-outward--operator-configured-cloudevents-webhook"
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Context",
+          "id": "context"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "A blocking "
+            },
+            {
+              "k": "code",
+              "text": "nika:prompt"
+            },
+            {
+              "k": "text",
+              "text": " under a non-interactive surface journals a\n"
+            },
+            {
+              "k": "code",
+              "text": "workflow_paused"
+            },
+            {
+              "k": "text",
+              "text": " event and exits cleanly with run state "
+            },
+            {
+              "k": "code",
+              "text": "paused"
+            },
+            {
+              "k": "text",
+              "text": "\n(spec ADR-099 rider; emission site "
+            },
+            {
+              "k": "code",
+              "text": "crates/nika-runtime/src/lib.rs:1275"
+            },
+            {
+              "k": "text",
+              "text": ",\nsingle-site per INV-024). The pause is durable — but silent outward. The\njournal records it; nothing tells a human who has walked away. Discovery today\nis polling ("
+            },
+            {
+              "k": "code",
+              "text": "nika trace ls"
+            },
+            {
+              "k": "text",
+              "text": " marks paused traces) or watching the terminal."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Every workflow system that pauses for humans ships an outbound signal:\nAWS Step Functions hands out a task token at "
+            },
+            {
+              "k": "code",
+              "text": ".waitForTaskToken"
+            },
+            {
+              "k": "text",
+              "text": "; GitHub\ndeployment protection rules receive a webhook and answer with a callback;\nCNCF Serverless Workflow correlates human callbacks on CloudEvents attributes.\nThe engine has all the ingredients — the pause payload (task, mode, message,\nchoices, approval ticket fields), an SSRF-defended HTTP effect crate\n("
+            },
+            {
+              "k": "code",
+              "text": "nika-http"
+            },
+            {
+              "k": "text",
+              "text": ": static + DNS-resolve + per-hop redirect re-check), and an\nenv-var configuration surface ("
+            },
+            {
+              "k": "code",
+              "text": "NIKA_*"
+            },
+            {
+              "k": "text",
+              "text": ") — but no delivery seam."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Non-goals that bound this decision: no daemon, no inbound listener, no\nlanguage change. The workflow file never declares where notifications go —\ndelivery is a deployment concern, so it rides operator configuration, never\nthe contract."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Decision",
+          "id": "decision"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "At the moment the engine journals `workflow_paused`, it also POSTs that\nevent — as a CloudEvents 1.0.2 structured JSON envelope, optionally signed\nwith Standard Webhooks headers — to an operator-configured URL. Default OFF.\nDelivery failure never affects the run."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Configuration (env — the engine's existing config surface)",
+          "id": "configuration-env--the-engines-existing-config-surface"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "NIKA_NOTIFY_URL"
+              },
+              {
+                "k": "text",
+                "text": " — the webhook target. Absent ⇒ the feature is OFF and the\nengine opens no socket (the sovereign default)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "NIKA_NOTIFY_SECRET"
+              },
+              {
+                "k": "text",
+                "text": " — optional, Standard Webhooks "
+              },
+              {
+                "k": "code",
+                "text": "whsec_"
+              },
+              {
+                "k": "text",
+                "text": " base64 secret.\nPresent ⇒ requests carry a "
+              },
+              {
+                "k": "code",
+                "text": "webhook-signature"
+              },
+              {
+                "k": "text",
+                "text": " header ("
+              },
+              {
+                "k": "code",
+                "text": "v1,"
+              },
+              {
+                "k": "text",
+                "text": " HMAC-SHA256\nover "
+              },
+              {
+                "k": "code",
+                "text": "{msg_id}.{timestamp}.{payload}"
+              },
+              {
+                "k": "text",
+                "text": "). "
+              },
+              {
+                "k": "code",
+                "text": "webhook-id"
+              },
+              {
+                "k": "text",
+                "text": " and "
+              },
+              {
+                "k": "code",
+                "text": "webhook-timestamp"
+              },
+              {
+                "k": "text",
+                "text": "\nheaders are always sent (they cost nothing and give receivers an idempotency\nkey for free)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The envelope (CloudEvents 1.0.2, structured mode)",
+          "id": "the-envelope-cloudevents-102-structured-mode"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "Content-Type: application/cloudevents+json"
+            },
+            {
+              "k": "text",
+              "text": ". Required attributes per the\nspec: "
+            },
+            {
+              "k": "code",
+              "text": "specversion: \"1.0\""
+            },
+            {
+              "k": "text",
+              "text": ", "
+            },
+            {
+              "k": "code",
+              "text": "id"
+            },
+            {
+              "k": "text",
+              "text": ", "
+            },
+            {
+              "k": "code",
+              "text": "source"
+            },
+            {
+              "k": "text",
+              "text": ", "
+            },
+            {
+              "k": "code",
+              "text": "type"
+            },
+            {
+              "k": "text",
+              "text": ". Ours:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "type"
+              },
+              {
+                "k": "text",
+                "text": ": "
+              },
+              {
+                "k": "code",
+                "text": "sh.nika.run.paused"
+              },
+              {
+                "k": "text",
+                "text": " (reverse-DNS per the CloudEvents convention)"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "source"
+              },
+              {
+                "k": "text",
+                "text": ": the run URI (trace identity)"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "subject"
+              },
+              {
+                "k": "text",
+                "text": ": "
+              },
+              {
+                "k": "code",
+                "text": "task:<id>"
+              },
+              {
+                "k": "text",
+                "text": " · the pausing task id, namespaced"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "id"
+              },
+              {
+                "k": "text",
+                "text": ": "
+              },
+              {
+                "k": "strong",
+                "text": "deterministic"
+              },
+              {
+                "k": "text",
+                "text": " · sha256 over "
+              },
+              {
+                "k": "code",
+                "text": "trace_id:task"
+              },
+              {
+                "k": "text",
+                "text": ", lowercase hex.\nRe-delivering the same pause yields the same id (consumers dedup for\nfree); a later re-pause of the same task yields a new id. The contract\nholds by construction, not by chain position: the trace id is the fresh\nper-run mint the trace file is named from (a resume leg opens a NEW\ntrace), and within one trace a task pauses at most once (the pause ends\nthe run)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "time"
+              },
+              {
+                "k": "text",
+                "text": ": RFC 3339, from the engine's injected clock"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "data"
+              },
+              {
+                "k": "text",
+                "text": ": a curated subset of the "
+              },
+              {
+                "k": "code",
+                "text": "workflow_paused"
+              },
+              {
+                "k": "text",
+                "text": " journal payload, not\nthe frame verbatim · "
+              },
+              {
+                "k": "code",
+                "text": "workflow"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "task"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "mode"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "message?"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "choices?"
+              },
+              {
+                "k": "text",
+                "text": ",\n"
+              },
+              {
+                "k": "code",
+                "text": "approval_digest?"
+              },
+              {
+                "k": "text",
+                "text": ", plus the two facts a remote surface needs to act:\n"
+              },
+              {
+                "k": "code",
+                "text": "trace_path"
+              },
+              {
+                "k": "text",
+                "text": " and the rendered "
+              },
+              {
+                "k": "code",
+                "text": "resume_hint"
+              },
+              {
+                "k": "text",
+                "text": " teaching line. What stays on\nthe machine: the journal's "
+              },
+              {
+                "k": "code",
+                "text": "note"
+              },
+              {
+                "k": "text",
+                "text": " (the envelope speaks the same teaching\nthrough "
+              },
+              {
+                "k": "code",
+                "text": "resume_hint"
+              },
+              {
+                "k": "text",
+                "text": ") and the approval ticket's replay-guard internals\n· "
+              },
+              {
+                "k": "code",
+                "text": "approval_shown_hash"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "approval_nonce"
+              },
+              {
+                "k": "text",
+                "text": ", "
+              },
+              {
+                "k": "code",
+                "text": "approval_minted_at_ms"
+              },
+              {
+                "k": "text",
+                "text": ",\n"
+              },
+              {
+                "k": "code",
+                "text": "approval_ttl_seconds"
+              },
+              {
+                "k": "text",
+                "text": ". The resumed run validates "
+              },
+              {
+                "k": "code",
+                "text": "--answer"
+              },
+              {
+                "k": "text",
+                "text": " against\nthose locally; only the digest rides, so the replay surface stays\nbounded. Masking is unchanged: the payload renders over the\nsecret-marker scope upstream, exactly as the journal does."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "One serde struct. No new dependency for the envelope; the signature needs\n"
+            },
+            {
+              "k": "code",
+              "text": "hmac"
+            },
+            {
+              "k": "text",
+              "text": " (RustCrypto — "
+            },
+            {
+              "k": "code",
+              "text": "sha2"
+            },
+            {
+              "k": "text",
+              "text": " is already in the tree for the chain)."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Delivery discipline (per the CloudEvents HTTP-Webhook companion spec)",
+          "id": "delivery-discipline-per-the-cloudevents-http-webhook-companion-spec"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Single POST, 3-second timeout, never follow a redirect (the SSRF per-hop\nre-check in "
+            },
+            {
+              "k": "code",
+              "text": "nika-http"
+            },
+            {
+              "k": "text",
+              "text": " already refuses cross-target hops), any 2xx counts as\ndelivered. No retries in R1. The OPTIONS abuse-protection handshake is\nexplicitly out of scope: an operator-configured target IS the consent."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Sequencing — the pause path is sacred",
+          "id": "sequencing--the-pause-path-is-sacred"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The notifier runs AFTER the "
+            },
+            {
+              "k": "code",
+              "text": "workflow_paused"
+            },
+            {
+              "k": "text",
+              "text": " journal write and BEFORE\nprocess exit, awaited with its timeout (never spawned — the pause path exits\nthe process, and a detached task would be dropped mid-flight)."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Every lane delivers · including an interactive TTY run, where the POST\nleaves before the terminal's in-process ask continues the run · because\nthe human a gate waits on may be far from the keyboard, so the outbound\nsignal must not wait on the local ask."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Its outcome is journaled as one of two additive event kinds:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "notify_delivered"
+              },
+              {
+                "k": "text",
+                "text": " (target host, duration)"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "notify_failed"
+              },
+              {
+                "k": "text",
+                "text": " (target host, error class — including the SSRF refusal\nclass; the URL is judged by the same "
+              },
+              {
+                "k": "code",
+                "text": "nika-http"
+              },
+              {
+                "k": "text",
+                "text": " floor as every other\nengine egress)"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Neither outcome changes the run's state: the run exits "
+            },
+            {
+              "k": "code",
+              "text": "paused"
+            },
+            {
+              "k": "text",
+              "text": " with the same\ncode whether the webhook succeeded, failed, or was never configured. The\nnotification is observable history, not control flow."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "What this is not",
+          "id": "what-this-is-not"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "Not a language surface: zero envelope change, zero new YAML, zero flags.\nThe conformance contract binds required events and semantics, not journal\nbytes; the two kinds are engine-additive."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Not a queue: one event, one POST, at-most-once. Consumers that need\nfan-out, retries or routing put a relay behind the URL (a self-hosted ntfy\ntopic already works as-is for phone push)."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Not the answer path: answering stays "
+              },
+              {
+                "k": "code",
+                "text": "nika run … --resume <trace> --answer <task>=<value>"
+              },
+              {
+                "k": "text",
+                "text": " (ADR-099). This ADR only makes the question heard."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Consequences",
+          "id": "consequences"
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Positive",
+          "id": "positive"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "Any surface — notification relays, dashboards, atelier tooling, CI — learns\nabout a waiting gate the second it happens, through two boring, widely\nimplemented standards (CloudEvents envelope, Standard Webhooks signature)\ninstead of a bespoke format."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "The deterministic event id + always-on "
+              },
+              {
+                "k": "code",
+                "text": "webhook-id"
+              },
+              {
+                "k": "text",
+                "text": " header give consumers\nexactly-once processing without any server-side state on our side."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Sovereignty intact: OFF by default, operator-pointed, SSRF-floored,\njournaled. The workflow file stays a pure contract."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Negative",
+          "id": "negative"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "The pause path gains up to ~8 s of worst-case latency when a URL is\nconfigured and the target is slow · the 3 s request budget\n("
+              },
+              {
+                "k": "code",
+                "text": "request.timeout"
+              },
+              {
+                "k": "text",
+                "text": " in "
+              },
+              {
+                "k": "code",
+                "text": "deliver"
+              },
+              {
+                "k": "text",
+                "text": ") plus the 5 s SSRF DNS-resolve advisory\nbudget ("
+              },
+              {
+                "k": "code",
+                "text": "DNS_RESOLVE_TIMEOUT"
+              },
+              {
+                "k": "text",
+                "text": " in "
+              },
+              {
+                "k": "code",
+                "text": "nika-http"
+              },
+              {
+                "k": "text",
+                "text": "), which runs before and\noutside the request budget. Bounded and journaled; acceptable for a path\nwhose next step is a human. No dynamic test exercises this bound today:\nthe e2e \"unreachable\" scenario points at a closed loopback port and\nfails as instant connection-refused, never at the timeout."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Two more event kinds for run-report consumers to render."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "A secret in "
+              },
+              {
+                "k": "code",
+                "text": "NIKA_NOTIFY_SECRET"
+              },
+              {
+                "k": "text",
+                "text": " is env-borne; store-backed references can\nfollow later without changing the header contract."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Neutral",
+          "id": "neutral"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "R2 candidates, deliberately deferred: multiple URLs; an "
+              },
+              {
+                "k": "code",
+                "text": "on_finished"
+              },
+              {
+                "k": "text",
+                "text": "\nsibling event; secret-store references for the URL/secret; surfacing paused\nruns as MCP tasks in "
+              },
+              {
+                "k": "code",
+                "text": "input_required"
+              },
+              {
+                "k": "text",
+                "text": " state with elicitation for the answer\n(per the MCP 2026-07-28 tasks extension — client support is still uneven,\nso it waits behind a flag until the webhook seam has proven the payload)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Tests (ship with the implementation — e2e unless noted)",
+          "id": "tests-ship-with-the-implementation--e2e-unless-noted"
+        },
+        {
+          "k": "list",
+          "ordered": true,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "Kind unit test — the two kinds serialize snake_case and class as Workflow."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Default OFF — a pausing run with no "
+              },
+              {
+                "k": "code",
+                "text": "NIKA_NOTIFY_URL"
+              },
+              {
+                "k": "text",
+                "text": " journals no\n"
+              },
+              {
+                "k": "code",
+                "text": "notify_*"
+              },
+              {
+                "k": "text",
+                "text": " kind and opens no socket."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Delivery · a local listener receives ONE structured CloudEvents POST whose\nrequired attributes and curated "
+              },
+              {
+                "k": "code",
+                "text": "data"
+              },
+              {
+                "k": "text",
+                "text": " match the pause payload; the trace\ngains "
+              },
+              {
+                "k": "code",
+                "text": "notify_delivered"
+              },
+              {
+                "k": "text",
+                "text": "."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "SSRF refusal — a metadata-range URL yields no POST, a "
+              },
+              {
+                "k": "code",
+                "text": "notify_failed"
+              },
+              {
+                "k": "text",
+                "text": "\ncarrying the SSRF class, and an unchanged "
+              },
+              {
+                "k": "code",
+                "text": "paused"
+              },
+              {
+                "k": "text",
+                "text": " exit."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Failure is not control flow — an unreachable target still exits "
+              },
+              {
+                "k": "code",
+                "text": "paused"
+              },
+              {
+                "k": "text",
+                "text": "\nwith the same code, within timeout + margin."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Envelope golden — the serialized envelope pins the required CloudEvents\nattributes and the deterministic id."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Signature vector — with a "
+              },
+              {
+                "k": "code",
+                "text": "whsec_"
+              },
+              {
+                "k": "text",
+                "text": " secret configured, the\n"
+              },
+              {
+                "k": "code",
+                "text": "webhook-signature"
+              },
+              {
+                "k": "text",
+                "text": " header verifies against an independent Standard\nWebhooks implementation's test vector."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Alternatives considered",
+          "id": "alternatives-considered"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "Author-facing notify on pause"
+              },
+              {
+                "k": "text",
+                "text": " (a workflow-declared hook): rejected —\ncouples the contract to deployment topology and breaks \"the file is the\ncontract\". The authored "
+              },
+              {
+                "k": "code",
+                "text": "nika:notify"
+              },
+              {
+                "k": "text",
+                "text": " builtin keeps its own job (a DAG\ntask), which structurally cannot fire at pause time."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "A bespoke JSON payload without an envelope"
+              },
+              {
+                "k": "text",
+                "text": ": rejected — CloudEvents\ncosts one struct and buys an ecosystem of consumers; inventing a shape\nbuys nothing."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "A daemon/queue with retries"
+              },
+              {
+                "k": "text",
+                "text": ": rejected — a supervisor contradicts the\nengine's no-daemon posture; operators who need delivery guarantees put a\nrelay they own behind the URL."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Spawn-and-exit delivery"
+              },
+              {
+                "k": "text",
+                "text": ": rejected — the process exits on pause; a\ndetached task is a silent drop. Awaited-with-timeout is the only honest\nsequencing."
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ADR-113",
+      "file": "adr-113-envelope-identity-on-nika.md",
+      "sections": [
+        {
+          "title": "Context",
+          "anchor": "context"
+        },
+        {
+          "title": "Decision",
+          "anchor": "decision"
+        },
+        {
+          "title": "Consequences",
+          "anchor": "consequences"
+        }
+      ],
+      "words": 672,
+      "sha256": "009fa92674f9ae3838bf9568adbfe465015456869c39424f67ddf86e6c3b1445",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "ADR-113: The envelope's identity moves onto `nika:`",
+          "id": "adr-113-the-envelopes-identity-moves-onto-nika"
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Context",
+          "id": "context"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-spec"
+            },
+            {
+              "k": "text",
+              "text": " executed its envelope nuke on 2026-08-12 ("
+            },
+            {
+              "k": "code",
+              "text": "d20b139"
+            },
+            {
+              "k": "text",
+              "text": " · « l enveloppe\npasse de 13 cles a 9, nika porte l identite »). The engine had not followed."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The gap was invisible because the engine is judged at a pinned spec commit\n("
+            },
+            {
+              "k": "code",
+              "text": "SPEC_PIN"
+            },
+            {
+              "k": "text",
+              "text": ", consumed by "
+            },
+            {
+              "k": "code",
+              "text": "diamond-ci.yml"
+            },
+            {
+              "k": "text",
+              "text": "). At the time of writing that pin sat\n"
+            },
+            {
+              "k": "strong",
+              "text": "44 commits behind"
+            },
+            {
+              "k": "text",
+              "text": " "
+            },
+            {
+              "k": "code",
+              "text": "nika-spec"
+            },
+            {
+              "k": "text",
+              "text": " "
+            },
+            {
+              "k": "code",
+              "text": "main"
+            },
+            {
+              "k": "text",
+              "text": ", so CI was green against a spec that\npredates the change. Pointing the conformance battery at the CURRENT spec made\nthe real state visible:"
+            }
+          ]
+        },
+        {
+          "k": "code",
+          "lang": "text",
+          "text": "NIKA_SPEC_DIR=<spec@main> cargo nextest run -p nika-check\n  → 4 suites failed · 172 diagnostic emissions · 172 of them NIKA-PARSE-003"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Every one of 145 named fixtures died on the "
+            },
+            {
+              "k": "code",
+              "text": "nika:"
+            },
+            {
+              "k": "text",
+              "text": " line, before the engine\ncould reach the construct the fixture actually tests. One defect masked the\nentire next layer."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Decision",
+          "id": "decision"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika:"
+            },
+            {
+              "k": "text",
+              "text": " carries BOTH the mark and the name. The KEY says "
+            },
+            {
+              "k": "em",
+              "text": "this is a Nika file"
+            },
+            {
+              "k": "text",
+              "text": ";\nthe VALUE is the file's kebab-case id ("
+            },
+            {
+              "k": "code",
+              "text": "^[a-z][a-z0-9-]*$"
+            },
+            {
+              "k": "text",
+              "text": ")."
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "parse_nika_version"
+              },
+              {
+                "k": "text",
+                "text": " → "
+              },
+              {
+                "k": "code",
+                "text": "parse_nika_id"
+              },
+              {
+                "k": "text",
+                "text": ". The shape is judged on the NODE, not\nthrough "
+              },
+              {
+                "k": "code",
+                "text": "get_scalar"
+              },
+              {
+                "k": "text",
+                "text": ": a mapping or sequence would otherwise read as ABSENT and\nthe id would go quietly missing instead of loudly wrong."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "SchemaError::BadNikaVersion"
+              },
+              {
+                "k": "text",
+                "text": " → "
+              },
+              {
+                "k": "code",
+                "text": "BadNikaId"
+              },
+              {
+                "k": "text",
+                "text": ". "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-PARSE-003"
+              },
+              {
+                "k": "text",
+                "text": " survives by\nchanging MEANING, and its CATEGORY moves with it — "
+              },
+              {
+                "k": "code",
+                "text": "parse_error"
+              },
+              {
+                "k": "text",
+                "text": " →\n"
+              },
+              {
+                "k": "code",
+                "text": "validation_error"
+              },
+              {
+                "k": "text",
+                "text": ". Judging a version marker was the file's entry contract;\njudging a name is a spec-rule violation in well-formed input. The document\nparses; the name is wrong. (Spec fixture "
+              },
+              {
+                "k": "code",
+                "text": "envelope/003-nika-id-bad-shape"
+              },
+              {
+                "k": "text",
+                "text": "\npins the category, and it is what caught this.)"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "workflow:"
+              },
+              {
+                "k": "text",
+                "text": " and top-level "
+              },
+              {
+                "k": "code",
+                "text": "description:"
+              },
+              {
+                "k": "text",
+                "text": " leave "
+              },
+              {
+                "k": "code",
+                "text": "TOP_LEVEL_KEYS"
+              },
+              {
+                "k": "text",
+                "text": " and refuse as\nunknown keys ("
+              },
+              {
+                "k": "code",
+                "text": "NIKA-PARSE-005"
+              },
+              {
+                "k": "text",
+                "text": "). "
+              },
+              {
+                "k": "code",
+                "text": "RawWorkflow.workflow"
+              },
+              {
+                "k": "text",
+                "text": " now holds the value of\n"
+              },
+              {
+                "k": "code",
+                "text": "nika:"
+              },
+              {
+                "k": "text",
+                "text": " — so the ~5 downstream readers of the workflow id changed by zero\nlines."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "NIKA-PARSE-004"
+              },
+              {
+                "k": "text",
+                "text": " ("
+              },
+              {
+                "k": "code",
+                "text": "BadWorkflowId"
+              },
+              {
+                "k": "text",
+                "text": "), "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-PARSE-020"
+              },
+              {
+                "k": "text",
+                "text": " ("
+              },
+              {
+                "k": "code",
+                "text": "W1WorkflowScalar"
+              },
+              {
+                "k": "text",
+                "text": ") and\n"
+              },
+              {
+                "k": "code",
+                "text": "NIKA-PARSE-021"
+              },
+              {
+                "k": "text",
+                "text": " ("
+              },
+              {
+                "k": "code",
+                "text": "W1TopLevelDescription"
+              },
+              {
+                "k": "text",
+                "text": ") are RETIRED. No retired code is\never reused (SSOT-2 B.22). "
+              },
+              {
+                "k": "code",
+                "text": "SchemaVersion"
+              },
+              {
+                "k": "text",
+                "text": " is deleted: a field with one legal\nvalue for the whole lifetime of the contract was never a version."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "W1's envelope half is retired with it",
+          "id": "w1s-envelope-half-is-retired-with-it"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-migrate"
+            },
+            {
+              "k": "text",
+              "text": "'s W1 codemod migrated "
+            },
+            {
+              "k": "code",
+              "text": "workflow: <scalar>"
+            },
+            {
+              "k": "text",
+              "text": " INTO\n"
+            },
+            {
+              "k": "code",
+              "text": "workflow: { id, description }"
+            },
+            {
+              "k": "text",
+              "text": " — precisely the object the parser now refuses.\nA repair whose output its own checker rejects is worse than no repair, so that\nhalf is removed and its "
+            },
+            {
+              "k": "code",
+              "text": "--fix"
+            },
+            {
+              "k": "text",
+              "text": " ladder arms with it. "
+            },
+            {
+              "k": "strong",
+              "text": "The tasks half is\nuntouched"
+            },
+            {
+              "k": "text",
+              "text": " (sequence → map · "
+            },
+            {
+              "k": "code",
+              "text": "- id:"
+            },
+            {
+              "k": "text",
+              "text": " → the key). The identity codemod is\nfollow-up work, and it must DEMOTE the "
+            },
+            {
+              "k": "code",
+              "text": "description:"
+            },
+            {
+              "k": "text",
+              "text": " prose (to a comment),\nnever silently drop it."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Consequences",
+          "id": "consequences"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Measured, not asserted:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "before · after"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "conformance emissions (spec@main) · 172 · **16**"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "`nika-check` suites failing · 4 · **3**"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "workspace `--lib` · 5757 run · **5747 pass / 4 fail**"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The 16 remaining emissions are the next layer, now visible and small:\n"
+            },
+            {
+              "k": "code",
+              "text": "group:"
+            },
+            {
+              "k": "text",
+              "text": " ×7 · "
+            },
+            {
+              "k": "code",
+              "text": "lift:"
+            },
+            {
+              "k": "text",
+              "text": " ×2 · "
+            },
+            {
+              "k": "code",
+              "text": "extract:"
+            },
+            {
+              "k": "text",
+              "text": " ×1 · "
+            },
+            {
+              "k": "code",
+              "text": "for_each"
+            },
+            {
+              "k": "text",
+              "text": " block ×2 · "
+            },
+            {
+              "k": "code",
+              "text": "unwind"
+            },
+            {
+              "k": "text",
+              "text": " ×1 ·\nplus two unrelated. "
+            },
+            {
+              "k": "strong",
+              "text": "`group:` was not in any plan"
+            },
+            {
+              "k": "text",
+              "text": " — it arrived with spec\n"
+            },
+            {
+              "k": "code",
+              "text": "450b476"
+            },
+            {
+              "k": "text",
+              "text": " and only surfaced once the envelope stopped masking it."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The pack is all-or-nothing (the sequencing constraint this uncovered)",
+          "id": "the-pack-is-all-or-nothing-the-sequencing-constraint-this-uncovered"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The 4 remaining workspace failures are all consumers of the VENDORED spec pack\n("
+            },
+            {
+              "k": "code",
+              "text": "crates/nika-pack/pack/"
+            },
+            {
+              "k": "text",
+              "text": "). "
+            },
+            {
+              "k": "code",
+              "text": "scripts/sync-pack.sh"
+            },
+            {
+              "k": "text",
+              "text": " moves whole directories with\n"
+            },
+            {
+              "k": "code",
+              "text": "rsync --delete"
+            },
+            {
+              "k": "text",
+              "text": ", and the spec's pack uses "
+            },
+            {
+              "k": "code",
+              "text": "lift:"
+            },
+            {
+              "k": "text",
+              "text": " (2 files), "
+            },
+            {
+              "k": "code",
+              "text": "extract:"
+            },
+            {
+              "k": "text",
+              "text": " (9),\n"
+            },
+            {
+              "k": "code",
+              "text": "max_parallel"
+            },
+            {
+              "k": "text",
+              "text": "/"
+            },
+            {
+              "k": "code",
+              "text": "fail_fast"
+            },
+            {
+              "k": "text",
+              "text": " under "
+            },
+            {
+              "k": "code",
+              "text": "for_each"
+            },
+            {
+              "k": "text",
+              "text": " (9/8). So the pack can only resync\nonce the engine speaks the WHOLE new grammar."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "Consequence: LOT 2's slices cannot each land green on their own."
+            },
+            {
+              "k": "text",
+              "text": " The parser\nwork slices cleanly; the pack does not. This is a correction to the plan, found\nby measurement."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "A second reader of `description:`",
+          "id": "a-second-reader-of-description"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The spec's tombstone justified killing "
+            },
+            {
+              "k": "code",
+              "text": "description:"
+            },
+            {
+              "k": "text",
+              "text": " with « one consumer across\nfive reading surfaces ». There is a second: "
+            },
+            {
+              "k": "code",
+              "text": "nika-onboard"
+            },
+            {
+              "k": "text",
+              "text": "'s intent router\nindexes the description line ("
+            },
+            {
+              "k": "code",
+              "text": "intent.rs:594"
+            },
+            {
+              "k": "text",
+              "text": "), and the routing fixtures score\nagainst that exact wording — the query "
+            },
+            {
+              "k": "code",
+              "text": "chase unpaid invoices"
+            },
+            {
+              "k": "text",
+              "text": " IS\n"
+            },
+            {
+              "k": "code",
+              "text": "invoice-chaser"
+            },
+            {
+              "k": "text",
+              "text": "'s description. When the pack resyncs, routing quality drops and\n3 tests go red. Recorded here rather than patched silently."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ADR-114",
+      "file": "adr-114-nika-cadence-admission.md",
+      "sections": [
+        {
+          "title": "Context",
+          "anchor": "context"
+        },
+        {
+          "title": "Decision",
+          "anchor": "decision"
+        },
+        {
+          "title": "Consequences",
+          "anchor": "consequences"
+        }
+      ],
+      "words": 878,
+      "sha256": "72e6f74efa67bdbd3c7c482af40673ea3ca64c2b35c92d3b75737a6d3708c579",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "ADR-114: `nika-cadence` — the arming registry grammar, at L0",
+          "id": "adr-114-nika-cadence--the-arming-registry-grammar-at-l0"
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Context",
+          "id": "context"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "This ADR is written "
+            },
+            {
+              "k": "strong",
+              "text": "after"
+            },
+            {
+              "k": "text",
+              "text": " the crate landed, and the reason it is late is\nitself worth recording."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-cadence"
+            },
+            {
+              "k": "text",
+              "text": " arrived on "
+            },
+            {
+              "k": "code",
+              "text": "main"
+            },
+            {
+              "k": "text",
+              "text": " in "
+            },
+            {
+              "k": "code",
+              "text": "508b61ae1"
+            },
+            {
+              "k": "text",
+              "text": " (#928) carrying no ADR. The\nrepository has a gate for exactly this — "
+            },
+            {
+              "k": "code",
+              "text": "adr-coverage-new-crate"
+            },
+            {
+              "k": "text",
+              "text": " — and it did\nnot fire. Two independent reasons, both measured:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": true,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "The gate is "
+              },
+              {
+                "k": "strong",
+                "text": "warn-only"
+              },
+              {
+                "k": "text",
+                "text": " (it exits 0 even on a miss; its own header says\n« Promote to fail when coverage… »)."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "Its one branch that "
+              },
+              {
+                "k": "em",
+                "text": "does"
+              },
+              {
+                "k": "text",
+                "text": " block reads "
+              },
+              {
+                "k": "code",
+                "text": "git diff --cached"
+              },
+              {
+                "k": "text",
+                "text": ", so it lives in a\n"
+              },
+              {
+                "k": "strong",
+                "text": "local pre-commit hook"
+              },
+              {
+                "k": "text",
+                "text": " — and a squash-merge performed on GitHub never runs\na local hook."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "quote",
+          "inline": [
+            {
+              "k": "text",
+              "text": "A gate that judges the staged diff is blind to the tree, and a gate that only\nexists in a local hook is blind to the merge path."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The crate's rationale was never missing — it is written at length in\n"
+            },
+            {
+              "k": "code",
+              "text": "crates/nika-cadence/src/lib.rs"
+            },
+            {
+              "k": "text",
+              "text": ", citing its own locks. What was missing is the\nADR file the admission process expects. This document transcribes that\nrationale and adds what has been measured since."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Decision",
+          "id": "decision"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-cadence"
+            },
+            {
+              "k": "text",
+              "text": " is admitted at "
+            },
+            {
+              "k": "strong",
+              "text": "L0 · pure · zero I/O · zero async"
+            },
+            {
+              "k": "text",
+              "text": ". It owns two\nthings and nothing else:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "the "
+              },
+              {
+                "k": "strong",
+                "text": "grammar"
+              },
+              {
+                "k": "text",
+                "text": " of the arming registry (the "
+              },
+              {
+                "k": "code",
+                "text": "arm:"
+              },
+              {
+                "k": "text",
+                "text": " block of "
+              },
+              {
+                "k": "code",
+                "text": "nika.yaml"
+              },
+              {
+                "k": "text",
+                "text": ", per\nD-2026-08-10-N3),"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "the "
+              },
+              {
+                "k": "strong",
+                "text": "pure next-slot calculator"
+              },
+              {
+                "k": "text",
+                "text": " (hand-counted 5-field cron, embedded IANA\ntzdb)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Why L0 and not inside a CLI crate",
+          "id": "why-l0-and-not-inside-a-cli-crate"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Two L4 consumers are intended to read this registry — "
+            },
+            {
+              "k": "code",
+              "text": "nika arm"
+            },
+            {
+              "k": "text",
+              "text": " today,\n"
+            },
+            {
+              "k": "code",
+              "text": "nika serve"
+            },
+            {
+              "k": "text",
+              "text": " at ②. Shared logic beneath more than one L4 consumer belongs at\nL0; putting it in a CLI crate would make the second consumer an upward\ndependency. This follows the precedent recorded in "
+            },
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": "'s manifest\n(« THREE L0 consumers make any higher layer an upward-dep violation »)."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "Honest state of that argument"
+            },
+            {
+              "k": "text",
+              "text": ": only ONE of the two consumers exists today.\nThe layering choice is therefore carried by one consumer plus a stated\nintention, and it is listed as a follow-up rather than presented as settled."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The four locks — one law at four moments",
+          "id": "the-four-locks--one-law-at-four-moments"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The crate encodes D-2026-08-11-N1→N4, which are four faces of a single law ·\n"
+            },
+            {
+              "k": "strong",
+              "text": "the file proposes, the machine disposes"
+            },
+            {
+              "k": "text",
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "Lock · Law"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "**N1 · DST** · A slot that does not exist fires at the FIRST VALID instant (02:00 absent ⇒ 03:00); a doubled slot fires ONCE, at its first occurrence. Written policy, never a guess."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "**N2 · no resume** · A beat starts from ZERO; every tick is a new run. This crate computes slots and never carries run state."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "**N3 · identity** · The MACHINE's key authorizes. `par:` DECLARES the human and proves nothing — a merge arms nothing."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "**N4 · absence** · Removing a line does NOT disarm. That gesture is `arm --disarm`, an L4 act this crate knows nothing about."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "The three hermeticity constraints",
+          "id": "the-three-hermeticity-constraints"
+        },
+        {
+          "k": "list",
+          "ordered": true,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "No kernel `Clock` dependency"
+              },
+              {
+                "k": "text",
+                "text": " — that trait has no civil surface. The\ncalculator takes a "
+              },
+              {
+                "k": "code",
+                "text": "jiff::Zoned"
+              },
+              {
+                "k": "text",
+                "text": "; the clock lives at the L4 edge.\nDeterminism becomes trivial: tests use literal instants, with no clock to\ndrive."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "The calculator never sleeps"
+              },
+              {
+                "k": "text",
+                "text": " — a virtual clock's "
+              },
+              {
+                "k": "code",
+                "text": "sleep"
+              },
+              {
+                "k": "text",
+                "text": " does not advance\ntime, so a sleeping loop would spin forever under the very mode meant to\nprove it. The caller sleeps; the calculator never does."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "`jiff`'s `TimeZone::get` is forbidden here"
+              },
+              {
+                "k": "text",
+                "text": " — it prefers the host's\n"
+              },
+              {
+                "k": "code",
+                "text": "/usr/share/zoneinfo"
+              },
+              {
+                "k": "text",
+                "text": ", which is a hermeticity hole. Zones resolve from the\nEMBEDDED tzdb only ("
+              },
+              {
+                "k": "code",
+                "text": "jiff_tzdb::get"
+              },
+              {
+                "k": "text",
+                "text": " + "
+              },
+              {
+                "k": "code",
+                "text": "TimeZone::tzif"
+              },
+              {
+                "k": "text",
+                "text": ")."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Refusals teach",
+          "id": "refusals-teach"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Every law is validated at parse, and every refusal is named and carries its\nfix. The grammar publishes 23 spec codes, all under the "
+            },
+            {
+              "k": "code",
+              "text": "cadence."
+            },
+            {
+              "k": "text",
+              "text": " namespace —\na test pins that prefix, so a code cannot silently escape it."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Round 1 refuses two keys "
+            },
+            {
+              "k": "strong",
+              "text": "by name"
+            },
+            {
+              "k": "text",
+              "text": " rather than ignoring them: "
+            },
+            {
+              "k": "code",
+              "text": "signature:"
+            },
+            {
+              "k": "text",
+              "text": "\n(verification belongs to ②) and "
+            },
+            {
+              "k": "code",
+              "text": "budget:"
+            },
+            {
+              "k": "text",
+              "text": " (it waits on a measured lack). An\nunknown key is a refusal, not a shrug — the grammar is closed."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Consequences",
+          "id": "consequences"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Measured consumers today: "
+            },
+            {
+              "k": "code",
+              "text": "nika-cli"
+            },
+            {
+              "k": "text",
+              "text": " (the "
+            },
+            {
+              "k": "code",
+              "text": "nika arm"
+            },
+            {
+              "k": "text",
+              "text": " verb) and "
+            },
+            {
+              "k": "code",
+              "text": "nika-tui-core"
+            },
+            {
+              "k": "text",
+              "text": "."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Two findings recorded since the crate landed, both from building its first\nconsumer:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "Eight cadence keys are unreachable through the project file."
+              },
+              {
+                "k": "text",
+                "text": " They parse in\nthe registry grammar but no path through "
+              },
+              {
+                "k": "code",
+                "text": "nika.yaml"
+              },
+              {
+                "k": "text",
+                "text": " can carry them. This is\npinned by a test in "
+              },
+              {
+                "k": "code",
+                "text": "nika-cli"
+              },
+              {
+                "k": "text",
+                "text": " so it cannot drift silently. It is not yet\nresolved in either direction — the keys may gain a path, or lose their place\nin the grammar."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "The two readers must agree on the beat count."
+              },
+              {
+                "k": "text",
+                "text": " "
+              },
+              {
+                "k": "code",
+                "text": "nika arm"
+              },
+              {
+                "k": "text",
+                "text": " checks\n"
+              },
+              {
+                "k": "code",
+                "text": "project.arm().len()"
+              },
+              {
+                "k": "text",
+                "text": " against the registry's own count, because the project\nfile and the registry are parsed by two different paths over the same bytes.\nA divergence there would be the same class of defect as the two "
+              },
+              {
+                "k": "code",
+                "text": "registry:"
+              },
+              {
+                "k": "text",
+                "text": "\nparsers that disagreed in both directions (fixed in #936)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "One defect surfaced since admission and has been repaired (#940):\nthe "
+            },
+            {
+              "k": "code",
+              "text": "WorkflowPath"
+            },
+            {
+              "k": "text",
+              "text": " refusal taught its fix with a path borrowed from the private\nmonorepo tree — a leak in a public engine, and an example meaningless to anyone\noutside the studio. The repair carries a test pinning the general law ·\n"
+            },
+            {
+              "k": "strong",
+              "text": "a remedy a gate displays must itself pass the rule that gate teaches"
+            },
+            {
+              "k": "text",
+              "text": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ADR-115",
+      "file": "adr-115-nika-check-analyzer-member-split.md",
+      "sections": [
+        {
+          "title": "Context",
+          "anchor": "context"
+        },
+        {
+          "title": "Decision",
+          "anchor": "decision"
+        },
+        {
+          "title": "Alternatives rejected",
+          "anchor": "alternatives-rejected"
+        },
+        {
+          "title": "Consequences",
+          "anchor": "consequences"
+        },
+        {
+          "title": "Security boundary",
+          "anchor": "security-boundary"
+        },
+        {
+          "title": "Rollback",
+          "anchor": "rollback"
+        }
+      ],
+      "words": 727,
+      "sha256": "b64527e681b8cee3ce265248ef2273de9533de302e90d36b6ca69932ae208b31",
+      "tokens": [
+        {
+          "k": "h",
+          "depth": 1,
+          "text": "ADR-115: nika-check size-cap member split — nika-check-analyzer",
+          "id": "adr-115-nika-check-size-cap-member-split--nika-check-analyzer"
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Context",
+          "id": "context"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Vector 24 measured "
+            },
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": " at "
+            },
+            {
+              "k": "strong",
+              "text": "14,995 prod LOC against the 15,000\nDiamond invariant"
+            },
+            {
+              "k": "text",
+              "text": " — five lines from a push that blocks. "
+            },
+            {
+              "k": "code",
+              "text": "nika-runtime"
+            },
+            {
+              "k": "text",
+              "text": "\nsat at 14,929 (seventy-one). Neither was visible: the hygiene dashboard\nrenders one line per vector, and that line said only "
+            },
+            {
+              "k": "code",
+              "text": "crate(s) in [12000, 15000) LOC range"
+            },
+            {
+              "k": "text",
+              "text": " — the same sentence at 12,001 as at 14,999. A\n3,000-wide band reported as a single bit (fixed separately · the vector\nnow names the tightest crate and its headroom)."
+            }
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": " is itself the product of this exact move: it descended from\n"
+            },
+            {
+              "k": "code",
+              "text": "nika-schema"
+            },
+            {
+              "k": "text",
+              "text": " at the same wall on 2026-07-21 (parser there, judgment\nhere). The cap is a locked maintainability budget (nika-invariants.md),\nnot advisory."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Decision",
+          "id": "decision"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Per "
+            },
+            {
+              "k": "strong",
+              "text": "D-2026-07-09-N1"
+            },
+            {
+              "k": "text",
+              "text": " (a size-cap split is ONE architectural unit in\nTWO workspace members), the "
+            },
+            {
+              "k": "strong",
+              "text": "analysis substrate"
+            },
+            {
+              "k": "text",
+              "text": " descends to a new L0\nmember crate "
+            },
+            {
+              "k": "code",
+              "text": "nika-check-analyzer"
+            },
+            {
+              "k": "text",
+              "text": ":"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "analyze"
+              },
+              {
+                "k": "text",
+                "text": " + "
+              },
+              {
+                "k": "code",
+                "text": "AnalyzedWorkflow"
+              },
+              {
+                "k": "text",
+                "text": " (the Core conformance pass — envelope ·\nduplicate ids · "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-DAG-002"
+              },
+              {
+                "k": "text",
+                "text": " edge-target resolution · "
+              },
+              {
+                "k": "code",
+                "text": "NIKA-DAG-001"
+              },
+              {
+                "k": "text",
+                "text": "\ncycle detection over "
+              },
+              {
+                "k": "code",
+                "text": "G_p"
+              },
+              {
+                "k": "text",
+                "text": " · the "
+              },
+              {
+                "k": "code",
+                "text": "tasks.*"
+              },
+              {
+                "k": "text",
+                "text": " reference boundary ·\nnamespace resolution · "
+              },
+              {
+                "k": "code",
+                "text": "when:"
+              },
+              {
+                "k": "text",
+                "text": " shape · output binding rules · the full\n"
+              },
+              {
+                "k": "code",
+                "text": "TypeExpr"
+              },
+              {
+                "k": "text",
+                "text": " on io "
+              },
+              {
+                "k": "code",
+                "text": "type:"
+              },
+              {
+                "k": "text",
+                "text": ")"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "edges"
+              },
+              {
+                "k": "text",
+                "text": " (the derived DAG edges every surface projects) + "
+              },
+              {
+                "k": "code",
+                "text": "dag"
+              },
+              {
+                "k": "text",
+                "text": "\n(topological waves)"
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "scan"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "builtin_shape"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "jq_lint"
+              },
+              {
+                "k": "text",
+                "text": " (the jaq compile-check) ·\n"
+              },
+              {
+                "k": "code",
+                "text": "schema_lint"
+              },
+              {
+                "k": "text",
+                "text": " (the jsonschema meta-check) · "
+              },
+              {
+                "k": "code",
+                "text": "schema_paths"
+              },
+              {
+                "k": "text",
+                "text": " ·\n"
+              },
+              {
+                "k": "code",
+                "text": "types_contract"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": " re-exports the member at its "
+            },
+            {
+              "k": "strong",
+              "text": "historical path"
+            },
+            {
+              "k": "text",
+              "text": " —\n"
+            },
+            {
+              "k": "code",
+              "text": "pub use nika_check_analyzer as analyzer;"
+            },
+            {
+              "k": "text",
+              "text": " — so every call site inside\nand outside the crate keeps writing "
+            },
+            {
+              "k": "code",
+              "text": "nika_check::analyzer::…"
+            },
+            {
+              "k": "text",
+              "text": " and\n"
+            },
+            {
+              "k": "code",
+              "text": "crate::analyzer::…"
+            },
+            {
+              "k": "text",
+              "text": " unchanged. The boundary moved; the surface did not."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 3,
+          "text": "Why this boundary, measured",
+          "id": "why-this-boundary-measured"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "The seam was not chosen by theme, it was measured on the module graph:"
+            }
+          ]
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "text",
+                "text": "direction · edges"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "the rest of `nika-check` → `analyzer` · **33**"
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "`analyzer` → the rest of `nika-check` · **0**"
+              }
+            ]
+          ]
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "code",
+              "text": "analyzer"
+            },
+            {
+              "k": "text",
+              "text": " is the substrate everything reads and it reads nothing back —\na pure leaf downward, which is exactly what can descend without breaking\na cycle. The only back-references from inside the subtree to the ladder\n("
+            },
+            {
+              "k": "code",
+              "text": "crate::analyze"
+            },
+            {
+              "k": "text",
+              "text": ") live in "
+            },
+            {
+              "k": "code",
+              "text": "#[cfg(test)]"
+            },
+            {
+              "k": "text",
+              "text": " blocks and became internal\n"
+            },
+            {
+              "k": "code",
+              "text": "crate::"
+            },
+            {
+              "k": "text",
+              "text": " paths on the move."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Alternatives rejected",
+          "id": "alternatives-rejected"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "strong",
+                "text": "`LOC-EXEMPT` markers"
+              },
+              {
+                "k": "text",
+                "text": " · the whitelist (codegen · lookup-table ·\nenum-mega) does not cover organic judgment growth; exempting erodes\nthe ratchet."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Descending the authority plane instead"
+              },
+              {
+                "k": "text",
+                "text": " ("
+              },
+              {
+                "k": "code",
+                "text": "permit_taint"
+              },
+              {
+                "k": "text",
+                "text": " ·\n"
+              },
+              {
+                "k": "code",
+                "text": "permits_fit"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "permits_infer"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "certificate"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "secrets"
+              },
+              {
+                "k": "text",
+                "text": " ·\n"
+              },
+              {
+                "k": "code",
+                "text": "consent"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "declass"
+              },
+              {
+                "k": "text",
+                "text": " · "
+              },
+              {
+                "k": "code",
+                "text": "data_journey"
+              },
+              {
+                "k": "text",
+                "text": ") · measured as a leaf on the\ninbound side (nothing but "
+              },
+              {
+                "k": "code",
+                "text": "lib.rs"
+              },
+              {
+                "k": "text",
+                "text": " references it) but it "
+              },
+              {
+                "k": "em",
+                "text": "depends on"
+              },
+              {
+                "k": "text",
+                "text": "\n"
+              },
+              {
+                "k": "code",
+                "text": "analyzer"
+              },
+              {
+                "k": "text",
+                "text": "/"
+              },
+              {
+                "k": "code",
+                "text": "analysis"
+              },
+              {
+                "k": "text",
+                "text": "/"
+              },
+              {
+                "k": "code",
+                "text": "reach"
+              },
+              {
+                "k": "text",
+                "text": "/"
+              },
+              {
+                "k": "code",
+                "text": "hints"
+              },
+              {
+                "k": "text",
+                "text": " — nine edges from three files.\nExtracting it while the ladder stays in "
+              },
+              {
+                "k": "code",
+                "text": "nika-check"
+              },
+              {
+                "k": "text",
+                "text": " makes\n"
+              },
+              {
+                "k": "code",
+                "text": "nika-check"
+              },
+              {
+                "k": "text",
+                "text": " → authority → "
+              },
+              {
+                "k": "code",
+                "text": "nika-check"
+              },
+              {
+                "k": "text",
+                "text": " a "
+              },
+              {
+                "k": "strong",
+                "text": "cycle"
+              },
+              {
+                "k": "text",
+                "text": ". Cargo forbids it.\nDescending the substrate first is precisely what removes that cycle."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "A logic split inside one crate"
+              },
+              {
+                "k": "text",
+                "text": " · moves no prod LOC out of the\ncrate; churns module bodies for no budget gain."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Consequences",
+          "id": "consequences"
+        },
+        {
+          "k": "list",
+          "ordered": false,
+          "items": [
+            [
+              {
+                "k": "code",
+                "text": "nika-check"
+              },
+              {
+                "k": "text",
+                "text": " "
+              },
+              {
+                "k": "strong",
+                "text": "14,995 → 12,455 prod LOC"
+              },
+              {
+                "k": "text",
+                "text": " · headroom "
+              },
+              {
+                "k": "strong",
+                "text": "5 → 2,545"
+              },
+              {
+                "k": "text",
+                "text": ".\nThe crate is off the wall."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "nika-check-analyzer"
+              },
+              {
+                "k": "text",
+                "text": " ≈ 2,540 prod (5,688 raw across 9 files — the\ndifference is "
+              },
+              {
+                "k": "code",
+                "text": "#[cfg(test)]"
+              },
+              {
+                "k": "text",
+                "text": " mass the counter correctly subtracts)."
+              }
+            ],
+            [
+              {
+                "k": "strong",
+                "text": "Still YELLOW"
+              },
+              {
+                "k": "text",
+                "text": " (>12,000): this buys a planning window, it does not\nend the descent. The next unit to leave is the authority plane, and\nADR-115 is what makes it extractable — with the substrate in its own\nmember, "
+              },
+              {
+                "k": "code",
+                "text": "nika-check-authority"
+              },
+              {
+                "k": "text",
+                "text": " would depend on "
+              },
+              {
+                "k": "code",
+                "text": "nika-check-analyzer"
+              },
+              {
+                "k": "text",
+                "text": ",\nnot on its own parent."
+              }
+            ],
+            [
+              {
+                "k": "text",
+                "text": "New "
+              },
+              {
+                "k": "code",
+                "text": "crates/nika-check-analyzer/public-api.txt"
+              },
+              {
+                "k": "text",
+                "text": " baseline joins the\ndiff gate; "
+              },
+              {
+                "k": "code",
+                "text": "crates/nika-check/public-api.txt"
+              },
+              {
+                "k": "text",
+                "text": " re-baselines (the\n"
+              },
+              {
+                "k": "code",
+                "text": "analyzer"
+              },
+              {
+                "k": "text",
+                "text": " items become re-exports)."
+              }
+            ],
+            [
+              {
+                "k": "code",
+                "text": "nika-check-analyzer"
+              },
+              {
+                "k": "text",
+                "text": " is a member of the "
+              },
+              {
+                "k": "code",
+                "text": "nika-check"
+              },
+              {
+                "k": "text",
+                "text": " unit, not a new\narchitectural unit: same L0 row, "
+              },
+              {
+                "k": "code",
+                "text": "publish = false"
+              },
+              {
+                "k": "text",
+                "text": ", one public surface\nre-exported by the judgment crate. The ADR-037 count horizon is\nunaffected (a size-cap split adds a member, never a unit)."
+              }
+            ]
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Security boundary",
+          "id": "security-boundary"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "None moved."
+            },
+            {
+              "k": "text",
+              "text": " The authority model stays whole in "
+            },
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": " —\npermits fit, capability escape, secret-leak IFC, consent, declassify,\nthe trifecta and the "
+            },
+            {
+              "k": "code",
+              "text": "RunCertificate"
+            },
+            {
+              "k": "text",
+              "text": " are untouched, and the substrate\ncarries no verdict of policy. The one authority-adjacent item that\ntravels is "
+            },
+            {
+              "k": "code",
+              "text": "jq_lint"
+            },
+            {
+              "k": "text",
+              "text": "'s read of "
+            },
+            {
+              "k": "code",
+              "text": "nika_cap::is_withheld_jq_native"
+            },
+            {
+              "k": "text",
+              "text": " — the\nwithheld-native list ("
+            },
+            {
+              "k": "code",
+              "text": "env"
+            },
+            {
+              "k": "text",
+              "text": ", refused since 2026-08-15) — which is a\n"
+            },
+            {
+              "k": "em",
+              "text": "compile-check"
+            },
+            {
+              "k": "text",
+              "text": " over the jq program, not a permits decision."
+            }
+          ]
+        },
+        {
+          "k": "h",
+          "depth": 2,
+          "text": "Rollback",
+          "id": "rollback"
+        },
+        {
+          "k": "p",
+          "inline": [
+            {
+              "k": "text",
+              "text": "Reverse "
+            },
+            {
+              "k": "code",
+              "text": "git mv"
+            },
+            {
+              "k": "text",
+              "text": " + drop the member from workspace "
+            },
+            {
+              "k": "code",
+              "text": "members"
+            },
+            {
+              "k": "text",
+              "text": ", the\n"
+            },
+            {
+              "k": "code",
+              "text": "layers."
+            },
+            {
+              "k": "text",
+              "text": " entry and the "
+            },
+            {
+              "k": "code",
+              "text": "nika-check"
+            },
+            {
+              "k": "text",
+              "text": " dep. The re-export shim keeps the\nsurface stable in both directions, so no call site changes either way."
             }
           ]
         }

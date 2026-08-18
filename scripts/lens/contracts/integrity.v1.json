@@ -75,7 +75,7 @@
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "1d00b215fc94f80577ccee6558ecfe6634d57ce96f0554b6204c2e3c38581cd2"
+   "sha256": "d554786fcd9e3e83dcf40d02683ceb3e5799a59833f2b994526d824bf2a12c66"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -99,7 +99,7 @@
   },
   {
    "path": "scripts/spec-resync.contract.json",
-   "sha256": "74cf2ffaf0c2d3ce1688231b568b97e3d44e9e210f79032672a3fc5d0ad90c73"
+   "sha256": "89b53d1f3dcd456c2d1466eee8a9ead021ec4aac6c9f44c29c99aae89e3796d4"
   },
   {
    "path": "scripts/spec-resync-lib.mjs",
@@ -135,7 +135,7 @@
   },
   {
    "path": "site.config.ts",
-   "sha256": "e00be5a6cc82c38222374c9c4c42279f324a2edcbc659f53142bf6d34c50154d"
+   "sha256": "589aeed98638cea6616c6356a0de7dd0a49c355562e7e5664963d4f9a08c18c6"
   },
   {
    "path": "src/routes.tsx",

@@ -72,6 +72,11 @@ export function lex(body, file) {
         items: t.items.map((it) => inlineOf((it.tokens ?? []).flatMap((x) => x.tokens ?? [x]))),
       })
     else if (t.type === 'hr') tokens.push({ k: 'hr' })
+    /* an HTML COMMENT block is authoring margin, not prose (the engine's
+       decision record annotates its own history in comments · adr-111 first,
+       2026-08-06) · it renders nothing on GitHub and nothing here. Any OTHER
+       html block still fails loudly — the vocabulary stays closed. */
+    else if (t.type === 'html' && /^\s*<!--[\s\S]*?-->\s*$/.test(t.raw)) continue
     else if (t.type === 'table') {
       /* the spec uses tables the blog never did · rendered as a list of rows
          rather than dropped: losing a normative table would be a lie. */
