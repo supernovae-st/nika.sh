@@ -72,12 +72,13 @@ describe('/learn · every teaching fragment parses', () => {
     },
   )
 
-  it('step 01 carries the frozen envelope (0.105 · the map id)', () => {
+  it('step 01 carries the nine-key mark (0.109 · nika: IS the name · no version key)', () => {
     const doc = parse(STEPS[0].yaml) as Record<string, unknown>
-    expect(doc.nika).toBe('v1')
-    const wf = doc.workflow as { id?: string }
-    expect(typeof wf).toBe('object')
-    expect(wf.id).toMatch(/^[a-z][a-z0-9-]*$/)
+    expect(doc.nika).toMatch(/^[a-z][a-z0-9-]*$/)
+    expect(doc.nika).not.toBe('v1')
+    expect('workflow' in doc).toBe(false)
+    /* the page must never teach the frozen-format sentence again */
+    expect(STEPS[0].note ?? '').not.toMatch(/frozen/)
   })
 
   it('the typed-error example is real JSON with the load-bearing fields', () => {
@@ -94,7 +95,6 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
     }
     const doc = parse(FULL_FILE) as {
       nika: string
-      workflow: { id: string }
       inputs: Record<string, unknown>
       const: Record<string, unknown>
       permits: Record<string, unknown>
@@ -102,9 +102,10 @@ it('the assembled whole file composes every taught idea and stays coherent', () 
       tasks: Record<string, Task>
       outputs: Record<string, unknown>
     }
-    /* the envelope (01) · the value split (02) · the model (03) */
-    expect(doc.nika).toBe('v1')
-    expect(doc.workflow.id).toBe('weekly-radar')
+    /* the envelope (01 · the mark IS the name · no workflow: block · 0.109) ·
+       the value split (02) · the model (03) */
+    expect(doc.nika).toBe('weekly-radar')
+    expect('workflow' in doc).toBe(false)
     expect(Object.keys(doc.inputs)).toEqual(['topic', 'notes_path'])
     expect(Object.keys(doc.const)).toEqual(['output_dir'])
     expect(doc.model).toBe('ollama/llama3.2:3b')

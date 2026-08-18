@@ -11,7 +11,7 @@ import {
   type SourceLink,
 } from '../content/sources'
 import { LANGUAGE_WORDS } from '../content/language.generated'
-import { PATHS } from '../../site.config'
+import { CHAPTER_PATHS, PATHS } from '../../site.config'
 
 /* ── the sources-map drift gates ──────────────────────────────────────────────
    sources.ts is the ONE map of where the language lives; these gates keep
@@ -32,7 +32,7 @@ const ALL_RAILS: [string, SourceLink[]][] = [
 ]
 
 describe('sources.ts · where the language lives, kept honest', () => {
-  it('the chapter list IS the spec repo tree (00→08, nine files)', () => {
+  it('the chapter list IS the spec repo tree (00→17, eighteen files · the set the /language/spec rooms serve)', () => {
     expect([...SPEC_CHAPTERS]).toEqual([
       '00-overview.md',
       '01-envelope.md',
@@ -43,7 +43,18 @@ describe('sources.ts · where the language lives, kept honest', () => {
       '06-stdlib-contract.md',
       '07-conformance.md',
       '08-out-of-scope.md',
+      '09-types.md',
+      '10-authority.md',
+      '11-decision.md',
+      '12-gateway.md',
+      '13-outcomes.md',
+      '14-composition.md',
+      '15-proof.md',
+      '16-projections.md',
+      '17-trace.md',
     ])
+    /* one clock: the chapter rooms and the source rails name the same files */
+    expect(CHAPTER_PATHS.length).toBe(SPEC_CHAPTERS.length)
   })
 
   it('every internal href is a prerendered route or a served public file', () => {

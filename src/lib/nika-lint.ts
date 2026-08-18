@@ -1,10 +1,12 @@
 /* ─── nika-lint · the oracle's static checks, in the browser ────────────────
    A TypeScript port of the conformance cross-refs + the eight hard rules
    (docs.nika.sh/guides/agent-authoring), speaking the SHIPPED grammar
-   (0.106 · the map envelope + the value authorities: inputs · config ·
+   (0.109 · the nine-key envelope · nika · model · inputs · const · secrets ·
+   permits · run · tasks · outputs · the value authorities are THREE: inputs ·
    const · secrets — the visitor's own binary is the contract). Same NIKA
    codes, same fix lines — the playground teaches with the engine's own
-   vocabulary. Line numbers
+   vocabulary, and every dead form refuses with the engine's own PARSE-005
+   teaching (the destination, not just the refusal). Line numbers
    come from a light scanner over the source text (task blocks + envelope
    keys), not a CST: precise enough to put the squiggle on the right task.
    Note · 'exec' below is the Nika VERB (a yaml key) — nothing here runs
@@ -26,11 +28,14 @@ export interface LintDiag {
     port = extending this, and the corpus judges the claim. */
 export const LINT_COVERAGE = [
   'NIKA-PARSE',
+  'NIKA-PARSE-005',
   'NIKA-PARSE-024',
   'NIKA-DAG-001',
   'NIKA-DAG-002',
-  'NIKA-DAG-003',
   'NIKA-DAG-004',
+  'NIKA-DAG-005',
+  'NIKA-DAG-008',
+  'NIKA-DAG-009',
   'NIKA-VAR-001',
   'NIKA-VAR-005',
   'NIKA-VAR-008',
@@ -39,11 +44,14 @@ export const LINT_COVERAGE = [
   'NIKA-BUILTIN-DONE-001',
 ] as const
 
-/** codes the SHIPPED binary emits that the PIN has not ratified yet (the
-    0.104 grammar flip) — no /errors room exists until the spec lands them,
-    so every door for these renders TEXT-ONLY. Shrinks to empty at the pin
-    flip (the U1 gate re-tightens by itself). */
-export const SHIPPED_AHEAD_CODES = new Set(['NIKA-DAG-003'])
+/** codes the SHIPPED binary emits that the PIN has not ratified yet — no
+    /errors room exists until the spec lands them, so every door for these
+    renders TEXT-ONLY. EMPTY at the 0.109 pin (2b3d6ac3): every code the
+    port claims has its room; the set stays declared so the U1 door law
+    (nika-lint-conformance.test.ts) re-tightens by itself the day a shipped
+    code runs ahead of the pin again. NIKA-DAG-003 (the 0.104 entry) left
+    the port's coverage with the group fold: the port never emitted it. */
+export const SHIPPED_AHEAD_CODES = new Set<string>([])
 
 /* ─── the oracle seam (WO-11 · U3 · the I8 contract, born early) ─────────────
    The day the engine ships its wasm check artifact it registers
@@ -73,7 +81,35 @@ interface Task {
   with?: unknown
   when?: unknown
   for_each?: unknown
+  group?: unknown
+  after?: unknown
   [k: string]: unknown
+}
+
+/* ─── the nine keys · the whole envelope, nothing else at top level ─────────── */
+const ENVELOPE_KEYS = ['nika', 'model', 'inputs', 'const', 'secrets', 'permits', 'run', 'tasks', 'outputs'] as const
+const ENVELOPE_LIST = ENVELOPE_KEYS.join(' · ')
+/** the dead envelope keys → the engine's own PARSE-005 teaching (the
+    destination each one moved to · #974: the refusal names the door) */
+const DEAD_ENVELOPE: Record<string, string> = {
+  workflow: 'the identity moved onto `nika:` itself (`nika: <id>` · a kebab-case name, no longer `v1`) · its `description:` prose belongs in a `#` comment above `nika:`, never dropped',
+  description: 'prose at the top belongs in a `#` comment above `nika:` · the envelope never carried it',
+  config: 'a deployment-supplied value is now an `inputs:` entry with `required: false` and a `default:` · a value baked into the file is a `const:` entry',
+  policy: 'the block died with the nine-key envelope · the capability boundary is `permits:` (fs · net · exec · tools) · the unconditional laws need no declaration',
+  types: 'named types died with the block · write the type inline where it is used · the task\'s `returns:` and the verb\'s `schema:` are the typed doors',
+  vars: 'the value authorities are `inputs:` (caller-supplied) · `const:` (baked in) · `secrets:` (vault-backed) · `vars:` and `${{ vars.* }}` died with them',
+  env: 'a process environment value is an `inputs:` entry the caller supplies or a `secrets:` reference · `${{ env.* }}` died with the E-split',
+  assert: 'assertions left the file · `nika trace verify` judges the run\'s own receipt',
+}
+/** the dead task-level keys → the same teaching, per key */
+const DEAD_TASK_KEYS: Record<string, string> = {
+  output: 'renamed `extract:` (2026-08-11) — same shape, the truthful word for what it does',
+  on_finally: 'cleanup is a TASK now, joined by an unwind edge — write it as its own task with `after: { <parent>: unwind }` (a `finally` node in graph_format 3)',
+  max_parallel: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) — they have no meaning without it',
+  fail_fast: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) — they have no meaning without it',
+  declassify: 'merged into `lift:` — the law is a PARAMETER of one door: `lift: [{ law: taint, from: <binding>, because: "…" }]`',
+  inert: 'merged into `lift:` — `lift: [{ law: data-as-code, because: "…" }]` names which law the task opens and why',
+  id: 'the map KEY is the task id (`tasks: { <id>: … }`) · an `id:` field inside the body is the dead sequence form',
 }
 
 const VERBS = ['infer', 'exec', 'invoke', 'agent'] as const
@@ -84,10 +120,15 @@ const DURATION = /^([0-9]+(\.[0-9]+)?(ns|us|µs|ms|s|m|h))+$/
 const ROOT_ID = /(?<![.\w])([A-Za-z_][A-Za-z0-9_]*)(?:\.([A-Za-z_][A-Za-z0-9_]*))?/g
 const CEL_BUILTINS = new Set(['true', 'false', 'null', 'in', 'size'])
 export const LOOP_LOCALS = new Set(['item', 'index'])
-/* the six namespaces (0.106 · R3a the E-split): the value authorities
-   inputs · config · const · secrets, plus the two graph scopes with · tasks.
-   `vars` and `env` died at the flag-day (NIKA-VALUES-001/-002). */
-export const NAMESPACES = new Set(['inputs', 'config', 'const', 'secrets', 'with', 'tasks'])
+/* the namespaces are the CANON's (spec canon.yaml → src/canon.generated.ts ·
+   never typed here): the three value authorities inputs · const · secrets,
+   plus the two graph scopes with · tasks. `config` died with the envelope
+   nuke (a deployment default is an input with required: false) · `vars`
+   and `env` died at the E-split. `group.<name>` is a FOLD (with:-only ·
+   spec 03 §group), not a value namespace — it is judged on its own below. */
+export const NAMESPACES = new Set<string>(CANON.namespaceNames)
+const NAMESPACE_LIST = [...NAMESPACES].join(' ')
+const GROUP_REF = /\bgroup\.([a-z][a-z0-9_]*)\b/g
 const PROVIDERS = new Set<string>([
   ...CANON.providerIdsCloud,
   ...CANON.providerIdsLocal,
@@ -146,15 +187,22 @@ export function lintNika(src: string): LintDiag[] {
     return [{ line: 1, code: 'NIKA-PARSE', message: 'the file is not a YAML mapping', fix: 'start from a template' }]
   }
 
-  // ── envelope ──
-  if (doc.nika !== 'v1')
-    diags.push({ line: 1, code: 'NIKA-PARSE', message: '`nika: v1` is required · the exact value, first line', fix: 'add `nika: v1` at the top' })
-  const wf = doc.workflow as Record<string, unknown> | undefined
-  const wfId = wf && typeof wf === 'object' ? wf.id : undefined
-  if (!wf || typeof wf !== 'object' || typeof wfId !== 'string' || !/^[a-z][a-z0-9-]*$/.test(wfId))
-    diags.push({ line: keyLine(src, 'workflow'), code: 'NIKA-PARSE-020', message: '`workflow:` is a map — `id:` (kebab-case) + optional `description:`', fix: 'e.g. `workflow:\n  id: my-job`' })
+  // ── envelope · the nine keys · `nika:` carries the file's NAME ──
+  const mark = doc.nika
+  if (mark === 'v1')
+    diags.push({ line: keyLine(src, 'nika'), code: 'NIKA-PARSE-005', message: '`nika: v1` is the dead version marker — `nika:` carries the file\'s NAME now', fix: 'write `nika: <name>` (kebab-case · e.g. `nika: weekly-radar`) · the envelope has no version key' })
+  else if (typeof mark !== 'string' || !/^[a-z][a-z0-9-]*$/.test(mark))
+    diags.push({ line: keyLine(src, 'nika'), code: 'NIKA-PARSE', message: mark === undefined ? '`nika:` is required · the file\'s NAME, first key' : `\`nika: ${String(mark)}\` is not a kebab-case name`, fix: 'add `nika: <name>` at the top (kebab-case · lowercase letters, digits, hyphens)' })
+  for (const key of Object.keys(doc)) {
+    if ((ENVELOPE_KEYS as readonly string[]).includes(key)) continue
+    const line = keyLine(src, key)
+    if (key in DEAD_ENVELOPE)
+      diags.push({ line, code: 'NIKA-PARSE-005', message: `unknown field \`${key}\` in the workflow envelope (strict mode) — this key died with the nine-key envelope (2026-08-12)`, fix: `${DEAD_ENVELOPE[key]} · the fields here: ${ENVELOPE_LIST}` })
+    else
+      diags.push({ line, code: 'NIKA-PARSE-005', message: `unknown field \`${key}\` in the workflow envelope (strict mode)`, fix: `the fields here: ${ENVELOPE_LIST}` })
+  }
 
-  // 0.105 « the map »: tasks is a MAP keyed by id · uniqueness is structural.
+  // « the map »: tasks is a MAP keyed by id · uniqueness is structural.
   const rawTasks = doc.tasks
   const tasksMap = rawTasks && typeof rawTasks === 'object' && !Array.isArray(rawTasks)
     ? (rawTasks as Record<string, Task>)
@@ -167,10 +215,12 @@ export function lintNika(src: string): LintDiag[] {
   const ids = entries.map(([id]) => id)
   const idset = new Set(ids)
 
-  /* 0.105 precedence: the BINDING is the edge — every tasks.X read implies
-     it · `after:` carries the control edges ({producer: predicate}).
-     0.106 ratified the predicate names: success · failure (DAG-005). */
-  const PREDICATES = new Set(['success', 'failure', 'skipped', 'terminal'])
+  /* precedence: the BINDING is the edge — every tasks.X read implies it ·
+     `after:` carries the control edges ({producer: predicate}). The
+     predicate set is CLOSED (DAG-005): success · failure · skipped ·
+     terminal · unwind. `unwind` is the E_f cleanup attachment (spec 03
+     §unwind): it never enters the precedence graph — no wave, no cycle. */
+  const PREDICATES = new Set(['success', 'failure', 'skipped', 'terminal', 'unwind'])
   const aftersOf = (t: Task | null | undefined): Array<[string, unknown]> => {
     const a = (t as Task | undefined)?.after
     if (!a) return []
@@ -178,11 +228,23 @@ export function lintNika(src: string): LintDiag[] {
     if (typeof a === 'object') return Object.entries(a as Record<string, unknown>)
     return []
   }
+  /** the producers an unwind task cleans up after (its E_f parents) */
+  const unwindParentsOf = (t: Task | null | undefined): string[] =>
+    aftersOf(t).filter(([, pred]) => pred === 'unwind').map(([d]) => d)
+  const isUnwindTask = (t: Task | null | undefined): boolean => unwindParentsOf(t).length > 0
+  /** group name → its declared members (spec 03 §group · membership is DECLARED) */
+  const groupMembers = new Map<string, string[]>()
+  for (const [gid, gt] of entries)
+    if (typeof gt.group === 'string') groupMembers.set(gt.group, [...(groupMembers.get(gt.group) ?? []), gid])
   const producersAll = (t: Task | null | undefined): string[] => {
     const out: string[] = []
-    for (const [d] of aftersOf(t)) if (!out.includes(d)) out.push(d)
+    for (const [d, pred] of aftersOf(t)) if (pred !== 'unwind' && !out.includes(d)) out.push(d)
     for (const body of exprBodies(t))
       for (const m of body.matchAll(TASK_REF)) if (!out.includes(m[1])) out.push(m[1])
+    /* a group fold in with: is an edge from EVERY member (the fan-in) */
+    for (const body of exprBodies((t as Task | undefined)?.with))
+      for (const m of body.matchAll(GROUP_REF))
+        for (const member of groupMembers.get(m[1]) ?? []) if (!out.includes(member)) out.push(member)
     return out
   }
 
@@ -205,7 +267,16 @@ export function lintNika(src: string): LintDiag[] {
     if (!/^[a-z][a-z0-9_]*$/.test(id))
       diags.push({ line, code: 'NIKA-PARSE', message: `task id ${JSON.stringify(id)} must be snake_case`, fix: 'a hyphen is CEL subtraction · use _' })
 
-    // timeout: quoted Go-duration (used by task · wait · on_finally rules below)
+    // the dead task-level keys · PARSE-005 with the engine's own teaching
+    for (const key of Object.keys(t))
+      if (key in DEAD_TASK_KEYS)
+        diags.push({ line, code: 'NIKA-PARSE-005', message: `unknown field \`${key}\` in task '${id}' (strict mode) — dead since the 0.109 grammar`, fix: DEAD_TASK_KEYS[key] })
+    // the dead on_error knob · failing loudly IS the default
+    const onErrKeys = t.on_error && typeof t.on_error === 'object' ? Object.keys(t.on_error as object) : []
+    if (onErrKeys.includes('fail_workflow'))
+      diags.push({ line, code: 'NIKA-PARSE-005', message: `unknown field \`fail_workflow\` in \`on_error:\` on '${id}' (strict mode)`, fix: 'a task fails loudly unless on_error says otherwise · the fields here: recover · skip · on_codes' })
+
+    // timeout: quoted Go-duration (used by task · wait rules below)
     const checkDuration = (v: unknown, whereFix: string) => {
       if (typeof v === 'number')
         diags.push({ line, code: 'NIKA-PARSE', message: `timeout ${v} is a number · must be a quoted duration`, fix: `write "${v}s" (${whereFix})` })
@@ -213,8 +284,6 @@ export function lintNika(src: string): LintDiag[] {
         diags.push({ line, code: 'NIKA-PARSE', message: `timeout '${v}' is not a Go-duration`, fix: `e.g. "30s" · "5m" · "1h30m" (${whereFix})` })
     }
     checkDuration(t.timeout, 'task timeout')
-    for (const step of Array.isArray(t.on_finally) ? (t.on_finally as Record<string, unknown>[]) : [])
-      if (step && typeof step === 'object') checkDuration(step.timeout, 'on_finally timeout')
 
     // exactly one verb
     const verbs = VERBS.filter((v) => v in t)
@@ -238,8 +307,26 @@ export function lintNika(src: string): LintDiag[] {
       else if (!idset.has(d))
         diags.push({ line, code: 'NIKA-DAG-002', message: `after: '${d}' is not a task`, fix: 'fix the name or add the task' })
       if (typeof pred === 'string' && !PREDICATES.has(pred))
-        diags.push({ line, code: 'NIKA-DAG-005', message: `after.${d}: '${pred}' is not a predicate`, fix: 'the set is closed · success · failure · skipped · terminal' })
+        diags.push({ line, code: 'NIKA-DAG-005', message: `after.${d}: '${pred}' is not a predicate`, fix: `the set is closed · success · failure · skipped · terminal · unwind${pred === 'succeeded' ? ' · respell `succeeded` as `success`' : pred === 'failed' ? ' · respell `failed` as `failure`' : ''}` })
     }
+
+    // the group fold (spec 03 §group) · DAG-008 a ghost group · DAG-009 an
+    // unwind task may not join one · a member folding its own group is a
+    // cycle (DAG-001) · the fold is legal in with: only (VAR-021 elsewhere)
+    if (typeof t.group === 'string' && isUnwindTask(t))
+      diags.push({ line, code: 'NIKA-DAG-009', message: `unwind task '${id}' joins group '${t.group}'`, fix: 'cleanup never schedules · a group is a fan-in of scheduled tasks · drop group: on the unwind task' })
+    for (const body of exprBodies(t.with))
+      for (const m of body.matchAll(GROUP_REF)) {
+        const members = groupMembers.get(m[1])
+        if (!members)
+          diags.push({ line, code: 'NIKA-DAG-008', message: `with: on '${id}' folds group.${m[1]} · no task declares group: ${m[1]}`, fix: 'membership is DECLARED · add group: to the members or fix the name' })
+        else if (members.includes(id))
+          diags.push({ line, code: 'NIKA-DAG-001', message: `'${id}' is a member of group '${m[1]}' and folds it`, fix: 'a fold reads its members · a member cannot wait for itself · leave the group or fold another' })
+      }
+    for (const field of ['when', 'for_each', ...VERBS])
+      for (const body of exprBodies(t[field]))
+        for (const m of body.matchAll(GROUP_REF))
+          diags.push({ line, code: 'NIKA-VAR-021', message: `group.${m[1]} in ${field}: on '${id}' — a fold is a boundary read`, fix: `hoist it into with: and read \${{ with.<name> }}` })
 
     // DAG-002 · a tasks.X binding must name a task (the binding IS the edge)
     for (const body of exprBodies(t.with))
@@ -251,22 +338,28 @@ export function lintNika(src: string): LintDiag[] {
       }
 
     // VAR-021 · tasks.* is boundary-only — with:/after: declare the edges,
-    // the body reads its bindings (when:/for_each:/verb fields are LOCAL)
+    // the body reads its bindings (when:/for_each:/verb fields are LOCAL).
+    // The one settled read: an unwind task may read its PRODUCER anywhere
+    // (spec 03 §unwind · the parent is settled by definition when it runs).
+    const settledParents = unwindParentsOf(t)
     for (const field of ['when', 'for_each', ...VERBS])
       for (const body of exprBodies(t[field]))
         for (const m of body.matchAll(TASK_REF))
-          diags.push({ line, code: 'NIKA-VAR-021', message: `tasks.${m[1]} in ${field}: on '${id}' — the body never reads the graph`, fix: `hoist it into with: and read \${{ with.${m[1]} }}` })
+          if (!settledParents.includes(m[1]))
+            diags.push({ line, code: 'NIKA-VAR-021', message: `tasks.${m[1]} in ${field}: on '${id}' — the body never reads the graph`, fix: `hoist it into with: and read \${{ with.${m[1]} }}` })
 
-    // VAR-021 · on_finally reads its PARENT only (a sibling may still be running)
-    for (const step of Array.isArray(t.on_finally) ? (t.on_finally as unknown[]) : [])
-      for (const body of exprBodies(step))
+    // VAR-021 · an unwind task reads its PRODUCER only (a sibling may still
+    // be running · spec 03 §unwind « what it may read »)
+    if (isUnwindTask(t)) {
+      const parents = unwindParentsOf(t)
+      for (const body of exprBodies(t))
         for (const m of body.matchAll(TASK_REF))
-          if (m[1] !== id)
-            diags.push({ line, code: 'NIKA-VAR-021', message: `on_finally on '${id}' reads tasks.${m[1]} · only the parent is legal there`, fix: `cleanup reads its parent only · \${{ tasks.${id}.status }}` })
+          if (!parents.includes(m[1]))
+            diags.push({ line, code: 'NIKA-VAR-021', message: `unwind task '${id}' reads tasks.${m[1]} · only its producer is settled when it runs`, fix: `cleanup reads its producer only · \${{ tasks.${parents[0]}.status }} · .error · .output` })
+    }
 
-    // VAR-001 · roots must resolve (the four value authorities + with)
+    // VAR-001 · roots must resolve (the three value authorities + with)
     const inputs = new Set(Object.keys((doc.inputs as object) || {}))
-    const config = new Set(Object.keys((doc.config as object) || {}))
     const consts = new Set(Object.keys((doc.const as object) || {}))
     const secrets = new Set(Object.keys((doc.secrets as object) || {}))
     const withKeys = new Set(Object.keys((t.with as object) || {}))
@@ -278,10 +371,15 @@ export function lintNika(src: string): LintDiag[] {
         if (LOOP_LOCALS.has(root)) {
           if (!inForEach)
             diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}' is a for_each loop-local · no for_each on '${id}'`, fix: 'add for_each: or use a namespace' })
+        } else if (root === 'group') {
+          /* the fold is judged above (DAG-008 · VAR-021) · never a VAR-001 ·
+             a BARE `group` names no group at all (DAG-008 · the fold is
+             `group.<name>`) */
+          if (!seg)
+            diags.push({ line, code: 'NIKA-DAG-008', message: `'${id}' reads bare \`group\` · a fold names its group`, fix: 'write ${{ group.<name> }} · the name is what the members declare under group:' })
+          continue
         } else if (root === 'inputs' && seg && !inputs.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `inputs.${seg} is not declared`, fix: `declare it under inputs:` })
-        else if (root === 'config' && seg && !config.has(seg))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `config.${seg} is not declared`, fix: 'declare it under config:' })
         else if (root === 'const' && seg && !consts.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `const.${seg} is not declared`, fix: 'declare it under const:' })
         else if (root === 'secrets' && seg && !secrets.has(seg))
@@ -289,7 +387,7 @@ export function lintNika(src: string): LintDiag[] {
         else if (root === 'with' && seg && !withKeys.has(seg))
           diags.push({ line, code: 'NIKA-VAR-001', message: `with.${seg} is not in this task's with:`, fix: 'add it to with:' })
         else if (seg && !NAMESPACES.has(root) && !LOOP_LOCALS.has(root))
-          diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}.${seg}' uses an unknown namespace`, fix: 'the six namespaces · inputs config const secrets with tasks' })
+          diags.push({ line, code: 'NIKA-VAR-001', message: `'${root}.${seg}' uses an unknown namespace${root === 'config' ? ' · config died with the nine-key envelope' : root === 'vars' || root === 'env' ? ` · ${root} died at the E-split` : ''}`, fix: `the namespaces · ${NAMESPACE_LIST}${root === 'config' ? ' · a deployment default is an inputs: entry with required: false + default:' : root === 'env' ? ' · a process value is an inputs: entry or a secrets: reference' : root === 'vars' ? ' · inputs: (supplied) or const: (baked in)' : ''}` })
       }
 
     // hard rule 6 · write needs content
@@ -328,13 +426,13 @@ export function lintNika(src: string): LintDiag[] {
         diags.push({ line, code: 'NIKA-VAR-005', message: `when: on '${id}' is not boolean-shaped`, fix: 'compare something · e.g. ${{ inputs.x > 0 }} · has(inputs.x) · x.contains("…")' })
     }
 
-    // output: bindings are pure jq — ${{ }} never appears inside them
-    const out = t.output
+    // extract: bindings are pure jq — ${{ }} never appears inside them
+    const out = t.extract
     if (out && typeof out === 'object')
       for (const [name, expr] of Object.entries(out as Record<string, unknown>))
         if (typeof expr === 'string' && EXPR_BODY.test(expr)) {
           EXPR_BODY.lastIndex = 0
-          diags.push({ line, code: 'NIKA-VAR-005', message: `output.${name} on '${id}' contains \${{ }}`, fix: 'bindings are pure jq over the task output · shape the verb INPUT with ${{ }} instead' })
+          diags.push({ line, code: 'NIKA-VAR-005', message: `extract.${name} on '${id}' contains \${{ }}`, fix: 'bindings are pure jq over the task output · shape the verb INPUT with ${{ }} instead' })
         }
 
 

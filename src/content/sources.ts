@@ -58,6 +58,15 @@ export const SPEC_CHAPTERS = [
   '06-stdlib-contract.md',
   '07-conformance.md',
   '08-out-of-scope.md',
+  '09-types.md',
+  '10-authority.md',
+  '11-decision.md',
+  '12-gateway.md',
+  '13-outcomes.md',
+  '14-composition.md',
+  '15-proof.md',
+  '16-projections.md',
+  '17-trace.md',
 ] as const
 
 const chapter = (file: (typeof SPEC_CHAPTERS)[number], hint: string): SourceLink => ({
@@ -161,28 +170,29 @@ export const ECOSYSTEM: SourceLink[] = [
 
 /* ── per-scope normative chapter (the schema's own structure → the prose) ── */
 const SCOPE_CHAPTER: Record<string, SourceLink> = {
-  envelope: chapter('01-envelope.md', 'the container: every top-level key'),
-  /* W1 « the map »: the identity object is envelope prose */
-  workflow: chapter('01-envelope.md', 'the identity object: id + description'),
+  /* the nine-key envelope (0.109): nika: carries the name, no identity object */
+  envelope: chapter('01-envelope.md', 'the container: the nine top-level keys'),
   task: chapter('03-dag.md', 'the task shape and the plan it hangs on'),
+  for_each: chapter('03-dag.md', 'the fan-out block: items and its two knobs'),
   infer: chapter('02-verbs.md', 'the four verbs, one execution model each'),
   exec: chapter('02-verbs.md', 'the four verbs, one execution model each'),
   invoke: chapter('02-verbs.md', 'the four verbs, one execution model each'),
   agent: chapter('02-verbs.md', 'the four verbs, one execution model each'),
   retry: chapter('05-errors.md', 'failures, typed, and the leash that retries them'),
   on_error: chapter('05-errors.md', 'failures, typed: the catch side'),
-  on_finally: chapter('03-dag.md', 'the cleanup lane rides the task shape'),
+  lift: chapter('10-authority.md', 'the authored doors: one law lifted, with its reason'),
 }
 
 /* words whose PROSE home differs from their scope's default */
 const WORD_CHAPTER: Record<string, SourceLink> = {
   inputs: chapter('04-variables.md', 'typed caller parameters and the ${{ }} grammar'),
-  config: chapter('04-variables.md', 'typed deployment config; it may appear in logs'),
   const: chapter('04-variables.md', 'fixed values baked into the file'),
   secrets: chapter('04-variables.md', 'masked references, never inline literals'),
   with: chapter('04-variables.md', 'task-level scope injection'),
-  output: chapter('04-variables.md', 'named jq bindings over a task result'),
+  extract: chapter('04-variables.md', 'named jq bindings over a task result'),
   outputs: chapter('04-variables.md', 'the workflow return value, symmetric to inputs'),
+  group: chapter('03-dag.md', 'fan-in membership: the fold reads every member'),
+  returns: chapter('09-types.md', 'the typed door: the task output contract'),
   tool: chapter('06-stdlib-contract.md', 'the closed nika: set + the mcp: lane'),
   args: chapter('06-stdlib-contract.md', 'validated against the builtin contract'),
 }

@@ -49,9 +49,11 @@ describe('code roles · derived in the spec, re-derived here', () => {
 
   it('the failure closure re-derives from the twin, exactly', () => {
     /* the spec's rule, applied independently: a word whose ONLY scopes are
-       recovery scopes IS failure grammar, plus the four authored heads */
-    const RECOVERY = new Set(['on_error', 'on_finally', 'retry'])
-    const derived = new Set(['on_error', 'on_finally', 'retry', 'recover'])
+       recovery scopes IS failure grammar, plus the three authored heads
+       (0.109 · on_finally left the grammar: cleanup is a task on an unwind
+       edge, and fail_workflow left on_error — failing loudly is the default) */
+    const RECOVERY = new Set(['on_error', 'retry'])
+    const derived = new Set(['on_error', 'retry', 'recover'])
     for (const [word, scopes] of Object.entries(twinScopes())) {
       if (scopes.length && scopes.every((s) => RECOVERY.has(s))) derived.add(word)
     }

@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: e7ebf29a7eaa3f8b933b87d04d8fb67bdab516e89a5543ce16659ec8e110e5eb
+  sha256: 77f60f95f36e03ee7357e8b9fe5f31054faa0db52682de902bf65e60c027ea8a
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -615,7 +615,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/learn.ts"
   class: authored
-  sha256: 65ee8b381d304cf52c8fc65a7b5ffb2d743dc49826d9f1ee4136a2bb936cad49
+  sha256: b05825c3879e87c007e1b4bcb2d775ee9db7ffd8123a0e004d01f66d88b4aaca
   evidence: "hand-written learn-track copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: fd9b47ade7a61d0ef260a930e4a13ac26bbe25569380fd17937aabfb2dd330e2
+  aggregate_sha256: 486046484885c39e56e3cb2e08d6680f2220bbf9f8f05805ea204d9df68e6628
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -936,7 +936,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: c88f467b7002f80741a4a89cde37c63fb07bafa1104830b5fd21d2714b619964
+  aggregate_sha256: aca791924e8373617dc2cc0c3187c15403b0754c3988e483bd77aa7b7eeba60a
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

@@ -651,7 +651,7 @@
     {
       "selector": "src/content/learn.ts#count:2",
       "path": "src/content/learn.ts",
-      "line": 128,
+      "line": 125,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -675,7 +675,7 @@
     {
       "selector": "src/content/sources.ts#count:1",
       "path": "src/content/sources.ts",
-      "line": 168,
+      "line": 177,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -687,7 +687,7 @@
     {
       "selector": "src/content/sources.ts#count:2",
       "path": "src/content/sources.ts",
-      "line": 169,
+      "line": 178,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -699,7 +699,7 @@
     {
       "selector": "src/content/sources.ts#count:3",
       "path": "src/content/sources.ts",
-      "line": 170,
+      "line": 179,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -711,7 +711,7 @@
     {
       "selector": "src/content/sources.ts#count:4",
       "path": "src/content/sources.ts",
-      "line": 171,
+      "line": 180,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -723,7 +723,7 @@
     {
       "selector": "src/content/sources.ts#count:5",
       "path": "src/content/sources.ts",
-      "line": 216,
+      "line": 226,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -771,7 +771,7 @@
     {
       "selector": "src/lib/nika-lint.ts#count:1",
       "path": "src/lib/nika-lint.ts",
-      "line": 219,
+      "line": 288,
       "text": "one verb",
       "source": "one",
       "field": "verbs",

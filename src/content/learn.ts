@@ -16,14 +16,12 @@ import type { TermLine } from '../components/TermFrame'
    explain the same key differently). Keys are the token texts the CodeFile
    tokenizer emits (no trailing colon). */
 export const DICT: Record<string, string> = {
-  nika: 'the format marker · v1 is frozen, files you write today keep working',
-  workflow: 'the file’s name · what you call when you run it',
+  nika: 'the mark and the name · says « this is a nika file » and what you call it',
   model: 'which brain to ask · local or any cloud, one line to swap',
   inputs: 'the caller’s parameters · typed, validated, passed from the command line',
   const: 'the file’s wiring · fixed values baked in, edit the file to change them',
   permits: PERMITS_WORDS,
   tasks: 'the to-do list · each item does exactly one thing',
-  id: 'the workflow’s handle · what you call from the command line',
   with: WITH_WORDS,
   after: AFTER_WORDS,
   when: WHEN_WORDS,
@@ -36,7 +34,7 @@ export const DICT: Record<string, string> = {
   backoff_ms: 'the pause between tries, in milliseconds',
   on_error: 'the plan B · what steps in when retries run out',
   recover: 'the value that stands in when the step still fails',
-  output: 'picks pieces of this step’s result and names them',
+  extract: 'picks pieces of this step’s result and names them',
   outputs: 'what the whole workflow hands back, by name',
   prompt: 'the question sent to the model',
   tool: 'which tool to use · always named, never guessed',
@@ -77,12 +75,11 @@ export const STEPS: Step[] = [
     topic: 'the file',
     title: 'A workflow is a file you can read',
     plain:
-      'The whole thing is one plain-text file. Two lines make it real: name the language, name the workflow. That header is the whole ceremony: no project setup, no boilerplate, no config.',
+      'The whole thing is one plain-text file. One line makes it real: the mark that says « this is a nika file » is also its name. That header is the whole ceremony: no project setup, no boilerplate, no version marker.',
     file: 'weekly-radar.nika.yaml',
-    yaml: `nika: v1
-workflow:
-  id: weekly-radar`,
-    note: 'nika: v1 means the format is frozen. Files you write today won’t break.',
+    yaml: `# a weekly radar · gate → gather → one synthesis → save
+nika: weekly-radar`,
+    note: 'nika: carries the file’s name (kebab-case). A description is a comment above it. There is no version key to get wrong: the binary that runs the file is the version.',
   },
   {
     n: '02',
@@ -255,17 +252,17 @@ digest:
     topic: 'the outputs',
     title: 'Name what comes out',
     plain:
-      'output: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
-    file: 'output · outputs',
+      'extract: binds pieces of a task result to names; the workflow declares what it returns. Downstream tasks (and you) read clean names, not raw API responses.',
+    file: 'extract · outputs',
     yaml: `tasks:
   digest:
     infer:
       prompt: "…"
-    output:
+    extract:
       result: ".choices[0].message.content"
 
 outputs:
-  brief: \${{ tasks.digest.output.result }}`,
+  brief: \${{ tasks.digest.result }}`,
   },
 ]
 
@@ -284,10 +281,7 @@ outputs:
    VERBATIM (captured 2026-08-03 from a bare directory holding just this
    file, exactly like a reader's first copy · nika 0.108.0). The honesty law:
    re-capture when the CLI's voice changes, never hand-edit. */
-export const FULL_FILE = `nika: v1
-workflow:
-  id: weekly-radar
-  description: "gate → parallel gather (fetch · git log · notes) → one synthesis → save"
+export const FULL_FILE = `nika: weekly-radar
 inputs:
   topic:
     type: string
