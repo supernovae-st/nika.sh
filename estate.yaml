@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: f0438136242feca5b189a15896f3b6b68b0b25808715bf71bf69083397702704
+  sha256: 08c293057b89a44fe19d6c71292159fbe5528e8bcacdbba500d8b399fbd5d329
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 5b2bbd0b87c8bdf7f7942e6f4271efe8be7a754e17fce4b45c50f3799614fcee
+  aggregate_sha256: 98e904dd8e233e53f0bb49cba70ce0e464e7f6cce0f3c11581f9b4b6c0db845f
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -931,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 9f61e511b1de1e39168806dd41789936cc29d6611d675493127286d2a25ffd26
+  aggregate_sha256: f7d0cdd105d62cf802673d2f9c2764b2823543456fad8f040ec8e83595346c47
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: 44f9659aa781f5c6b9ca3e828f7f01b3d458ef944fedaa9120a739673e3143a8
+  aggregate_sha256: cf040b9e3e7fe2aade6bb3ea97893627a6aea74fb85c85e049250b9430a7b6a6
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: b7c011ee2b1de8812ab17240871e0f5d6b60c40b0740063b9bb7b44649b20085
+  aggregate_sha256: 11a0879d1214bc7c5c5cc6aad19c29e8990bc3a5c7a091fcc60a73a21caefb25
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

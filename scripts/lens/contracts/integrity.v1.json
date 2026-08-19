@@ -43,7 +43,7 @@
   },
   {
    "path": "scripts/build-blog.mjs",
-   "sha256": "aee0e71b580ae98d596f2c9b087ad4210e7fc3f68a1faa9cb0c24c0b585f7a60"
+   "sha256": "87a6c44aca42fd40929f0119b015f0d2338e0ed488bae6d4f38dd304cc1b0614"
   },
   {
    "path": "scripts/build-og-card.mjs",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "3c07cfb7d903e49f5a1cfdd65fc220b1e8e8199b1ac7fa686a74f024c3ddc1c4"
+   "sha256": "c7ceeeb4639137644c224aee08e45dd121ef596d61f9e7fcf299fb0d9b5f040b"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
