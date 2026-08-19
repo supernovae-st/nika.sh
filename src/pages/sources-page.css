@@ -15,9 +15,8 @@
   padding-top: clamp(124px, 16vh, 188px);
 }
 .src-title {
-  max-width: 12ch;
+  max-width: 20ch;
   overflow-wrap: anywhere;
-  font-size: var(--type-display);
 }
 
 /* ── the bands · reuse the year-head rule line ─────────────────────────────── */
@@ -130,36 +129,10 @@
 }
 
 /* ── the verify protocol ───────────────────────────────────────────────────── */
-.src-arch {
-  position: relative;
-  margin-top: 16px;
-  overflow: hidden;
-  box-shadow: var(--elev-frame);
-}
-.src-arch::before {
-  content: '';
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  z-index: 1;
-  height: 1px;
-  background: color-mix(in oklch, var(--v4-accent-bright) 65%, white);
-  transform: scaleX(0);
-  transform-origin: left;
-  pointer-events: none;
-}
-.src-arch-k {
-  margin: 0;
-  padding: 12px 16px 0;
-  font-size: var(--type-mini);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--v4-text-faint);
-}
 .src-verify {
   list-style: none;
-  padding: 8px 16px 16px;
-  margin: 0;
+  padding: 0;
+  margin: 16px 0 0;
   display: grid;
   gap: 20px;
   counter-reset: verify;
@@ -185,27 +158,4 @@
   color: color-mix(in srgb, var(--v4-text) 62%, transparent);
   margin: 0;
   max-width: 68ch;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .src-arch {
-    transition: transform var(--dur-soft) var(--ease-ui);
-  }
-  .v4sec.v4-in .src-arch::before {
-    animation: src-seam var(--dur-slow) var(--ease-ui) var(--dur-ui) forwards;
-  }
-  .src-arch:hover {
-    transform: translateY(-3px);
-  }
-  .src-word {
-    transition: transform var(--dur-ui) var(--ease-ui);
-  }
-  .src-word:hover {
-    transform: translateY(-2px);
-  }
-}
-@keyframes src-seam {
-  to {
-    transform: scaleX(1);
-  }
 }

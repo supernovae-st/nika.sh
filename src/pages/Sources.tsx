@@ -151,9 +151,6 @@ export function Component() {
           <h1 id="src-title" className="v4sec-title src-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
             Sources.
           </h1>
-          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
-            Pinned sources. Verify every claim yourself.
-          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Every count, every code block and every claim on these pages is a projection of
             pinned sources, <b>re-derived at build time and gated in CI</b>: the site never
@@ -310,8 +307,6 @@ export function Component() {
               the same discipline the {CANON.verbs}-verb language applies to runs, applied to the
               site that documents it.
             </p>
-            <div className="src-arch v4-frame-canvas">
-              <p className="src-arch-k mono">the protocol</p>
             <ol className="src-verify">
               {VERIFY.map((v) => (
                 <li key={v.cmd}>
@@ -320,7 +315,6 @@ export function Component() {
                 </li>
               ))}
             </ol>
-            </div>
           </section>
 
           <HubFoot nodeId="surface:sources" />

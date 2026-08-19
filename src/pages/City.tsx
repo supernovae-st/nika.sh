@@ -15,7 +15,6 @@ import { BelvedereRail } from '../components/BelvedereRail'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './how-page.css'
-import './city-page.css'
 import './tool-detail.css'
 
 /* ─── /city · where every piece lives (the belvédère, 2026-08-02) ────────────
@@ -99,7 +98,7 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark tp-page td-page city-page">
+    <main className="theme-dark tp-page td-page">
       <section ref={ref} aria-labelledby="city-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <Island id="city" payload={payload ?? ''} />
@@ -109,15 +108,12 @@ export function Component() {
           </p>
           <h1
             id="city-title"
-            className="v4sec-title city-display"
+            className="v4sec-title"
             data-rise
             style={{ ['--rise-delay' as string]: '60ms' }}
           >
             Where every piece lives.
           </h1>
-          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
-            Two clocks. Every fact hangs off one of them.
-          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Nika is not one repository. The language is specified in one, the engine implements it
             in another, and this site is a projection of both, read at a commit it names out loud.
@@ -151,8 +147,6 @@ export function Component() {
               would have to lie about one of them.{' '}
               <Link to="/language/spec/envelope">The envelope, whole →</Link>
             </p>
-            <div className="city-arch v4-frame-canvas">
-              <p className="city-arch-k mono">the two pins</p>
             <ol className="td-args tp-args">
               <li className="tp-arg" style={{ listStyle: 'none' }}>
                 <span className="tp-arg-name">the spec pin</span>
@@ -176,7 +170,6 @@ export function Component() {
                 </span>
               </li>
             </ol>
-            </div>
           </div>
 
           {/* ── the repos ── */}

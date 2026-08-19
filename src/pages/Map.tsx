@@ -186,9 +186,6 @@ export function Component() {
             <h1 id="mp-title" className="v4sec-title mp-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
               Every page, <span className="mp-spectrum">one graph</span>.
             </h1>
-            <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
-              The list is the truth. The drawing is a lens.
-            </p>
             <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
               {MAP_OPENER} The anatomy below reads top-down; the constellation draws the same
               graph; every door on this site is listed once, grouped, and walkable.
