@@ -905,7 +905,7 @@ patterns:
 - glob: "docs/plans/*.md"
   class: authored
   match_count: 9
-  aggregate_sha256: 7d0e1bef96946a5f26240aa1d75a016c30c367b6a38a4c98b08fd13b969c0327
+  aggregate_sha256: 50727d6c6c4982f1394914814d306167aa3bcb1420505f337cda9c97cbe0d32c
   evidence: "hand-written design/implementation plans"
 - glob: "patches/*.patch"
   class: authored

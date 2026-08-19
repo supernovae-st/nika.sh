@@ -3,6 +3,13 @@
 > Status: **design / validated direction** · 2026-06-17
 > Supersedes the v3 cinematic-galaxy site (preserved — see §10).
 > Owner: Thibaut · doc drafted with Olympus.
+>
+> **⚠️ AMENDMENT 2026-08-19 · SPELLING, NOT THE DIRECTION.** This file is
+> a dated photo. The live envelope is nine-key · `nika: <kebab-id>` is
+> the mark AND the name. `nika: v1` + `workflow:` + `vars:` PARSE-refuse
+> since 0.109. Do not copy-paste a fence from §5.1 as a current workflow.
+> Normative spelling · nika-spec `01-envelope.md`. Original 2026-06-17
+> text stays below per §2.7.
 
 ---
 
@@ -155,13 +162,14 @@ The literal story of *Intent as Code*: a real file **writes itself**, becomes a
 **2D DAG**, then tilts into a **3D depth corridor** and **executes** as you
 scroll — all four verbs firing in topological order.
 
-### 5.1 The workflow (spec-valid · all 4 verbs)
+### 5.1 The workflow (pre-0.109 photo · all 4 verbs)
 
-> ⚠️ **Illustrative.** Per AGENTS.md, the final file must be authored in
-> nika-spec `examples/showcase/*.nika.yaml` and projected via
-> `showcase-projector.py` into `usecases-yaml.generated.ts` — never hand-typed
-> on the site. `exec`/`agent` field names below to be confirmed against the
-> spec before projection.
+> ⚠️ **Illustrative · and the envelope is dead.** The fence below is the
+> fourteen-key form (`nika: v1` + `workflow:` + `vars:`). 0.109 PARSE-refuses
+> it. Live files start `nika: morning-brief`; description is a `#` comment;
+> a caller knob is `inputs:` with a default. Per AGENTS.md, the final file
+> must be authored in nika-spec `examples/showcase/*.nika.yaml` and projected
+> via `showcase-projector.py` — never hand-typed on the site.
 
 ```yaml
 nika: v1
@@ -410,7 +418,7 @@ prerendered to its own `index.html` with per-page `<head>` (Unhead) for SEO:
 |---|---|---|
 | `/` | rebuild | the v4 landing (§4–§6) |
 | `/docs` | keep | Mintlify — external, untouched |
-| `/spec` | **NEW** | language reference: `nika: v1`, the 4 verbs, 23 builtins, 14 providers, the JSON schema + the 14 `NIKA-XXX` error namespaces. Built from in-repo `public/schema/workflow.json` + `public/errors/catalog.json`. FIG-numbered, monochrome, Linear-`Method` register. |
+| `/spec` | **NEW** | language reference: `nika: <id>` (nine keys), the 4 verbs, builtins/providers from canon.yaml (derive, never tape), the JSON schema + the `NIKA-<NS>-<NNN>` error namespaces. Built from in-repo `public/schema/workflow.json` + `public/errors/catalog.json`. FIG-numbered, monochrome, Linear-`Method` register. |
 | `/changelog` | **NEW** | dated ship log with version tags, monochrome. Home shows the latest 3–4 (FIG 7.0); the page shows all. Projected from engine release notes where possible. |
 | `/use-cases` | **NEW** | gallery of the 27 `SHOWCASE_YAML` workflows; each card opens a mini Living-File run (reuses `RunSim`). |
 | `/blog` | keep | exists |
