@@ -6,6 +6,7 @@ import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { GATE_GRID } from './hub-data.generated'
 import { MemberRows, Rails, HubFoot, GateMatrix } from './hub-shared'
 import { useHubHead, chapterHref } from './hub-lib'
+import { wordRoom, errorRoom } from '../lib/rooms'
 import '../sections/v4-home.css'
 import './flow-page.css'
 
@@ -48,10 +49,10 @@ const DOORS = [
 
 /* the wave knobs · each one owns a language room */
 const WAVE_ROOMS = [
-  { kind: 'room', label: 'for_each', href: '/language/for_each' },
-  { kind: 'room', label: 'max_parallel', href: '/language/max_parallel' },
-  { kind: 'room', label: 'fail_fast', href: '/language/fail_fast' },
-  { kind: 'room', label: 'when', href: '/language/when' },
+  { kind: 'room' as const, label: 'for_each', href: wordRoom('for_each') },
+  { kind: 'room' as const, label: 'max_parallel', href: wordRoom('max_parallel') },
+  { kind: 'room' as const, label: 'fail_fast', href: wordRoom('fail_fast') },
+  { kind: 'room' as const, label: 'when', href: wordRoom('when') },
 ]
 
 export function Component() {
@@ -69,7 +70,7 @@ export function Component() {
   const decisionsSlot = hub.sections.find((s) => s.anchor === 'decisions')?.slot
 
   return (
-    <main className="theme-dark fl-page" style={{ ['--hub-hue' as string]: '#5b8cff' }}>
+    <main className="theme-dark fl-page" style={{ ['--hub-hue' as string]: 'var(--verb-infer)' }}>
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="fl-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
@@ -121,9 +122,9 @@ export function Component() {
             </div>
             <Rails
               rails={[
-                { kind: 'room', label: 'with', href: '/language/with' },
-                { kind: 'room', label: 'after', href: '/language/after' },
-                { kind: 'teaching', label: 'depends_on does not exist · NIKA-PARSE-024', href: '/language/errors/NIKA-PARSE-024' },
+                { kind: 'room', label: 'with', href: wordRoom('with') },
+                { kind: 'room', label: 'after', href: wordRoom('after') },
+                { kind: 'teaching', label: 'depends_on does not exist · NIKA-PARSE-024', href: errorRoom('NIKA-PARSE-024') },
               ]}
             />
           </section>

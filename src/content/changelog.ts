@@ -403,7 +403,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     date: '2026-05-01',
     tag: 'spec',
     title: 'The JSON Schema · one workflow contract',
-    body: 'workflow.json describes a valid plan end to end: the nika: v1 envelope, the four verbs, the permits: block. Your editor checks it as you write.',
+    body: 'workflow.json describes a valid plan end to end: the nine-key envelope (nika: is the mark AND the name), the four verbs, the permits: block. Your editor checks it as you write.',
   },
   {
     date: '2026-04-29',

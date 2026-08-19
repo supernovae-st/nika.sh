@@ -341,16 +341,6 @@ export function Component() {
           on a one-section page the observer armed everything at hydration anyway;
           baking moves the arm to HTML time and the hero stops being a 4.7s LCP. */}
       <section ref={ref} aria-labelledby="lrn-title" className="v4sec v4-in">
-        {/* the HUD registration frame on the reading column (decorative) */}
-        <div className="v4hud" aria-hidden>
-          <span className="v4hud-mark v4hud-mark--tl" />
-          <span className="v4hud-mark v4hud-mark--tr" />
-          <span className="v4hud-mark v4hud-mark--bl" />
-          <span className="v4hud-mark v4hud-mark--br" />
-          <span className="v4hud-tick v4hud-tick--l" />
-          <span className="v4hud-tick v4hud-tick--r" />
-        </div>
-
         <div className="v4sec-wrap">
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>

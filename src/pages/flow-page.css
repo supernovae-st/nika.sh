@@ -18,8 +18,9 @@
   padding-top: clamp(124px, 16vh, 188px);
 }
 .fl-title {
-  max-width: 20ch;
+  max-width: 12ch;
   overflow-wrap: anywhere;
+  font-size: var(--type-display);
 }
 
 /* ── the authority line · the spec chapter, compact mono under the lede ────── */

@@ -137,7 +137,7 @@ files:
   evidence: "hand-kept RFC 9116 security contact"
 - path: "public/404.html"
   class: authored
-  sha256: 8e56e6e74ced1314ab251ec8567fe9c8833b3aecd2158bf3516f131bbe45a81c
+  sha256: 495160839e1afa56c13539ae4a3340c1c353349ec07e954dbfa3696e1a480a4e
   evidence: "hand-written static error shell — DigitalOcean's error_document serves it for un-prerendered deep links (pending-error-codes.ts header)"
 - path: "public/apple-touch-icon.png"
   class: authored
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 08c293057b89a44fe19d6c71292159fbe5528e8bcacdbba500d8b399fbd5d329
+  sha256: 09454cc882d8048133597c7f589cd5481d664d85f725965c2e2dc722fb6a9123
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 98e904dd8e233e53f0bb49cba70ce0e464e7f6cce0f3c11581f9b4b6c0db845f
+  aggregate_sha256: 3c1b0218e34089b271e5cbe742e6a8841c19fee344876f633e9873615105f79c
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: f57474ff1d9e83d3fd005cd1f4e6a6f58b04bc270432904da75db08eec410f72
+  aggregate_sha256: a37ab5318ce55ab8bebe9c0fe1af3002b8261d6476487721c2c53f02bb68ac33
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: 76a33e1ae7a103021f6c260749f299fd656a2eba7266e62e662ac8f6dc3fc4ff
+  aggregate_sha256: 07135aa1617d57b10ed3093098c238a1d64c4331c394923391867117fd2ee534
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

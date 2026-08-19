@@ -142,7 +142,7 @@ export function Component() {
               {/* the envelope marker is NOT typed here: the snippet lint refuses
                   floating nika-yaml outside the registry, and this page has no
                   business teaching syntax when the spec world does it whole */}
-              They tick independently on purpose: the language is frozen at its v1 envelope and
+              They tick independently on purpose: the language is frozen at its nine-key envelope and
               the engine versions on its own semver toward 1.0. A page that mixed the two clocks
               would have to lie about one of them.{' '}
               <Link to="/language/spec/envelope">The envelope, whole →</Link>

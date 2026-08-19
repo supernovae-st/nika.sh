@@ -25,7 +25,8 @@ export const PERMITS_WORDS = 'what the file may touch'
    stay the single source for their keys. */
 export const KEY_WORDS: Record<string, string> = {
   nika: 'the mark and the name · nika: <name>, one line, no version key',
-  workflow: 'this run’s name',
+  /* invoke.workflow: compose. Envelope `workflow:` died with the nine-key mark. */
+  workflow: 'calls another file · a pinned path, not this file’s name',
   model: 'the model it runs on · local means nothing leaves',
   permits: PERMITS_WORDS,
   fs: 'file permits · what it may read and write',
@@ -44,7 +45,6 @@ export const KEY_WORDS: Record<string, string> = {
   recover: 'the value used if this step fails',
   outputs: 'what the run hands back',
   inputs: 'what the caller passes in · typed and checked first',
-  config: 'the deployment’s dials · set per environment, not per run',
   const: 'plain data the file reuses · edit the file to change it',
   command: 'the program and its arguments, one by one: nothing can escape',
   shell: 'one real shell line: pipes and redirects, the explicit door',

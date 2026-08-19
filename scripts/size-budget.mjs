@@ -320,6 +320,15 @@
      tabs read. CI measured 425.5 · margin ~0.5 (the bite-on-growth
      grammar holds).
 
+   2026-08-19 · 426 → 438 · THE LANGUAGE HUB PLATE. /language now shows
+     the nine-key envelope as a live file (the product-as-hero law · the
+     same hello-ai the install page already serves, reused not copied)
+     and the how-hub titles take the display step. Sync-routed pages
+     ride the entry BY SSG DESIGN (the WO-7 class). CI measured 437.2 ·
+     margin ~0.8. DEATH CLAUSE: the plate belongs behind the language
+     access door the register prose already uses — paying that island
+     diet buys the ceiling back DOWN.
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -327,7 +336,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 426
+const BUDGET_KB = 438
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

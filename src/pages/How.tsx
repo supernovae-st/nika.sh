@@ -101,7 +101,7 @@ export function Component() {
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: 'https://nika.sh/og-how.png' },
-      { property: 'og:image:alt', content: 'How Nika works: the agent writes the file, the router routes it, the judge reads it back, the run leaves a trace.' },
+      { property: 'og:image:alt', content: 'One file. The whole loop. See it, own it, audit it, run it, read it back.' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: 'https://nika.sh/og-how.png' },
@@ -109,20 +109,22 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark tp-page td-page">
+    <main className="theme-dark tp-page td-page how-hub">
       <section ref={ref} aria-labelledby="how-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>
             how it works
           </p>
           <h1 id="how-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
-            Five commands, four subsystems, one file.
+            One file.
+            <br />
+            The whole loop.
           </h1>
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            See it, own it, audit it, run it, read it back.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Nika is a loop you can hold in your head: see it work, make it yours, audit it, run
-            it, read back what happened. Underneath sit four subsystems, and each one is
-            explained here rather than assumed · how your words find a workflow, how tasks link,
-            what a run may touch, and how anyone can verify what it did.
+            Five commands. Four subsystems. Nothing else to hold.
           </p>
 
           {/* THE LOOP · moved from /learn, where it was a chapter about a page
@@ -136,13 +138,17 @@ export function Component() {
               One arc, five doors
             </h2>
             <p className="how-body" data-rise>
-              Captured from one real run, in one directory, in this order. Nothing below is
-              illustrative: the cost warning is what an unpriced local model really earns, and
-              the timing is what that machine really took.
+              Captured from one real run. Nothing below is illustrative.
             </p>
             <ol className="how-doors">
-              {doors.map((d) => (
-                <li className="how-door" key={d.verb} id={`door-${d.verb}`}>
+              {doors.map((d, i) => (
+                <li
+                  className="how-door"
+                  key={d.verb}
+                  id={`door-${d.verb}`}
+                  data-rise
+                  style={{ ['--rise-delay' as string]: `${180 + i * 70}ms` }}
+                >
                   <div className="how-door-copy">
                     <div className="how-beat-head">
                       <span className="how-beat-n">
@@ -153,7 +159,7 @@ export function Component() {
                     <p className="how-beat-plain">{d.plain}</p>
                     <p className="how-door-proves">{d.proves}</p>
                   </div>
-                  <div className="how-door-term">
+                  <div className="how-door-term v4-frame-canvas">
                     <TermCapture title={`nika ${d.verb}`} lines={d.lines} command={d.command} />
                   </div>
                 </li>

@@ -90,6 +90,16 @@ describe('on-page YAML · the whole corpus is schema-true against the PIN', () =
     ['404 · not-found.nika.yaml', NOT_FOUND_YAML],
   ] as const)('%s validates', (label, yaml) => expectValid(label, yaml))
 
+  it('the static 404 joke file speaks the nine-key mark, not the dead envelope', () => {
+    const html = readFileSync(join(__dirname, '../../public/404.html'), 'utf8')
+    const file = html.match(/<pre class="file"[^>]*>([\s\S]*?)<\/pre>/)?.[1] ?? ''
+    expect(file).not.toBe('')
+    expect(file).not.toMatch(/workflow:/)
+    expect(file).not.toMatch(/description:/)
+    expect(file).not.toMatch(/nika:<\/span>\s*<span class="val">v1/)
+    expect(file).toMatch(/nika:<\/span>\s*<span class="val">not-found/)
+  })
+
   it.each(VERBS.map((v) => [v.verb, v.code] as const))(
     '/spec verb card fragment %s seats in a valid file',
     (verb, code) => {
