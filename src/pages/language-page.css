@@ -68,40 +68,18 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .lg-arch {
-    transition: transform 280ms var(--ease-ui);
+    transition: transform var(--dur-soft) var(--ease-ui);
   }
   .v4sec.v4-in .lg-arch::before {
-    animation: lg-seam 720ms var(--ease-ui) 160ms forwards;
+    animation: lg-seam var(--dur-slow) var(--ease-ui) var(--dur-ui) forwards;
   }
   .lg-arch:hover {
     transform: translateY(-3px);
   }
-  .lg-keys li {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  .v4sec.v4-in .lg-keys li {
-    animation: lg-key 420ms var(--ease-ui) forwards;
-  }
-  .v4sec.v4-in .lg-keys li:nth-child(1) { animation-delay: 220ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(2) { animation-delay: 260ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(3) { animation-delay: 300ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(4) { animation-delay: 340ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(5) { animation-delay: 380ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(6) { animation-delay: 420ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(7) { animation-delay: 460ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(8) { animation-delay: 500ms; }
-  .v4sec.v4-in .lg-keys li:nth-child(9) { animation-delay: 540ms; }
 }
 @keyframes lg-seam {
   to {
     transform: scaleX(1);
-  }
-}
-@keyframes lg-key {
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 

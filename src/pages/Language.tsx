@@ -176,7 +176,7 @@ export function Component() {
             The whole language, in one file you can read.
           </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Projected from <a href="/schema/workflow.json">workflow.schema.json</a> — the same
+            Projected from <a href="/schema/workflow.json">workflow.schema.json</a> · the same
             contract your editor validates against. <b>Every word opens its own room.</b>{' '}
             <Link to="/language/verbs">The four verbs</Link> keep theirs.
           </p>

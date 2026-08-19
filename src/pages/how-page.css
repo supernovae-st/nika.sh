@@ -255,10 +255,10 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .how-door-term {
-    transition: transform 280ms var(--ease-ui);
+    transition: transform var(--dur-soft) var(--ease-ui);
   }
   .v4sec.v4-in .how-door-term::before {
-    animation: how-seam 640ms var(--ease-ui) 200ms forwards;
+    animation: how-seam var(--dur-slow) var(--ease-ui) var(--dur-soft) forwards;
   }
   .how-door:hover .how-door-term {
     transform: translateY(-2px);
@@ -272,12 +272,12 @@
 @media (prefers-reduced-motion: no-preference) {
   .how-sub-row {
     transition:
-      background-color var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1)),
-      transform var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1));
+      background-color var(--dur-ui) var(--ease-ui),
+      transform var(--dur-ui) var(--ease-ui);
   }
   .how-sub-go {
-    transition: transform var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1)),
-      color var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1));
+    transition: transform var(--dur-ui) var(--ease-ui),
+      color var(--dur-ui) var(--ease-ui);
   }
   .how-sub-row:hover {
     transform: translateX(2px);

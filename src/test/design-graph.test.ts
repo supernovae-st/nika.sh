@@ -138,8 +138,10 @@ describe('design graph · cross-emission coherence (one resolution, three files)
     )
     /* measured 2026-07-19 (fenêtre B pin, after the touched-surface fold).
        New animation cites a token (var(--dur-*) / var(--ease-*)); legacy
-       numbers convert window by window — the ceiling only descends. */
-    const CEILING = 97
+       numbers convert window by window — the ceiling only descends.
+       97→89 (2026-08-19): architecture-hub wow motion cites --dur-* instead
+       of raw ms, and the per-key stagger (a fourth wow) left. */
+    const CEILING = 89
     expect(total, `inline ms count ${total} > ceiling ${CEILING}`).toBeLessThanOrEqual(CEILING)
   })
 
