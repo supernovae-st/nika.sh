@@ -1,9 +1,9 @@
 {
  "engine_resync_format": 1,
  "law": "vendored from the pinned engine release — fetched BY SHA, commit+tree digest-verified before any copy; --check re-verifies these digests offline (exit 5 on drift)",
- "source": "supernovae-st/nika@6cf7c902c6b8c6348f8b75e0074a16edd96d1aea",
- "release_tag": "v0.109.1",
- "engine_tree": "22b5b9fd8f73c4641614cfe883166780d9a9f9c5",
+ "source": "supernovae-st/nika@1da35b6859a8f54cd09cfed7ca0e35d1f40fe590",
+ "release_tag": "v0.109.2",
+ "engine_tree": "2cf4cbd3a8a651fcf017b083c589decb3364e8de",
  "tool": "scripts/engine-resync.mjs",
  "files": [
   {
