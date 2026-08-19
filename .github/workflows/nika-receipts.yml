@@ -39,6 +39,6 @@ jobs:
           - public/library/pr-risk-review.nika.yaml
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-      - uses: supernovae-st/nika-action@92dd93ef1599003e747722f36b2a1fe9b47dec5c # v1.0.10
+      - uses: supernovae-st/nika-action@783e73e1b1e8804594e28db757cf920e60dc46c2 # v1.0.12
         with:
           workflow: ${{ matrix.flow }}
