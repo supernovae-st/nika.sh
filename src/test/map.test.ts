@@ -126,6 +126,12 @@ describe('/map · the constellation is one drawing, twice served', () => {
     expect(/<\/script/i.test(svg)).toBe(false)
   })
 
+  it('the core mark is the live identity key, not the dead version marker', () => {
+    const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
+    expect(svg).toContain('>nika:</text>')
+    expect(svg).not.toContain('nika: v1')
+  })
+
   it('a fragment anchor in the drawing only exists where the section does (the sweep crawls fragments)', () => {
     const svg = readFileSync(join(ROOT, 'public/map/constellation.svg'), 'utf8')
     const twin = JSON.parse(readFileSync(join(ROOT, 'public/ontology/language.json'), 'utf8')) as {
