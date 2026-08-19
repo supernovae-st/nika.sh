@@ -169,7 +169,7 @@ export function Component() {
           </p>
 
           <div className="lg-arch" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
-            <p className="lg-arch-k mono">the envelope · nine keys · 0.109</p>
+            <p className="lg-arch-k mono">the envelope · mark AND name</p>
             <CodeFile
               yaml={HELLO_AI_YAML}
               filename="hello-ai.nika.yaml"
