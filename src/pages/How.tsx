@@ -109,7 +109,7 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark tp-page td-page">
+    <main className="theme-dark tp-page td-page how-hub">
       <section ref={ref} aria-labelledby="how-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <p className="v4sec-fig" data-rise>

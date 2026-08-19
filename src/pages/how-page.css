@@ -228,7 +228,8 @@
 .how-sub-row:focus-visible .how-sub-go {
   color: var(--v4-accent);
 }
-.td-page .v4sec-title {
+/* How hub only — SpecHub shares td-page and must keep its golden title size */
+.how-hub .v4sec-title {
   max-width: 16ch;
   font-size: var(--type-display);
 }
