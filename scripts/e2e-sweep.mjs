@@ -744,13 +744,21 @@ await check('blog · All restores the lead + the whole shelf', async () => {
    build-time ?y= link on a workflow fence must DECODE into the editor —
    the film's see→touch loop, extended to the journal's exact yaml. */
 {
-  await send('Page.navigate', { url: `${BASE}/blog/the-run-that-waits` })
-  await settle()
-  const fenceHref = await until(
-    () => evaluate(`document.querySelector('.bp-open-play')?.getAttribute('href') || false`),
-    10,
-    400,
-  )
+  /* the post body rides an island; on a slow CI box a one-shot read
+     races the React commit (the sweep's own law). Re-navigate per
+     attempt and poll longer than the home battery — the page is heavier
+     than it was when this check was written. */
+  let fenceHref = false
+  for (let attempt = 0; attempt < 3; attempt++) {
+    await send('Page.navigate', { url: `${BASE}/blog/the-run-that-waits` })
+    await settle()
+    fenceHref = await until(
+      () => evaluate(`document.querySelector('.bp-open-play')?.getAttribute('href') || false`),
+      20,
+      600,
+    )
+    if (typeof fenceHref === 'string') break
+  }
   if (typeof fenceHref === 'string' && fenceHref.startsWith('/play?y=')) {
     await send('Page.navigate', { url: `${BASE}${fenceHref}` })
     await settle()
