@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.109.2"
+export const TERMINAL_ENGINE = "0.111.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.109.2 (1da35b685)"
+        "text": "nika 0.111.0 (25f502adb)"
       }
     ]
   },
@@ -80,6 +80,10 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       {
         "kind": "ok",
         "text": " ✔ EXEC     no literal argv the exec floor refuses at run · a templated argv is the RUN's verdict"
+      },
+      {
+        "kind": "ok",
+        "text": " ✔ ORDER    no exec: sits downstream of a net-effecting task · unauthored content never reaches a shell"
       },
       {
         "kind": "ok",

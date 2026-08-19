@@ -279,7 +279,7 @@ outputs:
    [headless-prompt] hint is the price of a real one. This exact text passes
    `nika check` on the shipping binary — the transcript below is that run,
    VERBATIM (captured 2026-08-19 from a bare directory holding just this
-   file, exactly like a reader's first copy · nika 0.109.2). The honesty law:
+   file, exactly like a reader's first copy · nika 0.111.0). The honesty law:
    re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: weekly-radar
 inputs:

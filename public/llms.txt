@@ -21,7 +21,7 @@ secrets · permits · run · tasks · outputs. Values come from three
 authorities: inputs (caller-supplied, with defaults), const (baked in),
 secrets (vault-backed references). A file names no version; the binary
 that runs it is the version. The engine versions on real semver toward
-a 1.0 launch; currently v0.109.2.
+a 1.0 launch; currently v0.111.0.
 
 Stdlib v0.1: 28 builtins · 17 providers (Ollama, LM Studio, llama.cpp,
 LocalAI, vLLM, Mistral, Hugging Face, OpenAI, xAI, Anthropic, Gemini,
@@ -126,7 +126,7 @@ data language (jq) · workflows are callable · mock-first.
 
 ## Status
 
-Shipping in the open (v0.109.2, real semver toward 1.0). The engine is admitted crate by crate (the repo README carries the live count). Each passes
+Shipping in the open (v0.111.0, real semver toward 1.0). The engine is admitted crate by crate (the repo README carries the live count). Each passes
 a 12-gate admission (TDD, mutation testing ≥90%, zero `.unwrap()` in src).
 Language v0.1 public spec is live; 1.0 is readiness-gated: the timeline carries the gates (conditions, never dates).
 Building in public.
