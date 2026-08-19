@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: bilingual-release-note
-  description: "drafted in French, shipped in English — large drafts, small translates"
+# drafted in French, shipped in English — large drafts, small translates
+nika: bilingual-release-note
 
 tasks:
   draft:

@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: open-weights-answer
-  description: "an open-weight model served by the provider network — policy rides the model id"
+# an open-weight model served by the provider network — policy rides the model id
+nika: open-weights-answer
 
 tasks:
   explain:

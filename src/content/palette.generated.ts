@@ -157,13 +157,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "set",
     "label": "The namespaces",
     "href": "/language/namespaces",
-    "hint": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies, config and const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime."
+    "hint": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies (a deployment default is an input with required: false), const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime."
   },
   {
     "kind": "set",
     "label": "The types",
     "href": "/language/types",
-    "hint": "Typed contracts for task outputs: types, returns, decode. Ratified with the types wave · this surface fills when the resync brings it."
+    "hint": "Typed contracts for task outputs: returns and decode, written inline · the closed primitive grammar below is the whole register since 0.109 (a named `types:` block resolves to nothing; spec/09-types.md)."
   },
   {
     "kind": "set",
@@ -601,13 +601,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-PARSE-002",
     "href": "/language/errors/NIKA-PARSE-002",
-    "hint": "missing envelope field (nika: / workflow: / non-empty tasks:)"
+    "hint": "missing envelope field (nika: / non-empty tasks:)"
   },
   {
     "kind": "error",
     "label": "NIKA-PARSE-003",
     "href": "/language/errors/NIKA-PARSE-003",
-    "hint": "nika: version marker is not exactly v1"
+    "hint": "nika: is not a kebab-case id (^[a-z][a-z0-9-]*$)"
   },
   {
     "kind": "error",
@@ -667,7 +667,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-PARSE-013",
     "href": "/language/errors/NIKA-PARSE-013",
-    "hint": "with:/output: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
+    "hint": "with:/extract: binding uses a reserved name (output · status · error · started_at · ended_at · duration_ms)"
   },
   {
     "kind": "error",
@@ -692,18 +692,6 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-PARSE-019",
     "href": "/language/errors/NIKA-PARSE-019",
     "hint": "generic structural validation — wrong YAML shape for a field"
-  },
-  {
-    "kind": "error",
-    "label": "NIKA-PARSE-020",
-    "href": "/language/errors/NIKA-PARSE-020",
-    "hint": "workflow: is a scalar — the envelope became an object (workflow: then id: <value>)"
-  },
-  {
-    "kind": "error",
-    "label": "NIKA-PARSE-021",
-    "href": "/language/errors/NIKA-PARSE-021",
-    "hint": "top-level description: — it moved into workflow.description"
   },
   {
     "kind": "error",
@@ -809,15 +797,21 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
-    "label": "NIKA-TYPE-001",
-    "href": "/language/errors/NIKA-TYPE-001",
-    "hint": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
+    "label": "NIKA-DAG-008",
+    "href": "/language/errors/NIKA-DAG-008",
+    "hint": "a group.<name> fold names a group no task declares — including a bare group and the group a renamed member left empty"
   },
   {
     "kind": "error",
-    "label": "NIKA-TYPE-002",
-    "href": "/language/errors/NIKA-TYPE-002",
-    "hint": "recursive type reference — the types: graph must be acyclic"
+    "label": "NIKA-DAG-009",
+    "href": "/language/errors/NIKA-DAG-009",
+    "hint": "an unwind task declares group: — cleanup never enters G_p, so it cannot be a fan-in member"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-TYPE-001",
+    "href": "/language/errors/NIKA-TYPE-001",
+    "hint": "unknown type name (in types: · returns: · an outputs: type) — did-you-mean when close"
   },
   {
     "kind": "error",
@@ -853,7 +847,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VAR-001",
     "href": "/language/errors/NIKA-VAR-001",
-    "hint": "unresolved reference (unknown namespace entry · undeclared inputs/config/const/secrets/with key)"
+    "hint": "unresolved reference (unknown namespace entry · undeclared inputs/const/secrets/with key)"
   },
   {
     "kind": "error",
@@ -907,7 +901,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VAR-021",
     "href": "/language/errors/NIKA-VAR-021",
-    "hint": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · on_finally parent-only · workflow outputs) — hoist it into with: (check --fix applies it)"
+    "hint": "a tasks.* reference outside the boundary (with: · after: · on_error.recover · an unwind task reading its producer · workflow outputs) — hoist it into with: (check --fix applies it)"
   },
   {
     "kind": "error",
@@ -932,6 +926,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "NIKA-INFER-003",
     "href": "/language/errors/NIKA-INFER-003",
     "hint": "the provider reported no token usage for a priced model — the ledger cannot bill the call honestly (fail-closed · R3-F1)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-INFER-004",
+    "href": "/language/errors/NIKA-INFER-004",
+    "hint": "the provider spent tokens yet the visible answer is empty — a thinking model ate the budget on its reasoning trace (fail-closed · #651 · raise max_tokens or use a no-think variant)"
   },
   {
     "kind": "error",
@@ -1013,12 +1013,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
-    "label": "NIKA-POLICY-001",
-    "href": "/language/errors/NIKA-POLICY-001",
-    "hint": "a hard policy: rule is violated (require.human_gate_before · forbid.exec_after · allow.providers · limits.max_tasks) — the diagnostic names rule + task + witness (order rules: the path) · check-time, before any token (spec 10)"
-  },
-  {
-    "kind": "error",
     "label": "NIKA-PORT-001",
     "href": "/language/errors/NIKA-PORT-001",
     "hint": "a gateway artifact (deployment bundle · capabilities report · lowering report · fidelity report · authority delta) is malformed or violates its laws (unknown promoted · permissive_unsafe without refusal · disclosure subset-chain violated · child authority exceeding parent) (spec 12)"
@@ -1075,7 +1069,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-SEC-008",
     "href": "/language/errors/NIKA-SEC-008",
-    "hint": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no inert: door · the read hides an execution sink (F-O7 · NEP-0006)"
+    "hint": "data-as-code sink · a nika:fetch resolved URL path names a code-bearing class (serialized-executable · script/interpreter · executable binary/module · the closed NEP-0006 list) and the task declares no door — no lift: entry naming the data-as-code law · the read hides an execution sink (F-O7 · NEP-0006)"
   },
   {
     "kind": "error",
@@ -1103,15 +1097,15 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
-    "label": "NIKA-SEC-013",
-    "href": "/language/errors/NIKA-SEC-013",
-    "hint": "the endorsement mode law — a human gate (invoke: nika:prompt) declared under a policy: block that names no endorsement mode refuses fail-closed (endorsement.undeclared_mode · F-F5 · zero implicit escape), and endorsement: solo carried by a workflow with more than one gate refuses as the declaration lying (endorsement.solo_count · exactly one endorser) (NEP-0017 · F-P23)"
-  },
-  {
-    "kind": "error",
     "label": "NIKA-SEC-014",
     "href": "/language/errors/NIKA-SEC-014",
     "hint": "the affirmative-consent law — a confirm-mode human gate (invoke: nika:prompt · mode absent or confirm) reaches an egress-capable task over a route no affirmative gate closes: a REFUSED confirm settles success with value false, so a bare after: { gate: success } edge, a when: that never reads the answer, and a when: provably true on the refusal all let the effect through · the gate is credited only when every route consumes the answer and proves false on it (the Kleene-falsifiable when: · when: false · a closer confirm gate owns its closure) · an undecidable gate (a nested binding · a non-fragment expression) defers to the advisory hint, never a refusal (NEP-0020 · P0-2 of the 2026-07-30 audit)"
+  },
+  {
+    "kind": "error",
+    "label": "NIKA-SEC-015",
+    "href": "/language/errors/NIKA-SEC-015",
+    "hint": "the order law — an exec: task sits transitively downstream of a net-effecting task (nika:fetch · nika:notify) over the derived graph (with: data edges ∪ after: control edges) · content the workflow did not author must not reach a shell · UNCONDITIONAL: no block declares it and none can disable it"
   },
   {
     "kind": "error",
@@ -1187,6 +1181,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "error",
+    "label": "NIKA-AUTH-011",
+    "href": "/language/errors/NIKA-AUTH-011",
+    "hint": "a lift: entry whose named law would not have fired on this task — a trapdoor that lifts nothing is refused, never a silent no-op (10 §the authored doors rule 6)"
+  },
+  {
+    "kind": "error",
     "label": "NIKA-VALUES-001",
     "href": "/language/errors/NIKA-VALUES-001",
     "hint": "vars: is a dead envelope field (R3a · the E-split)"
@@ -1201,13 +1201,13 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "error",
     "label": "NIKA-VALUES-003",
     "href": "/language/errors/NIKA-VALUES-003",
-    "hint": "a value-namespace read outside the four-authority family (R3a · LAW-SURFACE-0201)"
+    "hint": "a value-namespace read outside the three-authority family (R3a · LAW-SURFACE-0201)"
   },
   {
     "kind": "error",
     "label": "NIKA-DEFAULT-001",
     "href": "/language/errors/NIKA-DEFAULT-001",
-    "hint": "a declared default (inputs · config) or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
+    "hint": "a declared inputs default or typed const value does not conform to its declared type (R3b · LAW-TYPE-0211)"
   },
   {
     "kind": "tool",
@@ -1655,8 +1655,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: anthropic.claude-sonnet-4-20250514-v1:0",
-    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514-v1-0",
+    "label": "model: anthropic.claude-sonnet-4-6-v1:0",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-6-v1-0",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {
@@ -1667,8 +1667,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: anthropic/claude-sonnet-4-20250514",
-    "href": "/catalog/models/anthropic-claude-sonnet-4-20250514",
+    "label": "model: anthropic/claude-sonnet-4-6",
+    "href": "/catalog/models/anthropic-claude-sonnet-4-6",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {
@@ -1679,8 +1679,8 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "model: claude-sonnet-4-20250514",
-    "href": "/catalog/models/claude-sonnet-4-20250514",
+    "label": "model: claude-sonnet-4-6",
+    "href": "/catalog/models/claude-sonnet-4-6",
     "hint": "catalog room · seats, prices, measured energy"
   },
   {
@@ -2813,12 +2813,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "member",
-    "label": "error namespace: NIKA-POLICY",
-    "href": "/language/error-namespaces/NIKA-POLICY",
-    "hint": ""
-  },
-  {
-    "kind": "member",
     "label": "error namespace: NIKA-PORT",
     "href": "/language/error-namespaces/NIKA-PORT",
     "hint": ""
@@ -3019,12 +3013,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "member",
     "label": "mode: text",
     "href": "/language/modes/text",
-    "hint": ""
-  },
-  {
-    "kind": "member",
-    "label": "namespace: config",
-    "href": "/language/namespaces/config",
     "hint": ""
   },
   {
@@ -3305,6 +3293,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "usecase",
+    "label": "corpus digest",
+    "href": "/workflows/jobs/corpus-digest",
+    "hint": "a real workflow · the whole file, one room"
+  },
+  {
+    "kind": "usecase",
     "label": "csv chart report",
     "href": "/workflows/jobs/csv-chart-report",
     "hint": "a real workflow · the whole file, one room"
@@ -3439,7 +3433,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "agent",
     "href": "/language/words/agent",
-    "hint": "task · on_finally"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -3467,6 +3461,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
+    "label": "because",
+    "href": "/language/words/because",
+    "hint": "lift"
+  },
+  {
+    "kind": "word",
     "label": "capture",
     "href": "/language/words/capture",
     "hint": "exec"
@@ -3476,12 +3476,6 @@ export const PALETTE: PaletteEntry[] = [
     "label": "command",
     "href": "/language/words/command",
     "hint": "exec"
-  },
-  {
-    "kind": "word",
-    "label": "config",
-    "href": "/language/words/config",
-    "hint": "envelope"
   },
   {
     "kind": "word",
@@ -3497,21 +3491,9 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
-    "label": "declassify",
-    "href": "/language/words/declassify",
-    "hint": "task"
-  },
-  {
-    "kind": "word",
     "label": "decode",
     "href": "/language/words/decode",
     "hint": "exec"
-  },
-  {
-    "kind": "word",
-    "label": "description",
-    "href": "/language/words/description",
-    "hint": "workflow"
   },
   {
     "kind": "word",
@@ -3523,19 +3505,19 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "exec",
     "href": "/language/words/exec",
-    "hint": "task · on_finally"
+    "hint": "task"
+  },
+  {
+    "kind": "word",
+    "label": "extract",
+    "href": "/language/words/extract",
+    "hint": "task"
   },
   {
     "kind": "word",
     "label": "fail_fast",
     "href": "/language/words/fail_fast",
-    "hint": "task"
-  },
-  {
-    "kind": "word",
-    "label": "fail_workflow",
-    "href": "/language/words/fail_workflow",
-    "hint": "on_error"
+    "hint": "for_each"
   },
   {
     "kind": "word",
@@ -3545,21 +3527,21 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
-    "label": "id",
-    "href": "/language/words/id",
-    "hint": "workflow"
+    "label": "from",
+    "href": "/language/words/from",
+    "hint": "lift"
   },
   {
     "kind": "word",
-    "label": "inert",
-    "href": "/language/words/inert",
+    "label": "group",
+    "href": "/language/words/group",
     "hint": "task"
   },
   {
     "kind": "word",
     "label": "infer",
     "href": "/language/words/infer",
-    "hint": "task · on_finally"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -3571,13 +3553,31 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "invoke",
     "href": "/language/words/invoke",
-    "hint": "task · on_finally"
+    "hint": "task"
+  },
+  {
+    "kind": "word",
+    "label": "items",
+    "href": "/language/words/items",
+    "hint": "for_each"
   },
   {
     "kind": "word",
     "label": "jitter",
     "href": "/language/words/jitter",
     "hint": "retry"
+  },
+  {
+    "kind": "word",
+    "label": "law",
+    "href": "/language/words/law",
+    "hint": "lift"
+  },
+  {
+    "kind": "word",
+    "label": "lift",
+    "href": "/language/words/lift",
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -3589,7 +3589,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "max_parallel",
     "href": "/language/words/max_parallel",
-    "hint": "task"
+    "hint": "for_each"
   },
   {
     "kind": "word",
@@ -3635,18 +3635,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
-    "label": "on_finally",
-    "href": "/language/words/on_finally",
-    "hint": "task"
-  },
-  {
-    "kind": "word",
-    "label": "output",
-    "href": "/language/words/output",
-    "hint": "task"
-  },
-  {
-    "kind": "word",
     "label": "outputs",
     "href": "/language/words/outputs",
     "hint": "envelope"
@@ -3655,12 +3643,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "permits",
     "href": "/language/words/permits",
-    "hint": "envelope"
-  },
-  {
-    "kind": "word",
-    "label": "policy",
-    "href": "/language/words/policy",
     "hint": "envelope"
   },
   {
@@ -3757,7 +3739,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "timeout",
     "href": "/language/words/timeout",
-    "hint": "task · on_finally"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -3773,12 +3755,6 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "word",
-    "label": "types",
-    "href": "/language/words/types",
-    "hint": "envelope"
-  },
-  {
-    "kind": "word",
     "label": "vision",
     "href": "/language/words/vision",
     "hint": "infer"
@@ -3787,7 +3763,7 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "when",
     "href": "/language/words/when",
-    "hint": "task · on_finally"
+    "hint": "task"
   },
   {
     "kind": "word",
@@ -3799,6 +3775,6 @@ export const PALETTE: PaletteEntry[] = [
     "kind": "word",
     "label": "workflow",
     "href": "/language/words/workflow",
-    "hint": "envelope · invoke"
+    "hint": "invoke"
   }
 ]

@@ -64,5 +64,9 @@ export const ADR_ROOM_IDS: string[] = [
  "ADR-107",
  "ADR-108",
  "ADR-109",
- "ADR-110"
+ "ADR-110",
+ "ADR-111",
+ "ADR-113",
+ "ADR-114",
+ "ADR-115"
 ]

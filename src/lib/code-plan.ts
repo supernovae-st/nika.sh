@@ -147,7 +147,8 @@ function full(yaml: string): FlagshipPlanModel | null {
   for (const t of tasks) waves[t.wave].push(t)
 
   return {
-    workflow: /^workflow:\s*\n\s+id:\s*(\S+)/m.exec(yaml)?.[1] ?? '',
+    /* the nine-key mark IS the name (0.109 · `nika: <name>`) */
+    workflow: /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(yaml)?.[1] ?? '',
     model: /^model:\s*(\S+)/m.exec(yaml)?.[1] ?? '',
     tasks,
     waveCount,

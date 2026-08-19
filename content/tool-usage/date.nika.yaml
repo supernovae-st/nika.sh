@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: the-review-window
-  description: "timestamp arithmetic without a shell date incantation"
+# timestamp arithmetic without a shell date incantation
+nika: the-review-window
 
 tasks:
   deadline:

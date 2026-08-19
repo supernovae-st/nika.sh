@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: long-context-brief
-  description: "built for long context — the whole document goes in, one brief comes out"
+# built for long context — the whole document goes in, one brief comes out
+nika: long-context-brief
 
 tasks:
   brief:

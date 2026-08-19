@@ -17,10 +17,8 @@
 # Run (the human's move · a local model keeps it sovereign and unmetered):
 #   nika run scripts/i18n/localize-page.nika.yaml \
 #     --var page=learn --var locale=fr --var language="French"
-nika: v1
-workflow:
-  id: localize-page
-  description: "draft one L1 page translation from the EN twin, lexicon locked"
+# draft one L1 page translation from the EN twin, lexicon locked
+nika: localize-page
 
 model: ollama/qwen3.5:4b   # local · zero key · swap any catalog provider
 

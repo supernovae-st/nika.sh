@@ -11,10 +11,8 @@ A generative ai workflow, with the buzzword stripped, is three things: **inputs 
 Declare the triple instead. This workflow came from the engine's own skeleton, `nika new --from media-asset-pack`, whose header states the house rule: *"Native-first · generation is `nika:image_generate` (no provider curl · no OpenAI helper script)"*. Filled, it reads:
 
 ```yaml landing-hero-pack.nika.yaml
-nika: v1
-workflow:
-  id: landing-hero-pack
-  description: "One brief, one rendered hero, one manifest naming what landed where"
+# One brief, one rendered hero, one manifest naming what landed where
+nika: landing-hero-pack
 
 model: ollama/llama3.2:3b
 

@@ -24,14 +24,14 @@ const bin = process.env.NIKA_BIN || 'nika'
 
 const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
   .trim()
-  .replace(/^nika\s+/, '')
+  /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+  .split(/\s+/)[1]
 
-/* the fixture the commands run on — the install page's own hello (0.106:
-   the file every visitor meets first declares its touch — an absent
-   permits: is the EMPTY boundary now) */
-const HELLO = `nika: v1
-workflow:
-  id: hello
+/* the fixture the commands run on — the install page's own hello (0.109 ·
+   the nine-key mark IS the name · the file every visitor meets first
+   declares its touch — an absent permits: is the EMPTY boundary) */
+const HELLO = `# first file after install · one exec, zero setup, zero keys
+nika: hello
 permits:
   exec: ["echo"]
 tasks:

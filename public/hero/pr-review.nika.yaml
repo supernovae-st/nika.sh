@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh
-nika: v1
-workflow:
-  id: pr-review
+nika: pr-review
 # a local model reads the diff · nothing leaves this machine
 model: ollama/llama3.2:3b
 

@@ -1,7 +1,11 @@
-nika: v1
-workflow:
-  id: deterministic-triage
-  description: "apply a governed decision bundle to cited evidence"
+# apply a governed decision bundle to cited evidence
+nika: deterministic-triage
+
+permits:
+  fs:
+    read: ["./decisions/pr-triage.bundle.json"]
+  exec: false
+  tools: ["nika:decide"]
 
 tasks:
   decide:

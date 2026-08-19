@@ -125,9 +125,15 @@ function membersOf(set) {
     case 'types': {
       /* the closed v1 primitive grammar, read from the SERVED schema (the
          set's own declared source) — the pattern's first alternation IS
-         the register; PascalCase refs are authored, not members */
+         the register. Until 0.109 the alternation ended in a `|[A-Z]…`
+         branch (declared PascalCase type refs); named types died with the
+         `types:` block, so the branch is gone and the anchor is the closing
+         `)$` — the reader accepts both shapes, and an empty register throws
+         (a family with zero members is a schema the compiler cannot read,
+         never a silent empty room). */
       const pattern = S.schema?.$defs?.typeExpr?.oneOf?.find((o) => o.pattern)?.pattern ?? ''
-      const prims = pattern.match(/\(([a-z|]+)\|\[A-Z\]/)?.[1]?.split('|') ?? []
+      const prims = pattern.match(/^\^\(([a-z|]+)(?:\|\[A-Z\][^)]*)?\)\$$/)?.[1]?.split('|') ?? []
+      if (prims.length === 0) throw new Error(`types: no primitive alternation in typeExpr pattern: ${pattern}`)
       return prims.map((m) => ({
         member: m, title: m, opener: null, ...anchor(m), status: 'ratified',
       }))

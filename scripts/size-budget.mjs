@@ -313,6 +313,13 @@
      not code. Measured 423.3 · margin ~0.7 (the bite-on-growth grammar
      holds).
 
+   2026-08-19 · 424 → 426 · THE 0.109.2 NINE-KEY SHIP. The ship log opens
+     on v0.109.2 and the served library copies drop `workflow:` for
+     `nika: <id>` (the identity the visitor copies). Content, not code —
+     the changelog-catchup class again, plus the seven files the hero
+     tabs read. CI measured 425.5 · margin ~0.5 (the bite-on-growth
+     grammar holds).
+
    Run: pnpm build && node scripts/size-budget.mjs */
 import { readFileSync } from 'node:fs'
 import { gzipSync } from 'node:zlib'
@@ -320,7 +327,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist')
-const BUDGET_KB = 424
+const BUDGET_KB = 426
 
 const html = readFileSync(join(DIST, 'index.html'), 'utf8')
 const entry = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])

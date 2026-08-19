@@ -16,6 +16,7 @@ import {
 import {
   carrierSetSha256,
   cssContentInventory,
+  derivedCanonCounts,
   discoverCountClaims,
   discoverCountClaimsInText,
   discoverPrerenderClaims,
@@ -116,6 +117,8 @@ function parseCanon() {
     mcpTools: number('mcpTools'),
     errorCodes: number('errorCodes'),
     errorNamespaces: number('errorNamespaces'),
+    /* the 0.109 pair · derived the same way the contracts builder derives it */
+    ...derivedCanonCounts(ROOT, source),
   }
 }
 
@@ -136,7 +139,10 @@ function claimValue(raw) {
 
 function validateCountText(text, label, canon, { adjacent = false } = {}) {
   const count = '(\\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)'
-  const noun = '(verbs?|builtins?|providers?|extract(?:ion)?\\s+modes?|templates?|MCP\\s+tools?|read-only\\s+tools?|error\\s+codes?|error\\s+namespaces?)'
+  /* the 0.109 nouns ride the SPECIFIC forms (value authorities · envelope /
+     top-level keys): `keys` alone is API keys on half the site and
+     `authority` alone is the permits concept */
+  const noun = '(verbs?|builtins?|providers?|extract(?:ion)?\\s+modes?|templates?|MCP\\s+tools?|read-only\\s+tools?|error\\s+codes?|error\\s+namespaces?|value\\s+authorit(?:y|ies)|envelope\\s+keys?|top-level\\s+keys?)'
   const claims = new RegExp(adjacent ? `\\bNika\\s+(?:has|uses|ships with|locks at)\\s+${count}\\s+${noun}\\b` : `\\b${count}\\s+${noun}\\b`, 'gi')
   for (const match of text.matchAll(claims)) {
     // Indefinite singular prose (`one builtin, nine shapes`) does not claim
@@ -154,7 +160,9 @@ function validateCountText(text, label, canon, { adjacent = false } = {}) {
     const resolvedField = claimedNoun.startsWith('template') ? 'templates'
       : claimedNoun.startsWith('mcp') || claimedNoun.startsWith('read-only') ? 'mcpTools'
         : claimedNoun.startsWith('error code') ? 'errorCodes'
-          : claimedNoun.startsWith('error namespace') ? 'errorNamespaces' : field
+          : claimedNoun.startsWith('error namespace') ? 'errorNamespaces'
+            : claimedNoun.startsWith('value authorit') ? 'valueAuthorities'
+              : /keys?$/.test(claimedNoun) ? 'envelopeKeys' : field
     const got = claimValue(match[countIndex])
     if (got !== canon[resolvedField]) fail(`${label} says ${match[0]}, canon says ${canon[resolvedField]} ${claimedNoun}`)
   }

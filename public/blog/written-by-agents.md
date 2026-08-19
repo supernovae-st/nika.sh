@@ -40,10 +40,8 @@ Fed the error back, the model *described* a fix, and its own example was still w
 **The frontier agent next**: `claude -p`, headless; one of several, the scaffold does not care which frontier you call. First shot, audit-green. Here is the file it wrote, shown as reviewed. The two lines we ended up changing are the story of the third act:
 
 ```yaml summarize-notes.nika.yaml
-nika: v1
-workflow:
-  id: summarize-notes
-  description: "Summarize the three notes under ./notes/ into ./manifest.md"
+# Summarize the three notes under ./notes/ into ./manifest.md
+nika: summarize-notes
 
 model: ollama/llama3.2:3b   # local · zero key · swap for anthropic/claude-haiku-4-5
 

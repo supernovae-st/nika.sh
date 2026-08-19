@@ -49,10 +49,8 @@ export const DOCTOR_CMD = 'nika doctor'
 /* the zero-setup first file — no model, no key (exec only). 0.106: an
    absent permits: is the EMPTY boundary, so even the hello declares its
    touch — two more lines, and the file IS the blast radius from day one. */
-export const HELLO_YAML = `nika: v1
-workflow:
-  id: hello
-  description: "first file after install · one exec, zero setup, zero keys"
+export const HELLO_YAML = `# first file after install · one exec, zero setup, zero keys
+nika: hello
 permits:
   exec: ["echo"]
 tasks:
@@ -61,10 +59,8 @@ tasks:
       command: ["echo", "hello", "from", "nika"]`
 
 /* the first AI step — a free local model, nothing leaves the machine */
-export const HELLO_AI_YAML = `nika: v1
-workflow:
-  id: hello-ai
-  description: "first model call · one local seat, one bounded sentence"
+export const HELLO_AI_YAML = `# first model call · one local seat, one bounded sentence
+nika: hello-ai
 model: ollama/llama3.2:3b   # local · zero key · swap for any provider in the catalog
 permits: {}
 tasks:
@@ -77,37 +73,42 @@ outputs:
   greeting: \${{ tasks.greet.output }}`
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-07-28 against nika 0.108.0 (the verified release binary)
-   running the exact HELLO_YAML above. The honesty law: these frames render
-   REAL output — re-capture when the CLI's voice changes, never hand-edit. */
+   Captured 2026-08-19 against nika 0.109.2 (the verified release binary ·
+   the macos-arm64 asset, sha256 checked against the release's SHA256SUMS)
+   running the exact HELLO_YAML above from a bare directory. The honesty
+   law: these frames render REAL output — re-capture when the CLI's voice
+   changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
-  { kind: 'cmd', text: 'nika --version' },
-  { kind: 'out', text: 'nika 0.108.0' },
+  { kind: 'cmd', text: "nika --version" },
+  { kind: 'out', text: "nika 0.109.2 (1da35b685)" },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [
-  { kind: 'cmd', text: 'nika check hello.nika.yaml' },
-  { kind: 'out', text: 'nika check · hello.nika.yaml' },
-  { kind: 'ok', text: ' ✔ PLAN     1 wave · 1 task · max parallelism 1' },
-  { kind: 'dim', text: '      wave 1 greet (exec · echo)' },
-  { kind: 'ok', text: ' ✔ COST     no inference tasks · $0.00' },
-  { kind: 'ok', text: ' ✔ SECRETS  no information-flow escapes' },
-  { kind: 'ok', text: ' ✔ TYPES    every deep output reference fits its declared shape' },
-  { kind: 'ok', text: ' ✔ TOOLS    every nika: tool names a canonical builtin' },
-  { kind: 'ok', text: ' ✔ ARGS     every invoke arg key is declared + every required arg is present' },
-  { kind: 'ok', text: ' ✔ SCHEMA   every authored schema: is satisfiable' },
-  { kind: 'ok', text: ' ✔ GATES    every task is statically reachable · status literals in vocabulary' },
-  { kind: 'ok', text: ' ✔ PERMITS  body fits the declared boundary' },
-  { kind: 'ok', text: ' ✔ TRIFECTA no lethal trifecta without a dominating human gate' },
-  { kind: 'ok', text: ' ✔ audited · 1 task · 1 wave · permits declared · est ≥$0.0000 · 0 hints' },
-  { kind: 'out', text: '' },
-  { kind: 'cmd', text: 'nika run hello.nika.yaml' },
-  { kind: 'out', text: '  🦋 nika · hello · 1 task' },
-  { kind: 'dim', text: '     permits ✓ declared boundary · default-deny' },
-  { kind: 'out', text: '' },
-  { kind: 'ok', text: '  ✔  greet  exec · echo  13ms' },
-  { kind: 'dim', text: '  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────' },
-  { kind: 'dim', text: '    trace: .nika/traces/2026-07-28T00-14-59Z-1e25.ndjson · 7 events · chain d1d0936cf6689561617e4d4df41132e9b1ba403d47611ee39353a946b1263d42' },
+  { kind: 'cmd', text: "nika check hello.nika.yaml" },
+  { kind: 'out', text: "nika check · hello.nika.yaml" },
+  { kind: 'ok', text: " ✔ PLAN     1 wave · 1 task · max parallelism 1" },
+  { kind: 'dim', text: "      wave 1 greet (exec · echo)" },
+  { kind: 'ok', text: " ✔ COST     no infer/agent tasks · $0.00 · exec + mcp spend unpriced" },
+  { kind: 'ok', text: " ✔ SECRETS  no declared secret reaches an effect · model echo untracked" },
+  { kind: 'ok', text: " ✔ TYPES    deep references fit the shapes tasks declare · builtin output has none" },
+  { kind: 'ok', text: " ✔ TOOLS    every named nika: tool is canonical · globs + mcp: not checked" },
+  { kind: 'ok', text: " ✔ ARGS     every builtin invoke arg key is declared + required args present" },
+  { kind: 'ok', text: " ✔ SCHEMA   no known-unsatisfiable form in an authored schema: · $ref opaque" },
+  { kind: 'ok', text: " ✔ GATES    no task proven dead · status literals in vocabulary" },
+  { kind: 'ok', text: " ✔ WRITES   no two unordered tasks write the same static path · computed paths at run" },
+  { kind: 'ok', text: " ✔ EXEC     no literal argv the exec floor refuses at run · a templated argv is the RUN's verdict" },
+  { kind: 'ok', text: " ✔ PERMITS  literal + const: args fit the boundary · computed paths + symlinks are the RUN's verdict · exec outside the fs bounds" },
+  { kind: 'ok', text: " ✔ TRIFECTA no lethal trifecta over the declared permits: without a human gate" },
+  { kind: 'ok', text: " ✔ JOURNEY internal · 0 sources · 1 destination · 0 model endpoints · no secret reaches a cloud destination" },
+  { kind: 'ok', text: " ✔ audited · 1 task · 1 wave · permits declared · est out ≤$0.0000 · 0 hints · risk supervised" },
+  { kind: 'out', text: "" },
+  { kind: 'cmd', text: "nika run hello.nika.yaml" },
+  { kind: 'out', text: "  🦋 nika · hello · 1 task" },
+  { kind: 'dim', text: "     permits ✓ declared boundary · exec outside the fs bounds" },
+  { kind: 'out', text: "" },
+  { kind: 'ok', text: "  ✔  greet  exec · echo  9ms" },
+  { kind: 'dim', text: "  ── 1/1 done · $0.00 · elapsed 0.0s ─────────────────────────────" },
+  { kind: 'dim', text: "    trace: .nika/traces/2026-08-18T23-26-42Z-0a8e.ndjson · 7 events · chain a145a48cf0d995069384cbd8332a067c01d7490f78190897cd6bdf46f40b90b6" },
 ]
 
 /* ── troubleshooting · the four honest snags (each fix is verifiable) ────────── */

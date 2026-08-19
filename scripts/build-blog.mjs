@@ -108,12 +108,15 @@ export function compilePost(raw, file, canon) {
       })
     else if (t.type === 'code') {
       const [lang, ...rest] = (t.lang ?? '').split(/\s+/)
-      /* a COMPLETE workflow fence (envelope-first yaml) gets its playground
+      /* a COMPLETE workflow fence (nine-key yaml) gets its playground
          handoff precomputed at build time — the same lz ?y= the film's done
          frame hands off with, as pure SSG HTML (zero client JS). Console
-         fences (text) and pedagogical yaml fragments carry no link. */
+         fences (text) and pedagogical yaml fragments carry no link.
+         Identity is `nika: <kebab-id>` (0.109) · the dead `nika: v1` mark
+         is refused, not aliased. A `#` comment above the mark is fine. */
+      const id = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(t.text)?.[1]
       const play =
-        (lang || '') === 'yaml' && /^nika:\s*v1\b/.test(t.text.trimStart())
+        (lang || '') === 'yaml' && id && id !== 'v1' && /^tasks:/m.test(t.text)
           ? lz.compressToEncodedURIComponent(t.text)
           : undefined
       tokens.push({ k: 'code', lang: lang || 'text', filename: rest.join(' ') || undefined, text: t.text, ...(play ? { play } : {}) })

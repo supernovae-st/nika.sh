@@ -11,9 +11,7 @@ Every automation platform bolted image generation on the same way: a node that c
 Nika's stdlib grew two Media builtins this week, `nika:image_generate` and `nika:tts_generate`, and the point is not that they exist. It's that they had to pass the same bar as `read`, `fetch` and `exec` before they could:
 
 ```yaml
-nika: v1
-workflow:
-  id: og-hero
+nika: og-hero
 
 permits:
   fs: { write: ["./assets/**"] }     # saves are boundary-gated, per final path

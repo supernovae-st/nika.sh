@@ -28,10 +28,8 @@ export const CHAPTERS: Chapter[] = [
     claim: 'Think.',
     gloss: 'Ask any model · local or cloud.',
     filename: 'think.nika.yaml',
-    yaml: `nika: v1
-workflow:
-  id: think
-  description: "the infer verb alone · one bounded model call"
+    yaml: `# the infer verb alone · one bounded model call
+nika: think
 model: ollama/llama3.2:3b
 permits: {}
 tasks:
@@ -54,10 +52,8 @@ outputs:
     claim: 'Run.',
     gloss: 'A shell command, captured and typed.',
     filename: 'run.nika.yaml',
-    yaml: `nika: v1
-workflow:
-  id: run
-  description: "the exec verb alone · one program, argv form, allowlisted"
+    yaml: `# the exec verb alone · one program, argv form, allowlisted
+nika: run
 permits:
   exec: ["cargo"]
 tasks:
@@ -76,10 +72,8 @@ tasks:
     claim: 'Use a tool.',
     gloss: 'Fetch a page, write a file, call GitHub. Every tool explicit.',
     filename: 'use-a-tool.nika.yaml',
-    yaml: `nika: v1
-workflow:
-  id: use-a-tool
-  description: "the invoke verb alone · one tool call under the two-part grant"
+    yaml: `# the invoke verb alone · one tool call under the two-part grant
+nika: use-a-tool
 permits:
   tools: ["nika:fetch"]
   net: { http: ["nika.sh"] }
@@ -100,10 +94,8 @@ tasks:
     claim: 'Delegate.',
     gloss: 'An autonomous loop, on a leash you can read.',
     filename: 'delegate.nika.yaml',
-    yaml: `nika: v1
-workflow:
-  id: delegate
-  description: "the agent verb alone · goal + tool whitelist, loop bounded"
+    yaml: `# the agent verb alone · goal + tool whitelist, loop bounded
+nika: delegate
 model: ollama/llama3.2:3b
 permits:
   tools: ["nika:read", "nika:fetch"]

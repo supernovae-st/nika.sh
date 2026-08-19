@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: say-the-verdict
-  description: "one audio file under output_dir — mock provider runs offline"
+# one audio file under output_dir — mock provider runs offline
+nika: say-the-verdict
 
 permits:
   fs:
@@ -29,10 +27,14 @@ tasks:
         provider: mock
         text: "${{ with.line }}"
         output_dir: "./audio"
-    on_finally:
-      - invoke:
-          tool: "nika:log"
-          args: { message: "audio pass done — anything staged is under ./audio" }
+
+  # cleanup is a task · the unwind edge runs it after speak settles, cancel
+  # and timeout included · it reads its producer only
+  wrap_up:
+    after: { speak: unwind }
+    invoke:
+      tool: "nika:log"
+      args: { message: "audio pass done — anything staged is under ./audio" }
 
 outputs:
   audio: ${{ tasks.speak.output }}

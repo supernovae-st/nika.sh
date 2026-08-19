@@ -9,9 +9,7 @@ description: "infer, exec, invoke, agent: what makes the four verbs genuinely di
 The language locks at four verbs, and the [earlier post](/blog/four-verbs) made the case for why. This one is about the *what*: the rule says a verb is a distinct execution model, so it should be possible to point at the engine and show the distinction. Here is one file that uses all four, and what the audit actually says about each.
 
 ```yaml verbs-probe.nika.yaml
-nika: v1
-workflow:
-  id: verbs-probe
+nika: verbs-probe
 model: ollama/llama3.2:3b
 
 tasks:

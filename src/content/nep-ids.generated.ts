@@ -5,24 +5,5 @@
 
 /** every proposal, in number order */
 export const NEP_SLUGS: string[] = [
- "nep-0000-the-nep-process",
- "nep-0002-lethal-trifecta-human-gate",
- "nep-0003-absent-permits-zero-authority",
- "nep-0004-permit-parameterization-taint",
- "nep-0005-env-permit-dimension",
- "nep-0006-data-as-code-sink",
- "nep-0007-trace-format-and-equivalence",
- "nep-0008-egress-permit-bound",
- "nep-0009-effective-path-identity",
- "nep-0010-run-entropy-clock",
- "nep-0011-run-lifecycle-attestation",
- "nep-0012-receipt-untrusted-input",
- "nep-0013-approval-ticket",
- "nep-0014-thin-laws",
- "nep-0015-preview-commit",
- "nep-0016-provenance-tiers",
- "nep-0017-thin-laws-3b",
- "nep-0018-energy-honesty",
- "nep-0019-workflow-token-budget",
- "nep-0020-affirmative-consent"
+ "nep-0000-the-nep-process"
 ]

@@ -11,9 +11,7 @@ Every orchestration tool eventually grows a scheduler dialect: stages, barriers,
 **Nika has two doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
 
 ```yaml release-radar.nika.yaml
-nika: v1
-workflow:
-  id: release-radar
+nika: release-radar
 
 tasks:
   changelog:

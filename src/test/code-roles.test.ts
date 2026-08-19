@@ -49,9 +49,11 @@ describe('code roles · derived in the spec, re-derived here', () => {
 
   it('the failure closure re-derives from the twin, exactly', () => {
     /* the spec's rule, applied independently: a word whose ONLY scopes are
-       recovery scopes IS failure grammar, plus the four authored heads */
-    const RECOVERY = new Set(['on_error', 'on_finally', 'retry'])
-    const derived = new Set(['on_error', 'on_finally', 'retry', 'recover'])
+       recovery scopes IS failure grammar, plus the three authored heads
+       (0.109 · on_finally left the grammar: cleanup is a task on an unwind
+       edge, and fail_workflow left on_error — failing loudly is the default) */
+    const RECOVERY = new Set(['on_error', 'retry'])
+    const derived = new Set(['on_error', 'retry', 'recover'])
     for (const [word, scopes] of Object.entries(twinScopes())) {
       if (scopes.length && scopes.every((s) => RECOVERY.has(s))) derived.add(word)
     }
@@ -76,7 +78,7 @@ describe('code roles · POSITION overrules spelling', () => {
      launch (the boundary), under a task it IS the act. A word-list highlighter
      gets exactly one of these right. */
   const both = [
-    'nika: v1',
+    'nika: both',
     'permits:',
     '  exec: [ git ]',
     '  tools: [ "nika:read" ]',
@@ -112,7 +114,7 @@ describe('code roles · POSITION overrules spelling', () => {
   })
 
   it('a plain envelope key keeps frame ink (colour is spent, not sprayed)', () => {
-    const y = ['nika: v1', 'workflow:', '  id: x', '  description: y'].join('\n')
+    const y = ['nika: x', 'model: mock/echo', 'inputs:', '  topic: { type: string }'].join('\n')
     for (const l of [1, 2, 3, 4]) expect(head(y, l)?.role).toBeUndefined()
   })
 })

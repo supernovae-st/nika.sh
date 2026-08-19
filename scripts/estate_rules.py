@@ -611,12 +611,17 @@ PATTERNS = [
     {
         "glob": "content/tool-usage/*.nika.yaml",
         "class": "authored",
-        "evidence": "crafted minimal usage workflows (nika-check green) — inputs of scripts/build-tool-usage.mjs (its marker cites them)",
+        "evidence": "crafted minimal usage workflows (nika-check green on 0.109 · nine-key) — inputs of scripts/build-tool-usage.mjs (its marker cites them)",
+    },
+    {
+        "glob": "content/tool-usage/skills/**",
+        "class": "authored",
+        "evidence": "the fixture skill the compose donor reads — since 0.109 a skill read is judged at check (inside permits.fs.read · relative to the workflow file), so the donor is check-green only with the file beside it",
     },
     {
         "glob": "content/provider-usage/*.nika.yaml",
         "class": "authored",
-        "evidence": "crafted per-provider donor workflows (nika: v1 headers · one per canonical provider) — inputs of scripts/build-provider-usage.mjs; the pricing shape they carry is the engine's models.dev-pinned snapshot",
+        "evidence": "crafted per-provider donor workflows (nine-key headers · one per canonical provider) — inputs of scripts/build-provider-usage.mjs; the pricing shape they carry is the engine's models.dev-pinned snapshot",
     },
     {
         "glob": "design/**",

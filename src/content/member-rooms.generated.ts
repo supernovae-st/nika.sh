@@ -30,12 +30,6 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
     "hub": "/language",
     "members": [
       {
-        "id": "config",
-        "title": "config",
-        "url": "/language/namespaces/config",
-        "node": "ns:config"
-      },
-      {
         "id": "const",
         "title": "const",
         "url": "/language/namespaces/const",
@@ -634,12 +628,6 @@ export const MEMBER_ROOM_FAMILIES: Record<string, MemberRoomFamily> = {
         "url": "/language/error-namespaces/NIKA-PARSE",
         "node": "errns:NIKA-PARSE",
         "gloss": "YAML parse + envelope validation"
-      },
-      {
-        "id": "NIKA-POLICY",
-        "title": "NIKA-POLICY",
-        "url": "/language/error-namespaces/NIKA-POLICY",
-        "node": "errns:NIKA-POLICY"
       },
       {
         "id": "NIKA-PORT",

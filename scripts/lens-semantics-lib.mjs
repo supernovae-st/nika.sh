@@ -43,9 +43,16 @@ const COUNT_NOUNS = new Map([
   ['read-only tool', 'mcpTools'], ['read-only tools', 'mcpTools'],
   ['error code', 'errorCodes'], ['error codes', 'errorCodes'],
   ['error namespace', 'errorNamespaces'], ['error namespaces', 'errorNamespaces'],
+  /* the 0.109 vocabulary (the plan's L5 · counts derive): the three value
+     authorities and the nine envelope keys are counts a sentence can type
+     wrong · the SPECIFIC noun forms only — `keys` alone is API keys on half
+     the site and `authority` alone is the permits concept */
+  ['value authority', 'valueAuthorities'], ['value authorities', 'valueAuthorities'],
+  ['envelope key', 'envelopeKeys'], ['envelope keys', 'envelopeKeys'],
+  ['top-level key', 'envelopeKeys'], ['top-level keys', 'envelopeKeys'],
 ])
 
-const COUNT_NOUN_PATTERN = /(verbs?|builtins?|providers?|extract(?:ion)?\s+modes?|templates?|MCP\s+tools?|read-only\s+tools?|error\s+codes?|error\s+namespaces?)\b/gi
+const COUNT_NOUN_PATTERN = /(verbs?|builtins?|providers?|extract(?:ion)?\s+modes?|templates?|MCP\s+tools?|read-only\s+tools?|error\s+codes?|error\s+namespaces?|value\s+authorit(?:y|ies)|envelope\s+keys?|top-level\s+keys?)\b/gi
 
 const PUBLIC_TEXT = /\.(?:css|html|json|md|sh|svg|ttl|txt|webmanifest|xml|ya?ml)$/
 const PROJECTION_SOURCES = ['scripts/build-blog.mjs', 'scripts/build-og-card.mjs']
@@ -556,4 +563,22 @@ export function discoverPrerenderClaims(root) {
 
 export function relativePath(root, path) {
   return relative(root, path).split(sep).join('/')
+}
+
+/* the two 0.109 counts a sentence can type wrong, DERIVED (never typed):
+   the envelope keys are the served schema's own top-level properties (the
+   pin · public/schema/workflow.json), the value authorities are the canon
+   namespaces minus the two graph scopes (spec 04 · inputs · const · secrets
+   are the authorities, with · tasks read the graph). lens-gate.mjs derives
+   the same pair the same way — the count-source contract pins the field
+   list, so the two readers cannot drift apart unnoticed. */
+export function derivedCanonCounts(root, canonSource) {
+  const schema = JSON.parse(readFileSync(join(root, 'public/schema/workflow.json'), 'utf8'))
+  const names = canonSource.match(/\bnamespaceNames: \[([^\]]*)\]/)?.[1] ?? ''
+  const namespaces = [...names.matchAll(/"([a-z]+)"/g)].map((m) => m[1])
+  if (namespaces.length === 0) throw new Error('LENS-006: CanonCount field missing: namespaceNames')
+  return {
+    envelopeKeys: Object.keys(schema.properties ?? {}).length,
+    valueAuthorities: namespaces.filter((n) => n !== 'with' && n !== 'tasks').length,
+  }
 }

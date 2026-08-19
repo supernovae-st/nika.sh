@@ -1,8 +1,9 @@
 /* ─── build-language · the language's words → the keyword register data ───────
-   Every key an author can type in a .nika.yaml — the envelope, the task
-   grammar, the four verb blocks, the leash (retry), the catch side
-   (on_error), the cleanup lane (on_finally) — projected from the ONE
-   contract the engine already serves: public/schema/workflow.json. The
+   Every key an author can type in a .nika.yaml — the nine-key envelope, the
+   task grammar, the four verb blocks, the leash (retry), the catch side
+   (on_error) — projected from the ONE contract the engine already serves:
+   public/schema/workflow.json (0.109 · the cleanup lane is a task on an
+   `unwind` edge now, so it has no surface of its own). The
    /language register renders this; prose can never drift from the schema
    because there is no prose — descriptions are the schema's own.
 
@@ -27,18 +28,29 @@ const schema = JSON.parse(readFileSync(join(ROOT, 'public/schema/workflow.json')
 
 /* the reading order of the language's surfaces (the spec's own order) */
 const SURFACES = [
+  /* the nine keys: nika · model · inputs · const · secrets · permits · run ·
+     tasks · outputs — `nika:` carries the name (no workflow: object) */
   { scope: 'envelope', node: schema, blurb: 'the file itself' },
-  /* W1 « the map »: the identity object carries id + description */
-  { scope: 'workflow', node: schema.properties.workflow, blurb: 'inside workflow:' },
   { scope: 'task', node: schema.$defs.task, blurb: 'one step of the plan' },
   { scope: 'infer', node: schema.$defs.infer, blurb: 'inside infer:' },
   { scope: 'exec', node: schema.$defs.exec, blurb: 'inside exec:' },
   { scope: 'invoke', node: schema.$defs.invoke, blurb: 'inside invoke:' },
   { scope: 'agent', node: schema.$defs.agent, blurb: 'inside agent:' },
+  /* the task-level blocks that carry their own words (the leashes) —
+     `for_each:` became ONE block in 0.109 (items · max_parallel · fail_fast),
+     and `lift:` entries name the law they lift (law · from · because) */
+  { scope: 'for_each', node: schema.$defs.task.properties.for_each, blurb: 'inside for_each:' },
   { scope: 'retry', node: schema.$defs.retry, blurb: 'inside retry:' },
   { scope: 'on_error', node: schema.$defs.onError, blurb: 'inside on_error:' },
-  { scope: 'on_finally', node: schema.$defs.finallyStep, blurb: 'inside an on_finally step' },
+  { scope: 'lift', node: schema.$defs.task.properties.lift.items, blurb: 'inside a lift entry' },
 ]
+/* every surface must resolve on the served schema — a renamed $def is a
+   loud red here, never a silent empty register */
+for (const s of SURFACES) {
+  if (!s.node || typeof s.node !== 'object') {
+    throw new Error(`build-language: surface ${s.scope} has no node in public/schema/workflow.json`)
+  }
+}
 
 /* a compact human label for a property's type — the schema's own facts,
    never invented: explicit type (string|array), a const, or an enum */

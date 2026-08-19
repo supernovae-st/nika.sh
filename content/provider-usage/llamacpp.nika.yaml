@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: gguf-classify
-  description: "llama-server answers for whatever GGUF you loaded — the model id is free-form"
+# llama-server answers for whatever GGUF you loaded — the model id is free-form
+nika: gguf-classify
 
 tasks:
   classify:

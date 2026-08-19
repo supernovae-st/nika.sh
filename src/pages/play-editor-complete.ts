@@ -23,38 +23,35 @@ import { LOOP_LOCALS, NAMESPACES } from '../lib/nika-lint'
 
 /* the structural keys — pinned to public/spec/shipped/workflow.schema.json
    by the test (hand-listed here because a JSON schema is not a TS module;
-   the GATE is what keeps it honest) · 0.106: the value authorities
-   inputs · config · const · secrets replace vars/env, run + policy land */
+   the GATE is what keeps it honest) · 0.109: the nine-key envelope — the
+   value authorities are inputs · const · secrets (config died into inputs
+   with required: false + default:), workflow:/types:/policy: left */
 export const TOP_LEVEL_KEYS = [
   'nika',
-  'workflow',
   'model',
-  'types',
   'inputs',
-  'config',
   'const',
   'secrets',
   'permits',
   'run',
-  'policy',
   'tasks',
   'outputs',
 ] as const
 
+/* the task grammar of 0.109 · for_each is ONE block (its knobs inside) ·
+   extract replaced output · lift replaced declassify/inert · cleanup is a
+   task on an unwind edge (no on_finally) · group is the fan-in membership */
 export const TASK_KEYS = [
+  'group',
   'after',
   'when',
   'for_each',
-  'max_parallel',
-  'fail_fast',
-  'inert',
   'retry',
   'on_error',
   'timeout',
-  'on_finally',
   'with',
-  'declassify',
-  'output',
+  'extract',
+  'lift',
   'returns',
   'infer',
   'exec',
@@ -110,8 +107,8 @@ function docTaskIds(ctx: CompletionContext, uptoLine: number): { ids: string[]; 
   return { ids, own }
 }
 
-/* keys of a top-level envelope block (`inputs:` · `config:` · `const:` ·
-   `secrets:`) — two-space children, scanned like the task heads */
+/* keys of a top-level envelope block (`inputs:` · `const:` · `secrets:`)
+   — two-space children, scanned like the task heads */
 function envelopeBlockKeys(ctx: CompletionContext, block: string): string[] {
   const keys: string[] = []
   let inBlock = false
@@ -124,6 +121,17 @@ function envelopeBlockKeys(ctx: CompletionContext, block: string): string[] {
     }
   }
   return keys
+}
+
+/* the groups the doc declares (`    group: <name>` inside a task item) —
+   the fold completes only what a member already names */
+function docGroups(ctx: CompletionContext): string[] {
+  const out: string[] = []
+  for (let n = 1; n <= ctx.state.doc.lines; n++) {
+    const m = ctx.state.doc.line(n).text.match(/^ {4}group\s*:\s*([a-z][a-z0-9_]*)\s*$/)
+    if (m && !out.includes(m[1])) out.push(m[1])
+  }
+  return out
 }
 
 /* the task item the cursor sits in: its for_each truth + its with: keys —
@@ -157,9 +165,9 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
   const before = line.text.slice(0, ctx.pos - line.from)
 
   /* ${{ ref }} — the lint's own namespaces (ONE list, imported), the doc's
-     own names: tasks.<id>.output for the other tasks, inputs/config/const/
-     secrets keys from their envelope blocks, with. keys of the current
-     item, item/index only inside a for_each task */
+     own names: tasks.<id>.output for the other tasks, inputs/const/secrets
+     keys from their envelope blocks, with. keys of the current item,
+     item/index only inside a for_each task, group.<name> for the folds */
   const interp = before.match(/\$\{\{\s*([a-z_][a-z0-9_.]*)?$/)
   if (interp) {
     const ref = interp[1] ?? ''
@@ -171,6 +179,9 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
         label: `${n}.`,
         type: 'namespace',
       }))
+      /* the fold is not a value namespace · it completes when the doc
+         declares a group (with:-only · the lint judges the position) */
+      if (docGroups(ctx).length) options.push({ label: 'group.', type: 'namespace', detail: 'fold' })
       if (block.forEach)
         options.push(...[...LOOP_LOCALS].map((l) => ({ label: l, type: 'variable', detail: 'for_each' })))
       return { from, options, validFor: /^[a-z_][a-z0-9_]*\.?$/ }
@@ -182,8 +193,10 @@ export function nikaComplete(ctx: CompletionContext): CompletionResult | null {
       options = ids
         .filter((id) => id !== own)
         .map((id) => ({ label: `tasks.${id}.output`, type: 'variable', detail: 'task output' }))
-    } else if (root === 'inputs' || root === 'config' || root === 'const' || root === 'secrets') {
+    } else if (root === 'inputs' || root === 'const' || root === 'secrets') {
       options = envelopeBlockKeys(ctx, root).map((k) => ({ label: `${root}.${k}`, type: 'variable' }))
+    } else if (root === 'group') {
+      options = docGroups(ctx).map((g) => ({ label: `group.${g}`, type: 'variable', detail: 'fold' }))
     } else if (root === 'with') {
       options = currentTaskBlock(ctx, line.number).withKeys.map((k) => ({
         label: `with.${k}`,

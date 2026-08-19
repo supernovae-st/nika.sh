@@ -64,11 +64,11 @@ describe('palette actions · pure whens, derived rows', () => {
     const doc = {
       querySelector: (sel: string) =>
         sel === '.cf-pre'
-          ? { textContent: 'nika: v1\nworkflow:\n  id: demo' }
+          ? { textContent: 'nika: demo\ntasks:\n  a:\n    exec: { command: [ls] }' }
           : { href: 'https://github.com/supernovae-st/nika-spec/blob/main/templates/x.yaml' },
     } as unknown as Document
     expect(snippetWithProvenance(doc, '/tools/fetch')).toBe(
-      '# from nika.sh/tools/fetch\n# source: https://github.com/supernovae-st/nika-spec/blob/main/templates/x.yaml\nnika: v1\nworkflow:\n  id: demo\n',
+      '# from nika.sh/tools/fetch\n# source: https://github.com/supernovae-st/nika-spec/blob/main/templates/x.yaml\nnika: demo\ntasks:\n  a:\n    exec: { command: [ls] }\n',
     )
   })
 

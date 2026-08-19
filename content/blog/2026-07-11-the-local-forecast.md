@@ -30,10 +30,8 @@ The numbers are *earned*, and the table says how much. At two runs you get hones
 It prices inference the same way. Here is a three-task digest that reads a status file, runs one small `infer` on a local model, and writes the result:
 
 ```yaml digest.nika.yaml
-nika: v1
-workflow:
-  id: digest
-  description: "Read the notes, draft a one-line digest, save it"
+# Read the notes, draft a one-line digest, save it
+nika: digest
 
 model: ollama/llama3.2:3b
 

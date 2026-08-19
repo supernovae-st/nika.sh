@@ -49,7 +49,7 @@ export const FLAGSHIPS: Flagship[] = [
     /* consumer-first: « blast radius » is earned 3 beats later by TheBoundary —
        the default tab must not open on unexplained jargon (P2-13a) */
     gloss: 'permits: the file says what it may touch',
-    highlight: [8, 10],
+    highlight: [6, 8],
     artifact: 'wrote brief.md',
     traceNdjson: dailyBriefTrace,
     /* comment discipline (all 7 files): section comments live on their OWN
@@ -57,9 +57,7 @@ export const FLAGSHIPS: Flagship[] = [
        soft-wraps into a one-word orphan (« leave » · « radius »), which reads
        broken. Comments are display prose; ids/paths/structure stay byte-true
        to the recorded run. */
-    yaml: `nika: v1
-workflow:
-  id: daily-brief
+    yaml: `nika: daily-brief
 # local model · your notes never leave
 model: ollama/llama3.2:3b
 
@@ -99,8 +97,7 @@ tasks:
       args: { path: ./brief.md, content: "\${{ with.draft }}" }
 
 outputs:
-  brief: "\${{ tasks.draft.output }}"
-`,
+  brief: "\${{ tasks.draft.output }}"`,
   },
   {
     id: 'pr_risk_review',
@@ -110,12 +107,10 @@ outputs:
     /* the lit band is the caption's EVIDENCE, nothing more: the probe task's
        head + the with: boundary its when: reads (the schema block above is a
        different story). */
-    highlight: [31, 35],
+    highlight: [29, 33],
     artifact: 'wrote review.md',
     traceNdjson: prRiskReviewTrace,
-    yaml: `nika: v1
-workflow:
-  id: pr-risk-review
+    yaml: `nika: pr-risk-review
 # local model · the diff never leaves
 model: ollama/llama3.2:3b
 
@@ -161,20 +156,17 @@ tasks:
       args: { path: ./review.md, content: "\${{ with.review }}" }
 
 outputs:
-  review: "\${{ tasks.risk.output }}"
-`,
+  review: "\${{ tasks.risk.output }}"`,
   },
   {
     id: 'meeting_actions',
     filename: 'meeting-actions.nika.yaml',
     label: 'meeting-actions',
     gloss: 'schema: the output is a contract, not prose',
-    highlight: [21, 32],
+    highlight: [19, 30],
     artifact: 'wrote action-items.json',
     traceNdjson: meetingActionsTrace,
-    yaml: `nika: v1
-workflow:
-  id: meeting-actions
+    yaml: `nika: meeting-actions
 # local model · the recording stays yours
 model: ollama/llama3.2:3b
 
@@ -214,8 +206,7 @@ tasks:
       args: { path: ./action-items.json, content: "\${{ with.extract }}" }
 
 outputs:
-  actions: "\${{ tasks.extract.output }}"
-`,
+  actions: "\${{ tasks.extract.output }}"`,
   },
   {
     id: 'price_watch',
@@ -224,18 +215,13 @@ outputs:
     /* the zero-model tab: not every workflow needs an LLM · the DAG, two
        builtins and one CEL compare do the whole job deterministically. */
     gloss: 'when: zero model · plain data opens the gate',
-    highlight: [26, 29],
+    highlight: [27, 30],
     artifact: 'wrote price-alert.md',
     traceNdjson: priceWatchTrace,
-    /* alert_below is `config:` BY ROLE (the E-split classify-not-rename law):
-       a deployment dial — every deployment of the watch sets ITS threshold
-       without editing the logic. Not `inputs:` (nobody passes --var to a
-       cron watch) · not `const:` (the value is a setting, not wiring). The
-       vitrine now teaches all three: daily-brief has inputs-shaped reads,
-       the showcases carry const, price-watch carries config. */
-    yaml: `nika: v1
-workflow:
-  id: price-watch
+    /* alert_below is an `inputs:` dial with a default: the watch is runnable
+       bare, and `--var alert_below=…` overrides it. `config:` died with the
+       nine-key envelope (three authorities: inputs · const · secrets). */
+    yaml: `nika: price-watch
 # zero model · two tools and one CEL compare
 
 # the file IS the blast radius
@@ -243,9 +229,12 @@ permits:
   fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
   tools: [ "nika:read", "nika:jq", "nika:write" ]
 
-config:
-  # your threshold · the deployment's dial
-  alert_below: { type: number, default: 899 }
+inputs:
+  # your threshold · a defaulted dial, override with --var
+  alert_below:
+    type: number
+    required: false
+    default: 899
 
 tasks:
   snapshot:
@@ -261,16 +250,15 @@ tasks:
   alert:
     with:
       price: \${{ tasks.price.output }}
-    when: \${{ with.price < config.alert_below }}
+    when: \${{ with.price < inputs.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now \${{ with.price }} (target \${{ config.alert_below }})"
+        content: "Price drop: now \${{ with.price }} (target \${{ inputs.alert_below }})"
 
 outputs:
-  price: "\${{ tasks.price.output }}"
-`,
+  price: "\${{ tasks.price.output }}"`,
   },
   {
     id: 'social_repurpose',
@@ -282,12 +270,10 @@ outputs:
     /* the lit band = the caption's evidence: the bundle head + the fan-in
        with: block whose bindings literally list the three parallel rewrites
        (the binding IS the edge — W2). */
-    highlight: [32, 36],
+    highlight: [30, 34],
     artifact: 'wrote social-bundle.md',
     traceNdjson: socialRepurposeTrace,
-    yaml: `nika: v1
-workflow:
-  id: social-repurpose
+    yaml: `nika: social-repurpose
 # local model · your draft never leaves
 model: ollama/llama3.2:3b
 
@@ -328,8 +314,7 @@ tasks:
         content: "\${{ with.thread }}\\n\\n---\\n\\n\${{ with.linkedin }}\\n\\n---\\n\\n\${{ with.newsletter }}"
 
 outputs:
-  bundle: "\${{ tasks.bundle.output }}"
-`,
+  bundle: "\${{ tasks.bundle.output }}"`,
   },
   /* ── the library wing · recorded in the same trace lab (wave K) ─────────────
      Hand-shaped from their embedded-pack cousins (nika-pack examples/
@@ -344,12 +329,10 @@ outputs:
     /* the grounding tab: the note starts from `git log`, not from what a
        model remembers — the lit lines are the exec task that fetched truth. */
     gloss: 'exec: the note starts from real commits, not memory',
-    highlight: [18, 19],
+    highlight: [16, 17],
     artifact: 'wrote standup-note.md',
     traceNdjson: standupDigestTrace,
-    yaml: `nika: v1
-workflow:
-  id: standup-digest
+    yaml: `nika: standup-digest
 # local model · your commits never leave
 model: ollama/llama3.2:3b
 
@@ -389,8 +372,7 @@ tasks:
       args: { path: ./standup-note.md, content: "\${{ with.digest }}" }
 
 outputs:
-  note: "\${{ tasks.digest.output }}"
-`,
+  note: "\${{ tasks.digest.output }}"`,
   },
   {
     id: 'etl_quarantine',
@@ -399,12 +381,10 @@ outputs:
     /* the resilience tab: zero model · a validate gate splits the batch and
        the lit lines are the on_error recover that keeps the pipeline alive. */
     gloss: 'on_error: a bad batch degrades, the run survives',
-    highlight: [25, 27],
+    highlight: [23, 25],
     artifact: 'wrote daily-totals.json',
     traceNdjson: etlQuarantineTrace,
-    yaml: `nika: v1
-workflow:
-  id: etl-quarantine
+    yaml: `nika: etl-quarantine
 # zero model · a schema gate splits the batch
 
 # the file IS the blast radius
@@ -483,7 +463,6 @@ tasks:
         create_dirs: true
 
 outputs:
-  totals: "\${{ tasks.good.output }}"
-`,
+  totals: "\${{ tasks.good.output }}"`,
   },
 ]

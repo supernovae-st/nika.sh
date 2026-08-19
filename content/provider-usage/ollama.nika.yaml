@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: local-summary
-  description: "a summary that never leaves the machine — Ollama serves on localhost:11434"
+# a summary that never leaves the machine — Ollama serves on localhost:11434
+nika: local-summary
 
 tasks:
   summarize:

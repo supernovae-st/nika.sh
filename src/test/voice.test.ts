@@ -183,7 +183,7 @@ describe('voice · page copy carries no NEW em dash (law 3 ratchet)', () => {
      drawn as a mark (the aria-hidden list bullet in Wedge) is correct
      typography, not prose. A bare em dash alone on a line is never a
      sentence. */
-  const VERBATIM = /kind:\s*'(?:dim|soft|out|err)'|diags\.push\(|↳\s*HINT|code:\s*'NIKA-/
+  const VERBATIM = /kind:\s*'(?:dim|soft|out|err|warn|ok)'|diags\.push\(|↳\s*HINT|code:\s*'NIKA-/
   const GLYPH = /(['"`])\s*—\s*\1|\[\s*—\s*\]|\?\?\s*'—'|^\s*—\s*$/
 
   const isCountable = (line: string) => !VERBATIM.test(line) && !GLYPH.test(line)

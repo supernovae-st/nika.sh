@@ -1137,5 +1137,85 @@
       "requires": [],
       "enables": []
     }
+    ,
+    {
+      "id": "ADR-111",
+      "title": "Deliver the pause event outward — operator-configured CloudEvents webhook",
+      "status": "accepted",
+      "date": "2026-08-06",
+      "filename": "adr-111-outbound-pause-delivery.md",
+      "tags": ["notify","pause","human-gate","webhook","cloudevents","trace","resume"],
+      "affects_crates": ["nika-cli-host","nika-cli","nika-event"],
+      "affects_layers": ["L0","L4"],
+      "supersedes": [],
+      "superseded_by": [],
+      "related": [],
+      "requires": [],
+      "enables": []
+    }
+    ,
+    {
+      "id": "ADR-112",
+      "title": "Trace-as-dataset — OTel GenAI semconv now, input-capture before the SFT export",
+      "status": "proposed",
+      "date": "2026-08-06",
+      "filename": "adr-112-trace-as-dataset.md",
+      "tags": ["trace","otel","semconv","dataset","observability","content-policy"],
+      "affects_crates": ["nika-dap","nika-runtime","nika-cli"],
+      "affects_layers": ["L3","L4"],
+      "supersedes": [],
+      "superseded_by": [],
+      "related": [],
+      "requires": [],
+      "enables": []
+    }
+    ,
+    {
+      "id": "ADR-113",
+      "title": "The envelope's identity moves onto `nika:` — the version slot dies, losslessly",
+      "status": "accepted",
+      "date": "2026-08-13",
+      "filename": "adr-113-envelope-identity-on-nika.md",
+      "tags": ["envelope","grammar","parser","flag-day","spec-alignment"],
+      "affects_crates": ["nika-schema","nika-vocab","nika-check","nika-lsp","nika-migrate","nika-cli","nika-cli-host","nika-runtime","nika-display"],
+      "affects_layers": ["L0","L4"],
+      "supersedes": [],
+      "superseded_by": [],
+      "related": ["ADR-001","ADR-021"],
+      "requires": [],
+      "enables": []
+    }
+    ,
+    {
+      "id": "ADR-114",
+      "title": "`nika-cadence` — the arming registry grammar and the pure next-slot calculator, at L0",
+      "status": "accepted",
+      "date": "2026-08-15",
+      "filename": "adr-114-nika-cadence-admission.md",
+      "tags": ["crate-admission","cadence","arm","grammar","layering","hermeticity"],
+      "affects_crates": ["nika-cadence","nika-cli","nika-tui-core"],
+      "affects_layers": ["L0","L4"],
+      "supersedes": [],
+      "superseded_by": [],
+      "related": ["ADR-001","ADR-003"],
+      "requires": [],
+      "enables": []
+    }
+    ,
+    {
+      "id": "ADR-115",
+      "title": "nika-check size-cap member split: the analysis substrate descends to nika-check-analyzer",
+      "status": "accepted",
+      "date": "2026-08-18",
+      "filename": "adr-115-nika-check-analyzer-member-split.md",
+      "tags": ["architecture","crates","split","size-cap","static-judgment"],
+      "affects_crates": ["nika-check","nika-check-analyzer"],
+      "affects_layers": ["L0"],
+      "supersedes": [],
+      "superseded_by": [],
+      "related": ["ADR-110","ADR-022","ADR-023","ADR-027"],
+      "requires": [],
+      "enables": []
+    }
   ]
 }

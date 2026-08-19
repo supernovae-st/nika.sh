@@ -13,10 +13,8 @@ Neither pole is "the right way to build agents." The design question is narrower
 What makes the dynamic end shippable is that the freedom is **contained in a task**. Here is the workflow this post ran, instantiated from the engine's own `agent-loop` template (`nika new --from agent-loop`), whose header states the doctrine outright: *"Three leashes (NEVER ship an unleashed agent): `tools:` default-deny · grant the MINIMUM; `max_turns` + `max_tokens_total` · the worst case is bounded; `schema:` · the final message is TYPED, prose is not a contract."*
 
 ```yaml notes-triage.nika.yaml
-nika: v1
-workflow:
-  id: notes-triage
-  description: "Read the status notes, return a typed triage"
+# Read the status notes, return a typed triage
+nika: notes-triage
 
 model: ollama/llama3.2:3b
 

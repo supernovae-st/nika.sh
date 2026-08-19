@@ -360,6 +360,12 @@ describe('lens · the snippet manifest (§2bis · no floating code)', () => {
   })
 
   it('THE LINT: no nika-yaml literal outside the registry and generated modules', () => {
+    /* the detector reads the nine-key MARK (`nika: <name>` at a line start or
+       right after a quote/backtick · 0.109), never only the dead `nika: v1`
+       marker: a detector keyed on the old envelope would have gone blind on
+       the day the corpus migrated (0 hits · exit 0 · a gate over nothing).
+       The old marker is caught too, so a stray fossil still trips it. */
+    const MARK = /(?:^|[`'"]|\\n)nika:\s*(?:v1\b|[a-z][a-z0-9-]*\s*(?:\\n|$))/m
     const registered = new Set(SNIPPET_REGISTRY.map((r) => r.file))
     const dirs = ['src/pages', 'src/sections', 'src/shell', 'src/content', 'src/flagships', 'src/components']
     const offenders: string[] = []
@@ -369,7 +375,7 @@ describe('lens · the snippet manifest (§2bis · no floating code)', () => {
         const rel = `${dir}/${f}`
         if (rel.includes('.generated.') || rel.includes('.test.')) continue
         const body = readFileSync(join(ROOT, rel), 'utf8')
-        if (body.includes('nika: v1') && !registered.has(rel)) offenders.push(rel)
+        if (MARK.test(body) && !registered.has(rel)) offenders.push(rel)
       }
     }
     expect(offenders, `unregistered inline nika-yaml: ${offenders.join(' · ')} — register it in sets.yaml snippet_registry with its gate, or move it behind a generated module`).toEqual([])

@@ -6,6 +6,7 @@ import { ROOT } from './spec-resync-lib.mjs'
 import {
   carrierSetSha256,
   cssContentInventory,
+  derivedCanonCounts,
   discoverCountClaims,
   discoverPrerenderClaims,
   discoverRouteClaims,
@@ -81,6 +82,7 @@ function canonCounts() {
     if (!match) fail(`CanonCount field missing: ${field}`)
     result[field] = Number(match[1])
   }
+  Object.assign(result, derivedCanonCounts(ROOT, source))
   return result
 }
 

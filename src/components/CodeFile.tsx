@@ -71,9 +71,10 @@ let TIPS: TipModule | null = null
 /* the eager half: does this block even look like a plan? One regex, no
    parse, no import — the derivation itself rides the lazy chunk. */
 const PLAN_SHAPE = /(^|\s)(infer|exec|invoke|agent)\s*:/m
-/* the workflow id is the file's identity in nika, and the cheapest key the
-   panel can read without hashing its own bytes */
-const WF_ID = /^workflow:\s*\n\s+id:\s*(\S+)/m
+/* the file's identity in nika is its `nika:` mark (0.109 · the nine keys ·
+   `nika: <name>`), and the cheapest key the panel can read without hashing
+   its own bytes · an inline `# comment` after the name is tolerated */
+const WF_ID = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m
 const hasPlanShape = (y: string) => y.length > 0 && y.length <= 20000 && PLAN_SHAPE.test(y)
 
 export interface CodeFileProps {

@@ -1,21 +1,20 @@
 import { describe, expect, it } from 'vitest'
 import { parsePlan } from './parse-plan'
 
-const FLAGSHIP_LIKE = `nika: v1
-workflow: daily-brief
+const FLAGSHIP_LIKE = `nika: daily-brief
 tasks:
   notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
   inbox: { invoke: { tool: "nika:read", args: { path: ./notes/inbox.md } } }
   triage:
     after:
-      inbox: succeeded
+      inbox: success
     with:
       inbox: \${{ tasks.inbox.output }}
     infer: { prompt: "Flag urgent: \${{ with.inbox }}" }
   draft:
     after:
-      notes: succeeded
-      triage: succeeded
+      notes: success
+      triage: success
     with:
       notes: \${{ tasks.notes.output }}
       triage: \${{ tasks.triage.output }}
@@ -24,7 +23,7 @@ tasks:
       model: ollama/llama3.2:3b
   save:
     after:
-      draft: succeeded
+      draft: success
     with:
       draft: \${{ tasks.draft.output }}
     when: \${{ with.draft != "" }}
@@ -76,7 +75,7 @@ tasks:
     expect(parsePlan('tasks:\n  a:\n    invoke: {')).toBeNull()
     expect(parsePlan('')).toBeNull()
     expect(parsePlan('just a string')).toBeNull()
-    expect(parsePlan('nika: v1\nworkflow: x')).toBeNull() /* no tasks yet */
+    expect(parsePlan('nika: x\nmodel: mock/echo')).toBeNull() /* no tasks yet */
   })
 
   it('survives a cycle across BOTH doors · cyclic flag + file-order fallback', () => {
@@ -85,11 +84,11 @@ tasks:
     const plan = parsePlan(`tasks:
   a:
     after:
-      b: succeeded
+      b: success
     exec: { command: ["ls"] }
   b:
     after:
-      a: succeeded
+      a: success
     with:
       prev: \${{ tasks.a.output }}
     exec: { command: ["git", "log"] }`)
@@ -103,14 +102,14 @@ tasks:
     const plan = parsePlan(`tasks:
   a:
     after:
-      ghost: succeeded
+      ghost: success
     with:
       g: \${{ tasks.ghost.output }}
       me: \${{ tasks.a.output }}
     infer: { prompt: "x" }
   b:
     after:
-      a: succeeded`)
+      a: success`)
     expect(plan).not.toBeNull()
     expect(plan!.edges).toEqual([{ from: 'a', to: 'b' }])
     /* b has no verb yet (mid-authoring) · verb null renders as a shell card */
@@ -128,7 +127,7 @@ tasks:
   b: 42
   c:
     after:
-      a: succeeded
+      a: success
     agent: { model: mistral/mistral-small }`)
     expect(plan).not.toBeNull()
     expect(plan!.tasks.map((t) => t.id)).toEqual(['a', 'c'])

@@ -11,9 +11,7 @@ Ask a team where their prompts live. A chat window. A doc titled `PROMPT_v2_FINA
 The usual answer is a prompt-management platform: another dashboard, another account, another place your logic lives that is not your repo. Nika's answer is shorter. **The prompt is a line in the workflow file.**
 
 ```yaml release-notes.nika.yaml
-nika: v1
-workflow:
-  id: release-notes
+nika: release-notes
 # local model · nothing leaves this machine
 model: ollama/llama3.2:3b
 

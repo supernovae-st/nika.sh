@@ -4,7 +4,7 @@
 //   node scripts/build-provider-usage.mjs
 // Drift gate: src/test/provider-usage.test.ts recompiles hermetically
 // (--from-capture), byte-diffs, and re-validates every donor against the
-// served schema. Engine at audit: "0.106.0".
+// served schema. Engine at audit: "0.109.2".
 
 /** the static audit the released binary gave the donor at regen time */
 export interface ProviderAudit {
@@ -44,7 +44,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "lmstudio": {
     "clean": true,
@@ -60,7 +60,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "llamacpp": {
     "clean": true,
@@ -76,7 +76,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "localai": {
     "clean": true,
@@ -92,7 +92,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "vllm": {
     "clean": true,
@@ -108,7 +108,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "mistral": {
     "clean": true,
@@ -129,7 +129,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.6
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "anthropic": {
     "clean": true,
@@ -145,7 +145,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 15
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "openai": {
     "clean": true,
@@ -161,7 +161,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 2
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "gemini": {
     "clean": true,
@@ -177,7 +177,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "deepseek": {
     "clean": true,
@@ -193,7 +193,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.28
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "xai": {
     "clean": true,
@@ -209,7 +209,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 4
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "groq": {
     "clean": true,
@@ -225,7 +225,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.08
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "openrouter": {
     "clean": true,
@@ -246,7 +246,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 15
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "huggingface": {
     "clean": true,
@@ -262,7 +262,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 3.6
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "nvidia": {
     "clean": true,
@@ -278,7 +278,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "moonshot": {
     "clean": false,
@@ -294,14 +294,14 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "mock": {
     "clean": true,
     "models_resolve": true,
     "tasks": 2,
     "waves": 2,
-    "cost_ceiling_usd": null,
+    "cost_ceiling_usd": 0,
     "cost_floor_usd": 0,
     "pricing": [
       {
@@ -310,94 +310,94 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   }
 } as const
 
 export const PROVIDER_USAGE: Record<string, ProviderUsage> = {
   "ollama": {
     "id": "ollama",
-    "yaml": "nika: v1\nworkflow:\n  id: local-summary\n  description: \"a summary that never leaves the machine — Ollama serves on localhost:11434\"\n\ntasks:\n  summarize:\n    infer:\n      model: ollama/qwen3.5:4b\n      max_tokens: 200\n      prompt: |\n        Summarize in two sentences what a hash-chained trace\n        gives an auditor that a plain log file cannot.\n\noutputs:\n  summary: ${{ tasks.summarize.output }}\n",
+    "yaml": "# a summary that never leaves the machine — Ollama serves on localhost:11434\nnika: local-summary\n\ntasks:\n  summarize:\n    infer:\n      model: ollama/qwen3.5:4b\n      max_tokens: 200\n      prompt: |\n        Summarize in two sentences what a hash-chained trace\n        gives an auditor that a plain log file cannot.\n\noutputs:\n  summary: ${{ tasks.summarize.output }}\n",
     "file": "ollama.nika.yaml"
   },
   "lmstudio": {
     "id": "lmstudio",
-    "yaml": "nika: v1\nworkflow:\n  id: loaded-model-notes\n  description: \"whatever model LM Studio has loaded answers — localhost:1234, no key\"\n\ntasks:\n  tighten:\n    infer:\n      model: lmstudio/qwen3.5-4b\n      max_tokens: 150\n      system: You tighten prose. Keep the meaning, halve the words.\n      prompt: |\n        The meeting that was scheduled for the purpose of discussing\n        the roadmap has been moved to a later date next week.\n\noutputs:\n  tight: ${{ tasks.tighten.output }}\n",
+    "yaml": "# whatever model LM Studio has loaded answers — localhost:1234, no key\nnika: loaded-model-notes\n\ntasks:\n  tighten:\n    infer:\n      model: lmstudio/qwen3.5-4b\n      max_tokens: 150\n      system: You tighten prose. Keep the meaning, halve the words.\n      prompt: |\n        The meeting that was scheduled for the purpose of discussing\n        the roadmap has been moved to a later date next week.\n\noutputs:\n  tight: ${{ tasks.tighten.output }}\n",
     "file": "lmstudio.nika.yaml"
   },
   "llamacpp": {
     "id": "llamacpp",
-    "yaml": "nika: v1\nworkflow:\n  id: gguf-classify\n  description: \"llama-server answers for whatever GGUF you loaded — the model id is free-form\"\n\ntasks:\n  classify:\n    infer:\n      model: llamacpp/default\n      max_tokens: 20\n      temperature: 0\n      prompt: |\n        One word, bug or feature:\n        \"clicking save twice creates two invoices\"\n\noutputs:\n  label: ${{ tasks.classify.output }}\n",
+    "yaml": "# llama-server answers for whatever GGUF you loaded — the model id is free-form\nnika: gguf-classify\n\ntasks:\n  classify:\n    infer:\n      model: llamacpp/default\n      max_tokens: 20\n      temperature: 0\n      prompt: |\n        One word, bug or feature:\n        \"clicking save twice creates two invoices\"\n\noutputs:\n  label: ${{ tasks.classify.output }}\n",
     "file": "llamacpp.nika.yaml"
   },
   "localai": {
     "id": "localai",
-    "yaml": "nika: v1\nworkflow:\n  id: self-hosted-triage\n  description: \"your own server, the familiar API shape — LocalAI on localhost:8080\"\n\ntasks:\n  triage:\n    infer:\n      model: localai/default\n      max_tokens: 120\n      prompt: |\n        Three support lines arrive. Order them most urgent first:\n        payment page 500s, typo in footer, password reset loops.\n\noutputs:\n  order: ${{ tasks.triage.output }}\n",
+    "yaml": "# your own server, the familiar API shape — LocalAI on localhost:8080\nnika: self-hosted-triage\n\ntasks:\n  triage:\n    infer:\n      model: localai/default\n      max_tokens: 120\n      prompt: |\n        Three support lines arrive. Order them most urgent first:\n        payment page 500s, typo in footer, password reset loops.\n\noutputs:\n  order: ${{ tasks.triage.output }}\n",
     "file": "localai.nika.yaml"
   },
   "vllm": {
     "id": "vllm",
-    "yaml": "nika: v1\nworkflow:\n  id: throughput-batch\n  description: \"one vLLM server, one batch — continuous batching earns its keep under fan-out\"\n\ntasks:\n  caption:\n    for_each: [\"checkout\", \"search\", \"onboarding\"]\n    max_parallel: 3\n    infer:\n      model: vllm/Qwen/Qwen3-8B\n      max_tokens: 60\n      prompt: |\n        One-line release note for the improved ${{ item }} flow.\n\noutputs:\n  notes: ${{ tasks.caption.output }}\n",
+    "yaml": "# one vLLM server, one batch — continuous batching earns its keep under fan-out\nnika: throughput-batch\n\ntasks:\n  caption:\n    for_each: { items: [\"checkout\", \"search\", \"onboarding\"], max_parallel: 3 }\n    infer:\n      model: vllm/Qwen/Qwen3-8B\n      max_tokens: 60\n      prompt: |\n        One-line release note for the improved ${{ item }} flow.\n\noutputs:\n  notes: ${{ tasks.caption.output }}\n",
     "file": "vllm.nika.yaml"
   },
   "mistral": {
     "id": "mistral",
-    "yaml": "nika: v1\nworkflow:\n  id: bilingual-release-note\n  description: \"drafted in French, shipped in English — large drafts, small translates\"\n\ntasks:\n  draft:\n    infer:\n      model: mistral/mistral-large-latest\n      max_tokens: 120\n      prompt: |\n        Rédige en une phrase la note de version : les traces\n        sont désormais signées et rejouables.\n\n  translate:\n    with:\n      draft: ${{ tasks.draft.output }}\n    infer:\n      model: mistral/mistral-small-latest\n      max_tokens: 120\n      prompt: |\n        Translate to plain English: ${{ with.draft }}\n\noutputs:\n  note: ${{ tasks.translate.output }}\n",
+    "yaml": "# drafted in French, shipped in English — large drafts, small translates\nnika: bilingual-release-note\n\ntasks:\n  draft:\n    infer:\n      model: mistral/mistral-large-latest\n      max_tokens: 120\n      prompt: |\n        Rédige en une phrase la note de version : les traces\n        sont désormais signées et rejouables.\n\n  translate:\n    with:\n      draft: ${{ tasks.draft.output }}\n    infer:\n      model: mistral/mistral-small-latest\n      max_tokens: 120\n      prompt: |\n        Translate to plain English: ${{ with.draft }}\n\noutputs:\n  note: ${{ tasks.translate.output }}\n",
     "file": "mistral.nika.yaml"
   },
   "anthropic": {
     "id": "anthropic",
-    "yaml": "nika: v1\nworkflow:\n  id: reasoned-review\n  description: \"a careful pass with a visible thinking budget — the key rides ANTHROPIC_API_KEY\"\n\ntasks:\n  review:\n    infer:\n      model: anthropic/claude-sonnet-4-20250514\n      max_tokens: 400\n      thinking: { enabled: true, budget_tokens: 2000 }\n      prompt: |\n        Name the single riskiest assumption in this plan:\n        ship on Friday, no rollback path, one reviewer.\n\noutputs:\n  verdict: ${{ tasks.review.output }}\n",
+    "yaml": "# a careful pass with a visible thinking budget — the key rides ANTHROPIC_API_KEY\nnika: reasoned-review\n\ntasks:\n  review:\n    infer:\n      model: anthropic/claude-sonnet-4-20250514\n      max_tokens: 400\n      thinking: { enabled: true, budget_tokens: 2000 }\n      prompt: |\n        Name the single riskiest assumption in this plan:\n        ship on Friday, no rollback path, one reviewer.\n\noutputs:\n  verdict: ${{ tasks.review.output }}\n",
     "file": "anthropic.nika.yaml"
   },
   "openai": {
     "id": "openai",
-    "yaml": "nika: v1\nworkflow:\n  id: typed-extraction\n  description: \"the answer arrives as data, not prose — schema makes the shape a contract\"\n\ntasks:\n  extract:\n    infer:\n      model: openai/gpt-5-mini\n      max_tokens: 200\n      schema:\n        type: object\n        required: [severity, component]\n        properties:\n          severity: { type: string, enum: [low, medium, high] }\n          component: { type: string }\n      prompt: |\n        \"Login fails with a 500 after the session-store deploy.\"\n        Extract severity and component.\n\noutputs:\n  ticket: ${{ tasks.extract.output }}\n",
+    "yaml": "# the answer arrives as data, not prose — schema makes the shape a contract\nnika: typed-extraction\n\ntasks:\n  extract:\n    infer:\n      model: openai/gpt-5-mini\n      max_tokens: 200\n      schema:\n        type: object\n        required: [severity, component]\n        properties:\n          severity: { type: string, enum: [low, medium, high] }\n          component: { type: string }\n      prompt: |\n        \"Login fails with a 500 after the session-store deploy.\"\n        Extract severity and component.\n\noutputs:\n  ticket: ${{ tasks.extract.output }}\n",
     "file": "openai.nika.yaml"
   },
   "gemini": {
     "id": "gemini",
-    "yaml": "nika: v1\nworkflow:\n  id: flash-digest\n  description: \"a fast, steady digest — GEMINI_API_KEY in the environment, nothing else\"\n\ntasks:\n  digest:\n    infer:\n      model: gemini/gemini-2.5-flash\n      max_tokens: 150\n      temperature: 0.2\n      prompt: |\n        Digest to three bullets: the run is a DAG, the DAG comes\n        from references, references are checked before anything runs.\n\noutputs:\n  bullets: ${{ tasks.digest.output }}\n",
+    "yaml": "# a fast, steady digest — GEMINI_API_KEY in the environment, nothing else\nnika: flash-digest\n\ntasks:\n  digest:\n    infer:\n      model: gemini/gemini-2.5-flash\n      max_tokens: 150\n      temperature: 0.2\n      prompt: |\n        Digest to three bullets: the run is a DAG, the DAG comes\n        from references, references are checked before anything runs.\n\noutputs:\n  bullets: ${{ tasks.digest.output }}\n",
     "file": "gemini.nika.yaml"
   },
   "deepseek": {
     "id": "deepseek",
-    "yaml": "nika: v1\nworkflow:\n  id: bounded-answer\n  description: \"a tight token budget makes the audit price a hard ceiling, not a guess\"\n\ntasks:\n  answer:\n    infer:\n      model: deepseek/deepseek-chat\n      max_tokens: 80\n      prompt: |\n        In one sentence: why should a workflow engine refuse\n        to run a file it cannot price?\n\noutputs:\n  answer: ${{ tasks.answer.output }}\n",
+    "yaml": "# a tight token budget makes the audit price a hard ceiling, not a guess\nnika: bounded-answer\n\ntasks:\n  answer:\n    infer:\n      model: deepseek/deepseek-chat\n      max_tokens: 80\n      prompt: |\n        In one sentence: why should a workflow engine refuse\n        to run a file it cannot price?\n\noutputs:\n  answer: ${{ tasks.answer.output }}\n",
     "file": "deepseek.nika.yaml"
   },
   "xai": {
     "id": "xai",
-    "yaml": "nika: v1\nworkflow:\n  id: retried-verdict\n  description: \"transient network noise is policy, not a crash — backoff rides the file\"\n\ntasks:\n  judge:\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_strategy: exponential\n    infer:\n      model: xai/grok-3-mini-fast\n      max_tokens: 100\n      prompt: |\n        Yes or no, with one reason: should a failed retry\n        surface the first error or the last?\n\noutputs:\n  verdict: ${{ tasks.judge.output }}\n",
+    "yaml": "# transient network noise is policy, not a crash — backoff rides the file\nnika: retried-verdict\n\ntasks:\n  judge:\n    retry:\n      max_attempts: 3\n      backoff_ms: 500\n      backoff_strategy: exponential\n    infer:\n      model: xai/grok-3-mini-fast\n      max_tokens: 100\n      prompt: |\n        Yes or no, with one reason: should a failed retry\n        surface the first error or the last?\n\noutputs:\n  verdict: ${{ tasks.judge.output }}\n",
     "file": "xai.nika.yaml"
   },
   "groq": {
     "id": "groq",
-    "yaml": "nika: v1\nworkflow:\n  id: instant-fanout\n  description: \"four prompts at once on LPU hardware — a failed item yields null, the batch lives\"\n\ntasks:\n  slogan:\n    for_each: [\"latency\", \"cost\", \"recovery\", \"provenance\"]\n    max_parallel: 4\n    on_error:\n      recover: null\n    infer:\n      model: groq/llama-3.1-8b-instant\n      max_tokens: 30\n      prompt: |\n        A four-word slogan about ${{ item }} in CI pipelines.\n\noutputs:\n  slogans: ${{ tasks.slogan.output }}\n",
+    "yaml": "# four prompts at once on LPU hardware — a failed item yields null, the batch lives\nnika: instant-fanout\n\ntasks:\n  slogan:\n    for_each: { items: [\"latency\", \"cost\", \"recovery\", \"provenance\"], max_parallel: 4 }\n    on_error:\n      recover: null\n    infer:\n      model: groq/llama-3.1-8b-instant\n      max_tokens: 30\n      prompt: |\n        A four-word slogan about ${{ item }} in CI pipelines.\n\noutputs:\n  slogans: ${{ tasks.slogan.output }}\n",
     "file": "groq.nika.yaml"
   },
   "openrouter": {
     "id": "openrouter",
-    "yaml": "nika: v1\nworkflow:\n  id: one-key-two-vendors\n  description: \"two vendors' models through one endpoint — the router owns the hop\"\n\ntasks:\n  first_opinion:\n    infer:\n      model: openrouter/anthropic/claude-sonnet-4-20250514\n      max_tokens: 120\n      prompt: |\n        One sentence: what breaks when prompts live in a wiki\n        instead of version control?\n\n  second_opinion:\n    with:\n      claim: ${{ tasks.first_opinion.output }}\n    infer:\n      model: openrouter/anthropic/claude-haiku-4-5-20251001\n      max_tokens: 120\n      prompt: |\n        Disagree in one sentence, if you can: ${{ with.claim }}\n\noutputs:\n  debate: ${{ tasks.second_opinion.output }}\n",
+    "yaml": "# two vendors' models through one endpoint — the router owns the hop\nnika: one-key-two-vendors\n\ntasks:\n  first_opinion:\n    infer:\n      model: openrouter/anthropic/claude-sonnet-4-20250514\n      max_tokens: 120\n      prompt: |\n        One sentence: what breaks when prompts live in a wiki\n        instead of version control?\n\n  second_opinion:\n    with:\n      claim: ${{ tasks.first_opinion.output }}\n    infer:\n      model: openrouter/anthropic/claude-haiku-4-5-20251001\n      max_tokens: 120\n      prompt: |\n        Disagree in one sentence, if you can: ${{ with.claim }}\n\noutputs:\n  debate: ${{ tasks.second_opinion.output }}\n",
     "file": "openrouter.nika.yaml"
   },
   "huggingface": {
     "id": "huggingface",
-    "yaml": "nika: v1\nworkflow:\n  id: open-weights-answer\n  description: \"an open-weight model served by the provider network — policy rides the model id\"\n\ntasks:\n  explain:\n    infer:\n      model: huggingface/Qwen/Qwen3.5-397B-A17B:fastest\n      max_tokens: 120\n      prompt: |\n        In two sentences: why do open weights turn a provider\n        catalog into a menu instead of a cage?\n\noutputs:\n  answer: ${{ tasks.explain.output }}\n",
+    "yaml": "# an open-weight model served by the provider network — policy rides the model id\nnika: open-weights-answer\n\ntasks:\n  explain:\n    infer:\n      model: huggingface/Qwen/Qwen3.5-397B-A17B:fastest\n      max_tokens: 120\n      prompt: |\n        In two sentences: why do open weights turn a provider\n        catalog into a menu instead of a cage?\n\noutputs:\n  answer: ${{ tasks.explain.output }}\n",
     "file": "huggingface.nika.yaml"
   },
   "nvidia": {
     "id": "nvidia",
-    "yaml": "nika: v1\nworkflow:\n  id: nim-catalog-call\n  description: \"one catalog, many vendors' models — the hosted endpoint and the container match\"\n\ntasks:\n  note:\n    infer:\n      model: nvidia/meta/llama-3.1-70b-instruct\n      max_tokens: 120\n      system: Answer like a release note, not an ad.\n      prompt: |\n        One sentence: what does self-hosting the same container\n        later buy a team that starts on a hosted endpoint?\n\noutputs:\n  line: ${{ tasks.note.output }}\n",
+    "yaml": "# one catalog, many vendors' models — the hosted endpoint and the container match\nnika: nim-catalog-call\n\ntasks:\n  note:\n    infer:\n      model: nvidia/meta/llama-3.1-70b-instruct\n      max_tokens: 120\n      system: Answer like a release note, not an ad.\n      prompt: |\n        One sentence: what does self-hosting the same container\n        later buy a team that starts on a hosted endpoint?\n\noutputs:\n  line: ${{ tasks.note.output }}\n",
     "file": "nvidia.nika.yaml"
   },
   "moonshot": {
     "id": "moonshot",
-    "yaml": "nika: v1\nworkflow:\n  id: long-context-brief\n  description: \"built for long context — the whole document goes in, one brief comes out\"\n\ntasks:\n  brief:\n    infer:\n      model: moonshot/kimi-k2\n      max_tokens: 150\n      prompt: |\n        Brief a reviewer in three lines: the file declares its\n        blast radius; permits allowlist what runs, reads, writes\n        and calls; absent permits mean the engine floor.\n\noutputs:\n  brief: ${{ tasks.brief.output }}\n",
+    "yaml": "# built for long context — the whole document goes in, one brief comes out\nnika: long-context-brief\n\ntasks:\n  brief:\n    infer:\n      model: moonshot/kimi-k2\n      max_tokens: 150\n      prompt: |\n        Brief a reviewer in three lines: the file declares its\n        blast radius; permits allowlist what runs, reads, writes\n        and calls; absent permits mean the engine floor.\n\noutputs:\n  brief: ${{ tasks.brief.output }}\n",
     "file": "moonshot.nika.yaml"
   },
   "mock": {
     "id": "mock",
-    "yaml": "nika: v1\nworkflow:\n  id: mock-first-draft\n  description: \"the whole file rehearses for free — swap one word when it goes real\"\n\ntasks:\n  draft:\n    infer:\n      model: mock/mock-default\n      max_tokens: 50\n      prompt: |\n        Any deterministic echo will do — the shape is the test.\n\n  prove:\n    with:\n      draft: ${{ tasks.draft.output }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.draft != \"\" }}\n        message: \"the rehearsal produced nothing\"\n\noutputs:\n  rehearsal: ${{ tasks.draft.output }}\n",
+    "yaml": "# the whole file rehearses for free — swap one word when it goes real\nnika: mock-first-draft\n\ntasks:\n  draft:\n    infer:\n      model: mock/mock-default\n      max_tokens: 50\n      prompt: |\n        Any deterministic echo will do — the shape is the test.\n\n  prove:\n    with:\n      draft: ${{ tasks.draft.output }}\n    invoke:\n      tool: \"nika:assert\"\n      args:\n        condition: ${{ with.draft != \"\" }}\n        message: \"the rehearsal produced nothing\"\n\noutputs:\n  rehearsal: ${{ tasks.draft.output }}\n",
     "file": "mock.nika.yaml"
   }
 } as const

@@ -28,7 +28,8 @@ const bin = process.env.NIKA_BIN || 'nika'
 
 const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
   .trim()
-  .replace(/^nika\s+/, '')
+  /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+  .split(/\s+/)[1]
 
 /* corpus 1 · the 26 showcase rooms — one clock (0.106 flag-day): the
    projector emission IS what the room serves, so the engine reads it

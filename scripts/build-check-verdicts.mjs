@@ -31,11 +31,13 @@ const LIB = `${ROOT}public/library`
    file — never baked (see the honesty line above) */
 const ENVIRONMENTAL = new Set(['inputs'])
 
+const bin = process.env.NIKA_BIN || 'nika'
 let engine
 try {
-  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/).pop()
+  /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+  engine = execFileSync(bin, ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
 } catch {
-  console.error('build-check-verdicts: `nika` is not on PATH — the capture needs the real binary')
+  console.error('build-check-verdicts: no nika binary (NIKA_BIN or PATH) — the capture needs the real binary')
   process.exit(2)
 }
 
@@ -45,7 +47,7 @@ for (const name of readdirSync(LIB).sort()) {
   const path = `${LIB}/${name}`
   let out
   try {
-    out = execFileSync('nika', ['check', '--json', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+    out = execFileSync(bin, ['check', '--json', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
   } catch (e) {
     out = e.stdout || ''
   }
@@ -57,9 +59,11 @@ for (const name of readdirSync(LIB).sort()) {
     continue
   }
   const yaml = readFileSync(path, 'utf8')
-  const id = /^workflow:\s*\n\s+id:\s*(\S+)/m.exec(yaml)?.[1]
-  if (!id) {
-    console.error(`build-check-verdicts: ${name} has no workflow id — skipped`)
+  /* the nine-key mark IS the id (0.109 · `nika: <name>` · never `v1`) */
+  const id = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(yaml)?.[1]
+  if (!id || id === 'v1') {
+    console.error(`build-check-verdicts: ${name} has no nika: name — skipped`)
+    process.exitCode = 1
     continue
   }
   const hints = (d.hints ?? []).filter((h) => !ENVIRONMENTAL.has(h.kind))

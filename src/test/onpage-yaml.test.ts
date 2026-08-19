@@ -101,7 +101,7 @@ describe('on-page YAML · the whole corpus is schema-true against the PIN', () =
         .join('\n')
       expectValid(
         `spec verb card · ${verb}`,
-        `nika: v1\nworkflow:\n  id: card-${verb}\ntasks:\n${indented}\n`,
+        `nika: card-${verb}\ntasks:\n${indented}\n`,
       )
     },
   )

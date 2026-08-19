@@ -11,9 +11,7 @@ Every AI bill has the same shape: you find out what it cost after it cost it. Th
 Nika moves the question to before. The second verdict `nika check` prints, right under the plan, is the cost line:
 
 ```yaml cost-probe.nika.yaml
-nika: v1
-workflow:
-  id: cost-probe
+nika: cost-probe
 model: mistral/mistral-small
 
 tasks:

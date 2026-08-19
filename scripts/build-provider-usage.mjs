@@ -62,7 +62,8 @@ if (!fromCapture) {
   const bin = process.env.NIKA_BIN || 'nika'
   engine = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
     .trim()
-    .replace(/^nika\s+/, '')
+    /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+    .split(/\s+/)[1]
   audits = {}
   for (const id of ids) {
     let raw

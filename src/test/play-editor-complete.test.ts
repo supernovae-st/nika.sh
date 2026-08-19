@@ -112,15 +112,18 @@ describe('play editor completion · positions', () => {
     const plain = ['tasks:', '  a:', '    infer:', '      prompt: "x ${{ '].join('\n')
     const r = nikaComplete(ctx(plain))
     expect(r).not.toBeNull()
+    /* the canon namespaces (config died with the nine-key envelope) · the
+       group fold completes only once a task declares a group */
     expect(r!.options.map((o) => o.label).sort()).toEqual([
-      'config.',
       'const.',
       'inputs.',
       'secrets.',
       'tasks.',
       'with.',
     ])
-    const looped = ['tasks:', '  a:', '    for_each: ${{ const.list }}', '    exec:', '      command: ["x", "${{ '].join('\n')
+    const grouped = ['tasks:', '  a:', '    group: probes', '    exec: { command: ["x"] }', '  b:', '    with:', '      legs: ${{ '].join('\n')
+    expect(nikaComplete(ctx(grouped))!.options.map((o) => o.label)).toContain('group.')
+    const looped = ['tasks:', '  a:', '    for_each: { items: ${{ const.list }} }', '    exec:', '      command: ["x", "${{ '].join('\n')
     const r2 = nikaComplete(ctx(looped))
     expect(r2!.options.map((o) => o.label)).toContain('item')
     expect(r2!.options.map((o) => o.label)).toContain('index')

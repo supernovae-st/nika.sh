@@ -101,7 +101,7 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'The boundary', href: '/how/boundary', hint: 'permits · secrets · the always-on floor' },
       { label: 'The proof', href: '/how/proof', hint: 'run graph · conformance · machine surfaces' },
       { label: 'The truth system', href: '/truth', hint: 'how this site tells the truth · verify it yourself' },
-      { label: 'Spec', href: '/language/spec', hint: 'the language reference · nika: v1' },
+      { label: 'Spec', href: '/language/spec', hint: 'the language reference · the nine-key envelope' },
       { label: 'Governance', href: '/language/governance', hint: 'the 18 NEPs · how the standard changes' },
       { label: 'Timeline', href: '/timeline', hint: 'the one verifiable record · eras · releases · gates' },
       { label: 'Docs', href: DOCS, hint: 'guides · examples · the full reference', external: true },

@@ -71,6 +71,11 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "transient": false
   },
   {
+    "code": "NIKA-AUTH-011",
+    "category": "validation_error",
+    "transient": false
+  },
+  {
     "code": "NIKA-BUILTIN-001",
     "category": "validation_error",
     "transient": false
@@ -136,6 +141,16 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "transient": false
   },
   {
+    "code": "NIKA-DAG-008",
+    "category": "validation_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-DAG-009",
+    "category": "validation_error",
+    "transient": false
+  },
+  {
     "code": "NIKA-DECIDE-001",
     "category": "validation_error",
     "transient": false
@@ -177,6 +192,11 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   },
   {
     "code": "NIKA-INFER-003",
+    "category": "validation_error",
+    "transient": false
+  },
+  {
+    "code": "NIKA-INFER-004",
     "category": "validation_error",
     "transient": false
   },
@@ -291,16 +311,6 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "transient": false
   },
   {
-    "code": "NIKA-PARSE-020",
-    "category": "validation_error",
-    "transient": false
-  },
-  {
-    "code": "NIKA-PARSE-021",
-    "category": "validation_error",
-    "transient": false
-  },
-  {
     "code": "NIKA-PARSE-022",
     "category": "validation_error",
     "transient": false
@@ -333,11 +343,6 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   {
     "code": "NIKA-PARSE-028",
     "category": "validation_error",
-    "transient": false
-  },
-  {
-    "code": "NIKA-POLICY-001",
-    "category": "security_error",
     "transient": false
   },
   {
@@ -411,12 +416,12 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
     "transient": false
   },
   {
-    "code": "NIKA-SEC-013",
+    "code": "NIKA-SEC-014",
     "category": "security_error",
     "transient": false
   },
   {
-    "code": "NIKA-SEC-014",
+    "code": "NIKA-SEC-015",
     "category": "security_error",
     "transient": false
   },
@@ -427,11 +432,6 @@ export const ERROR_CODES: ErrorCodeEntry[] = [
   },
   {
     "code": "NIKA-TYPE-001",
-    "category": "validation_error",
-    "transient": false
-  },
-  {
-    "code": "NIKA-TYPE-002",
     "category": "validation_error",
     "transient": false
   },

@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: bump-log-level
-  description: "literal find/replace in place — not regex, no surprises"
+# literal find/replace in place — not regex, no surprises
+nika: bump-log-level
 
 permits:
   fs:

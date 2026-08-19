@@ -13,10 +13,8 @@ Make solved this for C files in 1976. Nika gives the same move to AI pipelines, 
 Here is a small build with a diamond in it: fetch feeds render feeds index, and an asset-packing branch that depends on none of them.
 
 ```yaml site-build.nika.yaml
-nika: v1
-workflow:
-  id: site-build
-  description: "Fetch the data, render the page, index it - and pack assets on the side"
+# Fetch the data, render the page, index it - and pack assets on the side
+nika: site-build
 
 permits:
   fs:

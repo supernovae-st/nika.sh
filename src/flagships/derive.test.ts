@@ -38,8 +38,8 @@ const producersOf = (t: YamlTask): string[] => {
   return out
 }
 interface YamlDoc {
-  /** 0.105 envelope: the map carries the id */
-  workflow: { id: string; description?: string }
+  /** 0.109 · `nika:` IS the name. The dead `workflow: {id}` map is gone. */
+  nika: string
   /** absent on a zero-model flagship (price-watch runs no inference) */
   model?: string
   permits: Record<string, unknown>
@@ -115,7 +115,7 @@ describe.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
     })
 
     it('derives workflow name, model and outputs', () => {
-      expect(plan.workflow).toBe(truth.workflow.id)
+      expect(plan.workflow).toBe(truth.nika)
       // a zero-model flagship (price-watch) declares NO model: derive yields ''
       expect(plan.model).toBe(truth.model ?? '')
       expect(plan.outputs).toEqual(Object.keys(truth.outputs ?? {}))

@@ -58,7 +58,8 @@ describe('gate matrix · the vendored corpus is byte-stable and complete', () =>
   it('every runnable cell carries its fixture witness, its yaml and a legal verdict', () => {
     for (const c of GATE_MATRIX.filter((x) => !x.dead)) {
       expect(c.fixture, `${c.producer}/${c.form}`).toMatch(/^conformance\/tests\/runtime\/gates\/\d{3}-/)
-      expect(c.yaml, `${c.producer}/${c.form}`).toContain('nika: v1')
+      /* the nine-key mark: `nika: <name>` (never the dead `v1` marker) */
+      expect(c.yaml, `${c.producer}/${c.form}`).toMatch(/^nika: (?!v1$)[a-z][a-z0-9-]*$/m)
       expect(['success', 'failure', 'skipped', 'cancelled']).toContain(c.verdict)
     }
   })

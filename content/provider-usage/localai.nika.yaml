@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: self-hosted-triage
-  description: "your own server, the familiar API shape — LocalAI on localhost:8080"
+# your own server, the familiar API shape — LocalAI on localhost:8080
+nika: self-hosted-triage
 
 tasks:
   triage:

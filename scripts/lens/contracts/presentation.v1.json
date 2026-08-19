@@ -1,6 +1,6 @@
 {
   "contract_version": 1,
-  "forbidden_keys": ["depends_on", "max_iterations", "output_schema"],
+  "forbidden_keys": ["depends_on", "max_iterations", "output_schema", "workflow", "config", "types", "policy", "on_finally", "fail_workflow", "vars"],
   "forbidden_key_carriers": [
     "src/sections/Hero.tsx",
     "src/sections/Proof.tsx",

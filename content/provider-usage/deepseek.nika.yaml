@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: bounded-answer
-  description: "a tight token budget makes the audit price a hard ceiling, not a guess"
+# a tight token budget makes the audit price a hard ceiling, not a guess
+nika: bounded-answer
 
 tasks:
   answer:

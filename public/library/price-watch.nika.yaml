@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
-nika: v1
-workflow:
-  id: price-watch
+nika: price-watch
 # zero model · two tools and one CEL compare
 
 # the file IS the blast radius
@@ -10,9 +8,12 @@ permits:
   fs: { read: [ ./price.json ], write: [ ./price-alert.md ] }
   tools: [ "nika:read", "nika:jq", "nika:write" ]
 
-config:
-  # your threshold · the deployment's dial
-  alert_below: { type: number, default: 899 }
+inputs:
+  # your threshold · a defaulted dial, override with --var
+  alert_below:
+    type: number
+    required: false
+    default: 899
 
 tasks:
   snapshot:
@@ -28,12 +29,12 @@ tasks:
   alert:
     with:
       price: ${{ tasks.price.output }}
-    when: ${{ with.price < config.alert_below }}
+    when: ${{ with.price < inputs.alert_below }}
     invoke:
       tool: "nika:write"
       args:
         path: ./price-alert.md
-        content: "Price drop: now ${{ with.price }} (target ${{ config.alert_below }})"
+        content: "Price drop: now ${{ with.price }} (target ${{ inputs.alert_below }})"
 
 outputs:
   price: "${{ tasks.price.output }}"

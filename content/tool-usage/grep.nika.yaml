@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: count-the-todos
-  description: "recursive regex search — {path, line, match}, sorted"
+# recursive regex search — {path, line, match}, sorted
+nika: count-the-todos
 
 permits:
   fs:

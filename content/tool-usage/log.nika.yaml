@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: narrate-the-run
-  description: "a human-readable line in the run stream — best-effort, never fails"
+# a human-readable line in the run stream — best-effort, never fails
+nika: narrate-the-run
 
 tasks:
   narrate:

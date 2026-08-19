@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: flash-digest
-  description: "a fast, steady digest — GEMINI_API_KEY in the environment, nothing else"
+# a fast, steady digest — GEMINI_API_KEY in the environment, nothing else
+nika: flash-digest
 
 tasks:
   digest:

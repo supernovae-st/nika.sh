@@ -1,7 +1,5 @@
-nika: v1
-workflow:
-  id: stamp-the-run
-  description: "a sortable v7 id — minted once, threaded through the file"
+# a sortable v7 id — minted once, threaded through the file
+nika: stamp-the-run
 
 permits:
   fs:

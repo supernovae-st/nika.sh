@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
-nika: v1
-workflow:
-  id: etl-quarantine
+nika: etl-quarantine
 # zero model · a schema gate splits the batch
 
 # the file IS the blast radius

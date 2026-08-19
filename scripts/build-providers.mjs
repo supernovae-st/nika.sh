@@ -91,7 +91,8 @@ if (fromBinary && Array.isArray(fromBinary.providers)) {
   })
   const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
     .trim()
-    .replace(/^nika\s+/, '')
+    /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+    .split(/\s+/)[1]
   const embedded_extra = fromBinary.providers.length - providers.length
   writeFileSync(
     CATALOG,

@@ -36,10 +36,6 @@ export const LANGUAGE_SCOPES = [
     "blurb": "the file itself"
   },
   {
-    "scope": "workflow",
-    "blurb": "inside workflow:"
-  },
-  {
     "scope": "task",
     "blurb": "one step of the plan"
   },
@@ -60,6 +56,10 @@ export const LANGUAGE_SCOPES = [
     "blurb": "inside agent:"
   },
   {
+    "scope": "for_each",
+    "blurb": "inside for_each:"
+  },
+  {
     "scope": "retry",
     "blurb": "inside retry:"
   },
@@ -68,8 +68,8 @@ export const LANGUAGE_SCOPES = [
     "blurb": "inside on_error:"
   },
   {
-    "scope": "on_finally",
-    "blurb": "inside an on_finally step"
+    "scope": "lift",
+    "blurb": "inside a lift entry"
   }
 ] as const
 
@@ -92,10 +92,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "task",
-        "required": false
-      },
-      {
-        "scope": "on_finally",
         "required": false
       }
     ]
@@ -150,6 +146,17 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
+    "word": "because",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "lift",
+        "required": true,
+        "type": "string"
+      }
+    ]
+  },
+  {
     "word": "capture",
     "verb": false,
     "decls": [
@@ -178,17 +185,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
-    "word": "config",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "envelope",
-        "required": false,
-        "type": "object"
-      }
-    ]
-  },
-  {
     "word": "const",
     "verb": false,
     "decls": [
@@ -211,17 +207,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
-    "word": "declassify",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "task",
-        "required": false,
-        "type": "array"
-      }
-    ]
-  },
-  {
     "word": "decode",
     "verb": false,
     "decls": [
@@ -235,17 +220,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
           "jsonl",
           "bytes"
         ]
-      }
-    ]
-  },
-  {
-    "word": "description",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "workflow",
-        "required": false,
-        "type": "string"
       }
     ]
   },
@@ -267,10 +241,18 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false
-      },
+      }
+    ]
+  },
+  {
+    "word": "extract",
+    "verb": false,
+    "decls": [
       {
-        "scope": "on_finally",
-        "required": false
+        "scope": "task",
+        "required": false,
+        "type": "object",
+        "format": "jq"
       }
     ]
   },
@@ -279,18 +261,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "verb": false,
     "decls": [
       {
-        "scope": "task",
-        "required": false,
-        "type": "boolean"
-      }
-    ]
-  },
-  {
-    "word": "fail_workflow",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "on_error",
+        "scope": "for_each",
         "required": false,
         "type": "boolean"
       }
@@ -303,30 +274,31 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false,
-        "type": "string | array"
+        "type": "object"
       }
     ]
   },
   {
-    "word": "id",
+    "word": "from",
     "verb": false,
     "decls": [
       {
-        "scope": "workflow",
-        "required": true,
+        "scope": "lift",
+        "required": false,
         "type": "string",
-        "pattern": "^[a-z][a-z0-9-]*$"
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)+$"
       }
     ]
   },
   {
-    "word": "inert",
+    "word": "group",
     "verb": false,
     "decls": [
       {
         "scope": "task",
         "required": false,
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
       }
     ]
   },
@@ -336,10 +308,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "decls": [
       {
         "scope": "task",
-        "required": false
-      },
-      {
-        "scope": "on_finally",
         "required": false
       }
     ]
@@ -362,10 +330,17 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "task",
         "required": false
-      },
+      }
+    ]
+  },
+  {
+    "word": "items",
+    "verb": false,
+    "decls": [
       {
-        "scope": "on_finally",
-        "required": false
+        "scope": "for_each",
+        "required": true,
+        "type": "string | array"
       }
     ]
   },
@@ -377,6 +352,32 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "retry",
         "required": false,
         "type": "boolean"
+      }
+    ]
+  },
+  {
+    "word": "law",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "lift",
+        "required": true,
+        "type": "string",
+        "enum": [
+          "taint",
+          "data-as-code"
+        ]
+      }
+    ]
+  },
+  {
+    "word": "lift",
+    "verb": false,
+    "decls": [
+      {
+        "scope": "task",
+        "required": false,
+        "type": "array"
       }
     ]
   },
@@ -396,7 +397,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "verb": false,
     "decls": [
       {
-        "scope": "task",
+        "scope": "for_each",
         "required": false,
         "type": "integer"
       }
@@ -463,7 +464,8 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
       {
         "scope": "envelope",
         "required": true,
-        "type": "\"v1\""
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
       }
     ]
   },
@@ -496,29 +498,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     ]
   },
   {
-    "word": "on_finally",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "task",
-        "required": false,
-        "type": "array"
-      }
-    ]
-  },
-  {
-    "word": "output",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "task",
-        "required": false,
-        "type": "object",
-        "format": "jq"
-      }
-    ]
-  },
-  {
     "word": "outputs",
     "verb": false,
     "decls": [
@@ -531,17 +510,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
   },
   {
     "word": "permits",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "envelope",
-        "required": false,
-        "type": "object"
-      }
-    ]
-  },
-  {
-    "word": "policy",
     "verb": false,
     "decls": [
       {
@@ -742,11 +710,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": false,
         "type": "string",
         "pattern": "^[0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h)([0-9]+(\\.[0-9]+)?(ns|us|µs|ms|s|m|h))*$"
-      },
-      {
-        "scope": "on_finally",
-        "required": false,
-        "type": "string"
       }
     ]
   },
@@ -758,7 +721,7 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "invoke",
         "required": false,
         "type": "string",
-        "pattern": "^mcp:[a-z][a-z0-9-]*/[A-Za-z0-9_/-]+$"
+        "pattern": "^mcp:[a-z0-9][a-z0-9-]*/[A-Za-z0-9_/-]+$"
       }
     ]
   },
@@ -770,17 +733,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "scope": "agent",
         "required": false,
         "type": "array"
-      }
-    ]
-  },
-  {
-    "word": "types",
-    "verb": false,
-    "decls": [
-      {
-        "scope": "envelope",
-        "required": false,
-        "type": "object"
       }
     ]
   },
@@ -804,12 +756,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
         "required": false,
         "type": "boolean | string",
         "format": "cel-expression"
-      },
-      {
-        "scope": "on_finally",
-        "required": false,
-        "type": "boolean | string",
-        "format": "cel-expression"
       }
     ]
   },
@@ -828,11 +774,6 @@ export const LANGUAGE_WORDS: LanguageWord[] = [
     "word": "workflow",
     "verb": false,
     "decls": [
-      {
-        "scope": "envelope",
-        "required": true,
-        "type": "object"
-      },
       {
         "scope": "invoke",
         "required": false,

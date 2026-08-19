@@ -72,24 +72,27 @@ const BROWSE: {
     slug: 'invoice-chaser',
     blurb: 'finds the overdue, drafts reminders, waits for your yes',
     /* the lit lines: the approve task — a human answer gates the save
-       (re-anchored at the 0811607 pin · the corpus re-projection moved
-       the block two lines down and the old range lit an empty line) */
+       (re-anchored at the 2b3d6ac3 pin · the nine-key envelope shed the
+       workflow: block and the approve task now opens at line 53; the
+       0811607 anchor lit an empty line and a foreign block) */
     gloss: 'invoke: a human yes sits before anything is saved',
-    highlight: [58, 66],
+    highlight: [53, 61],
   },
   {
     slug: 'deep-research-brief',
     blurb: 'an agent works the web inside hard caps, then the brief',
-    /* the lit lines: the granted tools + the turn/token ceilings */
+    /* the lit lines: the agent block — the granted tools + the turn/token
+       ceilings (re-anchored at the 2b3d6ac3 pin · nine keys · agent: at 65) */
     gloss: 'agent: two tools granted, caps it cannot exceed',
-    highlight: [68, 85],
+    highlight: [65, 82],
   },
   {
     slug: 'localization-factory',
     blurb: 'every doc translated in parallel, the tree mirrored back',
-    /* the lit lines: the fan-out head — one run per item, rate-limited */
+    /* the lit lines: the fan-out block — one run per item, rate-limited
+       (0.109 · for_each is ONE block · items + max_parallel + fail_fast) */
     gloss: 'for_each: one run per doc, three in flight at a time',
-    highlight: [69, 70],
+    highlight: [67, 70],
   },
 ]
 

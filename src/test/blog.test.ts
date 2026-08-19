@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 // @ts-expect-error — the compiler is the untyped build script itself (the point: same code path)
-import { compileAll, SERIES } from '../../scripts/build-blog.mjs'
+import { compileAll, compilePost, SERIES } from '../../scripts/build-blog.mjs'
 import { BLOG_POSTS } from '../content/blog.generated'
 import { BLOG_BODIES } from '../content/blog-bodies.generated'
 import { BLOG_PATHS } from '../../site.config'
@@ -62,6 +62,46 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
   it('the GitHub face (content/blog/README.md) lists every post file', () => {
     const readme = readFileSync(join(__dirname, '../../content/blog/README.md'), 'utf8')
     for (const p of fresh) expect(readme).toContain(p.file)
+  })
+
+  it('a complete nine-key fence carries the playground handoff · dead v1 does not', () => {
+    type CodeTok = { k: string; play?: string; filename?: string; text?: string }
+    const waits = fresh.find((p) => p.slug === 'the-run-that-waits')
+    const tokens = (waits?.tokens ?? []) as CodeTok[]
+    const playable = tokens.filter((t) => t.k === 'code' && Boolean(t.play))
+    expect(playable.length).toBeGreaterThan(0)
+    expect(playable[0].filename).toBe('gated-release.nika.yaml')
+    expect(playable[0].text).toMatch(/^nika:\s*gated-release\s*$/m)
+    expect(playable[0].play).toMatch(/^[A-Za-z0-9+/=_-]+$/)
+
+    const fm = `---
+slug: x
+title: "T"
+tag: Engine
+date: 2026-01-01
+description: "d"
+---
+`
+    const live = compilePost(
+      `${fm}\n\`\`\`yaml live.nika.yaml\n# comment above the mark\nnika: gated-release\n\ntasks:\n  a:\n    invoke: { tool: nika:log }\n\`\`\`\n`,
+      'x.md',
+      {},
+    )
+    expect((live.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeTruthy()
+
+    const dead = compilePost(
+      `${fm}\n\`\`\`yaml dead.nika.yaml\nnika: v1\nworkflow: gated-release\n\ntasks:\n  a:\n    invoke: { tool: nika:log }\n\`\`\`\n`,
+      'x.md',
+      {},
+    )
+    expect((dead.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeUndefined()
+
+    const fragment = compilePost(
+      `${fm}\n\`\`\`yaml\npermits:\n  fs: { read: ["."] }\n\`\`\`\n`,
+      'x.md',
+      {},
+    )
+    expect((fragment.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeUndefined()
   })
 
   it('posts are newest-first with sane frontmatter', () => {

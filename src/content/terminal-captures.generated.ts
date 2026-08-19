@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.108.0"
+export const TERMINAL_ENGINE = "0.109.2"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.108.0"
+        "text": "nika 0.109.2 (1da35b685)"
       }
     ]
   },
@@ -79,6 +79,10 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
+        "text": " ✔ EXEC     no literal argv the exec floor refuses at run · a templated argv is the RUN's verdict"
+      },
+      {
+        "kind": "ok",
         "text": " ✔ PERMITS  literal + const: args fit the boundary · computed paths + symlinks are the RUN's verdict · exec outside the fs bounds"
       },
       {
@@ -112,7 +116,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
         "text": "  (no orphans · DAG check NIKA-DAG-001 clean)"
       }
     ],
-    "json": "{\n \"graph_format\": 2,\n \"workflow\": \"hello\",\n \"nodes\": [\n  {\n   \"id\": \"greet\",\n   \"verb\": \"exec\",\n   \"when\": null,\n   \"fan_out\": null,\n   \"permits\": [\n    \"exec: echo\"\n   ],\n   \"cost_interval\": null\n  }\n ],\n \"edges\": []\n}"
+    "json": "{\n \"graph_format\": 3,\n \"workflow\": \"hello\",\n \"nodes\": [\n  {\n   \"id\": \"greet\",\n   \"kind\": \"task\",\n   \"verb\": \"exec\",\n   \"when\": null,\n   \"fan_out\": null,\n   \"permits\": [\n    \"exec: echo\"\n   ],\n   \"cost_interval\": null\n  }\n ],\n \"edges\": []\n}"
   },
   {
     "id": "explain-parse-019",
