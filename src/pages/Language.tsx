@@ -23,21 +23,7 @@ import './language-page.css'
 import { WordTable } from './WordTable'
 import { wordRoom } from '../lib/rooms'
 import { CodeFile } from '../components/CodeFile'
-
-const ENVELOPE = `# a job, in a sentence
-nika: scrape-and-summarize
-model: ollama/llama3.2:3b
-inputs:
-  topic: { type: string, required: true }
-permits: {}
-tasks:
-  summarize:
-    infer:
-      max_tokens: 400
-      prompt: "Summarize · \${{ inputs.topic }}"
-outputs:
-  summary: \${{ tasks.summarize.output }}
-`
+import { HELLO_AI_YAML } from '../content/install'
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
    Every key an author can type in a .nika.yaml, as an anchored row — the
@@ -185,8 +171,9 @@ export function Component() {
           <div className="lg-arch" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             <p className="lg-arch-k mono">the envelope · nine keys · 0.109</p>
             <CodeFile
-              yaml={ENVELOPE}
-              filename="scrape-and-summarize.nika.yaml"
+              yaml={HELLO_AI_YAML}
+              filename="hello-ai.nika.yaml"
+              sourceHref="https://github.com/supernovae-st/nika-spec/blob/main/examples/snippets/hello-ai.nika.yaml"
               wrap
               tips
             />

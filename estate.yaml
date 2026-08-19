@@ -941,7 +941,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: 1dea3f2583829980a79ae38a886ff5e39a719a6526e0ad333fe6d5eeece05450
+  aggregate_sha256: 5eb2d88f7f62bb643c25dea51884945df3132094debd198517cbf72dd64088b8
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
