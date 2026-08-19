@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-18',
+    tag: 'release',
+    title: 'v0.109.2 · the nine-key envelope ships',
+    body: 'The envelope is nine keys: nika: is the mark and the name, never a version marker. Values come from three authorities (inputs · const · secrets). The first two 0.109 tags died at the release gates before any asset landed; this is the one a visitor can install. Linux builders now install bubblewrap so a permits: file is judged confined, the same way macOS already was.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.109.2',
+  },
+  {
     date: '2026-08-05',
     tag: 'release',
     title: 'v0.108.0 · the access layer',

@@ -28,11 +28,11 @@ export interface Anatomy {
 }
 
 /** the engine release these graphs were read from (the provenance stamp) */
-export const ANATOMY_ENGINE = "0.108.0"
+export const ANATOMY_ENGINE = "0.109.2"
 
 export const ANATOMY: Record<string, Anatomy> = {
   "agent-loop": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "agent-loop-template",
     "nodes": [
       {
@@ -73,7 +73,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "api-upload-and-create": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "api-upload-and-create-template",
     "nodes": [
       {
@@ -88,7 +88,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     "edges": []
   },
   "bookmark-triage": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "bookmark-triage",
     "nodes": [
       {
@@ -140,7 +140,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "ceo-monday-brief": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "ceo-monday-brief",
     "nodes": [
       {
@@ -319,7 +319,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "chain": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "chain-template",
     "nodes": [
       {
@@ -359,7 +359,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "competitor-radar": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "competitor-radar",
     "nodes": [
       {
@@ -516,7 +516,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "config-drift-sentinel": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "config-drift-sentinel",
     "nodes": [
       {
@@ -669,7 +669,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "contract-guard": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "contract-guard",
     "nodes": [
       {
@@ -751,8 +751,118 @@ export const ANATOMY: Record<string, Anatomy> = {
       }
     ]
   },
+  "corpus-digest": {
+    "graph_format": 3,
+    "workflow": "corpus-digest",
+    "nodes": [
+      {
+        "id": "files",
+        "verb": "invoke",
+        "tool": "nika:glob",
+        "permits": [
+          "tool: nika:glob"
+        ]
+      },
+      {
+        "id": "plan",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "permits": []
+      },
+      {
+        "id": "texts",
+        "verb": "invoke",
+        "tool": "nika:read",
+        "fan_out": {
+          "kind": "expression"
+        },
+        "permits": [
+          "tool: nika:read"
+        ]
+      },
+      {
+        "id": "slices",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "cards",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "fan_out": {
+          "kind": "expression"
+        },
+        "permits": []
+      },
+      {
+        "id": "deck",
+        "verb": "invoke",
+        "tool": "nika:jq",
+        "permits": [
+          "tool: nika:jq"
+        ]
+      },
+      {
+        "id": "brief",
+        "verb": "infer",
+        "model": "ollama/llama3.2:3b",
+        "when": "${{ size(with.deck) > 0 }}",
+        "permits": []
+      }
+    ],
+    "edges": [
+      {
+        "from": "cards",
+        "to": "deck",
+        "kind": "value"
+      },
+      {
+        "from": "deck",
+        "to": "brief",
+        "kind": "value"
+      },
+      {
+        "from": "files",
+        "to": "plan",
+        "kind": "value"
+      },
+      {
+        "from": "files",
+        "to": "slices",
+        "kind": "value"
+      },
+      {
+        "from": "files",
+        "to": "texts",
+        "kind": "value"
+      },
+      {
+        "from": "plan",
+        "to": "slices",
+        "kind": "value"
+      },
+      {
+        "from": "slices",
+        "to": "cards",
+        "kind": "value"
+      },
+      {
+        "from": "slices",
+        "to": "deck",
+        "kind": "value"
+      },
+      {
+        "from": "texts",
+        "to": "slices",
+        "kind": "value"
+      }
+    ]
+  },
   "csv-chart-report": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "csv-chart-report",
     "nodes": [
       {
@@ -932,7 +1042,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "deep-research-brief": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "deep-research-brief",
     "nodes": [
       {
@@ -1002,7 +1112,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "docker-report": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "docker-report-template",
     "nodes": [
       {
@@ -1054,7 +1164,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "etl-quarantine": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "etl-quarantine",
     "nodes": [
       {
@@ -1163,7 +1273,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "etl-state": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "etl-state-template",
     "nodes": [
       {
@@ -1265,7 +1375,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "fanout": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "fanout-template",
     "nodes": [
       {
@@ -1335,7 +1445,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "gate-and-act": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "gate-and-act-template",
     "nodes": [
       {
@@ -1365,7 +1475,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "human-gated-ship": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "human-gated-ship-template",
     "nodes": [
       {
@@ -1449,7 +1559,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "image-fx-batch": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "image-fx-batch",
     "nodes": [
       {
@@ -1494,7 +1604,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "incident-war-room": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "incident-war-room",
     "nodes": [
       {
@@ -1666,7 +1776,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "invoice-chaser": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "invoice-chaser",
     "nodes": [
       {
@@ -1754,7 +1864,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "localization-factory": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "localization-factory",
     "nodes": [
       {
@@ -1852,7 +1962,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "media-asset-pack": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "media-asset-pack-template",
     "nodes": [
       {
@@ -1910,7 +2020,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "meeting-actions": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "meeting-actions",
     "nodes": [
       {
@@ -1964,7 +2074,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "model-bench": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "model-bench",
     "nodes": [
       {
@@ -2042,7 +2152,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "og-images": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "og-images",
     "nodes": [
       {
@@ -2058,7 +2168,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     "edges": []
   },
   "pr-review-fanout": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "pr-review-fanout",
     "nodes": [
       {
@@ -2247,7 +2357,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "price-watch": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "price-watch",
     "nodes": [
       {
@@ -2282,7 +2392,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "release-notes": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "release-notes",
     "nodes": [
       {
@@ -2403,7 +2513,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "release-radar": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "release-radar",
     "nodes": [
       {
@@ -2544,7 +2654,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "release-train": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "release-train",
     "nodes": [
       {
@@ -2772,7 +2882,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "resume-screener": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "resume-screener",
     "nodes": [
       {
@@ -2889,7 +2999,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "seo-content-brief": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "seo-content-brief",
     "nodes": [
       {
@@ -2947,7 +3057,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "social-repurpose": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "social-repurpose",
     "nodes": [
       {
@@ -3020,7 +3130,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "standup-digest": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "standup-digest",
     "nodes": [
       {
@@ -3073,7 +3183,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "support-triage": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "support-triage",
     "nodes": [
       {
@@ -3158,7 +3268,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "transcript-shownotes": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "transcript-shownotes",
     "nodes": [
       {
@@ -3222,7 +3332,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "website-brief": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "website-brief-template",
     "nodes": [
       {

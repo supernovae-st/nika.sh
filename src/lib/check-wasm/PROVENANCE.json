@@ -1,10 +1,10 @@
 {
   "what": "the static half of nika check, compiled to the browser: nika-schema parse + nika-check conformance, the same SchemaError Display and spec_code() as the binary",
   "crate": "nika-check-wasm",
-  "engine_version": "0.108.0",
-  "source": "https://github.com/supernovae-st/nika/tree/v0.108.0/crates/nika-check-wasm",
-  "commit": "82e6839e2d226aa137ae32cdb9771dcb6104a526",
-  "branch": "release v0.108.0 — admitted (ADR-107 accepted); this artifact is the release asset the npm package ships, sha-verified against the sidecar",
+  "engine_version": "0.109.2",
+  "source": "https://github.com/supernovae-st/nika/tree/v0.109.2/crates/nika-check-wasm",
+  "commit": "1da35b6859a8f54cd09cfed7ca0e35d1f40fe590",
+  "branch": "release v0.109.2 — admitted (ADR-107 accepted); this artifact is the release asset the npm package ships, sha-verified against the sidecar",
   "coverage": "in-band: every verdict carries wasm:true and a closed legs:[] list (PARSE, CONFORM). The browser half never claims the binary's reach.",
   "gates": {
     "differential_leg_a": "crate tests/differential.rs · check()'s assembly byte-compared against parse+analyze over the 125-fixture conformance corpus, always on",
@@ -16,7 +16,7 @@
     "profile": "wasm-release (debug off · fat LTO · opt-level z)",
     "post": "wasm-opt -Oz --enable-bulk-memory --enable-nontrapping-float-to-int"
   },
-  "wasm_sha256_16": "cb3ab45f873abd88",
+  "wasm_sha256_16": "7258af111f817243",
   "revendor": "node scripts/revendor-check-wasm.mjs v<X.Y.Z> — release-asset only, never a local build",
-  "npm": "@supernovae-st/nika-check-wasm@0.108.0"
+  "npm": "@supernovae-st/nika-check-wasm@0.109.2"
 }

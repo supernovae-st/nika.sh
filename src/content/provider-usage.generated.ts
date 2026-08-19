@@ -4,7 +4,7 @@
 //   node scripts/build-provider-usage.mjs
 // Drift gate: src/test/provider-usage.test.ts recompiles hermetically
 // (--from-capture), byte-diffs, and re-validates every donor against the
-// served schema. Engine at audit: "0.106.0".
+// served schema. Engine at audit: "0.109.2".
 
 /** the static audit the released binary gave the donor at regen time */
 export interface ProviderAudit {
@@ -44,7 +44,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "lmstudio": {
     "clean": true,
@@ -60,7 +60,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "llamacpp": {
     "clean": true,
@@ -76,7 +76,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "localai": {
     "clean": true,
@@ -92,7 +92,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "vllm": {
     "clean": true,
@@ -108,7 +108,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "mistral": {
     "clean": true,
@@ -129,7 +129,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.6
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "anthropic": {
     "clean": true,
@@ -145,7 +145,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 15
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "openai": {
     "clean": true,
@@ -161,7 +161,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 2
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "gemini": {
     "clean": true,
@@ -177,7 +177,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "deepseek": {
     "clean": true,
@@ -193,7 +193,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.28
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "xai": {
     "clean": true,
@@ -209,7 +209,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 4
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "groq": {
     "clean": true,
@@ -225,7 +225,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0.08
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "openrouter": {
     "clean": true,
@@ -246,7 +246,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 15
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "huggingface": {
     "clean": true,
@@ -262,7 +262,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 3.6
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "nvidia": {
     "clean": true,
@@ -278,7 +278,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": 0
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "moonshot": {
     "clean": false,
@@ -294,14 +294,14 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   },
   "mock": {
     "clean": true,
     "models_resolve": true,
     "tasks": 2,
     "waves": 2,
-    "cost_ceiling_usd": null,
+    "cost_ceiling_usd": 0,
     "cost_floor_usd": 0,
     "pricing": [
       {
@@ -310,7 +310,7 @@ export const PROVIDER_AUDITS: Record<string, ProviderAudit> = {
         "output_per_million": null
       }
     ],
-    "pricing_as_of": "2026-07-07"
+    "pricing_as_of": "2026-07-28"
   }
 } as const
 

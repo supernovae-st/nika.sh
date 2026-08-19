@@ -278,8 +278,8 @@ outputs:
    NIKA-SEC-009 instead · a gate with a default is not a gate; its one
    [headless-prompt] hint is the price of a real one. This exact text passes
    `nika check` on the shipping binary — the transcript below is that run,
-   VERBATIM (captured 2026-08-03 from a bare directory holding just this
-   file, exactly like a reader's first copy · nika 0.108.0). The honesty law:
+   VERBATIM (captured 2026-08-19 from a bare directory holding just this
+   file, exactly like a reader's first copy · nika 0.109.2). The honesty law:
    re-capture when the CLI's voice changes, never hand-edit. */
 export const FULL_FILE = `nika: weekly-radar
 inputs:
@@ -370,29 +370,30 @@ outputs:
 
 export const FULL_FILE_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: "nika check weekly-radar.nika.yaml" },
-  { kind: 'out', text: "nika check \u00b7 weekly-radar.nika.yaml" },
-  { kind: 'ok', text: " \u2714 PLAN     4 waves \u00b7 6 tasks \u00b7 max parallelism 3" },
-  { kind: 'dim', text: "      wave 1 approve (invoke \u00b7 nika:prompt)" },
-  { kind: 'dim', text: "      wave 2 fetch_news (invoke \u00b7 nika:fetch) \u00b7 repo_log (exec \u00b7 git) \u00b7 read_notes (invoke \u00b7 nika:read)" },
-  { kind: 'dim', text: "      wave 3 digest (infer \u00b7 ollama/llama3.2:3b)" },
-  { kind: 'dim', text: "      wave 4 save (invoke \u00b7 nika:write)" },
-  { kind: 'ok', text: " \u2714 MODELS   1 model resolves in this binary \u00b7 local servers not probed (nika doctor --ping)" },
-  { kind: 'warn', text: " \u26a0  COST     bounded portion $0.0000 no total ceiling \u00b7 1 unpriced task \u00b7 prompts, exec + mcp unpriced \u00b7 prices 2026-07-28" },
-  { kind: 'dim', text: "   digest  ollama/llama3.2:3b  UNBOUNDED \u2014 no catalog price (local/unknown model)" },
-  { kind: 'dim', text: " \u25cb ENERGY   unpriced \u2014 no sourced Wh figure for any task model \u00b7 a local model draws your watts \u00b7 never 0 Wh (NEP-0018)" },
-  { kind: 'ok', text: " \u2714 SECRETS  no declared secret reaches an effect \u00b7 model echo untracked" },
-  { kind: 'ok', text: " \u2714 TYPES    deep references fit the shapes tasks declare \u00b7 builtin output has none" },
-  { kind: 'ok', text: " \u2714 TOOLS    every named nika: tool is canonical \u00b7 globs + mcp: not checked" },
-  { kind: 'ok', text: " \u2714 ARGS     every builtin invoke arg key is declared + required args present" },
-  { kind: 'ok', text: " \u2714 SCHEMA   no known-unsatisfiable form in an authored schema: \u00b7 $ref opaque" },
-  { kind: 'ok', text: " \u2714 GATES    no task proven dead \u00b7 status literals in vocabulary" },
-  { kind: 'ok', text: " \u2714 WRITES   no two unordered tasks write the same static path \u00b7 computed paths at run" },
-  { kind: 'ok', text: " \u2714 PERMITS  literal + const: args fit the boundary \u00b7 computed paths + symlinks are the RUN's verdict \u00b7 exec outside the fs bounds" },
-  { kind: 'ok', text: " \u2714 TRIFECTA no lethal trifecta over the declared permits: without a human gate" },
-  { kind: 'ok', text: " \u2714 JOURNEY internal \u00b7 0 sources \u00b7 2 destinations \u00b7 6 model endpoints \u00b7 no secret reaches a cloud destination" },
-  { kind: 'soft', text: " \u21b3 HINT     [headless-prompt] `nika:prompt` on `approve` declares no `default:` \u2014 unattended (CI, or an agent handing it over) the run pauses at this gate awaiting a human (exit 4 \u00b7 the resume line taught on the frame); at a terminal it asks directly. Answer it in one pass with `nika run <file> --answer approve=<value>`, or declare the `default:` the unattended path should take" },
-  { kind: 'soft', text: " \u21b3 HINT     [inputs] `read_notes` reads `examples/fixtures/notes.md` which does not exist here \u2014 create it (or point its var elsewhere) \u00b7 the run would fail at that wave" },
-  { kind: 'warn', text: " \u26a0 audited \u00b7 6 tasks \u00b7 4 waves \u00b7 permits declared \u00b7 est unbounded \u00b7 1 unpriced task \u00b7 2 hints \u00b7 risk unbounded \u2014 no dollar meter for a local/unknown model \u00b7 cap a cloud seat on the run: `nika run <file> --max-cost-usd <usd>`" },
+  { kind: 'out', text: "nika check · weekly-radar.nika.yaml" },
+  { kind: 'ok', text: " ✔ PLAN     4 waves · 6 tasks · max parallelism 3" },
+  { kind: 'dim', text: "      wave 1 approve (invoke · nika:prompt)" },
+  { kind: 'dim', text: "      wave 2 fetch_news (invoke · nika:fetch) · repo_log (exec · git) · read_notes (invoke · nika:read)" },
+  { kind: 'dim', text: "      wave 3 digest (infer · ollama/llama3.2:3b)" },
+  { kind: 'dim', text: "      wave 4 save (invoke · nika:write)" },
+  { kind: 'ok', text: " ✔ MODELS   1 model resolves in this binary · local servers not probed (nika doctor --ping)" },
+  { kind: 'warn', text: " ⚠  COST     bounded portion $0.0000 no total ceiling · 1 unpriced task · prompts, exec + mcp unpriced · prices 2026-07-28" },
+  { kind: 'out', text: "   digest  ollama/llama3.2:3b  UNBOUNDED — no catalog price (local/unknown model)" },
+  { kind: 'soft', text: " ○ ENERGY   unpriced — no sourced Wh figure for any task model · a local model draws your watts · never 0 Wh (NEP-0018)" },
+  { kind: 'ok', text: " ✔ SECRETS  no declared secret reaches an effect · model echo untracked" },
+  { kind: 'ok', text: " ✔ TYPES    deep references fit the shapes tasks declare · builtin output has none" },
+  { kind: 'ok', text: " ✔ TOOLS    every named nika: tool is canonical · globs + mcp: not checked" },
+  { kind: 'ok', text: " ✔ ARGS     every builtin invoke arg key is declared + required args present" },
+  { kind: 'ok', text: " ✔ SCHEMA   no known-unsatisfiable form in an authored schema: · $ref opaque" },
+  { kind: 'ok', text: " ✔ GATES    no task proven dead · status literals in vocabulary" },
+  { kind: 'ok', text: " ✔ WRITES   no two unordered tasks write the same static path · computed paths at run" },
+  { kind: 'ok', text: " ✔ EXEC     no literal argv the exec floor refuses at run · a templated argv is the RUN's verdict" },
+  { kind: 'ok', text: " ✔ PERMITS  literal + const: args fit the boundary · computed paths + symlinks are the RUN's verdict · exec outside the fs bounds" },
+  { kind: 'ok', text: " ✔ TRIFECTA no lethal trifecta over the declared permits: without a human gate" },
+  { kind: 'ok', text: " ✔ JOURNEY internal · 0 sources · 2 destinations · 6 model endpoints · no secret reaches a cloud destination" },
+  { kind: 'soft', text: " ↳ HINT     [headless-prompt] `nika:prompt` on `approve` declares no `default:` — unattended (CI, or an agent handing it over) the run pauses at this gate awaiting a human (exit 4 · the resume line taught on the frame); at a terminal it asks directly. Answer it in one pass with `nika run <file> --answer approve=<value>`, or declare the `default:` the unattended path should take" },
+  { kind: 'soft', text: " ↳ HINT     [inputs] `read_notes` reads `examples/fixtures/notes.md` which does not exist here — create it (or point its var elsewhere) · the run would fail at that wave" },
+  { kind: 'warn', text: " ⚠ audited · 6 tasks · 4 waves · permits declared · est unbounded · 1 unpriced task · 2 hints · risk unbounded — no dollar meter for a local/unknown model · cap a cloud seat on the run: `nika run <file> --max-cost-usd <usd>`" },
 ]
 
 export const ERROR_JSON = `{
