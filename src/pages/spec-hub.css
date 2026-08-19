@@ -1,0 +1,77 @@
+/* ─── /language/spec · scoped sparse hub ──────────────────────────────────────
+   Display title + punch + the nine-key plate. Exactly three wow moments,
+   tokens only, reduced-motion gated. Never sizes .td-page (that broke goldens). */
+
+.sp-hub .v4sec-wrap {
+  padding-top: clamp(132px, 18vh, 208px);
+}
+.sp-hub .v4sec-title {
+  max-width: 16ch;
+  font-size: var(--type-display);
+}
+
+.sp-arch {
+  position: relative;
+  margin-top: clamp(28px, 4vh, 44px);
+  overflow: hidden;
+  box-shadow: var(--elev-frame);
+}
+.sp-arch::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-accent-bright) 65%, white);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+.sp-arch-k {
+  margin: 0;
+  padding: 12px 16px 0;
+  font-size: var(--type-mini);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.sp-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 0;
+  padding: 12px 16px 16px;
+  list-style: none;
+  border-top: 1px solid var(--v4-line);
+}
+.sp-keys a {
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+  letter-spacing: 0.06em;
+  color: var(--v4-text-dim);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.sp-keys a:hover,
+.sp-keys a:focus-visible {
+  color: var(--v4-text);
+  border-bottom-color: var(--v4-accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sp-arch {
+    transition: transform var(--dur-soft) var(--ease-ui);
+  }
+  .v4sec.v4-in .sp-arch::before {
+    animation: sp-seam var(--dur-slow) var(--ease-ui) var(--dur-ui) forwards;
+  }
+  .sp-arch:hover {
+    transform: translateY(-3px);
+  }
+}
+@keyframes sp-seam {
+  to {
+    transform: scaleX(1);
+  }
+}

@@ -21,6 +21,8 @@
 
 .mp-title {
   margin: 0 0 14px;
+  max-width: 16ch;
+  font-size: var(--type-display);
 }
 
 /* the one multicolor word on the whole site: the map speaks ALL seven
@@ -172,7 +174,8 @@
   padding: 20px 22px 18px;
   transition:
     border-color var(--dur-ui) var(--ease-ui),
-    background-color var(--dur-ui) var(--ease-ui);
+    background-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-ui) var(--ease-ui);
 }
 .mp-layer:hover {
   border-color: color-mix(in srgb, var(--mp-hue, #89a) 34%, var(--v4-line));
@@ -282,8 +285,41 @@ a.mp-set-chip:focus-visible {
 /* the constellation · its own full-width stage, centered — the drawing
    is the lens over the whole list and it deserves the whole line */
 .mp-figure {
+  position: relative;
   margin: clamp(48px, 7vh, 80px) auto 0;
   max-width: 1040px;
+  box-shadow: var(--elev-frame);
+}
+.mp-figure::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-accent-bright) 65%, white);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mp-figure {
+    transition: transform var(--dur-soft) var(--ease-ui);
+  }
+  .v4sec.v4-in .mp-figure::before {
+    animation: mp-seam var(--dur-slow) var(--ease-ui) var(--dur-ui) forwards;
+  }
+  .mp-figure:hover {
+    transform: translateY(-3px);
+  }
+  .mp-layer:hover {
+    transform: translateY(-2px);
+  }
+}
+@keyframes mp-seam {
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .mp-constellation svg {

@@ -9,7 +9,21 @@ import './page-chrome.css'
 import './how-page.css'
 import './workflows-page.css'
 import './chapter-page.css'
+import './spec-hub.css'
 import { collectionLd, ldScript } from '../lib/ld'
+import { wordRoom } from '../lib/rooms'
+
+const ENVELOPE = [
+  'nika',
+  'model',
+  'inputs',
+  'const',
+  'secrets',
+  'permits',
+  'run',
+  'tasks',
+  'outputs',
+] as const
 
 /* ─── /language/spec · the specification, chapter by chapter ─────────────────
    The old /spec was one page for the whole document: eighteen chapters in a
@@ -58,7 +72,7 @@ export function Component() {
   })
 
   return (
-    <main className="theme-dark tp-page td-page">
+    <main className="theme-dark tp-page td-page sp-hub">
       <section ref={ref} aria-labelledby="sp-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
@@ -73,11 +87,24 @@ export function Component() {
           <h1 id="sp-title" className="v4sec-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
             One envelope, four verbs, one graph.
           </h1>
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            The whole language, written down.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            The whole language, written down: the nine-key envelope and everything under it. Each chapter has
+            The nine-key envelope and everything under it. Each chapter has
             its own page and its own digest, so you can cite the paragraph you mean instead of
             linking a document and hoping. Read at the pin, never retyped.
           </p>
+          <div className="sp-arch v4-frame-canvas" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+            <p className="sp-arch-k mono">the envelope · mark AND name</p>
+            <ul className="sp-keys">
+              {ENVELOPE.map((k) => (
+                <li key={k}>
+                  <Link to={wordRoom(k)}>{k}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <StampStrip
             items={[
