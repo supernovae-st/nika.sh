@@ -286,7 +286,7 @@ files:
   evidence: "hand-written PWA manifest"
 - path: "public/map/constellation.svg"
   class: generated
-  sha256: 8795769eb20fa2778b286fad08d6b926fce7b1caf41f3e259376351231347a32
+  sha256: 333747c921a313970671ff89b8642185d8528a61e4c4ace71853b3493868bd1f
   evidence: "written by build-lens.mjs:1730 — the served twin of src/assets/constellation.generated.svg"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -530,7 +530,7 @@ files:
   note: "scripts/lens/graph/build-lens.mjs rewrites a derived block in place when sets.yaml changes (build-lens.mjs:1715) — a bot-maintained region inside an authored file"
 - path: "src/assets/constellation.generated.svg"
   class: generated
-  sha256: 8795769eb20fa2778b286fad08d6b926fce7b1caf41f3e259376351231347a32
+  sha256: 333747c921a313970671ff89b8642185d8528a61e4c4ace71853b3493868bd1f
   evidence: "written by build-lens.mjs:1716 (.generated. basename · no textual marker inside the SVG)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: a37ab5318ce55ab8bebe9c0fe1af3002b8261d6476487721c2c53f02bb68ac33
+  aggregate_sha256: 83d847bbe1383a1928f439e3ec47bd5b2f082f92270b6e9526c2a14e606715a2
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: 07135aa1617d57b10ed3093098c238a1d64c4331c394923391867117fd2ee534
+  aggregate_sha256: 6a1cf3726f3e49c620800bab68b9f1a6ed5b83238490c4b22655688f93734bc3
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
