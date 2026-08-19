@@ -950,7 +950,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "daily-brief": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "daily-brief",
     "nodes": [
       {
@@ -2298,7 +2298,7 @@ export const ANATOMY: Record<string, Anatomy> = {
     ]
   },
   "pr-risk-review": {
-    "graph_format": 2,
+    "graph_format": 3,
     "workflow": "pr-risk-review",
     "nodes": [
       {

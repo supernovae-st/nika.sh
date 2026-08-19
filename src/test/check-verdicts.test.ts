@@ -15,6 +15,14 @@ import { CHECK_VERDICTS, VERDICT_ENGINE } from '../content/check-verdicts.genera
    binary, and that is where drift is caught. */
 
 const ROOT = join(__dirname, '../..')
+const pathEngine = (() => {
+  try {
+    return execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
+  } catch {
+    return ''
+  }
+})()
+const hasPinnedNika = pathEngine === VERDICT_ENGINE
 
 describe('check verdicts · the receipt cannot drift from the binary', () => {
   it('every hero flagship joins a captured verdict by its served filename', async () => {
@@ -31,11 +39,7 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
     }
   })
 
-  /* FLAGSHIPS · public/library still carries the recorded pre-0.109 bytes
-     (`nika: v1`). The seven re-run as one block (yaml · traces · served
-     copy · this receipt) on the released binary; until the operator wall
-     lifts, the name-is-the-mark assertion stays skipped. */
-  it.skip('FLAGSHIPS · every shipped library workflow has a captured verdict', () => {
+  it('every shipped library workflow has a captured verdict', () => {
     const ids: string[] = []
     for (const name of readdirSync(join(ROOT, 'public/library'))) {
       if (!name.endsWith('.nika.yaml')) continue
@@ -69,18 +73,14 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
     expect(CHECK_VERDICTS['daily-brief']?.hints).toBe(0)
   })
 
-  /* FLAGSHIPS · recapture needs the seven library files to speak nine keys.
-     A PATH binary (0.108 brew or 0.109.2) must not rewrite this receipt
-     until the operator re-runs yaml · traces · served copy · this capture
-     as one block. */
-  it.skip('FLAGSHIPS · the capture is exactly what the binary emits today', () => {
+  it.skipIf(!hasPinnedNika)('the capture is exactly what the binary emits today', () => {
     const before = readFileSync(join(ROOT, 'src/content/check-verdicts.generated.ts'), 'utf8')
     execFileSync('node', [join(ROOT, 'scripts/build-check-verdicts.mjs')], { stdio: 'pipe' })
     const after = readFileSync(join(ROOT, 'src/content/check-verdicts.generated.ts'), 'utf8')
     expect(after).toBe(before)
   })
 
-  it.skip('FLAGSHIPS · the pinned engine is the engine on PATH', () => {
+  it.skipIf(!hasPinnedNika)('the pinned engine is the engine on PATH', () => {
     const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
     expect(VERDICT_ENGINE).toBe(live)
   })

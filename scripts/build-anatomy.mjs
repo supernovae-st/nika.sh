@@ -53,29 +53,12 @@ const flagships = readdirSync(join(ROOT, 'public/library'))
 
 const work = mkdtempSync(join(tmpdir(), 'anatomy-'))
 const graphs = {}
-/* FLAGSHIPS · the seven recorded public/library files still speak the
-   pre-0.109 envelope. `nika inspect` refuses them (PARSE-005). Re-authoring
-   without `nika run --json` would make the home film lie, so a dead-grammar
-   file reuses the previously vendored graph instead of aborting the
-   showcase refresh. */
-const prevSrc = readFileSync(join(ROOT, 'src/content/anatomy.generated.ts'), 'utf8')
-const prevJson = prevSrc.match(/export const ANATOMY: Record<string, Anatomy> = (\{[\s\S]*\})\n/)
-const previous = prevJson ? JSON.parse(prevJson[1]) : {}
-const deadGrammar = (yaml) => /^nika:\s*v1\b/m.test(yaml) || /^workflow:/m.test(yaml)
 /* the flat spec rename made five slugs live in BOTH corpora (etl-quarantine ·
    meeting-actions · price-watch · social-repurpose · standup-digest — the
    flagship file is a distinct curated variant). The rooms that render this
    map are the /use-cases rooms, and anatomy.test pins task-set parity with
    SHOWCASE_DAG — so on a shared slug the SHOWCASE reading wins (last write). */
 for (const { slug, yaml } of [...flagships, ...showcases]) {
-  if (deadGrammar(yaml)) {
-    if (!previous[slug]) {
-      console.error(`build-anatomy: ${slug} is dead-grammar and has no previous graph (FLAGSHIPS)`)
-      process.exit(1)
-    }
-    graphs[slug] = previous[slug]
-    continue
-  }
   const file = join(work, `${slug}.nika.yaml`)
   writeFileSync(file, yaml)
   const raw = JSON.parse(

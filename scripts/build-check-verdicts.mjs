@@ -31,11 +31,13 @@ const LIB = `${ROOT}public/library`
    file — never baked (see the honesty line above) */
 const ENVIRONMENTAL = new Set(['inputs'])
 
+const bin = process.env.NIKA_BIN || 'nika'
 let engine
 try {
-  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
+  /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+  engine = execFileSync(bin, ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
 } catch {
-  console.error('build-check-verdicts: `nika` is not on PATH — the capture needs the real binary')
+  console.error('build-check-verdicts: no nika binary (NIKA_BIN or PATH) — the capture needs the real binary')
   process.exit(2)
 }
 
@@ -45,7 +47,7 @@ for (const name of readdirSync(LIB).sort()) {
   const path = `${LIB}/${name}`
   let out
   try {
-    out = execFileSync('nika', ['check', '--json', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+    out = execFileSync(bin, ['check', '--json', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
   } catch (e) {
     out = e.stdout || ''
   }
