@@ -119,9 +119,9 @@ export function renderConstellation(geo, tokens, paper) {
     )
   }
 
-  /* the core */
+  /* the core · the mark, not the dead version slot (0.109 · nika: IS the name) */
   parts.push(`<circle class="cst-corering" cx="${C}" cy="${C}" r="64"/>`)
-  parts.push(`<text class="cst-core" x="${C}" y="${C + 5}" text-anchor="middle">nika: v1</text>`)
+  parts.push(`<text class="cst-core" x="${C}" y="${C + 5}" text-anchor="middle">nika:</text>`)
   parts.push('</svg>')
   const out = parts.join('\n') + '\n'
   /* the island guard: /map carries these bytes inside a <script type=
