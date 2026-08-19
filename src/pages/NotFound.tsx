@@ -5,8 +5,9 @@ import './not-found.css'
 
 /* ─── the SPA catch-all 404 (client-side twin of public/404.html) ─────────────
    Hard misses (a fresh request to a bad URL) are served the static, zero-JS
-   public/404.html by the platform (.do/app.yaml error_document) — that
-   contract is untouched. This route covers the OTHER path: a client-side
+   public/404.html by the platform (.do/app.yaml error_document) — same
+   nine-key mark (`nika: not-found`, description as a `#` comment). This
+   route covers the OTHER path: a client-side
    navigation to a URL that matches no route used to render React Router's
    default error boundary (a register break); now it renders the same crafted
    404 composition inside the app shell. noindex — never a crawl target. */

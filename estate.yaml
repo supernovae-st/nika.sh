@@ -137,7 +137,7 @@ files:
   evidence: "hand-kept RFC 9116 security contact"
 - path: "public/404.html"
   class: authored
-  sha256: 8e56e6e74ced1314ab251ec8567fe9c8833b3aecd2158bf3516f131bbe45a81c
+  sha256: 495160839e1afa56c13539ae4a3340c1c353349ec07e954dbfa3696e1a480a4e
   evidence: "hand-written static error shell — DigitalOcean's error_document serves it for un-prerendered deep links (pending-error-codes.ts header)"
 - path: "public/apple-touch-icon.png"
   class: authored
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 4af79bcaf79e1351d9d2634f3464c37e054c6a4825d4d7a36d5c094c24b5177a
+  aggregate_sha256: 5db1c166df71923d8bcbbcf3e62cbefe17ef2aedccafde6d1f58db0c36583132
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -941,7 +941,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: faba03c55fa466ddd339281b2e69314920fa824476683dd04bb3b815a0eb2b24
+  aggregate_sha256: 7401826ba3ef612f82202df5cc668c5f4970edd5e64085c04546e6a1ce4bbdf8
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

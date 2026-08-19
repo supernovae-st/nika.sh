@@ -1,6 +1,6 @@
 /* ─── the client-side 404 · the same register as public/404.html ──────────────
    public/404.html is the ZERO-JS static page DigitalOcean serves on a HARD miss
-   (.do/app.yaml error_document) — untouched, still the contract. THIS is its
+   (.do/app.yaml error_document) — same nine-key mark as this twin. THIS is its
    client-side twin: React Router's catch-all renders it for an in-app
    navigation to a bad path, so the visitor never meets the default error
    boundary. Same composition (tag · 404 headline · the not-found file plan ·

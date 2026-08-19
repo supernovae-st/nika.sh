@@ -18,6 +18,13 @@ describe('tipFor', () => {
     expect(tipFor('key', 'schema')?.term).toBe('schema')
   })
 
+  it('does not teach the dead envelope keys as live', () => {
+    expect(KEY_WORDS.config).toBeUndefined()
+    expect(tipFor('key', 'config')).toBeNull()
+    expect(KEY_WORDS.workflow).not.toMatch(/this run/)
+    expect(tipFor('key', 'workflow')?.words).toMatch(/another file/)
+  })
+
   it('resolves the 4 verbs even with the leading glyph in the span text', () => {
     expect(tipFor('verb', '◇infer')).toEqual({
       term: 'infer',

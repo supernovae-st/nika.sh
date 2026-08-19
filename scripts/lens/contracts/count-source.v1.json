@@ -1074,7 +1074,7 @@
     {
       "selector": "src/pages/ProviderPage.tsx#count:1",
       "path": "src/pages/ProviderPage.tsx",
-      "line": 30,
+      "line": 31,
       "text": "one provider",
       "source": "one",
       "field": "providers",
