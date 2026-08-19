@@ -946,7 +946,7 @@ patterns:
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: c9bcfd7c9489de8f847a4452305d977537646032a099e9bcb2e350af2443e1fe
+  aggregate_sha256: b7c011ee2b1de8812ab17240871e0f5d6b60c40b0740063b9bb7b44649b20085
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
