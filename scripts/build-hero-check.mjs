@@ -44,18 +44,20 @@ const FIXED = 'pr-review.nika.yaml'
    the file — never baked (see the honesty line above) */
 const ENVIRONMENTAL = new Set(['inputs'])
 
+const bin = process.env.NIKA_BIN || 'nika'
 let engine
 try {
-  engine = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
+  /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+  engine = execFileSync(bin, ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
 } catch {
-  console.error('build-hero-check: `nika` is not on PATH — the capture needs the real binary')
+  console.error('build-hero-check: no nika binary (NIKA_BIN or PATH) — the capture needs the real binary')
   process.exit(2)
 }
 
 function audit(name) {
   let out
   try {
-    out = execFileSync('nika', ['check', '--json', `${HERO}/${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+    out = execFileSync(bin, ['check', '--json', `${HERO}/${name}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
   } catch (e) {
     /* rc=2 IS the broken twin's whole point — the report is on stdout anyway */
     out = e.stdout || ''

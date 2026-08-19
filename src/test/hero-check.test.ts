@@ -32,14 +32,17 @@ const served = (url: string) => join(ROOT, 'public', url.replace(/^\//, ''))
 const broken = readFileSync(served(HERO_BROKEN_FILE), 'utf8')
 const fixed = readFileSync(served(HERO_FIXED_FILE), 'utf8')
 
-const hasNika = (() => {
+const pathEngine = (() => {
   try {
-    execFileSync('nika', ['--version'], { stdio: 'ignore' })
-    return true
+    return execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
   } catch {
-    return false
+    return ''
   }
 })()
+/* recapture only against the engine this module was captured from — a
+   older PATH binary (0.108 on a brew pin) must not rewrite the 0.109.2
+   receipt or judge the nine-key twins. */
+const hasPinnedNika = pathEngine === HERO_ENGINE
 
 /** every `backticked` name the engine put in a sentence */
 const named = (message: string) => [...message.matchAll(/`([^`]+)`/g)].map((m) => m[1])
@@ -111,14 +114,14 @@ describe('hero check · the transaction cannot drift from the binary', () => {
     expect(a.filter((line, i) => line !== b[i])).toHaveLength(2)
   })
 
-  it.skipIf(!hasNika)('the capture is exactly what the binary emits today', () => {
+  it.skipIf(!hasPinnedNika)('the capture is exactly what the binary emits today', () => {
     const OUT = join(ROOT, 'src/content/hero-check.generated.ts')
     const before = readFileSync(OUT, 'utf8')
     execFileSync('node', [join(ROOT, 'scripts/build-hero-check.mjs')], { stdio: 'pipe' })
     expect(readFileSync(OUT, 'utf8')).toBe(before)
   })
 
-  it.skipIf(!hasNika)('the broken twin still breaks and the fixed twin still passes', () => {
+  it.skipIf(!hasPinnedNika)('the broken twin still breaks and the fixed twin still passes', () => {
     const audit = (url: string) => {
       try {
         return JSON.parse(execFileSync('nika', ['check', '--json', served(url)], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }))
@@ -130,7 +133,7 @@ describe('hero check · the transaction cannot drift from the binary', () => {
     expect(audit(HERO_FIXED_FILE).clean, 'the fixed twin does not audit clean').toBe(true)
   })
 
-  it.skipIf(!hasNika)('the pinned engine is the engine on PATH', () => {
+  it.skipIf(!hasPinnedNika)('the pinned engine is the engine on PATH', () => {
     const live = execFileSync('nika', ['--version'], { encoding: 'utf8' }).trim().split(/\s+/)[1] ?? ''
     expect(HERO_ENGINE).toBe(live)
   })

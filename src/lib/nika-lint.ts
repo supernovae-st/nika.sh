@@ -103,12 +103,12 @@ const DEAD_ENVELOPE: Record<string, string> = {
 }
 /** the dead task-level keys → the same teaching, per key */
 const DEAD_TASK_KEYS: Record<string, string> = {
-  output: 'renamed `extract:` (2026-08-11) — same shape, the truthful word for what it does',
-  on_finally: 'cleanup is a TASK now, joined by an unwind edge — write it as its own task with `after: { <parent>: unwind }` (a `finally` node in graph_format 3)',
-  max_parallel: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) — they have no meaning without it',
-  fail_fast: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) — they have no meaning without it',
-  declassify: 'merged into `lift:` — the law is a PARAMETER of one door: `lift: [{ law: taint, from: <binding>, because: "…" }]`',
-  inert: 'merged into `lift:` — `lift: [{ law: data-as-code, because: "…" }]` names which law the task opens and why',
+  output: 'renamed `extract:` (2026-08-11) · same shape, the truthful word for what it does',
+  on_finally: 'cleanup is a TASK now, joined by an unwind edge · write it as its own task with `after: { <parent>: unwind }` (a `finally` node in graph_format 3)',
+  max_parallel: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) · they have no meaning without it',
+  fail_fast: 'the two fan-out knobs live INSIDE the `for_each:` block now (`for_each: { items: …, max_parallel: N, fail_fast: false }`) · they have no meaning without it',
+  declassify: 'merged into `lift:` · the law is a PARAMETER of one door: `lift: [{ law: taint, from: <binding>, because: "…" }]`',
+  inert: 'merged into `lift:` · `lift: [{ law: data-as-code, because: "…" }]` names which law the task opens and why',
   id: 'the map KEY is the task id (`tasks: { <id>: … }`) · an `id:` field inside the body is the dead sequence form',
 }
 

@@ -92,7 +92,8 @@ if (fromBinary && Array.isArray(fromBinary.tools)) {
   tools.sort((a, b) => (a.bare < b.bare ? -1 : a.bare > b.bare ? 1 : 0))
   const version = execFileSync(bin, ['--version'], { encoding: 'utf8', timeout: 5000 })
     .trim()
-    .replace(/^nika\s+/, '')
+    /* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+    .split(/\s+/)[1]
   writeFileSync(CATALOG, `${JSON.stringify({ version, tools }, null, 2)}\n`)
   const flagged = tools.filter((t) => t.ratified_only).length
   console.log(`wrote public/tools/catalog.json (${tools.length} tools · ${flagged} ratified-only · engine ${version})`)

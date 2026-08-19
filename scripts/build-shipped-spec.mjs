@@ -33,7 +33,8 @@ const bin = process.env.NIKA_BIN || 'nika'
 
 const run = (args) => execFileSync(bin, args, { encoding: 'utf8', timeout: 15000 })
 
-const version = run(['--version']).trim().replace(/^nika\s+/, '')
+/* the VERSION token · 0.109 prints `nika X.Y.Z (hash)` · the bare semver is the identity */
+const version = run(['--version']).trim().split(/\s+/)[1]
 const schema = JSON.parse(run(['spec', '--schema']))
 const canon = run(['spec', '--canon'])
 

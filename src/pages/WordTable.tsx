@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { Link } from 'react-router'
-import { LANGUAGE_WORDS } from '../content/language.generated'
+import { LANGUAGE_SCOPES, LANGUAGE_WORDS } from '../content/language.generated'
 import { useLamp } from '../lib/use-lamp'
 import { wordRoom } from '../lib/rooms'
 
@@ -18,19 +18,25 @@ import { wordRoom } from '../lib/rooms'
    The cells are the site's shared plate (styles/plate.css, projected from
    nika-spec design/tokens.yaml), lit by the one lamp. */
 
-/* the file's own order: what you declare · what runs · how it recovers */
-const SCOPES = [
-  { id: 'envelope', label: 'the envelope' },
-  { id: 'workflow', label: 'workflow' },
-  { id: 'task', label: 'a task' },
-  { id: 'infer', label: 'infer' },
-  { id: 'exec', label: 'exec' },
-  { id: 'invoke', label: 'invoke' },
-  { id: 'agent', label: 'agent' },
-  { id: 'on_error', label: 'on_error' },
-  { id: 'retry', label: 'retry' },
-  { id: 'on_finally', label: 'on_finally' },
-] as const
+/* the served schema's own surfaces (LANGUAGE_SCOPES) · dead blocks
+   (workflow · on_finally) left with the nine-key envelope and must not
+   keep an empty column. Labels stay the table's voice. */
+const SCOPE_LABEL: Record<string, string> = {
+  envelope: 'the envelope',
+  task: 'a task',
+  infer: 'infer',
+  exec: 'exec',
+  invoke: 'invoke',
+  agent: 'agent',
+  for_each: 'for_each',
+  retry: 'retry',
+  on_error: 'on_error',
+  lift: 'lift',
+}
+const SCOPES = LANGUAGE_SCOPES.map((s) => ({
+  id: s.scope,
+  label: SCOPE_LABEL[s.scope] ?? s.scope,
+}))
 
 const homes = new Map<string, string[]>()
 for (const w of LANGUAGE_WORDS) {

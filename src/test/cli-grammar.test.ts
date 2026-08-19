@@ -21,20 +21,28 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = join(__dirname, '../..')
 
-/** measured against v0.107.2 with `nika <verb> --help` (rc=0 · 15/15 re-probed 2026-08-03) */
-const ENGINE_PIN = 'v0.107.2'
+/** measured against v0.109.2 with `nika <verb> --help` (rc=0 · re-probed 2026-08-19) */
+const ENGINE_PIN = 'v0.109.2'
 const LIVE_VERBS = new Set([
+  'arm',
   'audit-workflow', // the repo name in prose paths, never a verb call
   'catalog',
   'check',
+  'completions',
+  'dap',
   'doctor',
   'explain',
+  'guard',
   'init',
   'inspect',
+  'key',
   'lsp',
+  'mcp',
   'model',
   'new',
   'run',
+  'sign',
+  'spec',
   'test',
   'trace',
   'try',

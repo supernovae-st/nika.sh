@@ -9,7 +9,9 @@
     "templates",
     "mcpTools",
     "errorCodes",
-    "errorNamespaces"
+    "errorNamespaces",
+    "envelopeKeys",
+    "valueAuthorities"
   ],
   "carrier_census": {
     "roots": [
@@ -29,7 +31,7 @@
     "rendered_count": 1081,
     "rendered_set_sha256": "c19d82c9f196cc1ce1dbe535d91718aa132e64ca111c2f1d339f2dc5926a4615"
   },
-  "claim_count": 130,
+  "claim_count": 134,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -214,7 +216,19 @@
     {
       "selector": "public/llms.txt#count:2",
       "path": "public/llms.txt",
-      "line": 21,
+      "line": 18,
+      "text": "nine top-level keys",
+      "source": "nine",
+      "field": "envelopeKeys",
+      "value": 9,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.envelopeKeys"
+    },
+    {
+      "selector": "public/llms.txt#count:3",
+      "path": "public/llms.txt",
+      "line": 26,
       "text": "28 builtins",
       "source": "28",
       "field": "builtins",
@@ -224,9 +238,9 @@
       "reason": "literal is gated against CANON.builtins"
     },
     {
-      "selector": "public/llms.txt#count:3",
+      "selector": "public/llms.txt#count:4",
       "path": "public/llms.txt",
-      "line": 21,
+      "line": 26,
       "text": "17 providers",
       "source": "17",
       "field": "providers",
@@ -236,9 +250,9 @@
       "reason": "literal is gated against CANON.providers"
     },
     {
-      "selector": "public/llms.txt#count:4",
+      "selector": "public/llms.txt#count:5",
       "path": "public/llms.txt",
-      "line": 23,
+      "line": 28,
       "text": "9 extract modes",
       "source": "9",
       "field": "extractModes",
@@ -248,9 +262,9 @@
       "reason": "literal is gated against CANON.extractModes"
     },
     {
-      "selector": "public/llms.txt#count:5",
+      "selector": "public/llms.txt#count:6",
       "path": "public/llms.txt",
-      "line": 96,
+      "line": 103,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -260,9 +274,9 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "public/llms.txt#count:6",
+      "selector": "public/llms.txt#count:7",
       "path": "public/llms.txt",
-      "line": 104,
+      "line": 111,
       "text": "9 read-only tools",
       "source": "9",
       "field": "mcpTools",
@@ -407,7 +421,7 @@
     {
       "selector": "src/content/changelog.ts#count:1",
       "path": "src/content/changelog.ts",
-      "line": 157,
+      "line": 164,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -419,7 +433,7 @@
     {
       "selector": "src/content/changelog.ts#count:2",
       "path": "src/content/changelog.ts",
-      "line": 157,
+      "line": 164,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
@@ -431,7 +445,7 @@
     {
       "selector": "src/content/changelog.ts#count:3",
       "path": "src/content/changelog.ts",
-      "line": 199,
+      "line": 206,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -443,7 +457,7 @@
     {
       "selector": "src/content/changelog.ts#count:4",
       "path": "src/content/changelog.ts",
-      "line": 326,
+      "line": 333,
       "text": "${CANON.verbs} verbs",
       "source": "${CANON.verbs}",
       "field": "verbs",
@@ -456,7 +470,7 @@
     {
       "selector": "src/content/changelog.ts#count:5",
       "path": "src/content/changelog.ts",
-      "line": 363,
+      "line": 370,
       "text": "One verb",
       "source": "One",
       "field": "verbs",
@@ -468,7 +482,7 @@
     {
       "selector": "src/content/changelog.ts#count:6",
       "path": "src/content/changelog.ts",
-      "line": 368,
+      "line": 375,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -480,7 +494,7 @@
     {
       "selector": "src/content/changelog.ts#count:7",
       "path": "src/content/changelog.ts",
-      "line": 369,
+      "line": 376,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",
@@ -492,7 +506,7 @@
     {
       "selector": "src/content/changelog.ts#count:8",
       "path": "src/content/changelog.ts",
-      "line": 380,
+      "line": 387,
       "text": "${CANON.extractModes} extract modes",
       "source": "${CANON.extractModes}",
       "field": "extractModes",
@@ -505,7 +519,7 @@
     {
       "selector": "src/content/changelog.ts#count:9",
       "path": "src/content/changelog.ts",
-      "line": 381,
+      "line": 388,
       "text": "One builtin",
       "source": "One",
       "field": "builtins",
@@ -517,7 +531,7 @@
     {
       "selector": "src/content/changelog.ts#count:10",
       "path": "src/content/changelog.ts",
-      "line": 386,
+      "line": 393,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -530,7 +544,7 @@
     {
       "selector": "src/content/changelog.ts#count:11",
       "path": "src/content/changelog.ts",
-      "line": 387,
+      "line": 394,
       "text": "${CANON.builtins} builtin",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -543,7 +557,7 @@
     {
       "selector": "src/content/changelog.ts#count:12",
       "path": "src/content/changelog.ts",
-      "line": 399,
+      "line": 406,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -675,19 +689,19 @@
     {
       "selector": "src/content/sources.ts#count:1",
       "path": "src/content/sources.ts",
-      "line": 177,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
+      "line": 174,
+      "text": "nine top-level keys",
+      "source": "nine",
+      "field": "envelopeKeys",
+      "value": 9,
       "ordinal": false,
       "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
+      "reason": "literal is gated against CANON.envelopeKeys"
     },
     {
       "selector": "src/content/sources.ts#count:2",
       "path": "src/content/sources.ts",
-      "line": 178,
+      "line": 177,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -699,7 +713,7 @@
     {
       "selector": "src/content/sources.ts#count:3",
       "path": "src/content/sources.ts",
-      "line": 179,
+      "line": 178,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -711,7 +725,7 @@
     {
       "selector": "src/content/sources.ts#count:4",
       "path": "src/content/sources.ts",
-      "line": 180,
+      "line": 179,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -722,6 +736,18 @@
     },
     {
       "selector": "src/content/sources.ts#count:5",
+      "path": "src/content/sources.ts",
+      "line": 180,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "src/content/sources.ts#count:6",
       "path": "src/content/sources.ts",
       "line": 226,
       "text": "four verbs",
@@ -771,6 +797,18 @@
     {
       "selector": "src/lib/nika-lint.ts#count:1",
       "path": "src/lib/nika-lint.ts",
+      "line": 124,
+      "text": "three value authorities",
+      "source": "three",
+      "field": "valueAuthorities",
+      "value": 3,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.valueAuthorities"
+    },
+    {
+      "selector": "src/lib/nika-lint.ts#count:2",
+      "path": "src/lib/nika-lint.ts",
       "line": 288,
       "text": "one verb",
       "source": "one",
@@ -779,6 +817,18 @@
       "ordinal": false,
       "relation": "registry-member",
       "reason": "singular member reference is bounded by CANON.verbs"
+    },
+    {
+      "selector": "src/lib/nika-lint.ts#count:3",
+      "path": "src/lib/nika-lint.ts",
+      "line": 361,
+      "text": "three value authorities",
+      "source": "three",
+      "field": "valueAuthorities",
+      "value": 3,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.valueAuthorities"
     },
     {
       "selector": "src/lib/parse-plan.ts#count:1",
