@@ -216,14 +216,31 @@
 .how-sub-go {
   color: var(--v4-text-dim);
 }
+.how-sub-row:hover,
+.how-sub-row:focus-visible {
+  background: color-mix(in oklch, var(--v4-bg-raised) 72%, transparent);
+}
+.how-sub-row:hover .how-sub-title,
+.how-sub-row:focus-visible .how-sub-title {
+  color: var(--v4-text);
+}
+.how-sub-row:hover .how-sub-go,
+.how-sub-row:focus-visible .how-sub-go {
+  color: var(--v4-accent);
+}
+.td-page .v4sec-title {
+  max-width: 16ch;
+  font-size: var(--type-display);
+}
 @media (prefers-reduced-motion: no-preference) {
   .how-sub-row {
     transition:
-      background-color var(--dur-ui) var(--ease-ui),
-      transform var(--dur-ui) var(--ease-ui);
+      background-color var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1)),
+      transform var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1));
   }
   .how-sub-go {
-    transition: transform var(--dur-ui) var(--ease-ui);
+    transition: transform var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1)),
+      color var(--dur-ui, 140ms) var(--ease-ui, cubic-bezier(0.22, 1, 0.36, 1));
   }
   .how-sub-row:hover {
     transform: translateX(2px);
@@ -231,12 +248,4 @@
   .how-sub-row:hover .how-sub-go {
     transform: translateX(3px);
   }
-}
-.how-sub-row:hover,
-.how-sub-row:focus-visible {
-  background-color: color-mix(in oklch, var(--v4-bg-raised) 80%, transparent);
-}
-.how-sub-row:hover .how-sub-go,
-.how-sub-row:focus-visible .how-sub-go {
-  color: var(--v4-text);
 }

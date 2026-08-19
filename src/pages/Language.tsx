@@ -22,6 +22,22 @@ import './tool-detail.css'
 import './language-page.css'
 import { WordTable } from './WordTable'
 import { wordRoom } from '../lib/rooms'
+import { CodeFile } from '../components/CodeFile'
+
+const ENVELOPE = `# a job, in a sentence
+nika: scrape-and-summarize
+model: ollama/llama3.2:3b
+inputs:
+  topic: { type: string, required: true }
+permits: {}
+tasks:
+  summarize:
+    infer:
+      max_tokens: 400
+      prompt: "Summarize · \${{ inputs.topic }}"
+outputs:
+  summary: \${{ tasks.summarize.output }}
+`
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
    Every key an author can type in a .nika.yaml, as an anchored row — the
@@ -154,7 +170,7 @@ export function Component() {
           <p className="v4sec-fig" data-rise>
             the language
           </p>
-          <h1 id="lg-title" className="v4sec-title tp-title" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
+          <h1 id="lg-title" className="v4sec-title tp-title lg-display" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
             Every word.
           </h1>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
@@ -165,6 +181,16 @@ export function Component() {
             <Link to="/language/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
             <a href={`${SPEC}/tree/main/spec`}>the spec</a>.
           </p>
+
+          <div className="lg-arch" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+            <p className="lg-arch-k mono">the envelope · nine keys · 0.109</p>
+            <CodeFile
+              yaml={ENVELOPE}
+              filename="scrape-and-summarize.nika.yaml"
+              wrap
+              tips
+            />
+          </div>
 
           {/* the vocabulary's dimensions, at a glance */}
           <StampStrip

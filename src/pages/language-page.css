@@ -5,6 +5,33 @@
    value chips, the verb-room link, the deep-link highlight. Monochrome
    blueprint. SSR-safe: pure CSS. */
 
+/* architecture hubs · Vercel-grade display, product replica first */
+.lg-display {
+  max-width: 16ch;
+  font-size: var(--type-display);
+}
+.lg-arch {
+  margin-top: clamp(28px, 4vh, 48px);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  box-shadow: var(--seam-panel);
+  overflow: hidden;
+  background: var(--v4-bg-raised);
+}
+.lg-arch-k {
+  margin: 0;
+  padding: 10px 14px 0;
+  font-size: var(--type-mini);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.lg-arch .cf-panel {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
 .lg-list {
   margin-top: clamp(28px, 4vh, 44px);
 }
