@@ -65,8 +65,10 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
   })
 
   it('a complete nine-key fence carries the playground handoff · dead v1 does not', () => {
+    type CodeTok = { k: string; play?: string; filename?: string; text?: string }
     const waits = fresh.find((p) => p.slug === 'the-run-that-waits')
-    const playable = (waits?.tokens ?? []).filter((t) => t.k === 'code' && 'play' in t && t.play)
+    const tokens = (waits?.tokens ?? []) as CodeTok[]
+    const playable = tokens.filter((t) => t.k === 'code' && Boolean(t.play))
     expect(playable.length).toBeGreaterThan(0)
     expect(playable[0].filename).toBe('gated-release.nika.yaml')
     expect(playable[0].text).toMatch(/^nika:\s*gated-release\s*$/m)
@@ -85,21 +87,21 @@ description: "d"
       'x.md',
       {},
     )
-    expect(live.tokens.find((t) => t.k === 'code')?.play).toBeTruthy()
+    expect((live.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeTruthy()
 
     const dead = compilePost(
       `${fm}\n\`\`\`yaml dead.nika.yaml\nnika: v1\nworkflow: gated-release\n\ntasks:\n  a:\n    invoke: { tool: nika:log }\n\`\`\`\n`,
       'x.md',
       {},
     )
-    expect(dead.tokens.find((t) => t.k === 'code')?.play).toBeUndefined()
+    expect((dead.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeUndefined()
 
     const fragment = compilePost(
       `${fm}\n\`\`\`yaml\npermits:\n  fs: { read: ["."] }\n\`\`\`\n`,
       'x.md',
       {},
     )
-    expect(fragment.tokens.find((t) => t.k === 'code')?.play).toBeUndefined()
+    expect((fragment.tokens as CodeTok[]).find((t) => t.k === 'code')?.play).toBeUndefined()
   })
 
   it('posts are newest-first with sane frontmatter', () => {
