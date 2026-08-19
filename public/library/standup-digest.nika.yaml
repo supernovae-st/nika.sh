@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # © SuperNovae Studio · nika.sh/library
-nika: v1
-workflow:
-  id: standup-digest
+nika: standup-digest
 # local model · your commits never leave
 model: ollama/llama3.2:3b
 

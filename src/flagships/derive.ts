@@ -172,6 +172,13 @@ export function deriveWorkflow(yaml: string): FlagshipPlanModel {
         section = key === 'permits' || key === 'tasks' || key === 'outputs' ? key : ''
         /* 0.105 envelope: `workflow:` map — `id:` on the next lines carries
            the display name (the scalar form died at the release) */
+        /* 0.109 · `nika:` IS the name (kebab-case). The dead `workflow: {id}`
+           map still parses so recorded FLAGSHIPS traces keep a reader until
+           the operator re-runs them. */
+        if (key === 'nika') {
+          const name = rest.replace(/#.*$/, '').trim()
+          if (name && name !== 'v1') workflow = name
+        }
         if (key === 'workflow') {
           if (rest.trim()) workflow = rest.replace(/#.*$/, '').trim()
           else {

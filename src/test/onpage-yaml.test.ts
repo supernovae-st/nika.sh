@@ -59,13 +59,8 @@ const expectValid = expectAgainst(validatePin, 'the PIN schema (workflow.json)')
 const expectValidPin = expectValid
 
 describe('on-page YAML · the whole corpus is schema-true against the PIN', () => {
-  /* FLAGSHIPS · the seven recorded files still speak the pre-0.109 envelope
-     (`nika: v1` + `workflow:`). Re-authoring them without `nika run --json`
-     would make the home film lie (yaml ↛ traces). The operator wall is the
-     re-run; until then these seven stay the recorded bytes and this row
-     stays skipped. Every other on-page file is judged below. */
-  it.skip.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
-    'FLAGSHIPS · %s validates (operator re-run of nika run --json)',
+  it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
+    'flagship %s validates',
     (label, yaml) => expectValid(label, yaml),
   )
 
