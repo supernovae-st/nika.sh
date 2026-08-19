@@ -15,15 +15,28 @@ import { Island } from '../lib/ssg-island'
 import { islandJson } from '../lib/island-json'
 import { MEMBER_ROOM_FAMILIES } from '../content/member-rooms.generated'
 import { CANON } from '../canon.generated'
-import { SPEC, routeHead } from '../content'
+import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
 import './language-page.css'
+import './page-chrome.css'
 import { WordTable } from './WordTable'
 import { wordRoom } from '../lib/rooms'
 import { CodeFile } from '../components/CodeFile'
 import { HELLO_AI_YAML } from '../content/install'
+
+const ENVELOPE = [
+  'nika',
+  'model',
+  'inputs',
+  'const',
+  'secrets',
+  'permits',
+  'run',
+  'tasks',
+  'outputs',
+] as const
 
 /* ─── /language + /language/:word · the keyword register (theme-dark) ─────────
    Every key an author can type in a .nika.yaml, as an anchored row — the
@@ -159,16 +172,16 @@ export function Component() {
           <h1 id="lg-title" className="v4sec-title tp-title lg-display" data-rise style={{ ['--rise-delay' as string]: '60ms' }}>
             Every word.
           </h1>
+          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
+            The whole language, in one file you can read.
+          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Every key a <code>.nika.yaml</code> can carry, projected from the one contract the
-            engine serves: <a href="/schema/workflow.json">workflow.schema.json</a>, the same file
-            your editor validates against. Descriptions are the schema's own. <b>Every word opens its own room</b>; the
-            contract, the word in a real file, the block it lives in; the{' '}
-            <Link to="/language/verbs">four verbs</Link> keep theirs. The deeper grammar lives in{' '}
-            <a href={`${SPEC}/tree/main/spec`}>the spec</a>.
+            Projected from <a href="/schema/workflow.json">workflow.schema.json</a> — the same
+            contract your editor validates against. <b>Every word opens its own room.</b>{' '}
+            <Link to="/language/verbs">The four verbs</Link> keep theirs.
           </p>
 
-          <div className="lg-arch" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
+          <div className="lg-arch v4-frame-canvas" data-rise style={{ ['--rise-delay' as string]: '140ms' }}>
             <p className="lg-arch-k mono">the envelope · mark AND name</p>
             <CodeFile
               yaml={HELLO_AI_YAML}
@@ -177,6 +190,13 @@ export function Component() {
               wrap
               tips
             />
+            <ul className="lg-keys">
+              {ENVELOPE.map((k) => (
+                <li key={k}>
+                  <Link to={wordRoom(k)}>{k}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* the vocabulary's dimensions, at a glance */}

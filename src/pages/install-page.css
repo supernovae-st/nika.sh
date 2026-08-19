@@ -4,7 +4,8 @@
    v4 theme tokens + the seam kit. SSR-safe: pure CSS. */
 
 .ins-title {
-  max-width: 16ch;
+  max-width: 12ch;
+  font-size: var(--type-display);
 }
 
 /* ── the step register ── */

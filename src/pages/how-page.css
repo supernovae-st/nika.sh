@@ -229,9 +229,45 @@
   color: var(--v4-accent);
 }
 /* How hub only — SpecHub shares td-page and must keep its golden title size */
+.how-hub .v4sec-wrap {
+  padding-top: clamp(132px, 18vh, 208px);
+}
 .how-hub .v4sec-title {
-  max-width: 16ch;
+  max-width: 18ch;
   font-size: var(--type-display);
+}
+.how-door-term {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--elev-frame);
+}
+.how-door-term::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1;
+  height: 1px;
+  background: color-mix(in oklch, var(--v4-accent-bright) 55%, white);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .how-door-term {
+    transition: transform 280ms var(--ease-ui);
+  }
+  .v4sec.v4-in .how-door-term::before {
+    animation: how-seam 640ms var(--ease-ui) 200ms forwards;
+  }
+  .how-door:hover .how-door-term {
+    transform: translateY(-2px);
+  }
+}
+@keyframes how-seam {
+  to {
+    transform: scaleX(1);
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
   .how-sub-row {
