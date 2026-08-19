@@ -1,5 +1,5 @@
 {
-  "version": "0.109.2",
+  "version": "0.111.0",
   "tools": [
     {
       "name": "nika:assert",
@@ -376,8 +376,7 @@
         {
           "name": "content",
           "required": true,
-          "type": "string",
-          "desc": "the content to hash"
+          "desc": "bytes to hash — a string is hashed as-is; any other JSON value (object · array · number · bool) is compact JSON. Do not pre-pipe | tojson."
         },
         {
           "name": "algo",

@@ -4,7 +4,7 @@
 //   node scripts/build-provider-usage.mjs
 // Drift gate: src/test/provider-usage.test.ts recompiles hermetically
 // (--from-capture), byte-diffs, and re-validates every donor against the
-// served schema. Engine at audit: "0.109.2".
+// served schema. Engine at audit: "0.111.0".
 
 /** the static audit the released binary gave the donor at regen time */
 export interface ProviderAudit {

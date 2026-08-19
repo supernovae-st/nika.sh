@@ -1,15 +1,15 @@
 {
  "engine_resync_format": 1,
  "law": "vendored from the pinned engine release — fetched BY SHA, commit+tree digest-verified before any copy; --check re-verifies these digests offline (exit 5 on drift)",
- "source": "supernovae-st/nika@1da35b6859a8f54cd09cfed7ca0e35d1f40fe590",
- "release_tag": "v0.109.2",
- "engine_tree": "2cf4cbd3a8a651fcf017b083c589decb3364e8de",
+ "source": "supernovae-st/nika@25f502adb7ece46897d4881cb095136099062e83",
+ "release_tag": "v0.111.0",
+ "engine_tree": "ec88d972bd557c113c0baa031eb431d60015edae",
  "tool": "scripts/engine-resync.mjs",
  "files": [
   {
    "path": "adr/index.json",
    "upstream": "docs/adr/index.json",
-   "sha256": "4f21dd78802ff8366b643bbbee10ed4e6ef20b6673322fac4a76ff3a1ccd2b09"
+   "sha256": "95ba3ddfb0712f85f915fc1a7d17d587b9ed376ffae716c39e1a1bb65ed856c4"
   },
   {
    "path": "catalog/embeddings.toml",

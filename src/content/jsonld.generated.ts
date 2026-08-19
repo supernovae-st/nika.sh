@@ -13,7 +13,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the namespaces",
       "description": "Each namespace scopes where a value lives and who may read it: inputs for what the caller supplies (a deployment default is an input with required: false), const for fixed values, with for bindings, tasks for outputs, secrets for the boundary. A reference outside its scope is a check finding, never a surprise at runtime.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -53,7 +53,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the types",
       "description": "Typed contracts for task outputs: returns and decode, written inline · the closed primitive grammar below is the whole register since 0.109 (a named `types:` block resolves to nothing; spec/09-types.md).",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -123,7 +123,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the language words",
       "description": "Every key an author can type in a workflow file, each scoped to the surface where it speaks. The schema declares them · the register lists them all · each room shows the word at work.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -540,7 +540,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the edge kinds",
       "description": "The run graph speaks a closed set of edge kinds: value bindings, the two observations, control, recovery and the reserved finally. Unknown kinds are reader-tolerated by law · new ones arrive with the spec.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -592,7 +592,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the gate predicates",
       "description": "An after entry gates on producer state: success, failure, skipped or terminal. The full producer-status by predicate matrix is fixture-proven upstream · the site replays it, never re-derives it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -632,7 +632,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the four verbs",
       "description": "infer thinks, exec runs, invoke calls a tool, agent loops with judgment. A verb is a distinct native execution model and the set is closed · everything callable is a tool under invoke.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -668,7 +668,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the standard library",
       "description": "Every nika tool the engine ships, each with a JSON Schema for its args. No plugin store · capability is versioned with the engine and granted per file by the boundary.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -874,7 +874,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the templates",
       "description": "Routing skeletons for real work: each template is sha-pinned, conformance-checked and grants exactly the tools it needs. Copy one and the provenance travels with it.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -954,7 +954,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the tool families",
       "description": "The library groups by intent: core, file, data, introspection, network, media. Families are anchors on the hub · each lists its members with their one-line contracts.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1002,7 +1002,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the providers",
       "description": "Model access is provider-agnostic and local-first: the same file runs on a laptop runtime or a cloud API. Each provider declares its env var, its dialect and its models · the file picks, never the vendor.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1133,7 +1133,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the extract modes",
       "description": "nika fetch extracts structure, not just bytes. Each mode is a named contract with a defined output shape · the modes anchor inside the fetch room because that is where an author meets them.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1199,7 +1199,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the permit families",
       "description": "Permits fence a run by family: exec for processes, fs for reads and writes, net for the wire, tools for the library, env for the names a child process inherits. Absent means the engine floor · present means default-deny.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1244,7 +1244,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the secret sources",
       "description": "A secret is a masked reference, never a literal: it resolves from vault, env or file at run time and stays masked in every log and every trace the run leaves behind.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1277,7 +1277,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error categories",
       "description": "A category names the kind of failure, orthogonal to the namespace that raised it. Transient categories are retry candidates · the rest are contract refusals that no retry will fix.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -1359,7 +1359,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error codes",
       "description": "Every failure the engine can name, as data: a stable code with a category and a transient flag. If the engine can refuse it, the refusal has a name you can retry on, route on and search.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2090,7 +2090,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the error namespaces",
       "description": "Codes group by namespace, one per surface of the engine: parse, DAG, variables, security, each verb and the machine seams. A namespace can exist before its first code ships · the register says so out loud.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2260,7 +2260,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the conformance levels",
       "description": "Conformance nests: core parses and validates, runtime executes, stdlib proves the library. A higher level includes every lower one · the fixtures are the contract, not the prose.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2291,7 +2291,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the oracle tools",
       "description": "The read-only oracle an agent loads: check, explain, schema, examples and the rest of the register. The same truth the CLI speaks, served over MCP · nothing here mutates anything.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2355,7 +2355,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the showcases",
       "description": "Real workflows, whole files: each showcase passes the spec conformance gate and ships with its graph. This is the language at work on real jobs, not a demo reel.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",
@@ -2529,7 +2529,7 @@ export const JSONLD_TERMSETS: Record<string, unknown[]> = {
       "name": "Nika the truth words",
       "description": "The vocabulary of how this site tells the truth: spec, canon, schema, pack, pin, catalog, mirror, registry, manifest, lens. Each word has exactly one meaning · confusing two of them is a prose bug.",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
-      "version": "v0.109.2",
+      "version": "v0.111.0",
       "hasDefinedTerm": [
         {
           "@type": "DefinedTerm",

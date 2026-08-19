@@ -38,8 +38,10 @@ const edits = [
     s = s.replace(/(against nika )0\.\d+\.\d+/g, `$1${bare}`)
       .replace(/(captured \d{4}-\d{2}-\d{2} · nika )0\.\d+\.\d+/g, `$1${bare}`)
     if (transcript) {
-      s = s.replace(/(\{ kind: 'out', text: ')nika [\d.]+(' \},?\n\]\s*\n\nexport const FIRST_RUN_TRANSCRIPT)/, `$1${transcript.replace('nika ', 'nika ')}$2`)
-      s = s.replace(/(kind: 'out', text: ')nika [\d.]+('\s*\},\s*\n\])/, `$1${transcript}$2`)
+      s = s.replace(
+        /(export const VERSION_TRANSCRIPT:[\s\S]*?\{ kind: ['"]out['"], text: )(['"])nika [^'"\r\n]+\2/,
+        `$1$2${transcript}$2`,
+      )
     }
     return s
   }],

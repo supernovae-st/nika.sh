@@ -18,7 +18,7 @@ export const DOCS = 'https://docs.nika.sh'
    without a re-vendor goes red instead of serving a stale clock). Bumping this
    line alone turns the suite red and names every surface that must move with
    it. */
-export const ENGINE_VERSION = 'v0.109.2'
+export const ENGINE_VERSION = 'v0.111.0'
 
 /* the canonical site origin (matches react-ssg.config.ts `origin`). */
 export const SITE = 'https://nika.sh'

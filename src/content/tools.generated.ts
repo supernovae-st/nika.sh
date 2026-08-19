@@ -32,7 +32,7 @@ export interface ToolEntry {
   ratified_only?: boolean
 }
 
-/** Every builtin, sorted by bare name. Engine version at generation: "0.109.2". */
+/** Every builtin, sorted by bare name. Engine version at generation: "0.111.0". */
 export const TOOLS: ToolEntry[] = [
   {
     "name": "nika:assert",
@@ -409,8 +409,7 @@ export const TOOLS: ToolEntry[] = [
       {
         "name": "content",
         "required": true,
-        "type": "string",
-        "desc": "the content to hash"
+        "desc": "bytes to hash — a string is hashed as-is; any other JSON value (object · array · number · bool) is compact JSON. Do not pre-pipe | tojson."
       },
       {
         "name": "algo",

@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-19',
+    tag: 'release',
+    title: 'v0.111.0 · the authoring loop closes',
+    body: 'The checker now distinguishes a legal file from one ready to spend: paid_ready goes quiet only when no paid-run hint remains, compiled means the law was proven, and next names the first repair. nika:inspect is live from the first task and follows the run after every wave, so a workflow can read its DAG, records, spend and threads. nika:compose stays inside an agent loop after nika:done, where the model can draft, read the whole check verdict and revise without making check execute the draft. The arm lock now survives the shot, and the paid extract wave repairs structured hashing, string schemas, scalar anyOf coercion and resumed for_each item fields.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.111.0',
+  },
+  {
     date: '2026-08-18',
     tag: 'release',
     title: 'v0.109.2 · the nine-key envelope ships',
@@ -448,4 +455,3 @@ export function entryDate(e: ChangelogEntry): string {
 export function entryDateTime(e: ChangelogEntry): string {
   return isRelease(e) ? e.date : e.date.slice(0, 7)
 }
-
