@@ -198,8 +198,8 @@ export function Component() {
                   <code>nika explain {hit.code}</code> answers offline with the failure, the fix
                   shape and this page's address: the same text the check finding carries. A code
                   is a contract: never renamed, never repurposed, safe to route on in{' '}
-                  <Link to="/language/on_codes">on_codes</Link> and{' '}
-                  <Link to="/language/retry">retry</Link> policy.
+                  <Link to={wordRoom('on_codes')}>on_codes</Link> and{' '}
+                  <Link to={wordRoom('retry')}>retry</Link> policy.
                 </p>
               </div>
 

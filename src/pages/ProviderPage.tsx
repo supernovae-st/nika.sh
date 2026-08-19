@@ -21,6 +21,7 @@ import { fmtTokens } from './providers-shared'
 import { PROVIDER_SOURCES } from '../content/sources'
 import { routeHead } from '../content'
 import { crumbLd, ldScript, termLd } from '../lib/ld'
+import { wordRoom } from '../lib/rooms'
 import '../sections/v4-home.css'
 import './tools-page.css'
 import './tool-detail.css'
@@ -714,12 +715,12 @@ export function Component() {
                         </Link>
                       </li>
                       <li>
-                        <Link className="td-chip" to="/language/model">
+                        <Link className="td-chip" to={wordRoom('model')}>
                           model
                         </Link>
                       </li>
                       <li>
-                        <Link className="td-chip" to="/language/max_tokens">
+                        <Link className="td-chip" to={wordRoom('max_tokens')}>
                           max_tokens
                         </Link>
                       </li>

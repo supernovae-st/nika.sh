@@ -140,7 +140,7 @@ export function Component() {
   ]
 
   return (
-    <main className="theme-dark src-page" style={{ ['--hub-hue' as string]: '#9a8cff' }}>
+    <main className="theme-dark src-page" style={{ ['--hub-hue' as string]: 'var(--brand)' }}>
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="src-title" className="v4sec v4-in">
         <div className="v4sec-wrap">
