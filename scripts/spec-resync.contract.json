@@ -141,7 +141,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-providers.mjs",
-   "sha256": "cadbaf47044f6b0b39e8bb6a2d5579b578a8abd2f14cf4920831050d94b835be",
+   "sha256": "7b3d906e1eb72e3718ae6a120d5d06fe77eb33166d21af5f8683c93aafc0c304",
    "args": [
     "--from-catalog"
    ],
@@ -157,7 +157,7 @@
    "root": "website",
    "runtime": "node",
    "path": "scripts/build-tools.mjs",
-   "sha256": "eb1d2c0395e74791c1cdba9423f5c74bf3fcd415880dc51f8ce2c7fe48220d76",
+   "sha256": "7afa23a307a164ba0af6cc63a1213b11540c2d76176d7e97e733027c47f17042",
    "args": [
     "--from-catalog"
    ],
@@ -343,14 +343,14 @@
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "fdae12974e65f0e279fc634f7155943daa1b518ea7a446a761a5cd0616564cc0",
+   "sha256": "264e6461944ac263e419c599a611534a8756ccd547e2c0d1a9c0c48ec128f25b",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "2835dc1c00569e7f551be4355ccc528551705c7fee0a720269b329934b90e415",
+   "sha256": "88a328854e87c3e3005afd4cc636685d5c895067a548c83415254e5d5c709121",
    "consumers": [
     "src/pages/Tools.tsx"
    ]
