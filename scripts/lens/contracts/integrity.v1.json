@@ -51,15 +51,15 @@
   },
   {
    "path": "scripts/build-lens-semantic-contracts.mjs",
-   "sha256": "3b9b9429997902e8b42a566c329300f3d9cf3cbd83954e7b15950d36afedeb0a"
+   "sha256": "e8af6ff50c7fe861e0a4f48815eb496256db2fbc0bcb68081d2fb542c24706b7"
   },
   {
    "path": "scripts/lens-gate.mjs",
-   "sha256": "6a56ea57e5e5303ff4a094afdfa91d01ccaa26bf7c69559d6c651a96ae398ea9"
+   "sha256": "bc126645aa08ab39d459fad6e1dd118030515ab695a3faaf7bf4284b5e67ac7e"
   },
   {
    "path": "scripts/lens-semantics-lib.mjs",
-   "sha256": "9192618019aaa13ec6429bbcab0dd49fa4c46b40fc97c8b38659b9e5810effdd"
+   "sha256": "f60d5cfc7b61b11a285d886eef921e26de4e30ef01dad9da0e13ddfe292c5cce"
   },
   {
    "path": "scripts/lens/contracts/carrier-universe.v1.json",
@@ -71,11 +71,11 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "fb945f04c673abe4ea26a5ffd5e37a608f78b7277da4b20dfcb50d6dd7af3408"
+   "sha256": "eeb86e9cf09113abeadf712f6ca79355684a8b82e8a11bd1112584e20927ea90"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
-   "sha256": "d554786fcd9e3e83dcf40d02683ceb3e5799a59833f2b994526d824bf2a12c66"
+   "sha256": "8aed7ee64ce90c6e553837c755b59751bd113b7e69592a85217fd0a22aba609e"
   },
   {
    "path": "scripts/lens/contracts/gates.v1.json",
@@ -83,7 +83,7 @@
   },
   {
    "path": "scripts/lens/contracts/presentation.v1.json",
-   "sha256": "9645a596d85db3c0abff2cebecbd554a18e6b1208b756d55e35c290faf829775"
+   "sha256": "c015dccc93bd1e0da63a1778e64cb5c33e27a73cab5c7f84a25b1cecff786848"
   },
   {
    "path": "scripts/lens/contracts/release-attestation.v1.json",
