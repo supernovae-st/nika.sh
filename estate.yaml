@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: c08ccc1769ec6d3d0612f20c800d4395713833dd71203bbfdb2af43f1b317d33
+  aggregate_sha256: faba03c55fa466ddd339281b2e69314920fa824476683dd04bb3b815a0eb2b24
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 95
-  aggregate_sha256: 76a33e1ae7a103021f6c260749f299fd656a2eba7266e62e662ac8f6dc3fc4ff
+  aggregate_sha256: 07135aa1617d57b10ed3093098c238a1d64c4331c394923391867117fd2ee534
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
