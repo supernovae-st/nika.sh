@@ -36,7 +36,7 @@ export interface ProviderEntry {
   models: ProviderModelEntry[]
 }
 
-/** The spec-named providers, presentation-law order. Engine at generation: "0.111.0". */
+/** The spec-named providers, presentation-law order. Engine at generation: "0.112.0". */
 export const PROVIDERS: ProviderEntry[] = [
   {
     "id": "ollama",

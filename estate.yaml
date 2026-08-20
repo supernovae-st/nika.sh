@@ -45,7 +45,7 @@ files:
   evidence: "hand-kept git attributes"
 - path: ".github/nika-engine-pin.json"
   class: authored-pin
-  sha256: a34a709d1cb8ed2dc75d88b151557f957bfb7723d8a6918beea972e98358e5cc
+  sha256: f08dd47b2893fd7314feabe3b9995b71ef6482275c23ff9abcd40458a548cc8e
   evidence: "the catalog seam INPUT (D1) — the full engine RELEASE commit AND tree the /catalog world derives from; advanced only at release trains, PR-only; its $comment narrates the trust model"
 - path: ".github/nika-spec-pin.json"
   class: authored-pin
@@ -171,34 +171,34 @@ files:
   evidence: "hand-written courtesy redirect to docs.nika.sh — bespoke prose comment, NOT the lens stub template"
 - path: "public/engine/PROVENANCE.json"
   class: generated
-  sha256: d3ab9b140b763e29e96b293c03f21d21145e852bbba4315c47cf0b0b4810c7e6
+  sha256: 1c8a2e0a4d4a21c99e1542c12b5c5fbe3fa7f863666080e5c4f650e131f1cecd
   evidence: "the vendoring receipt: source commit+tree from the engine pin + sha256 of every vendored surface (sorted · timestamp-free — same pins, same bytes)"
   derivation:
     tool: "node scripts/engine-resync.mjs --write (fetch BY SHA · verify commit+tree · vendor · receipt)"
     gate: "pnpm check → node scripts/engine-resync.mjs --check (offline digest re-verify of every vendored byte against public/engine/PROVENANCE.json + the pin · exit 5 on drift)"
     inputs:
     - ".github/nika-engine-pin.json"
-    - "supernovae-st/nika@25f502adb7ec (v0.111.0) (the pinned release tree)"
+    - "supernovae-st/nika@974fc555947c (v0.112.0) (the pinned release tree)"
 - path: "public/engine/adr/index.json"
   class: pinned-copy
   sha256: 95ba3ddfb0712f85f915fc1a7d17d587b9ed376ffae716c39e1a1bb65ed856c4
-  evidence: "byte-copy of docs/adr/index.json at the pinned engine release (supernovae-st/nika@25f502adb7ec (v0.111.0)) — the ADR machine index /city/decisions derives from (via scripts/build-adrs.mjs)"
+  evidence: "byte-copy of docs/adr/index.json at the pinned engine release (supernovae-st/nika@974fc555947c (v0.112.0)) — the ADR machine index /city/decisions derives from (via scripts/build-adrs.mjs)"
   derivation:
     tool: "node scripts/engine-resync.mjs --write"
     gate: "pnpm check → node scripts/engine-resync.mjs --check (offline digest re-verify of every vendored byte against public/engine/PROVENANCE.json + the pin · exit 5 on drift)"
     inputs:
     - ".github/nika-engine-pin.json"
-    - "supernovae-st/nika@25f502adb7ec (v0.111.0):docs/adr/index.json"
+    - "supernovae-st/nika@974fc555947c (v0.112.0):docs/adr/index.json"
 - path: "public/engine/clients.registry.yaml"
   class: pinned-copy
   sha256: ffc3c92201da77535133b4704ced791d2255454571fb14ee234606f9db1e4859
-  evidence: "byte-copy of crates/nika-cli-host/data/clients.registry.yaml at the pinned engine release (supernovae-st/nika@25f502adb7ec (v0.111.0)) — the client × component coverage matrix (31 doors · kit-native SSOT) the /integrations matrix derives from"
+  evidence: "byte-copy of crates/nika-cli-host/data/clients.registry.yaml at the pinned engine release (supernovae-st/nika@974fc555947c (v0.112.0)) — the client × component coverage matrix (31 doors · kit-native SSOT) the /integrations matrix derives from"
   derivation:
     tool: "node scripts/engine-resync.mjs --write"
     gate: "pnpm check → node scripts/engine-resync.mjs --check (offline digest re-verify of every vendored byte against public/engine/PROVENANCE.json + the pin · exit 5 on drift)"
     inputs:
     - ".github/nika-engine-pin.json"
-    - "supernovae-st/nika@25f502adb7ec (v0.111.0):crates/nika-cli-host/data/clients.registry.yaml"
+    - "supernovae-st/nika@974fc555947c (v0.112.0):crates/nika-cli-host/data/clients.registry.yaml"
 - path: "public/errors/catalog.json"
   class: generated
   sha256: 0f7de6af72e1d3cf3a6c29c83162f167bac96f98c3d636ceb52d5bf66dbcf575
@@ -219,7 +219,7 @@ files:
   evidence: "studio brand asset — exported artwork, no in-repo generator"
 - path: "public/humans.txt"
   class: authored
-  sha256: f51e1a939d0105d3d34ebaa7ecb7e373e0e95b478b3984a465071ae5c934dd60
+  sha256: 065210511239a986dd045a0a0f28208f9811516d7c4ddb2796df91bc6dfe5839
   evidence: "hand-written humans.txt"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "public/i18n/untranslatables.json"
@@ -277,7 +277,7 @@ files:
     - "content/blog/*.md"
 - path: "public/llms.txt"
   class: authored
-  sha256: 4d5292fc736b3ce6bbe9170422dcf00e651384df1b79b843cddebd098375b7ea
+  sha256: 2c9ac36324969b77fe63f4b4b12a2d3afc94711b58f3dcdd3e1ed97725e4cb5e
   evidence: "hand-curated llms.txt (llmstxt.org) — NOT in BLOG_GENERATED_MIRRORS"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file; counts drift-gated by src/test/llms.test.ts + llms-urls.test.ts against the canon projection"
 - path: "public/manifest.webmanifest"
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 5fe2b3e56832f9523022d1923e5a87265e61b37a68c2f00607dcfbf5f5bb47ed
+  sha256: fff91df2365197ae28e576e66898975267b59284e884621e5e49cfbc22142522
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -331,7 +331,7 @@ files:
   note: "unverified-default"
 - path: "public/ontology/language.json"
   class: generated
-  sha256: ceeb4d67b59ba7841fa363e7748f99918bce482f1efaea466709152e6f8f8d9d
+  sha256: 009c13ef584c65affdc24d2048cda6d92ea7e8bbea90530365cf85127c61190d
   evidence: "written by build-lens.mjs:1731 (the language-graph twin · language_graph shape)"
   derivation:
     tool: "node scripts/lens/graph/build-lens.mjs (pnpm lens)"
@@ -342,13 +342,13 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/providers/catalog.json"
   class: generated
-  sha256: 7cb640d0ba78b656d699ae022fa084f602fc79041813b5435febac6bbb639984
-  evidence: "version field '0.111.0' == the released engine; vendored-catalog law (build-shipped-spec.mjs header): the build never probes the binary — refresh is a deliberate manual run against the released engine"
+  sha256: bb9e48064b44922703184db100b06131e1deddbeaba59d21787c36af4eb44ac3
+  evidence: "version field '0.112.0' == the released engine; vendored-catalog law (build-shipped-spec.mjs header): the build never probes the binary — refresh is a deliberate manual run against the released engine"
   derivation:
     tool: "node scripts/build-providers.mjs (NIKA_BIN or `nika` on PATH)"
     gate: "src/test/providers.test.ts — pnpm test in .github/workflows/gate.yml"
     inputs:
-    - "nika 0.111.0 (the released binary's own provider catalog)"
+    - "nika 0.112.0 (the released binary's own provider catalog)"
 - path: "public/redirects.json"
   class: generated
   sha256: a6c7d2d5005f1350fe9cce363e9880961a4242614a38b6c36ee6fdcfecaeb1fa
@@ -396,31 +396,31 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/spec/shipped/PROVENANCE.json"
   class: generated
-  sha256: 73bf2d0eb1098adbe39ad280532722c7b7c626940b443487f014873594e4c473
-  evidence: "the vendor run's receipt: engine_version 0.111.0 + source 'nika spec --schema / --canon'"
+  sha256: a168863885af5e8cf5812dea834f72ea8e902037ab0cbb52617babde49fc4775
+  evidence: "the vendor run's receipt: engine_version 0.112.0 + source 'nika spec --schema / --canon'"
   derivation:
     tool: "node scripts/build-shipped-spec.mjs (deliberate manual vendor run — the build NEVER probes the binary)"
     gate: "src/test/onpage-yaml.test.ts validates the on-page corpus against THIS shipped schema; the truth zoom renders the ratified↔shipped drift"
     inputs:
-    - "nika 0.111.0 (the released binary)"
+    - "nika 0.112.0 (the released binary)"
 - path: "public/spec/shipped/canon.yaml"
   class: pinned-copy
   sha256: ff6dfd16fe66e2acea6dc3d7e51c369c9da39a71da5f643d32cd9c053fdfe349
-  evidence: "byte-copy of what the RELEASED binary embeds (`nika spec --canon` · engine 0.111.0 per PROVENANCE.json) — the SHIPPED clock of the two-clocks doctrine (build-shipped-spec.mjs header)"
+  evidence: "byte-copy of what the RELEASED binary embeds (`nika spec --canon` · engine 0.112.0 per PROVENANCE.json) — the SHIPPED clock of the two-clocks doctrine (build-shipped-spec.mjs header)"
   derivation:
     tool: "node scripts/build-shipped-spec.mjs (deliberate manual vendor run — the build NEVER probes the binary)"
     gate: "src/test/onpage-yaml.test.ts validates the on-page corpus against THIS shipped schema; the truth zoom renders the ratified↔shipped drift"
     inputs:
-    - "nika 0.111.0 (the released binary)"
+    - "nika 0.112.0 (the released binary)"
 - path: "public/spec/shipped/workflow.schema.json"
   class: pinned-copy
   sha256: 0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b
-  evidence: "byte-copy of what the RELEASED binary embeds (`nika spec --schema` · engine 0.111.0 per PROVENANCE.json) — the SHIPPED clock of the two-clocks doctrine"
+  evidence: "byte-copy of what the RELEASED binary embeds (`nika spec --schema` · engine 0.112.0 per PROVENANCE.json) — the SHIPPED clock of the two-clocks doctrine"
   derivation:
     tool: "node scripts/build-shipped-spec.mjs (deliberate manual vendor run — the build NEVER probes the binary)"
     gate: "src/test/onpage-yaml.test.ts validates the on-page corpus against THIS shipped schema; the truth zoom renders the ratified↔shipped drift"
     inputs:
-    - "nika 0.111.0 (the released binary)"
+    - "nika 0.112.0 (the released binary)"
 - path: "public/spec/v1/workflow.schema.json"
   class: pinned-copy
   sha256: 0979b0350eaa78b1ed38eb87dfae82d96ac5f552ca290cf594f2605c9b15de0b
@@ -443,13 +443,13 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "public/tools/catalog.json"
   class: generated
-  sha256: 4c2f6bef9f74d5b39bdf441e449c3473d5846a5710b84ffb0f87bf088aeab341
-  evidence: "version field '0.111.0' == the released engine; vendored-catalog law (build-shipped-spec.mjs header): the build never probes the binary — refresh is a deliberate manual run against the released engine"
+  sha256: f0295fef3e030500095ec729b2fa14f0f2054c847454fa3979185c15f0874c4e
+  evidence: "version field '0.112.0' == the released engine; vendored-catalog law (build-shipped-spec.mjs header): the build never probes the binary — refresh is a deliberate manual run against the released engine"
   derivation:
     tool: "node scripts/build-tools.mjs (NIKA_BIN or `nika` on PATH)"
     gate: "src/test/tools.test.ts + src/test/version.test.ts — pnpm test in .github/workflows/gate.yml"
     inputs:
-    - "nika 0.111.0 (the released binary's own tool catalog)"
+    - "nika 0.112.0 (the released binary's own tool catalog)"
 - path: "react-ssg.config.ts"
   class: authored
   sha256: 785d33b8ddce179481d90a15366b7f51d6286401875ce68e1a76704f0ed6ec4b
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: ff83ab5ff9042b0da4f124b79e1fa65cb5861d012d3296b06fb76f0a633963d6
+  sha256: bba040e3f51cce955f510ede32e36cf8b6fef9fd2ebc9e6681e0a96a3f05e02b
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -514,7 +514,7 @@ files:
   evidence: "hand-kept manifest for the media pipeline lane"
 - path: "scripts/spec-resync.contract.json"
   class: generated
-  sha256: 499c9c7bd120b886994b60dd1216770aa280c038cbfb48e11ad22d5f645c8166
+  sha256: 101f0d24d03ae03cb5045d7934e3857816aac894b4c8d4ad551b9c53cd7cb78a
   evidence: "the versioned resync contract: sha256-pinned generators + outputs + toolchain + publish-input contract, all derived from the spec pin"
   derivation:
     tool: "node scripts/lens/repin-spec-resync-contract.mjs (deliberate repin)"
@@ -555,7 +555,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content.ts"
   class: authored
-  sha256: 2b0a98a3bbd59dcb373f98405acee5bc8766f64798866bf82f1baf3aee23ba54
+  sha256: 82423fce762e381653e02f3739196ff190626b7705caacc8af0e8ed9a69b1260
   evidence: "hand-written content constants"
   note: "the ENGINE_VERSION constant is bot-healed on engine releases (.github/workflows/release-heal.yml → scripts/sync-version.mjs) — a bot-maintained field inside an authored file"
 - path: "src/content/errors.generated.ts"
@@ -580,7 +580,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/install.ts"
   class: authored
-  sha256: 31da54ac8d65cedd9462dca1ec2c42afdc7b21581530339b77257be96028c543
+  sha256: eb06c596aba8692def3ed47da297043bc795c667236d30e00cdc28f971886776
   evidence: "hand-written install copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/language-usage-refs.generated.ts"
@@ -615,7 +615,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/learn.ts"
   class: authored
-  sha256: e31a039e1aafb43d39772799ef4ab1538dec0b095f7f2f75a24ff7f237aed530
+  sha256: 6b229565f0cd007a20bfdb8d24a7b33bd5dfe6f87186077067497146cfab0cb0
   evidence: "hand-written learn-track copy"
   note: "version strings rewritten by scripts/sync-version.mjs on release heal (.github/workflows/release-heal.yml) — bot-maintained fields inside an authored file"
 - path: "src/content/palette.generated.ts"
@@ -630,7 +630,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/providers.generated.ts"
   class: generated
-  sha256: 9972e209706602d18585e011c0b16149a7fdef7f16288f36707ff10fd8c9a942
+  sha256: 33bcc5d80fb4644f6e9a50bafe671910ae24711a9c4314c92f0d5d2be1e08483
   evidence: "declared output of resync contract generator 'website-providers' (supernovae-st/nika.sh scripts/build-providers.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-providers.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -680,7 +680,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/content/tools.generated.ts"
   class: generated
-  sha256: 4a455cc5106365d7b0143b3e7c3490feee72f0226d1df70bde5493bcb39e4a52
+  sha256: 158fd59a42a87550fa71d4953e38bbf905968066e47377efe292ed4d776597f8
   evidence: "declared output of resync contract generator 'website-tools' (supernovae-st/nika.sh scripts/build-tools.mjs · generator sha256-pinned in the contract)"
   derivation:
     tool: "node scripts/build-tools.mjs (root: website · via node scripts/spec-resync-run.mjs)"
@@ -700,7 +700,7 @@ files:
     - "supernovae-st/nika-spec@2b3d6ac3e725 (tree 7f19997ba742)"
 - path: "src/lib/check-wasm/PROVENANCE.json"
   class: generated
-  sha256: c20496777381db1a736f6d2415e9e03261f26d6b89b83a31ca62f0f1c83b5242
+  sha256: 16ba2447100791e2a197826481458c3dd1a6244b99b8c23652e388a54c132336
   evidence: "the revendor receipt: release tag + commit + npm identity + wasm sha16, rewritten by the lane on every revendor"
   derivation:
     tool: "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)"
@@ -811,7 +811,7 @@ patterns:
   class: authored
   match_count: 7
   aggregate_sha256: 1026397f5479424438087373646d88e1475c87d56a7117c261e0569357f90516
-  evidence: "hand-crafted example workflows (SPDX headers · © SuperNovae Studio); src/test/onpage-yaml.test.ts validates them against the SHIPPED schema (engine 0.111.0)"
+  evidence: "hand-crafted example workflows (SPDX headers · © SuperNovae Studio); src/test/onpage-yaml.test.ts validates them against the SHIPPED schema (engine 0.112.0)"
 - glob: "public/hero/*.nika.yaml"
   class: authored
   match_count: 2
@@ -833,13 +833,13 @@ patterns:
   class: pinned-copy
   match_count: 5
   aggregate_sha256: 924d38047b5d42dcce21a8e7167b2d960fd7154d6af26096fadde6f17ad092fa
-  evidence: "byte-copies of crates/nika-catalog/data/*.toml at the pinned engine release (supernovae-st/nika@25f502adb7ec (v0.111.0)) — the market catalog the /catalog world derives from · every byte receipted in public/engine/PROVENANCE.json"
+  evidence: "byte-copies of crates/nika-catalog/data/*.toml at the pinned engine release (supernovae-st/nika@974fc555947c (v0.112.0)) — the market catalog the /catalog world derives from · every byte receipted in public/engine/PROVENANCE.json"
   derivation:
     tool: "node scripts/engine-resync.mjs --write (fetch BY SHA · verify commit+tree · vendor · receipt)"
     gate: "pnpm check → node scripts/engine-resync.mjs --check (offline digest re-verify of every vendored byte against public/engine/PROVENANCE.json + the pin · exit 5 on drift)"
     inputs:
     - ".github/nika-engine-pin.json"
-    - "supernovae-st/nika@25f502adb7ec (v0.111.0) (the pinned release tree)"
+    - "supernovae-st/nika@974fc555947c (v0.112.0) (the pinned release tree)"
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 9341bb87c0bd66ef52465af9dd8d00a7a3173906d4723c9d6d83ff391dcd1986
+  aggregate_sha256: 2d4b7cc0f57ee845f52ef8e9723ef1c372b9952f5667b9538faf1770e733015a
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -920,7 +920,7 @@ patterns:
 - glob: "src/lib/check-wasm/pkg/**"
   class: pinned-copy
   match_count: 4
-  aggregate_sha256: 87738c8523cd3f9de8ce83ac3d4fc1fa444ebbb0c389cc7f5279ad3b8b8de3f4
+  aggregate_sha256: df6f9581005f1122045ad286f739a6c3c54ea26e7cbbd26e357dffdf71b84ee7
   evidence: "the @supernovae-st/nika-check-wasm package vendored VERBATIM from the GitHub release asset (sha256-verified against its published .sha256 sidecar) — the browser half of nika check, attested by the release train"
   derivation:
     tool: "node scripts/revendor-check-wasm.mjs v<X.Y.Z> (release-asset only, never a local build)"
@@ -931,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: e1d683d8a9a5010f848332133cb80adaf93ad3c326e500c703f1b39a083d6fea
+  aggregate_sha256: 08fa62c8ac43e5b77e3f24b7cae92ad807cfa4b60c672c8a74787710d3ad46b5
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,7 +941,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 444
-  aggregate_sha256: 1a8eb875ac74977acc47f1f5a291858832c55bf7d0c64069266ee89aa38a00a4
+  aggregate_sha256: c10fbcca666ff67a5e5a5a44b4b16119d43f3585daf8ff8adf17ee0508935d38
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
@@ -956,7 +956,7 @@ patterns:
 - glob: "**"
   class: authored
   match_count: 475
-  aggregate_sha256: b56a6249d33f1d7f170c3c59a8a2ebc97be29932ef57bc437629ce1705ee21d5
+  aggregate_sha256: 908cc95d75de2f2d1cca48bd72e1250d7d5c3b78c611a35d3752a25519b18da6
   evidence: "no evidence gathered — honesty over completeness (the catchall; anything landing here is reported under unverified:)"
   note: "unverified-default"
 unverified:

@@ -343,14 +343,14 @@
   },
   {
    "path": "src/content/providers.generated.ts",
-   "sha256": "9972e209706602d18585e011c0b16149a7fdef7f16288f36707ff10fd8c9a942",
+   "sha256": "33bcc5d80fb4644f6e9a50bafe671910ae24711a9c4314c92f0d5d2be1e08483",
    "consumers": [
     "src/pages/Providers.tsx"
    ]
   },
   {
    "path": "src/content/tools.generated.ts",
-   "sha256": "4a455cc5106365d7b0143b3e7c3490feee72f0226d1df70bde5493bcb39e4a52",
+   "sha256": "158fd59a42a87550fa71d4953e38bbf905968066e47377efe292ed4d776597f8",
    "consumers": [
     "src/pages/Tools.tsx"
    ]

@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-20',
+    tag: 'release',
+    title: 'v0.112.0 · the instruments tell the truth',
+    body: 'A test binary can no longer open the OS keychain. JOURNEY counts model endpoints instead of tasks. Recovered fan-out is recorded as recovered, and a broken trace chain is reported as a break. The exec fit lane now checks filesystem access before a run, while the release estate is proven against the tagged tree. These changes make the audit say what the engine will actually do.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.112.0',
+  },
+  {
     date: '2026-08-19',
     tag: 'release',
     title: 'v0.111.0 · the authoring loop closes',

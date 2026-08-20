@@ -16,7 +16,7 @@ export interface TerminalCapture {
 }
 
 /** the engine release every capture was recorded from */
-export const TERMINAL_ENGINE = "0.111.0"
+export const TERMINAL_ENGINE = "0.112.0"
 
 export const TERMINAL_CAPTURES: TerminalCapture[] = [
   {
@@ -25,7 +25,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
     "lines": [
       {
         "kind": "out",
-        "text": "nika 0.111.0 (25f502adb)"
+        "text": "nika 0.112.0 (974fc5559)"
       }
     ]
   },
@@ -95,7 +95,7 @@ export const TERMINAL_CAPTURES: TerminalCapture[] = [
       },
       {
         "kind": "ok",
-        "text": " ✔ JOURNEY internal · 0 sources · 1 destination · 0 model endpoints · no secret reaches a cloud destination"
+        "text": " ✔ JOURNEY internal · 0 sources · 1 destination · 0 model endpoints · no secret reaches an external destination"
       },
       {
         "kind": "ok",

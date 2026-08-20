@@ -73,14 +73,14 @@ outputs:
   greeting: \${{ tasks.greet.output }}`
 
 /* ── « what you should see » · VERBATIM transcripts from the shipping binary ──
-   Captured 2026-08-19 against nika 0.111.0 (the verified release binary ·
+   Captured 2026-08-19 against nika 0.112.0 (the verified release binary ·
    the macos-arm64 asset, sha256 checked against the release's SHA256SUMS)
    running the exact HELLO_YAML above from a bare directory. The honesty
    law: these frames render REAL output — re-capture when the CLI's voice
    changes, never hand-edit. */
 export const VERSION_TRANSCRIPT: TermLine[] = [
   { kind: 'cmd', text: "nika --version" },
-  { kind: 'out', text: "nika 0.111.0 (25f502adb)" },
+  { kind: 'out', text: "nika 0.112.0 (974fc5559)" },
 ]
 
 export const FIRST_RUN_TRANSCRIPT: TermLine[] = [

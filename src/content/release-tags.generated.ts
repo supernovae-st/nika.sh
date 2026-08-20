@@ -10,6 +10,7 @@
  * law: the lens discovery re-derives these from this module, never from
  * site.config's arithmetic) */
 export const RELEASE_TAGS: string[] = [
+  "v0.112.0",
   "v0.111.0",
   "v0.110.0",
   "v0.109.1",

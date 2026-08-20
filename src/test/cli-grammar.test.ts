@@ -21,8 +21,8 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = join(__dirname, '../..')
 
-/** measured against v0.111.0 with `nika <verb> --help` (rc=0 · re-probed 2026-08-20) */
-const ENGINE_PIN = 'v0.111.0'
+/** measured against v0.112.0 with `nika <verb> --help` (rc=0 · re-probed 2026-08-21) */
+const ENGINE_PIN = 'v0.112.0'
 const LIVE_VERBS = new Set([
   'arm',
   'audit-workflow', // the repo name in prose paths, never a verb call
