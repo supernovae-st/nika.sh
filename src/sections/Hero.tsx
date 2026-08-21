@@ -5,6 +5,7 @@ import { MiniDag } from '../components/MiniDag'
 import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION } from '../content'
+import { CANON } from '../canon.generated'
 import { CHECK_VERDICTS, VERDICT_ENGINE } from '../content/check-verdicts.generated'
 import { type FlagshipEntry } from '../flagships'
 import { LIBRARY_TABS, type LibraryItem } from '../flagships/library'
@@ -290,70 +291,40 @@ export default function Hero({
       {/* the HUD ticks + the readability scrim (the WebGL field is page-level) */}
       <HeroAtmosphere />
 
-      {/* the two-column composition · copy LEFT · editor RIGHT · generous air. */}
+      {/* One claim first, then the product board. The YAML and its derived plan
+          stay in one well, but neither competes with the headline anymore. */}
       <div className="v4hero-grid relative z-[1] mx-auto w-full max-w-7xl">
-        {/* ── LEFT · the pitch ─────────────────────────────────────────────── */}
         <div className="v4hero-copy flex max-w-2xl flex-col">
-          {/* the bracket eyebrow · the mono museum-plate register */}
           <p data-rise style={rise(40)} className="v4beyebrow mb-6">
-            [ INTENT AS CODE ]
+            [ NIKA · CHECKED WORKFLOWS FOR AI ]
           </p>
 
-          {/* the REAL <h1> · the wedge · the SEO win. The compiler wedge
-              (2026-07-28): nobody re-reads a plan, and nobody has to — the
-              checker reads it back. The line names the loop the product
-              actually lives in: an agent writes, nika check answers. */}
           <h1 data-rise style={rise(80)} className="v4hero-h1">
-            Your agent writes the workflow. Nika reads it back.
+            Intent as Code.
           </h1>
 
-          {/* the sub · ONE sentence pair. The full version is desktop; phones
-              get the short register (the 7-line sub wall is a defect class). */}
-          {/* the checked-language lead: the position line first, then the two
-              moments (audited BEFORE a token is spent · a verifiable receipt
-              AFTER every run), with the fixes NAMED in plain words — each one
-              real check output (did-you-mean · the UNBOUNDED cost floor ·
-              NIKA-DRIFT-001). The contract tricolon closes it: permits
-              default-deny (02 below) · the hash-chained trace (nika trace
-              verify) · the cost cap (--max-cost-usd). */}
-          <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--full">
-            The checked workflow language for AI: <b>audited before a token is
-            spent</b>, every fix named (the typo, the unbounded cost, the
-            permit wider than the code), with{' '}
-            <Link to="/blog/the-pipeline-is-a-file" className="v4hero-sublink">
-              a verifiable receipt
-            </Link>{' '}
-            after every run. The runtime <b>enforces the file as a contract</b>:
-            permits default-deny, the trace hash-chained, cost capped.
-          </p>
-          <p data-rise style={rise(150)} className="v4hero-sub v4hero-sub--short">
-            The checked workflow language for AI: audited before a token is
-            spent, a receipt after every run. The file is a contract the
-            runtime <b>enforces</b>.
+          <p data-rise style={rise(150)} className="v4hero-sub">
+            AI work should not disappear in a chat. Write it as a plan, check
+            its permissions and cost before it runs, then keep a verifiable
+            receipt of what happened.
           </p>
 
-          {/* the main CTA row · the primary button + the command-as-CTA install */}
           <div
             id="install"
             data-rise
             style={rise(220)}
             className="v4hero-ctas flex scroll-mt-28 flex-wrap items-center gap-3"
           >
-            <a ref={ctaRef} href="#the-run" className="v4cta vfx-mag group">
-              <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
-                ↓
-              </span>
-              See it run
-            </a>
+            <Link ref={ctaRef} to="/install" className="v4cta vfx-mag">
+              Start building <span aria-hidden>→</span>
+            </Link>
+            <Link to="/language/spec" className="v6hero-secondary">
+              Read the spec
+            </Link>
             <InstallCommand />
-            {/* the two escape hatches, one quiet row: the browser playground
-                (W12b·A2 · no install, nothing leaves the tab) and the editor
-                extension (the surface most readers already live in — the
-                anchor scrolls to the working miniature, which sells it
-                better than any store page). */}
             <span className="v4hero-hatches">
               <Link to="/play" className="v4hero-play">
-                try it in your browser
+                Open the playground
                 <span className="acue acue--r" aria-hidden>
                   {' '}
                   →
@@ -362,8 +333,8 @@ export default function Hero({
               <span className="v4hero-hatch-sep" aria-hidden>
                 ·
               </span>
-              <a href="#editor" className="v4hero-play">
-                or in VS Code / Cursor
+              <a href="#the-run" className="v4hero-play">
+                Watch a recorded run
                 <span className="acue acue--d" aria-hidden>
                   {' '}
                   ↓
@@ -372,10 +343,6 @@ export default function Hero({
             </span>
           </div>
 
-          {/* the version plate · the ONE metadata line under the CTAs. (Wave Q
-              diet: the spec/GitHub links row duplicated the nav, the trust
-              litany repeated the sub — five quiet elements now, not eight;
-              the trust story lives downstream where it's earned.) */}
           <p className="v4vplate mt-5" data-rise style={rise(260)}>
             {ENGINE_VERSION}
             <span className="v4vplate-pipe" aria-hidden>
@@ -389,38 +356,8 @@ export default function Hero({
           </p>
         </div>
 
-        {/* ── RIGHT · THE FILE · the switchable product replica ──────────────
-             The selected tab is the file the whole page runs: it descends into
-             the replay (beat 2), the plan (beat 3), the boundary (beat 4).
-             Reading order (wave O·P): THE PLAN first (what happens, assembling
-             in time order), then the file. The switcher lives IN the window's
-             titlebar (wave P: a real editor's tab bar — the active tab IS the
-             filename, no repeat), the copy chip floats in the code corner. */}
         <div className="v4hero-editor" data-rise style={rise(180)}>
           <div ref={panelRef} className="v4hero-well">
-            {/* THE PLAN · derived from the selection, so every library pick
-                gets its diagram for free · ≥1024 only (the editor is the
-                phone's whole story — phones keep the big See-it-run CTA).
-                THE MINIMAP (operator 2026-07-13 v2): the drawing rides
-                INSIDE the panel, bottom-right — an editor's minimap, no
-                title, no frame. The film's pips keep their data-task rects. */}
-            <MiniDag
-              plan={item.plan}
-              orientation="rail"
-              fileId={item.id}
-              pairTask={pairTask}
-              onPair={setPairTask}
-              action={planAction}
-              className="v4hero-dag"
-            />
-            {/* wrap: the hero is the READING surface — long flow lines soft-wrap
-                with a hanging indent (no right-edge clip, no hidden content).
-                tips + rangeTip: the smart-hover layer (plain-words glossary +
-                the tab's gloss over its whole evidence band). NOTHING is lit
-                at rest (wave Q): hovering the evidence lights its band + card;
-                hovering a plan node or a task block lights that task's exact
-                lines (the pairing). bodyProps marks the CODE area as the
-                tabpanel the chrome tabs control. */}
             <CodeFile
               yaml={item.yaml}
               highlight={
@@ -450,18 +387,32 @@ export default function Hero({
                   `v4ftab-${item.id}`,
               }}
             />
-            {/* THE VERDICT STRIP · what the binary said about THIS file,
-                captured (check-verdicts.generated · re-proven by its drift
-                gate), never re-phrased. The wedge is « Nika reads it back » —
-                this is the reading, on the artifact itself.
-
-                THE JOIN is the served filename, not item.id: flagship ids are
-                snake_case while verdicts key on the workflow id parsed from
-                the served yaml, and the first draft of this strip joined on
-                item.id — which matched NOTHING and rendered for nobody,
-                silently. check-verdicts.test.ts now gates this join. A
-                browse-only pick (no flagship) shows nothing rather than a
-                claim nobody ran. */}
+            <aside className="v6hero-plan" aria-label="Derived plan and released language counts">
+              <p className="v6hero-plan-kick">derived from this file</p>
+              <MiniDag
+                plan={item.plan}
+                orientation="rail"
+                fileId={item.id}
+                pairTask={pairTask}
+                onPair={setPairTask}
+                action={planAction}
+                className="v4hero-dag"
+              />
+              <dl className="v6hero-facts">
+                <div>
+                  <dt>{CANON.verbs}</dt>
+                  <dd>verbs</dd>
+                </div>
+                <div>
+                  <dt>{CANON.builtins}</dt>
+                  <dd>builtins</dd>
+                </div>
+                <div>
+                  <dt>{CANON.providers}</dt>
+                  <dd>providers</dd>
+                </div>
+              </dl>
+            </aside>
             {(() => {
               const v =
                 item.flagship &&

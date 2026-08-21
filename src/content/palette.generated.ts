@@ -263,6 +263,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "Clean is not ready to spend",
+    "href": "/blog/clean-is-not-ready-to-spend",
+    "hint": "Engine|Security · 2026-08-21"
+  },
+  {
+    "kind": "post",
     "label": "The registry re-proves everything",
     "href": "/blog/the-registry-reproves-everything",
     "hint": "Engine · 2026-07-14"

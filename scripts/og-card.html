@@ -33,18 +33,14 @@
     overflow: hidden;
   }
 
-  /* ── the EdgeAurora — the v4 signature · the LONE colour ──────────────────
-     a blurred conic cyan→violet ring hugging the frame, masked transparent at
-     the centre so the card stays black & readable. */
+  /* One blue signal. The old full-frame cyan/violet halo competed with the
+     headline; this reads as light hitting black material from one corner. */
   .aurora {
     position: absolute;
-    inset: -22%;
-    background: conic-gradient(from 200deg,
-      #22d3ee 0%, #b07bff 25%, #22d3ee 50%, #b07bff 75%, #22d3ee 100%);
-    -webkit-mask: radial-gradient(ellipse 70% 76% at 50% 50%,
-      transparent 50%, #000 92%);
-    filter: blur(86px);
-    opacity: 0.26;
+    inset: -12%;
+    background: radial-gradient(circle at 82% 12%, #4f86ff, transparent 44%);
+    filter: blur(96px);
+    opacity: 0.11;
   }
   /* a hard 1px inner frame line over the aurora — the instrument bezel */
   .bezel {
@@ -64,25 +60,20 @@
   .tick.bl { bottom: 40px; left: 40px; transform: scaleY(-1); }
   .tick.br { bottom: 40px; right: 40px; transform: scale(-1,-1); }
 
-  /* ── faint perspective depth grid receding into the floor (hero echo) ──── */
+  /* Quiet mathematical paper, flat like the product surfaces on the site. */
   .depth {
     position: absolute;
-    left: 0; right: 0; bottom: 0; height: 62%;
-    perspective: 540px;
-    perspective-origin: 50% 0%;
-    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 24%, transparent 88%);
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 88%);
     overflow: hidden;
   }
   .depth-plane {
     position: absolute;
-    inset: -60% -40% -40% -40%;
-    transform-origin: 50% 100%;
-    transform: rotateX(66deg);
+    inset: 0;
     background-image:
-      repeating-linear-gradient(to right, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 52px),
-      repeating-linear-gradient(to bottom, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 52px);
-    opacity: 0.05;
-    -webkit-mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0,0,0,0.5) 42%, transparent 78%);
+      repeating-linear-gradient(to right, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(to bottom, #f4f5f7 0, #f4f5f7 1px, transparent 1px, transparent 80px);
+    opacity: 0.035;
   }
 
   /* ── content ───────────────────────────────────────────────────────────── */
@@ -199,12 +190,12 @@
         </svg>
         <span class="wordmark">nika</span>
       </div>
-      <div class="fig"><span class="rule"></span>FIG B.0</div>
+      <div class="fig"><span class="rule"></span>FIG W.0</div>
     </div>
 
-    <h1 class="headline">Where every<br><span class="b">piece lives.</span></h1>
-    <p class="sub">The city: which repo ships each part of Nika, what it ships, and at which commit this site read it. Two clocks, named.</p>
-    <p class="permits"><span class="arrow">▸</span><span>15&nbsp;buildings<span class="sep">·</span>decisions<span class="sep">·</span><b>pins</b></span></p>
+    <h1 class="headline">The<br><span class="b">corpus.</span></h1>
+    <p class="sub">The path that teaches, the jobs that prove, the skeletons that start yours: every file conformance-gated, sha-pinned, runnable.</p>
+    <p class="permits"><span class="arrow">▸</span><span>the&nbsp;path<span class="sep">·</span>real&nbsp;jobs<span class="sep">·</span><b>skeletons</b></span></p>
 
     <div class="foot">
       <span class="domain">nika.sh</span>

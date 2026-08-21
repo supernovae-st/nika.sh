@@ -260,16 +260,28 @@ export function Component() {
      they are rewritten to `#y=` in place, which also scrubs the workflow
      out of the address bar. */
   const [shared, setShared] = useState(false)
+  /* CodeMirror must mount with the resolved buffer, not race the handoff
+     effect with an empty/template first value. The gate is hydration-safe:
+     false on the server and the first client render, then opened from the
+     same deferred frame that either applies or dismisses the external file. */
+  const [handoffReady, setHandoffReady] = useState(false)
   useEffect(() => {
-    /* deferred one frame — the effect body only wires the external read
-       (the repo lint bans synchronous setState in effects) */
-    const raf = requestAnimationFrame(() => {
+    /* Deferred off the effect body, but deliberately NOT through rAF: a
+       software-rendered or backgrounded tab may starve frames indefinitely,
+       while URL hydration is data work and must not depend on a paint. */
+    const timer = window.setTimeout(() => {
       const hashed = new URLSearchParams(window.location.hash.slice(1)).get('y')
       const queried = new URLSearchParams(window.location.search).get('y')
       const y = hashed ?? queried
-      if (!y) return
+      if (!y) {
+        setHandoffReady(true)
+        return
+      }
       const src = decompressFromEncodedURIComponent(y)
-      if (!src) return
+      if (!src) {
+        setHandoffReady(true)
+        return
+      }
       /* a legacy `?y=` link: rewrite to the fragment form in place, so the
          workflow leaves the address bar and the next share is private */
       if (!hashed) {
@@ -286,8 +298,9 @@ export function Component() {
       setDiags(checkNika(src))
       setPlan(parsePlan(src))
       setStale(false)
+      setHandoffReady(true)
     })
-    return () => cancelAnimationFrame(raf)
+    return () => window.clearTimeout(timer)
   }, [])
   const share = () => {
     const url = `${window.location.origin}/play#y=${compressToEncodedURIComponent(code)}`
@@ -502,7 +515,7 @@ export function Component() {
                     Suspense boundary → no #419). After hydration `mounted` flips
                     and the lazy editor loads, its own Suspense fallback bridges
                     the chunk fetch. */}
-                {mounted ? (
+                {mounted && handoffReady ? (
                   <Suspense fallback={EditorFallback}>
                     <PlayEditor
                       value={code}
@@ -518,7 +531,7 @@ export function Component() {
                 {/* the corner minimap — the drawing every panel carries,
                     riding the LAST VALID source (dimmed while the buffer is
                     mid-edit, the DagView law) */}
-                {mounted && goodYaml ? (
+                {mounted && handoffReady && goodYaml ? (
                   <div className="play-minimap" data-stale={stale || undefined}>
                     <Suspense fallback={null}>
                       <PlayMiniDag yaml={goodYaml} />

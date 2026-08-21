@@ -2713,6 +2713,15 @@
       "exists": true
     },
     {
+      "id": "post:clean-is-not-ready-to-spend",
+      "kind": "surface",
+      "title": "Clean is not ready to spend",
+      "url": "/blog/clean-is-not-ready-to-spend",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
       "id": "post:dag-for-free",
       "kind": "surface",
       "title": "The plan you get for free",
@@ -10035,6 +10044,21 @@
     {
       "from": "post:blast-radius-in-the-file",
       "to": "word:permits",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:clean-is-not-ready-to-spend",
+      "to": "tool:compose",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:clean-is-not-ready-to-spend",
+      "to": "tool:done",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:clean-is-not-ready-to-spend",
+      "to": "tool:inspect",
       "kind": "mentions"
     },
     {

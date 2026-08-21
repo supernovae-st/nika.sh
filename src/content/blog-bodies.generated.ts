@@ -10,6 +10,636 @@
 import type { BlogToken } from './blog.generated'
 
 export const BLOG_BODIES: Record<string, BlogToken[]> = {
+  "clean-is-not-ready-to-spend": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An AI workflow can pass validation and still be a bad place to spend money."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That distinction matters. A parser can prove that a file is legal. A schema can prove that its fields have the right shapes. Neither proves that the workflow's expensive decisions are backed by deterministic checks, that its output limits make sense, or that the author has resolved every warning that matters before a paid model runs."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika v0.111.0 gives that difference a name: "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The short answer is simple. "
+        },
+        {
+          "k": "strong",
+          "text": "Clean means the workflow is valid. Paid-ready means no paid-run hint remains unresolved."
+        },
+        {
+          "k": "text",
+          "text": " A team can keep using "
+        },
+        {
+          "k": "code",
+          "text": "nika check"
+        },
+        {
+          "k": "text",
+          "text": " as the normal authoring loop, then require "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready: true"
+        },
+        {
+          "k": "text",
+          "text": " at the boundary where real model spend begins."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Validation and readiness answer different questions",
+      "id": "validation-and-readiness-answer-different-questions"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Traditional validation asks whether a document belongs to a language. Does it parse? Are required keys present? Does every reference resolve? Are the declared permissions sufficient for the requested effects?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those are hard requirements. If any of them fail, the workflow should not start."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Readiness asks a second set of questions:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Is a model being asked to make a decision that a deterministic task should enforce?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is the workflow claiming a law without carrying a fixture that proves the law?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Do structured outputs use types that preserve the meaning of the data?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Does a broad file pattern hide the real read boundary?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is a powerful introspection tool present but disconnected from the task that should consume it?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A workflow may be legal while the honest answer to one of those questions is still no. Treating both states as the same green check makes the signal less useful precisely when a run becomes expensive."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is the design reason for two verdicts. "
+        },
+        {
+          "k": "code",
+          "text": "clean"
+        },
+        {
+          "k": "text",
+          "text": " remains the language verdict. "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": " is the operational verdict for a paid execution boundary."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The check result is now an authoring interface",
+      "id": "the-check-result-is-now-an-authoring-interface"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Three fields close the loop in v0.111.0:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "code",
+            "text": "paid_ready"
+          },
+          {
+            "k": "text",
+            "text": " states whether any paid-run hint remains."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "compiled"
+          },
+          {
+            "k": "text",
+            "text": " states whether the workflow's law has been proven."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "next"
+          },
+          {
+            "k": "text",
+            "text": " names the first repair to make."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The important field is not only the boolean. "
+        },
+        {
+          "k": "code",
+          "text": "next"
+        },
+        {
+          "k": "text",
+          "text": " turns a verdict into an ordered editing loop. An author, editor extension or agent does not have to interpret a wall of findings and guess where to begin. It can apply the first repair, run the checker again, and continue until the readiness signal is quiet."
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika check path/to/workflow.nika.yaml --json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That command is useful to a person, but the JSON contract also makes the result usable in CI and in an agent's own revision loop. The checker remains the authority. The model can propose a change, but it does not get to declare its own work safe."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A model should extract facts, not enforce the law",
+      "id": "a-model-should-extract-facts-not-enforce-the-law"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The most common workflow design mistake is to ask one model call to do everything: read evidence, choose a verdict, explain it and format the final artifact. The result can look coherent while the rule itself remains untested."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A stronger plan separates three jobs:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "A model extracts typed facts from messy source material."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A deterministic task applies the rule to those facts."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A fixture asserts that the rule behaves correctly on a known case."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For example, an editorial workflow may ask a model to list unsupported claims and broken links. A deterministic expression then decides that publication is allowed only when both counts are zero. A fixed fixture proves that the expression refuses a deliberately bad audit result."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The model handles ambiguity. The deterministic task owns the gate. The fixture proves the gate is wired."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This arrangement is less dramatic than asking an agent to \"make sure the post is good.\" It is also reviewable. A teammate can inspect the rule without reading a prompt, and a future model swap cannot quietly redefine the publication threshold."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Cost controls need an honest scope",
+      "id": "cost-controls-need-an-honest-scope"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Output ceilings are useful, but they are not a complete cost estimate. A low "
+        },
+        {
+          "k": "code",
+          "text": "max_tokens"
+        },
+        {
+          "k": "text",
+          "text": " value bounds generated output. It does not erase the cost of a large input, cached context, tool results, reasoning tokens or a provider's pricing rules."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is why cost policy belongs beside workflow structure rather than inside marketing copy. Before a paid run, review at least four things:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the selected provider and model;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the maximum output for every model task;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the amount of research or file content flowing into each prompt;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the static cost ceiling used by the runner."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Local models need the same honesty. Unpriced is not the same as free. A local run consumes time, memory and energy even when no vendor invoice exists."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": " does not pretend to predict every possible bill. It gives teams a stronger, machine-readable boundary: the checker has no remaining paid-run guidance for this file under the released rules."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Put the distinction into CI",
+      "id": "put-the-distinction-into-ci"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A practical policy can stay small:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " on every workflow change."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Refuse any non-clean result."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "For workflows allowed to call paid models, also require "
+          },
+          {
+            "k": "code",
+            "text": "paid_ready"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Keep the JSON verdict as a build artifact."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Review cost and permission changes like code changes."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The split avoids two bad outcomes. It does not weaken validation to accommodate advisory findings, and it does not pretend that an advisory is a syntax error. Each signal keeps one meaning."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It also improves review. A pull request can show that a file is legal while still blocking a production promotion because the paid-readiness work is unfinished. The reviewer sees the exact gap instead of a generic red state."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The workflow can now inspect and revise itself",
+      "id": "the-workflow-can-now-inspect-and-revise-itself"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same release adds two pieces that make this loop useful inside agentic authoring."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "nika:inspect"
+        },
+        {
+          "k": "text",
+          "text": " is available from the first task and updates after every wave. A workflow can read its DAG, records, spend and threads while it runs. "
+        },
+        {
+          "k": "code",
+          "text": "nika:compose"
+        },
+        {
+          "k": "text",
+          "text": " stays inside an agent loop after "
+        },
+        {
+          "k": "code",
+          "text": "nika:done"
+        },
+        {
+          "k": "text",
+          "text": ", so a model can draft a workflow, read the complete checker verdict and revise it without making the checker execute the draft."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That separation is essential. Composition proposes. Checking judges. Running performs effects. Combining those authorities would make a generated file prove itself by acting, which is exactly the boundary a checked workflow language is meant to avoid."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Ready is a stronger word than valid",
+      "id": "ready-is-a-stronger-word-than-valid"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The useful mental model is not \"more validation.\" It is staged confidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A valid file belongs to the language. A compiled law carries its proof. A paid-ready workflow has resolved the checker guidance that matters before money is spent. A successful run then produces its own trace and receipt."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Each stage adds evidence without rewriting the meaning of the previous one."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is the deeper change in v0.111.0. The checker is no longer only a gate that says yes or no. It is an authoring protocol that tells a person, an editor or an agent what is true now and what to repair next."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read the "
+        },
+        {
+          "k": "link",
+          "text": "v0.111.0 release",
+          "href": "https://github.com/supernovae-st/nika/releases/tag/v0.111.0"
+        },
+        {
+          "k": "text",
+          "text": ", see the complete "
+        },
+        {
+          "k": "link",
+          "text": "Nika changelog",
+          "href": "/changelog"
+        },
+        {
+          "k": "text",
+          "text": ", or continue with "
+        },
+        {
+          "k": "link",
+          "text": "The cost line",
+          "href": "/blog/the-cost-line"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
   "the-registry-reproves-everything": [
     {
       "k": "p",

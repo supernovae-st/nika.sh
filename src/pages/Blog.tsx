@@ -24,21 +24,22 @@ import { ldScript } from '../lib/ld'
    fully visible by default (no-JS / reduced-motion). Per-route <head> via
    useHead → prerendered into dist/blog/index.html. */
 
-/* the upcoming teasers · dated stubs of coming articles (unchanged content). */
+/* The next two field notes. The cadence is explicit; these are editorial
+   promises, not fake publication dates. */
 const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
   {
-    slug: 'the-advisory-that-names-itself',
-    tag: 'Security',
-    date: 'soon',
-    title: 'The advisory that names itself',
-    teaser: 'When a published workflow goes bad, the registry does not unpublish history. An advisory attaches to the pinned entry in the open, and the verify protocol already told you never to install what one names.',
-  },
-  {
-    slug: 'the-run-that-never-runs',
+    slug: 'the-workflow-that-reads-itself',
     tag: 'Engine',
     date: 'soon',
-    title: 'The run that never runs',
-    teaser: 'nika run --dry-run shows the whole static plan and executes zero effects: waves, permits, models, the cost floor. The full rehearsal before anything is allowed to happen.',
+    title: 'The workflow that reads itself',
+    teaser: 'nika:inspect gives a running workflow a typed view of its own plan, permits, tasks and provenance. That changes what an agent can prove before it proposes a repair.',
+  },
+  {
+    slug: 'the-agent-that-checks-its-draft',
+    tag: 'Engine',
+    date: 'soon',
+    title: 'The agent that checks its draft',
+    teaser: 'nika:compose can propose a workflow and return the checker findings beside it. The useful loop is not generation alone. It is proposal, evidence, repair and an explicit decision.',
   },
 ]
 
@@ -157,6 +158,23 @@ export function Component() {
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             {BLOG_POSTS.length} live · {SOON.length} upcoming
           </p>
+
+          <div className="blog-status" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+            <p className="blog-status-item">
+              <span className="blog-status-k">cadence</span>
+              <span className="blog-status-v">Daily, human-reviewed</span>
+            </p>
+            <p className="blog-status-item">
+              <span className="blog-status-k">latest</span>
+              <time className="blog-status-v" dateTime={BLOG_POSTS[0]?.date}>
+                {BLOG_POSTS[0]?.date}
+              </time>
+            </p>
+            <p className="blog-status-item">
+              <span className="blog-status-k">method</span>
+              <span className="blog-status-v">Research → check → publish</span>
+            </p>
+          </div>
 
           {/* the register filter · plain toggles (aria-pressed), the /use-cases
               métier-bar grammar — filtering the shelf isn't a tab/tabpanel

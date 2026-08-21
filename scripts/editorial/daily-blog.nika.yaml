@@ -1,0 +1,311 @@
+# SPDX-License-Identifier: Apache-2.0
+# yaml-language-server: $schema=https://nika.sh/spec/v1/workflow.schema.json
+#
+# Daily editorial loop for nika.sh.
+#
+# Three read-only MCP sources run together: Ahrefs for search demand,
+# Firecrawl for the live result set, Perplexity for a cited research pass.
+# A model turns that evidence into typed editorial facts and a draft. A jq
+# law scores the audit, an assertion proves the law on a known bad fixture,
+# and a human gate dominates the only task that can publish into content/blog.
+#
+# One run produces one candidate. A scheduler owns the daily cadence. The
+# workflow never pushes, deploys, or edits generated mirrors.
+
+nika: daily-nika-blog
+
+model: openai/gpt-5.2
+
+inputs:
+  topic:
+    type: string
+    required: true
+    description: "The Nika feature or workflow problem the article must answer"
+  slug:
+    type: string
+    required: true
+    description: "One URL-safe path segment for the post"
+  date:
+    type: string
+    required: true
+    description: "Publication date as YYYY-MM-DD"
+  publish:
+    type: bool
+    default: false
+    description: "Ask for approval and write into content/blog when true"
+
+const:
+  candidate_path: "out/editorial/daily-blog.md"
+  country: "US"
+  editorial_rules: |
+    Write direct, jargon-free English for technical readers.
+    Answer the search intent in the opening paragraph.
+    Use only claims supported by supplied sources or the Nika release notes.
+    Explain the product mechanism, tradeoffs, and a practical operating loop.
+    Never use an em dash. Never invent benchmarks, customers, quotes, or counts.
+    Do not put an H1 in the body. Use descriptive H2 headings.
+    Prefer concrete nouns and verbs to marketing adjectives.
+  bad_fixture:
+    factual_errors: 0
+    unsupported_claims: 1
+    broken_links: 0
+    hype_phrases: 0
+    word_count: 1200
+    intent_coverage_score: 92
+    clarity_score: 90
+    geo_answerability_score: 90
+
+permits:
+  tools:
+    - "mcp:ahrefs/keywords-explorer-matching-terms"
+    - "mcp:firecrawl/firecrawl_search"
+    - "mcp:perplexity/deep_research"
+    - "nika:assert"
+    - "nika:jq"
+    - "nika:prompt"
+    - "nika:write"
+  fs:
+    write:
+      - "out/editorial/daily-blog.md"
+      - "content/blog/*.md"
+
+tasks:
+  search_demand:
+    invoke:
+      tool: "mcp:ahrefs/keywords-explorer-matching-terms"
+      args:
+        keywords: "${{ inputs.topic }}"
+        country: "${{ const.country }}"
+        match_mode: terms
+        terms: all
+        limit: 20
+        order_by: "volume:desc"
+        select: "keyword,intents,parent_topic,volume,difficulty,traffic_potential,serp_features"
+
+  live_serp:
+    invoke:
+      tool: "mcp:firecrawl/firecrawl_search"
+      args:
+        query: "${{ inputs.topic }} AI workflow validation Nika"
+        limit: 8
+        highlights: true
+        sources:
+          - { type: web }
+
+  cited_research:
+    invoke:
+      tool: "mcp:perplexity/deep_research"
+      args:
+        query: |
+          Research this editorial question for nika.sh: ${{ inputs.topic }}.
+          Find current primary sources, competing explanations, unanswered
+          questions, and claims that need careful qualification. Return source
+          URLs beside the claims they support.
+        focus_areas:
+          - "AI workflow validation and cost controls"
+          - "search intent and common reader questions"
+          - "Nika features relevant to the topic"
+
+  brief:
+    with:
+      demand: ${{ tasks.search_demand.output }}
+      serp: ${{ tasks.live_serp.output }}
+      research: ${{ tasks.cited_research.output }}
+    infer:
+      max_tokens: 1800
+      prompt: |
+        Build an evidence-backed editorial brief for this topic:
+        ${{ inputs.topic }}
+
+        Ahrefs demand data:
+        ${{ with.demand }}
+
+        Live search results:
+        ${{ with.serp }}
+
+        Cited research:
+        ${{ with.research }}
+
+        Select one primary keyword because it matches product truth and reader
+        intent, not because it has the largest number. Separate facts from
+        hypotheses. Keep every source URL that the writer should verify.
+      schema:
+        type: object
+        additionalProperties: false
+        required: [primary_keyword, search_intent, reader_answer, angle, outline, secondary_keywords, facts, source_urls]
+        properties:
+          primary_keyword: { type: string }
+          search_intent: { type: string }
+          reader_answer: { type: string }
+          angle: { type: string }
+          outline: { type: array, items: { type: string } }
+          secondary_keywords: { type: array, items: { type: string } }
+          facts: { type: array, items: { type: string } }
+          source_urls: { type: array, items: { type: string } }
+
+  draft:
+    with:
+      brief: ${{ tasks.brief.output }}
+      research: ${{ tasks.cited_research.output }}
+      serp: ${{ tasks.live_serp.output }}
+    infer:
+      max_tokens: 4200
+      prompt: |
+        Write the publication draft for nika.sh.
+
+        Topic: ${{ inputs.topic }}
+        Editorial rules:
+        ${{ const.editorial_rules }}
+
+        Approved brief:
+        ${{ with.brief }}
+
+        Research record:
+        ${{ with.research }}
+
+        Live result context:
+        ${{ with.serp }}
+
+        Return the title, one plain meta description, and the Markdown body.
+        Keep Markdown links only when their source URL appears in the research
+        record. The body must stand alone and must not include frontmatter.
+      schema:
+        type: object
+        additionalProperties: false
+        required: [title, description, body]
+        properties:
+          title: { type: string }
+          description: { type: string }
+          body: { type: string }
+
+  audit:
+    with:
+      draft: ${{ tasks.draft.output }}
+      brief: ${{ tasks.brief.output }}
+      research: ${{ tasks.cited_research.output }}
+    infer:
+      max_tokens: 1400
+      prompt: |
+        Audit this article as a strict editor. Count factual errors,
+        unsupported claims, broken links, hype phrases, and body words. Score
+        intent coverage, clarity, and GEO answerability from 0 to 100. A GEO
+        answerability score measures whether an answer engine can extract a
+        direct, sourced answer without guessing. Do not rewrite the article.
+
+        Brief:
+        ${{ with.brief }}
+
+        Research:
+        ${{ with.research }}
+
+        Draft:
+        ${{ with.draft }}
+      schema:
+        type: object
+        additionalProperties: false
+        required: [factual_errors, unsupported_claims, broken_links, hype_phrases, word_count, intent_coverage_score, clarity_score, geo_answerability_score]
+        properties:
+          factual_errors: { type: integer, minimum: 0 }
+          unsupported_claims: { type: integer, minimum: 0 }
+          broken_links: { type: integer, minimum: 0 }
+          hype_phrases: { type: integer, minimum: 0 }
+          word_count: { type: integer, minimum: 0 }
+          intent_coverage_score: { type: integer, minimum: 0, maximum: 100 }
+          clarity_score: { type: integer, minimum: 0, maximum: 100 }
+          geo_answerability_score: { type: integer, minimum: 0, maximum: 100 }
+
+  quality_law:
+    with:
+      audit: ${{ tasks.audit.output }}
+    invoke:
+      tool: "nika:jq"
+      args:
+        expression: ".factual_errors == 0 and .unsupported_claims == 0 and .broken_links == 0 and .hype_phrases <= 2 and .word_count >= 900 and .word_count <= 2200 and .intent_coverage_score >= 85 and .clarity_score >= 85 and .geo_answerability_score >= 85"
+        input: ${{ with.audit }}
+
+  fixture_law:
+    invoke:
+      tool: "nika:jq"
+      args:
+        expression: ".factual_errors == 0 and .unsupported_claims == 0 and .broken_links == 0 and .hype_phrases <= 2 and .word_count >= 900 and .word_count <= 2200 and .intent_coverage_score >= 85 and .clarity_score >= 85 and .geo_answerability_score >= 85"
+        input: ${{ const.bad_fixture }}
+
+  compiled:
+    with:
+      bad_fixture_passed: ${{ tasks.fixture_law.output }}
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: ${{ with.bad_fixture_passed == false }}
+        message: "the publication law must reject an audit with one unsupported claim"
+
+  render:
+    with:
+      draft: ${{ tasks.draft.output }}
+    after:
+      compiled: success
+    invoke:
+      tool: "nika:jq"
+      args:
+        expression: |
+          "---\nslug: " + .slug + "\ntitle: " + (.title | tojson) + "\ntag: Engine\ndate: " + .date + "\ndescription: " + (.description | tojson) + "\n---\n\n" + .body + "\n"
+        input:
+          slug: ${{ inputs.slug }}
+          date: ${{ inputs.date }}
+          title: ${{ with.draft.title }}
+          description: ${{ with.draft.description }}
+          body: ${{ with.draft.body }}
+
+  candidate:
+    with:
+      article: ${{ tasks.render.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "${{ const.candidate_path }}"
+        content: "${{ with.article }}"
+        create_dirs: true
+        overwrite: true
+
+  approve:
+    with:
+      passed: ${{ tasks.quality_law.output }}
+    after:
+      candidate: success
+    when: ${{ inputs.publish == true && with.passed == true }}
+    invoke:
+      tool: "nika:prompt"
+      args:
+        mode: confirm
+        message: "The candidate passed the quality law. Publish it into content/blog?"
+
+  publish:
+    with:
+      approved: ${{ tasks.approve.output }}
+      article: ${{ tasks.render.output }}
+    when: ${{ with.approved == true }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "content/blog/${{ inputs.date }}-${{ inputs.slug }}.md"
+        content: "${{ with.article }}"
+        create_dirs: false
+        overwrite: false
+    lift:
+      - law: taint
+        from: inputs.date
+        because: "the operator-supplied publication date names one file inside the closed content/blog directory"
+      - law: taint
+        from: inputs.slug
+        because: "the operator-supplied URL slug names one file inside the closed content/blog directory"
+
+outputs:
+  candidate:
+    value: ${{ const.candidate_path }}
+    description: "The reviewable Markdown candidate written on every run"
+  audit:
+    value: ${{ tasks.audit.output }}
+    description: "The typed editorial audit used by the deterministic quality law"
+  paid_ready:
+    value: ${{ tasks.quality_law.output }}
+    description: "Whether this candidate met the publication thresholds"

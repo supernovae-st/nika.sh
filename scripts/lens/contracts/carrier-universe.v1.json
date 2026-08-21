@@ -43,10 +43,10 @@
     "site.config.ts",
     "src/routes.tsx"
   ],
-  "carrier_count": 1081,
-  "set_sha256": "c19d82c9f196cc1ce1dbe535d91718aa132e64ca111c2f1d339f2dc5926a4615",
-  "normative_source_count": 303,
-  "normative_source_sha256": "e8d6fd00aac3aa90d8521263f99337a91fb35cdc41e4354f6cf306311df8509c",
+  "carrier_count": 1084,
+  "set_sha256": "fbacbe9182a3f0d0a70550860f85bc0111fa0307f04bbef8f2bb80ac0f9a0721",
+  "normative_source_count": 304,
+  "normative_source_sha256": "f1c114cc940ee856de2f399814921f891a56924a0b2158b88ac3ad91c0d52792",
   "normative_sources": [
     "content/blog/2025-10-17-the-note-that-started-it.md",
     "content/blog/2026-03-21-naming-the-drum.md",
@@ -81,6 +81,7 @@
     "content/blog/2026-07-11-the-pipeline-is-a-file.md",
     "content/blog/2026-07-11-written-by-agents.md",
     "content/blog/2026-07-14-the-registry-reproves-everything.md",
+    "content/blog/2026-08-21-clean-is-not-ready-to-spend.md",
     "public/.well-known/security.txt",
     "public/404.html",
     "public/humans.txt",
@@ -367,6 +368,7 @@
     "public/bench/2026-08-03-model-bench/witness.json",
     "public/blog/anatomy-of-a-verb.md",
     "public/blog/blast-radius-in-the-file.md",
+    "public/blog/clean-is-not-ready-to-spend.md",
     "public/blog/dag-for-free.md",
     "public/blog/four-verbs.md",
     "public/blog/injection-goes-nowhere.md",
@@ -1132,6 +1134,7 @@
     "src/styles/node.generated.css",
     "src/styles/plate.css",
     "src/styles/print.css",
+    "src/styles/refactor-2026.css",
     "src/styles/tokens.css"
   ],
   "carriers": [
@@ -1168,6 +1171,7 @@
     "content/blog/2026-07-11-the-pipeline-is-a-file.md",
     "content/blog/2026-07-11-written-by-agents.md",
     "content/blog/2026-07-14-the-registry-reproves-everything.md",
+    "content/blog/2026-08-21-clean-is-not-ready-to-spend.md",
     "public/.well-known/nika-spec-pin.json",
     "public/.well-known/security.txt",
     "public/404.html",
@@ -1178,6 +1182,7 @@
     "public/bench/2026-08-03-model-bench/witness.json",
     "public/blog/anatomy-of-a-verb.md",
     "public/blog/blast-radius-in-the-file.md",
+    "public/blog/clean-is-not-ready-to-spend.md",
     "public/blog/dag-for-free.md",
     "public/blog/four-verbs.md",
     "public/blog/injection-goes-nowhere.md",
@@ -2214,6 +2219,7 @@
     "src/styles/node.generated.css",
     "src/styles/plate.css",
     "src/styles/print.css",
+    "src/styles/refactor-2026.css",
     "src/styles/tokens.css",
     "src/vite-env.d.ts"
   ]

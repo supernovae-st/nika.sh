@@ -176,6 +176,10 @@ function jsonldTermsets(): Plugin {
 export default defineConfig({
   plugins: [react(), tailwindcss(), reactSsg(), previewCleanUrls(), sitemap(), jsonldTermsets()],
   build: {
+    /* Route and data chunks are intentionally lazy; the initial-JS ceiling is
+       enforced by scripts/size-budget.mjs. Keep Vite's generic raw-byte
+       warning above the largest lazy corpus so a green build is signal-only. */
+    chunkSizeWarningLimit: 1300,
     // Vite 8 / Rolldown declarative chunking (NOT the deprecated manualChunks fn).
     // Pull the React runtime (react / react-dom / react-router / scheduler) into
     // one stable `react-vendor` chunk so a copy change doesn't bust its hash —

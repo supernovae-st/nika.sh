@@ -4,6 +4,10 @@ import { createHead, UnheadProvider } from '@unhead/react/client'
 import { createBrowserRouter, RouterProvider, type HydrationState } from 'react-router'
 import './index.css'
 import { routes } from './routes'
+/* The 2026 register intentionally lands after every route-owned stylesheet.
+   Print remains the final authority for paper. */
+import './styles/refactor-2026.css'
+import './styles/print.css'
 
 /* ─── client entry · hydrate the prerendered HTML (or mount fresh in dev) ─────
    Each route ships as static HTML built by vite-plugin-react-ssg (build-time

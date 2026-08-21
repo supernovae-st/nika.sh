@@ -26,10 +26,10 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 303,
-    "set_sha256": "e8d6fd00aac3aa90d8521263f99337a91fb35cdc41e4354f6cf306311df8509c",
-    "rendered_count": 1081,
-    "rendered_set_sha256": "c19d82c9f196cc1ce1dbe535d91718aa132e64ca111c2f1d339f2dc5926a4615"
+    "count": 304,
+    "set_sha256": "f1c114cc940ee856de2f399814921f891a56924a0b2158b88ac3ad91c0d52792",
+    "rendered_count": 1084,
+    "rendered_set_sha256": "fbacbe9182a3f0d0a70550860f85bc0111fa0307f04bbef8f2bb80ac0f9a0721"
   },
   "claim_count": 134,
   "bindings": [
@@ -324,7 +324,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:3",
       "path": "scripts/build-og-card.mjs",
-      "line": 569,
+      "line": 579,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -336,7 +336,7 @@
     {
       "selector": "scripts/build-og-card.mjs#count:4",
       "path": "scripts/build-og-card.mjs",
-      "line": 618,
+      "line": 628,
       "text": "17 providers",
       "source": "17",
       "field": "providers",
@@ -857,7 +857,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:1",
       "path": "src/pages/Blog.tsx",
-      "line": 92,
+      "line": 93,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -869,7 +869,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:2",
       "path": "src/pages/Blog.tsx",
-      "line": 102,
+      "line": 103,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -881,7 +881,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:3",
       "path": "src/pages/Blog.tsx",
-      "line": 154,
+      "line": 155,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1050,7 +1050,7 @@
     {
       "selector": "src/pages/Play.tsx#count:1",
       "path": "src/pages/Play.tsx",
-      "line": 704,
+      "line": 717,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",

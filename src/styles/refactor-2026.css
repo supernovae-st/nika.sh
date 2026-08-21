@@ -1,0 +1,750 @@
+/* ─── 2026 refactor · one black field, one product, one signal ───────────────
+   The previous system spent blue, grain, glass and framing on every surface.
+   This pass keeps the site's type and run semantics, then removes the ambient
+   competition: near-black pages, quiet rules, square product wells, blue only
+   for live or actionable state. The selectors live last in the cascade on
+   purpose while the long-tail routes migrate onto the same register. */
+
+:root {
+  --v6-field-deep: #050505;
+  --v6-field: #080808;
+  --v6-panel: #111111;
+  --v6-ink: #f5f5f3;
+  --v6-ink-dim: #a3a3a3;
+  --v6-ink-faint: #8b8b8b;
+  --v6-hud: #7f7f7f;
+  --v6-blue: #6f97ff;
+  --v6-blue-core: #4f7cff;
+  --v6-blue-high: #a8beff;
+  --v6-paper: #f4f4f1;
+  --v4-bg-deep: var(--v6-field-deep);
+  --v4-bg: var(--v6-field);
+  --v4-bg-raised: var(--v6-panel);
+  --v4-line: rgb(255 255 255 / 0.085);
+  --v4-line-strong: rgb(255 255 255 / 0.16);
+  --v4-text: var(--v6-ink);
+  --v4-text-dim: var(--v6-ink-dim);
+  --v4-text-faint: var(--v6-ink-faint);
+  --v4-hud-faint: var(--v6-hud);
+  --paper-dim: var(--v6-ink-dim);
+  --paper-faint: var(--v6-ink-faint);
+  --v4-accent: var(--v6-blue);
+  --v4-accent-strong: var(--v6-blue-core);
+  --v4-accent-bright: var(--v6-blue-high);
+  --v4-accent-soft: rgb(79 124 255 / 0.1);
+  --v4-accent-cta: var(--v6-paper);
+  --v4-radius: 8px;
+  --v4-radius-sm: 4px;
+  --seam-highlight: inset 0 1px 0 rgb(255 255 255 / 0.045);
+  --seam-hairline-soft: rgb(255 255 255 / 0.06);
+  --seam-hairline: rgb(255 255 255 / 0.085);
+  --seam-hairline-strong: rgb(255 255 255 / 0.15);
+  --elev-tight: 0 1px 2px rgb(0 0 0 / 0.45);
+  --elev-ambient: 0 24px 64px -36px rgb(0 0 0 / 0.9);
+  --seam-panel: var(--seam-highlight);
+  --elev-frame: var(--seam-highlight), var(--elev-tight), var(--elev-ambient);
+  --type-display: clamp(3.5rem, 2.2rem + 4.4vw, 6.7rem);
+  --type-h2: clamp(2.2rem, 1.4rem + 2.5vw, 4rem);
+  --rhythm-sec: clamp(108px, 12vh, 148px);
+  --rhythm-sec-m: 76px;
+  --frame-w: 4px;
+  --frame-r: 0px;
+}
+
+html,
+body {
+  background: var(--v4-bg);
+}
+
+/* One dark register. Light and solid-blue chapters retain their semantic
+   classes, but no longer interrupt the reading field with a different page. */
+.theme-dark,
+.theme-light,
+.theme-blue,
+[data-theme='dark'],
+[data-theme='light'],
+[data-theme='blue'] {
+  --v4-bg-deep: var(--v6-field-deep);
+  --v4-bg: var(--v6-field);
+  --v4-bg-raised: var(--v6-panel);
+  --v4-line: rgb(255 255 255 / 0.085);
+  --v4-line-strong: rgb(255 255 255 / 0.16);
+  --v4-text: var(--v6-ink);
+  --v4-text-dim: var(--v6-ink-dim);
+  --v4-text-faint: var(--v6-ink-faint);
+  --v4-hud-faint: var(--v6-hud);
+  --paper-dim: var(--v6-ink-dim);
+  --paper-faint: var(--v6-ink-faint);
+  --v4-accent: var(--v6-blue);
+  --v4-accent-strong: var(--v6-blue-core);
+  --v4-accent-bright: var(--v6-blue-high);
+  --v4-accent-soft: rgb(79 124 255 / 0.1);
+  --v4-accent-cta: var(--v6-paper);
+  --v4-focus-ring: #8aa8ff;
+  --v4-seam-nod: transparent;
+  --seam-highlight: inset 0 1px 0 rgb(255 255 255 / 0.045);
+  --seam-hairline-soft: rgb(255 255 255 / 0.06);
+  --seam-hairline: rgb(255 255 255 / 0.085);
+  --seam-hairline-strong: rgb(255 255 255 / 0.15);
+  --elev-tight: 0 1px 2px rgb(0 0 0 / 0.45);
+  --elev-ambient: 0 24px 64px -36px rgb(0 0 0 / 0.9);
+  --seam-panel: var(--seam-highlight);
+  --elev-frame: var(--seam-highlight), var(--elev-tight), var(--elev-ambient);
+  background-color: var(--v4-bg);
+  color: var(--v4-text);
+}
+
+.v4sec.theme-dark,
+.v4sec.theme-light,
+.v4sec.theme-blue {
+  background-image: none;
+}
+
+.v4sec::before {
+  background: var(--v4-line);
+}
+
+.v4sec.v4-flip::after,
+.v4hud {
+  display: none;
+}
+
+.v4wedge-chat {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.v4wedge-chat-kicker,
+.v4wedge-chat-who--agent,
+.v4wedge-chat-gone {
+  color: var(--v4-text-dim);
+}
+
+.v4sec-wrap {
+  max-width: 80rem;
+}
+
+.v4sec-fig,
+.v4fig,
+.v4beyebrow {
+  color: var(--v4-text-faint);
+}
+
+.v4sec-title {
+  max-width: 16ch;
+}
+
+.v4punch {
+  color: var(--v4-text-dim);
+  font-weight: var(--fw-medium);
+}
+
+/* ── thin site bar, aligned to the references' full-width top rule ───────── */
+.v4nav {
+  inset: 0 0 auto;
+  padding: 0;
+  --nav-tint-hairline: var(--v4-line);
+  --nav-tint-catch: none;
+}
+
+.v4nav::before {
+  display: none;
+}
+
+.v4nav-capsule,
+.v4nav[data-solid='true'] .v4nav-capsule,
+.v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+  max-width: none;
+  border: 0;
+  border-bottom: 1px solid var(--v4-line);
+  border-radius: 0;
+  background: rgb(8 8 8 / 0.92);
+  box-shadow: none;
+}
+
+.v4nav-capsule::after {
+  border-radius: 0;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  opacity: 1;
+}
+
+.v4nav-row {
+  max-width: 90rem;
+  height: 64px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 4vw, 56px);
+}
+
+.v4nav[data-scrolled='true'] .v4nav-row {
+  height: 58px;
+}
+
+.v4nav-vpill {
+  border: 0;
+  background: transparent;
+}
+
+.v4nav-link,
+.v4nav-ghost,
+.ck-trigger {
+  font-size: var(--type-mini);
+  color: var(--v4-text-faint);
+}
+
+.v4nav-link[aria-current='page'] {
+  background: transparent;
+}
+
+.v4nav-cta {
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: #f4f4f1;
+  color: #090909;
+  box-shadow: none;
+}
+
+/* The menu is navigation, not a scene. Keeping it geometrically settled also
+   makes its links available on the first frame on slow and reduced-motion
+   devices. */
+.v4sheet {
+  animation: none;
+}
+
+/* ── hero · centred claim, product board below ───────────────────────────── */
+.v5-header-field {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(70% 44% at 74% 12%, rgb(79 124 255 / 0.1), transparent 66%),
+    linear-gradient(180deg, var(--v4-bg) 0%, var(--v4-bg) 76%, var(--v4-bg-deep) 100%);
+}
+
+.v5-header-field::before {
+  background-image:
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(255 255 255 / 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent 78%);
+  mask-image: linear-gradient(180deg, #000, transparent 78%);
+}
+
+.v5-header-field::after {
+  display: none;
+}
+
+.depth-fixed {
+  mix-blend-mode: normal;
+}
+
+.depth-fixed canvas {
+  opacity: 0.2;
+  filter: saturate(0.42) brightness(0.58);
+}
+
+#hero {
+  min-height: auto;
+  padding-top: 64px;
+  background: transparent;
+}
+
+#hero .v4hero-readscrim {
+  background: linear-gradient(180deg, transparent 64%, #080808 100%);
+}
+
+@media (min-width: 1024px) {
+  .v4hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.v4hero-grid {
+  display: grid;
+  gap: clamp(52px, 8vh, 84px);
+  max-width: 90rem;
+  padding: clamp(92px, 13vh, 136px) clamp(20px, 4vw, 56px) 72px;
+}
+
+.v4hero-copy {
+  align-items: center;
+  max-width: 58rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+#hero .v4beyebrow {
+  margin-bottom: 20px;
+  color: #8a8a8a;
+  letter-spacing: 0.14em;
+}
+
+.v4hero-h1 {
+  max-width: 12ch;
+  background: none;
+  color: var(--v4-text);
+  font-size: var(--type-display);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.v4hero-sub,
+#hero .v4hero-sub {
+  max-width: 44rem;
+  margin-top: 24px;
+  color: #9b9b9b;
+  font-size: var(--type-body);
+  line-height: 1.6;
+}
+
+.v4hero-sub b {
+  color: #d8d8d6;
+  font-weight: var(--fw-regular);
+}
+
+.v4hero-ctas {
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.v4cta {
+  min-height: 42px;
+  padding-inline: 18px;
+  border-radius: 999px;
+  background: #f4f4f1;
+  color: #090909;
+  box-shadow: none;
+  font-size: var(--type-ui);
+}
+
+.v4cta:hover {
+  background: #fff;
+}
+
+.v6hero-secondary {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  padding-inline: 18px;
+  border: 1px solid var(--v4-line-strong);
+  border-radius: 999px;
+  color: var(--v4-text);
+  font-size: var(--type-ui);
+  transition:
+    border-color var(--dur-ui) var(--ease-ui),
+    background-color var(--dur-ui) var(--ease-ui);
+}
+
+.v6hero-secondary:hover,
+.v6hero-secondary:focus-visible {
+  border-color: rgb(255 255 255 / 0.28);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.v4cmd {
+  min-height: 42px;
+  border-color: var(--v4-line-strong);
+  border-radius: 999px;
+  background: #0b0b0b;
+  background-image: none;
+  box-shadow: none;
+}
+
+.v4hero-hatches {
+  width: 100%;
+  justify-content: center;
+}
+
+.v4hero-play {
+  min-height: 32px;
+  font-size: var(--type-mini);
+}
+
+.v4vplate {
+  margin-top: 16px;
+  font-size: var(--type-micro);
+  color: #626262;
+}
+
+@media (min-width: 1024px) {
+  .v4hero-editor {
+    max-width: 76rem;
+    margin-inline: auto;
+  }
+}
+
+.v4hero-editor {
+  width: 100%;
+  min-width: 0;
+}
+
+.v4hero-well {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  overflow: hidden;
+  border: 1px solid var(--v4-line);
+  border-radius: 12px;
+  background: #0b0b0b;
+  box-shadow: 0 32px 100px -64px rgb(79 124 255 / 0.8);
+}
+
+.v4hero-code {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  border: 0;
+  border-right: 1px solid var(--v4-line);
+  border-radius: 0;
+  background-color: #090909;
+  background-image: none;
+  box-shadow: none;
+}
+
+.v4hero-code .cf-body {
+  min-height: 390px;
+}
+
+.v4hero-code .cf-pre {
+  max-height: 390px;
+}
+
+.v6hero-plan {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 75% 22%, rgb(79 124 255 / 0.08), transparent 42%),
+    #0d0d0d;
+}
+
+.v6hero-plan-kick {
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+
+.v6hero-plan .v4hero-dag {
+  position: static;
+  transform: none;
+  width: 100%;
+  padding: 12px 0 18px;
+  border: 0;
+  border-bottom: 1px solid var(--v4-line);
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  opacity: 1;
+}
+
+.v6hero-plan .v4hero-dag .mdag-row {
+  min-height: 196px;
+  justify-content: center;
+}
+
+.v6hero-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 18px;
+}
+
+.v6hero-facts div {
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.v6hero-facts dt {
+  font-size: var(--type-h3);
+  color: var(--v4-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.v6hero-facts dd {
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+
+.v4verdict {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+  padding: 11px 16px;
+  border-top: 1px solid var(--v4-line);
+  background: #0a0a0a;
+  font-size: var(--type-micro);
+}
+
+/* ── product panels and DAGs · thin, black, legible ──────────────────────── */
+.v4-frame-canvas {
+  border-color: var(--v4-line);
+  border-radius: 10px;
+  background: #0a0a0a;
+}
+
+.cf-panel::after,
+.v4-frame-canvas::after {
+  opacity: 0.015;
+}
+
+.dv-track {
+  min-height: 200px;
+}
+
+.dv-wire {
+  stroke: rgb(255 255 255 / 0.18);
+  stroke-width: 1;
+}
+
+.dv-wire-flow {
+  stroke: rgb(111 151 255 / 0.58);
+  stroke-width: 1;
+  stroke-dasharray: 2 18;
+}
+
+.dv-arrow-head {
+  stroke: rgb(255 255 255 / 0.48);
+}
+
+.dv .nc,
+.pm-node {
+  border-color: rgb(255 255 255 / 0.12);
+  border-radius: 6px;
+  background-color: #111;
+  background-image: none;
+  box-shadow: inset 2px 0 0 var(--dv-vhue, var(--node-vhue, var(--v4-accent)));
+}
+
+.pm-arrow {
+  color: rgb(255 255 255 / 0.38);
+}
+
+/* ── journal · editorial grid, no blueprint watermark ───────────────────── */
+.blog-title {
+  max-width: 14ch;
+}
+
+.blog-status {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 34px 0 10px;
+  border-block: 1px solid var(--v4-line);
+}
+
+.blog-status-item {
+  padding: 18px 18px 18px 0;
+}
+
+.blog-status-item + .blog-status-item {
+  padding-left: 18px;
+  border-left: 1px solid var(--v4-line);
+}
+
+.blog-status-k {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+
+.blog-status-v {
+  display: block;
+  margin-top: 7px;
+  font-size: var(--type-ui);
+  color: var(--v4-text);
+}
+
+.blog-lead,
+.blog-card,
+.blog-soon-tile {
+  border-color: var(--v4-line);
+  border-radius: 8px;
+  background: #0d0d0d;
+  box-shadow: none;
+}
+
+.blog-lead:hover,
+.blog-lead:focus-visible,
+.blog-card:hover,
+.blog-card:focus-visible,
+.blog-soon-tile:hover {
+  border-color: var(--v4-line-strong);
+  background: #111;
+}
+
+.blog-lead-no {
+  color: rgb(255 255 255 / 0.035);
+}
+
+@media (min-width: 1100px) {
+  .blog-shelf {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ── footer · keep the map and SUPERNOVAE, retire the animated forest ────── */
+.sitefoot-field {
+  background: #070707;
+}
+
+.sitefoot-grove {
+  display: flex;
+  height: auto;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  padding: 20px 0 30px;
+  border-bottom: 1px solid var(--v4-line);
+}
+
+.sitefoot-signature {
+  width: 180px;
+  flex: none;
+}
+
+.sitefoot-signature .fsig {
+  --fsig-size: 96px;
+  align-items: flex-start;
+  margin: 0;
+}
+
+.sitefoot-signature .fsig-fallback {
+  width: 60px;
+  height: 60px;
+}
+
+.sitefoot-signature .fsig-caption {
+  display: none;
+}
+
+.grove-root-plate {
+  position: static;
+  transform: none;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.grove-caption {
+  font-size: var(--type-micro);
+  letter-spacing: 0.1em;
+}
+
+.sitefoot-cols--six {
+  display: grid !important;
+}
+
+.sitefoot-cols--six .sitefoot-col {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+.sitefoot-col:hover {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.sitefoot-wrap {
+  padding-top: 48px;
+}
+
+.supernovae-type {
+  filter: saturate(0.35);
+}
+
+/* The frame remains the run drum, but at rest it is a one-pixel viewport
+   boundary rather than a device mockup. */
+.frame {
+  border-radius: 0;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.07),
+    0 0 0 9999px #050505;
+}
+
+.frame-lining {
+  border-radius: 0;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --frame-w: 2px;
+    --frame-r: 0px;
+    --type-display: clamp(3rem, 15vw, 4.6rem);
+  }
+
+  .v4hero-grid {
+    display: flex;
+    gap: 40px;
+    padding-block: 76px 56px;
+  }
+
+  .v4hero-copy {
+    display: flex;
+  }
+
+  .v4hero-grid .v4beyebrow,
+  .v4hero-h1,
+  .v4hero-sub,
+  .v4hero-ctas,
+  .v4hero-grid .v4vplate,
+  .v4hero-editor {
+    order: initial;
+  }
+
+  .v4hero-h1 {
+    max-width: 9ch;
+  }
+
+  .v4hero-editor {
+    margin-top: 0;
+  }
+
+  .v4hero-well {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  .v4hero-code {
+    grid-column: 1;
+    grid-row: 1;
+    border-right: 0;
+  }
+
+  .v6hero-plan {
+    grid-column: 1;
+    grid-row: 2;
+    border-top: 1px solid var(--v4-line);
+  }
+
+  .v4verdict {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .v4hero-code .cf-body {
+    min-height: 0;
+  }
+
+  .blog-status {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-status-item + .blog-status-item {
+    padding-left: 0;
+    border-top: 1px solid var(--v4-line);
+    border-left: 0;
+  }
+}

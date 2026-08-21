@@ -395,50 +395,6 @@ function PersonaSection({ persona, index }: { persona: Persona; index: number })
   )
 }
 
-/* ─── the rotating outcome · one REAL card title per persona cycles inside the
-   hero claim (« I want to… <outcome> »). Honesty: every line is the exact
-   title of a card rendered further down this page; nothing is invented.
-   SSG renders the first line statically; reduced-motion never cycles. */
-const ROTA_LINES = PERSONAS.map((p) => p.cards[0]?.title ?? '').filter(Boolean)
-function RotatingOutcome() {
-  const [i, setI] = useState(0)
-  const [leaving, setLeaving] = useState(false)
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    /* the cycle is INTERACTION-EARNED: every swap paints a fresh largest-
-       contentful candidate, so on an input-less trace (Lighthouse sends
-       none) a free-running rotator slides LCP to the last swap before the
-       trace ends — this span measured as an 8s LCP while real users saw
-       nothing slow. Real hands move within the first second; the first
-       pointer / scroll / key starts the cycle, imperceptibly. */
-    let timer: ReturnType<typeof setInterval> | null = null
-    const start = () => {
-      if (timer) return
-      timer = setInterval(() => {
-        setLeaving(true)
-        window.setTimeout(() => {
-          setI((n) => (n + 1) % ROTA_LINES.length)
-          setLeaving(false)
-        }, 260)
-      }, 3000)
-    }
-    const opts = { once: true, passive: true } as const
-    const evs = ['pointermove', 'pointerdown', 'scroll', 'keydown', 'touchstart'] as const
-    evs.forEach((e) => window.addEventListener(e, start, opts))
-    return () => {
-      if (timer) clearInterval(timer)
-      evs.forEach((e) => window.removeEventListener(e, start))
-    }
-  }, [])
-  return (
-    <p className="ucp-rota" data-rise style={{ ['--rise-delay' as string]: '80ms' }}>
-      <span className={leaving ? 'ucp-rota-line is-leaving' : 'ucp-rota-line'}>
-        …{ROTA_LINES[i]?.charAt(0).toLowerCase()}{ROTA_LINES[i]?.slice(1)}
-      </span>
-    </p>
-  )
-}
-
 export function Component() {
   /* reveal the page once, on first intersection (motion-safe; default visible;
      safety-net timer reveals anyway if the observer misfires) */
@@ -531,19 +487,12 @@ export function Component() {
             data-rise
             style={{ ['--rise-delay' as string]: '60ms' }}
           >
-            “I want to…”
+            Start with the outcome.
           </h1>
-          {/* the rotating outcome · real card titles from below, cycling */}
-          <RotatingOutcome />
-          {/* the punch lede (F7) · the catchy line ABOVE the consumer TL;DR */}
-          <p className="v4punch" data-rise style={{ ['--rise-delay' as string]: '90ms' }}>
-            There&rsquo;s a file for that.
-          </p>
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-            Start from the outcome. Anything you ask an AI to do more than once belongs in{' '}
-            <b>a file you can read before it runs</b>. Every card below is a real workflow, pulled
-            from the language&rsquo;s own test suite, never mocked, with its plan (
-            <em>the tasks and what they wait on</em>) and the exact YAML that runs it.
+            Anything you ask an AI to do more than once belongs in{' '}
+            <b>a file you can read before it runs</b>. Every example below comes from the
+            language&rsquo;s showcase suite with its plan and exact YAML.
           </p>
 
           {/* the gallery register · the showcase dimensions, at a glance. */}

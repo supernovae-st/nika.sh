@@ -49,6 +49,16 @@ export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: 
    (initial-bundle diet: the token mass never rides a non-post page) */
 export const BLOG_POSTS: BlogPost[] = [
   {
+    "slug": "clean-is-not-ready-to-spend",
+    "file": "2026-08-21-clean-is-not-ready-to-spend.md",
+    "title": "Clean is not ready to spend",
+    "tag": "Engine|Security",
+    "date": "2026-08-21",
+    "description": "A valid AI workflow can still waste money. Nika now separates legal files from workflows that are ready for a paid run.",
+    "author": "Thibaut Melen",
+    "readingMin": 6
+  },
+  {
     "slug": "the-registry-reproves-everything",
     "file": "2026-07-14-the-registry-reproves-everything.md",
     "title": "The registry re-proves everything",

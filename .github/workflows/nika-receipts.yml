@@ -33,6 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         flow:
+          - scripts/editorial/daily-blog.nika.yaml
           - scripts/graph/enrich.nika.yaml
           - public/library/price-watch.nika.yaml
           - public/library/daily-brief.nika.yaml

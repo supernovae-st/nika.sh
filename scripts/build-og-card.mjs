@@ -7,7 +7,7 @@
 // and the nika butterfly mark. Each route carries THAT page's message.
 //
 // Cards (one card spec → one PNG · all in CARDS below):
-//   public/og.png            home      "See what your AI will do."          (control)
+//   public/og.png            home      "Intent as Code."                    (control)
 //   public/og-spec.png       /spec     "The contract an agent must satisfy…" (reference)
 //   public/og-use-cases.png  /use-cases "Real plans you'd review."           (gallery)
 //   public/og-manifesto.png  /manifesto "The drum of liberation."           (sovereignty)
@@ -77,10 +77,10 @@ const CARDS = [
     // HOME — the checked-language pitch (the compiler wedge · 2026-07-28).
     out: 'og.png',
     fig: 'FIG 0.0',
-    headline: 'Your agent writes the workflow.<br><span class="b">Nika reads it back.</span>',
-    sub: 'The checked workflow language for AI: every fix named before a token is spent.',
+    headline: 'Intent<br><span class="b">as Code.</span>',
+    sub: 'Write AI work as a plan. Check its permissions and cost before it runs. Keep the receipt.',
     detail:
-      '<span class="arrow">▸</span><span><b>permits:</b> everything it can touch, and nothing&nbsp;else.</span>',
+      '<span class="arrow">▸</span><span><b>write</b><span class="sep">·</span>check<span class="sep">·</span>run<span class="sep">·</span>verify</span>',
   },
   {
     // /spec — the language reference. The contract a plan must satisfy.
@@ -292,6 +292,16 @@ const CARDS = [
     sub: 'Every <span style="white-space:nowrap">nika:</span> builtin the engine ships (files, data, network, media), versioned with the spec and reviewed like the rest of your&nbsp;file.',
     detail:
       '<span class="arrow">▸</span><span>invoke-gated<span class="sep">·</span>permit-bound<span class="sep">·</span><b>check&nbsp;teaches&nbsp;the&nbsp;args</b></span>',
+  },
+  {
+    // /blog/clean-is-not-ready-to-spend — the 0.111 paid-readiness split.
+    out: 'og-blog-clean-is-not-ready-to-spend.png',
+    fig: 'FIG B.34',
+    size: 60,
+    headline: 'Clean is not<br><span class="b">ready to spend.</span>',
+    sub: 'A valid AI workflow can still waste money. Nika now separates legal files from workflows ready for a paid run.',
+    detail:
+      '<span class="arrow">▸</span><span>clean<span class="sep">·</span>compiled<span class="sep">·</span><b>paid_ready</b></span>',
   },
   {
     // /blog/the-run-becomes-evidence — hash-chained journal; verify names the first broken link.
@@ -715,18 +725,14 @@ const cardHtml = (c) => `<!doctype html>
     overflow: hidden;
   }
 
-  /* ── the EdgeAurora — the v4 signature · the LONE colour ──────────────────
-     a blurred conic cyan→violet ring hugging the frame, masked transparent at
-     the centre so the card stays black & readable. */
+  /* One blue signal. The old full-frame cyan/violet halo competed with the
+     headline; this reads as light hitting black material from one corner. */
   .aurora {
     position: absolute;
-    inset: -22%;
-    background: conic-gradient(from 200deg,
-      ${V.invoke} 0%, ${V.agent} 25%, ${V.invoke} 50%, ${V.agent} 75%, ${V.invoke} 100%);
-    -webkit-mask: radial-gradient(ellipse 70% 76% at 50% 50%,
-      transparent 50%, #000 92%);
-    filter: blur(86px);
-    opacity: ${c.cosmic ? 0.34 : 0.26};
+    inset: -12%;
+    background: radial-gradient(circle at 82% 12%, ${A.accent}, transparent 44%);
+    filter: blur(96px);
+    opacity: ${c.cosmic ? 0.18 : 0.11};
   }
   /* a hard 1px inner frame line over the aurora — the instrument bezel */
   .bezel {
@@ -746,25 +752,20 @@ const cardHtml = (c) => `<!doctype html>
   .tick.bl { bottom: 40px; left: 40px; transform: scaleY(-1); }
   .tick.br { bottom: 40px; right: 40px; transform: scale(-1,-1); }
 
-  /* ── faint perspective depth grid receding into the floor (hero echo) ──── */
+  /* Quiet mathematical paper, flat like the product surfaces on the site. */
   .depth {
     position: absolute;
-    left: 0; right: 0; bottom: 0; height: 62%;
-    perspective: 540px;
-    perspective-origin: 50% 0%;
-    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 24%, transparent 88%);
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 88%);
     overflow: hidden;
   }
   .depth-plane {
     position: absolute;
-    inset: -60% -40% -40% -40%;
-    transform-origin: 50% 100%;
-    transform: rotateX(66deg);
+    inset: 0;
     background-image:
-      repeating-linear-gradient(to right, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 52px),
-      repeating-linear-gradient(to bottom, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 52px);
-    opacity: 0.05;
-    -webkit-mask-image: radial-gradient(120% 88% at 50% 100%, #000 0%, rgba(0,0,0,0.5) 42%, transparent 78%);
+      repeating-linear-gradient(to right, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(to bottom, ${P.ink} 0, ${P.ink} 1px, transparent 1px, transparent 80px);
+    opacity: 0.035;
   }
 
   /* ── content ───────────────────────────────────────────────────────────── */

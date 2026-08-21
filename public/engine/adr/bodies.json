@@ -1,7 +1,7 @@
 {
   "adr_bodies_format": 1,
-  "engine_commit": "1da35b6859a8f54cd09cfed7ca0e35d1f40fe590",
-  "release_tag": "v0.109.2",
+  "engine_commit": "25f502adb7ece46897d4881cb095136099062e83",
+  "release_tag": "v0.111.0",
   "law": "roomed = every status except `proposed` — a proposal published as an indexed page invites citation as though it were settled",
   "bodies": [
     {
@@ -29120,14 +29120,76 @@
           "anchor": "related"
         }
       ],
-      "words": 404,
-      "sha256": "9087ab2620ff8f78e05a237a286ad2e75a5cf5ccadec9d862d3d0f259bfc8657",
+      "words": 471,
+      "sha256": "5df25d9162ba307e303ac7fe31484b1a2d330f39b8f47c3d5158f7028ea8c503",
       "tokens": [
         {
           "k": "h",
           "depth": 1,
           "text": "ADR-082: Workflow envelope — single version marker `nika: v1`",
           "id": "adr-082-workflow-envelope--single-version-marker-nika-v1"
+        },
+        {
+          "k": "quote",
+          "inline": [
+            {
+              "k": "strong",
+              "text": "⚠️ SUPERSEDED 2026-08-13"
+            },
+            {
+              "k": "text",
+              "text": " · the version slot decided here is gone,\nlosslessly: the envelope is nine keys and the file's identity rides ON\n"
+            },
+            {
+              "k": "code",
+              "text": "nika:"
+            },
+            {
+              "k": "text",
+              "text": " ("
+            },
+            {
+              "k": "code",
+              "text": "nika: <kebab-id>"
+            },
+            {
+              "k": "text",
+              "text": " · never "
+            },
+            {
+              "k": "code",
+              "text": "v1"
+            },
+            {
+              "k": "text",
+              "text": " · "
+            },
+            {
+              "k": "code",
+              "text": "workflow:"
+            },
+            {
+              "k": "text",
+              "text": " is not an\nenvelope key any more) · see "
+            },
+            {
+              "k": "link",
+              "text": "ADR-113",
+              "href": "adr-113-envelope-identity-on-nika.md"
+            },
+            {
+              "k": "text",
+              "text": "\nand the nine-key envelope decision of 2026-08-11 (D-2026-08-11 · "
+            },
+            {
+              "k": "code",
+              "text": "nika-spec"
+            },
+            {
+              "k": "text",
+              "text": "\n01-envelope). The body below is history and is not rewritten."
+            }
+          ]
         },
         {
           "k": "h",
@@ -50102,7 +50164,7 @@
         }
       ],
       "words": 672,
-      "sha256": "009fa92674f9ae3838bf9568adbfe465015456869c39424f67ddf86e6c3b1445",
+      "sha256": "9ae0c94ec52c8740f8092c2b1c52143515a5d9b3970f1a952acd111f69acd9a5",
       "tokens": [
         {
           "k": "h",

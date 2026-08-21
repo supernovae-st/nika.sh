@@ -41,12 +41,6 @@ import '../sections/v4-home.css'
    (in-view only; the prerendered fallback below is the no-JS truth) */
 const FooterSignature = lazy(() => import('../fx/FooterSignature'))
 
-/* LES BOIS · the map as a neural tree (lazy — the zero-entry law). The
-   grove's leaves are REAL links rendered by the chunk; until it mounts
-   (or without JS) the plain columns below remain the index — the
-   `:has(.grove)` rule swaps them only when the tree actually stands. */
-const FooterGrove = lazy(() => import('../fx/FooterGrove'))
-
 /* the funnel wiring the projection must not drop (the delegated listener in
    RootLayout reads [data-track]): which routes are funnel doors is a SHELL
    concern, so the map lives here — the nav descriptor stays structure-only. */
@@ -182,15 +176,6 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
      no-JS and reduced-motion stay fully visible by the same laws as every
      other v4 section) */
   const ref = useRevealOnce<HTMLElement>()
-  /* the sky mounts post-hydration only (the FooterSignature law) and never
-     for a lite-data visitor — the reserved band of grain is the honest
-     fallback either way */
-  const skyReady = useHydrated() && !prefersLiteData()
-
-  /* the grove's geometry rides the lazy chunk (computeGrove) — the shell
-     only decides WHEN the tree may stand: post-hydration, wide pointer
-     surfaces, never lite-data */
-  const groveReady = skyReady
   return (
     /* lang="en" · see the note on the nav: the footer is English on every
        page, including the ones the document declares as French */
@@ -208,22 +193,12 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
           the first pixel — masking it there would cut the field the other way. */}
       <div aria-hidden className="sitefoot-field" />
       <div className="v4sec-wrap v4cta-wrap sitefoot-wrap">
-        {/* LES BOIS · the map as a neural tree: the ROOT (✦ SPEC, where the
-            noise becomes the file) at the bottom center, antler branches
-            rising around the living butterfly, every internal door a
-            LABELED leaf — the tree IS the index on wide screens. The
-            wrapper is the SSR truth (root · caption · the map door ·
-            doctrine · butterfly); the branches and leaves stand with the
-            chunk. Home passes signature=false and keeps its butterfly
-            above the CTA — its grove grows leaves around an empty crown. */}
+        {/* The animated tree retired in the black-register pass. The real
+            links stay in the index below; the particle mark remains the one
+            quiet atmospheric note on routed pages. */}
         <div className="sitefoot-grove" data-rise>
-          {groveReady ? (
-            <Suspense fallback={null}>
-              <FooterGrove />
-            </Suspense>
-          ) : null}
           {signature && (
-            <div className="grove-crown" aria-hidden>
+            <div className="sitefoot-signature" aria-hidden>
               <SignatureMark />
             </div>
           )}
@@ -239,7 +214,6 @@ export default function SiteFooter({ signature = true }: { signature?: boolean }
               </span>
             </Link>
           </div>
-          <span className="grove-doctrine">Every claim on this site derives from the spec</span>
         </div>
 
         {/* THE COLUMNS · one per WORLD, authored in the descriptor. They used

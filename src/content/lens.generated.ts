@@ -2764,6 +2764,15 @@ export const LENS_NODES: LensNode[] = [
     "exists": true
   },
   {
+    "id": "post:clean-is-not-ready-to-spend",
+    "kind": "surface",
+    "title": "Clean is not ready to spend",
+    "url": "/blog/clean-is-not-ready-to-spend",
+    "status": "both",
+    "opener": null,
+    "exists": true
+  },
+  {
     "id": "post:dag-for-free",
     "kind": "surface",
     "title": "The plan you get for free",
@@ -10096,6 +10105,21 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "mentions"
   },
   {
+    "from": "post:clean-is-not-ready-to-spend",
+    "to": "tool:compose",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:clean-is-not-ready-to-spend",
+    "to": "tool:done",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:clean-is-not-ready-to-spend",
+    "to": "tool:inspect",
+    "kind": "mentions"
+  },
+  {
     "from": "post:dag-for-free",
     "to": "word:after",
     "kind": "mentions"
@@ -11739,7 +11763,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:og-images",
     "to": "verb:invoke",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:pr-review-fanout",
     "to": "tool:grep",
@@ -11754,10 +11781,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:pr-review-fanout",
     "to": "tool:prompt",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:pr-review-fanout",
     "to": "tool:write",
