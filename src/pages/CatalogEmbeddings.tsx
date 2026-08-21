@@ -1,9 +1,10 @@
 /* ─── /catalog/embeddings · vector compatibility as compile-time fact ────────
    The embedding models the released binary names: dimensions, windows,
    similarity metric, price · the whole table on one honest page. */
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { CATALOG_COUNTS, MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
@@ -69,7 +70,7 @@ export function Component() {
           const span = hi - lo || 1
           const nudge = new Map<number, number>()
           return (
-            <Suspense fallback={<p className="ax-foot">Loading the dimension axis…</p>}>
+            <SsgSuspense fallback={<p className="ax-foot">Loading the dimension axis…</p>}>
               <TickAxis
               ticks={rows.map((e) => {
                 const base = ((e.dimensions - lo) / span) * 100
@@ -87,7 +88,7 @@ export function Component() {
               hi={`${hi}d`}
               foot={`${rows.length} models · ${lo}d → ${hi}d · a shared column is a shared store shape`}
               />
-            </Suspense>
+            </SsgSuspense>
           )
         })()}
       </CatalogSection>

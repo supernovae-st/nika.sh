@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { HubFoot } from './hub-shared'
 import { useHubHead, chapterHref } from './hub-lib'
 import { HUBS, GATE_GRID } from './hub-data.generated'
@@ -93,9 +94,9 @@ export function Component() {
             {/* the slot's own prophecy, filled: the first W2+ train shipped
                 (0.104) — the living terminal replays the REAL captures,
                 including `nika inspect` with its human|json dual */}
-            <Suspense fallback={<p className="pf-slot">Loading the recorded-run player…</p>}>
+            <SsgSuspense fallback={<p className="pf-slot">Loading the recorded-run player…</p>}>
               <LivingTerminal />
-            </Suspense>
+            </SsgSuspense>
             <p className="pf-refs">
               <a className="pf-ref" href="/how/flow#edges">
                 <span className="pf-ref-k">kinds</span>the six edge kinds · /flow#edges

@@ -36,3 +36,15 @@ export function SsgLazy({ id, poster, children }: {
   const fallback = <Poster id={id}>{poster}</Poster>
   return hydrated ? <Suspense fallback={fallback}>{children}</Suspense> : fallback
 }
+
+/* renderToString cannot settle a React.lazy boundary. Render its authored
+   fallback directly for SSG and the first client pass, then introduce the
+   real Suspense boundary only after hydration. This is the small-island form
+   of SsgLazy: no poster transport, one shared guard against React #419. */
+export function SsgSuspense({ fallback, children }: {
+  fallback: ReactNode
+  children: ReactNode
+}) {
+  const hydrated = useHydrated()
+  return hydrated ? <Suspense fallback={fallback}>{children}</Suspense> : fallback
+}

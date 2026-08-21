@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from 'react'
+import { lazy, useMemo } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -9,6 +9,7 @@ import { CHANGELOG } from '../content/changelog'
 import type { EngineRelease } from '../content/releases.generated'
 import { ssrReleases, loadReleases } from '../lib/releases-access'
 import { Island } from '../lib/ssg-island'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { crumbLd, ldScript } from '../lib/ld'
 import { cadence, kindChips, fmtWeight } from './releases-lib'
@@ -157,7 +158,7 @@ export function Component() {
               asset count and the lone accent marks the release this site serves. Same-day trains
               keep both ticks: the record never hides a hotfix.
             </p>
-            <Suspense fallback={<p className="ax-foot">Loading the release axis…</p>}>
+            <SsgSuspense fallback={<p className="ax-foot">Loading the release axis…</p>}>
               <TickAxis
               ticks={strip.ticks.map((k) => ({
                 key: k.tag,
@@ -172,7 +173,7 @@ export function Component() {
               hi={strip.ticks[strip.ticks.length - 1]?.tag ?? ''}
               foot={`${RELEASES.length} releases · ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'} · ${fmtWeight(weight)} shipped`}
               />
-            </Suspense>
+            </SsgSuspense>
           </div>
 
           <div className="how-subs" data-rise>

@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, useEffect, useMemo, useRef, useState } from 'react'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -300,14 +301,14 @@ export function Component() {
                 {/* I7 · the inline check — one per step MAX, only where a
                     misread is likely (the data decides; zero here is fine) */}
                 {s.check && (
-                  <Suspense fallback={(
+                  <SsgSuspense fallback={(
                     <div className="lck">
                       <p className="lck-q">{s.check.q}</p>
                       <p>{s.check.options.join(' · ')}</p>
                     </div>
                   )}>
                     <LearnCheck check={s.check} />
-                  </Suspense>
+                  </SsgSuspense>
                 )}
               </li>
             ))}

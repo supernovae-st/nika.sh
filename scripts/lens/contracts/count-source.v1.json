@@ -1062,7 +1062,7 @@
     {
       "selector": "src/pages/Learn.tsx#count:1",
       "path": "src/pages/Learn.tsx",
-      "line": 394,
+      "line": 395,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -1074,7 +1074,7 @@
     {
       "selector": "src/pages/Learn.tsx#count:2",
       "path": "src/pages/Learn.tsx",
-      "line": 462,
+      "line": 463,
       "text": "4 verbs",
       "source": "4",
       "field": "verbs",
@@ -1122,7 +1122,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:1",
       "path": "src/pages/Providers.tsx",
-      "line": 159,
+      "line": 160,
       "text": "${CANON.providers} providers",
       "source": "${CANON.providers}",
       "field": "providers",
@@ -1135,7 +1135,7 @@
     {
       "selector": "src/pages/Providers.tsx#count:2",
       "path": "src/pages/Providers.tsx",
-      "line": 217,
+      "line": 218,
       "text": "one provider",
       "source": "one",
       "field": "providers",

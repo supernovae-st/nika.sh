@@ -1,8 +1,9 @@
-import { lazy, Suspense, useMemo } from 'react'
+import { lazy, useMemo } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useAnchorScroll } from '../lib/use-anchor-scroll'
 import { useHydrated } from '../lib/use-hydrated'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import {
@@ -221,9 +222,9 @@ export function Component() {
             ]}
           />
 
-          <Suspense fallback={<p className="pv-desc">Loading the model context axis…</p>}>
+          <SsgSuspense fallback={<p className="pv-desc">Loading the model context axis…</p>}>
             <ModelAxis />
-          </Suspense>
+          </SsgSuspense>
 
           {groups.map((group, gi) => (
             <div className="pv-family" key={group.kind} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>

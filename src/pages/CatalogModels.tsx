@@ -2,9 +2,10 @@
    Every model the wire catalog names, one room each. The context axis rides
    here (ModelAxis · the visual finally routed, D6): the axis is the fact the
    data actually holds. Register-diet: the rows ride the byte island, lean. */
-import { lazy, Suspense } from 'react'
+import { lazy } from 'react'
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
+import { SsgSuspense } from '../lib/ssg-lazy'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { BENCH_WITNESSES } from '../content/bench.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
@@ -86,9 +87,9 @@ export function Component() {
           The axis draws the canonical catalog · the spec-named seats whose models declare a
           window. The register below is the wider wire union; each count names its facet.
         </p>
-        <Suspense fallback={<p className="ax-foot">Loading the context axis…</p>}>
+        <SsgSuspense fallback={<p className="ax-foot">Loading the context axis…</p>}>
           <ModelAxis />
-        </Suspense>
+        </SsgSuspense>
       </CatalogSection>
       <CatalogSection id="price-axis" title="The price axis">
         {/* the context axis's twin, cut from the /releases cadence cloth: every
@@ -109,7 +110,7 @@ export function Component() {
           const nudge = new Map<number, number>()
           const openCount = priced.filter((m) => m.open).length
           return (
-            <Suspense fallback={<p className="ax-foot">Loading the price axis…</p>}>
+            <SsgSuspense fallback={<p className="ax-foot">Loading the price axis…</p>}>
               <TickAxis
               ticks={priced.map((m) => {
                 const base = ((Math.log10(m.out) - Math.log10(lo)) / span) * 100
@@ -130,7 +131,7 @@ export function Component() {
               hi={fmtUsd(hi)}
               foot={`${priced.length} priced · ${fmtUsd(lo)} → ${fmtUsd(hi)} out/Mtok · log scale · ${openCount} open weights`}
               />
-            </Suspense>
+            </SsgSuspense>
           )
         })()}
       </CatalogSection>
