@@ -18,11 +18,11 @@ classes:
   testimonial: "captured evidence — fixtures, corpora, traces, receipts: proves behavior; neither shipped source nor regenerable output"
   foreign: "pointer to a third-party sovereign source"
 summary:
-  classified_files: 1737
+  classified_files: 1738
   file_rows: 101
   pattern_rows: 30
   by_class:
-    authored: 1338
+    authored: 1339
     authored-pin: 3
     generated: 335
     pinned-copy: 21
@@ -308,7 +308,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/nika-graph.json"
   class: generated
-  sha256: 18de9279b810b9a57ba95c616acc3737b228e50011c6a63966a87f5d15350e6f
+  sha256: 4b8f6ff9b3e2231a929c53e7669db522f556d2b1392dc3eb8476c9aed11f07d7
   evidence: "the mégagraphe artifact (graph_schema 1 · JSON-LD triples + evidence + provenance on every edge · sorted keys · zero timestamps — same pins, same bytes)"
   derivation:
     tool: "node scripts/graph/build.mjs (pnpm graph · modular extractors → merger)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 360698acde7475ff3ecbbc36bcc854672c53a06d40ab1815c6a11cc19a6a3b3c
+  sha256: 7c90e3df71e7c96e47bd0d14ea232b8a4cfffc1370c1667b07d2f1897a648af0
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -741,11 +741,11 @@ files:
   evidence: "hand-written TS config (node tooling)"
 - path: "vite.config.ts"
   class: authored
-  sha256: 83182e6466456eea205ac6a026574e5ae26f43f54d35785147b95ff7976f3fdb
+  sha256: ff16b707522f9df29a6bd46ecbcba9cdd24bf583087ff8ee30e1ac0f3fab239f
   evidence: "hand-written Vite config"
 - path: "vitest.config.ts"
   class: authored
-  sha256: 13df849a59e1b5e0afe4ff4185d264525727d7bdb7a87002870c125a6a6ee54a
+  sha256: 4cd24b3a902c0b7420d58a378c986e66ac786213df923763094a3363f296f4cd
   evidence: "hand-written Vitest config"
 patterns:
 - glob: "public/brand/icons/*.svg"
@@ -810,7 +810,7 @@ patterns:
 - glob: "public/library/*.nika.yaml"
   class: authored
   match_count: 7
-  aggregate_sha256: 1dd7134214d2622870d579186e15f492563079749bde07b93355a2b008bcbfad
+  aggregate_sha256: 74522f7dd6d9cb709c799ab476cae0a66b9ae466783e9187ae998b56f4379e1f
   evidence: "hand-crafted example workflows (SPDX headers · © SuperNovae Studio); src/test/onpage-yaml.test.ts validates them against the SHIPPED schema (engine 0.111.0)"
 - glob: "public/hero/*.nika.yaml"
   class: authored
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: 32904538051c240a830c9ebcc5d40cf9eefd9076414c54943b13fcb60c72c969
+  aggregate_sha256: c86c3fde1e5247a57e0d8e541cb76af2243e51723e20b93e6bc0b50cc03bd106
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 476
-  aggregate_sha256: 30bc11526eb1f801cd4053fe87f0a6499bb13f85e7ea49a878febe5dc7177a46
+  aggregate_sha256: c9e1da11aa5d01ffd4c9578a543b03064c3c0d5d0645563bc74ef74f53904a1f
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
-  match_count: 97
-  aggregate_sha256: fa00afdbad5473b72d2134bd3df313ff42c53fe732faf2e49f6ebfaec242a6f6
+  match_count: 98
+  aggregate_sha256: 3ca6ad3d7b7e70ef12f26faaab4703c5987e5c41b5e2b6ed421fc45a62bae41f
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

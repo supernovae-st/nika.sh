@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest'
 import { FLAGSHIP_ENTRIES } from './index'
 import { formatMs, parseTrace } from './trace-parse'
 
+const RAW_TRACES = import.meta.glob('./traces/*.ndjson', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>
+
 /* ── trace · the recorded run must be REAL and must match ITS file ───────────
    The honesty gate behind the « recorded from a real nika run » caption:
    every flagship ships the verbatim NDJSON its own run streamed. This suite
@@ -26,6 +32,12 @@ describe.each(FLAGSHIP_ENTRIES.map((f) => [f.filename, f] as const))(
          seal without pretending it replaced the run verdict. */
       expect(['workflow_completed', 'run_sealed']).toContain(trace.steps[trace.steps.length - 1].kind)
       expect(trace.totalMs).toBeGreaterThan(0)
+    })
+
+    it('is the exact replay model projected from the verbatim signed trace', () => {
+      const raw = RAW_TRACES[`./traces/${entry.filename.replace('.nika.yaml', '.ndjson')}`]
+      expect(raw, `raw trace missing for ${entry.filename}`).toBeTypeOf('string')
+      expect(trace).toEqual(parseTrace(raw))
     })
 
     it('schedules exactly the file’s task set', () => {

@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 import reactSsg from 'vite-plugin-react-ssg'
 import { ORIGIN, PATHS } from './site.config'
 import { hreflangLinks, localeOf } from './src/lib/i18n'
+import { flagshipTraceReplay } from './scripts/flagship-trace-replay'
 
 /* ─── preview clean-URL resolver ─────────────────────────────────────────────
    `vite preview` serves the SPA fallback (dist/index.html) for an extension-less
@@ -174,7 +175,15 @@ function jsonldTermsets(): Plugin {
 // instant first paint + crawlable DOM, then the client hydrates (see main.tsx).
 // Routes to prerender are declared in react-ssg.config.ts (project root).
 export default defineConfig({
-  plugins: [react(), tailwindcss(), reactSsg(), previewCleanUrls(), sitemap(), jsonldTermsets()],
+  plugins: [
+    flagshipTraceReplay(),
+    react(),
+    tailwindcss(),
+    reactSsg(),
+    previewCleanUrls(),
+    sitemap(),
+    jsonldTermsets(),
+  ],
   build: {
     /* Route and data chunks are intentionally lazy; the initial-JS ceiling is
        enforced by scripts/size-budget.mjs. Keep Vite's generic raw-byte

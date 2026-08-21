@@ -9,7 +9,8 @@
      trace lab (`nika run <file> --json`) — one body per filename, forever.
    · every trace under ./traces/ is the VERBATIM NDJSON the engine streamed
      during that run — a real local model (ollama/llama3.2:3b), real files
-     written, real durations. Nothing staged, nothing simulated.
+     written, real durations. `?replay` removes only wire fields the film never
+     reads; trace.test.ts proves the projected model equals the raw recording.
    · schema-truth + trace↔file coherence are enforced by src/test tests
      (ajv against public/schema/workflow.json · derived plan == yaml-lib
      parse · every trace task exists in the file with the same verb).
@@ -17,13 +18,13 @@
    Data-only module (react-refresh: components-only files must not export
    data — the faq-data / hero-files pattern). */
 
-import dailyBriefTrace from './traces/daily-brief.ndjson?raw'
-import prRiskReviewTrace from './traces/pr-risk-review.ndjson?raw'
-import meetingActionsTrace from './traces/meeting-actions.ndjson?raw'
-import priceWatchTrace from './traces/price-watch.ndjson?raw'
-import socialRepurposeTrace from './traces/social-repurpose.ndjson?raw'
-import standupDigestTrace from './traces/standup-digest.ndjson?raw'
-import etlQuarantineTrace from './traces/etl-quarantine.ndjson?raw'
+import dailyBriefTrace from './traces/daily-brief.ndjson?replay'
+import prRiskReviewTrace from './traces/pr-risk-review.ndjson?replay'
+import meetingActionsTrace from './traces/meeting-actions.ndjson?replay'
+import priceWatchTrace from './traces/price-watch.ndjson?replay'
+import socialRepurposeTrace from './traces/social-repurpose.ndjson?replay'
+import standupDigestTrace from './traces/standup-digest.ndjson?replay'
+import etlQuarantineTrace from './traces/etl-quarantine.ndjson?replay'
 
 export interface Flagship {
   id: string
@@ -36,7 +37,7 @@ export interface Flagship {
   highlight: [number, number]
   /** what the run produced (the verdict card's artifact line) */
   artifact: string
-  /** the raw NDJSON the engine streamed for THIS file (verbatim) */
+  /** exact replay fields projected from this file's verbatim signed NDJSON */
   traceNdjson: string
   yaml: string
 }
@@ -74,11 +75,11 @@ tasks:
   triage:
     with:
       inbox: \${{ tasks.inbox.output }}
-    infer: { prompt: "Flag what is urgent: \${{ with.inbox }}", max_tokens: 2048 }
+    infer: { prompt: "Urgent item, 10 words max: \${{ with.inbox }}", max_tokens: 2048 }
   agenda:
     with:
       calendar: \${{ tasks.calendar.output }}
-    infer: { prompt: "Plan the day around: \${{ with.calendar }}", max_tokens: 2048 }
+    infer: { prompt: "Three bullets, 8 words max: \${{ with.calendar }}", max_tokens: 2048 }
 
   draft:
     with:
@@ -86,7 +87,7 @@ tasks:
       triage: \${{ tasks.triage.output }}
       agenda: \${{ tasks.agenda.output }}
     infer:
-      prompt: "Write the morning brief. Notes: \${{ with.notes }} Urgent: \${{ with.triage }} Plan: \${{ with.agenda }}"
+      prompt: "Three bullets, 8 words max. No preface. Notes: \${{ with.notes }} Urgent: \${{ with.triage }} Plan: \${{ with.agenda }}"
       max_tokens: 2048
 
   verify:
@@ -96,7 +97,7 @@ tasks:
       tool: "nika:assert"
       args:
         condition: "\${{ size(with.draft) > 0 }}"
-        message: "The model returned an empty brief. Raise max_tokens or choose a non-thinking model."
+        message: "Empty brief. Increase max_tokens or change model."
 
   save:
     after: { verify: success }
