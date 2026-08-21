@@ -38,7 +38,7 @@
   display: block;
   margin-top: 3px;
   font-size: var(--type-plate);
-  color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+  color: var(--v4-text-faint);
 }
 @media (prefers-reduced-motion: no-preference) {
   .wf-step {
@@ -60,7 +60,7 @@
   margin: 14px 0 0;
   font-size: var(--type-plate);
   line-height: 1.6;
-  color: color-mix(in srgb, var(--v4-text) 45%, transparent);
+  color: var(--v4-text-faint);
 }
 
 /* the run line · the one command that makes this step move */

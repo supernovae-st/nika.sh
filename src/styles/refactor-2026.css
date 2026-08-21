@@ -163,10 +163,9 @@ body {
 }
 
 .v4nav-capsule::after {
-  border-radius: 0;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  opacity: 1;
+  /* The bar already owns a 92% opaque floor. A second negative-z blur pane is
+     visually redundant and creates an avoidable SwiftShader compositing layer. */
+  display: none;
 }
 
 .v4nav-row {

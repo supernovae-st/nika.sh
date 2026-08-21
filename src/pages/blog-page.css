@@ -245,6 +245,9 @@
   pointer-events: none;
   user-select: none;
 }
+.blog-lead-no::before {
+  content: attr(data-number);
+}
 .blog-lead-title {
   font-size: clamp(24px, 3.2vw, 34px);
   font-weight: var(--fw-semibold);

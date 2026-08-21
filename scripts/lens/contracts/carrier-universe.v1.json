@@ -34,6 +34,7 @@
       "✓ "
     ],
     "allowed_dynamic_expressions": [
+      "attr(data-number)",
       "attr(href)",
       "counter(verify)"
     ]

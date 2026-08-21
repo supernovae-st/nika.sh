@@ -221,9 +221,11 @@ export function Component() {
               className="blog-lead"
               data-rise
             >
-              <span className="blog-lead-no mono" aria-hidden>
-                {String(BLOG_POSTS.length).padStart(2, '0')}
-              </span>
+              <span
+                className="blog-lead-no mono"
+                aria-hidden
+                data-number={String(BLOG_POSTS.length).padStart(2, '0')}
+              />
               <span className="blog-card-fig mono">
                 latest · {BLOG_POSTS[0].tag} ·{' '}
                 <time dateTime={BLOG_POSTS[0].date}>{BLOG_POSTS[0].date}</time>

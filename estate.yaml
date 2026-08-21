@@ -470,7 +470,7 @@ files:
   evidence: "the city as authored graph data (site voice · the ONE authored input the compiler accepts, declared voice to the doctor's §J.1 typing gate) — 13 canonical buildings (D-2026-07-29-N10 · the engine README city fence) + honest archives + lanes, every row citing what proves it"
 - path: "scripts/lens/contracts/carrier-universe.v1.json"
   class: generated
-  sha256: 94d2d5cdb525e2a9a25cb491ee391a02353285a65842112c9b39a1e745751f88
+  sha256: 6a756d22219aabf1ec2122d84c35c90a9d3266e6b58aa3ab86835c0f417bfb12
   evidence: "the exhaustive carrier census (authority: independent-exhaustive-carrier-universe)"
   derivation:
     tool: "node scripts/lens/repin-carrier-universe.mjs (deliberate repin)"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 11e3b81e3149b8b0bf64b0544bab07eb29a0afd48c8488d2d82be18b0a3b2c61
+  sha256: 7f1197720606e2cdbcbd2ba8e29986a08ab058b334cf91b94ace3ff33338750c
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 445
-  aggregate_sha256: 1bd78978c74471b35312a8b91e5aeba3a0b97a89519abeb199bfb80878d1c2bf
+  aggregate_sha256: 6c694abe3d4082e80376093b817a4cff2692dd0ff75d30fcbb950665682c942d
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 97
-  aggregate_sha256: 77d748248f150e426e51d5d64db8ef7b2c95d38ad71bd883030425c94acb2b32
+  aggregate_sha256: 79efb5e318140f7b577db9a1b15fff739a14bd4e99a0a87d55a94c0188198cbe
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

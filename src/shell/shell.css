@@ -272,6 +272,13 @@
   background: var(--seam-hairline-soft);
   box-shadow: var(--seam-panel); /* seam kit */
 }
+@media (max-width: 560px) {
+  /* An odd final datum owns the full last row. Leaving a blank fourth cell
+     made three-part registers look unfinished on phones. */
+  .v4stamp-cell:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
 @media (min-width: 620px) {
   .v4stamp {
     /* AUTO-FIT, not a fixed four: a strip of three reserved a fourth column

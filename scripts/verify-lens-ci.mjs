@@ -280,7 +280,7 @@ function verifyCarrierAuthority() {
          table rase) — the star was that row's marker and nothing else set it */
       '“', '”', '›', '→', '→ ', '−', '✓ ',
     ],
-    allowed_dynamic_expressions: ['attr(href)', 'counter(verify)'],
+    allowed_dynamic_expressions: ['attr(data-number)', 'attr(href)', 'counter(verify)'],
   }
   exactStructure('CSS content policy', universe.css_content_policy, cssPolicy)
   const css = cssContentInventory(ROOT, carriers.filter((path) => path.endsWith('.css')))

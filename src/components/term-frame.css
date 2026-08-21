@@ -85,7 +85,7 @@
   color: #f4f5f7;
 }
 .tf-prompt {
-  color: #626875;
+  color: var(--v4-text-faint);
 }
 .tf-line--ok {
   color: #9fb1c9;
@@ -99,7 +99,7 @@
 }
 .tf-line--soft,
 .tf-line--dim {
-  color: #626875;
+  color: var(--v4-text-faint);
 }
 
 /* ── TermCapture · the §2bis stamp (one calm line under the frame) ── */
