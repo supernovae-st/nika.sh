@@ -527,6 +527,30 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The part Git cannot prove",
+    "href": "/blog/the-part-git-cannot-prove",
+    "hint": "Origins · 2026-02"
+  },
+  {
+    "kind": "post",
+    "label": "What survived the first version",
+    "href": "/blog/what-survived-the-first-version",
+    "hint": "Origins|Engine · 2026-01"
+  },
+  {
+    "kind": "post",
+    "label": "The first page was too sure",
+    "href": "/blog/the-first-page-was-too-sure",
+    "hint": "Origins · 2025-12-30"
+  },
+  {
+    "kind": "post",
+    "label": "The file came before the language",
+    "href": "/blog/the-file-came-before-the-language",
+    "hint": "Origins|Language · 2025-11"
+  },
+  {
+    "kind": "post",
     "label": "The note that started it",
     "href": "/blog/the-note-that-started-it",
     "hint": "Origins · 2025-10-17"
@@ -656,6 +680,12 @@ export const PALETTE: PaletteEntry[] = [
     "label": "integration: website",
     "href": "/integrations/website",
     "hint": "get Nika into your stack"
+  },
+  {
+    "kind": "page",
+    "label": "path: origin-ledger",
+    "href": "/blog/series/origin-ledger",
+    "hint": "a reading path through the journal"
   },
   {
     "kind": "page",

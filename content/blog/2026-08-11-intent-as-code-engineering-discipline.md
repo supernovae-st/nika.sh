@@ -3,6 +3,7 @@ slug: intent-as-code-engineering-discipline
 title: "Intent as Code is an engineering discipline"
 tag: Manifesto
 date: 2026-08-11
+published: 2026-08-21
 description: "The useful part of AI work is not the chat. It is the intent, boundary, plan and evidence that a team can review before and after a run."
 ---
 

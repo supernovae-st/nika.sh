@@ -3,6 +3,7 @@ slug: ci-without-ambient-authority
 title: "The CI job should know its boundary"
 tag: Security
 date: 2026-08-15
+published: 2026-08-21
 description: "Run Nika in CI and on headless servers with the same checked workflow bytes, explicit authority, deterministic rehearsals and a hard launch budget."
 ---
 

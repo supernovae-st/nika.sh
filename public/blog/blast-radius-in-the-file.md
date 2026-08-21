@@ -3,6 +3,7 @@ slug: blast-radius-in-the-file
 title: "The blast radius is part of the file"
 tag: Security
 date: 2026-06-04
+published: 2026-07-05
 description: "permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error."
 ---
 

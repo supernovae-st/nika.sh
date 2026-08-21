@@ -3,6 +3,7 @@ slug: four-verbs
 title: "Four verbs are enough"
 tag: Language
 date: 2026-06-22
+published: 2026-07-05
 description: "A verb is a distinct execution model, not a feature. Why the language locks at four, forever."
 ---
 

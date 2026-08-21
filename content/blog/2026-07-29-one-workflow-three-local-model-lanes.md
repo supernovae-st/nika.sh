@@ -3,6 +3,7 @@ slug: one-workflow-three-local-model-lanes
 title: "One workflow, three local model lanes"
 tag: Sovereignty
 date: 2026-07-29
+published: 2026-08-21
 description: "Ollama, LM Studio and vLLM expose different operating experiences, but Nika keeps the workflow contract unchanged: one model string selects the local seat."
 ---
 

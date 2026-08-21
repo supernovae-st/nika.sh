@@ -3,6 +3,7 @@ slug: mcp-with-a-blast-radius
 title: "MCP with a blast radius"
 tag: Security
 date: 2026-07-24
+published: 2026-08-21
 description: "An MCP tool is executable foreign capability. Put its server, network, environment, tool ids and schema pin under separate review, then let the trace record the call."
 ---
 

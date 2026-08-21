@@ -3,6 +3,7 @@ slug: intent-as-code
 title: "Intent as Code: why your AI work should be a file"
 tag: Manifesto
 date: 2026-06-15
+published: 2026-07-05
 description: "Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code."
 ---
 

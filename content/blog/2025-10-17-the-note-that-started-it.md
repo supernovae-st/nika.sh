@@ -3,7 +3,10 @@ slug: the-note-that-started-it
 title: "The note that started it"
 tag: Origins
 date: 2025-10-17
+published: 2026-07-05
 description: "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared."
+series: origin-ledger
+series_stop: note
 ---
 
 Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab.

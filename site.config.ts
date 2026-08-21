@@ -70,6 +70,10 @@ export const BLOG_PATHS = [
   '/blog/own-your-stack',
   '/blog/starting-over-on-purpose',
   '/blog/naming-the-drum',
+  '/blog/the-part-git-cannot-prove',
+  '/blog/what-survived-the-first-version',
+  '/blog/the-first-page-was-too-sure',
+  '/blog/the-file-came-before-the-language',
   '/blog/the-note-that-started-it',
   '/blog/dag-for-free',
   '/blog/four-verbs',
@@ -95,7 +99,7 @@ export const BLOG_TAG_PATHS = [
 /* the journal's reading paths — one citable page per series (slug = the
    series id). Kept literal; the drift gate (tag-library-paths.test.ts)
    re-derives the set from the posts' series field. */
-export const BLOG_SERIES_PATHS = ['/blog/series/trace-family']
+export const BLOG_SERIES_PATHS = ['/blog/series/origin-ledger', '/blog/series/trace-family']
 
 /* the integrations register — get Nika into your stack: one room per
    client lane (how people search: claude code · codex · cursor · vscode ·

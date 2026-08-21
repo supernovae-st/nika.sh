@@ -8,6 +8,7 @@ import type { BlogPostCopy } from '../content/blog-bodies.generated'
 import { SITE, routeHead } from '../content'
 import { Island } from '../lib/ssg-island'
 import { useBlogCopy } from '../lib/use-blog-copy'
+import { isRetrospective, storyDateLabel } from '../lib/blog-dates'
 import '../sections/v4-home.css'
 import './blog-page.css'
 import './tools-page.css'
@@ -154,7 +155,7 @@ export function Component() {
                     <span className="blog-card-title">{l.post.title}</span>
                     <span className="blog-card-teaser">{l.post.description}</span>
                     <span className="blog-card-foot mono">
-                      {l.post.date} · {l.post.readingMin} min
+                      {isRetrospective(l.post) && 'retrospective · '}{storyDateLabel(l.post)} · {l.post.readingMin} min
                       <span className="blog-card-arrow acue acue--r" aria-hidden>
                         →
                       </span>

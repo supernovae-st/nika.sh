@@ -12,6 +12,7 @@ import { ldScript } from '../lib/ld'
 import { useHydrated } from '../lib/use-hydrated'
 import { Island } from '../lib/ssg-island'
 import { useBlogCopy } from '../lib/use-blog-copy'
+import { isRetrospective, storyDateLabel } from '../lib/blog-dates'
 
 const EditorialQueue = lazy(() => import('../components/EditorialQueue'))
 
@@ -146,7 +147,8 @@ export function Component() {
           <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
             Long-form pedagogy on <b>Intent as Code</b>: why useful AI work belongs in a file,
             why the language locks at four verbs, and what local-first actually buys you. The
-            archive runs from the spec opening to today.
+            archive runs from the first note to today. Retrospectives keep their story date and
+            show when they were actually published.
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
             {BLOG_POSTS.length} live · daily queue
@@ -221,7 +223,7 @@ export function Component() {
               />
               <span className="blog-card-fig mono">
                 latest · {posts[0].tag} ·{' '}
-                <time dateTime={posts[0].date}>{posts[0].date}</time>
+                <time dateTime={posts[0].date}>{storyDateLabel(posts[0])}</time>
               </span>
               <span className="blog-lead-title">{posts[0].title}</span>
               <span className="blog-lead-teaser">{posts[0].description}</span>
@@ -241,7 +243,8 @@ export function Component() {
               <Link key={p.slug} id={p.slug} to={`/blog/${p.slug}`} viewTransition className="blog-card">
                 <span className="blog-card-fig mono">
                   {String(p.issue).padStart(2, '0')} · {p.tag} ·{' '}
-                  <time dateTime={p.date}>{p.date}</time>
+                  {isRetrospective(p) && 'retrospective · '}
+                  <time dateTime={p.date}>{storyDateLabel(p)}</time>
                 </span>
                 <span className="blog-card-title">{p.title}</span>
                 <span className="blog-card-teaser">{p.description}</span>

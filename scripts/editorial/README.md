@@ -38,6 +38,7 @@ nika run scripts/editorial/daily-blog.nika.yaml \
   --var topic="paid-ready AI workflows" \
   --var slug="paid-ready-ai-workflows" \
   --var date="2026-08-21" \
+  --var source_commit="https://github.com/supernovae-st/nika/commit/<full-40-character-sha>" \
   --max-cost-usd 2
 ```
 
@@ -82,3 +83,22 @@ node scripts/build-palette.mjs
 
 One scheduled invocation equals one daily candidate. Publication remains a
 separate reviewed action.
+
+## Historical entries from commits
+
+For a post that belongs earlier in the product chronology, set `date` to the
+commit date, set `published` to the day the article actually goes live, and
+pass the exact commit URL as `source_commit`. The generated frontmatter keeps
+all three facts. The blog compiler then exposes the story date as
+`dateCreated`, the real publication as `datePublished`, and the commit as a
+JSON-LD citation plus an `llms-full.txt` receipt.
+
+```sh
+nika run scripts/editorial/daily-blog.nika.yaml \
+  --var topic="what changed in the first public Nika page" \
+  --var slug="the-first-public-nika-page" \
+  --var date="2025-12-30" \
+  --var published="2026-08-21" \
+  --var source_commit="https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5" \
+  --max-cost-usd 2
+```

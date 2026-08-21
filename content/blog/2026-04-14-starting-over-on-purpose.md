@@ -3,6 +3,7 @@ slug: starting-over-on-purpose
 title: "Starting over, on purpose"
 tag: Origins
 date: 2026-04-14
+published: 2026-07-05
 description: "We had a working prototype. We rebuilt from scratch anyway: craft, not extraction, one gate at a time."
 ---
 

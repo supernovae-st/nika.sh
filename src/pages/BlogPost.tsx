@@ -9,6 +9,7 @@ import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { useBlogCopy } from '../lib/use-blog-copy'
+import { isRetrospective, publicationDate, storyDateLabel } from '../lib/blog-dates'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -125,7 +126,10 @@ export function Component() {
             '@id': `https://nika.sh/blog/${post.slug}#post`,
             headline: post.title,
             description: post.description,
-            datePublished: post.date,
+            dateCreated: post.date,
+            datePublished: publicationDate(post),
+            ...(isRetrospective(post) ? { temporalCoverage: post.date } : {}),
+            ...(post.receipts ? { citation: post.receipts } : {}),
             inLanguage: 'en',
             image: `https://nika.sh/og-blog-${post.slug}.png`,
             url: `https://nika.sh/blog/${post.slug}`,
@@ -178,7 +182,7 @@ export function Component() {
             ...routeHead(`/blog/${post.slug}`).meta,
             { name: 'description', content: post.description },
             { property: 'og:type', content: 'article' },
-            { property: 'article:published_time', content: post.date },
+            { property: 'article:published_time', content: publicationDate(post) },
             { property: 'og:title', content: `${post.title} · Nika` },
             { property: 'og:description', content: post.description },
             { property: 'og:image', content: `https://nika.sh/og-blog-${post.slug}.png` },
@@ -252,7 +256,16 @@ export function Component() {
                 </Link>
               </span>
             ))}{' '}
-            · <time dateTime={post.date}>{post.date}</time> · {post.readingMin} min
+            ·{' '}
+            {isRetrospective(post) ? (
+              <>
+                retrospective · <time dateTime={post.date}>{storyDateLabel(post)}</time> · published{' '}
+                <time dateTime={post.published}>{post.published}</time>
+              </>
+            ) : (
+              <time dateTime={post.date}>{storyDateLabel(post)}</time>
+            )}{' '}
+            · {post.readingMin} min
           </p>
           <h1 id="bp-title" className="v4sec-title bp-title">
             {post.title}
@@ -350,6 +363,19 @@ export function Component() {
             </nav>
           )}
           <div className="bp-foot" data-rise>
+            {post.receipts && (
+              <p className="bp-foot-src mono">
+                commit receipts ·{' '}
+                {post.receipts.map((receipt, i) => (
+                  <span key={receipt}>
+                    {i > 0 && ' · '}
+                    <a href={receipt} target="_blank" rel="noreferrer" className="bp-foot-link">
+                      {receipt.slice(-40, -32)} ↗
+                    </a>
+                  </span>
+                ))}
+              </p>
+            )}
             <p className="bp-foot-src mono">
               this post is a file ·{' '}
               <a

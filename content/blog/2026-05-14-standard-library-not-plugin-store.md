@@ -3,6 +3,7 @@ slug: standard-library-not-plugin-store
 title: "A standard library, not a plugin store"
 tag: Language
 date: 2026-05-14
+published: 2026-07-05
 description: "28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still."
 ---
 

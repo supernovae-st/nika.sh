@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-08-21',
     tag: 'site',
+    title: 'nika.sh v4.22 · the honest origin ledger',
+    body: 'Four retrospective field notes fill the public story from November through February without pretending they were published then. Story dates and publication dates are now separate across the journal, feeds and structured metadata, and six records form one origin series from the first note to the name.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.22.0',
+  },
+  {
+    date: '2026-08-21',
+    tag: 'site',
     title: 'nika.sh v4.21 · the SDK control room',
     body: 'The SDK now connects nika.yaml project setup, local runs, runtime proof and the resident firer, separate from the future HTTP service.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.21.0',

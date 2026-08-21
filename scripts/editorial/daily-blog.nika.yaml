@@ -28,7 +28,15 @@ inputs:
   date:
     type: string
     required: true
-    description: "Publication date as YYYY-MM-DD"
+    description: "Story date as YYYY-MM or YYYY-MM-DD; use the source commit date when one exists"
+  published:
+    type: string
+    default: ""
+    description: "Actual publication date as YYYY-MM-DD; required when the story date is historical"
+  source_commit:
+    type: string
+    default: ""
+    description: "Exact first-party GitHub commit URL used as the article receipt"
   publish:
     type: bool
     default: false
@@ -147,6 +155,9 @@ tasks:
         Primary reader:
         ${{ inputs.audience }}
 
+        Source commit, when this article follows a shipped change:
+        ${{ inputs.source_commit }}
+
         Ahrefs demand data:
         ${{ with.demand }}
 
@@ -168,7 +179,9 @@ tasks:
         Select one primary keyword because it matches product truth and reader
         intent, not because it has the largest number. Product claims must be
         supported by one of the three local records above. Separate facts from
-        hypotheses. Keep every source URL that the writer should verify.
+        hypotheses. When a source commit is supplied, treat it as the primary
+        receipt and do not infer behavior its diff or linked release does not
+        establish. Keep every source URL that the writer should verify.
       schema:
         type: object
         additionalProperties: false
@@ -300,10 +313,15 @@ tasks:
       tool: "nika:jq"
       args:
         expression: |
-          "---\nslug: " + .slug + "\ntitle: " + (.title | tojson) + "\ntag: Engine\ndate: " + .date + "\ndescription: " + (.description | tojson) + "\n---\n\n" + .body + "\n"
+          "---\nslug: " + .slug + "\ntitle: " + (.title | tojson) + "\ntag: Engine\ndate: " + .date
+          + (if .published == "" then "" else "\npublished: " + .published end)
+          + (if .source_commit == "" then "" else "\nreceipts:\n  - " + (.source_commit | tojson) end)
+          + "\ndescription: " + (.description | tojson) + "\n---\n\n" + .body + "\n"
         input:
           slug: ${{ inputs.slug }}
           date: ${{ inputs.date }}
+          published: ${{ inputs.published }}
+          source_commit: ${{ inputs.source_commit }}
           title: ${{ with.draft.title }}
           description: ${{ with.draft.description }}
           body: ${{ with.draft.body }}

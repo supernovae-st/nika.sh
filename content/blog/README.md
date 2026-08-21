@@ -4,7 +4,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 ## Posts
 
-| date | post | file |
+| story date | post | file |
 |---|---|---|
 | 2026-08-21 | AI workflows on ARM64 Linux servers, without the missing safety step | [`2026-08-21-arm64-ai-workflows-on-linux-servers.md`](./2026-08-21-arm64-ai-workflows-on-linux-servers.md) |
 | 2026-08-21 | Clean is not ready to spend | [`2026-08-21-clean-is-not-ready-to-spend.md`](./2026-08-21-clean-is-not-ready-to-spend.md) |
@@ -50,6 +50,10 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 | 2026-05-01 | An open spec, a copyleft engine | [`2026-05-01-open-spec-copyleft-engine.md`](./2026-05-01-open-spec-copyleft-engine.md) |
 | 2026-04-14 | Starting over, on purpose | [`2026-04-14-starting-over-on-purpose.md`](./2026-04-14-starting-over-on-purpose.md) |
 | 2026-03-21 | Naming the drum | [`2026-03-21-naming-the-drum.md`](./2026-03-21-naming-the-drum.md) |
+| 2026-02 | The part Git cannot prove | [`2026-02-the-part-git-cannot-prove.md`](./2026-02-the-part-git-cannot-prove.md) |
+| 2026-01 | What survived the first version | [`2026-01-what-survived-the-first-version.md`](./2026-01-what-survived-the-first-version.md) |
+| 2025-12-30 | The first page was too sure | [`2025-12-30-the-first-page-was-too-sure.md`](./2025-12-30-the-first-page-was-too-sure.md) |
+| 2025-11 | The file came before the language | [`2025-11-the-file-came-before-the-language.md`](./2025-11-the-file-came-before-the-language.md) |
 | 2025-10-17 | The note that started it | [`2025-10-17-the-note-that-started-it.md`](./2025-10-17-the-note-that-started-it.md) |
 
 Feed: [nika.sh/rss.xml](https://nika.sh/rss.xml)
@@ -62,6 +66,9 @@ slug: url-slug            # /blog/<slug>
 title: "The title"
 tag: Origins | Manifesto | Language | Engine | Sovereignty | Security
 date: 2026-01-01
+published: 2026-08-21   # optional · actual date when this is a retrospective
+receipts:                 # optional · exact first-party commits behind the story
+  - https://github.com/supernovae-st/nika/commit/0123456789abcdef0123456789abcdef01234567
 description: "One honest sentence for the card + the feed."
 series: trace-family       # optional · a reading path (registry in build-blog.mjs)
 series_stop: custody       # required with series · this post's station on the line
@@ -78,6 +85,15 @@ Two conventions the build enforces:
   `scripts/build-blog.mjs` — title, claim, ordered stops); `series_stop:` claims one
   stop. Unknown id, unknown stop, a stop claimed twice, or a declared stop with no
   post all fail the build — a reading path is never half-wired.
+- **A retrospective tells both dates.** `date:` places the event or period in
+  the product chronology (`YYYY-MM` or `YYYY-MM-DD`). If the article was written
+  later, `published:` records its real first-publication date. The page labels
+  it as retrospective, RSS uses `published:`, and structured data never turns
+  the story date into a fake publication date.
+- **History keeps its receipts.** `receipts:` accepts exact 40-character commit
+  URLs from the first-party Nika repositories. The compiler refuses branches,
+  shortened hashes and unrelated hosts. The links are rendered on the article,
+  emitted as JSON-LD citations and copied into `llms-full.txt` for agents.
 - **Counts derive from the spec.** A number that comes from the language canon is wrapped in `<!-- canon:… -->N<!-- /canon -->` markers; the compiler verifies it against `canon.yaml` and the build fails on drift. Never hand-type a count.
 - **YAML is spec-correct.** Fenced workflow examples are real, runnable shapes, never pseudo-code.
 
