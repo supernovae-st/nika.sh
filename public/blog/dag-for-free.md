@@ -3,6 +3,7 @@ slug: dag-for-free
 title: "The plan you get for free"
 tag: Engine
 date: 2026-06-29
+published: 2026-07-05
 description: "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs."
 ---
 

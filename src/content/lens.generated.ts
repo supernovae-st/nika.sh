@@ -2917,6 +2917,15 @@ export const LENS_NODES: LensNode[] = [
     "exists": true
   },
   {
+    "id": "post:the-file-came-before-the-language",
+    "kind": "surface",
+    "title": "The file came before the language",
+    "url": "/blog/the-file-came-before-the-language",
+    "status": "both",
+    "opener": null,
+    "exists": true
+  },
+  {
     "id": "post:the-generative-workflow",
     "kind": "surface",
     "title": "The generative ai workflow, minus the mystery",
@@ -2984,6 +2993,15 @@ export const LENS_NODES: LensNode[] = [
     "kind": "surface",
     "title": "The two clocks behind a model string",
     "url": "/blog/the-two-clocks-behind-a-model-string",
+    "status": "both",
+    "opener": null,
+    "exists": true
+  },
+  {
+    "id": "post:what-survived-the-first-version",
+    "kind": "surface",
+    "title": "What survived the first version",
+    "url": "/blog/what-survived-the-first-version",
     "status": "both",
     "opener": null,
     "exists": true
@@ -10476,6 +10494,11 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "mentions"
   },
   {
+    "from": "post:the-file-came-before-the-language",
+    "to": "word:model",
+    "kind": "mentions"
+  },
+  {
     "from": "post:the-generative-workflow",
     "to": "provider:gemini",
     "kind": "mentions"
@@ -10568,6 +10591,11 @@ const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "post:the-two-clocks-behind-a-model-string",
     "to": "provider:ollama",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:what-survived-the-first-version",
+    "to": "word:model",
     "kind": "mentions"
   },
   {
@@ -11834,7 +11862,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:csv-chart-report",
     "to": "verb:invoke",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:deep-research-brief",
     "to": "tool:jq",
@@ -11844,10 +11875,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:deep-research-brief",
     "to": "tool:write",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:deep-research-brief",
     "to": "verb:agent",

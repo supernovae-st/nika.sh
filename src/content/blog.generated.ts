@@ -20,6 +20,10 @@ export interface BlogPost {
   title: string
   tag: string
   date: string
+  /** actual first publication date when this is a later retrospective */
+  published?: string
+  /** exact first-party commits used as historical receipts */
+  receipts?: string[]
   readingMin: number
   /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
   series?: string
@@ -27,6 +31,18 @@ export interface BlogPost {
 }
 
 export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: string[] }> = {
+  "origin-ledger": {
+    "title": "The origin ledger",
+    "claim": "Six records, one honest beginning",
+    "stops": [
+      "note",
+      "file",
+      "first-page",
+      "kernel",
+      "silence",
+      "name"
+    ]
+  },
   "trace-family": {
     "title": "The trace family",
     "claim": "One recorded file, five jobs",
@@ -62,6 +78,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The access layer is an operating contract",
     "tag": "Engine",
     "date": "2026-08-20",
+    "published": "2026-08-21",
     "readingMin": 6
   },
   {
@@ -69,6 +86,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "A field guide to the Nika workflow ecosystem",
     "tag": "Engine",
     "date": "2026-08-19",
+    "published": "2026-08-21",
     "readingMin": 8
   },
   {
@@ -76,6 +94,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Let coding agents write plans, not policy",
     "tag": "Agents",
     "date": "2026-08-17",
+    "published": "2026-08-21",
     "readingMin": 7
   },
   {
@@ -83,6 +102,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The CI job should know its boundary",
     "tag": "Security",
     "date": "2026-08-15",
+    "published": "2026-08-21",
     "readingMin": 8
   },
   {
@@ -90,6 +110,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Retire the prompt glue",
     "tag": "Language",
     "date": "2026-08-13",
+    "published": "2026-08-21",
     "readingMin": 7
   },
   {
@@ -97,6 +118,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Intent as Code is an engineering discipline",
     "tag": "Manifesto",
     "date": "2026-08-11",
+    "published": "2026-08-21",
     "readingMin": 7
   },
   {
@@ -104,6 +126,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The run keeps its receipt",
     "tag": "Engine",
     "date": "2026-08-08",
+    "published": "2026-08-21",
     "readingMin": 6
   },
   {
@@ -111,6 +134,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The two clocks behind a model string",
     "tag": "Language",
     "date": "2026-08-03",
+    "published": "2026-08-21",
     "readingMin": 6
   },
   {
@@ -118,6 +142,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "One workflow, three local model lanes",
     "tag": "Sovereignty",
     "date": "2026-07-29",
+    "published": "2026-08-21",
     "readingMin": 6
   },
   {
@@ -125,6 +150,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "MCP with a blast radius",
     "tag": "Security",
     "date": "2026-07-24",
+    "published": "2026-08-21",
     "readingMin": 6
   },
   {
@@ -303,6 +329,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "No cloud needed",
     "tag": "Sovereignty",
     "date": "2026-07-02",
+    "published": "2026-07-05",
     "readingMin": 1
   },
   {
@@ -310,6 +337,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The plan you get for free",
     "tag": "Engine",
     "date": "2026-06-29",
+    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -317,6 +345,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Four verbs are enough",
     "tag": "Language",
     "date": "2026-06-22",
+    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -324,6 +353,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Intent as Code: why your AI work should be a file",
     "tag": "Manifesto",
     "date": "2026-06-15",
+    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -331,6 +361,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "The blast radius is part of the file",
     "tag": "Security",
     "date": "2026-06-04",
+    "published": "2026-07-05",
     "readingMin": 1
   },
   {
@@ -338,6 +369,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "A standard library, not a plugin store",
     "tag": "Language",
     "date": "2026-05-14",
+    "published": "2026-07-05",
     "readingMin": 1
   },
   {
@@ -345,6 +377,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "An open spec, a copyleft engine",
     "tag": "Sovereignty",
     "date": "2026-05-01",
+    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -352,6 +385,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Starting over, on purpose",
     "tag": "Origins",
     "date": "2026-04-14",
+    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -359,13 +393,77 @@ export const BLOG_POSTS: BlogPost[] = [
     "title": "Naming the drum",
     "tag": "Origins",
     "date": "2026-03-21",
-    "readingMin": 2
+    "published": "2026-07-05",
+    "receipts": [
+      "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
+    ],
+    "readingMin": 2,
+    "series": "origin-ledger",
+    "seriesStop": "name"
+  },
+  {
+    "slug": "the-part-git-cannot-prove",
+    "title": "The part Git cannot prove",
+    "tag": "Origins",
+    "date": "2026-02",
+    "published": "2026-08-21",
+    "receipts": [
+      "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5",
+      "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43",
+      "https://github.com/supernovae-st/nika-spec/commit/7dd38aca0fe7e3ddc8f47f1a1b7e33133fbf09b8"
+    ],
+    "readingMin": 3,
+    "series": "origin-ledger",
+    "seriesStop": "silence"
+  },
+  {
+    "slug": "what-survived-the-first-version",
+    "title": "What survived the first version",
+    "tag": "Origins|Engine",
+    "date": "2026-01",
+    "published": "2026-08-21",
+    "receipts": [
+      "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5",
+      "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43"
+    ],
+    "readingMin": 3,
+    "series": "origin-ledger",
+    "seriesStop": "kernel"
+  },
+  {
+    "slug": "the-first-page-was-too-sure",
+    "title": "The first page was too sure",
+    "tag": "Origins",
+    "date": "2025-12-30",
+    "published": "2026-08-21",
+    "receipts": [
+      "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
+    ],
+    "readingMin": 3,
+    "series": "origin-ledger",
+    "seriesStop": "first-page"
+  },
+  {
+    "slug": "the-file-came-before-the-language",
+    "title": "The file came before the language",
+    "tag": "Origins|Language",
+    "date": "2025-11",
+    "published": "2026-08-21",
+    "receipts": [
+      "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
+    ],
+    "readingMin": 3,
+    "series": "origin-ledger",
+    "seriesStop": "file"
   },
   {
     "slug": "the-note-that-started-it",
     "title": "The note that started it",
     "tag": "Origins",
     "date": "2025-10-17",
-    "readingMin": 2
+    "published": "2026-07-05",
+    "readingMin": 2,
+    "series": "origin-ledger",
+    "seriesStop": "note"
   }
 ]

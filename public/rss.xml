@@ -26,7 +26,7 @@
       <title>The access layer is an operating contract</title>
       <link>https://nika.sh/blog/the-access-layer-is-an-operating-contract</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-access-layer-is-an-operating-contract</guid>
-      <pubDate>Thu, 20 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
       <description>From v0.108.0 to v0.111.0, Nika separated the model you choose from the path that reaches it, cut the workflow language to its durable core, added an explicit scheduler and turned check into an authoring loop.</description>
     </item>
@@ -34,7 +34,7 @@
       <title>A field guide to the Nika workflow ecosystem</title>
       <link>https://nika.sh/blog/workflow-ecosystem-field-guide</link>
       <guid isPermaLink="true">https://nika.sh/blog/workflow-ecosystem-field-guide</guid>
-      <pubDate>Wed, 19 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
       <description>Choose deliberately among model providers, local runtimes, builtins, MCP servers and coding-agent surfaces without turning the workflow into vendor glue.</description>
     </item>
@@ -42,7 +42,7 @@
       <title>Let coding agents write plans, not policy</title>
       <link>https://nika.sh/blog/coding-agents-write-plans</link>
       <guid isPermaLink="true">https://nika.sh/blog/coding-agents-write-plans</guid>
-      <pubDate>Mon, 17 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Agents</category>
       <description>Codex, Claude Code, Cursor and other coding agents can author Nika workflows while the checker, the human review and the runner keep separate authority.</description>
     </item>
@@ -50,7 +50,7 @@
       <title>The CI job should know its boundary</title>
       <link>https://nika.sh/blog/ci-without-ambient-authority</link>
       <guid isPermaLink="true">https://nika.sh/blog/ci-without-ambient-authority</guid>
-      <pubDate>Sat, 15 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
       <description>Run Nika in CI and on headless servers with the same checked workflow bytes, explicit authority, deterministic rehearsals and a hard launch budget.</description>
     </item>
@@ -58,7 +58,7 @@
       <title>Retire the prompt glue</title>
       <link>https://nika.sh/blog/retire-the-prompt-glue</link>
       <guid isPermaLink="true">https://nika.sh/blog/retire-the-prompt-glue</guid>
-      <pubDate>Thu, 13 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
       <description>A practical migration from brittle shell and Python prompt chains to a checked workflow whose graph, authority, cost and outputs are visible before it runs.</description>
     </item>
@@ -66,7 +66,7 @@
       <title>Intent as Code is an engineering discipline</title>
       <link>https://nika.sh/blog/intent-as-code-engineering-discipline</link>
       <guid isPermaLink="true">https://nika.sh/blog/intent-as-code-engineering-discipline</guid>
-      <pubDate>Tue, 11 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Manifesto</category>
       <description>The useful part of AI work is not the chat. It is the intent, boundary, plan and evidence that a team can review before and after a run.</description>
     </item>
@@ -74,7 +74,7 @@
       <title>The run keeps its receipt</title>
       <link>https://nika.sh/blog/the-run-keeps-its-receipt</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-run-keeps-its-receipt</guid>
-      <pubDate>Sat, 08 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
       <description>A trace is more than a log: it can replay without effects, resume verified work, expose one task, export to OpenTelemetry and assemble a redacted evidence pack.</description>
     </item>
@@ -82,7 +82,7 @@
       <title>The two clocks behind a model string</title>
       <link>https://nika.sh/blog/the-two-clocks-behind-a-model-string</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-two-clocks-behind-a-model-string</guid>
-      <pubDate>Mon, 03 Aug 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
       <description>A provider name can be part of the stable language while its models, prices and access paths keep changing. Nika resolves those truths on separate clocks and records the result.</description>
     </item>
@@ -90,7 +90,7 @@
       <title>One workflow, three local model lanes</title>
       <link>https://nika.sh/blog/one-workflow-three-local-model-lanes</link>
       <guid isPermaLink="true">https://nika.sh/blog/one-workflow-three-local-model-lanes</guid>
-      <pubDate>Wed, 29 Jul 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
       <description>Ollama, LM Studio and vLLM expose different operating experiences, but Nika keeps the workflow contract unchanged: one model string selects the local seat.</description>
     </item>
@@ -98,7 +98,7 @@
       <title>MCP with a blast radius</title>
       <link>https://nika.sh/blog/mcp-with-a-blast-radius</link>
       <guid isPermaLink="true">https://nika.sh/blog/mcp-with-a-blast-radius</guid>
-      <pubDate>Fri, 24 Jul 2026 09:00:00 GMT</pubDate>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
       <description>An MCP tool is executable foreign capability. Put its server, network, environment, tool ids and schema pin under separate review, then let the trace record the call.</description>
     </item>
@@ -290,7 +290,7 @@
       <title>No cloud needed</title>
       <link>https://nika.sh/blog/own-your-stack</link>
       <guid isPermaLink="true">https://nika.sh/blog/own-your-stack</guid>
-      <pubDate>Thu, 02 Jul 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
       <description>One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.</description>
     </item>
@@ -298,7 +298,7 @@
       <title>The plan you get for free</title>
       <link>https://nika.sh/blog/dag-for-free</link>
       <guid isPermaLink="true">https://nika.sh/blog/dag-for-free</guid>
-      <pubDate>Mon, 29 Jun 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Engine</category>
       <description>The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.</description>
     </item>
@@ -306,7 +306,7 @@
       <title>Four verbs are enough</title>
       <link>https://nika.sh/blog/four-verbs</link>
       <guid isPermaLink="true">https://nika.sh/blog/four-verbs</guid>
-      <pubDate>Mon, 22 Jun 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
       <description>A verb is a distinct execution model, not a feature. Why the language locks at four, forever.</description>
     </item>
@@ -314,7 +314,7 @@
       <title>Intent as Code: why your AI work should be a file</title>
       <link>https://nika.sh/blog/intent-as-code</link>
       <guid isPermaLink="true">https://nika.sh/blog/intent-as-code</guid>
-      <pubDate>Mon, 15 Jun 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Manifesto</category>
       <description>Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.</description>
     </item>
@@ -322,7 +322,7 @@
       <title>The blast radius is part of the file</title>
       <link>https://nika.sh/blog/blast-radius-in-the-file</link>
       <guid isPermaLink="true">https://nika.sh/blog/blast-radius-in-the-file</guid>
-      <pubDate>Thu, 04 Jun 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
       <description>permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.</description>
     </item>
@@ -330,7 +330,7 @@
       <title>A standard library, not a plugin store</title>
       <link>https://nika.sh/blog/standard-library-not-plugin-store</link>
       <guid isPermaLink="true">https://nika.sh/blog/standard-library-not-plugin-store</guid>
-      <pubDate>Thu, 14 May 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
       <description>28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.</description>
     </item>
@@ -338,7 +338,7 @@
       <title>An open spec, a copyleft engine</title>
       <link>https://nika.sh/blog/open-spec-copyleft-engine</link>
       <guid isPermaLink="true">https://nika.sh/blog/open-spec-copyleft-engine</guid>
-      <pubDate>Fri, 01 May 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
       <description>Two licenses, one argument: the file must outlive every vendor, including us.</description>
     </item>
@@ -346,7 +346,7 @@
       <title>Starting over, on purpose</title>
       <link>https://nika.sh/blog/starting-over-on-purpose</link>
       <guid isPermaLink="true">https://nika.sh/blog/starting-over-on-purpose</guid>
-      <pubDate>Tue, 14 Apr 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
       <description>We had a working prototype. We rebuilt from scratch anyway: craft, not extraction, one gate at a time.</description>
     </item>
@@ -354,15 +354,47 @@
       <title>Naming the drum</title>
       <link>https://nika.sh/blog/naming-the-drum</link>
       <guid isPermaLink="true">https://nika.sh/blog/naming-the-drum</guid>
-      <pubDate>Sat, 21 Mar 2026 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
       <description>Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.</description>
+    </item>
+    <item>
+      <title>The part Git cannot prove</title>
+      <link>https://nika.sh/blog/the-part-git-cannot-prove</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-part-git-cannot-prove</guid>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Origins</category>
+      <description>The public record goes quiet between the first site and the engine rebuild. An honest history keeps that gap visible.</description>
+    </item>
+    <item>
+      <title>What survived the first version</title>
+      <link>https://nika.sh/blog/what-survived-the-first-version</link>
+      <guid isPermaLink="true">https://nika.sh/blog/what-survived-the-first-version</guid>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Origins|Engine</category>
+      <description>The early product carried too many promises. Four technical bets survived every rewrite because they kept answering the same user problem.</description>
+    </item>
+    <item>
+      <title>The first page was too sure</title>
+      <link>https://nika.sh/blog/the-first-page-was-too-sure</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-first-page-was-too-sure</guid>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Origins</category>
+      <description>The first nika.sh landing page went live with a real idea and claims the code had not earned. Keeping both facts is part of the history.</description>
+    </item>
+    <item>
+      <title>The file came before the language</title>
+      <link>https://nika.sh/blog/the-file-came-before-the-language</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-file-came-before-the-language</guid>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Origins|Language</category>
+      <description>Before Nika had syntax, it had one constraint: useful AI work had to leave the chat and become an object you could keep.</description>
     </item>
     <item>
       <title>The note that started it</title>
       <link>https://nika.sh/blog/the-note-that-started-it</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-note-that-started-it</guid>
-      <pubDate>Fri, 17 Oct 2025 09:00:00 GMT</pubDate>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
       <description>Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.</description>
     </item>

@@ -3,6 +3,7 @@ slug: own-your-stack
 title: "No cloud needed"
 tag: Sovereignty
 date: 2026-07-02
+published: 2026-07-05
 description: "One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you."
 ---
 

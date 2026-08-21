@@ -3,6 +3,7 @@ slug: open-spec-copyleft-engine
 title: "An open spec, a copyleft engine"
 tag: Sovereignty
 date: 2026-05-01
+published: 2026-07-05
 description: "Two licenses, one argument: the file must outlive every vendor, including us."
 ---
 

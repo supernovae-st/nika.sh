@@ -15776,7 +15776,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "For months the project had no name. It was \"the file thing\": a note from October, a growing conviction, some early Rust. Then the question stopped being avoidable, because naming a thing is deciding what it is for."
+          "text": "By the time the first "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " page went live in December 2025, the project had a name. What it did not yet have was a meaning precise enough to keep. The early page used Nika like a product label. By March, that was no longer enough, because naming a thing is deciding what it is for."
         }
       ]
     },
@@ -15894,6 +15902,865 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "The note asked for a file. The name asked for a fight worth having. The rest is shipping."
+        }
+      ]
+    }
+  ],
+  "the-part-git-cannot-prove": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The public history of Nika has a gap."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " commit is dated December 30, 2025. The current engine repository begins on April 13, 2026. The current specification repository begins on May 22. Those are repository facts. They do not prove that nobody thought, wrote prototypes or made decisions in between. They also do not prove the opposite."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "February is where a polished origin story would normally add a montage."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "We will not."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A commit proves less than memory and more than a story",
+      "id": "a-commit-proves-less-than-memory-and-more-than-a-story"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A Git commit can show that specific bytes existed in a repository at a recorded point in its history. It does not show every conversation that led there. It does not prove that the code was deployed, used correctly or safe. But it is still a stronger receipt than a confident recollection written months later."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Memory can explain motive. The repository can establish sequence. Tests can establish behavior. A release artifact can establish what users could actually install. Each source answers a different question."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Trouble starts when one is used to impersonate another."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is why these origin articles carry two dates. The story date places the subject in the product chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective. A reader can enjoy the narrative without being told it was published in a month when no blog existed."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The gap contains hypotheses, not releases",
+      "id": "the-gap-contains-hypotheses-not-releases"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Looking backward, we can see concerns that later became durable architecture: a plain-text workflow, a visible graph, provider choice and a local runner. We can see them on the December page and in the current product."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "What we cannot do is assign every mature idea to a convenient day inside the quiet period. The current permits model, four-verb language, conformance suite and crate architecture have later receipts. Saying they were already complete in February would make the later design work disappear."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The honest sentence is smaller: the problem was stable before the solution was."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The project knew that useful AI work should outlive a chat session. It had not yet earned every mechanism needed to keep that promise."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why publish an article about missing evidence?",
+      "id": "why-publish-an-article-about-missing-evidence"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Because Nika asks users to care about provenance."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A trace should not claim an attestation it did not receive. A check should not call an unjudged constraint safe. A local model without a price row should be called unpriced, not free. The same standard belongs in the project history."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An empty section in the record is not a branding failure. It is information. It tells future maintainers where they should rely on source and where they are reading recollection. It prevents a later article from becoming the accidental authority for an event it merely described."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. Those chapters have commits, tests and releases behind them. February has a quieter receipt: we checked what the repositories could prove, found the boundary and kept it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Unknown remains unknown. That is not the absence of a story. It is the beginning of an honest one."
+        }
+      ]
+    }
+  ],
+  "what-survived-the-first-version": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There is no single January commit that declares the kernel of Nika. This is a retrospective comparison between the first public page and the system that exists now. The interesting parts are the ones that survived several opportunities to be removed."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Four bets made it through."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "1. The workflow is a plain-text artifact",
+      "id": "1-the-workflow-is-a-plain-text-artifact"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first version already put the job in YAML. The current language is much stricter, but the ownership model is unchanged: the workflow belongs in the project, not in a remote editor or a conversation account."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This choice keeps paying rent. A plain-text plan can be reviewed before execution. It can travel through Git. An agent can author it and a human can inspect the exact artifact. A future runtime can read it without asking the original service for permission."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The syntax was replaceable. The artifact was not."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "2. Dependencies should be visible as a graph",
+      "id": "2-dependencies-should-be-visible-as-a-graph"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The early page promised DAG execution because useful workflows already contain ordering. Some tasks need the output of another. Others can run together. Hiding those relationships in a prompt does not remove the graph. It only makes the scheduler guess."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika kept the graph and removed the spectacle around it. A task declares what it follows. The engine derives the execution plan. The same structure can be checked, rendered, costed and traced."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is one of the quiet advantages of Intent as Code. The plan is not a screenshot generated after the run. It is present before anything acts."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "3. Model choice is a parameter, not the architecture",
+      "id": "3-model-choice-is-a-parameter-not-the-architecture"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first version named several cloud and local model families. Some of those model names aged almost immediately. The separation did not."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A workflow should not need a new shape when the model changes. The task says what kind of work it needs. The "
+        },
+        {
+          "k": "code",
+          "text": "model:"
+        },
+        {
+          "k": "text",
+          "text": " selection says where that work is sent. The runtime owns provider-specific mechanics."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That boundary is what lets one file move between a local rehearsal and a cloud model without becoming two products. It also makes the destination reviewable. Provider independence is not a promise that all models behave identically. It is a promise that the rest of the workflow does not have to become provider glue."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "4. The runner should be a local executable",
+      "id": "4-the-runner-should-be-a-local-executable"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Rust was present in the first public story and stayed through the rebuild. The important part is not a language benchmark. It is distribution and custody."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A single local binary can parse, check and run a workflow without making a hosted control plane the owner of the file. It can expose the same engine to a terminal, a scheduler or a server adapter. It can fail on the machine where the boundary must be enforced."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That choice became more important as Nika grew. A remote API may be useful, but it should project the runtime rather than replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. Local is the foundation that keeps those doors honest."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Survival is a better origin story than certainty",
+      "id": "survival-is-a-better-origin-story-than-certainty"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first version also contained ideas that did not survive. Some were redundant language. Some were controls without enough enforcement beneath them. Some were marketing claims without a measurement."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Removing them was not loss of vision. It was how the vision became testable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The durable kernel can be stated without a feature count: write the work in a file, make its dependencies visible, choose the model without rewriting the plan, and run it through an engine you can hold. Everything else has to justify itself against that center."
+        }
+      ]
+    }
+  ],
+  "the-first-page-was-too-sure": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first public "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " landing page landed on December 30, 2025. The commit still exists. So does the page it replaced."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It already contained the durable center of Nika: workflows in YAML, a Rust command-line tool, a task graph and a choice of model providers. It also called the product production-ready, promised a ten-times speedup, treated "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " as a semantic verb and displayed a permissive license that the current engine no longer uses."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The idea was real. The confidence was ahead of the evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is not an unusual first website. A young product page tries to compress possibility into certainty. The mistake is leaving the certainty unexamined once the product becomes something people may trust with credentials, files and money."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A number without a measurement is decoration",
+      "id": "a-number-without-a-measurement-is-decoration"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "“10x faster” looked precise. It had no named baseline, workload, machine or benchmark report on the page. Without those, the number did not tell a reader anything they could reproduce."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current site treats numbers differently. Language counts are generated from the canonical specification instead of being typed into marketing copy. Release pages list actual assets and digests. Performance claims need a workload and a receipt. If the measurement changes, the projection changes with it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is a stricter standard because Nika is a tool for writing claims that machines will act on. The website cannot ask workflow authors to be precise while granting itself an exemption."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "“Production-ready” hid several questions",
+      "id": "production-ready-hid-several-questions"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ready for which production?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A local summarization job and an unattended server process do not carry the same risk. A model-only task and a shell command do not need the same authority. A successful demo does not prove crash recovery, secret confinement or replay semantics."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The early page collapsed those questions into one badge. The project later learned to separate them:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the language says whether a file is valid;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the checker judges what can be known before a run;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the runtime executes the graph;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "permits bound effects;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the trace records what happened;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "deployment guidance names what the host must provide."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "None of those facts becomes true because a page says “production-ready.” Each needs its own mechanism and test."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The vocabulary had not earned its shape either",
+      "id": "the-vocabulary-had-not-earned-its-shape-either"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first page advertised "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " as a verb. The current language keeps "
+        },
+        {
+          "k": "code",
+          "text": "infer"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": ". Fetching became a standard-library operation rather than a second way to express tool use."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That subtraction matters. A language is easier to teach when each concept has one obvious home. It is easier to implement when two paths do not compete for the same effect. The first page captured an exploration. The later specification had to capture a law."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The license changed for the same reason. “Open source” was not specific enough for the promise Nika wanted to make. The specification became permissive so anyone can implement the language. The engine became copyleft so improvements to a networked fork remain available. The current split is an architectural decision, not a badge."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep the first page",
+      "id": "keep-the-first-page"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "We could treat the old landing page as an embarrassment and bury it. It is more useful as a baseline."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It shows which ideas survived before the current engine existed. It also shows why public copy needs the same discipline as public code. Claims drift. Counts drift. Product vocabulary tightens. A page without a source of truth quietly becomes a second product."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first page was too sure. The correction was not to become timid. It was to make confidence follow evidence."
+        }
+      ]
+    }
+  ],
+  "the-file-came-before-the-language": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is a retrospective, not a recovered November changelog. The public repository has no November commit we can point to. What survives is the October note on one side and the first "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " page on the other. The useful story is the design choice between them, not a cleaner timeline than the evidence allows."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first choice was not YAML. It was "
+        },
+        {
+          "k": "strong",
+          "text": "a file"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That sounds small now because every Nika workflow is a file. At the time, it separated three things that chat products kept mixing together:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the conversation used to discover a method;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the method itself;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "one execution of that method."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A transcript can contain all three, but it does not distinguish them. It keeps the false starts, the corrections and the final instruction in one scroll. Copying the last prompt into a prompt library helps, but it still leaves the rest of the job implicit. Which material should be read? Which steps can run together? Which model is allowed to see which input? Where does the result go? What happens when a step fails?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file was the answer because a file already participates in software practice. It can be named, diffed, reviewed, copied, signed and deleted. It can live beside the work it affects. It does not need the product that created it to remain readable."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The object had to describe work, not conversation",
+      "id": "the-object-had-to-describe-work-not-conversation"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The earliest mental model was a short declaration:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "read these inputs\nrun these steps\nuse a model here\ncall a tool there\nwrite the result here"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "No transcript. No simulated team. No invisible planning ritual."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is why the language later became task-shaped. A task has an identity and an effect. Dependencies form a graph because work already has dependencies, whether the author draws them or leaves them buried in prose. Outputs are named because the next task needs an object, not a memory of what the model said three messages ago."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "YAML came after that. It was a practical container for a document people could read without a compiler course. The important decision was not indentation. It was that the document would describe the intent of the work while the runtime remained responsible for execution."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Portability started as a writing rule",
+      "id": "portability-started-as-a-writing-rule"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Provider independence is often described as an adapter feature. It started earlier, as a rule for the file."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If the method only makes sense inside one chat product, it is not yet the method. The durable parts are the inputs, the graph, the boundaries and the expected output. A model name is one selection inside that description. It may change because a better model appears, a local model becomes sufficient or a provider disappears. The work should remain recognizable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That rule is still visible in a current Nika workflow. Changing "
+        },
+        {
+          "k": "code",
+          "text": "model:"
+        },
+        {
+          "k": "text",
+          "text": " does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may differ, but the plan remains the plan."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What November does not prove",
+      "id": "what-november-does-not-prove"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It would be easy to turn this month into a list of invented milestones: first parser, first run, first perfect syntax. We do not have public receipts for those claims, so this article does not make them."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "What we can say is narrower. The October objection had become a design constraint by the time the first public page appeared in December. AI work worth repeating should become a durable object. That object should describe the work rather than preserve the conversation. It should be readable without the service that executes it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The language would change repeatedly after that. The file did not."
         }
       ]
     }
@@ -16241,6 +17108,26 @@ export const BLOG_POST_COPY: Record<string, BlogPostCopy> = {
   "naming-the-drum": {
     "description": "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.",
     "file": "2026-03-21-naming-the-drum.md",
+    "author": "Thibaut Melen"
+  },
+  "the-part-git-cannot-prove": {
+    "description": "The public record goes quiet between the first site and the engine rebuild. An honest history keeps that gap visible.",
+    "file": "2026-02-the-part-git-cannot-prove.md",
+    "author": "Thibaut Melen"
+  },
+  "what-survived-the-first-version": {
+    "description": "The early product carried too many promises. Four technical bets survived every rewrite because they kept answering the same user problem.",
+    "file": "2026-01-what-survived-the-first-version.md",
+    "author": "Thibaut Melen"
+  },
+  "the-first-page-was-too-sure": {
+    "description": "The first nika.sh landing page went live with a real idea and claims the code had not earned. Keeping both facts is part of the history.",
+    "file": "2025-12-30-the-first-page-was-too-sure.md",
+    "author": "Thibaut Melen"
+  },
+  "the-file-came-before-the-language": {
+    "description": "Before Nika had syntax, it had one constraint: useful AI work had to leave the chat and become an object you could keep.",
+    "file": "2025-11-the-file-came-before-the-language.md",
     "author": "Thibaut Melen"
   },
   "the-note-that-started-it": {

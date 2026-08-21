@@ -3,6 +3,7 @@ slug: the-access-layer-is-an-operating-contract
 title: "The access layer is an operating contract"
 tag: Engine
 date: 2026-08-20
+published: 2026-08-21
 description: "From v0.108.0 to v0.111.0, Nika separated the model you choose from the path that reaches it, cut the workflow language to its durable core, added an explicit scheduler and turned check into an authoring loop."
 ---
 

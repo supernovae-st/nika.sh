@@ -93,6 +93,35 @@ export function compilePost(raw, file, canon) {
   const meta = parseYaml(m[1])
   for (const key of ['slug', 'title', 'tag', 'date', 'description'])
     if (!meta[key]) throw new Error(`${file}: frontmatter missing "${key}"`)
+  const storyDate = String(meta.date)
+  const published = meta.published ? String(meta.published) : undefined
+  if (meta.receipts !== undefined && !Array.isArray(meta.receipts))
+    throw new Error(`${file}: "receipts" must be a YAML list of first-party commit URLs`)
+  const receipts = (meta.receipts ?? []).map(String)
+  const receiptPattern = /^https:\/\/github\.com\/supernovae-st\/(?:nika|nika-spec|nika\.sh)\/commit\/[0-9a-f]{40}$/
+  for (const receipt of receipts)
+    if (!receiptPattern.test(receipt))
+      throw new Error(`${file}: invalid first-party commit receipt "${receipt}"`)
+  if (new Set(receipts).size !== receipts.length)
+    throw new Error(`${file}: duplicate commit receipt`)
+  const validDate = (value, allowMonth) => {
+    const match = value.match(allowMonth ? /^(\d{4})-(\d{2})(?:-(\d{2}))?$/ : /^(\d{4})-(\d{2})-(\d{2})$/)
+    if (!match) return false
+    const [, year, month, day] = match
+    if (Number(month) < 1 || Number(month) > 12) return false
+    if (!day) return true
+    const normalized = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)))
+      .toISOString()
+      .slice(0, 10)
+    return normalized === value
+  }
+  if (!validDate(storyDate, true))
+    throw new Error(`${file}: "date" must be YYYY-MM or YYYY-MM-DD`)
+  if (published && !validDate(published, false))
+    throw new Error(`${file}: "published" must be YYYY-MM-DD`)
+  const storyFloor = storyDate.length === 7 ? `${storyDate}-01` : storyDate
+  if (published && published <= storyFloor)
+    throw new Error(`${file}: "published" must be later than retrospective "date"`)
   const body = applyCanonMarkers(raw.slice(m[0].length), canon, file)
 
   const tokens = []
@@ -135,7 +164,9 @@ export function compilePost(raw, file, canon) {
     file,
     title: String(meta.title),
     tag: String(meta.tag),
-    date: String(meta.date),
+    date: storyDate,
+    ...(published ? { published } : {}),
+    ...(receipts.length ? { receipts } : {}),
     description: String(meta.description),
     /* authorship (D8) · Person for E-E-A-T: a post without `author:` in its
        frontmatter inherits the house default — zero migration of the pack */
@@ -153,6 +184,11 @@ export function compilePost(raw, file, canon) {
    series = one row + `series:` lines in its posts — the gates below refuse
    half-wired states (unknown id · singleton series · missing stop label). */
 export const SERIES = {
+  'origin-ledger': {
+    title: 'The origin ledger',
+    claim: 'Six records, one honest beginning',
+    stops: ['note', 'file', 'first-page', 'kernel', 'silence', 'name'],
+  },
   'trace-family': {
     title: 'The trace family',
     claim: 'One recorded file, five jobs',
@@ -213,7 +249,7 @@ function rssOf(posts) {
   const items = posts
     .map((p) => {
       const url = `${SITE}/blog/${p.slug}`
-      const pub = new Date(`${p.date}T09:00:00Z`).toUTCString()
+      const pub = new Date(`${p.published ?? p.date}T09:00:00Z`).toUTCString()
       return `    <item>\n      <title>${esc(p.title)}</title>\n      <link>${url}</link>\n      <guid isPermaLink="true">${url}</guid>\n      <pubDate>${pub}</pubDate>\n      <category>${esc(p.tag)}</category>\n      <description>${esc(p.description)}</description>\n    </item>`
     })
     .join('\n')
@@ -270,6 +306,10 @@ export interface BlogPost {
   title: string
   tag: string
   date: string
+  /** actual first publication date when this is a later retrospective */
+  published?: string
+  /** exact first-party commits used as historical receipts */
+  receipts?: string[]
   readingMin: number
   /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
   series?: string
@@ -321,7 +361,13 @@ export const BLOG_POST_COPY: Record<string, BlogPostCopy> = ${JSON.stringify(cop
       const m = raw.match(/^---\n([\s\S]*?)\n---\n/)
       const meta = parseYaml(m[1])
       const body = applyCanonMarkers(raw.slice(m[0].length), canon, file).trim()
-      return `---\n\n## ${meta.title}\nurl: https://nika.sh/blog/${meta.slug}\ndate: ${meta.date} · tag: ${meta.tag}\n\n${body}\n`
+      const dates = meta.published
+        ? `story-date: ${meta.date} · published: ${meta.published}`
+        : `published: ${meta.date}`
+      const receipts = Array.isArray(meta.receipts) && meta.receipts.length
+        ? `\ncommit-receipts: ${meta.receipts.join(' · ')}`
+        : ''
+      return `---\n\n## ${meta.title}\nurl: https://nika.sh/blog/${meta.slug}\n${dates} · tag: ${meta.tag}${receipts}\n\n${body}\n`
     }),
   ].join('\n')
   const projectionBytes = new Map([

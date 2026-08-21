@@ -3,6 +3,7 @@ slug: the-run-keeps-its-receipt
 title: "The run keeps its receipt"
 tag: Engine
 date: 2026-08-08
+published: 2026-08-21
 description: "A trace is more than a log: it can replay without effects, resume verified work, expose one task, export to OpenTelemetry and assemble a redacted evidence pack."
 ---
 

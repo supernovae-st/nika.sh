@@ -3,6 +3,7 @@ slug: workflow-ecosystem-field-guide
 title: "A field guide to the Nika workflow ecosystem"
 tag: Engine
 date: 2026-08-19
+published: 2026-08-21
 description: "Choose deliberately among model providers, local runtimes, builtins, MCP servers and coding-agent surfaces without turning the workflow into vendor glue."
 ---
 

@@ -3,6 +3,7 @@ slug: coding-agents-write-plans
 title: "Let coding agents write plans, not policy"
 tag: Agents
 date: 2026-08-17
+published: 2026-08-21
 description: "Codex, Claude Code, Cursor and other coding agents can author Nika workflows while the checker, the human review and the runner keep separate authority."
 ---
 

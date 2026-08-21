@@ -6,7 +6,7 @@
 
 ## Clean is not ready to spend
 url: https://nika.sh/blog/clean-is-not-ready-to-spend
-date: 2026-08-21 · tag: Engine|Security
+published: 2026-08-21 · tag: Engine|Security
 
 An AI workflow can pass validation and still be a bad place to spend money.
 
@@ -119,7 +119,7 @@ Read the [v0.111.0 release](https://github.com/supernovae-st/nika/releases/tag/v
 
 ## AI workflows on ARM64 Linux servers, without the missing safety step
 url: https://nika.sh/blog/arm64-ai-workflows-on-linux-servers
-date: 2026-08-21 · tag: Engine|Sovereignty
+published: 2026-08-21 · tag: Engine|Sovereignty
 
 An ARM64 server does not need a separate workflow language, a container full of glue, or a weaker security story. It needs a native binary, a visible enforcement backend, a preflight check, and a trace that survives after the job exits. Nika treats those as separate facts, which makes the operating path easier to review.
 
@@ -257,7 +257,7 @@ ARM64 support is the first line of that checklist, not the last. The useful depl
 
 ## The access layer is an operating contract
 url: https://nika.sh/blog/the-access-layer-is-an-operating-contract
-date: 2026-08-20 · tag: Engine
+story-date: 2026-08-20 · published: 2026-08-21 · tag: Engine
 
 Four releases landed in two weeks, and reading only the feature names makes them look unrelated. Access paths. A smaller envelope. An arming registry. A richer check response. Underneath, they are one change: **the path from authored intent to an effect became explicit enough to inspect, pin and refuse.**
 
@@ -344,7 +344,7 @@ Read the [v0.108.0](/releases/v0.108.0), [v0.109.2](/releases/v0.109.2), [v0.110
 
 ## A field guide to the Nika workflow ecosystem
 url: https://nika.sh/blog/workflow-ecosystem-field-guide
-date: 2026-08-19 · tag: Engine
+story-date: 2026-08-19 · published: 2026-08-21 · tag: Engine
 
 A modern AI workflow sits at the intersection of several ecosystems. There are model providers, local runtimes, built-in tools, MCP servers, coding agents, editors and CI runners. Each offers a way to make the system more capable. Each can also become a source of accidental complexity.
 
@@ -562,7 +562,7 @@ The plan stays the stable center. Choose each surrounding layer for one reason, 
 
 ## Let coding agents write plans, not policy
 url: https://nika.sh/blog/coding-agents-write-plans
-date: 2026-08-17 · tag: Agents
+story-date: 2026-08-17 · published: 2026-08-21 · tag: Agents
 
 Coding agents are good at turning an intention into a first draft. They inspect a repository, find the relevant files, imitate local conventions and revise from diagnostics. That makes them natural authors of repeatable AI workflows.
 
@@ -738,7 +738,7 @@ The coding agent writes the plan. It does not write the policy by which its own 
 
 ## The CI job should know its boundary
 url: https://nika.sh/blog/ci-without-ambient-authority
-date: 2026-08-15 · tag: Security
+story-date: 2026-08-15 · published: 2026-08-21 · tag: Security
 
 Continuous integration is where automation becomes authority.
 
@@ -920,7 +920,7 @@ CI is not merely where a workflow happens to run. It is the boundary where autho
 
 ## Retire the prompt glue
 url: https://nika.sh/blog/retire-the-prompt-glue
-date: 2026-08-13 · tag: Language
+story-date: 2026-08-13 · published: 2026-08-21 · tag: Language
 
 Prompt glue usually begins as a useful ten-line script.
 
@@ -1120,7 +1120,7 @@ The result may be longer than the first ten-line prototype. It is smaller than t
 
 ## Intent as Code is an engineering discipline
 url: https://nika.sh/blog/intent-as-code-engineering-discipline
-date: 2026-08-11 · tag: Manifesto
+story-date: 2026-08-11 · published: 2026-08-21 · tag: Manifesto
 
 The first version of an AI task is often a conversation. You explain the problem, add context, correct a misunderstanding and keep going until the answer becomes useful. That is a good way to discover the work. It is a poor way to operate the work again.
 
@@ -1264,7 +1264,7 @@ Explore in conversation. Keep the useful decisions in source. Check the file bef
 
 ## The run keeps its receipt
 url: https://nika.sh/blog/the-run-keeps-its-receipt
-date: 2026-08-08 · tag: Engine
+story-date: 2026-08-08 · published: 2026-08-21 · tag: Engine
 
 A successful AI workflow leaves two questions behind.
 
@@ -1413,7 +1413,7 @@ Continue with [The chain of custody](/blog/the-chain-of-custody), [The resume st
 
 ## The two clocks behind a model string
 url: https://nika.sh/blog/the-two-clocks-behind-a-model-string
-date: 2026-08-03 · tag: Language
+story-date: 2026-08-03 · published: 2026-08-21 · tag: Language
 
 The line `model: anthropic/claude-sonnet-4-6` looks complete.
 
@@ -1528,7 +1528,7 @@ Browse the [model register](/catalog/models), inspect the current [release recor
 
 ## One workflow, three local model lanes
 url: https://nika.sh/blog/one-workflow-three-local-model-lanes
-date: 2026-07-29 · tag: Sovereignty
+story-date: 2026-07-29 · published: 2026-08-21 · tag: Sovereignty
 
 “Run it locally” is not one setup. A laptop developer wants a model up in minutes. A desktop user may want a visual model library and a server button. A team with GPUs wants batching, concurrency and an endpoint that survives the person who launched it.
 
@@ -1668,7 +1668,7 @@ Use the [local model guide](/install/local-models), browse every [provider room]
 
 ## MCP with a blast radius
 url: https://nika.sh/blog/mcp-with-a-blast-radius
-date: 2026-07-24 · tag: Security
+story-date: 2026-07-24 · published: 2026-08-21 · tag: Security
 
 MCP makes tools easy to discover. It does not make them safe to run.
 
@@ -1814,7 +1814,7 @@ Continue with [The MCP server you didn't have to build](/blog/the-mcp-server-you
 
 ## The registry re-proves everything
 url: https://nika.sh/blog/the-registry-reproves-everything
-date: 2026-07-14 · tag: Engine
+published: 2026-07-14 · tag: Engine
 
 npm taught everyone the failure mode: *install* means *trust the publisher*. A name you recognize, a README that reads well, and a postinstall script runs on your machine with your credentials in reach. Every package ecosystem since has rediscovered the same wound (typosquats, rug-pulled versions, maintainers gone rogue) and patched it with process: more review, more badges, more gatekeepers to trust instead.
 
@@ -1884,7 +1884,7 @@ Sharing was always the point of making [the intent a file](/blog/intent-as-code)
 
 ## Written by agents, reviewed by you
 url: https://nika.sh/blog/written-by-agents
-date: 2026-07-11 · tag: Agents
+published: 2026-07-11 · tag: Agents
 
 Your agent already writes code you review. That contract (the agent drafts, the diff is the meeting point, nothing merges unread) is the only reason agents are allowed near serious codebases at all. Then the same agent proposes to *run* something, and the contract quietly dissolves: the plan lives in chat scrollback, execution is whatever the loop decides in the moment, and "review" means watching it happen. [The file already made prompts reviewable](/blog/prompts-are-code); this post is about the division of labor that falls out of it: the agent writes the file, a machine audits it, and you review a diff instead of a transcript.
 
@@ -2039,7 +2039,7 @@ Count what the human actually did in this story. Zero YAML written. One ask, wor
 
 ## The pipeline is a file
 url: https://nika.sh/blog/the-pipeline-is-a-file
-date: 2026-07-11 · tag: Language
+published: 2026-07-11 · tag: Language
 
 An llm pipeline is a graph of model calls, tools and processes, wired by data dependencies. That is the whole definition. And the industry's default answer to "how do I build one" is a framework: pick an SDK, learn its abstractions, write the glue code that calls the model, passes the output, handles the retry. That is a program which *performs* the graph, step by imperative step.
 
@@ -2128,7 +2128,7 @@ The next pipeline you sketch, try writing the *shape* first: the tasks, and who 
 
 ## The MCP server you didn't have to build
 url: https://nika.sh/blog/the-mcp-server-you-didnt-build
-date: 2026-07-11 · tag: Engine
+published: 2026-07-11 · tag: Engine
 
 "How to build an MCP server" is this year's most-searched developer tutorial, and the ecosystem's answer is a scaffold: pick an SDK, define your tools, wire the transport, keep the schema in sync with the thing it describes, forever. Before you build one for your workflow tooling, check whether it already exists. If the workflow tool is Nika, it does, and it shipped inside the binary you already installed:
 
@@ -2172,7 +2172,7 @@ The deeper reason this beats the server you would have built: **it cannot drift.
 
 ## The forecast is local
 url: https://nika.sh/blog/the-local-forecast
-date: 2026-07-11 · tag: Engine
+published: 2026-07-11 · tag: Engine
 
 Two questions decide whether a pipeline is safe to re-run: how long will it take, and what will it cost? The industry's answer is a dashboard: ship your telemetry to somebody's cloud, and they will sell your own history back to you as graphs. Nika's answer is a flag:
 
@@ -2258,7 +2258,7 @@ The cloud version of this feature exists everywhere, and it is a fine business: 
 
 ## The generative ai workflow, minus the mystery
 url: https://nika.sh/blog/the-generative-workflow
-date: 2026-07-11 · tag: Language
+published: 2026-07-11 · tag: Language
 
 A generative ai workflow, with the buzzword stripped, is three things: **inputs you name**, **a model step**, and **effects you can point to**, meaning files that exist afterward and didn't before. Every image pipeline, every audio pack, every "brief to assets" product flow reduces to that triple. The mystery lives entirely in how those three usually stay *implicit*: the inputs buried in a notebook, the model step wrapped in a vendor helper script, the effects scattered wherever the SDK felt like writing.
 
@@ -2370,7 +2370,7 @@ That is the whole demystification. Not a platform, not a "creative AI stack": a 
 
 ## The chain of custody
 url: https://nika.sh/blog/the-chain-of-custody
-date: 2026-07-11 · tag: Engine
+published: 2026-07-11 · tag: Engine
 
 Your pipeline ran last Tuesday. The trace says five tasks went green, the summary came from a local model, and the whole thing cost nothing. Now the compliance question: *prove it*. The trace is an NDJSON file, plain text, one event per line, sitting in `.nika/traces/`. Plain text is wonderful for `grep` and terrible for trust, because anyone with write access can make last Tuesday say anything.
 
@@ -2421,7 +2421,7 @@ The quiet economy here is that this is not a new artifact. The trace being verif
 
 ## The agent workflow spectrum
 url: https://nika.sh/blog/the-agent-workflow-spectrum
-date: 2026-07-11 · tag: Language
+published: 2026-07-11 · tag: Language
 
 An ai agent workflow is any pipeline where a model chooses some of the steps. That single property splits the whole design space into a spectrum with two poles. At one end, the **declared graph**: every task and edge written down before anything runs, [the pipeline that is a file](/blog/the-pipeline-is-a-file), which an engine can schedule, price and audit statically. At the other, the **free loop**: the model reads, decides, acts, repeats. Maximally flexible, and nothing about it can be known in advance, which is why its failures make headlines.
 
@@ -2508,7 +2508,7 @@ So place your next workflow on the spectrum honestly. Write the steps whose shap
 
 ## The run that waits for you
 url: https://nika.sh/blog/the-run-that-waits
-date: 2026-07-10 · tag: Engine
+published: 2026-07-10 · tag: Engine
 
 Every serious pipeline eventually needs a human in it. Ship the release note, *after someone reads it*. Send the refund, *after someone approves it*. The usual place that approval lives is a Slack thread, a dashboard button, a "reply YES to continue" email: somewhere outside the logic, invisible to review, lost to the audit.
 
@@ -2607,7 +2607,7 @@ Chats evaporate. Files compound. Even the "hey, can someone approve this?" is a 
 
 ## The resume story
 url: https://nika.sh/blog/the-resume-story
-date: 2026-07-10 · tag: Engine
+published: 2026-07-10 · tag: Engine
 
 Every long pipeline eventually meets a hard death. The laptop lid closes, the CI runner is reaped, someone trips over `Ctrl-C` twice. The question that decides whether that hurts is not *did it crash*. Everything crashes. It is **what happens to the work that already finished?**
 
@@ -2719,7 +2719,7 @@ The same journal is the [flight recorder you can replay](/blog/the-trace-you-can
 
 ## The one-task re-run
 url: https://nika.sh/blog/the-one-task-rerun
-date: 2026-07-10 · tag: Engine
+published: 2026-07-10 · tag: Engine
 
 Every pipeline has this moment: one block is wrong. The page rendered from stale data, one summary came out weird, one artifact needs regenerating. And the tool gives you exactly one lever: run it all again. Every upstream API call re-billed, every finished artifact rewritten, ten minutes of pipeline for one second of fix.
 
@@ -2805,7 +2805,7 @@ Both levers read the same file everyone reviewed. Nobody wrote a `--skip-steps 3
 
 ## Prompts are code now
 url: https://nika.sh/blog/prompts-are-code
-date: 2026-07-08 · tag: Language
+published: 2026-07-08 · tag: Language
 
 Ask a team where their prompts live. A chat window. A doc titled `PROMPT_v2_FINAL_really`. An f-string three layers deep in a glue script. Then ask the question that matters during an incident: **which prompt produced this output?**
 
@@ -2931,7 +2931,7 @@ Every transcript in this post was captured verbatim against the released `nika 0
 
 ## The prompt injection that goes nowhere
 url: https://nika.sh/blog/injection-goes-nowhere
-date: 2026-07-08 · tag: Security
+published: 2026-07-08 · tag: Security
 
 Every list of prompt injection examples opens with the same demo, and it should scare you. You hand an agent a document to summarize. Somewhere in that document, an attacker has written:
 
@@ -3029,7 +3029,7 @@ Every transcript here was captured verbatim against the released `nika 0.97.0` (
 
 ## The run becomes evidence
 url: https://nika.sh/blog/the-run-becomes-evidence
-date: 2026-07-07 · tag: Engine
+published: 2026-07-07 · tag: Engine
 
 A workflow journal is a nice story until someone asks the auditor's question: **how do I know this record is what actually happened?**
 
@@ -3098,7 +3098,7 @@ Every transcript in this post was captured verbatim against the released `nika 0
 
 ## Time travel, for real
 url: https://nika.sh/blog/time-travel-for-real
-date: 2026-07-06 · tag: Engine
+published: 2026-07-06 · tag: Engine
 
 Every debugger you have ever used replays the past by **re-running it**. Set a breakpoint, restart the program, hope the bug happens again. If the program spends money, calls an API, or asks a model for tokens, every debugging session spends again, and a flaky failure may never reproduce at all.
 
@@ -3120,7 +3120,7 @@ We proved the whole wire on the shipping binary before writing this post, the ra
 
 ## The editor tells the truth
 url: https://nika.sh/blog/the-editor-tells-the-truth
-date: 2026-07-06 · tag: Engine
+published: 2026-07-06 · tag: Engine
 
 The Nika extension paints `nika check` verdicts in the margin as you type: a green badge on the file tree, audit chips on the canvas cards, squiggles under the exact byte span. All of it is a projection of one JSON report the binary emits. Which raises the only question that matters about any projection: **what happens when the source grows a field the projection doesn't know?**
 
@@ -3146,7 +3146,7 @@ None of this is editor-specific. It's the discipline for any client of any audit
 
 ## The credentials your pipeline was breaking
 url: https://nika.sh/blog/the-credentials-your-pipeline-breaks
-date: 2026-07-06 · tag: Security
+published: 2026-07-06 · tag: Security
 
 Ask an image API for a render in mid-2026 and you get back more than pixels. OpenAI's image models and Google's media models embed **C2PA Content Credentials** in the bytes they return: a cryptographically signed manifest saying *this came from us, generated, on this date*. We verified it the direct way: a `gpt-image-2` render requested through the plain API carries a `caBX` chunk, right there between `IHDR` and the pixel data.
 
@@ -3186,7 +3186,7 @@ Your assets are already signed. The least your tooling can do is stop breaking t
 
 ## One wire, five servers
 url: https://nika.sh/blog/one-wire-five-servers
-date: 2026-07-06 · tag: Sovereignty
+published: 2026-07-06 · tag: Sovereignty
 
 When we added image generation to the stdlib, the obvious move was a third cloud provider. The review said no: the engine already spoke to five *local* LLM runtimes, and the image path had zero. Sovereignty isn't a footnote in our doctrine: local-first is the presentation order, the default example, the first provider in every table. So we went looking for the local image wire.
 
@@ -3223,7 +3223,7 @@ Five servers today. The wire will outlive all of them. That's what a standard lo
 
 ## Media are workflow citizens
 url: https://nika.sh/blog/media-are-workflow-citizens
-date: 2026-07-06 · tag: Engine
+published: 2026-07-06 · tag: Engine
 
 Every automation platform bolted image generation on the same way: a node that calls one cloud API and drops base64 into your flow state. The file handling is your problem. The provenance is nobody's problem. The cost shows up on an invoice three weeks later.
 
@@ -3274,7 +3274,7 @@ Brief in. Assets, hashes, manifests and an exact bill out. That's what a workflo
 
 ## The trace you can replay
 url: https://nika.sh/blog/the-trace-you-can-replay
-date: 2026-07-05 · tag: Engine
+published: 2026-07-05 · tag: Engine
 
 Ask most AI tooling what happened during a run and you get logs: interleaved, truncated, gone at the next rotation. Ask what *exactly* happened, in what order, at what cost, and the honest answer is usually a shrug.
 
@@ -3310,7 +3310,7 @@ Chats evaporate. Files compound. It turns out that holds for the runs, too.
 
 ## The secrets line
 url: https://nika.sh/blog/the-secrets-line
-date: 2026-07-05 · tag: Security
+published: 2026-07-05 · tag: Security
 
 Every leaked credential has the same timeline: the key ends up in a log, a prompt, or a third-party host, and the grep that finds it runs after it is already there. The standard tooling answer is a scanner that hunts for strings shaped like keys, post hoc, best effort.
 
@@ -3384,7 +3384,7 @@ The [cost line](/blog/the-cost-line) bounded the spend before the meter started.
 
 ## The cost line
 url: https://nika.sh/blog/the-cost-line
-date: 2026-07-05 · tag: Engine
+published: 2026-07-05 · tag: Engine
 
 Every AI bill has the same shape: you find out what it cost after it cost it. The meter runs during the work, the invoice explains it later, and the only budget control is the sinking feeling.
 
@@ -3430,7 +3430,7 @@ The pattern is the site's whole thesis applied to money. The plan is reviewable 
 
 ## Anatomy of a verb
 url: https://nika.sh/blog/anatomy-of-a-verb
-date: 2026-07-05 · tag: Language
+published: 2026-07-05 · tag: Language
 
 The language locks at four verbs, and the [earlier post](/blog/four-verbs) made the case for why. This one is about the *what*: the rule says a verb is a distinct execution model, so it should be possible to point at the engine and show the distinction. Here is one file that uses all four, and what the audit actually says about each.
 
@@ -3484,7 +3484,7 @@ Four verbs, four failure surfaces, four budget shapes, one readable file. That i
 
 ## No cloud needed
 url: https://nika.sh/blog/own-your-stack
-date: 2026-07-02 · tag: Sovereignty
+story-date: 2026-07-02 · published: 2026-07-05 · tag: Sovereignty
 
 Local-first gets said a lot, and it means anything from "we cache" to "we sync, eventually". Here is what it means in Nika, concretely.
 
@@ -3512,7 +3512,7 @@ Your first run needs no key at all. That is not a trial mode. That is the archit
 
 ## The plan you get for free
 url: https://nika.sh/blog/dag-for-free
-date: 2026-06-29 · tag: Engine
+story-date: 2026-06-29 · published: 2026-07-05 · tag: Engine
 
 Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.
 
@@ -3556,7 +3556,7 @@ You never scheduled anything. The plan was in the file all along.
 
 ## Four verbs are enough
 url: https://nika.sh/blog/four-verbs
-date: 2026-06-22 · tag: Language
+story-date: 2026-06-22 · published: 2026-07-05 · tag: Language
 
 Every workflow language faces the same temptation: keep adding verbs. A verb for HTTP. A verb for files. A verb for email, for SQL, for whatever last week's integration needed. Ten years later the language is a catalog nobody can hold in their head, and every file is written in a different dialect of it.
 
@@ -3597,7 +3597,7 @@ That stillness is the promise. The file you write today is the file you run in t
 
 ## Intent as Code: why your AI work should be a file
 url: https://nika.sh/blog/intent-as-code
-date: 2026-06-15 · tag: Manifesto
+story-date: 2026-06-15 · published: 2026-07-05 · tag: Manifesto
 
 Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. **Where is it now?** For most people the honest answer is: gone. Buried in a chat history you will never scroll back through, on a server you don't control.
 
@@ -3615,7 +3615,7 @@ Chat is a great place to *figure out* what you want. It is a terrible place to *
 
 ## The blast radius is part of the file
 url: https://nika.sh/blog/blast-radius-in-the-file
-date: 2026-06-04 · tag: Security
+story-date: 2026-06-04 · published: 2026-07-05 · tag: Security
 
 Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage.
 
@@ -3659,7 +3659,7 @@ Capability declarations next to intent. It is one of the oldest ideas in securit
 
 ## A standard library, not a plugin store
 url: https://nika.sh/blog/standard-library-not-plugin-store
-date: 2026-05-14 · tag: Language
+story-date: 2026-05-14 · published: 2026-07-05 · tag: Language
 
 A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
 
@@ -3695,7 +3695,7 @@ The library grows. The language holds still. That trade is the design.
 
 ## An open spec, a copyleft engine
 url: https://nika.sh/blog/open-spec-copyleft-engine
-date: 2026-05-01 · tag: Sovereignty
+story-date: 2026-05-01 · published: 2026-07-05 · tag: Sovereignty
 
 The nika-spec repository went public this week, under Apache-2.0. The engine that runs it is AGPL-3.0-or-later. Two licenses for one project is a choice you should be able to interrogate, so here is the whole argument.
 
@@ -3711,7 +3711,7 @@ Licenses are boring until the Friday they are not. We picked ours so the file yo
 
 ## Starting over, on purpose
 url: https://nika.sh/blog/starting-over-on-purpose
-date: 2026-04-14 · tag: Origins
+story-date: 2026-04-14 · published: 2026-07-05 · tag: Origins
 
 By spring 2026 there was a working prototype. The note from October had become a real engine: files ran, models answered, tools fired. The fastest path from there was obvious: refactor what worked, extract the good parts, ship.
 
@@ -3733,9 +3733,10 @@ Starting over cost months. It bought a foundation that will not need to apologiz
 
 ## Naming the drum
 url: https://nika.sh/blog/naming-the-drum
-date: 2026-03-21 · tag: Origins
+story-date: 2026-03-21 · published: 2026-07-05 · tag: Origins
+commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5
 
-For months the project had no name. It was "the file thing": a note from October, a growing conviction, some early Rust. Then the question stopped being avoidable, because naming a thing is deciding what it is for.
+By the time the first `nika.sh` page went live in December 2025, the project had a name. What it did not yet have was a meaning precise enough to keep. The early page used Nika like a product label. By March, that was no longer enough, because naming a thing is deciding what it is for.
 
 The technical description was easy: a workflow language, four verbs, files you own. But the description missed the *reason*. We were not building a scheduler. We were building a way out of a trap: the trap where your best work, your context, your habits of thought all live behind someone else's login, priced monthly, revocable by letter.
 
@@ -3755,9 +3756,218 @@ The note asked for a file. The name asked for a fight worth having. The rest is 
 
 ---
 
+## The part Git cannot prove
+url: https://nika.sh/blog/the-part-git-cannot-prove
+story-date: 2026-02 · published: 2026-08-21 · tag: Origins
+commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5 · https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43 · https://github.com/supernovae-st/nika-spec/commit/7dd38aca0fe7e3ddc8f47f1a1b7e33133fbf09b8
+
+The public history of Nika has a gap.
+
+The first `nika.sh` commit is dated December 30, 2025. The current engine repository begins on April 13, 2026. The current specification repository begins on May 22. Those are repository facts. They do not prove that nobody thought, wrote prototypes or made decisions in between. They also do not prove the opposite.
+
+February is where a polished origin story would normally add a montage.
+
+We will not.
+
+## A commit proves less than memory and more than a story
+
+A Git commit can show that specific bytes existed in a repository at a recorded point in its history. It does not show every conversation that led there. It does not prove that the code was deployed, used correctly or safe. But it is still a stronger receipt than a confident recollection written months later.
+
+Memory can explain motive. The repository can establish sequence. Tests can establish behavior. A release artifact can establish what users could actually install. Each source answers a different question.
+
+Trouble starts when one is used to impersonate another.
+
+That is why these origin articles carry two dates. The story date places the subject in the product chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective. A reader can enjoy the narrative without being told it was published in a month when no blog existed.
+
+## The gap contains hypotheses, not releases
+
+Looking backward, we can see concerns that later became durable architecture: a plain-text workflow, a visible graph, provider choice and a local runner. We can see them on the December page and in the current product.
+
+What we cannot do is assign every mature idea to a convenient day inside the quiet period. The current permits model, four-verb language, conformance suite and crate architecture have later receipts. Saying they were already complete in February would make the later design work disappear.
+
+The honest sentence is smaller: the problem was stable before the solution was.
+
+The project knew that useful AI work should outlive a chat session. It had not yet earned every mechanism needed to keep that promise.
+
+## Why publish an article about missing evidence?
+
+Because Nika asks users to care about provenance.
+
+A trace should not claim an attestation it did not receive. A check should not call an unjudged constraint safe. A local model without a price row should be called unpriced, not free. The same standard belongs in the project history.
+
+An empty section in the record is not a branding failure. It is information. It tells future maintainers where they should rely on source and where they are reading recollection. It prevents a later article from becoming the accidental authority for an event it merely described.
+
+The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. Those chapters have commits, tests and releases behind them. February has a quieter receipt: we checked what the repositories could prove, found the boundary and kept it.
+
+Unknown remains unknown. That is not the absence of a story. It is the beginning of an honest one.
+
+---
+
+## What survived the first version
+url: https://nika.sh/blog/what-survived-the-first-version
+story-date: 2026-01 · published: 2026-08-21 · tag: Origins|Engine
+commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5 · https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43
+
+There is no single January commit that declares the kernel of Nika. This is a retrospective comparison between the first public page and the system that exists now. The interesting parts are the ones that survived several opportunities to be removed.
+
+Four bets made it through.
+
+## 1. The workflow is a plain-text artifact
+
+The first version already put the job in YAML. The current language is much stricter, but the ownership model is unchanged: the workflow belongs in the project, not in a remote editor or a conversation account.
+
+This choice keeps paying rent. A plain-text plan can be reviewed before execution. It can travel through Git. An agent can author it and a human can inspect the exact artifact. A future runtime can read it without asking the original service for permission.
+
+The syntax was replaceable. The artifact was not.
+
+## 2. Dependencies should be visible as a graph
+
+The early page promised DAG execution because useful workflows already contain ordering. Some tasks need the output of another. Others can run together. Hiding those relationships in a prompt does not remove the graph. It only makes the scheduler guess.
+
+Nika kept the graph and removed the spectacle around it. A task declares what it follows. The engine derives the execution plan. The same structure can be checked, rendered, costed and traced.
+
+This is one of the quiet advantages of Intent as Code. The plan is not a screenshot generated after the run. It is present before anything acts.
+
+## 3. Model choice is a parameter, not the architecture
+
+The first version named several cloud and local model families. Some of those model names aged almost immediately. The separation did not.
+
+A workflow should not need a new shape when the model changes. The task says what kind of work it needs. The `model:` selection says where that work is sent. The runtime owns provider-specific mechanics.
+
+That boundary is what lets one file move between a local rehearsal and a cloud model without becoming two products. It also makes the destination reviewable. Provider independence is not a promise that all models behave identically. It is a promise that the rest of the workflow does not have to become provider glue.
+
+## 4. The runner should be a local executable
+
+Rust was present in the first public story and stayed through the rebuild. The important part is not a language benchmark. It is distribution and custody.
+
+A single local binary can parse, check and run a workflow without making a hosted control plane the owner of the file. It can expose the same engine to a terminal, a scheduler or a server adapter. It can fail on the machine where the boundary must be enforced.
+
+That choice became more important as Nika grew. A remote API may be useful, but it should project the runtime rather than replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. Local is the foundation that keeps those doors honest.
+
+## Survival is a better origin story than certainty
+
+The first version also contained ideas that did not survive. Some were redundant language. Some were controls without enough enforcement beneath them. Some were marketing claims without a measurement.
+
+Removing them was not loss of vision. It was how the vision became testable.
+
+The durable kernel can be stated without a feature count: write the work in a file, make its dependencies visible, choose the model without rewriting the plan, and run it through an engine you can hold. Everything else has to justify itself against that center.
+
+---
+
+## The first page was too sure
+url: https://nika.sh/blog/the-first-page-was-too-sure
+story-date: 2025-12-30 · published: 2026-08-21 · tag: Origins
+commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5
+
+The first public `nika.sh` landing page landed on December 30, 2025. The commit still exists. So does the page it replaced.
+
+It already contained the durable center of Nika: workflows in YAML, a Rust command-line tool, a task graph and a choice of model providers. It also called the product production-ready, promised a ten-times speedup, treated `fetch` as a semantic verb and displayed a permissive license that the current engine no longer uses.
+
+The idea was real. The confidence was ahead of the evidence.
+
+That is not an unusual first website. A young product page tries to compress possibility into certainty. The mistake is leaving the certainty unexamined once the product becomes something people may trust with credentials, files and money.
+
+## A number without a measurement is decoration
+
+“10x faster” looked precise. It had no named baseline, workload, machine or benchmark report on the page. Without those, the number did not tell a reader anything they could reproduce.
+
+The current site treats numbers differently. Language counts are generated from the canonical specification instead of being typed into marketing copy. Release pages list actual assets and digests. Performance claims need a workload and a receipt. If the measurement changes, the projection changes with it.
+
+This is a stricter standard because Nika is a tool for writing claims that machines will act on. The website cannot ask workflow authors to be precise while granting itself an exemption.
+
+## “Production-ready” hid several questions
+
+Ready for which production?
+
+A local summarization job and an unattended server process do not carry the same risk. A model-only task and a shell command do not need the same authority. A successful demo does not prove crash recovery, secret confinement or replay semantics.
+
+The early page collapsed those questions into one badge. The project later learned to separate them:
+
+- the language says whether a file is valid;
+- the checker judges what can be known before a run;
+- the runtime executes the graph;
+- permits bound effects;
+- the trace records what happened;
+- deployment guidance names what the host must provide.
+
+None of those facts becomes true because a page says “production-ready.” Each needs its own mechanism and test.
+
+## The vocabulary had not earned its shape either
+
+The first page advertised `fetch` as a verb. The current language keeps `infer`, `exec`, `invoke` and `agent`. Fetching became a standard-library operation rather than a second way to express tool use.
+
+That subtraction matters. A language is easier to teach when each concept has one obvious home. It is easier to implement when two paths do not compete for the same effect. The first page captured an exploration. The later specification had to capture a law.
+
+The license changed for the same reason. “Open source” was not specific enough for the promise Nika wanted to make. The specification became permissive so anyone can implement the language. The engine became copyleft so improvements to a networked fork remain available. The current split is an architectural decision, not a badge.
+
+## Keep the first page
+
+We could treat the old landing page as an embarrassment and bury it. It is more useful as a baseline.
+
+It shows which ideas survived before the current engine existed. It also shows why public copy needs the same discipline as public code. Claims drift. Counts drift. Product vocabulary tightens. A page without a source of truth quietly becomes a second product.
+
+The first page was too sure. The correction was not to become timid. It was to make confidence follow evidence.
+
+---
+
+## The file came before the language
+url: https://nika.sh/blog/the-file-came-before-the-language
+story-date: 2025-11 · published: 2026-08-21 · tag: Origins|Language
+commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5
+
+This is a retrospective, not a recovered November changelog. The public repository has no November commit we can point to. What survives is the October note on one side and the first `nika.sh` page on the other. The useful story is the design choice between them, not a cleaner timeline than the evidence allows.
+
+The first choice was not YAML. It was **a file**.
+
+That sounds small now because every Nika workflow is a file. At the time, it separated three things that chat products kept mixing together:
+
+1. the conversation used to discover a method;
+2. the method itself;
+3. one execution of that method.
+
+A transcript can contain all three, but it does not distinguish them. It keeps the false starts, the corrections and the final instruction in one scroll. Copying the last prompt into a prompt library helps, but it still leaves the rest of the job implicit. Which material should be read? Which steps can run together? Which model is allowed to see which input? Where does the result go? What happens when a step fails?
+
+The file was the answer because a file already participates in software practice. It can be named, diffed, reviewed, copied, signed and deleted. It can live beside the work it affects. It does not need the product that created it to remain readable.
+
+## The object had to describe work, not conversation
+
+The earliest mental model was a short declaration:
+
+```text
+read these inputs
+run these steps
+use a model here
+call a tool there
+write the result here
+```
+
+No transcript. No simulated team. No invisible planning ritual.
+
+This is why the language later became task-shaped. A task has an identity and an effect. Dependencies form a graph because work already has dependencies, whether the author draws them or leaves them buried in prose. Outputs are named because the next task needs an object, not a memory of what the model said three messages ago.
+
+YAML came after that. It was a practical container for a document people could read without a compiler course. The important decision was not indentation. It was that the document would describe the intent of the work while the runtime remained responsible for execution.
+
+## Portability started as a writing rule
+
+Provider independence is often described as an adapter feature. It started earlier, as a rule for the file.
+
+If the method only makes sense inside one chat product, it is not yet the method. The durable parts are the inputs, the graph, the boundaries and the expected output. A model name is one selection inside that description. It may change because a better model appears, a local model becomes sufficient or a provider disappears. The work should remain recognizable.
+
+That rule is still visible in a current Nika workflow. Changing `model:` does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may differ, but the plan remains the plan.
+
+## What November does not prove
+
+It would be easy to turn this month into a list of invented milestones: first parser, first run, first perfect syntax. We do not have public receipts for those claims, so this article does not make them.
+
+What we can say is narrower. The October objection had become a design constraint by the time the first public page appeared in December. AI work worth repeating should become a durable object. That object should describe the work rather than preserve the conversation. It should be readable without the service that executes it.
+
+The language would change repeatedly after that. The file did not.
+
+---
+
 ## The note that started it
 url: https://nika.sh/blog/the-note-that-started-it
-date: 2025-10-17 · tag: Origins
+story-date: 2025-10-17 · published: 2026-07-05 · tag: Origins
 
 Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab.
 

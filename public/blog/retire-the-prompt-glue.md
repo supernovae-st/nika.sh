@@ -3,6 +3,7 @@ slug: retire-the-prompt-glue
 title: "Retire the prompt glue"
 tag: Language
 date: 2026-08-13
+published: 2026-08-21
 description: "A practical migration from brittle shell and Python prompt chains to a checked workflow whose graph, authority, cost and outputs are visible before it runs."
 ---
 

@@ -3,10 +3,15 @@ slug: naming-the-drum
 title: "Naming the drum"
 tag: Origins
 date: 2026-03-21
+published: 2026-07-05
+receipts:
+  - https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5
 description: "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit."
+series: origin-ledger
+series_stop: name
 ---
 
-For months the project had no name. It was "the file thing": a note from October, a growing conviction, some early Rust. Then the question stopped being avoidable, because naming a thing is deciding what it is for.
+By the time the first `nika.sh` page went live in December 2025, the project had a name. What it did not yet have was a meaning precise enough to keep. The early page used Nika like a product label. By March, that was no longer enough, because naming a thing is deciding what it is for.
 
 The technical description was easy: a workflow language, four verbs, files you own. But the description missed the *reason*. We were not building a scheduler. We were building a way out of a trap: the trap where your best work, your context, your habits of thought all live behind someone else's login, priced monthly, revocable by letter.
 

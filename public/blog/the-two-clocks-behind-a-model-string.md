@@ -3,6 +3,7 @@ slug: the-two-clocks-behind-a-model-string
 title: "The two clocks behind a model string"
 tag: Language
 date: 2026-08-03
+published: 2026-08-21
 description: "A provider name can be part of the stable language while its models, prices and access paths keep changing. Nika resolves those truths on separate clocks and records the result."
 ---
 

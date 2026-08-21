@@ -48,7 +48,7 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
     const rss = readFileSync(join(__dirname, '../../public/rss.xml'), 'utf8')
     for (const p of fresh) {
       expect(rss).toContain(`<link>https://nika.sh/blog/${p.slug}</link>`)
-      expect(rss).toContain(`<pubDate>${new Date(`${p.date}T09:00:00Z`).toUTCString()}</pubDate>`)
+      expect(rss).toContain(`<pubDate>${new Date(`${p.published ?? p.date}T09:00:00Z`).toUTCString()}</pubDate>`)
     }
   })
 
@@ -119,10 +119,39 @@ description: "d"
     expect(dates).toEqual([...dates].sort().reverse())
     for (const p of fresh) {
       expect(p.slug).toMatch(/^[a-z0-9-]+$/)
-      expect(p.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(p.date).toMatch(/^\d{4}-\d{2}(?:-\d{2})?$/)
+      if (p.published) {
+        expect(p.published).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+        expect(p.published > p.date).toBe(true)
+      }
       expect(p.readingMin).toBeGreaterThan(0)
       expect(p.tokens.length).toBeGreaterThan(2) /* fresh — the compiler still carries tokens */
     }
+  })
+
+  it('a retrospective separates its story date from its real publication date', () => {
+    const retrospective = compilePost(
+      `---\nslug: retrospective\ntitle: "T"\ntag: Origins\ndate: 2025-11\npublished: 2026-08-21\nreceipts:\n  - https://github.com/supernovae-st/nika/commit/0123456789abcdef0123456789abcdef01234567\ndescription: "d"\n---\n\nBody one.\n\nBody two.\n\nBody three.\n`,
+      'retrospective.md',
+      {},
+    )
+    expect(retrospective.date).toBe('2025-11')
+    expect(retrospective.published).toBe('2026-08-21')
+    expect(retrospective.receipts).toEqual([
+      'https://github.com/supernovae-st/nika/commit/0123456789abcdef0123456789abcdef01234567',
+    ])
+
+    expect(() => compilePost(
+      `---\nslug: false-history\ntitle: "T"\ntag: Origins\ndate: 2026-09\npublished: 2026-08-21\ndescription: "d"\n---\n\nBody.\n`,
+      'false-history.md',
+      {},
+    )).toThrow(/published.*later than retrospective/)
+
+    expect(() => compilePost(
+      `---\nslug: invented-receipt\ntitle: "T"\ntag: Origins\ndate: 2025-11\npublished: 2026-08-21\nreceipts:\n  - https://example.com/commit/short\ndescription: "d"\n---\n\nBody.\n`,
+      'invented-receipt.md',
+      {},
+    )).toThrow(/invalid first-party commit receipt/)
   })
 })
 
@@ -146,6 +175,13 @@ describe('/blog · series gates refuse half-wired reading paths', () => {
     const members = (compileAll() as typeof BLOG_POSTS).filter((p) => p.series === 'trace-family')
     expect(members.map((p) => p.seriesStop).sort()).toEqual(
       [...SERIES['trace-family'].stops].sort(),
+    )
+  })
+
+  it('members of the origin ledger cover its declared stops exactly once', () => {
+    const members = (compileAll() as typeof BLOG_POSTS).filter((p) => p.series === 'origin-ledger')
+    expect(members.map((p) => p.seriesStop).sort()).toEqual(
+      [...SERIES['origin-ledger'].stops].sort(),
     )
   })
 
