@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 63,
-    "block_count": 131
+    "carrier_count": 73,
+    "block_count": 172
   },
   "carriers": [
     {
@@ -697,6 +697,353 @@
       ]
     },
     {
+      "path": "content/blog/2026-07-24-mcp-with-a-blast-radius.md",
+      "source_blob": "1153db6c0f8468fd4aa9b566f09c3a091db2d9a6",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-07-24-mcp-with-a-blast-radius.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 28,
+          "language": "json",
+          "sha256": "fa68452063f798ca548c8f01fe56a9c58383b033016d623a1c6337cde7dc7c20"
+        },
+        {
+          "selector": "content/blog/2026-07-24-mcp-with-a-blast-radius.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 51,
+          "language": "yaml",
+          "sha256": "f9bec37788d11b2d276e3b40a31f35607a5fb78c9e8f63ebfdd5b96305669e4e"
+        },
+        {
+          "selector": "content/blog/2026-07-24-mcp-with-a-blast-radius.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 85,
+          "language": "yaml",
+          "sha256": "af1f5a7527216018eaf609fc30c5fa003b536f77fe251b40ead762e857e46387"
+        },
+        {
+          "selector": "content/blog/2026-07-24-mcp-with-a-blast-radius.md#fence:4",
+          "kind": "markdown-fence",
+          "line": 113,
+          "language": "text",
+          "sha256": "a6b7c438c92a2a0e987071d5baef7770896b2b006db7109a0a7dc63631612072"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md",
+      "source_blob": "825376ef1466ebb9a71d1ef6dbc076219b0252c7",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 13,
+          "language": "yaml",
+          "sha256": "e23bc8b5978bb3b9f384f1c3aa40363a2c14b43de10783cf9addec7b1d38db2d"
+        },
+        {
+          "selector": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 39,
+          "language": "text",
+          "sha256": "cbd2b61d94334179446c32c212049c295ad4d050aade7bbc35eeedd0a09e8e9c"
+        },
+        {
+          "selector": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 51,
+          "language": "text",
+          "sha256": "9e76fd330a2c1519a5e807ab7f5ae37ec322a774d720ca7425b0fc854e6008a7"
+        },
+        {
+          "selector": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md#fence:4",
+          "kind": "markdown-fence",
+          "line": 68,
+          "language": "yaml",
+          "sha256": "95ee5220efba38704eba25b4a4de7c9e4a747b3cee436dc67121b13306b04b59"
+        },
+        {
+          "selector": "content/blog/2026-07-29-one-workflow-three-local-model-lanes.md#fence:5",
+          "kind": "markdown-fence",
+          "line": 92,
+          "language": "yaml",
+          "sha256": "704756aeb03989546688720b627bc6a9ac3a46330a2af27ee4825ea53d3fa1d1"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-03-the-two-clocks-behind-a-model-string.md",
+      "source_blob": "8f91b8db9ca47663f7a8820ff7faebfff12ec596",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-03-the-two-clocks-behind-a-model-string.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 48,
+          "language": "yaml",
+          "sha256": "fe16ea5fcd23573bd1c40d9d3f860dcfb19cae614e68ae6839715166db51e140"
+        },
+        {
+          "selector": "content/blog/2026-08-03-the-two-clocks-behind-a-model-string.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 77,
+          "language": "text",
+          "sha256": "1259531d73fcea74442c5a46e206e46118eaa25a3282f035a231a13e5688e248"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-08-the-run-keeps-its-receipt.md",
+      "source_blob": "b0918b9729d9630ef28d7e0fd1b46abc0666a04e",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 19,
+          "language": "yaml",
+          "sha256": "0aa37d9775dd6b9c01525314d8066b2c5f786c3d36982476e8bc2400bf0a47b8"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 36,
+          "language": "text",
+          "sha256": "30fef875eb0e800503efa1ecde7b9bb8801fd47c32b3ec084907edf52376ef82"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 48,
+          "language": "text",
+          "sha256": "b7eae596c8cf52cd10cef8d7dfead01319b70997519d5e0c29acbb1fe1658bf8"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:4",
+          "kind": "markdown-fence",
+          "line": 59,
+          "language": "text",
+          "sha256": "548f87e954adc6d9c0e1c5fc0a1f03127a4e08dabb8f120b709f1aa04d240435"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:5",
+          "kind": "markdown-fence",
+          "line": 74,
+          "language": "text",
+          "sha256": "3f11bcb8fb3be0ba3e64425041835b968e393e2e446d8f94a6aec49c0e0a9661"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:6",
+          "kind": "markdown-fence",
+          "line": 86,
+          "language": "text",
+          "sha256": "234713c57c6fecc86235b68a70518194baa253b7f75f619d7775b6c094ab4229"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:7",
+          "kind": "markdown-fence",
+          "line": 96,
+          "language": "text",
+          "sha256": "faa0a046f454d448ee5b10bd1b41fddb73b5fc90ef1c01a3eebeb7fd37d3fba5"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:8",
+          "kind": "markdown-fence",
+          "line": 112,
+          "language": "text",
+          "sha256": "43b9b078bde71843bf0caff1438056f3aff52d1ab0671adf0eee35fd085f1e0c"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:9",
+          "kind": "markdown-fence",
+          "line": 126,
+          "language": "text",
+          "sha256": "493da5bca202627e82f2ab656441c7747d4212f4ca39747a239d35c19dced4c3"
+        },
+        {
+          "selector": "content/blog/2026-08-08-the-run-keeps-its-receipt.md#fence:10",
+          "kind": "markdown-fence",
+          "line": 134,
+          "language": "text",
+          "sha256": "f6ecc534abb769b1572812d01104a932a88e3b14914411b10fd71772c9bf17e1"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-11-intent-as-code-engineering-discipline.md",
+      "source_blob": "21a504080846980b9a2b5a543bf88c8bb5cadd28",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-11-intent-as-code-engineering-discipline.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 37,
+          "language": "yaml",
+          "sha256": "4088ce623fa0a20129c5d836e4819a55db85fee50afa4d179ad448ee00ad3dca"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-13-retire-the-prompt-glue.md",
+      "source_blob": "4c6138ac0af4c653d6c8a407b3728e925ea32204",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-13-retire-the-prompt-glue.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 48,
+          "language": "yaml",
+          "sha256": "8a08cee17280c041593ba42706d4ee616805235820f45262c0b5de22b6a6536c"
+        },
+        {
+          "selector": "content/blog/2026-08-13-retire-the-prompt-glue.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 159,
+          "language": "text",
+          "sha256": "b4d4d43034dc2872dee708673e82711259ba72ec64cadf2160d22c8bd69940b6"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-15-ci-without-ambient-authority.md",
+      "source_blob": "e333fd4b46a7c2ab45f1484979b7affdbd52178c",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 37,
+          "language": "bash",
+          "sha256": "f6405551c5e22cd1bde41383c4e47cb51dfbb76d8c44f9849fa8ffe79567056b"
+        },
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 52,
+          "language": "yaml",
+          "sha256": "12d0d9c867fb77651922a937fe8dbfe30bf1af89abf01c5530ae570e43a1cc75"
+        },
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 89,
+          "language": "bash",
+          "sha256": "65d3d620e631db670dfad8ec53f87accb9794a4e7093999899cd2140fe5d64eb"
+        },
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:4",
+          "kind": "markdown-fence",
+          "line": 103,
+          "language": "bash",
+          "sha256": "94f054c052bdeadbd97b57063417b6ded887868d25e074b52ccb4b0caa5d4b9b"
+        },
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:5",
+          "kind": "markdown-fence",
+          "line": 129,
+          "language": "bash",
+          "sha256": "6f55cf12b672d898029edfbff5deda6b6e4c8b6e1cefd503497ecf93c021b9fc"
+        },
+        {
+          "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#fence:6",
+          "kind": "markdown-fence",
+          "line": 160,
+          "language": "bash",
+          "sha256": "18fc8659f67fca53dd22e26eac9704d246662135df9ca685bfc589149f33e907"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-17-coding-agents-write-plans.md",
+      "source_blob": "a384e035f13a41b801bcc92a4cb574dd20f3ecc8",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-17-coding-agents-write-plans.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 45,
+          "language": "bash",
+          "sha256": "73c9b5de9e3a023f706fff1623936ffa35adda81ce61988bb4b62bb5122c3642"
+        },
+        {
+          "selector": "content/blog/2026-08-17-coding-agents-write-plans.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 63,
+          "language": "yaml",
+          "sha256": "5f6e005ceddeeb5b760b579999371fe9e4974465858be38e55b553f8afb41ca2"
+        },
+        {
+          "selector": "content/blog/2026-08-17-coding-agents-write-plans.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 135,
+          "language": "bash",
+          "sha256": "743db2b8d33bf3cc28b0ad54be13c9dadf3b10a14de4d059f3ad9fb460d73cf9"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md",
+      "source_blob": "e8752f541333a69c4d64a620421c672b575a174c",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 27,
+          "language": "text",
+          "sha256": "0f2dc57b70e83db349caf812e00484c172642f67fa32145fd0d1de205acee738"
+        },
+        {
+          "selector": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 33,
+          "language": "bash",
+          "sha256": "39a9f6f3b21da28a18ce21bc1167677df145bf246445e8fa500a8a42b038d6de"
+        },
+        {
+          "selector": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 48,
+          "language": "bash",
+          "sha256": "18df6f50f128c65870f0d3a4e358badeeb6cdac3451ba619d81792d6ac012ad3"
+        },
+        {
+          "selector": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md#fence:4",
+          "kind": "markdown-fence",
+          "line": 77,
+          "language": "yaml",
+          "sha256": "70ed339e6dea1716f496207ef6ae44fe915e7f87dd084a19d7067214a4286cee"
+        },
+        {
+          "selector": "content/blog/2026-08-19-workflow-ecosystem-field-guide.md#fence:5",
+          "kind": "markdown-fence",
+          "line": 128,
+          "language": "bash",
+          "sha256": "b8cac114c4d613db4041afeb19033fa599835646c434f4924f88859bb77c53e9"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md",
+      "source_blob": "b9f1caaa29897c25cb3104047eb8a98ebcf51522",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 13,
+          "language": "text",
+          "sha256": "9554587d09a01b82dd9454c5a262f949d1b5a555b792df514d8a137ffb571cd6"
+        },
+        {
+          "selector": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md#fence:2",
+          "kind": "markdown-fence",
+          "line": 29,
+          "language": "text",
+          "sha256": "ee90a1d6c9dcd9a69413013bf38c7e47cd826906e63bea8a03e9837fa42409c9"
+        },
+        {
+          "selector": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md#fence:3",
+          "kind": "markdown-fence",
+          "line": 35,
+          "language": "yaml",
+          "sha256": "547189a980d461c275baa573335137f59954d413d7f1a5d6047247e71f71cd0a"
+        }
+      ]
+    },
+    {
       "path": "content/blog/2026-08-21-arm64-ai-workflows-on-linux-servers.md",
       "source_blob": "74e4f96c3da14ff3e0da79e84206c6eb6f74ac44",
       "blocks": [
@@ -923,18 +1270,18 @@
     },
     {
       "path": "src/pages/Install.tsx",
-      "source_blob": "f0ce0eab9d4e3d4480faf9a5125944140f1b6726",
+      "source_blob": "329f48fd99718382e7b3395fc542d93193d0f0df",
       "blocks": [
         {
           "selector": "src/pages/Install.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 264,
+          "line": 268,
           "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         },
         {
           "selector": "src/pages/Install.tsx#codefile:2",
           "kind": "jsx-codefile",
-          "line": 276,
+          "line": 280,
           "sha256": "cb516f4c05f4422904a94e781bab0858de0c1a3061c2f15ab6ad16a64d9ff5a6"
         }
       ]

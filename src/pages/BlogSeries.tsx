@@ -4,7 +4,10 @@ import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { BLOG_POSTS, BLOG_SERIES } from '../content/blog.generated'
+import type { BlogPostCopy } from '../content/blog-bodies.generated'
 import { SITE, routeHead } from '../content'
+import { Island } from '../lib/ssg-island'
+import { useBlogCopy } from '../lib/use-blog-copy'
 import '../sections/v4-home.css'
 import './blog-page.css'
 import './tools-page.css'
@@ -21,15 +24,23 @@ export function Component() {
   const { id: rawId } = useParams()
   const id = (rawId ?? '').toLowerCase()
   const hit = BLOG_SERIES[id]
+  const members = useMemo(() => BLOG_POSTS.filter((p) => p.series === id), [id])
+  const { payload: copyPayload, copy } = useBlogCopy(
+    `blog-series-copy-${id}`,
+    members.map((post) => post.slug),
+  )
 
   /* the stops carry the reading order; each post names its stop */
+  type RichPost = (typeof BLOG_POSTS)[number] & BlogPostCopy
   const legs = useMemo(() => {
     if (!hit) return []
-    const members = BLOG_POSTS.filter((p) => p.series === id)
     return hit.stops
-      .map((stop) => ({ stop, post: members.find((p) => p.seriesStop === stop) }))
-      .filter((l): l is { stop: string; post: (typeof members)[number] } => Boolean(l.post))
-  }, [hit, id])
+      .map((stop) => {
+        const post = members.find((p) => p.seriesStop === stop)
+        return { stop, post: post && copy[post.slug] ? { ...post, ...copy[post.slug] } : undefined }
+      })
+      .filter((l): l is { stop: string; post: RichPost } => Boolean(l.post))
+  }, [copy, hit, members])
 
   const title = hit ? `${hit.title} · a reading path · Nika` : 'Not a reading path · Nika'
   const description = hit
@@ -78,6 +89,7 @@ export function Component() {
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="bs-title" className="v4sec v4-in" data-series={hit ? id : undefined}>
         <div className="v4sec-wrap">
+          <Island id={`blog-series-copy-${id}`} payload={copyPayload} />
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
             <Link to="/blog" className="td-crumb-link">
               ← the journal

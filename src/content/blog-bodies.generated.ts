@@ -1348,6 +1348,6676 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     }
   ],
+  "the-access-layer-is-an-operating-contract": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Four releases landed in two weeks, and reading only the feature names makes them look unrelated. Access paths. A smaller envelope. An arming registry. A richer check response. Underneath, they are one change: "
+        },
+        {
+          "k": "strong",
+          "text": "the path from authored intent to an effect became explicit enough to inspect, pin and refuse."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The quickest way to see it is a command that arrived in v0.108.0:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika run brief.nika.yaml --access local"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow still chooses its intelligence with "
+        },
+        {
+          "k": "code",
+          "text": "model:"
+        },
+        {
+          "k": "text",
+          "text": ". The new flag chooses how the engine may reach that intelligence. That distinction sounds small until one model can be available through several routes: a local runtime, a test double, an agent harness, an OAuth session or a provider API. A model name answers "
+        },
+        {
+          "k": "em",
+          "text": "what"
+        },
+        {
+          "k": "text",
+          "text": ". An access path answers "
+        },
+        {
+          "k": "em",
+          "text": "how"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Before the access layer, those answers could collapse into one provider branch. If the preferred route was unavailable, a runtime had a dangerous temptation: try another. That is convenient right until the substitute has a different billing account, trust boundary or custody story. Nika's pin refuses that temptation. If the requested access path is not satisfied on this machine, the run stops before its prologue, before a trace event and before spend. A pin never means “best effort”."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Without a pin, the admission-time resolver uses a deterministic order. It does not depend on enum order or whichever probe returned first. Every rejected candidate carries a witness that says which dimension failed and what the operator can do next. "
+        },
+        {
+          "k": "code",
+          "text": "nika check --json"
+        },
+        {
+          "k": "text",
+          "text": " exposes the plan, "
+        },
+        {
+          "k": "code",
+          "text": "nika explain"
+        },
+        {
+          "k": "text",
+          "text": " renders it for a person, and the run header names an explicit pin. The same decision is visible before, during and after the run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That was v0.108.0: "
+        },
+        {
+          "k": "code",
+          "text": "model:"
+        },
+        {
+          "k": "text",
+          "text": " chooses the intelligence; access chooses the path. The release also closed a security hole in the zero-authority scan. A shell-string "
+        },
+        {
+          "k": "code",
+          "text": "exec:"
+        },
+        {
+          "k": "text",
+          "text": " without "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": " had been deferred to runtime because the checker could not extract a safe program allowlist from a string. The correction was conceptual: the checker may not know the program, but it does know the workflow requests the "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " capability. Both the argv and shell forms now require declared authority. Unknown detail may defer. A known capability category may not."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The language gets smaller",
+      "id": "the-language-gets-smaller"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "v0.109.2 applied the same discipline to the file itself. The workflow envelope became:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika · model · inputs · const · secrets · permits · run · tasks · outputs"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The identity moved onto the first line:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "identity.nika.yaml",
+      "text": "nika: identity\n\npermits:\n  tools: [\"nika:jq\"]\n\ntasks:\n  answer:\n    invoke:\n      tool: \"nika:jq\"\n      args:\n        expression: \".\"\n        input: \"the file names itself\"",
+      "play": "HYSw1ghgXABCAmBTYAXEKCeAoLAHRATgLboDOUWMMKA9jQDbkwDaARKJFAFYCOrAujhQRSYcpRgRgpAO6EKVKiGAA3GmEQLFVWg1jtw0XqwnaIBAObjt2xAA9cBRKVIgawfQDoTNxctwArij6KAAWiDAAZiD0EcAQRM5wKKSI9JGsQA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There is no "
+        },
+        {
+          "k": "code",
+          "text": "workflow:"
+        },
+        {
+          "k": "text",
+          "text": " wrapper, no duplicate "
+        },
+        {
+          "k": "code",
+          "text": "id:"
+        },
+        {
+          "k": "text",
+          "text": ", and no description field whose prose never changed execution. Deployment values became optional typed inputs with defaults. Output extraction moved next to the verb that produces it. Cleanup became a real task on an "
+        },
+        {
+          "k": "code",
+          "text": "unwind"
+        },
+        {
+          "k": "text",
+          "text": " edge, so it passes through the same graph laws as every other task. Fan-out controls moved inside "
+        },
+        {
+          "k": "code",
+          "text": "for_each:"
+        },
+        {
+          "k": "text",
+          "text": ", where their scope is visible."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This was a pre-1.0 flag day. The release did not pretend an old file meant the new thing. "
+        },
+        {
+          "k": "code",
+          "text": "nika check --fix"
+        },
+        {
+          "k": "text",
+          "text": " migrates only transformations it can make without guessing, such as the identity and older task-map shapes. It stops on changes that require authorial judgment. Converting a cleanup mini-language into a task or deciding whether a former config value is really an input is not formatting. The refusal teaches the destination and leaves the source untouched."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Two security fixes explain why this subtraction mattered. Expressions stopped seeing the ambient process environment, so a “pure” computation sees only its declared input. Receipt fields were terminal-escaped before rendering, closing a clipboard-control path from third-party evidence. A smaller grammar is not only easier to teach. It leaves fewer shadow authorities where data or behavior can hide."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "v0.109.2 also added the project file, "
+        },
+        {
+          "k": "code",
+          "text": "nika.yaml"
+        },
+        {
+          "k": "text",
+          "text": ". A workflow says what one run means. A project file holds decisions shared by runs: the default cost ceiling, trace retention, the minimum registry policy and the team's future scheduling declarations. It deliberately does not carry a model seat or workflow permits. Those belong to the portable workflow, not the checkout that happens to contain it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "One project-level change is especially important on servers. If a workflow declares "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": " and starts an "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " or stdio MCP child, the default sandbox policy no longer degrades silently when the host has no confinement backend. It refuses. On Linux, "
+        },
+        {
+          "k": "code",
+          "text": "nika doctor"
+        },
+        {
+          "k": "text",
+          "text": " names the missing bubblewrap installation. An explicit "
+        },
+        {
+          "k": "code",
+          "text": "NIKA_SANDBOX=off"
+        },
+        {
+          "k": "text",
+          "text": " waiver remains possible, but the trace records that waiver. The system distinguishes “the contract was enforced” from “the operator chose to bypass it”."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The file proposes; the machine disposes",
+      "id": "the-file-proposes-the-machine-disposes"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "v0.110.0 gave the project file an "
+        },
+        {
+          "k": "code",
+          "text": "arm:"
+        },
+        {
+          "k": "text",
+          "text": " registry. The French keys are intentional because the sentence governing the design is precise: "
+        },
+        {
+          "k": "em",
+          "text": "le fichier propose, la machine dispose"
+        },
+        {
+          "k": "text",
+          "text": ". The file proposes a cadence. The machine still decides whether a tick is due, within budget, allowed to overlap and eligible for catch-up."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "No schedule is armed by writing a cron string alone. Each beat must name its workflow, cadence, execution place, per-tick ceiling and missed-run policy. The cost ceiling and miss policy have no defaults because choosing either would choose who pays or which deliverable disappears. A suspended beat must carry a reason and an end date. Silence is never the status of scheduled work."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "All launch doors converge on one firer. A direct "
+        },
+        {
+          "k": "code",
+          "text": "nika arm fire"
+        },
+        {
+          "k": "text",
+          "text": ", a generated launchd or systemd unit, and the resident "
+        },
+        {
+          "k": "code",
+          "text": "nika serve"
+        },
+        {
+          "k": "text",
+          "text": " loop ask the same due-window, lock, overlap and ceiling logic. This prevents the operational version of a split brain where a manual run obeys one policy and a daemon another. The arming release also made its limits explicit: unsupported overlap, catch-up and cloud-placement policies refuse instead of approximating a behavior."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is access control at a different scale. v0.108 chooses the route to a model. v0.109.2 chooses the authority of a run and the defaults of a project. v0.110 chooses when the machine may turn a proposed beat into an admitted run. Each layer is inspectable before it acts."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Check becomes a conversation",
+      "id": "check-becomes-a-conversation"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "v0.111.0 closed the loop for the author. A valid workflow is not necessarily ready for a paid run. "
+        },
+        {
+          "k": "code",
+          "text": "nika check --json"
+        },
+        {
+          "k": "text",
+          "text": " now separates those states with "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "compiled"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "next"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "compiled"
+        },
+        {
+          "k": "text",
+          "text": " means the file's law was proven by the checker. "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": " stays false while a paid-run hint remains unresolved. "
+        },
+        {
+          "k": "code",
+          "text": "next"
+        },
+        {
+          "k": "text",
+          "text": " is the first concrete repair. An editor, a CI job or an agent no longer has to scrape prose and guess which warning matters first. The machine answer says what is true now and the next smallest move toward a stronger state."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The release also made "
+        },
+        {
+          "k": "code",
+          "text": "nika:inspect"
+        },
+        {
+          "k": "text",
+          "text": " live. A running workflow can read the DAG that was seeded at run start, then observe records and spend after each wave. Inspection is not a second scheduler. It is a read surface over the same shared run state the dispatcher updates. "
+        },
+        {
+          "k": "code",
+          "text": "nika:compose"
+        },
+        {
+          "k": "text",
+          "text": " was added only inside an agent loop and only after "
+        },
+        {
+          "k": "code",
+          "text": "nika:done"
+        },
+        {
+          "k": "text",
+          "text": " is granted. The model may draft a child workflow, receive the full check response and iterate until valid. A standalone invoke refuses. Checking a draft never executes it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Put the releases together and the product direction becomes clearer:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "The author chooses a model, and the engine exposes the access path separately."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The workflow carries only the language fields that affect meaning."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The project proposes schedules without smuggling in run authority."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The checker returns a repair protocol, not just a Boolean."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The trace records the path, policy and waivers that actually admitted the run."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is what “Intent as Code” needs after the syntax is solved. Code is not valuable only because it can execute. It is valuable because resolution, admission, authority and history can all be reviewed at their proper layer. The access layer makes those layers visible. The releases after it make them operable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read the "
+        },
+        {
+          "k": "link",
+          "text": "v0.108.0",
+          "href": "/releases/v0.108.0"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "link",
+          "text": "v0.109.2",
+          "href": "/releases/v0.109.2"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "link",
+          "text": "v0.110.0",
+          "href": "/releases/v0.110.0"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "link",
+          "text": "v0.111.0",
+          "href": "/releases/v0.111.0"
+        },
+        {
+          "k": "text",
+          "text": " release records, or see why a green parse can still be "
+        },
+        {
+          "k": "link",
+          "text": "not ready to spend",
+          "href": "/blog/clean-is-not-ready-to-spend"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
+  "workflow-ecosystem-field-guide": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A modern AI workflow sits at the intersection of several ecosystems. There are model providers, local runtimes, built-in tools, MCP servers, coding agents, editors and CI runners. Each offers a way to make the system more capable. Each can also become a source of accidental complexity."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The practical question is not “which ecosystem wins?” It is “which layer owns this decision?”"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika keeps the workflow language small while letting the catalogs grow. The file describes intent with four execution models: infer, exec, invoke and agent. A model identifier selects intelligence. A builtin or MCP identifier selects a callable capability. Repository and client integrations help people and agents author the file. The runner enforces the plan."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This field guide gives each layer one job and a decision rule."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Start with the job, not the provider",
+      "id": "start-with-the-job-not-the-provider"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Write the task graph before choosing a model vendor."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For a document brief, the stable plan may be: read a source, extract facts, draft a summary, validate the artifact and write it. That graph does not become a different workflow because the inference runs through Ollama, OpenAI or another compatible provider."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Provider-first design creates unnecessary coupling. Prompts begin to mention SDK objects. Error handling follows one HTTP dialect. Credentials leak into helper code. Switching the model then requires a rewrite of the orchestration rather than a deliberate change to one seat."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "In Nika, the default seat is a model string:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "model: ollama/llama3.2:3b"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A production run can preview or override that seat from the command line:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika check workflow.nika.yaml --model openai/gpt-5-mini\nnika run workflow.nika.yaml --model openai/gpt-5-mini"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first command asks the installed catalog to resolve and price the proposed seat without changing the file. The second launches the same graph on that seat. A task-level model can still pin an exception when one job genuinely needs different capabilities."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This separation gives review a clean question: did the plan change, or did only the intelligence seat change?"
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Use the installed catalog as the source",
+      "id": "use-the-installed-catalog-as-the-source"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Provider names, model identifiers, environment keys, capabilities and prices change. Memory is a bad registry."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ask the binary that will run the workflow:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika catalog\nnika catalog --json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The human view helps discovery. The JSON view supports tools, audits and CI. The public "
+        },
+        {
+          "k": "link",
+          "text": "provider rooms",
+          "href": "/catalog/providers"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "link",
+          "text": "model catalog",
+          "href": "/catalog/models"
+        },
+        {
+          "k": "text",
+          "text": " project the released engine catalogs for web browsing, while the installed binary remains the admission-time authority for a local run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Check several properties before selecting a seat:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Does the provider require a credential, and which environment key does it use?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Does the model support the structured output or media capability the task needs?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is there a sourced price row for the exact identifier?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is the context window appropriate for the actual input size?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is the runtime local, remote or reached through an access layer?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A missing price does not mean a free run. It means the compute is unpriced by the current catalog. The "
+        },
+        {
+          "k": "link",
+          "text": "pricing register",
+          "href": "/catalog/pricing"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "link",
+          "text": "energy register",
+          "href": "/catalog/energy"
+        },
+        {
+          "k": "text",
+          "text": " keep financial and physical cost as separate clocks because one should not be inferred from the other."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Choose local and cloud by constraint",
+      "id": "choose-local-and-cloud-by-constraint"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Local and cloud are not opposing identities. They are execution choices with different constraints."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Choose a local runtime when data residency, offline operation, predictable access or hardware ownership dominates. The current catalog includes local server families such as Ollama, LM Studio, llama.cpp, LocalAI and vLLM. Their exact available models depend on the runtime you operate."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Choose a cloud provider when the task needs a model capability, scale or service level that the local seat does not provide. Keep the provider credential scoped to the run step, review the input volume and set a hard cost ceiling."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Use "
+        },
+        {
+          "k": "code",
+          "text": "mock/echo"
+        },
+        {
+          "k": "text",
+          "text": " for the third lane: deterministic rehearsal. It is not a weak production model. It is a test seat that exercises the workflow without a key or bill."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same source can move between all three. Here is a complete local-first brief:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "ecosystem-brief.nika.yaml",
+      "text": "nika: ecosystem-brief\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  tools: [\"nika:read\", \"nika:write\"]\n  fs:\n    read: [\"./sources/ecosystem.md\"]\n    write: [\"./out/ecosystem-brief.md\"]\n\ntasks:\n  source:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./sources/ecosystem.md\" }\n\n  brief:\n    with:\n      source: ${{ tasks.source.output }}\n    infer:\n      prompt: |\n        Write a factual field note from this source.\n        Separate observed changes from recommendations.\n        Do not invent dates, benchmarks or adoption claims.\n\n        ${{ with.source }}\n      max_tokens: 900\n\n  save:\n    with:\n      brief: ${{ tasks.brief.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./out/ecosystem-brief.md\"\n        content: \"${{ with.brief }}\"\n        create_dirs: true\n\noutputs:\n  brief: ${{ tasks.brief.output }}",
+      "play": "HYSw1ghgXABApgYwPYGcCeKAucC2BaAIwCcQ4AzAKApyQBM4AbWJBhiHCAelfYgGYAdACYofAlQAOcIjhCYUUCjBiYkLBTADaAIlCQoROBFraANDF3hoAdxLZtAXSUwyC58sPHYOgZxRIAVyIEOBRORFQMbBwBHBMnZWVbOThvbV9AzHDkdCxcQhJyWPiqTAgUMDdlfyCQxUSYEGAANyQwVPdE1RZYS31PE07lCCIAcw0AbxgJCEwAC17fGuDQ7Mi8mLjtGABfKmViUjJ6xOs5BaGYZbqYABIJqbKKlAFruAFMiQDMXb2GprI0hODQkRCQOAkmFgAB9LsoAOp2OAwCAuCAITABCAMFykBi0GDAJDYFxgnAqOYgFBXQIrARwmAAZTgMyIs2RSAIKGkzTgBIQcwgwFGoVJ4JghmQOBwcGAtFmICQwBeDIAIkhCcTGi1ZT95dgUOYCLKBRwiJUYEgiCjaEhIYrgDAEGwQDgVQz7lMzvNXrSQr9LhwAB4AfVU7WVsAAnAAGGP7K4QXnAmDei4NA6FY53B4qcqVASHIqfb4B-4tNodDMqNRMCx6GxI7SXEbjFMg2YLCwZb5rXLRApHYrN6vKZDAbAT3qe1PnQtZ34j0cITzYEO0EBEDSYIgBOBUEvyE5F7Mzp4Fk8fb5fH47HZAA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Rehearse it with "
+        },
+        {
+          "k": "code",
+          "text": "--model mock/echo"
+        },
+        {
+          "k": "text",
+          "text": ". Run it locally as written. Preview a cloud seat with "
+        },
+        {
+          "k": "code",
+          "text": "nika check --model ..."
+        },
+        {
+          "k": "text",
+          "text": " before supplying the provider key. The graph and file boundary stay constant."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Reach for builtins before subprocesses",
+      "id": "reach-for-builtins-before-subprocesses"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Builtins are the standard library inside the Nika binary. They cover common workflow operations across files, data, network access, introspection and media."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Use the live tool catalog rather than guessing an argument:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika catalog --tools\nnika catalog --tools --json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The native-first order is deliberate:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Use a "
+          },
+          {
+            "k": "code",
+            "text": "nika:*"
+          },
+          {
+            "k": "text",
+            "text": " builtin when the operation is in the standard library."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Use an "
+          },
+          {
+            "k": "code",
+            "text": "mcp:<server>/<tool>"
+          },
+          {
+            "k": "text",
+            "text": " call when an external product exposes the capability."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Use "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": " for a real program when neither tool path fits."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is not style preference. A builtin exposes typed arguments to the checker, participates directly in permits and leaves structured task evidence. A shell helper that wraps the same operation hides those facts behind process execution."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Common replacements are straightforward. File reads and writes use "
+        },
+        {
+          "k": "code",
+          "text": "nika:read"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "nika:write"
+        },
+        {
+          "k": "text",
+          "text": ". HTTP uses "
+        },
+        {
+          "k": "code",
+          "text": "nika:fetch"
+        },
+        {
+          "k": "text",
+          "text": ". JSON shaping uses "
+        },
+        {
+          "k": "code",
+          "text": "nika:jq"
+        },
+        {
+          "k": "text",
+          "text": ". Search uses "
+        },
+        {
+          "k": "code",
+          "text": "nika:glob"
+        },
+        {
+          "k": "text",
+          "text": " or "
+        },
+        {
+          "k": "code",
+          "text": "nika:grep"
+        },
+        {
+          "k": "text",
+          "text": ". Dates, hashes, UUIDs, validation and conversion have their own builtins. Inspect the catalog for the current argument schema before authoring."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " remains appropriate for tools such as a compiler, "
+        },
+        {
+          "k": "code",
+          "text": "git"
+        },
+        {
+          "k": "text",
+          "text": " or a product CLI with no callable surface. Prefer argv form so interpolated values remain one argument and cannot become shell syntax. If a shell is truly required, make that boundary explicit."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Use MCP for product capabilities, not invisible authority",
+      "id": "use-mcp-for-product-capabilities-not-invisible-authority"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "MCP lets a workflow call capabilities supplied by another server without importing its SDK into the workflow language. The task still uses "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": "; the tool identity simply lives under the "
+        },
+        {
+          "k": "code",
+          "text": "mcp:"
+        },
+        {
+          "k": "text",
+          "text": " namespace."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "MCP catalog",
+          "href": "/catalog/mcp"
+        },
+        {
+          "k": "text",
+          "text": " is a discovery map, not an automatic allowlist. Installing or configuring a server does not grant every workflow access to every tool. The workflow permit block names the tool, and the server process runs inside the applicable child boundary."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Before adding an MCP task, answer five questions:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Is the server version or installation source reviewed?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "What exact tool is needed?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which filesystem, network and environment effects can the child require?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "What data crosses into the server, including private inputs and secrets?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Can a builtin perform the same job with a smaller boundary?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Do not build a Python or shell wrapper around a product HTTP API merely to avoid MCP configuration. That creates a private protocol with no shared schema and moves credentials into glue. If no trustworthy server exists, "
+        },
+        {
+          "k": "code",
+          "text": "nika:fetch"
+        },
+        {
+          "k": "text",
+          "text": " with an exact host and governed header may still be clearer than a helper script."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "MCP is also how a coding agent can query Nika itself. The binary's own MCP server exposes a read-only oracle for checks and catalog information. It deliberately does not expose run authority. An agent can understand and repair the plan without receiving a tool that executes it."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep coding-agent integrations at the authoring layer",
+      "id": "keep-coding-agent-integrations-at-the-authoring-layer"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The ecosystem includes more than runtimes. Coding agents and editors need a way to learn the language and obtain diagnostics."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika uses three complementary surfaces:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "code",
+            "text": "nika init"
+          },
+          {
+            "k": "text",
+            "text": " writes repository instructions and authoring guidance;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the editor extension draws and validates the workflow while it is edited;"
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "nika mcp"
+          },
+          {
+            "k": "text",
+            "text": " gives compatible clients structured access to the released checker and catalogs."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The exact installation path depends on the client. Some load a native plugin, some read repository instructions, and some connect only through MCP. The live "
+        },
+        {
+          "k": "link",
+          "text": "integrations matrix",
+          "href": "/integrations"
+        },
+        {
+          "k": "text",
+          "text": " records those differences and names whether a path is proven, wired or still reconnaissance."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Keep the architecture stable despite those client differences. The client helps author. The binary checks. The terminal or protected CI job runs. A new agent UI should not require a new workflow dialect."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Make access selection visible",
+      "id": "make-access-selection-visible"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Model identity and access path are related but distinct. A provider/model name says which intelligence is requested. The access layer says how the runner can reach an acceptable seat in the current environment."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika's released access resolver considers available paths in a strict order and records why candidates were accepted or dropped. The "
+        },
+        {
+          "k": "code",
+          "text": "--access"
+        },
+        {
+          "k": "text",
+          "text": " launch option can pin the required class rather than allowing a silent substitution. If the requested path is unavailable, refusal is more honest than quietly sending the task somewhere else."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This matters for sovereignty. “Use this model” does not prove the request stayed local. “Use this model through a local access path” is a stronger operational claim, and the resolver witness makes it inspectable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It also matters for CI. A pull request rehearsal may use mock access, while a protected job requires an API or local server seat. Those are deployment decisions around one workflow, not forks of the source."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Review the whole data journey",
+      "id": "review-the-whole-data-journey"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The most capable workflow can also have the largest information path. A local file enters a prompt. A model output enters an MCP tool. A secret becomes an HTTP header. A generated artifact is written and later published."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Review the journey end to end:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "source and trust level of every input;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "tasks that transform or classify it;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "model and tool destinations;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "local files and external hosts reached;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "output retained after the run;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "trace material retained as evidence."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The permit block answers which effects are allowed. Secret egress declarations answer where credentials may travel. The lethal-trifecta check looks for paths combining private reads, untrusted ingress and external egress without the required human gate. No single provider setting replaces this workflow-level view."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A durable selection sequence",
+      "id": "a-durable-selection-sequence"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "When a new workflow request arrives, use the same sequence:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Draw the tasks and data edges without selecting a vendor."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Mark which tasks need language judgment, deterministic tools, real programs or an open-ended loop."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Inspect "
+          },
+          {
+            "k": "code",
+            "text": "nika catalog --tools"
+          },
+          {
+            "k": "text",
+            "text": " before writing any "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Inspect "
+          },
+          {
+            "k": "code",
+            "text": "nika catalog"
+          },
+          {
+            "k": "text",
+            "text": " before choosing a model identifier."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Pick mock, local or cloud access from the task's operating constraints."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Add MCP only for exact product capabilities and review the child boundary."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Derive permits from the body, then tighten them in review."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Check with the installed binary, rehearse with mock or local access, and require paid readiness before spend."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Launch with explicit secrets and a hard cost ceiling."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Retain the declared output and the trace as different artifacts."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The ecosystem can expand without making the workflow language sprawl. Providers add intelligence seats. Builtins add trusted primitives. MCP adds product capabilities. Coding agents add authoring leverage. None needs to own the whole system."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The plan stays the stable center. Choose each surrounding layer for one reason, make that reason visible, and keep the path from intent to evidence reviewable."
+        }
+      ]
+    }
+  ],
+  "coding-agents-write-plans": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Coding agents are good at turning an intention into a first draft. They inspect a repository, find the relevant files, imitate local conventions and revise from diagnostics. That makes them natural authors of repeatable AI workflows."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It does not make them the authority on whether those workflows are safe, affordable or approved to run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The useful architecture separates four roles:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "The coding agent proposes a workflow file."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The Nika checker judges the file against the released language and catalogs."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A human reviews the diff and grants the operational decision."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The runner executes the approved bytes inside the declared boundary."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Each role has a different power. The agent can write. The checker can refuse. The reviewer can approve. The runner can act. Combining them into one autonomous loop makes the demonstration smoother and the production system harder to trust."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Nika does not replace the coding agent",
+      "id": "nika-does-not-replace-the-coding-agent"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Codex, Claude Code, Cursor and similar tools already understand repositories. They can edit source, run commands and respond to test failures. Nika supplies a small language for one particular artifact inside that repository: the repeatable AI plan."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The relationship resembles an agent writing a CI workflow or an infrastructure definition. The coding agent does not need to become the scheduler, policy engine or trace store. It authors a file for a tool that owns those jobs."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This division keeps model choice open. One team can use a frontier coding agent to write a workflow that runs on a local Ollama model. Another can author locally and run one task through a cloud provider. The intelligence used to create the plan and the intelligence selected by the plan are separate decisions."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Teach the repository, not every conversation",
+      "id": "teach-the-repository-not-every-conversation"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent performs better when the rules live beside the code. Nika's "
+        },
+        {
+          "k": "code",
+          "text": "init"
+        },
+        {
+          "k": "text",
+          "text": " command scaffolds repository instructions for several agent and editor conventions, including "
+        },
+        {
+          "k": "code",
+          "text": "AGENTS.md"
+        },
+        {
+          "k": "text",
+          "text": " and a Nika authoring skill. Those files teach a repeatable loop:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Read real examples before writing."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Choose one verb for each task."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Bind data dependencies with "
+          },
+          {
+            "k": "code",
+            "text": "with:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Derive and review a tight "
+          },
+          {
+            "k": "code",
+            "text": "permits:"
+          },
+          {
+            "k": "text",
+            "text": " block."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check --native-strict"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Resolve paid-run guidance before using a paid model."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The important part is not a brand-specific prompt. It is a project-level contract that survives a new session and can be reviewed like any other repository rule."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Run the scaffold from the project root:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika init"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Existing files are preserved unless the operator deliberately chooses an overwrite path. The repository remains the source of truth. A future agent reads the same instructions the current agent used."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Ask for the artifact and the proof",
+      "id": "ask-for-the-artifact-and-the-proof"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "“Automate our weekly summary” is too broad for a reliable handoff. It lets the agent choose the sources, destination, model, permissions and test strategy without making those choices explicit."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A better request names the artifact and the gates:"
+        }
+      ]
+    },
+    {
+      "k": "quote",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read AGENTS.md and the Nika authoring skill. Start from two shipped examples. Create "
+        },
+        {
+          "k": "code",
+          "text": "workflows/weekly-summary.nika.yaml"
+        },
+        {
+          "k": "text",
+          "text": " that reads the two named source files and writes one report. Use a local model, derive the permit block, and stop only when "
+        },
+        {
+          "k": "code",
+          "text": "nika check --native-strict"
+        },
+        {
+          "k": "text",
+          "text": " is clean. Do not run paid models or publish anything."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That prompt gives the agent room to solve the task while reserving operational authority. It also produces evidence a reviewer can inspect: the source file, the checker result and a diff."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The resulting workflow may look like this:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "weekly-summary.nika.yaml",
+      "text": "nika: weekly-summary\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  tools: [\"nika:read\", \"nika:write\"]\n  fs:\n    read: [\"./notes/progress.md\", \"./notes/blockers.md\"]\n    write: [\"./reports/weekly.md\"]\n\ntasks:\n  progress:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/progress.md\" }\n\n  blockers:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/blockers.md\" }\n\n  summary:\n    with:\n      progress: ${{ tasks.progress.output }}\n      blockers: ${{ tasks.blockers.output }}\n    infer:\n      prompt: |\n        Write a concise weekly summary from the two project notes.\n        Preserve named owners and dates. Do not invent missing status.\n\n        PROGRESS\n        ${{ with.progress }}\n\n        BLOCKERS\n        ${{ with.blockers }}\n      max_tokens: 900\n\n  save:\n    with:\n      summary: ${{ tasks.summary.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./reports/weekly.md\"\n        content: \"${{ with.summary }}\"\n        create_dirs: true\n\noutputs:\n  report: ${{ tasks.summary.output }}",
+      "play": "HYSw1ghgXABA7gUwWANgTwLQGcCuBbPCAJzQChS8B7AEwRVkpRQkIHomWIBmAOgCYoXAEbkADgiJ4QAFyxRSMGNMqM5MANoAiUJChEEEapoA0MbeGhwiMhJoC6CmADM5jxfsOwtPVsErSELFZRIkoAc30sLB48I1NNHz8AoKEUSgBjMAlo2Ps3eGsArwTWfVFKIllWRGR0GKMHUmkILDBXRRDwyPbFGBBgADdKLPle3uVGWHNdDyN8xWIwtQBvGFEIaQALKcT-QODQiMCcoxgAX3JFVIysoh7FfqGR+aUVejMdaFnNF8WVtY22zMu2SrGumWy9U050uMFwBGIaFGvTgMm2L06RyisAAJMtVs1WtFMd0eJQcNJRBTzhcxlc0hC7rj8UoWm0eODbtFyZTqWdab1+k4JMixp08KJpLAAD4vRQAdUKCBgEBg6UowHSICwypqqDQcPwhBIzlCeCUm2V0jglDWoQAVgh0tIYElAjw5TAAAqRCQDZXAFgIagwShwYDZFXAEPUDbumAAEVtST6gwQwBdUii-TCcOa0hw0VhdO9ACUAPIAcVLAFEAMp1z141aorY8EnHGnFukAIQAMuWAMIAaRrpcbJcUzfgaI5DK5XZLhAAHgB9ZRZYBqACcAAZd7CsBB-aKZ1tT4p4cakTBp4T2VfEWSKVSXfz8o9hggL69Jh8LFAVg2D8JZ-D+HSAjspQIOUlRBHqdS5J66oZumUpmNOrabDwj4mvyIGTukHgBKu1AgEyShEDgCDkDyr49GUFToXebLRLhaDPryb5nEAA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The human review is concrete. Does the report need both sources? Is the local model appropriate? Are the output ceiling and prompt sufficient? Why can the workflow write only one path? No part of that conversation depends on replaying the agent's hidden reasoning."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Give the agent an oracle without a run button",
+      "id": "give-the-agent-an-oracle-without-a-run-button"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The Nika binary can expose its checker and catalog over MCP. This is useful because the coding agent receives structured answers from the same release that will parse the workflow."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The public MCP surface is intentionally read-only. It can check a plan, explain findings and serve language or catalog information. It does not expose a workflow run tool. The agent can learn whether the file is valid without receiving a second path to spend tokens, write files or call external services."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That absence is an architectural feature. A tool that knows how to judge a plan does not also need permission to execute it. The "
+        },
+        {
+          "k": "link",
+          "text": "MCP oracle",
+          "href": "/blog/the-mcp-server-you-didnt-build"
+        },
+        {
+          "k": "text",
+          "text": " keeps knowledge and action on separate surfaces."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current integration registry documents native or wired doors for many clients. The installation gesture differs by client, and those details should be read from the live "
+        },
+        {
+          "k": "link",
+          "text": "integrations rooms",
+          "href": "/integrations"
+        },
+        {
+          "k": "text",
+          "text": ", not copied from an old blog post. The stable contract is simpler: repository instructions teach authoring, the MCP server exposes the oracle, and the terminal runner owns execution."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Treat checker findings as the revision protocol",
+      "id": "treat-checker-findings-as-the-revision-protocol"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent should not improvise around a red check. The finding is part of the authoring interface."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If the parser reports an unknown field, the agent repairs the field rather than inventing an alias. If the boundary is missing an effect, it derives the candidate permit block and asks whether the broader authority is intended. If native-strict flags a helper script that wraps HTTP or file operations, it inspects "
+        },
+        {
+          "k": "code",
+          "text": "nika catalog --tools"
+        },
+        {
+          "k": "text",
+          "text": " before keeping "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika 0.111.0 adds a machine-readable "
+        },
+        {
+          "k": "code",
+          "text": "next"
+        },
+        {
+          "k": "text",
+          "text": " repair in the JSON check result and separates "
+        },
+        {
+          "k": "code",
+          "text": "clean"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "compiled"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": ". This gives an agent an ordered loop without giving it permission to declare itself finished:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika check --json --native-strict workflows/weekly-summary.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The checker remains the authority. The model can apply the first suggested repair and check again. It cannot convert a red verdict into green prose."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is especially important for cost and deterministic laws. A workflow may parse while still asking a model to make a verdict that should be enforced with "
+        },
+        {
+          "k": "code",
+          "text": "nika:jq"
+        },
+        {
+          "k": "text",
+          "text": " or "
+        },
+        {
+          "k": "code",
+          "text": "nika:decide"
+        },
+        {
+          "k": "text",
+          "text": ". It may contain a rule without a fixed fixture that proves the rule. "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": " stays false until those authoring debts are resolved."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep review focused on decisions",
+      "id": "keep-review-focused-on-decisions"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent-generated diff can be large. A good workflow review follows a fixed order:"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Identity and inputs."
+        },
+        {
+          "k": "text",
+          "text": " Is the file solving one named job? Are caller values, constants and secrets classified by role?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Graph."
+        },
+        {
+          "k": "text",
+          "text": " Does every task do one job? Are data edges written as "
+        },
+        {
+          "k": "code",
+          "text": "with:"
+        },
+        {
+          "k": "text",
+          "text": " bindings? Is dynamic agent work genuinely dynamic and bounded?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Authority."
+        },
+        {
+          "k": "text",
+          "text": " Does the body fit the permit block? Are paths and hosts exact? Is an "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " a real external program rather than hidden plumbing?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Cost."
+        },
+        {
+          "k": "text",
+          "text": " Does every model task have an output ceiling? Does every agent loop have turn and total-token limits? Is the selected provider intentional?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Policy."
+        },
+        {
+          "k": "text",
+          "text": " Does a deterministic task own each gate a deterministic task can express? Is irreversible work dominated by a human decision?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Evidence."
+        },
+        {
+          "k": "text",
+          "text": " Are outputs declared? Is there a mock or local rehearsal? Will a meaningful run leave a trace that the team retains?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This sequence reduces review fatigue because it asks about system properties before copy style. The perfect prompt inside an overpowered workflow is still the wrong first concern."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep execution outside the authoring loop",
+      "id": "keep-execution-outside-the-authoring-loop"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent often has terminal access, which means it may technically be able to run the file it just wrote. The project contract should still distinguish capability from authorization."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For ordinary authoring, allow safe checks and mock tests. Require a person or a protected CI environment to launch paid providers, send notifications, publish content or deploy software. If a workflow needs a human decision mid-run, represent that decision as a durable prompt task rather than an informal “tell me before you continue” instruction in chat."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The trace then records the answer and the tasks it enabled. A chat promise does not."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same principle applies when the coding agent itself is working overnight. Long autonomy does not broaden authority. The agent can continue improving source, running local gates and preparing a review. External publication remains a separate operation unless the user explicitly put it in scope and the workflow carries the corresponding boundary."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Use agents to make the file better",
+      "id": "use-agents-to-make-the-file-better"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The right conclusion is not that coding agents should be kept away from workflows. They are valuable precisely because the file gives their work a strong meeting point with human review and machine verification."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Let the agent inspect the repository, find the closest examples, draft the graph, tighten the permissions, respond to checker findings and add a deterministic rehearsal. Those are high-leverage tasks. Let the checker decide whether the file belongs to the language. Let the reviewer decide whether its authority and cost are acceptable. Let the runner act only after those two decisions are visible."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The coding agent writes the plan. It does not write the policy by which its own plan becomes trusted. That separation is what makes deeper autonomy practical."
+        }
+      ]
+    }
+  ],
+  "ci-without-ambient-authority": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Continuous integration is where automation becomes authority."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A local experiment can be stopped by the person watching it. A CI job may run at midnight with repository credentials, deployment tokens, network access and write permission across a working tree. If an AI step enters that environment as “one more script,” it quietly inherits a much larger blast radius than the prompt needs."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The safer operating model is to treat the workflow as a release artifact. Check the exact bytes that will run. Make effects explicit. Rehearse without provider keys. Require a separate readiness signal before paid execution. Put the final spend ceiling on the command that launches the run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika supports that loop, but the result still depends on how the CI job is designed. A workflow language cannot repair a runner that gives every step permanent production credentials."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep authoring and execution as separate gates",
+      "id": "keep-authoring-and-execution-as-separate-gates"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A useful pipeline has at least two stages."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first stage is safe to run on every pull request. It validates the workflow, checks native-first guidance and compares a deterministic rehearsal with its golden result. It needs no paid provider key and should not receive deployment credentials."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The second stage is allowed to execute real effects. It runs only after review or on a protected branch, receives the minimum required secrets and launches with an explicit cost cap. A publishing or deployment task may also pause for a recorded human decision before the irreversible step."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This split keeps “the file is valid” separate from “this run is authorized now.” A green parser verdict is not a production approval."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Check the same bytes you will run",
+      "id": "check-the-same-bytes-you-will-run"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Templating a workflow after validation defeats the check. The checker proves one document while the runner executes another."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Prefer committed workflow files with typed "
+        },
+        {
+          "k": "code",
+          "text": "inputs:"
+        },
+        {
+          "k": "text",
+          "text": " for the values that change per invocation. Pass them with repeated "
+        },
+        {
+          "k": "code",
+          "text": "--var key=value"
+        },
+        {
+          "k": "text",
+          "text": " arguments. The graph and boundary remain in source, while the caller supplies only declared values."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If a build step generates a workflow, preserve that generated artifact and run both "
+        },
+        {
+          "k": "code",
+          "text": "check"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "run"
+        },
+        {
+          "k": "text",
+          "text": " against the same file. Do not check the template and execute a later expansion. Record its digest as a build artifact so a reviewer can identify the exact bytes sent to the runner."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The command sequence for a pull request can stay small:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika check --native-strict workflows/release-brief.nika.yaml\nnika check --json workflows/release-brief.nika.yaml \\\n  | jq -e '.clean == true and .paid_ready == true'\nnika test workflows/release-brief.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first line applies the strict native-first posture. The second gives CI a machine verdict for legality and paid readiness. The third compares an offline mock run with the committed golden file. A failure in any line should stop before a provider key is introduced."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Make the workflow hermetic enough to rehearse",
+      "id": "make-the-workflow-hermetic-enough-to-rehearse"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "CI tests should not depend on a model provider being healthy, cheap or deterministic that morning. Nika's mock model gives the plan a keyless execution path, and "
+        },
+        {
+          "k": "code",
+          "text": "nika test"
+        },
+        {
+          "k": "text",
+          "text": " records the expected task and output structure."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Here is a small workflow suited to that lane:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "release-brief.nika.yaml",
+      "text": "nika: release-brief\n\nmodel: mock/echo\n\nrun:\n  entropy: none\n  clock: virtual\n\npermits:\n  tools: [\"nika:read\"]\n  fs:\n    read: [\"./CHANGELOG.md\"]\n\ntasks:\n  changes:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./CHANGELOG.md\" }\n\n  brief:\n    with:\n      changes: ${{ tasks.changes.output }}\n    infer:\n      prompt: |\n        Write a factual release brief from this changelog.\n        ${{ with.changes }}\n      max_tokens: 800\n\noutputs:\n  brief: ${{ tasks.brief.output }}",
+      "play": "HYSw1ghgXABATgUwDYIgZwQWgEZxAgMwCgiBbAewBNlYKBjMAegToAtyS4BXYKImGAmAAXOOQAOAT1jBywBPxh0k5BrABuIOMK4QkJcQjikQwtHwHDy5JOZgBtAEShIURBEqOAuooLnFAu6UsE4AdIwAwgASAIIAcgDiAKIAMgDyCaGknj5Ewuhg-gJsEMAA5ghFAjAgwOrkYAgW1ZbWSLDO4NBBjgHVEHBldgDeMOIQwqwd4dHxyemZ2Y4wAL4kArj4BM0CAO6mU33FrKUVdgAkw6P5aIWhJeWVoeRcwuKvq2sttQRGO9XiMSkcTCWAAHyO1QA6nhhAgYBAYAQIHQdHp4MhUBgYJtCEigTBJiA0EoTo8VGVQpCBJdRvtJvcyWdPpDSBAAB4AfSsjWAdgAHAAGQUkF5vV5VXHbGC0wkFNChKXPV7vYSfIA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "entropy: none"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "clock: virtual"
+        },
+        {
+          "k": "text",
+          "text": " state that the rehearsal should consume neither randomness nor ambient wall time. The file reads one committed source and performs no write. The mock response is not a quality evaluation of the prose. It is a deterministic proof that the workflow compiles, the graph executes and the output contract remains stable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Create the golden once after review:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika test workflows/release-brief.nika.yaml --update"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Future CI runs use "
+        },
+        {
+          "k": "code",
+          "text": "nika test"
+        },
+        {
+          "k": "text",
+          "text": " without "
+        },
+        {
+          "k": "code",
+          "text": "--update"
+        },
+        {
+          "k": "text",
+          "text": ". A red comparison is a change to investigate, not an invitation to regenerate the expected result automatically."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Treat permits as the CI capability manifest",
+      "id": "treat-permits-as-the-ci-capability-manifest"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow above can read one file through one builtin. It cannot write an artifact, spawn a process or reach a host because those capabilities are absent."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is more useful than a comment saying the task is read-only. The declared body and the permit block are checked together. If a later change adds "
+        },
+        {
+          "k": "code",
+          "text": "nika:write"
+        },
+        {
+          "k": "text",
+          "text": ", the file becomes red until the reviewer also grants the tool and the destination path."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Derive a starting boundary with:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika check --infer-permits workflows/release-brief.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Then read the result. Inference is not permission approval. An interpolated path may be impossible to resolve statically. An HTTP endpoint may redirect to another host. A composed child workflow carries its own effects. These cases need explicit review rather than a broader wildcard."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The runner should reinforce the same boundary at the operating-system layer. On macOS, Nika uses the platform sandbox path. On Linux, headless hosts need bubblewrap for confined process and MCP children. If a strict workflow declares permits and the host cannot enforce the process boundary, refusal is the correct result. The "
+        },
+        {
+          "k": "link",
+          "text": "server guide",
+          "href": "/install/servers"
+        },
+        {
+          "k": "text",
+          "text": " keeps this prerequisite visible."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Container isolation is still useful. It limits the entire job. "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": " limits the workflow inside that job. The controls answer different questions and should be layered rather than substituted for one another."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Give each stage only the secrets it needs",
+      "id": "give-each-stage-only-the-secrets-it-needs"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The check and mock-test stage should receive no model key. This catches accidental dependencies early and prevents an innocent pull request from spending money."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The execution stage receives only the provider or service credentials named by the approved plan. Nika secrets are governed references, not prompt strings. The secret declaration names its source, and any allowed egress belongs in the same reviewed file."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Do not expose every repository secret at job scope. Put each credential on the step that needs it. Use protected environments for production tokens and require the repository's normal approval mechanism before that environment is released."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An MCP child and an "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " child begin from a cleared environment plus the runner floor and explicitly permitted names. If a tool needs an environment variable, make that dependency visible. A child process should not receive a surprise copy of the host session."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Put the hard cost cap on the launch",
+      "id": "put-the-hard-cost-cap-on-the-launch"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Every "
+        },
+        {
+          "k": "code",
+          "text": "infer"
+        },
+        {
+          "k": "text",
+          "text": " task should have "
+        },
+        {
+          "k": "code",
+          "text": "max_tokens"
+        },
+        {
+          "k": "text",
+          "text": ". Every "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": " task should have both a turn limit and a total token limit. Those fields make the static output ceiling computable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The runtime boundary adds the final stop:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika run workflows/release-brief.nika.yaml \\\n  --model openai/gpt-5-mini \\\n  --max-cost-usd 0.25 \\\n  --output json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "--model"
+        },
+        {
+          "k": "text",
+          "text": " previews and selects the production seat without changing the workflow graph. "
+        },
+        {
+          "k": "code",
+          "text": "--max-cost-usd"
+        },
+        {
+          "k": "text",
+          "text": " refuses before the call that would cross the cap. "
+        },
+        {
+          "k": "code",
+          "text": "--output json"
+        },
+        {
+          "k": "text",
+          "text": " gives the CI caller a declared machine result instead of forcing it to scrape terminal prose."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Be precise about what the cap and preflight estimate mean. The static ceiling prices output tokens known to the catalog. Large input documents, provider-specific caching and local compute still need operational review. A local model is unpriced compute, not a zero-cost job."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Composition also requires care. A parent workflow's displayed ceiling does not currently include a child's model work, and a parent's run cap does not automatically become the child's cap. Check and budget each child at its own execution boundary before presenting a composed plan as globally bounded."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Design human gates for headless reality",
+      "id": "design-human-gates-for-headless-reality"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "CI has no hidden operator."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A blocking "
+        },
+        {
+          "k": "code",
+          "text": "nika:prompt"
+        },
+        {
+          "k": "text",
+          "text": " without a default pauses durably. The run records the question and can resume later with a typed answer. That is appropriate when a release, send or publish step must wait for a person."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A prompt with "
+        },
+        {
+          "k": "code",
+          "text": "default: false"
+        },
+        {
+          "k": "text",
+          "text": " completes unattended and fails closed. That is appropriate when CI should settle the run without taking the irreversible action. A default of true would turn absence into approval and should be treated as a serious policy decision."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Place the gate so it dominates every path to the effect it approves. A question beside one branch does not authorize another branch that can reach the same write or network send. The graph should make the approval relationship visible before the run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The final task can record an outcome even after failure by using a terminal control edge, but an always-running task should not be the one that performs external egress. Otherwise it may become reachable on a path where the human never approved anything."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep the trace as a CI artifact",
+      "id": "keep-the-trace-as-a-ci-artifact"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The JSON output is for downstream automation. The trace is for evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "After a run that matters, retain the matching "
+        },
+        {
+          "k": "code",
+          "text": ".nika/traces/*.ndjson"
+        },
+        {
+          "k": "text",
+          "text": " file with the workflow digest and CI job metadata. Verify it before long-term storage:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika trace verify .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The verifier reports the strongest proof the trace actually carries. Hash-chain integrity, a sealed signature, an anchored sidecar and a fresh replay are different levels. Do not relabel one as another."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Retention makes incident review concrete. A team can see which tasks ran, which outputs were reused, where a refusal happened and whether the record changed after the job. That is more useful than a single green checkmark beside “AI step.”"
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The production checklist",
+      "id": "the-production-checklist"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A headless Nika job is ready when the answers are explicit:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "The committed or generated bytes checked are the bytes that will run."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "nika check --native-strict"
+          },
+          {
+            "k": "text",
+            "text": " is clean and paid workflows report "
+          },
+          {
+            "k": "code",
+            "text": "paid_ready: true"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A deterministic "
+          },
+          {
+            "k": "code",
+            "text": "nika test"
+          },
+          {
+            "k": "text",
+            "text": " lane runs without provider keys."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The permit block names every file, host, tool and executable the body needs."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The host can enforce process confinement, including bubblewrap on Linux."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The execution step receives only its required secrets."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Model and agent tasks carry output and loop bounds."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The launch command sets a hard cost ceiling."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Human approval is explicit and fail-closed in a headless session."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The JSON result and verified trace are retained for their separate purposes."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "CI is not merely where a workflow happens to run. It is the boundary where authored intent receives real authority. Make that transfer visible, reviewable and reversible before the first token is spent."
+        }
+      ]
+    }
+  ],
+  "retire-the-prompt-glue": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Prompt glue usually begins as a useful ten-line script."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read a file. Call a model. Parse the answer. Write the result. The first version is fast, familiar and completely reasonable. Then the task becomes important. A second source arrives. A retry appears. Someone adds a shell command. CI needs the result as JSON. The provider changes. The script now owns orchestration, policy, cost control, secret handling and recovery, but still looks like a small utility."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The problem is not that Python or shell are weak languages. The problem is that a general-purpose program hides the properties a workflow reviewer needs most. The graph is mixed with control flow. Authority comes from the process. Model budgets live in request options. A partial write can occur before a later exception. The only proof of what happened may be a log assembled by the same code under review."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Migration should not translate every line into YAML. It should recover the plan that the glue had been performing implicitly."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Start with effects, not syntax",
+      "id": "start-with-effects-not-syntax"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Before changing code, make an inventory of what the script can do."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For a typical “read notes and write a launch brief” job, the inventory may be:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "read two Markdown files;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "ask a model for risks and another model call for opportunities;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "combine both outputs;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "write one report;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "return the report path to the caller."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That list already reveals the workflow better than the original call stack. Two reads are independent. Two analyses depend on the same source material and can run together. The merge waits for both. The save waits for the merge."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Now list authority separately:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "file reads under "
+          },
+          {
+            "k": "code",
+            "text": "./inputs/"
+          },
+          {
+            "k": "text",
+            "text": ";"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "one write under "
+          },
+          {
+            "k": "code",
+            "text": "./out/"
+          },
+          {
+            "k": "text",
+            "text": ";"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "no network tool, shell or arbitrary program;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "one model provider selected by the "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": " value."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If the script also calls "
+        },
+        {
+          "k": "code",
+          "text": "curl"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "jq"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "cat"
+        },
+        {
+          "k": "text",
+          "text": " or "
+        },
+        {
+          "k": "code",
+          "text": "mkdir"
+        },
+        {
+          "k": "text",
+          "text": ", do not copy those commands automatically. Nika has builtins for HTTP, files, structured data and directories. The native tool exposes its arguments to the checker and participates in the permit boundary. A subprocess is appropriate for a real external program, not for plumbing the workflow language already understands."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Draw tasks around jobs, not functions",
+      "id": "draw-tasks-around-jobs-not-functions"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A helper function is not automatically a workflow task. A task should perform one job with one execution model."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Use "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": " when a builtin or MCP tool already performs the operation. Use "
+        },
+        {
+          "k": "code",
+          "text": "infer"
+        },
+        {
+          "k": "text",
+          "text": " when language or judgment is required. Use "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " for a real process that cannot be reached through a tool. Use "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": " only when the number of steps cannot be declared up front."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Here is the recovered plan for the launch brief:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "launch-brief.nika.yaml",
+      "text": "nika: launch-brief\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  tools: [\"nika:read\", \"nika:write\"]\n  fs:\n    read: [\"./inputs/release.md\", \"./inputs/incidents.md\"]\n    write: [\"./out/launch-brief.md\"]\n\ntasks:\n  release:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./inputs/release.md\" }\n\n  incidents:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./inputs/incidents.md\" }\n\n  risks:\n    with:\n      release: ${{ tasks.release.output }}\n      incidents: ${{ tasks.incidents.output }}\n    infer:\n      prompt: |\n        Identify concrete launch risks supported by these two sources.\n        Do not invent missing incidents, dates or owners.\n\n        RELEASE\n        ${{ with.release }}\n\n        INCIDENTS\n        ${{ with.incidents }}\n      max_tokens: 900\n\n  opportunities:\n    with:\n      release: ${{ tasks.release.output }}\n    infer:\n      prompt: |\n        Extract the user-visible improvements in this release.\n        Keep product names and version numbers exactly as written.\n\n        ${{ with.release }}\n      max_tokens: 700\n\n  assemble:\n    with:\n      risks: ${{ tasks.risks.output }}\n      opportunities: ${{ tasks.opportunities.output }}\n    infer:\n      prompt: |\n        Write a launch brief with two headings: What changed and What to watch.\n        Use only the supplied analyses.\n\n        IMPROVEMENTS\n        ${{ with.opportunities }}\n\n        RISKS\n        ${{ with.risks }}\n      max_tokens: 1000\n\n  save:\n    with:\n      brief: ${{ tasks.assemble.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./out/launch-brief.md\"\n        content: \"${{ with.brief }}\"\n        create_dirs: true\n\noutputs:\n  brief: ${{ tasks.assemble.output }}",
+      "play": "HYSw1ghgXABANhArsAxgCwLQCMBOICmAZgFDEC2A9gCb5ywVwJkQD0jEzAzAHQBMUnLKQAO+HGRAAXAM5RiMGJIoNZMANoAiUJCg58EKhoA0MLeGgB3PJPwaAuvJiFZjhXoOxN3FiGDDEMix6cPrS+NxkhiYa3r7+gb4oIDTAMhGGDgoKVlL4njEsFAFsSKiYuASE6fakkhDSYC5utKF5rjC+AG4UYG1ZWUoMsGY67obtChA4AOaqAN4wwhCSaMOxfgHSQS314ZEaMAC+pAqJyfipTVldPX39isp0ptrQYxoTMFOzsAtLK2s+DYJVDnS7VI4nGB4BpXbJSVYfYKtWAAEjmCzqMO4SN23CKkniR2O9w6IJSMlR6MU9Ua3DO5OkeIChMOxOuwEIYjkJOEOAoZGEklgAB8PgoAJLkkCEACeMBQFFQehs8FK6ChIBhMGkiGEwgoOBsVBgWDlK3wYUUFgo2qKOBQFu4YpgABEbcAKJJSZ0Ll6JNJpL5pqSkgyTFRlhaYAboxZgGJGZCSQAlACiABlUwBBADKqedaIWFnh2J2ltZSfu4oAcgBhcUu1PVgAqOYLVOLKzpZN90iJH2YAA8APpKXrAVQATgADNPIRQ9QbJMgpARYTBOwiSTiwpSMTTGTvwviWWzThyuR9efzBSLnanB5IcBAUF7zTBEGEcBhOpqQFgQg6AU+R9Mhe1JRQ0E1KEy3CZ0AGl8HwYRFj5KhEFfGBgA4KMIGAY0fRwQNFSwxAyCwBMYHwQcX0kOA5XqDdrBsYAnXbIsSyPfsSSHUdbgnWAAHZZ0heownIkJuSyTcpP6aFGj3aksXkxkTwCbj7gXfVDRXSQ10UzFaS0pddLXJkCXUit+l8TkcFkrJrwFIUYFFEkFAAdWsfBPlVZB1QqIgN3hK0bTQfQqCDVR3LQZZ5Ri4BpnwY08ONaLYqUDdlnQJ03JgABVS1FXoyDvJ1PU4AIZLsPosJE2dcUAFkAAVkwAeQANVTBqm1bdigq7YydNAPSowrZ1k3FHN4LbXLC36tBsU1RoNP6XixwuVQAEZZznRxpAgH17Jkj4AsIAyD24MT8Ak49mUss9vVueyFEGJ4RksLz3hJL5136P5VlMbx8RKPzyjwIhqmdBVUl9YY5s3bhTqJL63JQdwbGHCKiNgJ9EHwUg1IpRxTvOrErpu8zTyAA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file does not say “run these analyses in parallel.” It says what each task consumes. The engine derives the waves from those bindings. "
+        },
+        {
+          "k": "code",
+          "text": "release"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "incidents"
+        },
+        {
+          "k": "text",
+          "text": " can start together. "
+        },
+        {
+          "k": "code",
+          "text": "risks"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "opportunities"
+        },
+        {
+          "k": "text",
+          "text": " can run together once their inputs exist. "
+        },
+        {
+          "k": "code",
+          "text": "assemble"
+        },
+        {
+          "k": "text",
+          "text": " waits for both analyses. This is the "
+        },
+        {
+          "k": "link",
+          "text": "plan you get from the data edges",
+          "href": "/blog/dag-for-free"
+        },
+        {
+          "k": "text",
+          "text": ", not a scheduler hidden in glue."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Separate values by who controls them",
+      "id": "separate-values-by-who-controls-them"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Prompt scripts often mix four kinds of value in one environment dictionary: user input, deployment configuration, constants and credentials. That makes review harder because everything looks equally changeable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika's current envelope keeps three authorities:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "code",
+            "text": "inputs:"
+          },
+          {
+            "k": "text",
+            "text": " for caller or deployment supplied values;"
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "const:"
+          },
+          {
+            "k": "text",
+            "text": " for fixed values committed in the workflow;"
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "secrets:"
+          },
+          {
+            "k": "text",
+            "text": " for governed references such as an environment key."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Classify by role. A report date supplied with "
+        },
+        {
+          "k": "code",
+          "text": "--var"
+        },
+        {
+          "k": "text",
+          "text": " is an input. A fixed output path is a constant or literal. An API token is a secret. A process environment name that a child must see belongs in the permit boundary too."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Do not turn every old environment variable into an input without thinking. That preserves the ambiguity rather than removing it. The migration is a chance to state who is allowed to choose each value."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Static paths are easier to verify than dynamic ones. If a caller supplies a path that reaches a file effect, the runtime must re-check the resolved value against the declared boundary. Keep the grant narrow and use a "
+        },
+        {
+          "k": "code",
+          "text": "lift"
+        },
+        {
+          "k": "text",
+          "text": " only when a deployment-controlled value genuinely needs to cross the taint law. A broad wildcard is not a substitute for classification."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Make data edges explicit",
+      "id": "make-data-edges-explicit"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Glue scripts pass values through local variables, mutable objects, temporary files and implicit process output. A migration should turn each meaningful transfer into a visible "
+        },
+        {
+          "k": "code",
+          "text": "with:"
+        },
+        {
+          "k": "text",
+          "text": " binding."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The rule is simple: if a task reads another task's result, bind it. Inside the task, read the alias under "
+        },
+        {
+          "k": "code",
+          "text": "with"
+        },
+        {
+          "k": "text",
+          "text": ", not the global task namespace. The binding is both the data contract and the dependency edge."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Use "
+        },
+        {
+          "k": "code",
+          "text": "after:"
+        },
+        {
+          "k": "text",
+          "text": " only when order matters but no value crosses. Cleanup after a terminal outcome is a good example. “Run B after A because B needs A's output” is a data edge and should be written as one."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This distinction removes accidental serial work. In an imperative script, lines execute in source order even when no dependency exists. In a declared graph, independent tasks are visible and may run together. Migration can make a repeated job faster without adding concurrency code."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Replace hand-built plumbing with native tools",
+      "id": "replace-hand-built-plumbing-with-native-tools"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The most common migration mistake is wrapping old commands inside "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": ":"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "curl URL | jq .items > out.json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That preserves a shell-shaped blind spot. The checker sees a process and, if "
+        },
+        {
+          "k": "code",
+          "text": "shell:"
+        },
+        {
+          "k": "text",
+          "text": " is used, a command language inside a string. It cannot reason about the URL, transformation and write with the same precision as three typed operations."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The native shape is "
+        },
+        {
+          "k": "code",
+          "text": "nika:fetch"
+        },
+        {
+          "k": "text",
+          "text": " for HTTP, "
+        },
+        {
+          "k": "code",
+          "text": "nika:jq"
+        },
+        {
+          "k": "text",
+          "text": " for the value transformation and "
+        },
+        {
+          "k": "code",
+          "text": "nika:write"
+        },
+        {
+          "k": "text",
+          "text": " for the artifact. Each task names its arguments. Each effect appears in "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": ". Each result can be inspected in the trace."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same rule covers "
+        },
+        {
+          "k": "code",
+          "text": "cat"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "tee"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "cp"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "find"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "grep"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "date"
+        },
+        {
+          "k": "text",
+          "text": ", UUID generation, hashing, conversion and schema validation. Run "
+        },
+        {
+          "k": "code",
+          "text": "nika catalog --tools"
+        },
+        {
+          "k": "text",
+          "text": " against the installed binary before keeping a subprocess. If a product exposes an MCP tool, prefer that tool over a local helper that wraps its HTTP API."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " that remains should name a real tool such as "
+        },
+        {
+          "k": "code",
+          "text": "git"
+        },
+        {
+          "k": "text",
+          "text": ", a compiler or a release CLI. Use argv form, one argument per item. A shell is an explicit language boundary, not the default string form."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Turn hidden policy into deterministic tasks",
+      "id": "turn-hidden-policy-into-deterministic-tasks"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A prompt often contains both extraction and policy:"
+        }
+      ]
+    },
+    {
+      "k": "quote",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Read the release, decide whether it is safe, and write the announcement."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That asks a model to define the evidence, apply the rule and produce the artifact. The result may sound decisive while the actual threshold remains impossible to test."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Split the jobs. Let a model extract typed facts. Apply the publication rule with "
+        },
+        {
+          "k": "code",
+          "text": "nika:jq"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "nika:decide"
+        },
+        {
+          "k": "text",
+          "text": " or "
+        },
+        {
+          "k": "code",
+          "text": "nika:assert"
+        },
+        {
+          "k": "text",
+          "text": ". Prove the rule against a fixed known case. A second model should not be the judge of the first model's work when the decision can be expressed deterministically."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is also where retries belong. A transient provider error may justify a bounded retry. A weak prompt does not. Retrying an unclear instruction spends more money on the same ambiguity."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Migrate in three passes",
+      "id": "migrate-in-three-passes"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Do not rewrite a critical script and switch production in one motion."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Pass one: shape."
+        },
+        {
+          "k": "text",
+          "text": " Start from two shipped examples that cover the graph. Recreate tasks and data edges with "
+        },
+        {
+          "k": "code",
+          "text": "mock/echo"
+        },
+        {
+          "k": "text",
+          "text": " or a local model. Run "
+        },
+        {
+          "k": "code",
+          "text": "nika check"
+        },
+        {
+          "k": "text",
+          "text": " until the file is clean."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Pass two: boundary."
+        },
+        {
+          "k": "text",
+          "text": " Derive a candidate with "
+        },
+        {
+          "k": "code",
+          "text": "nika check --infer-permits"
+        },
+        {
+          "k": "text",
+          "text": ", then review every path, host, tool and executable. Dynamic paths and redirects still require human attention because static inference cannot know their resolved targets."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Pass three: proof."
+        },
+        {
+          "k": "text",
+          "text": " Pin a deterministic rehearsal with "
+        },
+        {
+          "k": "code",
+          "text": "nika test <file> --update"
+        },
+        {
+          "k": "text",
+          "text": ", then run the old script and new workflow on the same fixed inputs. Compare the artifacts. Keep the trace from the workflow and document any deliberate difference."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Only after those passes should a paid model replace the mock or local seat. Require both a clean native-strict check and "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready: true"
+        },
+        {
+          "k": "text",
+          "text": ". Then use "
+        },
+        {
+          "k": "code",
+          "text": "--max-cost-usd"
+        },
+        {
+          "k": "text",
+          "text": " on the run boundary and remember that the static ceiling covers output tokens, not every possible input cost."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Delete the glue when the plan owns the job",
+      "id": "delete-the-glue-when-the-plan-owns-the-job"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A successful migration has a clear finish line."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow file names every job, every data edge, every effect, every model ceiling and the final output. CI checks the same bytes production runs. A mock or local rehearsal is pinned. The old script no longer owns retries, provider calls or file plumbing. It can be deleted rather than kept as a second implementation “just in case.”"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The result may be longer than the first ten-line prototype. It is smaller than the system the prototype had quietly become. More importantly, the operational truth is now visible before execution. That is what the glue could never provide."
+        }
+      ]
+    }
+  ],
+  "intent-as-code-engineering-discipline": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first version of an AI task is often a conversation. You explain the problem, add context, correct a misunderstanding and keep going until the answer becomes useful. That is a good way to discover the work. It is a poor way to operate the work again."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A month later, the durable part is rarely the final message. It is the set of decisions that produced it: which sources counted, which model handled the ambiguous step, which tool wrote the artifact, what the model was forbidden to touch, how much output it could generate and what proved the run actually followed the plan."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Intent as Code is the discipline of putting those decisions in a file before execution. Nika is one implementation of that discipline. The larger idea does not depend on a vendor, a model or a user interface. It starts with a simple question: "
+        },
+        {
+          "k": "strong",
+          "text": "can a reviewer understand what this AI work will do without watching it happen?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If the answer lives in chat history, the task is still a session. If it lives in a checked file, the task has become an engineering artifact."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Source is different from a transcript",
+      "id": "source-is-different-from-a-transcript"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A transcript records a path someone took. Source declares a path that can be inspected and taken again."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That distinction is familiar in software. A terminal history is not a build system. A production log is not an infrastructure definition. A screen recording of an analyst is not a data pipeline. Each may help explain what happened, but none is the owned, reviewable instruction for what should happen next time."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "AI work needs the same separation. The conversation remains useful for exploration. Once the task repeats, the stable parts move into source:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the inputs and fixed values;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the model and its output ceiling;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the tasks and the data passed between them;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the files, hosts, programs and tools the run may reach;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the output that makes the job complete."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The source should be smaller than the conversation because it carries the decisions, not every discarded thought. That compression is a feature. It turns a long session into a diff another person can review."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The smallest useful file makes four claims",
+      "id": "the-smallest-useful-file-makes-four-claims"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Consider a weekly brief that reads one note, asks a local model for a summary and writes one report:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "weekly-brief.nika.yaml",
+      "text": "nika: weekly-brief\n\nmodel: ollama/llama3.2:3b\n\npermits:\n  tools: [\"nika:read\", \"nika:write\"]\n  fs:\n    read: [\"./notes/week.md\"]\n    write: [\"./out/brief.md\"]\n\ntasks:\n  source:\n    invoke:\n      tool: \"nika:read\"\n      args: { path: \"./notes/week.md\" }\n\n  summarize:\n    with:\n      note: ${{ tasks.source.output }}\n    infer:\n      prompt: |\n        Summarize this weekly note in three factual paragraphs.\n        Keep named owners, dates and unresolved blockers.\n\n        ${{ with.note }}\n      max_tokens: 700\n\n  save:\n    with:\n      brief: ${{ tasks.summarize.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./out/brief.md\"\n        content: \"${{ with.brief }}\"\n        create_dirs: true\n\noutputs:\n  brief: ${{ tasks.summarize.output }}",
+      "play": "HYSw1ghgXABA7gUwWANgTwLQCMBOIEBmAUEQLYD2AJgirOSihKRAPQNMQDMAdAExScsJAA4IcpEABcAzlCIwYk8vVkwA2gCJQkKDgQRKGgDQwt4aHDySEGgLryYBWQ4V6DsTdxbBy16S0RkblJDewUFSykEDw0vcgBXSRZcfAJg0JJJCGkwZwVpBJwAY2iXGBBgADdyMFLw8KV6WDMdN0MyhQgcAHNVAG8YYQhJAAtmrx8-AKQwdI0YAF8SfPjSZjwALzrwuCkxjphJ6JgAEj6BrJzpbgL44oRuBMlhRMWl+oqCMTl6hWEccikYSSWAAHwOCgAyqt1iAtooRiBpPAZuhDr4EOVgAi9JiCBAipJ4hAUIMuhBujgIMIRtcITAANJIYSHJgISgwchwYBiaQmSjDBDIiDADnxYB6AooSrsmBYFDkIq1HB0+lnAa7UbcI5vA7MAAeAH0lLVgKoAOwABktyxg0ggMp+Oz2TvqKUIsHVimyuRuMK6cIeTxekl1HyqNW29UatFM2gsVhsBy6vVdvyGo3GLCeyTwhDm9KK5GA1hLzS9mpG3HdBDeGkLbmshsoIBVsEkOHiCBIwcSeTleYInvO3qufrWAa2j0SIbeQA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This file makes four claims a chat cannot make reliably."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "First, it names the job. "
+        },
+        {
+          "k": "code",
+          "text": "nika: weekly-brief"
+        },
+        {
+          "k": "text",
+          "text": " gives the plan an identity that can live in a repository, a review and a trace."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Second, it names the graph. The summary consumes the read result, and the save consumes the summary. The "
+        },
+        {
+          "k": "code",
+          "text": "with:"
+        },
+        {
+          "k": "text",
+          "text": " bindings are data edges, not prose about what should happen next."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Third, it names the authority. The run may read one path, write one path and call only the explicitly named builtins. Everything else is outside the declared boundary."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Fourth, it names completion. The brief is a declared output, not a useful-looking sentence somewhere in a terminal stream."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those four claims turn “summarize this note” from a request into a reviewable unit of work."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The graph should exist before the model does",
+      "id": "the-graph-should-exist-before-the-model-does"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Many AI systems discover their plan during execution. That is sometimes necessary. Research, debugging and open-ended investigation may require a model to choose the next step after seeing the last result."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Most recurring work is not like that. A release note still needs sources, a draft and a saved artifact. A support digest still needs records, classification and a report. A model may supply judgment inside one step, but the surrounding shape is known."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Declaring that shape first produces immediate benefits. Independent tasks can run together. Missing dependencies can be found before execution. A reviewer can see whether a publishing step depends on a validation step. A checker can determine which effects are reachable and estimate the output ceiling. None of this requires a model call."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "When the task really is open-ended, Nika gives the dynamic loop its own "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": " verb and requires bounds on turns, tokens and available tools. The dynamic part remains visible as one bounded task inside a larger declared plan. The exception does not erase the structure around it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is a core principle of Intent as Code: uncertainty belongs where the judgment is needed, not everywhere by default."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Authority belongs beside purpose",
+      "id": "authority-belongs-beside-purpose"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An AI task is not fully described by what it should produce. It is also described by what it may touch while trying."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "In ordinary scripts, authority arrives from the process environment. If the CI runner can read the repository and reach the network, the script often can too. The permission review happens indirectly through runner configuration, credentials and convention."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A declared workflow can make the boundary part of the same diff as the intent. Add a second output file, and the write grant changes beside the new task. Add a network source, and the exact host appears beside the fetch. Remove the tool, and its authority disappears from the file."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That proximity changes review. “Why does this summarizer need a shell?” becomes a concrete question. “Can this report leave the machine?” has an answer in source. An absent permission is not documentation debt. It is a refusal before the effect."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "blast radius belongs in the file",
+          "href": "/blog/blast-radius-in-the-file"
+        },
+        {
+          "k": "text",
+          "text": " because purpose without authority is incomplete. Two workflows can produce the same paragraph while carrying radically different operational risk."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Cost is part of correctness",
+      "id": "cost-is-part-of-correctness"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A task that returns the right answer at an unbounded price is not correct enough for production."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Intent as Code makes spend review possible by placing the model choice and output ceiling in the plan. The checker can price the part the catalog knows before execution. The runner can enforce a maximum cost at launch. Local compute stays honestly unpriced rather than being relabeled as free."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The distinction matters most when an agent authors the workflow. A model can propose an impressive plan with a large fan-out, generous generations and repeated research calls. The proposal may parse and still be a bad place to spend money. Nika 0.111.0 separates the legal verdict from "
+        },
+        {
+          "k": "code",
+          "text": "paid_ready"
+        },
+        {
+          "k": "text",
+          "text": ", the signal that paid-run guidance has been resolved. "
+        },
+        {
+          "k": "link",
+          "text": "Clean is not ready to spend",
+          "href": "/blog/clean-is-not-ready-to-spend"
+        },
+        {
+          "k": "text",
+          "text": ", and the file gives a team somewhere to enforce the difference."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Cost review also exposes input size. A small output ceiling does not make a huge fetched document cheap. The static ceiling covers what it can prove, and a human still reviews how much context enters each prompt. Honest partial knowledge is better than a precise number that hides the expensive half."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The run needs a receipt, not a memory",
+      "id": "the-run-needs-a-receipt-not-a-memory"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Source answers what should happen. A trace answers what did happen."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Every meaningful run should leave enough evidence to connect the two. Which workflow bytes ran? Which tasks completed? Which model seat answered? Which outputs were reused on resume? What was spent? Did the journal remain intact after the fact?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika records runs under "
+        },
+        {
+          "k": "code",
+          "text": ".nika/traces/"
+        },
+        {
+          "k": "text",
+          "text": " and links journal events through a hash chain. Verification reports the proof level actually reached. A local chain is not called an external attestation. A replay is not implied merely because the original run succeeded."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This matters when results are disputed. The team does not reconstruct the event from screenshots and chat. It reads the source, verifies the trace and finds the exact task where the observed run departed from expectation. The "
+        },
+        {
+          "k": "link",
+          "text": "run becomes evidence",
+          "href": "/blog/the-run-becomes-evidence"
+        },
+        {
+          "k": "text",
+          "text": " because the plan and the record share stable identities."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The discipline compounds",
+      "id": "the-discipline-compounds"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first workflow saves a prompt. The tenth creates an operating system for repeated AI work."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Files can share review rules. CI can check every changed workflow. Editors can offer completion from the same schema the engine uses. Coding agents can author plans against repository instructions, then call a read-only checker without receiving run authority. Teams can compare traces across model changes instead of trusting impressions. Useful patterns can become templates without becoming another framework dependency."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The compounding effect comes from ownership. A workflow committed today remains readable after a provider changes, a chat product disappears or the original author leaves. The model string may change. The task graph, boundary and definition of done can survive."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is why Intent as Code is more than prompt versioning. A prompt is one component. The discipline covers the whole unit of work: values, judgment, tools, authority, cost, outputs and evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Explore in conversation. Keep the useful decisions in source. Check the file before it runs, and keep the receipt after it finishes. That is the engineering loop."
+        }
+      ]
+    }
+  ],
+  "the-run-keeps-its-receipt": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A successful AI workflow leaves two questions behind."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first is operational: what happened, in what order, with which model, tools, permissions, outputs and cost? The second is adversarial: why should anyone trust the record that answers the first?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Plain logs answer neither well. They mix human decoration with machine state, lose graph relationships and make edits hard to detect. A hosted run page can preserve structure, but custody moves to the vendor and replay usually means “run it again”, which is the last thing an auditor wants from an evidence viewer."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika writes a local NDJSON journal for every run by default. One event per line, typed from the opening manifest to the closing verdict. That one artifact supports several different acts: read, replay, verify, resume, compare, export and package. The commands stay separate because each act carries a different authority."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Start with a small file whose effect is obvious:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "receipt-demo.nika.yaml",
+      "text": "nika: receipt-demo\n\npermits:\n  exec: [\"echo\"]\n\ntasks:\n  message:\n    exec:\n      command: [\"echo\", \"the run happened\"]\n\noutputs:\n  message: ${{ tasks.message.output }}",
+      "play": "HYSw1ghgXABATgUwMYJABwC4FoAmCC2A9gFDFoJz4gYDOUxMMCAHsrANoBEyAFoZwF1SGCDTB0GMfAho0IAcwT1GjFm0kqYSQvnwRgODtyR9OAGhicMPBPACuwGDwhpywBDkGlCdjGl8SjNKyCkowACQA3pEwImI0AHTBcooJPn6+MAC+WUA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Run it normally:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika check receipt-demo.nika.yaml\nnika run receipt-demo.nika.yaml\nnika trace ls"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The run prints its trace path. "
+        },
+        {
+          "k": "code",
+          "text": "trace ls"
+        },
+        {
+          "k": "text",
+          "text": " treats "
+        },
+        {
+          "k": "code",
+          "text": ".nika/traces/"
+        },
+        {
+          "k": "text",
+          "text": " as a workspace store and shows age, size, workflow and terminal state. The newest resumable trace for each workflow is marked so default retention never collects the one record most likely to continue interrupted work."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Read without causing another effect",
+      "id": "read-without-causing-another-effect"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The safest property of the trace interface is stated in the help itself: "
+        },
+        {
+          "k": "strong",
+          "text": "replay means re-render, never re-execute"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace replay .nika/traces/<run>.ndjson\nnika trace show .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "replay"
+        },
+        {
+          "k": "text",
+          "text": " rebuilds the live run presentation from recorded events. It may compress time, but it does not call a model, start a process, contact an MCP server or write the workflow's outputs again. "
+        },
+        {
+          "k": "code",
+          "text": "show"
+        },
+        {
+          "k": "text",
+          "text": " skips the journey and renders the final card."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That boundary matters. An incident responder can open a failed deployment trace without deploying again. A reviewer can watch an MCP call sequence without reconnecting to the MCP server. A colleague can inspect a paid inference run without buying a second answer. Viewing evidence should not need the authority that produced it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Several narrower readers avoid dumping the whole journal:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace outputs <trace>\nnika trace peek <trace> message\nnika trace session <trace>\nnika trace flow <trace> receipt-demo.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "outputs"
+        },
+        {
+          "k": "text",
+          "text": " lists bounded per-task previews. "
+        },
+        {
+          "k": "code",
+          "text": "peek"
+        },
+        {
+          "k": "text",
+          "text": " reads one task's full value and identity. "
+        },
+        {
+          "k": "code",
+          "text": "session"
+        },
+        {
+          "k": "text",
+          "text": " derives waves, waits and spend only where the journal has enough evidence to claim them. "
+        },
+        {
+          "k": "code",
+          "text": "flow"
+        },
+        {
+          "k": "text",
+          "text": " joins the recorded output sizes to the workflow's bindings so the data waterfall remains connected to the authored plan."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The division is useful for disclosure. “Show me the verdict” and “show me the entire model response” are not the same request. A tooling surface that always answers the first with the second will eventually leak something."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Verify before trusting",
+      "id": "verify-before-trusting"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Every modern trace line participates in a tamper-evidence chain. Edit, insert, drop or reorder a line and recomputation diverges at a named point:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace verify .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The chain proves internal consistency. By itself it does not stop someone with write access from rebuilding an entire chain. Nika says that boundary plainly and then offers stronger, separately named tiers."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A sealed run carries a signature that can be checked against a custody key. An anchored run has a detached sidecar tied to the post-seal journal head and public timestamp material. A replayed verification compares the recorded journal with a fresh run you provide. "
+        },
+        {
+          "k": "code",
+          "text": "trace verify"
+        },
+        {
+          "k": "text",
+          "text": " reports the highest honestly attained tier rather than turning every file into a generic green badge."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The refusals are equally specific. A changed line is tampered. Lines chained after the seal are a buried seal, because appending requires only file write access. A sidecar that vouches for nothing is an anchor forgery. A seal whose public key is unavailable is unattributable, which is a missing input, not proof of forgery."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "External anchoring is always an explicit network act:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace anchor .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The default local run does not contact a transparency service. The operator chooses when a run's custody story warrants that step."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Resume from evidence, not memory",
+      "id": "resume-from-evidence-not-memory"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The journal is also a checkpoint. A resumed run verifies the chain before trusting a recorded success:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika run receipt-demo.nika.yaml --resume .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Each completed task carries an identity derived from its definition and resolved inputs. If that identity still matches, the engine emits a visible cache hit and skips the effect. Edit the task or change its input and the match breaks. The task runs live."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is not blind memoization. The trace's engine version is judged too. Resuming under another version refuses unless the operator explicitly attests compatibility with the recorded version. If the chain is broken, resume refuses unless "
+        },
+        {
+          "k": "code",
+          "text": "--resume-unverified"
+        },
+        {
+          "k": "text",
+          "text": " is present, and that waiver is recorded in the new journal. An exception becomes evidence, not folklore."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Sometimes the hashes cannot see the reason to rerun. A rotated secret or changed external database may leave the task definition and authored inputs untouched. "
+        },
+        {
+          "k": "code",
+          "text": "--from <task>"
+        },
+        {
+          "k": "text",
+          "text": " forces that task and its transitive downstream to run again while eligible siblings still reuse their records. "
+        },
+        {
+          "k": "code",
+          "text": "--task <task>"
+        },
+        {
+          "k": "text",
+          "text": " takes the opposite cut and runs one task plus its transitive upstream."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "These controls work because the trace preserves task identity and the workflow preserves the graph. “Try from about here” becomes a deterministic subgraph operation."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Compare two runs without pretending models are deterministic",
+      "id": "compare-two-runs-without-pretending-models-are-deterministic"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "nika trace reproduce"
+        },
+        {
+          "k": "text",
+          "text": " compares a recorded journal with a fresh one:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace reproduce recorded.ndjson fresh.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It does not return only same or different. It classifies each task as reproduced, nondeterministic, authored, environment, status-changed or unverifiable. That vocabulary separates several causes teams often call “flakiness”."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A model producing different text under the same task and inputs is nondeterministic. A changed prompt is authored. A different file or environment input is environmental. A success becoming a failure is status-changed. An older record without enough identity material is unverifiable. The comparison refuses to infer evidence the journals do not carry."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is especially useful when evaluating a provider or model change. Keep the workflow and inputs controlled, run each seat, then compare traces. The result still does not tell you which answer is better. It tells you where execution identity or outputs diverged, which is the stable substrate for a real evaluation."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Export structure without exporting content by accident",
+      "id": "export-structure-without-exporting-content-by-accident"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The journal is local and Nika keeps observability vendor-neutral. "
+        },
+        {
+          "k": "code",
+          "text": "trace export"
+        },
+        {
+          "k": "text",
+          "text": " projects it to OTLP JSON lines:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace export .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The projection carries span structure and current GenAI semantic attributes such as provider and requested model. Recorded task content stays out unless "
+        },
+        {
+          "k": "code",
+          "text": "--include-content"
+        },
+        {
+          "k": "text",
+          "text": " is explicitly set. The output can be opened in an OpenTelemetry-compatible viewer or posted through your own collector later. Export does not make a network call on its own."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For a review or audit handoff, use the evidence pack:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika trace evidence <trace> --workflow receipt-demo.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The default pack combines the journal, manifest, receipt and verification instructions in redacted form. It proves run integrity without automatically disclosing model outputs, tool results or file reads. "
+        },
+        {
+          "k": "code",
+          "text": "--full"
+        },
+        {
+          "k": "text",
+          "text": " is the operator's deliberate widening when content is required."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The receipt has a readable projection, but the command naming keeps the trust boundary visible: "
+        },
+        {
+          "k": "code",
+          "text": "nika trace receipt explain"
+        },
+        {
+          "k": "text",
+          "text": " "
+        },
+        {
+          "k": "strong",
+          "text": "explains"
+        },
+        {
+          "k": "text",
+          "text": " a receipt; "
+        },
+        {
+          "k": "code",
+          "text": "nika trace verify"
+        },
+        {
+          "k": "text",
+          "text": " proves what can be proved. Human-friendly text is a reading, not the evidence itself."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A retention policy is part of operations",
+      "id": "a-retention-policy-is-part-of-operations"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Evidence that grows forever becomes an unmanaged data store. Evidence deleted too early stops being evidence. Nika's project file can set trace retention, while command-level removal protects paused runs unless the operator forces deletion. "
+        },
+        {
+          "k": "code",
+          "text": "--no-trace-file"
+        },
+        {
+          "k": "text",
+          "text": " exists for a run whose policy forbids a journal, but it also gives up replay, resume and the local receipt."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Choose retention from the workflow's data class, not disk anxiety alone. A trace can hold prompts, tool responses and file-derived values. Use redacted evidence packs for sharing. Keep full journals under the same access and deletion rules as the source data they record."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The design economy is the final point. The journal is not one feature among many. It is the substrate that lets replay stay effect-free, resume stay evidence-based, comparison stay classified, OpenTelemetry stay portable and audit packs stay re-verifiable. One run leaves one receipt. Every later reader chooses the smallest authority needed to understand it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Continue with "
+        },
+        {
+          "k": "link",
+          "text": "The chain of custody",
+          "href": "/blog/the-chain-of-custody"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "link",
+          "text": "The resume story",
+          "href": "/blog/the-resume-story"
+        },
+        {
+          "k": "text",
+          "text": ", or "
+        },
+        {
+          "k": "link",
+          "text": "The run becomes evidence",
+          "href": "/blog/the-run-becomes-evidence"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
+  "the-two-clocks-behind-a-model-string": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The line "
+        },
+        {
+          "k": "code",
+          "text": "model: anthropic/claude-sonnet-4-6"
+        },
+        {
+          "k": "text",
+          "text": " looks complete."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It is complete as authored intent. It is not the whole runtime decision."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The prefix names a provider family. The suffix names the model requested from that provider. To admit a run, an engine still has to know whether the provider belongs to the language it implements, whether this release knows the model and its limits, which access paths are available on this machine, and which price table will judge the budget."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those facts do not change together. Treat them as one global “model list” and reproducibility becomes impossible to explain. Freeze the whole list forever and the product cannot follow the market. Nika separates the problem into two data clocks, then records the machine-local access decision at run admission."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Clock one: the standard",
+      "id": "clock-one-the-standard"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The standard clock is the language canon. It defines the stable provider ids a conforming Nika implementation recognizes and which of them are local, cloud or test seats. It also defines the verbs, builtins, namespaces and other closed language sets."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This clock changes with the specification. A provider id is therefore more than a logo in a UI. It is part of the syntax and semantics of "
+        },
+        {
+          "k": "code",
+          "text": "<provider>/<name>"
+        },
+        {
+          "k": "text",
+          "text": ". "
+        },
+        {
+          "k": "code",
+          "text": "ollama/..."
+        },
+        {
+          "k": "text",
+          "text": " selects a local runtime family. "
+        },
+        {
+          "k": "code",
+          "text": "anthropic/..."
+        },
+        {
+          "k": "text",
+          "text": " selects a cloud provider family. "
+        },
+        {
+          "k": "code",
+          "text": "mock/..."
+        },
+        {
+          "k": "text",
+          "text": " selects a test path. A typo in the prefix is not a late HTTP error. It fails model resolution as an unknown provider."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The website imports those names and counts from generated canon projections. The engine compiles the same source. Docs do not get to remember a number and hope the language stayed still."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The standard deliberately does "
+        },
+        {
+          "k": "strong",
+          "text": "not"
+        },
+        {
+          "k": "text",
+          "text": " attempt to freeze every model sold by every provider. That inventory changes too quickly and includes operational facts the language specification should not own: context windows, output limits, API dialects, default seats, price rows and data-policy sources."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Clock two: the release catalog",
+      "id": "clock-two-the-release-catalog"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The release clock is the concrete catalog vendored into an engine version. It joins provider seats to known models and carries the facts that can be verified for that release:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "provider display and aliases;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "environment key requirements;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "default and lower-cost seed models;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "API dialects and local endpoints;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "context and output limits;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "exact-match price rules with source dates;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "measured energy rows where a receipt exists;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "data-policy claims with their primary source."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This clock moves when the engine ships. The current site's "
+        },
+        {
+          "k": "link",
+          "text": "catalog",
+          "href": "/catalog"
+        },
+        {
+          "k": "text",
+          "text": " is pinned to the current engine release, and its release room exposes the artifacts and digests that carry that catalog. A model can belong to a standard provider family but be absent from an older release's concrete rows. That is not a contradiction. It means the provider grammar is stable while the installed market snapshot is older."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The separation also keeps missing data honest. A model without a price row is unpriced, not free. A model without an energy measurement is unmeasured, not efficient. A model absent from the catalog may still be accepted by an open local server, but the engine cannot invent its context window or cost."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The model string joins the clocks",
+      "id": "the-model-string-joins-the-clocks"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Consider one portable workflow:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "review-change.nika.yaml",
+      "text": "nika: review-change\nmodel: anthropic/claude-sonnet-4-6\n\ninputs:\n  diff:\n    type: string\n    required: true\n\ntasks:\n  review:\n    infer:\n      prompt: |\n        Review this diff for one correctness risk and one missing test.\n        Quote no more than the line needed to identify each finding.\n\n        ${{ inputs.diff }}\n      max_tokens: 900\n\noutputs:\n  review: ${{ tasks.review.output }}",
+      "play": "HYSw1ghgXABATgUwG4gQdwLQGMAWFgDmCAUALYD2AJggDaz4AuOc5ADiFgPRY0QCu1DAGdywYAgYYALBgBsxYiGCs+DIVGIwYlEADNdGrVoYBPVglhCGcJQU1HEARz4hElWNb4liDCELDq9ogo6IZGSroIcGFGMKwspKwMsAA+9rFaAErIqGgwTCBC2nq6MLrkcDCiCDBYFYhYDOJCRTb+MPiUVeIwpIVCtvkIVgB06RkAinzkDDXA5L0VNUz4+Tg1NEpzCAjUXQwLINTADHomMAgQuGVKOoRj47EAJADeLzBKKmojOvowAL7-R69CAADwA+gcwAhgOoYABOAAMiIU5FUX0CWmCuVgr3evn8QhG2PQIzRDC+AP+QA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "At check time, the provider prefix is judged against the language and the model row is looked up in the release catalog. Known output pricing lets the checker compute the static floor implied by "
+        },
+        {
+          "k": "code",
+          "text": "max_tokens"
+        },
+        {
+          "k": "text",
+          "text": ". A missing price row cannot become a fake zero-dollar guarantee. A known reasoning model may trigger a hint if its output budget leaves no explicit room for thinking."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "At run admission, the machine resolves the "
+        },
+        {
+          "k": "strong",
+          "text": "access path"
+        },
+        {
+          "k": "text",
+          "text": ". The model still chooses the intelligence. Access chooses how this host reaches it. The candidate can be local, mock, harness, OAuth or API, depending on what the release and machine expose. The resolver is deterministic and carries a witness for every candidate it drops."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An operator can make that choice a contract:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika run review-change.nika.yaml --access api --var 'diff=the patch text'"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "If the API path is unavailable, the run refuses before the prologue. It does not substitute an OAuth session, local server or another model. Without a pin, resolution follows its stable ordering and the selected path is still recorded."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This access decision is not a third documentation clock. It is live machine state. That is why the correct place for it is the admission record, not the workflow source or the release catalog. The same engine release can run the same model through a different path on another host. The trace must say which one happened."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Reproducibility begins with the manifest",
+      "id": "reproducibility-begins-with-the-manifest"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The opening event of a Nika trace records the engine version and platform, workflow identity, specification pin, permits boundary, pricing snapshot and access plan. Model task events record the provider, model, access and billing class actually used."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those fields prevent four common rewrites of history:"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "“The same model name means the same run.”"
+        },
+        {
+          "k": "text",
+          "text": " It does not. A provider can update the served weights behind an API id. A local operator can replace a quantized file. The trace proves the requested seat and access path, not facts the provider never exposed. Reproducibility stays an evidence claim, not branding."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "“Today's price explains yesterday's budget verdict.”"
+        },
+        {
+          "k": "text",
+          "text": " It may not. Price tables change. The trace records the pricing snapshot identity used by the run, so an auditor does not silently re-price old work against today's catalog and call the result verification."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "“A model override is only a convenience flag.”"
+        },
+        {
+          "k": "text",
+          "text": " It changes the admitted seat. A resumed run keeps the recorded model context, and a silent seat swap refuses. Cross-version resume also refuses unless the operator explicitly attests compatibility with the recorded engine version."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "“Local means no provenance is needed.”"
+        },
+        {
+          "k": "text",
+          "text": " Local removes provider egress, which is valuable. It does not identify the weights on disk. For a decision that depends on exact reproduction, keep the model artifact digest and server configuration with the evidence pack. The Nika trace covers what crossed its boundary; it should not claim facts below a server wire it cannot observe."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why the website shows both clocks",
+      "id": "why-the-website-shows-both-clocks"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "catalog resolution instrument",
+          "href": "/catalog"
+        },
+        {
+          "k": "text",
+          "text": " places the standard clock beside the release clock. The first answers “which provider families are part of this language?” The second answers “which concrete seats and facts does this released binary know?” The model string sits between them because it is the join key."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That layout prevents several misleading product claims. A marketing integration list can grow without pretending each item is a language primitive. A price update can ship without implying a spec change. A spec addition cannot appear on the public site before the current engine actually carries its generated projection. Release assets and their digests remain the outer provenance boundary."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For operators, the practical rule is simple:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Write an explicit "
+          },
+          {
+            "k": "code",
+            "text": "<provider>/<model>"
+          },
+          {
+            "k": "text",
+            "text": " string."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " with the engine version that will execute the file."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Read catalog warnings as missing evidence, not cosmetic lint."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Pin "
+          },
+          {
+            "k": "code",
+            "text": "--access"
+          },
+          {
+            "k": "text",
+            "text": " when the path affects billing, custody or authentication."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Keep the trace and verify its chain."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Record model artifacts below the provider wire when exact weights matter."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The model market will keep moving. A workflow language does not become reproducible by denying that motion. It becomes reproducible by separating what is stable, what is released, what is live on this machine and what the run can actually prove."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Browse the "
+        },
+        {
+          "k": "link",
+          "text": "model register",
+          "href": "/catalog/models"
+        },
+        {
+          "k": "text",
+          "text": ", inspect the current "
+        },
+        {
+          "k": "link",
+          "text": "release record",
+          "href": "/releases/v0.111.0"
+        },
+        {
+          "k": "text",
+          "text": ", or continue with "
+        },
+        {
+          "k": "link",
+          "text": "Clean is not ready to spend",
+          "href": "/blog/clean-is-not-ready-to-spend"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
+  "one-workflow-three-local-model-lanes": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "“Run it locally” is not one setup. A laptop developer wants a model up in minutes. A desktop user may want a visual model library and a server button. A team with GPUs wants batching, concurrency and an endpoint that survives the person who launched it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ollama, LM Studio and vLLM answer those needs differently. Nika does not flatten their operational differences. It gives them the same place in a workflow: the provider prefix of one model string."
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "local-brief.nika.yaml",
+      "text": "nika: local-brief\nmodel: ollama/llama3.2:3b\n\ninputs:\n  notes:\n    type: string\n    required: true\n\ntasks:\n  brief:\n    infer:\n      prompt: |\n        Turn these notes into five concise bullets.\n\n        ${{ inputs.notes }}\n      max_tokens: 500\n\noutputs:\n  brief: ${{ tasks.brief.output }}",
+      "play": "HYSw1ghgXABANgewMYTgWgEYCcQFMBmAUALYIAmucsCccExEA9LfRAMwB0ATFGxoYRDAADgFcALgGcohGDGAJxuabLkxxAT2G5Yk8TmABzVXKy4AjqJBmysfaNwDxESWBVzsefDLUwh+XCwfXxhhLARiYXFYAB8TEIAVUSxgdQALZVx5RWU-YHEEGHwQADcspARgJBBJLIxRWlwpDgEQtQASAG9OvLFmhSVJGABfYfi5BgAPAH0CsFxgaRgAVgAGVYEECT73GE8CWC6e51dJDn38Di3xPpHhoA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file says what the model must do, how much output it may produce and what the workflow returns. It does not carry a base URL or a launch command. Those are properties of the runtime on the machine, not portable workflow intent."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Run the same file through each lane by changing only the model seat:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika run local-brief.nika.yaml --var 'notes=release notes here' --model ollama/llama3.2:3b\nnika run local-brief.nika.yaml --var 'notes=release notes here' --model lmstudio/qwen3.5-4b\nnika run local-brief.nika.yaml --var 'notes=release notes here' --model vllm/Qwen/Qwen3-8B"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That is not a claim that the outputs will match. Different models, quantizations, samplers and runtimes can produce different text. It is a claim that the "
+        },
+        {
+          "k": "strong",
+          "text": "contract around the inference"
+        },
+        {
+          "k": "text",
+          "text": " stays reviewable: same task graph, same prompt, same output budget, same input and same trace shape."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Ollama: the short first lane",
+      "id": "ollama-the-short-first-lane"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ollama is the easiest default when the goal is to prove the workflow on one machine. The Nika catalog expects its local server on port 11434 and requires no provider key. Pull a model, make sure the server is available, then run:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "ollama pull llama3.2:3b\nnika try 01-hello --model ollama/llama3.2:3b"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The model suffix is the tag Ollama knows. Nika's catalog carries "
+        },
+        {
+          "k": "code",
+          "text": "llama3.2:3b"
+        },
+        {
+          "k": "text",
+          "text": " as a seed, not a closed allowlist. A local server may host models added after the Nika release, so unknown local model names pass through verbatim. That keeps local ownership real. The catalog can teach a starting point without becoming a gatekeeper over files on your disk."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ollama fits the authoring loop well. Start with a model small enough to answer quickly. Iterate on the file at zero API spend. Use "
+        },
+        {
+          "k": "code",
+          "text": "nika check"
+        },
+        {
+          "k": "text",
+          "text": " to catch graph, permission and cost-shape problems independently of model quality. Move to a larger local model or a cloud seat only when the task has earned the change."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The common mistake is to interpret “local” as “free”. Nika labels local work "
+        },
+        {
+          "k": "strong",
+          "text": "unpriced"
+        },
+        {
+          "k": "text",
+          "text": ". Your API invoice may be zero, but the machine, electricity and operator time are not. The distinction matters in reports: an absent market price is missing cost data, never evidence of no cost. The "
+        },
+        {
+          "k": "link",
+          "text": "energy register",
+          "href": "/catalog/energy"
+        },
+        {
+          "k": "text",
+          "text": " follows the same rule and only shows measurements backed by a published receipt."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "LM Studio: the visible workstation lane",
+      "id": "lm-studio-the-visible-workstation-lane"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "LM Studio is useful when model selection is a desktop activity. A person can download a model, choose a quantization, load it, then expose an OpenAI-compatible server. Nika's provider profile targets the default port 1234 and does not require a key."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow model id must match the name the loaded server exposes. The catalog's current seed is:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "lm-studio-brief.nika.yaml",
+      "text": "nika: lm-studio-brief\nmodel: lmstudio/qwen3.5-4b\n\ntasks:\n  explain:\n    infer:\n      prompt: \"Explain why an AI workflow should be reviewed before it runs.\"\n      max_tokens: 350\n\noutputs:\n  answer: ${{ tasks.explain.output }}",
+      "play": "HYSw1ghgXABANgWwLQGcAuBXAJiA9kgIwCcQBTAMwCgFctS5ZF1s8B6ARwHdTgBmAOgCsSACwFKlNBBRgUUSjBikAHgAc4EEMHmLFW8qSI7di1UVwJVaWACIAomo1aYnABYBPGBGAwAggEkXXCIwcjhcThgUV1wMOCwYAlIYIlIANzJuBKTyYOSQNBSMYBR+GwUTGAQIZQB9NFwwHjkYXkEABglYtFUMNDkK7xRuIxgAEgBvCZgpGVKVdU1gfm7ewoBfdaA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There is no extra “LM Studio mode” in the language. The provider adapter handles its wire shape. If a teammate uses a different loaded model, that difference belongs in the model string or the explicit "
+        },
+        {
+          "k": "code",
+          "text": "--model"
+        },
+        {
+          "k": "text",
+          "text": " override, where it appears in terminal history and the run trace."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The visual server makes one class of failure easier to diagnose: nothing is loaded even though the application is open. "
+        },
+        {
+          "k": "code",
+          "text": "nika doctor"
+        },
+        {
+          "k": "text",
+          "text": " checks local server reachability and names the next step. That is better than turning a connection failure into a model failure. A provider prefix that resolves but has no live server is an access problem, not bad inference."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "LM Studio is also a good review bridge. A teammate who does not operate a model daemon every day can see which artifact is loaded and when the local API is enabled. The workflow remains plain text beside the code; the workstation UI remains the machine-specific control surface."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "vLLM: the server lane",
+      "id": "vllm-the-server-lane"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "vLLM serves the case where local means your infrastructure rather than your laptop. Nika's profile targets an OpenAI-compatible server on port 8000. The catalog seed uses a Hugging Face model id:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "gpu-brief.nika.yaml",
+      "text": "nika: gpu-brief\nmodel: vllm/Qwen/Qwen3-8B\n\ntasks:\n  classify:\n    infer:\n      prompt: \"Classify this incident as availability, integrity or confidentiality: database writes were silently dropped.\"\n      max_tokens: 120\n\noutputs:\n  class: ${{ tasks.classify.output }}",
+      "play": "HYSw1ghgXABA5gBwK4FoBGAnEBTAZgKAFsB7AE2wBtYA3CiwgegEUB3bYZt4AZhQA4AQvnwAXCAGcw4qPhgwAxhQniQuAJ4y5ckMFzYMmrXIQZihBCNgAiAMJLxK9TBEALEOJg75IcsBEwJAOoIECU0UJARNQAaTz9sOCwomGIMBWJdH3YREAgKSI0YUggxNAlsGBYk7A82DAqVCmyKNSLTBARsUgA6K1kjGEIIAA8AfRFiMHZpGABGACYABmFiJBFkEWl+xWVYABIAbwPnCSlunYdVNW7V9bWYAF8HoA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "vLLM changes the operating questions. Which GPUs does the service own? How is concurrency bounded? Which model revision is loaded? Who restarts the process? Does the endpoint stay on loopback, a private network or a controlled gateway? Nika does not answer those deployment questions for vLLM. It makes sure they do not leak into the workflow grammar as provider-specific fields."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For repeatable runs, record the server deployment beside the workflow's trace: model artifact revision, quantization, vLLM version and relevant sampling configuration. Nika's journal records the provider and model string used by the task. The external service still owns facts below that wire. Reproducibility cannot be created by omitting those facts."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same honesty applies to throughput. vLLM is designed for server workloads, but this post gives no universal speed number. GPU model, tensor parallelism, sequence length, batch shape and quantization all change the result. Benchmark the actual workload on the actual machine and publish the receipt if the number will guide a decision."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What stays the same",
+      "id": "what-stays-the-same"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Across the three lanes, the workflow keeps the properties worth reviewing:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "The model selection is one "
+          },
+          {
+            "k": "code",
+            "text": "<provider>/<name>"
+          },
+          {
+            "k": "text",
+            "text": " string."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A task may override the workflow default explicitly."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "max_tokens"
+          },
+          {
+            "k": "text",
+            "text": " remains part of the task, independent of the server."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Inputs, dependencies and outputs keep the same syntax."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " runs before inference and does not need the model to rewrite the file."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Every run records the selected provider and model in its trace."
+          }
+        ],
+        [
+          {
+            "k": "code",
+            "text": "--access local"
+          },
+          {
+            "k": "text",
+            "text": " can pin the path and refuse rather than substitute a cloud route."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The surrounding operations differ because the tools solve different problems. Ollama optimizes the first local run. LM Studio makes a workstation model visible. vLLM makes a GPU service usable by several callers. Those are legitimate differences, not abstraction leaks to hide."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "A practical promotion path",
+      "id": "a-practical-promotion-path"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Start with the cheapest failure you can learn from:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check local-brief.nika.yaml"
+          },
+          {
+            "k": "text",
+            "text": " before starting any model."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Prove the graph and prompt shape with "
+          },
+          {
+            "k": "code",
+            "text": "--model mock/echo"
+          },
+          {
+            "k": "text",
+            "text": " if no runtime is ready."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Use Ollama for the first real local answer."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Use LM Studio when model and quantization selection need a workstation UI."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Move to vLLM when the workflow needs a maintained GPU service."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Keep a representative trace from each lane and compare outcomes with "
+          },
+          {
+            "k": "code",
+            "text": "nika trace reproduce"
+          },
+          {
+            "k": "text",
+            "text": " only when the inputs and workflow identity are genuinely comparable."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Swapping the provider is easy. Deciding that the new output is good enough remains product work. The workflow helps because the comparison has a stable frame: the plan did not disappear into three SDKs and three scripts."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Local-first is not a demand that every team run a datacenter. It is the ability to choose custody per workflow and per task, without asking a framework to translate the plan. Three operating lanes, one file."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Use the "
+        },
+        {
+          "k": "link",
+          "text": "local model guide",
+          "href": "/install/local-models"
+        },
+        {
+          "k": "text",
+          "text": ", browse every "
+        },
+        {
+          "k": "link",
+          "text": "provider room",
+          "href": "/catalog/providers"
+        },
+        {
+          "k": "text",
+          "text": ", or continue with "
+        },
+        {
+          "k": "link",
+          "text": "No cloud needed",
+          "href": "/blog/own-your-stack"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
+  "mcp-with-a-blast-radius": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "MCP makes tools easy to discover. It does not make them safe to run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An MCP server is a process or remote service that publishes names and argument schemas. Once connected, it can read inputs, call APIs, touch databases and return content to the next step. That is useful precisely because it has authority. Treating its tool list as a menu of harmless functions confuses discoverability with trust."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika puts an MCP call through several independent boundaries. Each answers a different question:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Which server process did the project configure?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "May that process use the network, and what environment does it actually receive?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which tool ids may this workflow invoke?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which tools may one "
+          },
+          {
+            "k": "code",
+            "text": "agent:"
+          },
+          {
+            "k": "text",
+            "text": " task choose during its loop?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Is the tool schema the one a person previously approved?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "What did the server return during this run?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The important word is "
+        },
+        {
+          "k": "em",
+          "text": "independent"
+        },
+        {
+          "k": "text",
+          "text": ". A tool allowlist is not a network policy. A network policy is not a schema pin. A trace is not a preflight. Collapsing them into one “MCP enabled” switch gives every layer more meaning than it can enforce."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Start with the server process",
+      "id": "start-with-the-server-process"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika's engine-side MCP registry is project-local at "
+        },
+        {
+          "k": "code",
+          "text": ".nika/mcp_servers.json"
+        },
+        {
+          "k": "text",
+          "text": ". A minimal stdio entry looks like this:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "json",
+      "text": "{\n  \"mcp_servers_format\": 1,\n  \"servers\": {\n    \"github\": {\n      \"command\": \"github-mcp-server\",\n      \"args\": [\"stdio\"],\n      \"network\": { \"allowlist\": [\"api.github.com\"] }\n    }\n  }\n}"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "code",
+          "text": "github"
+        },
+        {
+          "k": "text",
+          "text": " key becomes the server segment in "
+        },
+        {
+          "k": "code",
+          "text": "mcp:github/<tool>"
+        },
+        {
+          "k": "text",
+          "text": ". "
+        },
+        {
+          "k": "code",
+          "text": "command"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "args"
+        },
+        {
+          "k": "text",
+          "text": " are part of the server identity. Repoint either and the previous approval no longer describes the process being started."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Network access is a separate local grant. If "
+        },
+        {
+          "k": "code",
+          "text": "network"
+        },
+        {
+          "k": "text",
+          "text": " is absent, the stdio child starts with network denied. A fully local server needs no exception. "
+        },
+        {
+          "k": "code",
+          "text": "\"network\": \"allow\""
+        },
+        {
+          "k": "text",
+          "text": " is the explicit escape hatch. The object form records a host set, but the v0.111.0 client names an important limitation on every connection: until the MCP egress proxy lands, that allowlist is confined exactly like "
+        },
+        {
+          "k": "code",
+          "text": "allow"
+        },
+        {
+          "k": "text",
+          "text": ". It is reviewable intent, not host-granular enforcement yet. Treat a networked stdio server as broadly network-capable in the current release."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current client path supports stdio servers for execution and pinning. A registry entry containing a remote URL is parsed but refuses honestly because the remote client transport is not wired yet. “Configured” never gets to masquerade as “supported”."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Name the exact tool in the workflow",
+      "id": "name-the-exact-tool-in-the-workflow"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow refers to an MCP tool through the same "
+        },
+        {
+          "k": "code",
+          "text": "invoke:"
+        },
+        {
+          "k": "text",
+          "text": " verb used for builtins. The namespace is closed and the slash matters:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "issue-digest.nika.yaml",
+      "text": "nika: issue-digest\n\npermits:\n  tools: [\"mcp:github/search_issues\", \"nika:write\"]\n  fs:\n    write: [\"./issue-digest.json\"]\n\ntasks:\n  issues:\n    invoke:\n      tool: \"mcp:github/search_issues\"\n      args:\n        query: \"repo:supernovae-st/nika is:issue is:open\"\n\n  save:\n    with:\n      issues: ${{ tasks.issues.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./issue-digest.json\"\n        content: \"${{ with.issues }}\"\n\noutputs:\n  digest: ${{ tasks.issues.output }}",
+      "play": "HYSw1ghgXABCDO8CuBTAtAExAcxfALgFCEAOKATgLYj7xSEwz4D2zANnTANoBElAxiSjYaACyQAjAPTwUEcv1EB9BMjw8ANDB6hIUAO7kaKHgF0GMAGZ0LjQ8di8AdFNWpMOPPicAreM2AzYnwIeDAbRjc8ekZI4AA3ZjAUGNjGFnZYPkFhMUkZOQVlKPgeW1j5bAi02IBHVHIATyzyFBJmKGQycmBmeIh0AildCDg6KLGoZjJA4kZ4CHiU8v0xVLSS2AASAG8dplDwpxKnZiR8EnOYAF9r8pAEpOWaplY2LJGDI3wTcsZK6ovEgQfCiLIuKIeXAEXz+WYvRj8AI-YD4LK7farUHHRCoeA3a5lQhnC7napYaFomAYg5heA4tT0kmXfAEoA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "permits.tools"
+        },
+        {
+          "k": "text",
+          "text": " is the workflow-wide ceiling. The file may invoke only those two tool ids. A wildcard such as "
+        },
+        {
+          "k": "code",
+          "text": "mcp:github/*"
+        },
+        {
+          "k": "text",
+          "text": " is legal when the workflow genuinely needs a changing family, but the exact id is the better review unit when one call will do."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Notice what the block does not say. It does not grant the GitHub process network access. That lives in the project registry because it governs the child process on this machine. It does not pass a token from the operator's shell either. The current stdio spawn clears the ambient environment and re-admits only the small runner floor. Provider keys and session tokens stay behind. The registry has no general-purpose environment map, and "
+        },
+        {
+          "k": "code",
+          "text": "permits.env"
+        },
+        {
+          "k": "text",
+          "text": " is not a back door into the MCP approval process."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For an "
+        },
+        {
+          "k": "code",
+          "text": "agent:"
+        },
+        {
+          "k": "text",
+          "text": " task, there is one more ceiling. The task's "
+        },
+        {
+          "k": "code",
+          "text": "tools:"
+        },
+        {
+          "k": "text",
+          "text": " list scopes what the model may choose during that loop:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "issue-research.nika.yaml",
+      "text": "nika: issue-research\nmodel: ollama/llama3.2:3b\n\npermits:\n  tools: [\"mcp:github/search_issues\", \"mcp:github/get_issue\"]\n\ntasks:\n  research:\n    agent:\n      system: \"Read issue metadata. Do not modify the repository.\"\n      prompt: \"Find the three oldest open bugs and explain their current blockers.\"\n      tools: [\"mcp:github/search_issues\", \"mcp:github/get_issue\"]\n      max_turns: 6\n      max_tokens_total: 6000\n\noutputs:\n  report: ${{ tasks.research.output }}",
+      "play": "HYSw1ghgXABCDO8CuBTAtAJxfFEMGMALAKAFsB7AExQBtZyaaJSIB6R5iAZgDoAmKFwBGxYgAcUGUiAAu8KMRgwZ5BvJgBtAESl8YqAHNZhJENY48RAPoJk2LQBoYOvYeOnWBlDJuJUWgF1RGQh4MHlFGCwLAkIFJSUIL2AZeISleABPeBkUUlgtACVcSjg-FBhSbwhKCBCeGAARchhgchlKqhAAM0zlQgqsMXJ4WXIMTJ4tSPSxDHJSMVTnADEQYFKZAf6sCoZqHJhyCWAYISQDeBgIDZgUAA8xJnX+lBAMGHwkDCwUs5pyPgwJJ4FMZgkVGpYNpdPojFsPDFrLZUPBHM5YW4EWYvD4UShAuClCx7lYZN9gOoAGxEyoQUkqYGUsntCB0GBUgAM3NE5CQMjE-IiSiG42WABIAN6S5ShcI8aK4WI8PkC-kwAC+GqAA"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The agent list cannot widen "
+        },
+        {
+          "k": "code",
+          "text": "permits.tools"
+        },
+        {
+          "k": "text",
+          "text": ". It can only narrow the workflow's ceiling for one task. This prevents a prompt from negotiating for a capability the file did not grant. A runtime permit refusal is not fed back to the model as another problem to talk around."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Pin the published schema",
+      "id": "pin-the-published-schema"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Tool names are not stable merely because the server command is stable. A server upgrade can add a tool, remove an argument, broaden a schema or change a description that steers agent selection."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika records approved tool definitions in "
+        },
+        {
+          "k": "code",
+          "text": ".nika/mcp_pins.json"
+        },
+        {
+          "k": "text",
+          "text": ". The pin includes the server identity and the published "
+        },
+        {
+          "k": "code",
+          "text": "tools/list"
+        },
+        {
+          "k": "text",
+          "text": " definitions. If the current list drifts, connection refuses and names the remediation. Re-approval is an explicit human act:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "text",
+      "text": "nika mcp approve github"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That command is not “accept whatever changed”. It fetches the current definitions, shows the new pin set and writes the reviewed state. The distinction matters for supply-chain review. Pinning only a package version misses a server that selects behavior from another installed binary. Pinning only a tool schema misses a registry command that now starts a different package. The identity and the advertised surface belong together."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is also why a catalog entry is not runtime trust. The public "
+        },
+        {
+          "k": "link",
+          "text": "MCP catalog",
+          "href": "/catalog/mcp"
+        },
+        {
+          "k": "text",
+          "text": " helps you discover packages, transport and security metadata. Your project registry names what this checkout will start. Your local pin names what that process promised when you approved it. The workflow names what one plan may call. Discovery, installation, approval and authority stay separate."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Refuse a credential channel you cannot review",
+      "id": "refuse-a-credential-channel-you-cannot-review"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Do not put an API token in "
+        },
+        {
+          "k": "code",
+          "text": "mcp_servers.json"
+        },
+        {
+          "k": "text",
+          "text": ", an argument list or the workflow. Process arguments are visible to operating-system inspection and often copied into logs. Inline workflow values enter version control and review surfaces."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For external MCP servers, the current release deliberately clears ambient credentials but does not yet offer a general secret injection field in the project registry. That means some credentialed servers are not safely expressible through this path today. Prefer a server with an explicit, reviewable credential source that works inside the project sandbox. If it only accepts an ambient token, do not smuggle that token into argv. The honest result is “not operational through this lane yet”."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The server's network arm is equally important for credentials. A token restricted to a child that may call any host is not much of a restriction. In v0.111.0, choose "
+        },
+        {
+          "k": "code",
+          "text": "deny"
+        },
+        {
+          "k": "text",
+          "text": " for servers that can stay local. For a networked server, review the child as broadly network-capable because the host-granular MCP proxy is not enforced yet. The connect note says so. Hidden openness is worse than explicit openness."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The trace is the receipt, not the guard",
+      "id": "the-trace-is-the-receipt-not-the-guard"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Every successful MCP task lands in the same hash-chained run journal as model calls and builtins. The trace records the task, tool, timing, outcome and the values the run retains. "
+        },
+        {
+          "k": "code",
+          "text": "nika trace verify"
+        },
+        {
+          "k": "text",
+          "text": " checks the chain. "
+        },
+        {
+          "k": "code",
+          "text": "nika trace replay"
+        },
+        {
+          "k": "text",
+          "text": " renders the recorded events without contacting the server again. "
+        },
+        {
+          "k": "code",
+          "text": "nika trace flow"
+        },
+        {
+          "k": "text",
+          "text": " shows which recorded output fed which downstream task."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is evidence after the effect. It does not replace the gates before it. A perfect log of an over-broad call is still a perfect log of an over-broad call. The safe order is:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Configure one server identity in the project."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Deny network by default; if the child needs it, review the current grant as broad."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Approve and pin the server's published tool schemas."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Declare exact workflow tool and environment permits."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Narrow an agent loop again with its own tool list."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " before the server starts."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Keep and verify the trace after it returns."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There are two MCP directions in Nika, and they should not be confused. A Nika workflow can act as an MCP "
+        },
+        {
+          "k": "strong",
+          "text": "client"
+        },
+        {
+          "k": "text",
+          "text": " through "
+        },
+        {
+          "k": "code",
+          "text": "mcp:<server>/<tool>"
+        },
+        {
+          "k": "text",
+          "text": ", which is the authority-heavy path described here. The "
+        },
+        {
+          "k": "code",
+          "text": "nika mcp"
+        },
+        {
+          "k": "text",
+          "text": " command also makes Nika an MCP "
+        },
+        {
+          "k": "strong",
+          "text": "server"
+        },
+        {
+          "k": "text",
+          "text": " for editors and agents. That in-binary server exposes the checker, schema, examples and catalog as a read-only oracle. It intentionally exposes no run tool."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The split is the larger lesson. A surface that helps an agent understand a plan does not need the authority to execute it. A surface that executes foreign tools needs more than a connection dialog. MCP provides the wire. The file, the project registry, the pin and the trace provide the operating contract around it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Continue with "
+        },
+        {
+          "k": "link",
+          "text": "The MCP server you didn't have to build",
+          "href": "/blog/the-mcp-server-you-didnt-build"
+        },
+        {
+          "k": "text",
+          "text": ", inspect the live "
+        },
+        {
+          "k": "link",
+          "text": "MCP catalog",
+          "href": "/catalog/mcp"
+        },
+        {
+          "k": "text",
+          "text": ", or read "
+        },
+        {
+          "k": "link",
+          "text": "The blast radius is part of the file",
+          "href": "/blog/blast-radius-in-the-file"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    }
+  ],
   "the-registry-reproves-everything": [
     {
       "k": "p",
@@ -9339,4 +16009,243 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     }
   ]
+}
+
+export interface BlogPostCopy {
+  description: string
+  /** the source file under content/blog/ — the GitHub edit target */
+  file: string
+  /** the writing Person (JSON-LD author) · frontmatter override, house default */
+  author: string
+}
+
+/* Card + article-head prose shares the bodies' register-diet lane. Pages
+   prerender it through an island; the client only loads this chunk on SPA
+   navigation. */
+export const BLOG_POST_COPY: Record<string, BlogPostCopy> = {
+  "clean-is-not-ready-to-spend": {
+    "description": "A valid AI workflow can still waste money. Nika now separates legal files from workflows that are ready for a paid run.",
+    "file": "2026-08-21-clean-is-not-ready-to-spend.md",
+    "author": "Thibaut Melen"
+  },
+  "arm64-ai-workflows-on-linux-servers": {
+    "description": "A practical path from a native ARM64 Nika binary to checked, sandboxed and traceable AI workflows on a headless Linux host.",
+    "file": "2026-08-21-arm64-ai-workflows-on-linux-servers.md",
+    "author": "Thibaut Melen"
+  },
+  "the-access-layer-is-an-operating-contract": {
+    "description": "From v0.108.0 to v0.111.0, Nika separated the model you choose from the path that reaches it, cut the workflow language to its durable core, added an explicit scheduler and turned check into an authoring loop.",
+    "file": "2026-08-20-the-access-layer-is-an-operating-contract.md",
+    "author": "Thibaut Melen"
+  },
+  "workflow-ecosystem-field-guide": {
+    "description": "Choose deliberately among model providers, local runtimes, builtins, MCP servers and coding-agent surfaces without turning the workflow into vendor glue.",
+    "file": "2026-08-19-workflow-ecosystem-field-guide.md",
+    "author": "Thibaut Melen"
+  },
+  "coding-agents-write-plans": {
+    "description": "Codex, Claude Code, Cursor and other coding agents can author Nika workflows while the checker, the human review and the runner keep separate authority.",
+    "file": "2026-08-17-coding-agents-write-plans.md",
+    "author": "Thibaut Melen"
+  },
+  "ci-without-ambient-authority": {
+    "description": "Run Nika in CI and on headless servers with the same checked workflow bytes, explicit authority, deterministic rehearsals and a hard launch budget.",
+    "file": "2026-08-15-ci-without-ambient-authority.md",
+    "author": "Thibaut Melen"
+  },
+  "retire-the-prompt-glue": {
+    "description": "A practical migration from brittle shell and Python prompt chains to a checked workflow whose graph, authority, cost and outputs are visible before it runs.",
+    "file": "2026-08-13-retire-the-prompt-glue.md",
+    "author": "Thibaut Melen"
+  },
+  "intent-as-code-engineering-discipline": {
+    "description": "The useful part of AI work is not the chat. It is the intent, boundary, plan and evidence that a team can review before and after a run.",
+    "file": "2026-08-11-intent-as-code-engineering-discipline.md",
+    "author": "Thibaut Melen"
+  },
+  "the-run-keeps-its-receipt": {
+    "description": "A trace is more than a log: it can replay without effects, resume verified work, expose one task, export to OpenTelemetry and assemble a redacted evidence pack.",
+    "file": "2026-08-08-the-run-keeps-its-receipt.md",
+    "author": "Thibaut Melen"
+  },
+  "the-two-clocks-behind-a-model-string": {
+    "description": "A provider name can be part of the stable language while its models, prices and access paths keep changing. Nika resolves those truths on separate clocks and records the result.",
+    "file": "2026-08-03-the-two-clocks-behind-a-model-string.md",
+    "author": "Thibaut Melen"
+  },
+  "one-workflow-three-local-model-lanes": {
+    "description": "Ollama, LM Studio and vLLM expose different operating experiences, but Nika keeps the workflow contract unchanged: one model string selects the local seat.",
+    "file": "2026-07-29-one-workflow-three-local-model-lanes.md",
+    "author": "Thibaut Melen"
+  },
+  "mcp-with-a-blast-radius": {
+    "description": "An MCP tool is executable foreign capability. Put its server, network, environment, tool ids and schema pin under separate review, then let the trace record the call.",
+    "file": "2026-07-24-mcp-with-a-blast-radius.md",
+    "author": "Thibaut Melen"
+  },
+  "the-registry-reproves-everything": {
+    "description": "A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI (hash, certificate, advisories). The npm-of-workflows, minus the trust-me.",
+    "file": "2026-07-14-the-registry-reproves-everything.md",
+    "author": "Thibaut Melen"
+  },
+  "written-by-agents": {
+    "description": "nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot. The human review is a two-line diff.",
+    "file": "2026-07-11-written-by-agents.md",
+    "author": "Thibaut Melen"
+  },
+  "the-pipeline-is-a-file": {
+    "description": "An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework. Diffable, auditable, replayable.",
+    "file": "2026-07-11-the-pipeline-is-a-file.md",
+    "author": "Thibaut Melen"
+  },
+  "the-mcp-server-you-didnt-build": {
+    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Read-only tools let any agent audit a plan and learn the language from the thing that enforces it.",
+    "file": "2026-07-11-the-mcp-server-you-didnt-build.md",
+    "author": "Thibaut Melen"
+  },
+  "the-local-forecast": {
+    "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five. Never a model call, never the network.",
+    "file": "2026-07-11-the-local-forecast.md",
+    "author": "Thibaut Melen"
+  },
+  "the-generative-workflow": {
+    "description": "Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates. Rehearsed offline, every asset with provenance.",
+    "file": "2026-07-11-the-generative-workflow.md",
+    "author": "Thibaut Melen"
+  },
+  "the-chain-of-custody": {
+    "description": "A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.",
+    "file": "2026-07-11-the-chain-of-custody.md",
+    "author": "Thibaut Melen"
+  },
+  "the-agent-workflow-spectrum": {
+    "description": "An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop. Where yours lands decides which safety you can even ask for.",
+    "file": "2026-07-11-the-agent-workflow-spectrum.md",
+    "author": "Thibaut Melen"
+  },
+  "the-run-that-waits": {
+    "description": "The approval gate is a task in the file, not a Slack thread: a plan fails closed on nika:prompt, and the human's answer rides the resume.",
+    "file": "2026-07-10-the-run-that-waits.md",
+    "author": "Thibaut Melen"
+  },
+  "the-resume-story": {
+    "description": "kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.",
+    "file": "2026-07-10-the-resume-story.md",
+    "author": "Thibaut Melen"
+  },
+  "the-one-task-rerun": {
+    "description": "Regenerate one block without re-running the world: --task scopes a fresh run to a task and its upstream, --from re-rolls what the hashes cannot see.",
+    "file": "2026-07-10-the-one-task-rerun.md",
+    "author": "Thibaut Melen"
+  },
+  "prompts-are-code": {
+    "description": "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it. The engine itself names an edited prompt when two runs diverge.",
+    "file": "2026-07-08-prompts-are-code.md",
+    "author": "Thibaut Melen"
+  },
+  "injection-goes-nowhere": {
+    "description": "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs: the hostile note becomes data, never an action, and the boundary is checked before a token is spent.",
+    "file": "2026-07-08-injection-goes-nowhere.md",
+    "author": "Thibaut Melen"
+  },
+  "the-run-becomes-evidence": {
+    "description": "Every journal line now carries a hash chain: verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
+    "file": "2026-07-07-the-run-becomes-evidence.md",
+    "author": "Thibaut Melen"
+  },
+  "time-travel-for-real": {
+    "description": "Every debugger replays the past by re-running it. Nika's past is a file, so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.",
+    "file": "2026-07-06-time-travel-for-real.md",
+    "author": "Thibaut Melen"
+  },
+  "the-editor-tells-the-truth": {
+    "description": "A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server, and found the badge lying. Here is the contract that keeps it honest now.",
+    "file": "2026-07-06-the-editor-tells-the-truth.md",
+    "author": "Thibaut Melen"
+  },
+  "the-credentials-your-pipeline-breaks": {
+    "description": "OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering. That included ours, until this week.",
+    "file": "2026-07-06-the-credentials-your-pipeline-breaks.md",
+    "author": "Thibaut Melen"
+  },
+  "one-wire-five-servers": {
+    "description": "The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years, and Nika's media builtins are built on it.",
+    "file": "2026-07-06-one-wire-five-servers.md",
+    "author": "Thibaut Melen"
+  },
+  "media-are-workflow-citizens": {
+    "description": "Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger, and the sovereign path first.",
+    "file": "2026-07-06-media-are-workflow-citizens.md",
+    "author": "Thibaut Melen"
+  },
+  "the-trace-you-can-replay": {
+    "description": "Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.",
+    "file": "2026-07-05-the-trace-you-can-replay.md",
+    "author": "Thibaut Melen"
+  },
+  "the-secrets-line": {
+    "description": "Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.",
+    "file": "2026-07-05-the-secrets-line.md",
+    "author": "Thibaut Melen"
+  },
+  "the-cost-line": {
+    "description": "The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.",
+    "file": "2026-07-05-the-cost-line.md",
+    "author": "Thibaut Melen"
+  },
+  "anatomy-of-a-verb": {
+    "description": "infer, exec, invoke, agent: what makes the four verbs genuinely different execution models, in the engine's own verdicts.",
+    "file": "2026-07-05-anatomy-of-a-verb.md",
+    "author": "Thibaut Melen"
+  },
+  "own-your-stack": {
+    "description": "One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.",
+    "file": "2026-07-02-own-your-stack.md",
+    "author": "Thibaut Melen"
+  },
+  "dag-for-free": {
+    "description": "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.",
+    "file": "2026-06-29-dag-for-free.md",
+    "author": "Thibaut Melen"
+  },
+  "four-verbs": {
+    "description": "A verb is a distinct execution model, not a feature. Why the language locks at four, forever.",
+    "file": "2026-06-22-four-verbs.md",
+    "author": "Thibaut Melen"
+  },
+  "intent-as-code": {
+    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.",
+    "file": "2026-06-15-intent-as-code.md",
+    "author": "Thibaut Melen"
+  },
+  "blast-radius-in-the-file": {
+    "description": "permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
+    "file": "2026-06-04-blast-radius-in-the-file.md",
+    "author": "Thibaut Melen"
+  },
+  "standard-library-not-plugin-store": {
+    "description": "28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
+    "file": "2026-05-14-standard-library-not-plugin-store.md",
+    "author": "Thibaut Melen"
+  },
+  "open-spec-copyleft-engine": {
+    "description": "Two licenses, one argument: the file must outlive every vendor, including us.",
+    "file": "2026-05-01-open-spec-copyleft-engine.md",
+    "author": "Thibaut Melen"
+  },
+  "starting-over-on-purpose": {
+    "description": "We had a working prototype. We rebuilt from scratch anyway: craft, not extraction, one gate at a time.",
+    "file": "2026-04-14-starting-over-on-purpose.md",
+    "author": "Thibaut Melen"
+  },
+  "naming-the-drum": {
+    "description": "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.",
+    "file": "2026-03-21-naming-the-drum.md",
+    "author": "Thibaut Melen"
+  },
+  "the-note-that-started-it": {
+    "description": "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.",
+    "file": "2025-10-17-the-note-that-started-it.md",
+    "author": "Thibaut Melen"
+  }
 }

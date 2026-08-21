@@ -22,7 +22,7 @@
 // Reproducible: `node scripts/build-og-card.mjs` regenerates ALL cards.
 // Single card while iterating: `node scripts/build-og-card.mjs spec`.
 
-import { readFileSync, writeFileSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -699,6 +699,48 @@ const CARDS = [
   },
 ];
 
+/* Blog cards are a projection of content/blog, like the feed and the command
+   palette. Individually art-directed cards above keep their composition;
+   every other post receives the restrained journal register from its
+   frontmatter. A post cannot ship with a missing og:image merely because
+   this hand-authored list was forgotten. */
+const htmlText = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;');
+
+const frontmatterValue = (block, key) => {
+  const match = block.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  if (!match) throw new Error(`blog frontmatter is missing ${key}`);
+  const rawValue = match[1].trim();
+  if (rawValue.startsWith('"')) return JSON.parse(rawValue);
+  if (rawValue.startsWith("'") && rawValue.endsWith("'")) return rawValue.slice(1, -1).replaceAll("''", "'");
+  return rawValue;
+};
+
+const blogDir = resolve(root, 'content/blog');
+for (const file of readdirSync(blogDir).filter((name) => name.endsWith('.md') && name !== 'README.md').sort()) {
+  const source = readFileSync(resolve(blogDir, file), 'utf8');
+  const frontmatter = source.match(/^---\n([\s\S]*?)\n---/)?.[1];
+  if (!frontmatter) throw new Error(`${file}: missing frontmatter`);
+  const slug = frontmatterValue(frontmatter, 'slug');
+  const out = `og-blog-${slug}.png`;
+  if (CARDS.some((card) => card.out === out)) continue;
+  const title = frontmatterValue(frontmatter, 'title');
+  const description = frontmatterValue(frontmatter, 'description');
+  const date = frontmatterValue(frontmatter, 'date');
+  const tags = frontmatterValue(frontmatter, 'tag').split('|').map((tag) => htmlText(tag.trim()));
+  CARDS.push({
+    out,
+    fig: `JOURNAL · ${htmlText(date)}`,
+    size: title.length > 52 ? 56 : title.length > 38 ? 62 : 68,
+    headline: `${htmlText(title)}<br><span class="b">Nika journal.</span>`,
+    sub: htmlText(description),
+    detail: `<span class="arrow">▸</span><span>${tags.map((tag, index) => `${index === 0 ? '<b>' : ''}${tag}${index === 0 ? '</b>' : ''}`).join('<span class="sep">·</span>')}<span class="sep">·</span>intent&nbsp;as&nbsp;code</span>`,
+  });
+}
+
 // ── the card template (a function of one card spec) ─────────────────────────
 const cardHtml = (c) => `<!doctype html>
 <html lang="en">
@@ -922,7 +964,7 @@ const down = '/tmp/og-down.png';
 // optional single-card filter: `node build-og-card.mjs spec` matches og-spec.png
 const only = process.argv[2];
 const cards = only
-  ? CARDS.filter((c) => c.out === `og-${only}.png` || c.out === `${only}.png`)
+  ? CARDS.filter((c) => c.out === `og-${only}.png` || c.out === `og-blog-${only}.png` || c.out === `${only}.png`)
   : CARDS;
 if (cards.length === 0) {
   console.error(`no card matches "${only}" — known: ${CARDS.map((c) => c.out).join(', ')}`);

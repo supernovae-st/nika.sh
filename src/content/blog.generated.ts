@@ -17,14 +17,9 @@ export type BlogToken =
 
 export interface BlogPost {
   slug: string
-  /** the source file under content/blog/ — the GitHub edit target */
-  file: string
   title: string
   tag: string
   date: string
-  description: string
-  /** the writing Person (JSON-LD author) · frontmatter override, house default */
-  author: string
   readingMin: number
   /** reading-path membership (optional) · id into BLOG_SERIES + this post's stop label */
   series?: string
@@ -50,362 +45,327 @@ export const BLOG_SERIES: Record<string, { title: string; claim: string; stops: 
 export const BLOG_POSTS: BlogPost[] = [
   {
     "slug": "clean-is-not-ready-to-spend",
-    "file": "2026-08-21-clean-is-not-ready-to-spend.md",
     "title": "Clean is not ready to spend",
     "tag": "Engine|Security",
     "date": "2026-08-21",
-    "description": "A valid AI workflow can still waste money. Nika now separates legal files from workflows that are ready for a paid run.",
-    "author": "Thibaut Melen",
     "readingMin": 6
   },
   {
     "slug": "arm64-ai-workflows-on-linux-servers",
-    "file": "2026-08-21-arm64-ai-workflows-on-linux-servers.md",
     "title": "AI workflows on ARM64 Linux servers, without the missing safety step",
     "tag": "Engine|Sovereignty",
     "date": "2026-08-21",
-    "description": "A practical path from a native ARM64 Nika binary to checked, sandboxed and traceable AI workflows on a headless Linux host.",
-    "author": "Thibaut Melen",
+    "readingMin": 6
+  },
+  {
+    "slug": "the-access-layer-is-an-operating-contract",
+    "title": "The access layer is an operating contract",
+    "tag": "Engine",
+    "date": "2026-08-20",
+    "readingMin": 6
+  },
+  {
+    "slug": "workflow-ecosystem-field-guide",
+    "title": "A field guide to the Nika workflow ecosystem",
+    "tag": "Engine",
+    "date": "2026-08-19",
+    "readingMin": 8
+  },
+  {
+    "slug": "coding-agents-write-plans",
+    "title": "Let coding agents write plans, not policy",
+    "tag": "Agents",
+    "date": "2026-08-17",
+    "readingMin": 7
+  },
+  {
+    "slug": "ci-without-ambient-authority",
+    "title": "The CI job should know its boundary",
+    "tag": "Security",
+    "date": "2026-08-15",
+    "readingMin": 8
+  },
+  {
+    "slug": "retire-the-prompt-glue",
+    "title": "Retire the prompt glue",
+    "tag": "Language",
+    "date": "2026-08-13",
+    "readingMin": 7
+  },
+  {
+    "slug": "intent-as-code-engineering-discipline",
+    "title": "Intent as Code is an engineering discipline",
+    "tag": "Manifesto",
+    "date": "2026-08-11",
+    "readingMin": 7
+  },
+  {
+    "slug": "the-run-keeps-its-receipt",
+    "title": "The run keeps its receipt",
+    "tag": "Engine",
+    "date": "2026-08-08",
+    "readingMin": 6
+  },
+  {
+    "slug": "the-two-clocks-behind-a-model-string",
+    "title": "The two clocks behind a model string",
+    "tag": "Language",
+    "date": "2026-08-03",
+    "readingMin": 6
+  },
+  {
+    "slug": "one-workflow-three-local-model-lanes",
+    "title": "One workflow, three local model lanes",
+    "tag": "Sovereignty",
+    "date": "2026-07-29",
+    "readingMin": 6
+  },
+  {
+    "slug": "mcp-with-a-blast-radius",
+    "title": "MCP with a blast radius",
+    "tag": "Security",
+    "date": "2026-07-24",
     "readingMin": 6
   },
   {
     "slug": "the-registry-reproves-everything",
-    "file": "2026-07-14-the-registry-reproves-everything.md",
     "title": "The registry re-proves everything",
     "tag": "Engine",
     "date": "2026-07-14",
-    "description": "A workflow registry where nothing is taken on faith: every entry is content-pinned to an exact source revision and re-proven by CI (hash, certificate, advisories). The npm-of-workflows, minus the trust-me.",
-    "author": "Thibaut Melen",
     "readingMin": 4
   },
   {
     "slug": "written-by-agents",
-    "file": "2026-07-11-written-by-agents.md",
     "title": "Written by agents, reviewed by you",
     "tag": "Agents",
     "date": "2026-07-11",
-    "description": "nika init teaches the language to whatever agent you already run. Then two real agents write the same workflow: one invents a schema the audit refuses, one goes green first shot. The human review is a two-line diff.",
-    "author": "Thibaut Melen",
     "readingMin": 5
   },
   {
     "slug": "the-pipeline-is-a-file",
-    "file": "2026-07-11-the-pipeline-is-a-file.md",
     "title": "The pipeline is a file",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "An llm pipeline is a graph of model calls, tools and processes. A graph is declared, not programmed: forty lines of YAML replace the orchestration framework. Diffable, auditable, replayable.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-mcp-server-you-didnt-build",
-    "file": "2026-07-11-the-mcp-server-you-didnt-build.md",
     "title": "The MCP server you didn't have to build",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "Everyone is learning how to build an MCP server. For your workflows, skip the tutorial: the nika binary already is one. Read-only tools let any agent audit a plan and learn the language from the thing that enforces it.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-local-forecast",
-    "file": "2026-07-11-the-local-forecast.md",
     "title": "The forecast is local",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "explain --forecast computes duration and cost priors from your own recorded runs: stats over .nika/traces/, honest ranges at two runs, percentiles at five. Never a model call, never the network.",
-    "author": "Thibaut Melen",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "forecast"
   },
   {
     "slug": "the-generative-workflow",
-    "file": "2026-07-11-the-generative-workflow.md",
     "title": "The generative ai workflow, minus the mystery",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "Strip the buzzword and a generative ai workflow is three things: inputs you name, a model step, and effects you can point to. Declare all three in one file and the mystery evaporates. Rehearsed offline, every asset with provenance.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-chain-of-custody",
-    "file": "2026-07-11-the-chain-of-custody.md",
     "title": "The chain of custody",
     "tag": "Engine",
     "date": "2026-07-11",
-    "description": "A recorded run is a text file, and text files can be edited. nika trace verify recomputes the hash chain: one changed word in history breaks every line after it, and the run's printed head closes the loop.",
-    "author": "Thibaut Melen",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "custody"
   },
   {
     "slug": "the-agent-workflow-spectrum",
-    "file": "2026-07-11-the-agent-workflow-spectrum.md",
     "title": "The agent workflow spectrum",
     "tag": "Language",
     "date": "2026-07-11",
-    "description": "An ai agent workflow is any pipeline where a model chooses some of the steps. Every design sits between a declared graph and a free loop. Where yours lands decides which safety you can even ask for.",
-    "author": "Thibaut Melen",
     "readingMin": 4
   },
   {
     "slug": "the-run-that-waits",
-    "file": "2026-07-10-the-run-that-waits.md",
     "title": "The run that waits for you",
     "tag": "Engine",
     "date": "2026-07-10",
-    "description": "The approval gate is a task in the file, not a Slack thread: a plan fails closed on nika:prompt, and the human's answer rides the resume.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-resume-story",
-    "file": "2026-07-10-the-resume-story.md",
     "title": "The resume story",
     "tag": "Engine",
     "date": "2026-07-10",
-    "description": "kill -9 a run mid-flight, then resume it: finished work never runs twice. Durability as a file property, shown from the real journal.",
-    "author": "Thibaut Melen",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "resume"
   },
   {
     "slug": "the-one-task-rerun",
-    "file": "2026-07-10-the-one-task-rerun.md",
     "title": "The one-task re-run",
     "tag": "Engine",
     "date": "2026-07-10",
-    "description": "Regenerate one block without re-running the world: --task scopes a fresh run to a task and its upstream, --from re-rolls what the hashes cannot see.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "prompts-are-code",
-    "file": "2026-07-08-prompts-are-code.md",
     "title": "Prompts are code now",
     "tag": "Language",
     "date": "2026-07-08",
-    "description": "Prompt versioning without a platform: the prompt lives in the workflow file, so git diffs it, a PR reviews it, git reverts it. The engine itself names an edited prompt when two runs diverge.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "injection-goes-nowhere",
-    "file": "2026-07-08-injection-goes-nowhere.md",
     "title": "The prompt injection that goes nowhere",
     "tag": "Security",
     "date": "2026-07-08",
-    "description": "Prompt injection examples usually end with the agent taking a new action. Here the plan is authored before the model runs: the hostile note becomes data, never an action, and the boundary is checked before a token is spent.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-run-becomes-evidence",
-    "file": "2026-07-07-the-run-becomes-evidence.md",
     "title": "The run becomes evidence",
     "tag": "Engine",
     "date": "2026-07-07",
-    "description": "Every journal line now carries a hash chain: verify names the first broken link, reproduce classifies every task, and the journal attests which engine wrote it. Trust, but verify. Then verify.",
-    "author": "Thibaut Melen",
     "readingMin": 3,
     "series": "trace-family",
     "seriesStop": "evidence"
   },
   {
     "slug": "time-travel-for-real",
-    "file": "2026-07-06-time-travel-for-real.md",
     "title": "Time travel, for real",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "Every debugger replays the past by re-running it. Nika's past is a file, so stepping backward is free, breakpoints live in your YAML, and F5 debugs a run that already happened.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "the-editor-tells-the-truth",
-    "file": "2026-07-06-the-editor-tells-the-truth.md",
     "title": "The editor tells the truth",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "A green badge is a claim. We audited the editor extension against the engine the way you'd audit a client against a server, and found the badge lying. Here is the contract that keeps it honest now.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-credentials-your-pipeline-breaks",
-    "file": "2026-07-06-the-credentials-your-pipeline-breaks.md",
     "title": "The credentials your pipeline was breaking",
     "tag": "Security",
     "date": "2026-07-06",
-    "description": "OpenAI and Google sign the images their APIs return. Almost every pipeline that touches those files silently converts the signature into evidence of tampering. That included ours, until this week.",
-    "author": "Thibaut Melen",
     "readingMin": 4
   },
   {
     "slug": "one-wire-five-servers",
-    "file": "2026-07-06-one-wire-five-servers.md",
     "title": "One wire, five servers",
     "tag": "Sovereignty",
     "date": "2026-07-06",
-    "description": "The self-hosted media world quietly standardized on OpenAI's wire shapes. That accident of history is the best sovereignty news in years, and Nika's media builtins are built on it.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "media-are-workflow-citizens",
-    "file": "2026-07-06-media-are-workflow-citizens.md",
     "title": "Media are workflow citizens",
     "tag": "Engine",
     "date": "2026-07-06",
-    "description": "Images and speech now render inside workflows under the same discipline as everything else: permit-gated saves, sha256 provenance, honest warnings, real cost on the ledger, and the sovereign path first.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-trace-you-can-replay",
-    "file": "2026-07-05-the-trace-you-can-replay.md",
     "title": "The trace you can replay",
     "tag": "Engine",
     "date": "2026-07-05",
-    "description": "Every run leaves a flight recorder: a deterministic AI audit trail you can replay like a film, never re-execute by accident.",
-    "author": "Thibaut Melen",
     "readingMin": 2,
     "series": "trace-family",
     "seriesStop": "replay"
   },
   {
     "slug": "the-secrets-line",
-    "file": "2026-07-05-the-secrets-line.md",
     "title": "The secrets line",
     "tag": "Security",
     "date": "2026-07-05",
-    "description": "Information-flow, audited before it flows: how the checker proves a secret cannot leak into a prompt, a file, or a host.",
-    "author": "Thibaut Melen",
     "readingMin": 3
   },
   {
     "slug": "the-cost-line",
-    "file": "2026-07-05-the-cost-line.md",
     "title": "The cost line",
     "tag": "Engine",
     "date": "2026-07-05",
-    "description": "The audit prices every token before it is spent: ceilings on generations, budgets on loops, and a $0.00 that means it.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "anatomy-of-a-verb",
-    "file": "2026-07-05-anatomy-of-a-verb.md",
     "title": "Anatomy of a verb",
     "tag": "Language",
     "date": "2026-07-05",
-    "description": "infer, exec, invoke, agent: what makes the four verbs genuinely different execution models, in the engine's own verdicts.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "own-your-stack",
-    "file": "2026-07-02-own-your-stack.md",
     "title": "No cloud needed",
     "tag": "Sovereignty",
     "date": "2026-07-02",
-    "description": "One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.",
-    "author": "Thibaut Melen",
     "readingMin": 1
   },
   {
     "slug": "dag-for-free",
-    "file": "2026-06-29-dag-for-free.md",
     "title": "The plan you get for free",
     "tag": "Engine",
     "date": "2026-06-29",
-    "description": "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "four-verbs",
-    "file": "2026-06-22-four-verbs.md",
     "title": "Four verbs are enough",
     "tag": "Language",
     "date": "2026-06-22",
-    "description": "A verb is a distinct execution model, not a feature. Why the language locks at four, forever.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "intent-as-code",
-    "file": "2026-06-15-intent-as-code.md",
     "title": "Intent as Code: why your AI work should be a file",
     "tag": "Manifesto",
     "date": "2026-06-15",
-    "description": "Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "blast-radius-in-the-file",
-    "file": "2026-06-04-blast-radius-in-the-file.md",
     "title": "The blast radius is part of the file",
     "tag": "Security",
     "date": "2026-06-04",
-    "description": "permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
-    "author": "Thibaut Melen",
     "readingMin": 1
   },
   {
     "slug": "standard-library-not-plugin-store",
-    "file": "2026-05-14-standard-library-not-plugin-store.md",
     "title": "A standard library, not a plugin store",
     "tag": "Language",
     "date": "2026-05-14",
-    "description": "28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
-    "author": "Thibaut Melen",
     "readingMin": 1
   },
   {
     "slug": "open-spec-copyleft-engine",
-    "file": "2026-05-01-open-spec-copyleft-engine.md",
     "title": "An open spec, a copyleft engine",
     "tag": "Sovereignty",
     "date": "2026-05-01",
-    "description": "Two licenses, one argument: the file must outlive every vendor, including us.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "starting-over-on-purpose",
-    "file": "2026-04-14-starting-over-on-purpose.md",
     "title": "Starting over, on purpose",
     "tag": "Origins",
     "date": "2026-04-14",
-    "description": "We had a working prototype. We rebuilt from scratch anyway: craft, not extraction, one gate at a time.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "naming-the-drum",
-    "file": "2026-03-21-naming-the-drum.md",
     "title": "Naming the drum",
     "tag": "Origins",
     "date": "2026-03-21",
-    "description": "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   },
   {
     "slug": "the-note-that-started-it",
-    "file": "2025-10-17-the-note-that-started-it.md",
     "title": "The note that started it",
     "tag": "Origins",
     "date": "2025-10-17",
-    "description": "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.",
-    "author": "Thibaut Melen",
     "readingMin": 2
   }
 ]

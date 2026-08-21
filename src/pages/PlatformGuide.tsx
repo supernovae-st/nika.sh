@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router'
 import { PLATFORM_GUIDE_NAV } from '../content/platform-guides-nav'
 import { routeHead } from '../content'
 import { useRevealOnce } from '../sections/use-reveal-once'
+import { useHydrated } from '../lib/use-hydrated'
 import '../sections/v4-home.css'
 import './page-chrome.css'
 import './platform-guide.css'
@@ -11,6 +12,7 @@ import './platform-guide.css'
 const PlatformGuideExperience = lazy(() => import('../components/PlatformGuideExperience'))
 
 export function Component() {
+  const hydrated = useHydrated()
   const { guide: guideId } = useParams()
   const guide = PLATFORM_GUIDE_NAV.find(([id]) => id === guideId) ?? PLATFORM_GUIDE_NAV[0]
   const [id, shortTitle, eyebrow, heading, description] = guide
@@ -43,9 +45,11 @@ export function Component() {
             <h1 id="pg-title" className="v4sec-title pg-title">{heading}</h1>
             <p className="v4sec-lede">{description}</p>
           </header>
-          <Suspense fallback={null}>
-            <PlatformGuideExperience />
-          </Suspense>
+          {hydrated ? (
+            <Suspense fallback={null}>
+              <PlatformGuideExperience />
+            </Suspense>
+          ) : null}
         </div>
       </section>
     </main>

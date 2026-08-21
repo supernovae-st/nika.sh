@@ -12,6 +12,7 @@ import { TruthLine } from '../components/TruthLine'
 import { mapLensOn, subscribeMapLens } from '../lib/map-lens'
 import { SITE, routeHead } from '../content'
 import { BelvedereRail } from '../components/BelvedereRail'
+import { useHydrated } from '../lib/use-hydrated'
 import '../sections/v4-home.css'
 import './tool-detail.css'
 import './map-page.css'
@@ -122,6 +123,7 @@ function EveryPageRow({ link }: { link: MapLink }) {
 }
 
 export function Component() {
+  const hydrated = useHydrated()
   const flag3d = useMap3dFlag()
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const constellation = useConstellation()
@@ -352,9 +354,11 @@ export function Component() {
                 {SITE_MAP.length} groups · {MAP_DOORS_COUNT} doors · nothing served is missing
               </span>
             </div>
-            <Suspense fallback={null}>
-              <MapRouteSearch doors={MAP_DOORS_COUNT} groups={SITE_MAP.length} />
-            </Suspense>
+            {hydrated ? (
+              <Suspense fallback={null}>
+                <MapRouteSearch doors={MAP_DOORS_COUNT} groups={SITE_MAP.length} />
+              </Suspense>
+            ) : null}
             <div className="mp-groups">
               {SITE_MAP.map((g) => (
                 <section key={g.kick} className="mp-group" aria-label={g.kick} id={groupId(g.kick)}>

@@ -9,6 +9,9 @@ import '../sections/v4-home.css'
 import './page-chrome.css'
 import './blog-page.css'
 import { ldScript } from '../lib/ld'
+import { useHydrated } from '../lib/use-hydrated'
+import { Island } from '../lib/ssg-island'
+import { useBlogCopy } from '../lib/use-blog-copy'
 
 const EditorialQueue = lazy(() => import('../components/EditorialQueue'))
 
@@ -33,6 +36,12 @@ const tagCount = (t: string) => BLOG_POSTS.filter((p) => p.tag.includes(t)).leng
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+  const hydrated = useHydrated()
+  const { payload: copyPayload, copy } = useBlogCopy('blog-copy')
+  const posts = useMemo(
+    () => BLOG_POSTS.flatMap((post) => copy[post.slug] ? [{ ...post, ...copy[post.slug] }] : []),
+    [copy],
+  )
 
   /* the register filter · URL-reflected (?tag=Engine — deep-linkable, share-
      safe) without navigation; SSR prerenders the unfiltered archive (no
@@ -53,10 +62,10 @@ export function Component() {
   }
   const shown = useMemo(
     () =>
-      BLOG_POSTS.map((p, i) => ({ ...p, issue: BLOG_POSTS.length - i })).filter(
+      posts.map((p, i) => ({ ...p, issue: BLOG_POSTS.length - i })).filter(
         (p) => tag === 'all' || p.tag.includes(tag),
       ),
-    [tag],
+    [posts, tag],
   )
   /* the lead plate stays the ALL-view front page; a filtered view is the
      archive drawer — every match as a card, real issue numbers */
@@ -121,6 +130,7 @@ export function Component() {
         </div>
 
         <div className="v4sec-wrap">
+          <Island id="blog-copy" payload={copyPayload} />
           {/* the masthead */}
           <p className="v4sec-fig" data-rise>
             the journal
@@ -196,10 +206,10 @@ export function Component() {
               the newest post reads FIRST-class — full-width plate, its issue
               number as a giant watermark stamp — and the archive files below.
               Same Link semantics as a card; only the rendering is promoted. */}
-          {leadOn && BLOG_POSTS.length > 0 && (
+          {leadOn && posts.length > 0 && (
             <Link
-              id={BLOG_POSTS[0].slug}
-              to={`/blog/${BLOG_POSTS[0].slug}`}
+              id={posts[0].slug}
+              to={`/blog/${posts[0].slug}`}
               viewTransition
               className="blog-lead"
               data-rise
@@ -210,13 +220,13 @@ export function Component() {
                 data-number={String(BLOG_POSTS.length).padStart(2, '0')}
               />
               <span className="blog-card-fig mono">
-                latest · {BLOG_POSTS[0].tag} ·{' '}
-                <time dateTime={BLOG_POSTS[0].date}>{BLOG_POSTS[0].date}</time>
+                latest · {posts[0].tag} ·{' '}
+                <time dateTime={posts[0].date}>{posts[0].date}</time>
               </span>
-              <span className="blog-lead-title">{BLOG_POSTS[0].title}</span>
-              <span className="blog-lead-teaser">{BLOG_POSTS[0].description}</span>
+              <span className="blog-lead-title">{posts[0].title}</span>
+              <span className="blog-lead-teaser">{posts[0].description}</span>
               <span className="blog-card-foot mono">
-                {BLOG_POSTS[0].readingMin} min read
+                {posts[0].readingMin} min read
                 <span className="blog-card-arrow acue acue--r" aria-hidden>
                   {' '}
                   →
@@ -264,9 +274,11 @@ export function Component() {
           </p>
 
           {/* ══ the upcoming register ═══════════════════════════════════════ */}
-          <Suspense fallback={null}>
-            <EditorialQueue />
-          </Suspense>
+          {hydrated ? (
+            <Suspense fallback={null}>
+              <EditorialQueue />
+            </Suspense>
+          ) : null}
 
           {/* the close · the doc dimension line + the page footer */}
           <p className="v4docnote" data-rise>

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 // @ts-expect-error — the compiler is the untyped build script itself (the point: same code path)
 import { compileAll, compilePost, SERIES } from '../../scripts/build-blog.mjs'
 import { BLOG_POSTS } from '../content/blog.generated'
-import { BLOG_BODIES } from '../content/blog-bodies.generated'
+import { BLOG_BODIES, BLOG_POST_COPY, type BlogPostCopy } from '../content/blog-bodies.generated'
 import { BLOG_PATHS } from '../../site.config'
 
 /* ── the blog drift gates · sources and projections may never disagree ────────
@@ -17,10 +17,13 @@ import { BLOG_PATHS } from '../../site.config'
    README table row) goes red here, never silently stale to prod. */
 
 describe('/blog · the compiled projection matches its markdown sources', () => {
-  const fresh = compileAll() as (typeof BLOG_POSTS[number] & { tokens: unknown[] })[]
+  const fresh = compileAll() as (typeof BLOG_POSTS[number] & BlogPostCopy & { tokens: unknown[] })[]
   const freshMetas = fresh.map((p) => {
     const meta = { ...p } as Partial<typeof p>
     delete meta.tokens
+    delete meta.description
+    delete meta.file
+    delete meta.author
     return meta
   })
 
@@ -30,6 +33,11 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
 
   it('blog-bodies.generated.ts is exactly what the compiler emits today (bodies)', () => {
     expect(BLOG_BODIES).toEqual(Object.fromEntries(fresh.map((p) => [p.slug, p.tokens])))
+    expect(BLOG_POST_COPY).toEqual(Object.fromEntries(fresh.map((p) => [p.slug, {
+      description: p.description,
+      file: p.file,
+      author: p.author,
+    }])))
   })
 
   it('every post prerenders · BLOG_PATHS mirrors the slugs', () => {
@@ -54,7 +62,9 @@ describe('/blog · the compiled projection matches its markdown sources', () => 
       expect(full).toContain(`url: https://nika.sh/blog/${p.slug}`)
     }
     const order = fresh
-      .map((p) => full.indexOf(`url: https://nika.sh/blog/${p.slug}`))
+      /* the trailing newline makes this an exact header lookup: a short slug
+         such as /intent-as-code must not match a longer future sibling. */
+      .map((p) => full.indexOf(`url: https://nika.sh/blog/${p.slug}\n`))
       .filter((i) => i >= 0)
     expect([...order].sort((a, b) => a - b)).toEqual(order)
   })

@@ -33,6 +33,7 @@ import { ssrInstallCopy, loadInstallCopy } from '../lib/i18n-copy-access'
 import { Island } from '../lib/ssg-island'
 import { inline } from '../lib/i18n-inline'
 import { INSTALL_LINKS } from '../content/install-links'
+import { useHydrated } from '../lib/use-hydrated'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
@@ -55,6 +56,7 @@ const InstallLanes = lazy(() => import('../components/InstallLanes'))
 
 export function Component() {
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
+  const hydrated = useHydrated()
   /* the L1 wiring (WO-10): the pathname's locale picks the reviewed copy —
      EN included (one shape, eight voices; the generated module IS the twin,
      so page↔twin drift cannot exist). Machine surfaces (commands ·
@@ -173,9 +175,11 @@ export function Component() {
             <LocaleRail pathname={pathname} />
           </div>
 
-          <Suspense fallback={null}>
-            <InstallLanes />
-          </Suspense>
+          {hydrated ? (
+            <Suspense fallback={null}>
+              <InstallLanes />
+            </Suspense>
+          ) : null}
 
           <ol className="ins-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {/* 1 · Homebrew */}

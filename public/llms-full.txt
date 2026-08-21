@@ -255,6 +255,1563 @@ ARM64 support is the first line of that checklist, not the last. The useful depl
 
 ---
 
+## The access layer is an operating contract
+url: https://nika.sh/blog/the-access-layer-is-an-operating-contract
+date: 2026-08-20 · tag: Engine
+
+Four releases landed in two weeks, and reading only the feature names makes them look unrelated. Access paths. A smaller envelope. An arming registry. A richer check response. Underneath, they are one change: **the path from authored intent to an effect became explicit enough to inspect, pin and refuse.**
+
+The quickest way to see it is a command that arrived in v0.108.0:
+
+```text
+nika run brief.nika.yaml --access local
+```
+
+The workflow still chooses its intelligence with `model:`. The new flag chooses how the engine may reach that intelligence. That distinction sounds small until one model can be available through several routes: a local runtime, a test double, an agent harness, an OAuth session or a provider API. A model name answers *what*. An access path answers *how*.
+
+Before the access layer, those answers could collapse into one provider branch. If the preferred route was unavailable, a runtime had a dangerous temptation: try another. That is convenient right until the substitute has a different billing account, trust boundary or custody story. Nika's pin refuses that temptation. If the requested access path is not satisfied on this machine, the run stops before its prologue, before a trace event and before spend. A pin never means “best effort”.
+
+Without a pin, the admission-time resolver uses a deterministic order. It does not depend on enum order or whichever probe returned first. Every rejected candidate carries a witness that says which dimension failed and what the operator can do next. `nika check --json` exposes the plan, `nika explain` renders it for a person, and the run header names an explicit pin. The same decision is visible before, during and after the run.
+
+That was v0.108.0: `model:` chooses the intelligence; access chooses the path. The release also closed a security hole in the zero-authority scan. A shell-string `exec:` without `permits:` had been deferred to runtime because the checker could not extract a safe program allowlist from a string. The correction was conceptual: the checker may not know the program, but it does know the workflow requests the `exec` capability. Both the argv and shell forms now require declared authority. Unknown detail may defer. A known capability category may not.
+
+## The language gets smaller
+
+v0.109.2 applied the same discipline to the file itself. The workflow envelope became:
+
+```text
+nika · model · inputs · const · secrets · permits · run · tasks · outputs
+```
+
+The identity moved onto the first line:
+
+```yaml identity.nika.yaml
+nika: identity
+
+permits:
+  tools: ["nika:jq"]
+
+tasks:
+  answer:
+    invoke:
+      tool: "nika:jq"
+      args:
+        expression: "."
+        input: "the file names itself"
+```
+
+There is no `workflow:` wrapper, no duplicate `id:`, and no description field whose prose never changed execution. Deployment values became optional typed inputs with defaults. Output extraction moved next to the verb that produces it. Cleanup became a real task on an `unwind` edge, so it passes through the same graph laws as every other task. Fan-out controls moved inside `for_each:`, where their scope is visible.
+
+This was a pre-1.0 flag day. The release did not pretend an old file meant the new thing. `nika check --fix` migrates only transformations it can make without guessing, such as the identity and older task-map shapes. It stops on changes that require authorial judgment. Converting a cleanup mini-language into a task or deciding whether a former config value is really an input is not formatting. The refusal teaches the destination and leaves the source untouched.
+
+Two security fixes explain why this subtraction mattered. Expressions stopped seeing the ambient process environment, so a “pure” computation sees only its declared input. Receipt fields were terminal-escaped before rendering, closing a clipboard-control path from third-party evidence. A smaller grammar is not only easier to teach. It leaves fewer shadow authorities where data or behavior can hide.
+
+v0.109.2 also added the project file, `nika.yaml`. A workflow says what one run means. A project file holds decisions shared by runs: the default cost ceiling, trace retention, the minimum registry policy and the team's future scheduling declarations. It deliberately does not carry a model seat or workflow permits. Those belong to the portable workflow, not the checkout that happens to contain it.
+
+One project-level change is especially important on servers. If a workflow declares `permits:` and starts an `exec` or stdio MCP child, the default sandbox policy no longer degrades silently when the host has no confinement backend. It refuses. On Linux, `nika doctor` names the missing bubblewrap installation. An explicit `NIKA_SANDBOX=off` waiver remains possible, but the trace records that waiver. The system distinguishes “the contract was enforced” from “the operator chose to bypass it”.
+
+## The file proposes; the machine disposes
+
+v0.110.0 gave the project file an `arm:` registry. The French keys are intentional because the sentence governing the design is precise: *le fichier propose, la machine dispose*. The file proposes a cadence. The machine still decides whether a tick is due, within budget, allowed to overlap and eligible for catch-up.
+
+No schedule is armed by writing a cron string alone. Each beat must name its workflow, cadence, execution place, per-tick ceiling and missed-run policy. The cost ceiling and miss policy have no defaults because choosing either would choose who pays or which deliverable disappears. A suspended beat must carry a reason and an end date. Silence is never the status of scheduled work.
+
+All launch doors converge on one firer. A direct `nika arm fire`, a generated launchd or systemd unit, and the resident `nika serve` loop ask the same due-window, lock, overlap and ceiling logic. This prevents the operational version of a split brain where a manual run obeys one policy and a daemon another. The arming release also made its limits explicit: unsupported overlap, catch-up and cloud-placement policies refuse instead of approximating a behavior.
+
+That is access control at a different scale. v0.108 chooses the route to a model. v0.109.2 chooses the authority of a run and the defaults of a project. v0.110 chooses when the machine may turn a proposed beat into an admitted run. Each layer is inspectable before it acts.
+
+## Check becomes a conversation
+
+v0.111.0 closed the loop for the author. A valid workflow is not necessarily ready for a paid run. `nika check --json` now separates those states with `paid_ready`, `compiled` and `next`.
+
+`compiled` means the file's law was proven by the checker. `paid_ready` stays false while a paid-run hint remains unresolved. `next` is the first concrete repair. An editor, a CI job or an agent no longer has to scrape prose and guess which warning matters first. The machine answer says what is true now and the next smallest move toward a stronger state.
+
+The release also made `nika:inspect` live. A running workflow can read the DAG that was seeded at run start, then observe records and spend after each wave. Inspection is not a second scheduler. It is a read surface over the same shared run state the dispatcher updates. `nika:compose` was added only inside an agent loop and only after `nika:done` is granted. The model may draft a child workflow, receive the full check response and iterate until valid. A standalone invoke refuses. Checking a draft never executes it.
+
+Put the releases together and the product direction becomes clearer:
+
+1. The author chooses a model, and the engine exposes the access path separately.
+2. The workflow carries only the language fields that affect meaning.
+3. The project proposes schedules without smuggling in run authority.
+4. The checker returns a repair protocol, not just a Boolean.
+5. The trace records the path, policy and waivers that actually admitted the run.
+
+This is what “Intent as Code” needs after the syntax is solved. Code is not valuable only because it can execute. It is valuable because resolution, admission, authority and history can all be reviewed at their proper layer. The access layer makes those layers visible. The releases after it make them operable.
+
+Read the [v0.108.0](/releases/v0.108.0), [v0.109.2](/releases/v0.109.2), [v0.110.0](/releases/v0.110.0) and [v0.111.0](/releases/v0.111.0) release records, or see why a green parse can still be [not ready to spend](/blog/clean-is-not-ready-to-spend).
+
+---
+
+## A field guide to the Nika workflow ecosystem
+url: https://nika.sh/blog/workflow-ecosystem-field-guide
+date: 2026-08-19 · tag: Engine
+
+A modern AI workflow sits at the intersection of several ecosystems. There are model providers, local runtimes, built-in tools, MCP servers, coding agents, editors and CI runners. Each offers a way to make the system more capable. Each can also become a source of accidental complexity.
+
+The practical question is not “which ecosystem wins?” It is “which layer owns this decision?”
+
+Nika keeps the workflow language small while letting the catalogs grow. The file describes intent with four execution models: infer, exec, invoke and agent. A model identifier selects intelligence. A builtin or MCP identifier selects a callable capability. Repository and client integrations help people and agents author the file. The runner enforces the plan.
+
+This field guide gives each layer one job and a decision rule.
+
+## Start with the job, not the provider
+
+Write the task graph before choosing a model vendor.
+
+For a document brief, the stable plan may be: read a source, extract facts, draft a summary, validate the artifact and write it. That graph does not become a different workflow because the inference runs through Ollama, OpenAI or another compatible provider.
+
+Provider-first design creates unnecessary coupling. Prompts begin to mention SDK objects. Error handling follows one HTTP dialect. Credentials leak into helper code. Switching the model then requires a rewrite of the orchestration rather than a deliberate change to one seat.
+
+In Nika, the default seat is a model string:
+
+```text
+model: ollama/llama3.2:3b
+```
+
+A production run can preview or override that seat from the command line:
+
+```bash
+nika check workflow.nika.yaml --model openai/gpt-5-mini
+nika run workflow.nika.yaml --model openai/gpt-5-mini
+```
+
+The first command asks the installed catalog to resolve and price the proposed seat without changing the file. The second launches the same graph on that seat. A task-level model can still pin an exception when one job genuinely needs different capabilities.
+
+This separation gives review a clean question: did the plan change, or did only the intelligence seat change?
+
+## Use the installed catalog as the source
+
+Provider names, model identifiers, environment keys, capabilities and prices change. Memory is a bad registry.
+
+Ask the binary that will run the workflow:
+
+```bash
+nika catalog
+nika catalog --json
+```
+
+The human view helps discovery. The JSON view supports tools, audits and CI. The public [provider rooms](/catalog/providers) and [model catalog](/catalog/models) project the released engine catalogs for web browsing, while the installed binary remains the admission-time authority for a local run.
+
+Check several properties before selecting a seat:
+
+- Does the provider require a credential, and which environment key does it use?
+- Does the model support the structured output or media capability the task needs?
+- Is there a sourced price row for the exact identifier?
+- Is the context window appropriate for the actual input size?
+- Is the runtime local, remote or reached through an access layer?
+
+A missing price does not mean a free run. It means the compute is unpriced by the current catalog. The [pricing register](/catalog/pricing) and [energy register](/catalog/energy) keep financial and physical cost as separate clocks because one should not be inferred from the other.
+
+## Choose local and cloud by constraint
+
+Local and cloud are not opposing identities. They are execution choices with different constraints.
+
+Choose a local runtime when data residency, offline operation, predictable access or hardware ownership dominates. The current catalog includes local server families such as Ollama, LM Studio, llama.cpp, LocalAI and vLLM. Their exact available models depend on the runtime you operate.
+
+Choose a cloud provider when the task needs a model capability, scale or service level that the local seat does not provide. Keep the provider credential scoped to the run step, review the input volume and set a hard cost ceiling.
+
+Use `mock/echo` for the third lane: deterministic rehearsal. It is not a weak production model. It is a test seat that exercises the workflow without a key or bill.
+
+The same source can move between all three. Here is a complete local-first brief:
+
+```yaml ecosystem-brief.nika.yaml
+nika: ecosystem-brief
+
+model: ollama/llama3.2:3b
+
+permits:
+  tools: ["nika:read", "nika:write"]
+  fs:
+    read: ["./sources/ecosystem.md"]
+    write: ["./out/ecosystem-brief.md"]
+
+tasks:
+  source:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./sources/ecosystem.md" }
+
+  brief:
+    with:
+      source: ${{ tasks.source.output }}
+    infer:
+      prompt: |
+        Write a factual field note from this source.
+        Separate observed changes from recommendations.
+        Do not invent dates, benchmarks or adoption claims.
+
+        ${{ with.source }}
+      max_tokens: 900
+
+  save:
+    with:
+      brief: ${{ tasks.brief.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./out/ecosystem-brief.md"
+        content: "${{ with.brief }}"
+        create_dirs: true
+
+outputs:
+  brief: ${{ tasks.brief.output }}
+```
+
+Rehearse it with `--model mock/echo`. Run it locally as written. Preview a cloud seat with `nika check --model ...` before supplying the provider key. The graph and file boundary stay constant.
+
+## Reach for builtins before subprocesses
+
+Builtins are the standard library inside the Nika binary. They cover common workflow operations across files, data, network access, introspection and media.
+
+Use the live tool catalog rather than guessing an argument:
+
+```bash
+nika catalog --tools
+nika catalog --tools --json
+```
+
+The native-first order is deliberate:
+
+1. Use a `nika:*` builtin when the operation is in the standard library.
+2. Use an `mcp:<server>/<tool>` call when an external product exposes the capability.
+3. Use `exec` for a real program when neither tool path fits.
+
+This is not style preference. A builtin exposes typed arguments to the checker, participates directly in permits and leaves structured task evidence. A shell helper that wraps the same operation hides those facts behind process execution.
+
+Common replacements are straightforward. File reads and writes use `nika:read` and `nika:write`. HTTP uses `nika:fetch`. JSON shaping uses `nika:jq`. Search uses `nika:glob` or `nika:grep`. Dates, hashes, UUIDs, validation and conversion have their own builtins. Inspect the catalog for the current argument schema before authoring.
+
+An `exec` remains appropriate for tools such as a compiler, `git` or a product CLI with no callable surface. Prefer argv form so interpolated values remain one argument and cannot become shell syntax. If a shell is truly required, make that boundary explicit.
+
+## Use MCP for product capabilities, not invisible authority
+
+MCP lets a workflow call capabilities supplied by another server without importing its SDK into the workflow language. The task still uses `invoke`; the tool identity simply lives under the `mcp:` namespace.
+
+The [MCP catalog](/catalog/mcp) is a discovery map, not an automatic allowlist. Installing or configuring a server does not grant every workflow access to every tool. The workflow permit block names the tool, and the server process runs inside the applicable child boundary.
+
+Before adding an MCP task, answer five questions:
+
+1. Is the server version or installation source reviewed?
+2. What exact tool is needed?
+3. Which filesystem, network and environment effects can the child require?
+4. What data crosses into the server, including private inputs and secrets?
+5. Can a builtin perform the same job with a smaller boundary?
+
+Do not build a Python or shell wrapper around a product HTTP API merely to avoid MCP configuration. That creates a private protocol with no shared schema and moves credentials into glue. If no trustworthy server exists, `nika:fetch` with an exact host and governed header may still be clearer than a helper script.
+
+MCP is also how a coding agent can query Nika itself. The binary's own MCP server exposes a read-only oracle for checks and catalog information. It deliberately does not expose run authority. An agent can understand and repair the plan without receiving a tool that executes it.
+
+## Keep coding-agent integrations at the authoring layer
+
+The ecosystem includes more than runtimes. Coding agents and editors need a way to learn the language and obtain diagnostics.
+
+Nika uses three complementary surfaces:
+
+- `nika init` writes repository instructions and authoring guidance;
+- the editor extension draws and validates the workflow while it is edited;
+- `nika mcp` gives compatible clients structured access to the released checker and catalogs.
+
+The exact installation path depends on the client. Some load a native plugin, some read repository instructions, and some connect only through MCP. The live [integrations matrix](/integrations) records those differences and names whether a path is proven, wired or still reconnaissance.
+
+Keep the architecture stable despite those client differences. The client helps author. The binary checks. The terminal or protected CI job runs. A new agent UI should not require a new workflow dialect.
+
+## Make access selection visible
+
+Model identity and access path are related but distinct. A provider/model name says which intelligence is requested. The access layer says how the runner can reach an acceptable seat in the current environment.
+
+Nika's released access resolver considers available paths in a strict order and records why candidates were accepted or dropped. The `--access` launch option can pin the required class rather than allowing a silent substitution. If the requested path is unavailable, refusal is more honest than quietly sending the task somewhere else.
+
+This matters for sovereignty. “Use this model” does not prove the request stayed local. “Use this model through a local access path” is a stronger operational claim, and the resolver witness makes it inspectable.
+
+It also matters for CI. A pull request rehearsal may use mock access, while a protected job requires an API or local server seat. Those are deployment decisions around one workflow, not forks of the source.
+
+## Review the whole data journey
+
+The most capable workflow can also have the largest information path. A local file enters a prompt. A model output enters an MCP tool. A secret becomes an HTTP header. A generated artifact is written and later published.
+
+Review the journey end to end:
+
+- source and trust level of every input;
+- tasks that transform or classify it;
+- model and tool destinations;
+- local files and external hosts reached;
+- output retained after the run;
+- trace material retained as evidence.
+
+The permit block answers which effects are allowed. Secret egress declarations answer where credentials may travel. The lethal-trifecta check looks for paths combining private reads, untrusted ingress and external egress without the required human gate. No single provider setting replaces this workflow-level view.
+
+## A durable selection sequence
+
+When a new workflow request arrives, use the same sequence:
+
+1. Draw the tasks and data edges without selecting a vendor.
+2. Mark which tasks need language judgment, deterministic tools, real programs or an open-ended loop.
+3. Inspect `nika catalog --tools` before writing any `exec`.
+4. Inspect `nika catalog` before choosing a model identifier.
+5. Pick mock, local or cloud access from the task's operating constraints.
+6. Add MCP only for exact product capabilities and review the child boundary.
+7. Derive permits from the body, then tighten them in review.
+8. Check with the installed binary, rehearse with mock or local access, and require paid readiness before spend.
+9. Launch with explicit secrets and a hard cost ceiling.
+10. Retain the declared output and the trace as different artifacts.
+
+The ecosystem can expand without making the workflow language sprawl. Providers add intelligence seats. Builtins add trusted primitives. MCP adds product capabilities. Coding agents add authoring leverage. None needs to own the whole system.
+
+The plan stays the stable center. Choose each surrounding layer for one reason, make that reason visible, and keep the path from intent to evidence reviewable.
+
+---
+
+## Let coding agents write plans, not policy
+url: https://nika.sh/blog/coding-agents-write-plans
+date: 2026-08-17 · tag: Agents
+
+Coding agents are good at turning an intention into a first draft. They inspect a repository, find the relevant files, imitate local conventions and revise from diagnostics. That makes them natural authors of repeatable AI workflows.
+
+It does not make them the authority on whether those workflows are safe, affordable or approved to run.
+
+The useful architecture separates four roles:
+
+1. The coding agent proposes a workflow file.
+2. The Nika checker judges the file against the released language and catalogs.
+3. A human reviews the diff and grants the operational decision.
+4. The runner executes the approved bytes inside the declared boundary.
+
+Each role has a different power. The agent can write. The checker can refuse. The reviewer can approve. The runner can act. Combining them into one autonomous loop makes the demonstration smoother and the production system harder to trust.
+
+## Nika does not replace the coding agent
+
+Codex, Claude Code, Cursor and similar tools already understand repositories. They can edit source, run commands and respond to test failures. Nika supplies a small language for one particular artifact inside that repository: the repeatable AI plan.
+
+The relationship resembles an agent writing a CI workflow or an infrastructure definition. The coding agent does not need to become the scheduler, policy engine or trace store. It authors a file for a tool that owns those jobs.
+
+This division keeps model choice open. One team can use a frontier coding agent to write a workflow that runs on a local Ollama model. Another can author locally and run one task through a cloud provider. The intelligence used to create the plan and the intelligence selected by the plan are separate decisions.
+
+## Teach the repository, not every conversation
+
+An agent performs better when the rules live beside the code. Nika's `init` command scaffolds repository instructions for several agent and editor conventions, including `AGENTS.md` and a Nika authoring skill. Those files teach a repeatable loop:
+
+1. Read real examples before writing.
+2. Choose one verb for each task.
+3. Bind data dependencies with `with:`.
+4. Derive and review a tight `permits:` block.
+5. Run `nika check --native-strict`.
+6. Resolve paid-run guidance before using a paid model.
+
+The important part is not a brand-specific prompt. It is a project-level contract that survives a new session and can be reviewed like any other repository rule.
+
+Run the scaffold from the project root:
+
+```bash
+nika init
+```
+
+Existing files are preserved unless the operator deliberately chooses an overwrite path. The repository remains the source of truth. A future agent reads the same instructions the current agent used.
+
+## Ask for the artifact and the proof
+
+“Automate our weekly summary” is too broad for a reliable handoff. It lets the agent choose the sources, destination, model, permissions and test strategy without making those choices explicit.
+
+A better request names the artifact and the gates:
+
+> Read AGENTS.md and the Nika authoring skill. Start from two shipped examples. Create `workflows/weekly-summary.nika.yaml` that reads the two named source files and writes one report. Use a local model, derive the permit block, and stop only when `nika check --native-strict` is clean. Do not run paid models or publish anything.
+
+That prompt gives the agent room to solve the task while reserving operational authority. It also produces evidence a reviewer can inspect: the source file, the checker result and a diff.
+
+The resulting workflow may look like this:
+
+```yaml weekly-summary.nika.yaml
+nika: weekly-summary
+
+model: ollama/llama3.2:3b
+
+permits:
+  tools: ["nika:read", "nika:write"]
+  fs:
+    read: ["./notes/progress.md", "./notes/blockers.md"]
+    write: ["./reports/weekly.md"]
+
+tasks:
+  progress:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./notes/progress.md" }
+
+  blockers:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./notes/blockers.md" }
+
+  summary:
+    with:
+      progress: ${{ tasks.progress.output }}
+      blockers: ${{ tasks.blockers.output }}
+    infer:
+      prompt: |
+        Write a concise weekly summary from the two project notes.
+        Preserve named owners and dates. Do not invent missing status.
+
+        PROGRESS
+        ${{ with.progress }}
+
+        BLOCKERS
+        ${{ with.blockers }}
+      max_tokens: 900
+
+  save:
+    with:
+      summary: ${{ tasks.summary.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./reports/weekly.md"
+        content: "${{ with.summary }}"
+        create_dirs: true
+
+outputs:
+  report: ${{ tasks.summary.output }}
+```
+
+The human review is concrete. Does the report need both sources? Is the local model appropriate? Are the output ceiling and prompt sufficient? Why can the workflow write only one path? No part of that conversation depends on replaying the agent's hidden reasoning.
+
+## Give the agent an oracle without a run button
+
+The Nika binary can expose its checker and catalog over MCP. This is useful because the coding agent receives structured answers from the same release that will parse the workflow.
+
+The public MCP surface is intentionally read-only. It can check a plan, explain findings and serve language or catalog information. It does not expose a workflow run tool. The agent can learn whether the file is valid without receiving a second path to spend tokens, write files or call external services.
+
+That absence is an architectural feature. A tool that knows how to judge a plan does not also need permission to execute it. The [MCP oracle](/blog/the-mcp-server-you-didnt-build) keeps knowledge and action on separate surfaces.
+
+The current integration registry documents native or wired doors for many clients. The installation gesture differs by client, and those details should be read from the live [integrations rooms](/integrations), not copied from an old blog post. The stable contract is simpler: repository instructions teach authoring, the MCP server exposes the oracle, and the terminal runner owns execution.
+
+## Treat checker findings as the revision protocol
+
+An agent should not improvise around a red check. The finding is part of the authoring interface.
+
+If the parser reports an unknown field, the agent repairs the field rather than inventing an alias. If the boundary is missing an effect, it derives the candidate permit block and asks whether the broader authority is intended. If native-strict flags a helper script that wraps HTTP or file operations, it inspects `nika catalog --tools` before keeping `exec`.
+
+Nika 0.111.0 adds a machine-readable `next` repair in the JSON check result and separates `clean`, `compiled` and `paid_ready`. This gives an agent an ordered loop without giving it permission to declare itself finished:
+
+```bash
+nika check --json --native-strict workflows/weekly-summary.nika.yaml
+```
+
+The checker remains the authority. The model can apply the first suggested repair and check again. It cannot convert a red verdict into green prose.
+
+This is especially important for cost and deterministic laws. A workflow may parse while still asking a model to make a verdict that should be enforced with `nika:jq` or `nika:decide`. It may contain a rule without a fixed fixture that proves the rule. `paid_ready` stays false until those authoring debts are resolved.
+
+## Keep review focused on decisions
+
+An agent-generated diff can be large. A good workflow review follows a fixed order:
+
+**Identity and inputs.** Is the file solving one named job? Are caller values, constants and secrets classified by role?
+
+**Graph.** Does every task do one job? Are data edges written as `with:` bindings? Is dynamic agent work genuinely dynamic and bounded?
+
+**Authority.** Does the body fit the permit block? Are paths and hosts exact? Is an `exec` a real external program rather than hidden plumbing?
+
+**Cost.** Does every model task have an output ceiling? Does every agent loop have turn and total-token limits? Is the selected provider intentional?
+
+**Policy.** Does a deterministic task own each gate a deterministic task can express? Is irreversible work dominated by a human decision?
+
+**Evidence.** Are outputs declared? Is there a mock or local rehearsal? Will a meaningful run leave a trace that the team retains?
+
+This sequence reduces review fatigue because it asks about system properties before copy style. The perfect prompt inside an overpowered workflow is still the wrong first concern.
+
+## Keep execution outside the authoring loop
+
+An agent often has terminal access, which means it may technically be able to run the file it just wrote. The project contract should still distinguish capability from authorization.
+
+For ordinary authoring, allow safe checks and mock tests. Require a person or a protected CI environment to launch paid providers, send notifications, publish content or deploy software. If a workflow needs a human decision mid-run, represent that decision as a durable prompt task rather than an informal “tell me before you continue” instruction in chat.
+
+The trace then records the answer and the tasks it enabled. A chat promise does not.
+
+The same principle applies when the coding agent itself is working overnight. Long autonomy does not broaden authority. The agent can continue improving source, running local gates and preparing a review. External publication remains a separate operation unless the user explicitly put it in scope and the workflow carries the corresponding boundary.
+
+## Use agents to make the file better
+
+The right conclusion is not that coding agents should be kept away from workflows. They are valuable precisely because the file gives their work a strong meeting point with human review and machine verification.
+
+Let the agent inspect the repository, find the closest examples, draft the graph, tighten the permissions, respond to checker findings and add a deterministic rehearsal. Those are high-leverage tasks. Let the checker decide whether the file belongs to the language. Let the reviewer decide whether its authority and cost are acceptable. Let the runner act only after those two decisions are visible.
+
+The coding agent writes the plan. It does not write the policy by which its own plan becomes trusted. That separation is what makes deeper autonomy practical.
+
+---
+
+## The CI job should know its boundary
+url: https://nika.sh/blog/ci-without-ambient-authority
+date: 2026-08-15 · tag: Security
+
+Continuous integration is where automation becomes authority.
+
+A local experiment can be stopped by the person watching it. A CI job may run at midnight with repository credentials, deployment tokens, network access and write permission across a working tree. If an AI step enters that environment as “one more script,” it quietly inherits a much larger blast radius than the prompt needs.
+
+The safer operating model is to treat the workflow as a release artifact. Check the exact bytes that will run. Make effects explicit. Rehearse without provider keys. Require a separate readiness signal before paid execution. Put the final spend ceiling on the command that launches the run.
+
+Nika supports that loop, but the result still depends on how the CI job is designed. A workflow language cannot repair a runner that gives every step permanent production credentials.
+
+## Keep authoring and execution as separate gates
+
+A useful pipeline has at least two stages.
+
+The first stage is safe to run on every pull request. It validates the workflow, checks native-first guidance and compares a deterministic rehearsal with its golden result. It needs no paid provider key and should not receive deployment credentials.
+
+The second stage is allowed to execute real effects. It runs only after review or on a protected branch, receives the minimum required secrets and launches with an explicit cost cap. A publishing or deployment task may also pause for a recorded human decision before the irreversible step.
+
+This split keeps “the file is valid” separate from “this run is authorized now.” A green parser verdict is not a production approval.
+
+## Check the same bytes you will run
+
+Templating a workflow after validation defeats the check. The checker proves one document while the runner executes another.
+
+Prefer committed workflow files with typed `inputs:` for the values that change per invocation. Pass them with repeated `--var key=value` arguments. The graph and boundary remain in source, while the caller supplies only declared values.
+
+If a build step generates a workflow, preserve that generated artifact and run both `check` and `run` against the same file. Do not check the template and execute a later expansion. Record its digest as a build artifact so a reviewer can identify the exact bytes sent to the runner.
+
+The command sequence for a pull request can stay small:
+
+```bash
+nika check --native-strict workflows/release-brief.nika.yaml
+nika check --json workflows/release-brief.nika.yaml \
+  | jq -e '.clean == true and .paid_ready == true'
+nika test workflows/release-brief.nika.yaml
+```
+
+The first line applies the strict native-first posture. The second gives CI a machine verdict for legality and paid readiness. The third compares an offline mock run with the committed golden file. A failure in any line should stop before a provider key is introduced.
+
+## Make the workflow hermetic enough to rehearse
+
+CI tests should not depend on a model provider being healthy, cheap or deterministic that morning. Nika's mock model gives the plan a keyless execution path, and `nika test` records the expected task and output structure.
+
+Here is a small workflow suited to that lane:
+
+```yaml release-brief.nika.yaml
+nika: release-brief
+
+model: mock/echo
+
+run:
+  entropy: none
+  clock: virtual
+
+permits:
+  tools: ["nika:read"]
+  fs:
+    read: ["./CHANGELOG.md"]
+
+tasks:
+  changes:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./CHANGELOG.md" }
+
+  brief:
+    with:
+      changes: ${{ tasks.changes.output }}
+    infer:
+      prompt: |
+        Write a factual release brief from this changelog.
+        ${{ with.changes }}
+      max_tokens: 800
+
+outputs:
+  brief: ${{ tasks.brief.output }}
+```
+
+`entropy: none` and `clock: virtual` state that the rehearsal should consume neither randomness nor ambient wall time. The file reads one committed source and performs no write. The mock response is not a quality evaluation of the prose. It is a deterministic proof that the workflow compiles, the graph executes and the output contract remains stable.
+
+Create the golden once after review:
+
+```bash
+nika test workflows/release-brief.nika.yaml --update
+```
+
+Future CI runs use `nika test` without `--update`. A red comparison is a change to investigate, not an invitation to regenerate the expected result automatically.
+
+## Treat permits as the CI capability manifest
+
+The workflow above can read one file through one builtin. It cannot write an artifact, spawn a process or reach a host because those capabilities are absent.
+
+That is more useful than a comment saying the task is read-only. The declared body and the permit block are checked together. If a later change adds `nika:write`, the file becomes red until the reviewer also grants the tool and the destination path.
+
+Derive a starting boundary with:
+
+```bash
+nika check --infer-permits workflows/release-brief.nika.yaml
+```
+
+Then read the result. Inference is not permission approval. An interpolated path may be impossible to resolve statically. An HTTP endpoint may redirect to another host. A composed child workflow carries its own effects. These cases need explicit review rather than a broader wildcard.
+
+The runner should reinforce the same boundary at the operating-system layer. On macOS, Nika uses the platform sandbox path. On Linux, headless hosts need bubblewrap for confined process and MCP children. If a strict workflow declares permits and the host cannot enforce the process boundary, refusal is the correct result. The [server guide](/install/servers) keeps this prerequisite visible.
+
+Container isolation is still useful. It limits the entire job. `permits:` limits the workflow inside that job. The controls answer different questions and should be layered rather than substituted for one another.
+
+## Give each stage only the secrets it needs
+
+The check and mock-test stage should receive no model key. This catches accidental dependencies early and prevents an innocent pull request from spending money.
+
+The execution stage receives only the provider or service credentials named by the approved plan. Nika secrets are governed references, not prompt strings. The secret declaration names its source, and any allowed egress belongs in the same reviewed file.
+
+Do not expose every repository secret at job scope. Put each credential on the step that needs it. Use protected environments for production tokens and require the repository's normal approval mechanism before that environment is released.
+
+An MCP child and an `exec` child begin from a cleared environment plus the runner floor and explicitly permitted names. If a tool needs an environment variable, make that dependency visible. A child process should not receive a surprise copy of the host session.
+
+## Put the hard cost cap on the launch
+
+Every `infer` task should have `max_tokens`. Every `agent` task should have both a turn limit and a total token limit. Those fields make the static output ceiling computable.
+
+The runtime boundary adds the final stop:
+
+```bash
+nika run workflows/release-brief.nika.yaml \
+  --model openai/gpt-5-mini \
+  --max-cost-usd 0.25 \
+  --output json
+```
+
+`--model` previews and selects the production seat without changing the workflow graph. `--max-cost-usd` refuses before the call that would cross the cap. `--output json` gives the CI caller a declared machine result instead of forcing it to scrape terminal prose.
+
+Be precise about what the cap and preflight estimate mean. The static ceiling prices output tokens known to the catalog. Large input documents, provider-specific caching and local compute still need operational review. A local model is unpriced compute, not a zero-cost job.
+
+Composition also requires care. A parent workflow's displayed ceiling does not currently include a child's model work, and a parent's run cap does not automatically become the child's cap. Check and budget each child at its own execution boundary before presenting a composed plan as globally bounded.
+
+## Design human gates for headless reality
+
+CI has no hidden operator.
+
+A blocking `nika:prompt` without a default pauses durably. The run records the question and can resume later with a typed answer. That is appropriate when a release, send or publish step must wait for a person.
+
+A prompt with `default: false` completes unattended and fails closed. That is appropriate when CI should settle the run without taking the irreversible action. A default of true would turn absence into approval and should be treated as a serious policy decision.
+
+Place the gate so it dominates every path to the effect it approves. A question beside one branch does not authorize another branch that can reach the same write or network send. The graph should make the approval relationship visible before the run.
+
+The final task can record an outcome even after failure by using a terminal control edge, but an always-running task should not be the one that performs external egress. Otherwise it may become reachable on a path where the human never approved anything.
+
+## Keep the trace as a CI artifact
+
+The JSON output is for downstream automation. The trace is for evidence.
+
+After a run that matters, retain the matching `.nika/traces/*.ndjson` file with the workflow digest and CI job metadata. Verify it before long-term storage:
+
+```bash
+nika trace verify .nika/traces/<run>.ndjson
+```
+
+The verifier reports the strongest proof the trace actually carries. Hash-chain integrity, a sealed signature, an anchored sidecar and a fresh replay are different levels. Do not relabel one as another.
+
+Retention makes incident review concrete. A team can see which tasks ran, which outputs were reused, where a refusal happened and whether the record changed after the job. That is more useful than a single green checkmark beside “AI step.”
+
+## The production checklist
+
+A headless Nika job is ready when the answers are explicit:
+
+1. The committed or generated bytes checked are the bytes that will run.
+2. `nika check --native-strict` is clean and paid workflows report `paid_ready: true`.
+3. A deterministic `nika test` lane runs without provider keys.
+4. The permit block names every file, host, tool and executable the body needs.
+5. The host can enforce process confinement, including bubblewrap on Linux.
+6. The execution step receives only its required secrets.
+7. Model and agent tasks carry output and loop bounds.
+8. The launch command sets a hard cost ceiling.
+9. Human approval is explicit and fail-closed in a headless session.
+10. The JSON result and verified trace are retained for their separate purposes.
+
+CI is not merely where a workflow happens to run. It is the boundary where authored intent receives real authority. Make that transfer visible, reviewable and reversible before the first token is spent.
+
+---
+
+## Retire the prompt glue
+url: https://nika.sh/blog/retire-the-prompt-glue
+date: 2026-08-13 · tag: Language
+
+Prompt glue usually begins as a useful ten-line script.
+
+Read a file. Call a model. Parse the answer. Write the result. The first version is fast, familiar and completely reasonable. Then the task becomes important. A second source arrives. A retry appears. Someone adds a shell command. CI needs the result as JSON. The provider changes. The script now owns orchestration, policy, cost control, secret handling and recovery, but still looks like a small utility.
+
+The problem is not that Python or shell are weak languages. The problem is that a general-purpose program hides the properties a workflow reviewer needs most. The graph is mixed with control flow. Authority comes from the process. Model budgets live in request options. A partial write can occur before a later exception. The only proof of what happened may be a log assembled by the same code under review.
+
+Migration should not translate every line into YAML. It should recover the plan that the glue had been performing implicitly.
+
+## Start with effects, not syntax
+
+Before changing code, make an inventory of what the script can do.
+
+For a typical “read notes and write a launch brief” job, the inventory may be:
+
+- read two Markdown files;
+- ask a model for risks and another model call for opportunities;
+- combine both outputs;
+- write one report;
+- return the report path to the caller.
+
+That list already reveals the workflow better than the original call stack. Two reads are independent. Two analyses depend on the same source material and can run together. The merge waits for both. The save waits for the merge.
+
+Now list authority separately:
+
+- file reads under `./inputs/`;
+- one write under `./out/`;
+- no network tool, shell or arbitrary program;
+- one model provider selected by the `model:` value.
+
+If the script also calls `curl`, `jq`, `cat` or `mkdir`, do not copy those commands automatically. Nika has builtins for HTTP, files, structured data and directories. The native tool exposes its arguments to the checker and participates in the permit boundary. A subprocess is appropriate for a real external program, not for plumbing the workflow language already understands.
+
+## Draw tasks around jobs, not functions
+
+A helper function is not automatically a workflow task. A task should perform one job with one execution model.
+
+Use `invoke` when a builtin or MCP tool already performs the operation. Use `infer` when language or judgment is required. Use `exec` for a real process that cannot be reached through a tool. Use `agent` only when the number of steps cannot be declared up front.
+
+Here is the recovered plan for the launch brief:
+
+```yaml launch-brief.nika.yaml
+nika: launch-brief
+
+model: ollama/llama3.2:3b
+
+permits:
+  tools: ["nika:read", "nika:write"]
+  fs:
+    read: ["./inputs/release.md", "./inputs/incidents.md"]
+    write: ["./out/launch-brief.md"]
+
+tasks:
+  release:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./inputs/release.md" }
+
+  incidents:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./inputs/incidents.md" }
+
+  risks:
+    with:
+      release: ${{ tasks.release.output }}
+      incidents: ${{ tasks.incidents.output }}
+    infer:
+      prompt: |
+        Identify concrete launch risks supported by these two sources.
+        Do not invent missing incidents, dates or owners.
+
+        RELEASE
+        ${{ with.release }}
+
+        INCIDENTS
+        ${{ with.incidents }}
+      max_tokens: 900
+
+  opportunities:
+    with:
+      release: ${{ tasks.release.output }}
+    infer:
+      prompt: |
+        Extract the user-visible improvements in this release.
+        Keep product names and version numbers exactly as written.
+
+        ${{ with.release }}
+      max_tokens: 700
+
+  assemble:
+    with:
+      risks: ${{ tasks.risks.output }}
+      opportunities: ${{ tasks.opportunities.output }}
+    infer:
+      prompt: |
+        Write a launch brief with two headings: What changed and What to watch.
+        Use only the supplied analyses.
+
+        IMPROVEMENTS
+        ${{ with.opportunities }}
+
+        RISKS
+        ${{ with.risks }}
+      max_tokens: 1000
+
+  save:
+    with:
+      brief: ${{ tasks.assemble.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./out/launch-brief.md"
+        content: "${{ with.brief }}"
+        create_dirs: true
+
+outputs:
+  brief: ${{ tasks.assemble.output }}
+```
+
+The file does not say “run these analyses in parallel.” It says what each task consumes. The engine derives the waves from those bindings. `release` and `incidents` can start together. `risks` and `opportunities` can run together once their inputs exist. `assemble` waits for both analyses. This is the [plan you get from the data edges](/blog/dag-for-free), not a scheduler hidden in glue.
+
+## Separate values by who controls them
+
+Prompt scripts often mix four kinds of value in one environment dictionary: user input, deployment configuration, constants and credentials. That makes review harder because everything looks equally changeable.
+
+Nika's current envelope keeps three authorities:
+
+- `inputs:` for caller or deployment supplied values;
+- `const:` for fixed values committed in the workflow;
+- `secrets:` for governed references such as an environment key.
+
+Classify by role. A report date supplied with `--var` is an input. A fixed output path is a constant or literal. An API token is a secret. A process environment name that a child must see belongs in the permit boundary too.
+
+Do not turn every old environment variable into an input without thinking. That preserves the ambiguity rather than removing it. The migration is a chance to state who is allowed to choose each value.
+
+Static paths are easier to verify than dynamic ones. If a caller supplies a path that reaches a file effect, the runtime must re-check the resolved value against the declared boundary. Keep the grant narrow and use a `lift` only when a deployment-controlled value genuinely needs to cross the taint law. A broad wildcard is not a substitute for classification.
+
+## Make data edges explicit
+
+Glue scripts pass values through local variables, mutable objects, temporary files and implicit process output. A migration should turn each meaningful transfer into a visible `with:` binding.
+
+The rule is simple: if a task reads another task's result, bind it. Inside the task, read the alias under `with`, not the global task namespace. The binding is both the data contract and the dependency edge.
+
+Use `after:` only when order matters but no value crosses. Cleanup after a terminal outcome is a good example. “Run B after A because B needs A's output” is a data edge and should be written as one.
+
+This distinction removes accidental serial work. In an imperative script, lines execute in source order even when no dependency exists. In a declared graph, independent tasks are visible and may run together. Migration can make a repeated job faster without adding concurrency code.
+
+## Replace hand-built plumbing with native tools
+
+The most common migration mistake is wrapping old commands inside `exec`:
+
+```text
+curl URL | jq .items > out.json
+```
+
+That preserves a shell-shaped blind spot. The checker sees a process and, if `shell:` is used, a command language inside a string. It cannot reason about the URL, transformation and write with the same precision as three typed operations.
+
+The native shape is `nika:fetch` for HTTP, `nika:jq` for the value transformation and `nika:write` for the artifact. Each task names its arguments. Each effect appears in `permits:`. Each result can be inspected in the trace.
+
+The same rule covers `cat`, `tee`, `cp`, `find`, `grep`, `date`, UUID generation, hashing, conversion and schema validation. Run `nika catalog --tools` against the installed binary before keeping a subprocess. If a product exposes an MCP tool, prefer that tool over a local helper that wraps its HTTP API.
+
+An `exec` that remains should name a real tool such as `git`, a compiler or a release CLI. Use argv form, one argument per item. A shell is an explicit language boundary, not the default string form.
+
+## Turn hidden policy into deterministic tasks
+
+A prompt often contains both extraction and policy:
+
+> Read the release, decide whether it is safe, and write the announcement.
+
+That asks a model to define the evidence, apply the rule and produce the artifact. The result may sound decisive while the actual threshold remains impossible to test.
+
+Split the jobs. Let a model extract typed facts. Apply the publication rule with `nika:jq`, `nika:decide` or `nika:assert`. Prove the rule against a fixed known case. A second model should not be the judge of the first model's work when the decision can be expressed deterministically.
+
+This is also where retries belong. A transient provider error may justify a bounded retry. A weak prompt does not. Retrying an unclear instruction spends more money on the same ambiguity.
+
+## Migrate in three passes
+
+Do not rewrite a critical script and switch production in one motion.
+
+**Pass one: shape.** Start from two shipped examples that cover the graph. Recreate tasks and data edges with `mock/echo` or a local model. Run `nika check` until the file is clean.
+
+**Pass two: boundary.** Derive a candidate with `nika check --infer-permits`, then review every path, host, tool and executable. Dynamic paths and redirects still require human attention because static inference cannot know their resolved targets.
+
+**Pass three: proof.** Pin a deterministic rehearsal with `nika test <file> --update`, then run the old script and new workflow on the same fixed inputs. Compare the artifacts. Keep the trace from the workflow and document any deliberate difference.
+
+Only after those passes should a paid model replace the mock or local seat. Require both a clean native-strict check and `paid_ready: true`. Then use `--max-cost-usd` on the run boundary and remember that the static ceiling covers output tokens, not every possible input cost.
+
+## Delete the glue when the plan owns the job
+
+A successful migration has a clear finish line.
+
+The workflow file names every job, every data edge, every effect, every model ceiling and the final output. CI checks the same bytes production runs. A mock or local rehearsal is pinned. The old script no longer owns retries, provider calls or file plumbing. It can be deleted rather than kept as a second implementation “just in case.”
+
+The result may be longer than the first ten-line prototype. It is smaller than the system the prototype had quietly become. More importantly, the operational truth is now visible before execution. That is what the glue could never provide.
+
+---
+
+## Intent as Code is an engineering discipline
+url: https://nika.sh/blog/intent-as-code-engineering-discipline
+date: 2026-08-11 · tag: Manifesto
+
+The first version of an AI task is often a conversation. You explain the problem, add context, correct a misunderstanding and keep going until the answer becomes useful. That is a good way to discover the work. It is a poor way to operate the work again.
+
+A month later, the durable part is rarely the final message. It is the set of decisions that produced it: which sources counted, which model handled the ambiguous step, which tool wrote the artifact, what the model was forbidden to touch, how much output it could generate and what proved the run actually followed the plan.
+
+Intent as Code is the discipline of putting those decisions in a file before execution. Nika is one implementation of that discipline. The larger idea does not depend on a vendor, a model or a user interface. It starts with a simple question: **can a reviewer understand what this AI work will do without watching it happen?**
+
+If the answer lives in chat history, the task is still a session. If it lives in a checked file, the task has become an engineering artifact.
+
+## Source is different from a transcript
+
+A transcript records a path someone took. Source declares a path that can be inspected and taken again.
+
+That distinction is familiar in software. A terminal history is not a build system. A production log is not an infrastructure definition. A screen recording of an analyst is not a data pipeline. Each may help explain what happened, but none is the owned, reviewable instruction for what should happen next time.
+
+AI work needs the same separation. The conversation remains useful for exploration. Once the task repeats, the stable parts move into source:
+
+- the inputs and fixed values;
+- the model and its output ceiling;
+- the tasks and the data passed between them;
+- the files, hosts, programs and tools the run may reach;
+- the output that makes the job complete.
+
+The source should be smaller than the conversation because it carries the decisions, not every discarded thought. That compression is a feature. It turns a long session into a diff another person can review.
+
+## The smallest useful file makes four claims
+
+Consider a weekly brief that reads one note, asks a local model for a summary and writes one report:
+
+```yaml weekly-brief.nika.yaml
+nika: weekly-brief
+
+model: ollama/llama3.2:3b
+
+permits:
+  tools: ["nika:read", "nika:write"]
+  fs:
+    read: ["./notes/week.md"]
+    write: ["./out/brief.md"]
+
+tasks:
+  source:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./notes/week.md" }
+
+  summarize:
+    with:
+      note: ${{ tasks.source.output }}
+    infer:
+      prompt: |
+        Summarize this weekly note in three factual paragraphs.
+        Keep named owners, dates and unresolved blockers.
+
+        ${{ with.note }}
+      max_tokens: 700
+
+  save:
+    with:
+      brief: ${{ tasks.summarize.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./out/brief.md"
+        content: "${{ with.brief }}"
+        create_dirs: true
+
+outputs:
+  brief: ${{ tasks.summarize.output }}
+```
+
+This file makes four claims a chat cannot make reliably.
+
+First, it names the job. `nika: weekly-brief` gives the plan an identity that can live in a repository, a review and a trace.
+
+Second, it names the graph. The summary consumes the read result, and the save consumes the summary. The `with:` bindings are data edges, not prose about what should happen next.
+
+Third, it names the authority. The run may read one path, write one path and call only the explicitly named builtins. Everything else is outside the declared boundary.
+
+Fourth, it names completion. The brief is a declared output, not a useful-looking sentence somewhere in a terminal stream.
+
+Those four claims turn “summarize this note” from a request into a reviewable unit of work.
+
+## The graph should exist before the model does
+
+Many AI systems discover their plan during execution. That is sometimes necessary. Research, debugging and open-ended investigation may require a model to choose the next step after seeing the last result.
+
+Most recurring work is not like that. A release note still needs sources, a draft and a saved artifact. A support digest still needs records, classification and a report. A model may supply judgment inside one step, but the surrounding shape is known.
+
+Declaring that shape first produces immediate benefits. Independent tasks can run together. Missing dependencies can be found before execution. A reviewer can see whether a publishing step depends on a validation step. A checker can determine which effects are reachable and estimate the output ceiling. None of this requires a model call.
+
+When the task really is open-ended, Nika gives the dynamic loop its own `agent` verb and requires bounds on turns, tokens and available tools. The dynamic part remains visible as one bounded task inside a larger declared plan. The exception does not erase the structure around it.
+
+This is a core principle of Intent as Code: uncertainty belongs where the judgment is needed, not everywhere by default.
+
+## Authority belongs beside purpose
+
+An AI task is not fully described by what it should produce. It is also described by what it may touch while trying.
+
+In ordinary scripts, authority arrives from the process environment. If the CI runner can read the repository and reach the network, the script often can too. The permission review happens indirectly through runner configuration, credentials and convention.
+
+A declared workflow can make the boundary part of the same diff as the intent. Add a second output file, and the write grant changes beside the new task. Add a network source, and the exact host appears beside the fetch. Remove the tool, and its authority disappears from the file.
+
+That proximity changes review. “Why does this summarizer need a shell?” becomes a concrete question. “Can this report leave the machine?” has an answer in source. An absent permission is not documentation debt. It is a refusal before the effect.
+
+The [blast radius belongs in the file](/blog/blast-radius-in-the-file) because purpose without authority is incomplete. Two workflows can produce the same paragraph while carrying radically different operational risk.
+
+## Cost is part of correctness
+
+A task that returns the right answer at an unbounded price is not correct enough for production.
+
+Intent as Code makes spend review possible by placing the model choice and output ceiling in the plan. The checker can price the part the catalog knows before execution. The runner can enforce a maximum cost at launch. Local compute stays honestly unpriced rather than being relabeled as free.
+
+The distinction matters most when an agent authors the workflow. A model can propose an impressive plan with a large fan-out, generous generations and repeated research calls. The proposal may parse and still be a bad place to spend money. Nika 0.111.0 separates the legal verdict from `paid_ready`, the signal that paid-run guidance has been resolved. [Clean is not ready to spend](/blog/clean-is-not-ready-to-spend), and the file gives a team somewhere to enforce the difference.
+
+Cost review also exposes input size. A small output ceiling does not make a huge fetched document cheap. The static ceiling covers what it can prove, and a human still reviews how much context enters each prompt. Honest partial knowledge is better than a precise number that hides the expensive half.
+
+## The run needs a receipt, not a memory
+
+Source answers what should happen. A trace answers what did happen.
+
+Every meaningful run should leave enough evidence to connect the two. Which workflow bytes ran? Which tasks completed? Which model seat answered? Which outputs were reused on resume? What was spent? Did the journal remain intact after the fact?
+
+Nika records runs under `.nika/traces/` and links journal events through a hash chain. Verification reports the proof level actually reached. A local chain is not called an external attestation. A replay is not implied merely because the original run succeeded.
+
+This matters when results are disputed. The team does not reconstruct the event from screenshots and chat. It reads the source, verifies the trace and finds the exact task where the observed run departed from expectation. The [run becomes evidence](/blog/the-run-becomes-evidence) because the plan and the record share stable identities.
+
+## The discipline compounds
+
+The first workflow saves a prompt. The tenth creates an operating system for repeated AI work.
+
+Files can share review rules. CI can check every changed workflow. Editors can offer completion from the same schema the engine uses. Coding agents can author plans against repository instructions, then call a read-only checker without receiving run authority. Teams can compare traces across model changes instead of trusting impressions. Useful patterns can become templates without becoming another framework dependency.
+
+The compounding effect comes from ownership. A workflow committed today remains readable after a provider changes, a chat product disappears or the original author leaves. The model string may change. The task graph, boundary and definition of done can survive.
+
+That is why Intent as Code is more than prompt versioning. A prompt is one component. The discipline covers the whole unit of work: values, judgment, tools, authority, cost, outputs and evidence.
+
+Explore in conversation. Keep the useful decisions in source. Check the file before it runs, and keep the receipt after it finishes. That is the engineering loop.
+
+---
+
+## The run keeps its receipt
+url: https://nika.sh/blog/the-run-keeps-its-receipt
+date: 2026-08-08 · tag: Engine
+
+A successful AI workflow leaves two questions behind.
+
+The first is operational: what happened, in what order, with which model, tools, permissions, outputs and cost? The second is adversarial: why should anyone trust the record that answers the first?
+
+Plain logs answer neither well. They mix human decoration with machine state, lose graph relationships and make edits hard to detect. A hosted run page can preserve structure, but custody moves to the vendor and replay usually means “run it again”, which is the last thing an auditor wants from an evidence viewer.
+
+Nika writes a local NDJSON journal for every run by default. One event per line, typed from the opening manifest to the closing verdict. That one artifact supports several different acts: read, replay, verify, resume, compare, export and package. The commands stay separate because each act carries a different authority.
+
+Start with a small file whose effect is obvious:
+
+```yaml receipt-demo.nika.yaml
+nika: receipt-demo
+
+permits:
+  exec: ["echo"]
+
+tasks:
+  message:
+    exec:
+      command: ["echo", "the run happened"]
+
+outputs:
+  message: ${{ tasks.message.output }}
+```
+
+Run it normally:
+
+```text
+nika check receipt-demo.nika.yaml
+nika run receipt-demo.nika.yaml
+nika trace ls
+```
+
+The run prints its trace path. `trace ls` treats `.nika/traces/` as a workspace store and shows age, size, workflow and terminal state. The newest resumable trace for each workflow is marked so default retention never collects the one record most likely to continue interrupted work.
+
+## Read without causing another effect
+
+The safest property of the trace interface is stated in the help itself: **replay means re-render, never re-execute**.
+
+```text
+nika trace replay .nika/traces/<run>.ndjson
+nika trace show .nika/traces/<run>.ndjson
+```
+
+`replay` rebuilds the live run presentation from recorded events. It may compress time, but it does not call a model, start a process, contact an MCP server or write the workflow's outputs again. `show` skips the journey and renders the final card.
+
+That boundary matters. An incident responder can open a failed deployment trace without deploying again. A reviewer can watch an MCP call sequence without reconnecting to the MCP server. A colleague can inspect a paid inference run without buying a second answer. Viewing evidence should not need the authority that produced it.
+
+Several narrower readers avoid dumping the whole journal:
+
+```text
+nika trace outputs <trace>
+nika trace peek <trace> message
+nika trace session <trace>
+nika trace flow <trace> receipt-demo.nika.yaml
+```
+
+`outputs` lists bounded per-task previews. `peek` reads one task's full value and identity. `session` derives waves, waits and spend only where the journal has enough evidence to claim them. `flow` joins the recorded output sizes to the workflow's bindings so the data waterfall remains connected to the authored plan.
+
+The division is useful for disclosure. “Show me the verdict” and “show me the entire model response” are not the same request. A tooling surface that always answers the first with the second will eventually leak something.
+
+## Verify before trusting
+
+Every modern trace line participates in a tamper-evidence chain. Edit, insert, drop or reorder a line and recomputation diverges at a named point:
+
+```text
+nika trace verify .nika/traces/<run>.ndjson
+```
+
+The chain proves internal consistency. By itself it does not stop someone with write access from rebuilding an entire chain. Nika says that boundary plainly and then offers stronger, separately named tiers.
+
+A sealed run carries a signature that can be checked against a custody key. An anchored run has a detached sidecar tied to the post-seal journal head and public timestamp material. A replayed verification compares the recorded journal with a fresh run you provide. `trace verify` reports the highest honestly attained tier rather than turning every file into a generic green badge.
+
+The refusals are equally specific. A changed line is tampered. Lines chained after the seal are a buried seal, because appending requires only file write access. A sidecar that vouches for nothing is an anchor forgery. A seal whose public key is unavailable is unattributable, which is a missing input, not proof of forgery.
+
+External anchoring is always an explicit network act:
+
+```text
+nika trace anchor .nika/traces/<run>.ndjson
+```
+
+The default local run does not contact a transparency service. The operator chooses when a run's custody story warrants that step.
+
+## Resume from evidence, not memory
+
+The journal is also a checkpoint. A resumed run verifies the chain before trusting a recorded success:
+
+```text
+nika run receipt-demo.nika.yaml --resume .nika/traces/<run>.ndjson
+```
+
+Each completed task carries an identity derived from its definition and resolved inputs. If that identity still matches, the engine emits a visible cache hit and skips the effect. Edit the task or change its input and the match breaks. The task runs live.
+
+This is not blind memoization. The trace's engine version is judged too. Resuming under another version refuses unless the operator explicitly attests compatibility with the recorded version. If the chain is broken, resume refuses unless `--resume-unverified` is present, and that waiver is recorded in the new journal. An exception becomes evidence, not folklore.
+
+Sometimes the hashes cannot see the reason to rerun. A rotated secret or changed external database may leave the task definition and authored inputs untouched. `--from <task>` forces that task and its transitive downstream to run again while eligible siblings still reuse their records. `--task <task>` takes the opposite cut and runs one task plus its transitive upstream.
+
+These controls work because the trace preserves task identity and the workflow preserves the graph. “Try from about here” becomes a deterministic subgraph operation.
+
+## Compare two runs without pretending models are deterministic
+
+`nika trace reproduce` compares a recorded journal with a fresh one:
+
+```text
+nika trace reproduce recorded.ndjson fresh.ndjson
+```
+
+It does not return only same or different. It classifies each task as reproduced, nondeterministic, authored, environment, status-changed or unverifiable. That vocabulary separates several causes teams often call “flakiness”.
+
+A model producing different text under the same task and inputs is nondeterministic. A changed prompt is authored. A different file or environment input is environmental. A success becoming a failure is status-changed. An older record without enough identity material is unverifiable. The comparison refuses to infer evidence the journals do not carry.
+
+This is especially useful when evaluating a provider or model change. Keep the workflow and inputs controlled, run each seat, then compare traces. The result still does not tell you which answer is better. It tells you where execution identity or outputs diverged, which is the stable substrate for a real evaluation.
+
+## Export structure without exporting content by accident
+
+The journal is local and Nika keeps observability vendor-neutral. `trace export` projects it to OTLP JSON lines:
+
+```text
+nika trace export .nika/traces/<run>.ndjson
+```
+
+The projection carries span structure and current GenAI semantic attributes such as provider and requested model. Recorded task content stays out unless `--include-content` is explicitly set. The output can be opened in an OpenTelemetry-compatible viewer or posted through your own collector later. Export does not make a network call on its own.
+
+For a review or audit handoff, use the evidence pack:
+
+```text
+nika trace evidence <trace> --workflow receipt-demo.nika.yaml
+```
+
+The default pack combines the journal, manifest, receipt and verification instructions in redacted form. It proves run integrity without automatically disclosing model outputs, tool results or file reads. `--full` is the operator's deliberate widening when content is required.
+
+The receipt has a readable projection, but the command naming keeps the trust boundary visible: `nika trace receipt explain` **explains** a receipt; `nika trace verify` proves what can be proved. Human-friendly text is a reading, not the evidence itself.
+
+## A retention policy is part of operations
+
+Evidence that grows forever becomes an unmanaged data store. Evidence deleted too early stops being evidence. Nika's project file can set trace retention, while command-level removal protects paused runs unless the operator forces deletion. `--no-trace-file` exists for a run whose policy forbids a journal, but it also gives up replay, resume and the local receipt.
+
+Choose retention from the workflow's data class, not disk anxiety alone. A trace can hold prompts, tool responses and file-derived values. Use redacted evidence packs for sharing. Keep full journals under the same access and deletion rules as the source data they record.
+
+The design economy is the final point. The journal is not one feature among many. It is the substrate that lets replay stay effect-free, resume stay evidence-based, comparison stay classified, OpenTelemetry stay portable and audit packs stay re-verifiable. One run leaves one receipt. Every later reader chooses the smallest authority needed to understand it.
+
+Continue with [The chain of custody](/blog/the-chain-of-custody), [The resume story](/blog/the-resume-story), or [The run becomes evidence](/blog/the-run-becomes-evidence).
+
+---
+
+## The two clocks behind a model string
+url: https://nika.sh/blog/the-two-clocks-behind-a-model-string
+date: 2026-08-03 · tag: Language
+
+The line `model: anthropic/claude-sonnet-4-6` looks complete.
+
+It is complete as authored intent. It is not the whole runtime decision.
+
+The prefix names a provider family. The suffix names the model requested from that provider. To admit a run, an engine still has to know whether the provider belongs to the language it implements, whether this release knows the model and its limits, which access paths are available on this machine, and which price table will judge the budget.
+
+Those facts do not change together. Treat them as one global “model list” and reproducibility becomes impossible to explain. Freeze the whole list forever and the product cannot follow the market. Nika separates the problem into two data clocks, then records the machine-local access decision at run admission.
+
+## Clock one: the standard
+
+The standard clock is the language canon. It defines the stable provider ids a conforming Nika implementation recognizes and which of them are local, cloud or test seats. It also defines the verbs, builtins, namespaces and other closed language sets.
+
+This clock changes with the specification. A provider id is therefore more than a logo in a UI. It is part of the syntax and semantics of `<provider>/<name>`. `ollama/...` selects a local runtime family. `anthropic/...` selects a cloud provider family. `mock/...` selects a test path. A typo in the prefix is not a late HTTP error. It fails model resolution as an unknown provider.
+
+The website imports those names and counts from generated canon projections. The engine compiles the same source. Docs do not get to remember a number and hope the language stayed still.
+
+The standard deliberately does **not** attempt to freeze every model sold by every provider. That inventory changes too quickly and includes operational facts the language specification should not own: context windows, output limits, API dialects, default seats, price rows and data-policy sources.
+
+## Clock two: the release catalog
+
+The release clock is the concrete catalog vendored into an engine version. It joins provider seats to known models and carries the facts that can be verified for that release:
+
+- provider display and aliases;
+- environment key requirements;
+- default and lower-cost seed models;
+- API dialects and local endpoints;
+- context and output limits;
+- exact-match price rules with source dates;
+- measured energy rows where a receipt exists;
+- data-policy claims with their primary source.
+
+This clock moves when the engine ships. The current site's [catalog](/catalog) is pinned to the current engine release, and its release room exposes the artifacts and digests that carry that catalog. A model can belong to a standard provider family but be absent from an older release's concrete rows. That is not a contradiction. It means the provider grammar is stable while the installed market snapshot is older.
+
+The separation also keeps missing data honest. A model without a price row is unpriced, not free. A model without an energy measurement is unmeasured, not efficient. A model absent from the catalog may still be accepted by an open local server, but the engine cannot invent its context window or cost.
+
+## The model string joins the clocks
+
+Consider one portable workflow:
+
+```yaml review-change.nika.yaml
+nika: review-change
+model: anthropic/claude-sonnet-4-6
+
+inputs:
+  diff:
+    type: string
+    required: true
+
+tasks:
+  review:
+    infer:
+      prompt: |
+        Review this diff for one correctness risk and one missing test.
+        Quote no more than the line needed to identify each finding.
+
+        ${{ inputs.diff }}
+      max_tokens: 900
+
+outputs:
+  review: ${{ tasks.review.output }}
+```
+
+At check time, the provider prefix is judged against the language and the model row is looked up in the release catalog. Known output pricing lets the checker compute the static floor implied by `max_tokens`. A missing price row cannot become a fake zero-dollar guarantee. A known reasoning model may trigger a hint if its output budget leaves no explicit room for thinking.
+
+At run admission, the machine resolves the **access path**. The model still chooses the intelligence. Access chooses how this host reaches it. The candidate can be local, mock, harness, OAuth or API, depending on what the release and machine expose. The resolver is deterministic and carries a witness for every candidate it drops.
+
+An operator can make that choice a contract:
+
+```text
+nika run review-change.nika.yaml --access api --var 'diff=the patch text'
+```
+
+If the API path is unavailable, the run refuses before the prologue. It does not substitute an OAuth session, local server or another model. Without a pin, resolution follows its stable ordering and the selected path is still recorded.
+
+This access decision is not a third documentation clock. It is live machine state. That is why the correct place for it is the admission record, not the workflow source or the release catalog. The same engine release can run the same model through a different path on another host. The trace must say which one happened.
+
+## Reproducibility begins with the manifest
+
+The opening event of a Nika trace records the engine version and platform, workflow identity, specification pin, permits boundary, pricing snapshot and access plan. Model task events record the provider, model, access and billing class actually used.
+
+Those fields prevent four common rewrites of history:
+
+**“The same model name means the same run.”** It does not. A provider can update the served weights behind an API id. A local operator can replace a quantized file. The trace proves the requested seat and access path, not facts the provider never exposed. Reproducibility stays an evidence claim, not branding.
+
+**“Today's price explains yesterday's budget verdict.”** It may not. Price tables change. The trace records the pricing snapshot identity used by the run, so an auditor does not silently re-price old work against today's catalog and call the result verification.
+
+**“A model override is only a convenience flag.”** It changes the admitted seat. A resumed run keeps the recorded model context, and a silent seat swap refuses. Cross-version resume also refuses unless the operator explicitly attests compatibility with the recorded engine version.
+
+**“Local means no provenance is needed.”** Local removes provider egress, which is valuable. It does not identify the weights on disk. For a decision that depends on exact reproduction, keep the model artifact digest and server configuration with the evidence pack. The Nika trace covers what crossed its boundary; it should not claim facts below a server wire it cannot observe.
+
+## Why the website shows both clocks
+
+The [catalog resolution instrument](/catalog) places the standard clock beside the release clock. The first answers “which provider families are part of this language?” The second answers “which concrete seats and facts does this released binary know?” The model string sits between them because it is the join key.
+
+That layout prevents several misleading product claims. A marketing integration list can grow without pretending each item is a language primitive. A price update can ship without implying a spec change. A spec addition cannot appear on the public site before the current engine actually carries its generated projection. Release assets and their digests remain the outer provenance boundary.
+
+For operators, the practical rule is simple:
+
+1. Write an explicit `<provider>/<model>` string.
+2. Run `nika check` with the engine version that will execute the file.
+3. Read catalog warnings as missing evidence, not cosmetic lint.
+4. Pin `--access` when the path affects billing, custody or authentication.
+5. Keep the trace and verify its chain.
+6. Record model artifacts below the provider wire when exact weights matter.
+
+The model market will keep moving. A workflow language does not become reproducible by denying that motion. It becomes reproducible by separating what is stable, what is released, what is live on this machine and what the run can actually prove.
+
+Browse the [model register](/catalog/models), inspect the current [release record](/releases/v0.111.0), or continue with [Clean is not ready to spend](/blog/clean-is-not-ready-to-spend).
+
+---
+
+## One workflow, three local model lanes
+url: https://nika.sh/blog/one-workflow-three-local-model-lanes
+date: 2026-07-29 · tag: Sovereignty
+
+“Run it locally” is not one setup. A laptop developer wants a model up in minutes. A desktop user may want a visual model library and a server button. A team with GPUs wants batching, concurrency and an endpoint that survives the person who launched it.
+
+Ollama, LM Studio and vLLM answer those needs differently. Nika does not flatten their operational differences. It gives them the same place in a workflow: the provider prefix of one model string.
+
+```yaml local-brief.nika.yaml
+nika: local-brief
+model: ollama/llama3.2:3b
+
+inputs:
+  notes:
+    type: string
+    required: true
+
+tasks:
+  brief:
+    infer:
+      prompt: |
+        Turn these notes into five concise bullets.
+
+        ${{ inputs.notes }}
+      max_tokens: 500
+
+outputs:
+  brief: ${{ tasks.brief.output }}
+```
+
+The file says what the model must do, how much output it may produce and what the workflow returns. It does not carry a base URL or a launch command. Those are properties of the runtime on the machine, not portable workflow intent.
+
+Run the same file through each lane by changing only the model seat:
+
+```text
+nika run local-brief.nika.yaml --var 'notes=release notes here' --model ollama/llama3.2:3b
+nika run local-brief.nika.yaml --var 'notes=release notes here' --model lmstudio/qwen3.5-4b
+nika run local-brief.nika.yaml --var 'notes=release notes here' --model vllm/Qwen/Qwen3-8B
+```
+
+That is not a claim that the outputs will match. Different models, quantizations, samplers and runtimes can produce different text. It is a claim that the **contract around the inference** stays reviewable: same task graph, same prompt, same output budget, same input and same trace shape.
+
+## Ollama: the short first lane
+
+Ollama is the easiest default when the goal is to prove the workflow on one machine. The Nika catalog expects its local server on port 11434 and requires no provider key. Pull a model, make sure the server is available, then run:
+
+```text
+ollama pull llama3.2:3b
+nika try 01-hello --model ollama/llama3.2:3b
+```
+
+The model suffix is the tag Ollama knows. Nika's catalog carries `llama3.2:3b` as a seed, not a closed allowlist. A local server may host models added after the Nika release, so unknown local model names pass through verbatim. That keeps local ownership real. The catalog can teach a starting point without becoming a gatekeeper over files on your disk.
+
+Ollama fits the authoring loop well. Start with a model small enough to answer quickly. Iterate on the file at zero API spend. Use `nika check` to catch graph, permission and cost-shape problems independently of model quality. Move to a larger local model or a cloud seat only when the task has earned the change.
+
+The common mistake is to interpret “local” as “free”. Nika labels local work **unpriced**. Your API invoice may be zero, but the machine, electricity and operator time are not. The distinction matters in reports: an absent market price is missing cost data, never evidence of no cost. The [energy register](/catalog/energy) follows the same rule and only shows measurements backed by a published receipt.
+
+## LM Studio: the visible workstation lane
+
+LM Studio is useful when model selection is a desktop activity. A person can download a model, choose a quantization, load it, then expose an OpenAI-compatible server. Nika's provider profile targets the default port 1234 and does not require a key.
+
+The workflow model id must match the name the loaded server exposes. The catalog's current seed is:
+
+```yaml lm-studio-brief.nika.yaml
+nika: lm-studio-brief
+model: lmstudio/qwen3.5-4b
+
+tasks:
+  explain:
+    infer:
+      prompt: "Explain why an AI workflow should be reviewed before it runs."
+      max_tokens: 350
+
+outputs:
+  answer: ${{ tasks.explain.output }}
+```
+
+There is no extra “LM Studio mode” in the language. The provider adapter handles its wire shape. If a teammate uses a different loaded model, that difference belongs in the model string or the explicit `--model` override, where it appears in terminal history and the run trace.
+
+The visual server makes one class of failure easier to diagnose: nothing is loaded even though the application is open. `nika doctor` checks local server reachability and names the next step. That is better than turning a connection failure into a model failure. A provider prefix that resolves but has no live server is an access problem, not bad inference.
+
+LM Studio is also a good review bridge. A teammate who does not operate a model daemon every day can see which artifact is loaded and when the local API is enabled. The workflow remains plain text beside the code; the workstation UI remains the machine-specific control surface.
+
+## vLLM: the server lane
+
+vLLM serves the case where local means your infrastructure rather than your laptop. Nika's profile targets an OpenAI-compatible server on port 8000. The catalog seed uses a Hugging Face model id:
+
+```yaml gpu-brief.nika.yaml
+nika: gpu-brief
+model: vllm/Qwen/Qwen3-8B
+
+tasks:
+  classify:
+    infer:
+      prompt: "Classify this incident as availability, integrity or confidentiality: database writes were silently dropped."
+      max_tokens: 120
+
+outputs:
+  class: ${{ tasks.classify.output }}
+```
+
+vLLM changes the operating questions. Which GPUs does the service own? How is concurrency bounded? Which model revision is loaded? Who restarts the process? Does the endpoint stay on loopback, a private network or a controlled gateway? Nika does not answer those deployment questions for vLLM. It makes sure they do not leak into the workflow grammar as provider-specific fields.
+
+For repeatable runs, record the server deployment beside the workflow's trace: model artifact revision, quantization, vLLM version and relevant sampling configuration. Nika's journal records the provider and model string used by the task. The external service still owns facts below that wire. Reproducibility cannot be created by omitting those facts.
+
+The same honesty applies to throughput. vLLM is designed for server workloads, but this post gives no universal speed number. GPU model, tensor parallelism, sequence length, batch shape and quantization all change the result. Benchmark the actual workload on the actual machine and publish the receipt if the number will guide a decision.
+
+## What stays the same
+
+Across the three lanes, the workflow keeps the properties worth reviewing:
+
+- The model selection is one `<provider>/<name>` string.
+- A task may override the workflow default explicitly.
+- `max_tokens` remains part of the task, independent of the server.
+- Inputs, dependencies and outputs keep the same syntax.
+- `nika check` runs before inference and does not need the model to rewrite the file.
+- Every run records the selected provider and model in its trace.
+- `--access local` can pin the path and refuse rather than substitute a cloud route.
+
+The surrounding operations differ because the tools solve different problems. Ollama optimizes the first local run. LM Studio makes a workstation model visible. vLLM makes a GPU service usable by several callers. Those are legitimate differences, not abstraction leaks to hide.
+
+## A practical promotion path
+
+Start with the cheapest failure you can learn from:
+
+1. Run `nika check local-brief.nika.yaml` before starting any model.
+2. Prove the graph and prompt shape with `--model mock/echo` if no runtime is ready.
+3. Use Ollama for the first real local answer.
+4. Use LM Studio when model and quantization selection need a workstation UI.
+5. Move to vLLM when the workflow needs a maintained GPU service.
+6. Keep a representative trace from each lane and compare outcomes with `nika trace reproduce` only when the inputs and workflow identity are genuinely comparable.
+
+Swapping the provider is easy. Deciding that the new output is good enough remains product work. The workflow helps because the comparison has a stable frame: the plan did not disappear into three SDKs and three scripts.
+
+Local-first is not a demand that every team run a datacenter. It is the ability to choose custody per workflow and per task, without asking a framework to translate the plan. Three operating lanes, one file.
+
+Use the [local model guide](/install/local-models), browse every [provider room](/catalog/providers), or continue with [No cloud needed](/blog/own-your-stack).
+
+---
+
+## MCP with a blast radius
+url: https://nika.sh/blog/mcp-with-a-blast-radius
+date: 2026-07-24 · tag: Security
+
+MCP makes tools easy to discover. It does not make them safe to run.
+
+An MCP server is a process or remote service that publishes names and argument schemas. Once connected, it can read inputs, call APIs, touch databases and return content to the next step. That is useful precisely because it has authority. Treating its tool list as a menu of harmless functions confuses discoverability with trust.
+
+Nika puts an MCP call through several independent boundaries. Each answers a different question:
+
+- Which server process did the project configure?
+- May that process use the network, and what environment does it actually receive?
+- Which tool ids may this workflow invoke?
+- Which tools may one `agent:` task choose during its loop?
+- Is the tool schema the one a person previously approved?
+- What did the server return during this run?
+
+The important word is *independent*. A tool allowlist is not a network policy. A network policy is not a schema pin. A trace is not a preflight. Collapsing them into one “MCP enabled” switch gives every layer more meaning than it can enforce.
+
+## Start with the server process
+
+Nika's engine-side MCP registry is project-local at `.nika/mcp_servers.json`. A minimal stdio entry looks like this:
+
+```json
+{
+  "mcp_servers_format": 1,
+  "servers": {
+    "github": {
+      "command": "github-mcp-server",
+      "args": ["stdio"],
+      "network": { "allowlist": ["api.github.com"] }
+    }
+  }
+}
+```
+
+The `github` key becomes the server segment in `mcp:github/<tool>`. `command` and `args` are part of the server identity. Repoint either and the previous approval no longer describes the process being started.
+
+Network access is a separate local grant. If `network` is absent, the stdio child starts with network denied. A fully local server needs no exception. `"network": "allow"` is the explicit escape hatch. The object form records a host set, but the v0.111.0 client names an important limitation on every connection: until the MCP egress proxy lands, that allowlist is confined exactly like `allow`. It is reviewable intent, not host-granular enforcement yet. Treat a networked stdio server as broadly network-capable in the current release.
+
+The current client path supports stdio servers for execution and pinning. A registry entry containing a remote URL is parsed but refuses honestly because the remote client transport is not wired yet. “Configured” never gets to masquerade as “supported”.
+
+## Name the exact tool in the workflow
+
+The workflow refers to an MCP tool through the same `invoke:` verb used for builtins. The namespace is closed and the slash matters:
+
+```yaml issue-digest.nika.yaml
+nika: issue-digest
+
+permits:
+  tools: ["mcp:github/search_issues", "nika:write"]
+  fs:
+    write: ["./issue-digest.json"]
+
+tasks:
+  issues:
+    invoke:
+      tool: "mcp:github/search_issues"
+      args:
+        query: "repo:supernovae-st/nika is:issue is:open"
+
+  save:
+    with:
+      issues: ${{ tasks.issues.output }}
+    invoke:
+      tool: "nika:write"
+      args:
+        path: "./issue-digest.json"
+        content: "${{ with.issues }}"
+
+outputs:
+  digest: ${{ tasks.issues.output }}
+```
+
+`permits.tools` is the workflow-wide ceiling. The file may invoke only those two tool ids. A wildcard such as `mcp:github/*` is legal when the workflow genuinely needs a changing family, but the exact id is the better review unit when one call will do.
+
+Notice what the block does not say. It does not grant the GitHub process network access. That lives in the project registry because it governs the child process on this machine. It does not pass a token from the operator's shell either. The current stdio spawn clears the ambient environment and re-admits only the small runner floor. Provider keys and session tokens stay behind. The registry has no general-purpose environment map, and `permits.env` is not a back door into the MCP approval process.
+
+For an `agent:` task, there is one more ceiling. The task's `tools:` list scopes what the model may choose during that loop:
+
+```yaml issue-research.nika.yaml
+nika: issue-research
+model: ollama/llama3.2:3b
+
+permits:
+  tools: ["mcp:github/search_issues", "mcp:github/get_issue"]
+
+tasks:
+  research:
+    agent:
+      system: "Read issue metadata. Do not modify the repository."
+      prompt: "Find the three oldest open bugs and explain their current blockers."
+      tools: ["mcp:github/search_issues", "mcp:github/get_issue"]
+      max_turns: 6
+      max_tokens_total: 6000
+
+outputs:
+  report: ${{ tasks.research.output }}
+```
+
+The agent list cannot widen `permits.tools`. It can only narrow the workflow's ceiling for one task. This prevents a prompt from negotiating for a capability the file did not grant. A runtime permit refusal is not fed back to the model as another problem to talk around.
+
+## Pin the published schema
+
+Tool names are not stable merely because the server command is stable. A server upgrade can add a tool, remove an argument, broaden a schema or change a description that steers agent selection.
+
+Nika records approved tool definitions in `.nika/mcp_pins.json`. The pin includes the server identity and the published `tools/list` definitions. If the current list drifts, connection refuses and names the remediation. Re-approval is an explicit human act:
+
+```text
+nika mcp approve github
+```
+
+That command is not “accept whatever changed”. It fetches the current definitions, shows the new pin set and writes the reviewed state. The distinction matters for supply-chain review. Pinning only a package version misses a server that selects behavior from another installed binary. Pinning only a tool schema misses a registry command that now starts a different package. The identity and the advertised surface belong together.
+
+This is also why a catalog entry is not runtime trust. The public [MCP catalog](/catalog/mcp) helps you discover packages, transport and security metadata. Your project registry names what this checkout will start. Your local pin names what that process promised when you approved it. The workflow names what one plan may call. Discovery, installation, approval and authority stay separate.
+
+## Refuse a credential channel you cannot review
+
+Do not put an API token in `mcp_servers.json`, an argument list or the workflow. Process arguments are visible to operating-system inspection and often copied into logs. Inline workflow values enter version control and review surfaces.
+
+For external MCP servers, the current release deliberately clears ambient credentials but does not yet offer a general secret injection field in the project registry. That means some credentialed servers are not safely expressible through this path today. Prefer a server with an explicit, reviewable credential source that works inside the project sandbox. If it only accepts an ambient token, do not smuggle that token into argv. The honest result is “not operational through this lane yet”.
+
+The server's network arm is equally important for credentials. A token restricted to a child that may call any host is not much of a restriction. In v0.111.0, choose `deny` for servers that can stay local. For a networked server, review the child as broadly network-capable because the host-granular MCP proxy is not enforced yet. The connect note says so. Hidden openness is worse than explicit openness.
+
+## The trace is the receipt, not the guard
+
+Every successful MCP task lands in the same hash-chained run journal as model calls and builtins. The trace records the task, tool, timing, outcome and the values the run retains. `nika trace verify` checks the chain. `nika trace replay` renders the recorded events without contacting the server again. `nika trace flow` shows which recorded output fed which downstream task.
+
+This is evidence after the effect. It does not replace the gates before it. A perfect log of an over-broad call is still a perfect log of an over-broad call. The safe order is:
+
+1. Configure one server identity in the project.
+2. Deny network by default; if the child needs it, review the current grant as broad.
+3. Approve and pin the server's published tool schemas.
+4. Declare exact workflow tool and environment permits.
+5. Narrow an agent loop again with its own tool list.
+6. Run `nika check` before the server starts.
+7. Keep and verify the trace after it returns.
+
+There are two MCP directions in Nika, and they should not be confused. A Nika workflow can act as an MCP **client** through `mcp:<server>/<tool>`, which is the authority-heavy path described here. The `nika mcp` command also makes Nika an MCP **server** for editors and agents. That in-binary server exposes the checker, schema, examples and catalog as a read-only oracle. It intentionally exposes no run tool.
+
+The split is the larger lesson. A surface that helps an agent understand a plan does not need the authority to execute it. A surface that executes foreign tools needs more than a connection dialog. MCP provides the wire. The file, the project registry, the pin and the trace provide the operating contract around it.
+
+Continue with [The MCP server you didn't have to build](/blog/the-mcp-server-you-didnt-build), inspect the live [MCP catalog](/catalog/mcp), or read [The blast radius is part of the file](/blog/blast-radius-in-the-file).
+
+---
+
 ## The registry re-proves everything
 url: https://nika.sh/blog/the-registry-reproves-everything
 date: 2026-07-14 · tag: Engine

@@ -12,6 +12,7 @@ import { PROVIDERS } from '../content/providers.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import { useHydrated } from '../lib/use-hydrated'
 import './catalog-hub.css'
 
 const CatalogResolution = lazy(() => import('../components/CatalogResolution'))
@@ -30,6 +31,7 @@ const DOORS: { to: string; title: string; count: number; unit: string; gloss: st
 ]
 
 export function Component() {
+  const hydrated = useHydrated()
   useCatalogHead('/catalog', 'The catalog', DESC, [
     collectionLd({ path: '/catalog', name: 'The catalog · Nika', description: DESC, total: CATALOG_COUNTS.models + CATALOG_COUNTS.mcp_servers + CATALOG_COUNTS.market_providers }),
   ])
@@ -55,17 +57,19 @@ export function Component() {
           { n: C.clients, label: 'client doors', sub: 'wire yours' },
         ]}
       />
-      <Suspense fallback={null}>
-        <CatalogResolution
-          release={CATALOG_ENGINE.release_tag}
-          canonicalProviders={PROVIDERS.length}
-          marketProviders={C.market_providers}
-          models={C.models}
-          pricingRules={C.pricing_rules}
-          energyRows={C.energy_rows}
-          mcpServers={C.mcp_servers}
-        />
-      </Suspense>
+      {hydrated ? (
+        <Suspense fallback={null}>
+          <CatalogResolution
+            release={CATALOG_ENGINE.release_tag}
+            canonicalProviders={PROVIDERS.length}
+            marketProviders={C.market_providers}
+            models={C.models}
+            pricingRules={C.pricing_rules}
+            energyRows={C.energy_rows}
+            mcpServers={C.mcp_servers}
+          />
+        </Suspense>
+      ) : null}
       <CatalogSection id="doors" title="The registers">
         <ol className="tp-list">
           {DOORS.map((d) => (

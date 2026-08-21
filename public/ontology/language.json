@@ -2722,10 +2722,28 @@
       "exists": true
     },
     {
+      "id": "post:ci-without-ambient-authority",
+      "kind": "surface",
+      "title": "The CI job should know its boundary",
+      "url": "/blog/ci-without-ambient-authority",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
       "id": "post:clean-is-not-ready-to-spend",
       "kind": "surface",
       "title": "Clean is not ready to spend",
       "url": "/blog/clean-is-not-ready-to-spend",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
+      "id": "post:coding-agents-write-plans",
+      "kind": "surface",
+      "title": "Let coding agents write plans, not policy",
+      "url": "/blog/coding-agents-write-plans",
       "status": "both",
       "opener": null,
       "exists": true
@@ -2767,6 +2785,24 @@
       "exists": true
     },
     {
+      "id": "post:intent-as-code-engineering-discipline",
+      "kind": "surface",
+      "title": "Intent as Code is an engineering discipline",
+      "url": "/blog/intent-as-code-engineering-discipline",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
+      "id": "post:mcp-with-a-blast-radius",
+      "kind": "surface",
+      "title": "MCP with a blast radius",
+      "url": "/blog/mcp-with-a-blast-radius",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
       "id": "post:media-are-workflow-citizens",
       "kind": "surface",
       "title": "Media are workflow citizens",
@@ -2785,10 +2821,28 @@
       "exists": true
     },
     {
+      "id": "post:retire-the-prompt-glue",
+      "kind": "surface",
+      "title": "Retire the prompt glue",
+      "url": "/blog/retire-the-prompt-glue",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
       "id": "post:standard-library-not-plugin-store",
       "kind": "surface",
       "title": "A standard library, not a plugin store",
       "url": "/blog/standard-library-not-plugin-store",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
+      "id": "post:the-access-layer-is-an-operating-contract",
+      "kind": "surface",
+      "title": "The access layer is an operating contract",
+      "url": "/blog/the-access-layer-is-an-operating-contract",
       "status": "both",
       "opener": null,
       "exists": true
@@ -2870,6 +2924,24 @@
       "kind": "surface",
       "title": "The trace you can replay",
       "url": "/blog/the-trace-you-can-replay",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
+      "id": "post:the-two-clocks-behind-a-model-string",
+      "kind": "surface",
+      "title": "The two clocks behind a model string",
+      "url": "/blog/the-two-clocks-behind-a-model-string",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
+      "id": "post:workflow-ecosystem-field-guide",
+      "kind": "surface",
+      "title": "A field guide to the Nika workflow ecosystem",
+      "url": "/blog/workflow-ecosystem-field-guide",
       "status": "both",
       "opener": null,
       "exists": true
@@ -10071,6 +10143,26 @@
       "kind": "mentions"
     },
     {
+      "from": "post:ci-without-ambient-authority",
+      "to": "tool:prompt",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:ci-without-ambient-authority",
+      "to": "tool:write",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:ci-without-ambient-authority",
+      "to": "word:inputs",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:ci-without-ambient-authority",
+      "to": "word:permits",
+      "kind": "mentions"
+    },
+    {
       "from": "post:clean-is-not-ready-to-spend",
       "to": "tool:compose",
       "kind": "mentions"
@@ -10083,6 +10175,26 @@
     {
       "from": "post:clean-is-not-ready-to-spend",
       "to": "tool:inspect",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:coding-agents-write-plans",
+      "to": "tool:decide",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:coding-agents-write-plans",
+      "to": "tool:jq",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:coding-agents-write-plans",
+      "to": "word:permits",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:coding-agents-write-plans",
+      "to": "word:with",
       "kind": "mentions"
     },
     {
@@ -10111,6 +10223,26 @@
       "kind": "mentions"
     },
     {
+      "from": "post:intent-as-code-engineering-discipline",
+      "to": "word:with",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:mcp-with-a-blast-radius",
+      "to": "word:agent",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:mcp-with-a-blast-radius",
+      "to": "word:invoke",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:mcp-with-a-blast-radius",
+      "to": "word:tools",
+      "kind": "mentions"
+    },
+    {
       "from": "post:media-are-workflow-citizens",
       "to": "tool:image_generate",
       "kind": "mentions"
@@ -10131,6 +10263,76 @@
       "kind": "mentions"
     },
     {
+      "from": "post:retire-the-prompt-glue",
+      "to": "provider:mock",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "tool:assert",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "tool:decide",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "tool:fetch",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "tool:jq",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "tool:write",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:after",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:const",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:inputs",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:model",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:permits",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:secrets",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:shell",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:retire-the-prompt-glue",
+      "to": "word:with",
+      "kind": "mentions"
+    },
+    {
       "from": "post:standard-library-not-plugin-store",
       "to": "tool:fetch",
       "kind": "mentions"
@@ -10138,6 +10340,46 @@
     {
       "from": "post:standard-library-not-plugin-store",
       "to": "word:invoke",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "tool:compose",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "tool:done",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "tool:inspect",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "word:exec",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "word:for_each",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "word:model",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "word:permits",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-access-layer-is-an-operating-contract",
+      "to": "word:workflow",
       "kind": "mentions"
     },
     {
@@ -10253,6 +10495,56 @@
     {
       "from": "post:the-trace-you-can-replay",
       "to": "word:with",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-two-clocks-behind-a-model-string",
+      "to": "provider:anthropic",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-two-clocks-behind-a-model-string",
+      "to": "provider:mock",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:the-two-clocks-behind-a-model-string",
+      "to": "provider:ollama",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "provider:mock",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:fetch",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:glob",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:grep",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:jq",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:read",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:workflow-ecosystem-field-guide",
+      "to": "tool:write",
       "kind": "mentions"
     },
     {

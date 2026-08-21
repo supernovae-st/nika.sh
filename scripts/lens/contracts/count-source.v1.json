@@ -26,12 +26,12 @@
       "content/blog/README.md",
       "binary public assets"
     ],
-    "count": 315,
-    "set_sha256": "031a0c6af74213e85ea6d5044ce23320789b79d5c43a16eac77593edf11425d6",
-    "rendered_count": 1098,
-    "rendered_set_sha256": "f7791ab433a8ae40cbb50b172d8e9c0cce4c8a0b5141c6b45deade36b13275e1"
+    "count": 327,
+    "set_sha256": "a2167e79f4d6f3fa550f0ca1e94ca72dea6ab70149a51409e074417d384538d6",
+    "rendered_count": 1120,
+    "rendered_set_sha256": "ce3f4b2fc33e705b9b43133e878f8b2dd94b631d4fda7a0704b70a5b6a57e435"
   },
-  "claim_count": 134,
+  "claim_count": 137,
   "bindings": [
     {
       "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
@@ -200,6 +200,42 @@
       "ordinal": false,
       "relation": "canon-count",
       "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "content/blog/2026-08-15-ci-without-ambient-authority.md#count:1",
+      "path": "content/blog/2026-08-15-ci-without-ambient-authority.md",
+      "line": 97,
+      "text": "one builtin",
+      "source": "one",
+      "field": "builtins",
+      "value": 1,
+      "ordinal": false,
+      "relation": "registry-member",
+      "reason": "singular member reference is bounded by CANON.builtins"
+    },
+    {
+      "selector": "content/blog/2026-08-17-coding-agents-write-plans.md#count:1",
+      "path": "content/blog/2026-08-17-coding-agents-write-plans.md",
+      "line": 35,
+      "text": "one verb",
+      "source": "one",
+      "field": "verbs",
+      "value": 1,
+      "ordinal": false,
+      "relation": "registry-member",
+      "reason": "singular member reference is bounded by CANON.verbs"
+    },
+    {
+      "selector": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md#count:1",
+      "path": "content/blog/2026-08-20-the-access-layer-is-an-operating-contract.md",
+      "line": 19,
+      "text": "one provider",
+      "source": "one",
+      "field": "providers",
+      "value": 1,
+      "ordinal": false,
+      "relation": "registry-member",
+      "reason": "singular member reference is bounded by CANON.providers"
     },
     {
       "selector": "public/llms.txt#count:1",
@@ -421,7 +457,7 @@
     {
       "selector": "src/content/changelog.ts#count:1",
       "path": "src/content/changelog.ts",
-      "line": 178,
+      "line": 192,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -433,7 +469,7 @@
     {
       "selector": "src/content/changelog.ts#count:2",
       "path": "src/content/changelog.ts",
-      "line": 178,
+      "line": 192,
       "text": "four verb",
       "source": "four",
       "field": "verbs",
@@ -445,7 +481,7 @@
     {
       "selector": "src/content/changelog.ts#count:3",
       "path": "src/content/changelog.ts",
-      "line": 220,
+      "line": 234,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -457,7 +493,7 @@
     {
       "selector": "src/content/changelog.ts#count:4",
       "path": "src/content/changelog.ts",
-      "line": 347,
+      "line": 361,
       "text": "${CANON.verbs} verbs",
       "source": "${CANON.verbs}",
       "field": "verbs",
@@ -470,7 +506,7 @@
     {
       "selector": "src/content/changelog.ts#count:5",
       "path": "src/content/changelog.ts",
-      "line": 384,
+      "line": 398,
       "text": "One verb",
       "source": "One",
       "field": "verbs",
@@ -482,7 +518,7 @@
     {
       "selector": "src/content/changelog.ts#count:6",
       "path": "src/content/changelog.ts",
-      "line": 389,
+      "line": 403,
       "text": "Four verbs",
       "source": "Four",
       "field": "verbs",
@@ -494,7 +530,7 @@
     {
       "selector": "src/content/changelog.ts#count:7",
       "path": "src/content/changelog.ts",
-      "line": 390,
+      "line": 404,
       "text": "fifth verb",
       "source": "fifth",
       "field": "verbs",
@@ -506,7 +542,7 @@
     {
       "selector": "src/content/changelog.ts#count:8",
       "path": "src/content/changelog.ts",
-      "line": 401,
+      "line": 415,
       "text": "${CANON.extractModes} extract modes",
       "source": "${CANON.extractModes}",
       "field": "extractModes",
@@ -519,7 +555,7 @@
     {
       "selector": "src/content/changelog.ts#count:9",
       "path": "src/content/changelog.ts",
-      "line": 402,
+      "line": 416,
       "text": "One builtin",
       "source": "One",
       "field": "builtins",
@@ -531,7 +567,7 @@
     {
       "selector": "src/content/changelog.ts#count:10",
       "path": "src/content/changelog.ts",
-      "line": 407,
+      "line": 421,
       "text": "${CANON.builtins} builtins",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -544,7 +580,7 @@
     {
       "selector": "src/content/changelog.ts#count:11",
       "path": "src/content/changelog.ts",
-      "line": 408,
+      "line": 422,
       "text": "${CANON.builtins} builtin",
       "source": "${CANON.builtins}",
       "field": "builtins",
@@ -557,7 +593,7 @@
     {
       "selector": "src/content/changelog.ts#count:12",
       "path": "src/content/changelog.ts",
-      "line": 420,
+      "line": 434,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -857,7 +893,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:1",
       "path": "src/pages/Blog.tsx",
-      "line": 76,
+      "line": 85,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -869,7 +905,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:2",
       "path": "src/pages/Blog.tsx",
-      "line": 86,
+      "line": 95,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -881,7 +917,7 @@
     {
       "selector": "src/pages/Blog.tsx#count:3",
       "path": "src/pages/Blog.tsx",
-      "line": 138,
+      "line": 148,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",

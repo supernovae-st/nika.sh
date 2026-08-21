@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -8,6 +8,7 @@ import { BlogBody } from '../lib/blog-render'
 import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
+import { useBlogCopy } from '../lib/use-blog-copy'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -103,7 +104,10 @@ function useBodyJson(slug: string): string | null {
 export function Component() {
   const { slug } = useParams()
   const idx = BLOG_POSTS.findIndex((p) => p.slug === slug)
-  const post = idx >= 0 ? BLOG_POSTS[idx] : null
+  const postMeta = idx >= 0 ? BLOG_POSTS[idx] : null
+  const copySlugs = useMemo(() => slug ? [slug] : [], [slug])
+  const { payload: copyPayload, copy } = useBlogCopy(`blog-post-copy-${slug ?? 'miss'}`, copySlugs)
+  const post = postMeta && copy[postMeta.slug] ? { ...postMeta, ...copy[postMeta.slug] } : null
   const bodyJson = useBodyJson(slug ?? '')
   const rails = usePostRails(slug ?? '')
 
@@ -312,6 +316,8 @@ export function Component() {
               dangerouslySetInnerHTML={{ __html: bodyJson ?? '[]' }}
             />
           </article>
+
+          <Island id={`blog-post-copy-${post.slug}`} payload={copyPayload} />
 
           {/* the honest foot · the post IS a file — read it, edit it, discuss it */}
           <Island id={railsIslandId(post.slug)} payload={JSON.stringify(rails)} />

@@ -275,6 +275,66 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "The access layer is an operating contract",
+    "href": "/blog/the-access-layer-is-an-operating-contract",
+    "hint": "Engine · 2026-08-20"
+  },
+  {
+    "kind": "post",
+    "label": "A field guide to the Nika workflow ecosystem",
+    "href": "/blog/workflow-ecosystem-field-guide",
+    "hint": "Engine · 2026-08-19"
+  },
+  {
+    "kind": "post",
+    "label": "Let coding agents write plans, not policy",
+    "href": "/blog/coding-agents-write-plans",
+    "hint": "Agents · 2026-08-17"
+  },
+  {
+    "kind": "post",
+    "label": "The CI job should know its boundary",
+    "href": "/blog/ci-without-ambient-authority",
+    "hint": "Security · 2026-08-15"
+  },
+  {
+    "kind": "post",
+    "label": "Retire the prompt glue",
+    "href": "/blog/retire-the-prompt-glue",
+    "hint": "Language · 2026-08-13"
+  },
+  {
+    "kind": "post",
+    "label": "Intent as Code is an engineering discipline",
+    "href": "/blog/intent-as-code-engineering-discipline",
+    "hint": "Manifesto · 2026-08-11"
+  },
+  {
+    "kind": "post",
+    "label": "The run keeps its receipt",
+    "href": "/blog/the-run-keeps-its-receipt",
+    "hint": "Engine · 2026-08-08"
+  },
+  {
+    "kind": "post",
+    "label": "The two clocks behind a model string",
+    "href": "/blog/the-two-clocks-behind-a-model-string",
+    "hint": "Language · 2026-08-03"
+  },
+  {
+    "kind": "post",
+    "label": "One workflow, three local model lanes",
+    "href": "/blog/one-workflow-three-local-model-lanes",
+    "hint": "Sovereignty · 2026-07-29"
+  },
+  {
+    "kind": "post",
+    "label": "MCP with a blast radius",
+    "href": "/blog/mcp-with-a-blast-radius",
+    "hint": "Security · 2026-07-24"
+  },
+  {
+    "kind": "post",
     "label": "The registry re-proves everything",
     "href": "/blog/the-registry-reproves-everything",
     "hint": "Engine · 2026-07-14"

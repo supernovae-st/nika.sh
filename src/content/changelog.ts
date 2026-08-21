@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-08-21',
     tag: 'site',
+    title: 'nika.sh v4.20 · ten field notes, one calmer instrument',
+    body: 'Ten long-form field notes close the July and August gap across access, local models, MCP, receipts, CI, coding agents and the workflow ecosystem. The catalog gains a compact two-clock resolver with one-shot motion and a settled reduced-motion state. Blog cards now derive from post frontmatter, the public queue advances, the missing arming release rejoins the changelog, and every lazy enhancement waits until hydration so the static page and the live page agree.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.20.0',
+  },
+  {
+    date: '2026-08-21',
+    tag: 'site',
     title: 'nika.sh v4.19 · the operational map',
     body: 'Searchable map, catalog clocks, install guides and a gated publishing loop.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.19.0',
@@ -58,6 +65,13 @@ export const CHANGELOG: ChangelogEntry[] = [
     title: 'v0.111.0 · the authoring loop closes',
     body: 'The checker now distinguishes a legal file from one ready to spend: paid_ready goes quiet only when no paid-run hint remains, compiled means the law was proven, and next names the first repair. nika:inspect is live from the first task and follows the run after every wave, so a workflow can read its DAG, records, spend and threads. nika:compose stays inside an agent loop after nika:done, where the model can draft, read the whole check verdict and revise without making check execute the draft. The arm lock now survives the shot, and the paid extract wave repairs structured hashing, string schemas, scalar anyOf coercion and resumed for_each item fields.',
     gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.111.0',
+  },
+  {
+    date: '2026-08-19',
+    tag: 'release',
+    title: 'v0.110.0 · the file proposes, the machine fires',
+    body: 'The project file gains an arm registry for scheduled workflows. Every beat names its workflow, cadence, execution place, cost ceiling and missed-run policy; choices that decide spend or lost work have no silent default. One firer serves the direct command, emitted launchd and systemd units, and the resident serve loop, so locks, overlap rules and ceilings do not change with the launch door. Unsupported policies refuse instead of being approximated, suspended beats carry a reason and an end date, and every skip is written as an event.',
+    gh: 'https://github.com/supernovae-st/nika/releases/tag/v0.110.0',
   },
   {
     date: '2026-08-18',

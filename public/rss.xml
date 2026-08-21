@@ -23,6 +23,86 @@
       <description>A practical path from a native ARM64 Nika binary to checked, sandboxed and traceable AI workflows on a headless Linux host.</description>
     </item>
     <item>
+      <title>The access layer is an operating contract</title>
+      <link>https://nika.sh/blog/the-access-layer-is-an-operating-contract</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-access-layer-is-an-operating-contract</guid>
+      <pubDate>Thu, 20 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>From v0.108.0 to v0.111.0, Nika separated the model you choose from the path that reaches it, cut the workflow language to its durable core, added an explicit scheduler and turned check into an authoring loop.</description>
+    </item>
+    <item>
+      <title>A field guide to the Nika workflow ecosystem</title>
+      <link>https://nika.sh/blog/workflow-ecosystem-field-guide</link>
+      <guid isPermaLink="true">https://nika.sh/blog/workflow-ecosystem-field-guide</guid>
+      <pubDate>Wed, 19 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>Choose deliberately among model providers, local runtimes, builtins, MCP servers and coding-agent surfaces without turning the workflow into vendor glue.</description>
+    </item>
+    <item>
+      <title>Let coding agents write plans, not policy</title>
+      <link>https://nika.sh/blog/coding-agents-write-plans</link>
+      <guid isPermaLink="true">https://nika.sh/blog/coding-agents-write-plans</guid>
+      <pubDate>Mon, 17 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Agents</category>
+      <description>Codex, Claude Code, Cursor and other coding agents can author Nika workflows while the checker, the human review and the runner keep separate authority.</description>
+    </item>
+    <item>
+      <title>The CI job should know its boundary</title>
+      <link>https://nika.sh/blog/ci-without-ambient-authority</link>
+      <guid isPermaLink="true">https://nika.sh/blog/ci-without-ambient-authority</guid>
+      <pubDate>Sat, 15 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>Run Nika in CI and on headless servers with the same checked workflow bytes, explicit authority, deterministic rehearsals and a hard launch budget.</description>
+    </item>
+    <item>
+      <title>Retire the prompt glue</title>
+      <link>https://nika.sh/blog/retire-the-prompt-glue</link>
+      <guid isPermaLink="true">https://nika.sh/blog/retire-the-prompt-glue</guid>
+      <pubDate>Thu, 13 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>A practical migration from brittle shell and Python prompt chains to a checked workflow whose graph, authority, cost and outputs are visible before it runs.</description>
+    </item>
+    <item>
+      <title>Intent as Code is an engineering discipline</title>
+      <link>https://nika.sh/blog/intent-as-code-engineering-discipline</link>
+      <guid isPermaLink="true">https://nika.sh/blog/intent-as-code-engineering-discipline</guid>
+      <pubDate>Tue, 11 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Manifesto</category>
+      <description>The useful part of AI work is not the chat. It is the intent, boundary, plan and evidence that a team can review before and after a run.</description>
+    </item>
+    <item>
+      <title>The run keeps its receipt</title>
+      <link>https://nika.sh/blog/the-run-keeps-its-receipt</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-run-keeps-its-receipt</guid>
+      <pubDate>Sat, 08 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>A trace is more than a log: it can replay without effects, resume verified work, expose one task, export to OpenTelemetry and assemble a redacted evidence pack.</description>
+    </item>
+    <item>
+      <title>The two clocks behind a model string</title>
+      <link>https://nika.sh/blog/the-two-clocks-behind-a-model-string</link>
+      <guid isPermaLink="true">https://nika.sh/blog/the-two-clocks-behind-a-model-string</guid>
+      <pubDate>Mon, 03 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>A provider name can be part of the stable language while its models, prices and access paths keep changing. Nika resolves those truths on separate clocks and records the result.</description>
+    </item>
+    <item>
+      <title>One workflow, three local model lanes</title>
+      <link>https://nika.sh/blog/one-workflow-three-local-model-lanes</link>
+      <guid isPermaLink="true">https://nika.sh/blog/one-workflow-three-local-model-lanes</guid>
+      <pubDate>Wed, 29 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Sovereignty</category>
+      <description>Ollama, LM Studio and vLLM expose different operating experiences, but Nika keeps the workflow contract unchanged: one model string selects the local seat.</description>
+    </item>
+    <item>
+      <title>MCP with a blast radius</title>
+      <link>https://nika.sh/blog/mcp-with-a-blast-radius</link>
+      <guid isPermaLink="true">https://nika.sh/blog/mcp-with-a-blast-radius</guid>
+      <pubDate>Fri, 24 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Security</category>
+      <description>An MCP tool is executable foreign capability. Put its server, network, environment, tool ids and schema pin under separate review, then let the trace record the call.</description>
+    </item>
+    <item>
       <title>The registry re-proves everything</title>
       <link>https://nika.sh/blog/the-registry-reproves-everything</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-registry-reproves-everything</guid>

@@ -5,6 +5,8 @@ import { useRevealOnce } from '../sections/use-reveal-once'
 import { StampStrip } from '../components/StampStrip'
 import { BLOG_POSTS } from '../content/blog.generated'
 import { SITE, routeHead } from '../content'
+import { Island } from '../lib/ssg-island'
+import { useBlogCopy } from '../lib/use-blog-copy'
 import '../sections/v4-home.css'
 import './blog-page.css'
 import './tools-page.css'
@@ -28,9 +30,17 @@ export function Component() {
   const { tag: rawTag } = useParams()
   const slug = (rawTag ?? '').toLowerCase()
   const tag = bySlug[slug]
-  const posts = useMemo(
+  const matching = useMemo(
     () => (tag ? BLOG_POSTS.filter((p) => p.tag.split('|').map((t) => t.trim()).includes(tag)) : []),
     [tag],
+  )
+  const { payload: copyPayload, copy } = useBlogCopy(
+    `blog-tag-copy-${slug}`,
+    matching.map((post) => post.slug),
+  )
+  const posts = useMemo(
+    () => matching.flatMap((post) => copy[post.slug] ? [{ ...post, ...copy[post.slug] }] : []),
+    [copy, matching],
   )
 
   const title = tag ? `${tag} · the journal, by tag · Nika` : 'Not a journal tag · Nika'
@@ -74,6 +84,7 @@ export function Component() {
       {/* v4-in baked in the prerendered HTML — the poster law (see use-reveal-once.ts) */}
       <section ref={ref} aria-labelledby="bt-title" className="v4sec v4-in" data-tag={tag}>
         <div className="v4sec-wrap">
+          <Island id={`blog-tag-copy-${slug}`} payload={copyPayload} />
           <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
             <Link to="/blog" className="td-crumb-link">
               ← the journal

@@ -8,6 +8,16 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 |---|---|---|
 | 2026-08-21 | AI workflows on ARM64 Linux servers, without the missing safety step | [`2026-08-21-arm64-ai-workflows-on-linux-servers.md`](./2026-08-21-arm64-ai-workflows-on-linux-servers.md) |
 | 2026-08-21 | Clean is not ready to spend | [`2026-08-21-clean-is-not-ready-to-spend.md`](./2026-08-21-clean-is-not-ready-to-spend.md) |
+| 2026-08-20 | The access layer is an operating contract | [`2026-08-20-the-access-layer-is-an-operating-contract.md`](./2026-08-20-the-access-layer-is-an-operating-contract.md) |
+| 2026-08-19 | A field guide to the Nika workflow ecosystem | [`2026-08-19-workflow-ecosystem-field-guide.md`](./2026-08-19-workflow-ecosystem-field-guide.md) |
+| 2026-08-17 | Let coding agents write plans, not policy | [`2026-08-17-coding-agents-write-plans.md`](./2026-08-17-coding-agents-write-plans.md) |
+| 2026-08-15 | The CI job should know its boundary | [`2026-08-15-ci-without-ambient-authority.md`](./2026-08-15-ci-without-ambient-authority.md) |
+| 2026-08-13 | Retire the prompt glue | [`2026-08-13-retire-the-prompt-glue.md`](./2026-08-13-retire-the-prompt-glue.md) |
+| 2026-08-11 | Intent as Code is an engineering discipline | [`2026-08-11-intent-as-code-engineering-discipline.md`](./2026-08-11-intent-as-code-engineering-discipline.md) |
+| 2026-08-08 | The run keeps its receipt | [`2026-08-08-the-run-keeps-its-receipt.md`](./2026-08-08-the-run-keeps-its-receipt.md) |
+| 2026-08-03 | The two clocks behind a model string | [`2026-08-03-the-two-clocks-behind-a-model-string.md`](./2026-08-03-the-two-clocks-behind-a-model-string.md) |
+| 2026-07-29 | One workflow, three local model lanes | [`2026-07-29-one-workflow-three-local-model-lanes.md`](./2026-07-29-one-workflow-three-local-model-lanes.md) |
+| 2026-07-24 | MCP with a blast radius | [`2026-07-24-mcp-with-a-blast-radius.md`](./2026-07-24-mcp-with-a-blast-radius.md) |
 | 2026-07-14 | The registry re-proves everything | [`2026-07-14-the-registry-reproves-everything.md`](./2026-07-14-the-registry-reproves-everything.md) |
 | 2026-07-11 | The MCP server you didn't have to build | [`2026-07-11-the-mcp-server-you-didnt-build.md`](./2026-07-11-the-mcp-server-you-didnt-build.md) |
 | 2026-07-11 | The generative ai workflow, minus the mystery | [`2026-07-11-the-generative-workflow.md`](./2026-07-11-the-generative-workflow.md) |
