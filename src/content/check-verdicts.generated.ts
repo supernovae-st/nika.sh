@@ -12,7 +12,7 @@ export const VERDICT_ENGINE = '0.111.0'
 
 /* packed as id:tasks,waves,permitsDeclared,hasUnbounded,hints,clean — one
    string beats N object literals in the initial chunk */
-const PACKED = 'daily-brief:7,4,1,1,0,1|etl-quarantine:7,5,1,0,0,1|meeting-actions:3,3,1,1,1,1|pr-risk-review:4,3,1,1,3,1|price-watch:3,3,1,0,0,1|social-repurpose:5,3,1,1,0,1|standup-digest:4,3,1,1,0,1'
+const PACKED = 'daily-brief:8,5,1,1,1,1|etl-quarantine:7,5,1,0,0,1|meeting-actions:3,3,1,1,1,1|pr-risk-review:4,3,1,1,3,1|price-watch:3,3,1,0,0,1|social-repurpose:5,3,1,1,0,1|standup-digest:4,3,1,1,0,1'
 
 export interface CheckVerdict {
   tasks: number

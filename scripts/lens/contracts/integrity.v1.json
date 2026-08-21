@@ -31,7 +31,7 @@
   },
   {
    "path": "package.json",
-   "sha256": "7e0296ebeea6f6788743924734cd3881df8f2267dcf159f0bbbf56319e4fa7ab"
+   "sha256": "23498a85bc39e74c4a36a9932fbace19f3c626ea3ee493c756291ff5e10f47c3"
   },
   {
    "path": "pnpm-lock.yaml",
@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "3408166e819e80f96c3d7de1fa5dcb735091cadb0cb5295e1a368a3d2fc67afe"
+   "sha256": "fd532bc83602d89a62f182b01971ea9c3021633e02c383615b5c347049532291"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -155,7 +155,7 @@
   },
   {
    "path": "vite.config.ts",
-   "sha256": "83182e6466456eea205ac6a026574e5ae26f43f54d35785147b95ff7976f3fdb"
+   "sha256": "ff16b707522f9df29a6bd46ecbcba9cdd24bf583087ff8ee30e1ac0f3fab239f"
   }
  ]
 }

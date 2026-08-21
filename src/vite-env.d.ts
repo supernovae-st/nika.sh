@@ -7,3 +7,9 @@ declare module '*.ndjson?raw' {
   const src: string
   export default src
 }
+
+/** Build-time projection of the fields consumed by the home run replay. */
+declare module '*.ndjson?replay' {
+  const src: string
+  export default src
+}

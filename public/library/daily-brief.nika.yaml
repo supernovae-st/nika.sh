@@ -7,7 +7,7 @@ model: ollama/llama3.2:3b
 # the file IS the blast radius
 permits:
   fs: { read: [ ./notes/* ], write: [ ./brief.md ] }
-  tools: [ "nika:read", "nika:write" ]
+  tools: [ "nika:read", "nika:assert", "nika:write" ]
 
 tasks:
   notes: { invoke: { tool: "nika:read", args: { path: ./notes/today.md } } }
@@ -17,11 +17,11 @@ tasks:
   triage:
     with:
       inbox: ${{ tasks.inbox.output }}
-    infer: { prompt: "Flag what is urgent: ${{ with.inbox }}", max_tokens: 300 }
+    infer: { prompt: "Urgent item, 10 words max: ${{ with.inbox }}", max_tokens: 2048 }
   agenda:
     with:
       calendar: ${{ tasks.calendar.output }}
-    infer: { prompt: "Plan the day around: ${{ with.calendar }}", max_tokens: 300 }
+    infer: { prompt: "Three bullets, 8 words max: ${{ with.calendar }}", max_tokens: 2048 }
 
   draft:
     with:
@@ -29,10 +29,20 @@ tasks:
       triage: ${{ tasks.triage.output }}
       agenda: ${{ tasks.agenda.output }}
     infer:
-      prompt: "Write the morning brief. Notes: ${{ with.notes }} Urgent: ${{ with.triage }} Plan: ${{ with.agenda }}"
-      max_tokens: 500
+      prompt: "Three bullets, 8 words max. No preface. Notes: ${{ with.notes }} Urgent: ${{ with.triage }} Plan: ${{ with.agenda }}"
+      max_tokens: 2048
+
+  verify:
+    with:
+      draft: ${{ tasks.draft.output }}
+    invoke:
+      tool: "nika:assert"
+      args:
+        condition: "${{ size(with.draft) > 0 }}"
+        message: "Empty brief. Increase max_tokens or change model."
 
   save:
+    after: { verify: success }
     with:
       draft: ${{ tasks.draft.output }}
     invoke:

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { parse } from 'yaml'
 import { FLAGSHIPS } from './flagship-data'
 import { buildLibrary } from './library'
 import { SHOWCASE_YAML } from '../sections/usecases-yaml.generated'
@@ -20,6 +21,17 @@ const ROOT = join(__dirname, '../..')
 
 const SPDX_PREAMBLE
   = '# SPDX-License-Identifier: Apache-2.0\n# © SuperNovae Studio · nika.sh/library\n'
+
+interface DailyBriefTask {
+  infer?: { max_tokens?: number }
+  invoke?: { tool?: string, args?: { condition?: string } }
+  after?: Record<string, string>
+}
+
+interface DailyBriefDoc {
+  permits?: { tools?: string[] }
+  tasks?: Record<string, DailyBriefTask>
+}
 
 describe('public/library · the served copies are the rendered truth', () => {
   it.each(FLAGSHIPS.map((f) => [f.filename, f.yaml] as const))(
@@ -44,5 +56,22 @@ describe('public/library · the served copies are the rendered truth', () => {
         )
       }
     }
+  })
+
+  it('daily-brief cannot persist a reasoning-starved empty answer', () => {
+    const flagship = FLAGSHIPS.find((item) => item.id === 'daily_brief')
+    expect(flagship).toBeDefined()
+    const doc = parse(flagship?.yaml ?? '') as DailyBriefDoc
+    const tasks = doc.tasks ?? {}
+
+    expect(doc.permits?.tools).toContain('nika:assert')
+    expect([
+      tasks.triage?.infer?.max_tokens,
+      tasks.agenda?.infer?.max_tokens,
+      tasks.draft?.infer?.max_tokens,
+    ]).toEqual([2048, 2048, 2048])
+    expect(tasks.verify?.invoke?.tool).toBe('nika:assert')
+    expect(tasks.verify?.invoke?.args?.condition).toBe('${{ size(with.draft) > 0 }}')
+    expect(tasks.save?.after).toEqual({ verify: 'success' })
   })
 })

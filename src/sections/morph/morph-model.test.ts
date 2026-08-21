@@ -230,7 +230,15 @@ describe('replay lines carry the recorded clock', () => {
         expect(l.atMs).toBeGreaterThanOrEqual(prev)
         prev = l.atMs
       }
-      expect(lines[lines.length - 1].atMs).toBe(f.trace.totalMs)
+      const verdict = [...f.trace.steps]
+        .reverse()
+        .find((step) => step.kind === 'workflow_completed' || step.kind === 'workflow_failed')
+      expect(verdict, `${f.filename} carries a lifecycle verdict`).toBeDefined()
+      expect(lines[lines.length - 1].atMs).toBe(verdict?.atMs)
+      /* A signed run_sealed frame may follow the lifecycle verdict. It belongs
+         to total wall time but not to the replay log: the frame speaks proof,
+         while the film stops when the run itself settles. */
+      expect(lines[lines.length - 1].atMs).toBeLessThanOrEqual(f.trace.totalMs)
     }
   })
 
