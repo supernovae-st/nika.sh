@@ -71,7 +71,7 @@
   },
   {
    "path": "scripts/lens/contracts/count-source.v1.json",
-   "sha256": "03d041d636c63da5de2c60d187f9561670f8588c0993414c63d7d2ee3b8c4a0c"
+   "sha256": "56ce726863eb89fc0c385eedbee59d30a28474f99425a6941e918c4d9c53787a"
   },
   {
    "path": "scripts/lens/contracts/features.v1.json",
@@ -91,7 +91,7 @@
   },
   {
    "path": "scripts/lens/contracts/snippets.v1.json",
-   "sha256": "a16352de0ea86eb3077c2041c37a37ec8bc502b13c054106fa9103d71b934257"
+   "sha256": "0a5ff900086fe164bec8b1631594392cb1be52e50bfadb9395f5cc703318c15e"
   },
   {
    "path": "scripts/lens/fixtures/negative.v1.json",

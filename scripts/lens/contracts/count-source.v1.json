@@ -31,20 +31,8 @@
     "rendered_count": 1144,
     "rendered_set_sha256": "7e45932236df1847f77b550461517bd0946066c0a2d7c7885708dd6eb35f6ac7"
   },
-  "claim_count": 137,
+  "claim_count": 136,
   "bindings": [
-    {
-      "selector": "content/blog/2026-03-21-naming-the-drum.md#count:1",
-      "path": "content/blog/2026-03-21-naming-the-drum.md",
-      "line": 16,
-      "text": "four verbs",
-      "source": "four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
     {
       "selector": "content/blog/2026-04-14-starting-over-on-purpose.md#count:1",
       "path": "content/blog/2026-04-14-starting-over-on-purpose.md",

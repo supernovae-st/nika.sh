@@ -397,7 +397,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "receipts": [
       "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
     ],
-    "readingMin": 2,
+    "readingMin": 3,
     "series": "origin-ledger",
     "seriesStop": "name"
   },

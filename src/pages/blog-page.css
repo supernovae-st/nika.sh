@@ -341,6 +341,182 @@
   margin-left: 5px; /* motion: the shared .acue cue (shell.css) */
 }
 
+/* ─── a reading path · one chronological ledger, not another card shelf ─────
+   The sequence column is the spine. Dates and receipts sit where a paper
+   register would keep them, while the title remains the dominant reading
+   target. The whole row is one link and one hit area. */
+.bs-register-head {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) 8rem;
+  gap: clamp(18px, 3vw, 42px);
+  margin-block-start: clamp(34px, 5vh, 52px);
+  padding-block: 0 12px;
+  padding-inline: 20px;
+  border-block-end: 1px solid var(--seam-hairline);
+  font-size: var(--type-micro);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.bs-register-head span:last-child {
+  text-align: end;
+}
+.bs-ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bs-ledger-row {
+  border-block-end: 1px solid var(--seam-hairline);
+}
+.bs-ledger-link {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr) 8rem;
+  gap: clamp(18px, 3vw, 42px);
+  align-items: start;
+  min-block-size: 150px;
+  padding-block: clamp(24px, 3.4vw, 38px);
+  padding-inline: 20px;
+  color: inherit;
+  background: transparent;
+  transition:
+    background-color var(--dur-ui) var(--ease-ui),
+    transform var(--dur-ui) var(--ease-ui);
+}
+.bs-ledger-link:hover,
+.bs-ledger-link:focus-visible {
+  background: color-mix(in oklch, var(--v4-bg-raised) 68%, transparent);
+  transform: translateX(4px);
+}
+.bs-ledger-link:focus-visible {
+  outline: 2px solid var(--v4-focus-ring);
+  outline-offset: -2px;
+}
+.bs-ledger-sequence {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-block-size: 100%;
+  padding-inline-start: 24px;
+  border-inline-start: 1px solid var(--v4-line);
+  color: var(--v4-text-faint);
+}
+.bs-ledger-node {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-start: -5px;
+  inline-size: 9px;
+  block-size: 9px;
+  border: 2px solid var(--v4-bg);
+  border-radius: 50%;
+  background: var(--v4-text-dim);
+  box-shadow: 0 0 0 1px var(--v4-line);
+}
+.bs-ledger-number {
+  font-size: var(--type-mini);
+  letter-spacing: 0.12em;
+  color: var(--v4-text);
+}
+.bs-ledger-stop {
+  font-size: var(--type-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.bs-ledger-record {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.bs-ledger-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-block-end: 9px;
+  font-size: var(--type-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+}
+.bs-ledger-title {
+  max-inline-size: 25ch;
+  font-size: var(--type-h3);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+  color: var(--v4-text);
+  text-wrap: balance;
+}
+.bs-ledger-teaser {
+  max-inline-size: 62ch;
+  margin-block-start: 10px;
+  font-size: var(--type-ui);
+  line-height: 1.62;
+  color: var(--v4-text-dim);
+  text-wrap: pretty;
+}
+.bs-ledger-evidence {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  padding-block-start: 2px;
+  font-size: var(--type-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--v4-text-faint);
+  text-align: end;
+}
+.bs-ledger-open {
+  margin-block-start: 18px;
+  color: var(--v4-text);
+}
+@media (max-width: 720px) {
+  .bs-register-head {
+    display: none;
+  }
+  .bs-ledger {
+    margin-block-start: 34px;
+    border-block-start: 1px solid var(--seam-hairline);
+  }
+  .bs-ledger-link {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: 18px;
+    min-block-size: 0;
+    padding-block: 26px;
+    padding-inline: 0;
+  }
+  .bs-ledger-sequence {
+    padding-inline-start: 18px;
+  }
+  .bs-ledger-stop {
+    font-size: var(--type-micro);
+    overflow-wrap: anywhere;
+  }
+  .bs-ledger-evidence {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding-block-start: 0;
+    text-align: start;
+  }
+  .bs-ledger-open {
+    margin-block-start: 0;
+    margin-inline-start: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bs-ledger-link {
+    transition: none;
+  }
+  .bs-ledger-link:hover,
+  .bs-ledger-link:focus-visible {
+    transform: none;
+  }
+}
+
 /* the folder truth line */
 .blog-folder {
   margin-top: 18px;
