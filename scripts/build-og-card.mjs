@@ -294,6 +294,16 @@ const CARDS = [
       '<span class="arrow">▸</span><span>invoke-gated<span class="sep">·</span>permit-bound<span class="sep">·</span><b>check&nbsp;teaches&nbsp;the&nbsp;args</b></span>',
   },
   {
+    // /blog/arm64-ai-workflows-on-linux-servers — native bytes + enforced boundary.
+    out: 'og-blog-arm64-ai-workflows-on-linux-servers.png',
+    fig: 'FIG B.35',
+    size: 54,
+    headline: 'ARM64 is native.<br><span class="b">Is the boundary?</span>',
+    sub: 'From a verified Linux ARM64 binary to a sandboxed, checked and traceable AI workflow on a headless host.',
+    detail:
+      '<span class="arrow">▸</span><span>native&nbsp;asset<span class="sep">·</span>bubblewrap<span class="sep">·</span><b>trace&nbsp;verified</b></span>',
+  },
+  {
     // /blog/clean-is-not-ready-to-spend — the 0.111 paid-readiness split.
     out: 'og-blog-clean-is-not-ready-to-spend.png',
     fig: 'FIG B.34',

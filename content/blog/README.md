@@ -6,6 +6,7 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 
 | date | post | file |
 |---|---|---|
+| 2026-08-21 | AI workflows on ARM64 Linux servers, without the missing safety step | [`2026-08-21-arm64-ai-workflows-on-linux-servers.md`](./2026-08-21-arm64-ai-workflows-on-linux-servers.md) |
 | 2026-08-21 | Clean is not ready to spend | [`2026-08-21-clean-is-not-ready-to-spend.md`](./2026-08-21-clean-is-not-ready-to-spend.md) |
 | 2026-07-14 | The registry re-proves everything | [`2026-07-14-the-registry-reproves-everything.md`](./2026-07-14-the-registry-reproves-everything.md) |
 | 2026-07-11 | The MCP server you didn't have to build | [`2026-07-11-the-mcp-server-you-didnt-build.md`](./2026-07-11-the-mcp-server-you-didnt-build.md) |

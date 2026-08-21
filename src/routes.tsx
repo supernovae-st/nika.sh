@@ -15,6 +15,7 @@ import { Component as SpecHub } from './pages/SpecHub'
 import { Component as ChapterRoom } from './pages/ChapterRoom'
 import { Component as Timeline } from './pages/Timeline'
 import { Component as Install } from './pages/Install'
+import { Component as PlatformGuide } from './pages/PlatformGuide'
 import { Component as Convert } from './pages/Convert'
 import { Component as Brand } from './pages/Brand'
 import { Component as NotFound } from './pages/NotFound'
@@ -253,6 +254,7 @@ export const routes: RouteObject[] = [
       { path: 'language/governance/:slug', Component: NepRoom },
       { path: 'timeline', Component: Timeline },
       { path: 'install', Component: Install },
+      { path: 'install/:guide', Component: PlatformGuide },
       { path: 'convert', Component: Convert },
       { path: 'brand', Component: Brand },
       /* the SPA catch-all — client-side navigations to a bad path render the

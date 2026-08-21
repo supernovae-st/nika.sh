@@ -640,6 +640,714 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     }
   ],
+  "arm64-ai-workflows-on-linux-servers": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An ARM64 server does not need a separate workflow language, a container full of glue, or a weaker security story. It needs a native binary, a visible enforcement backend, a preflight check, and a trace that survives after the job exits. Nika treats those as separate facts, which makes the operating path easier to review."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current Nika release publishes native archives for Linux ARM64 and macOS ARM64. The public installer recognizes both "
+        },
+        {
+          "k": "code",
+          "text": "arm64"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "aarch64"
+        },
+        {
+          "k": "text",
+          "text": ", selects the matching archive, verifies it against "
+        },
+        {
+          "k": "code",
+          "text": "SHA256SUMS"
+        },
+        {
+          "k": "text",
+          "text": ", and only then extracts the binary. That solves packaging. It does not, by itself, prove that a workflow is safe to run on a remote machine."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The missing step on many server guides is enforcement. On Linux, Nika uses bubblewrap for the process boundary around "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " and MCP children. If bubblewrap is absent, the installer says so. A workflow that declares "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": " refuses the unjailed path with "
+        },
+        {
+          "k": "code",
+          "text": "NIKA-1710"
+        },
+        {
+          "k": "text",
+          "text": " instead of presenting an unenforced boundary as a successful run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That distinction is the whole article: native support and enforced authority are two different checks."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Start with the release asset, not an architecture assumption",
+      "id": "start-with-the-release-asset-not-an-architecture-assumption"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Run the architecture probe on the machine that will execute the workflow:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "uname -sm"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "On an ARM64 Linux host, the output commonly contains "
+        },
+        {
+          "k": "code",
+          "text": "Linux aarch64"
+        },
+        {
+          "k": "text",
+          "text": ". On Apple silicon it contains "
+        },
+        {
+          "k": "code",
+          "text": "Darwin arm64"
+        },
+        {
+          "k": "text",
+          "text": ". The installer normalizes either ARM spelling to the "
+        },
+        {
+          "k": "code",
+          "text": "arm64"
+        },
+        {
+          "k": "text",
+          "text": " release target."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The normal install path is one command:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "curl -LsSf https://nika.sh/install.sh | sh\nnika --version"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For the current release, the archive set and recorded digests are visible in the "
+        },
+        {
+          "k": "link",
+          "text": "v0.111.0 release room",
+          "href": "/releases/v0.111.0"
+        },
+        {
+          "k": "text",
+          "text": ". The "
+        },
+        {
+          "k": "link",
+          "text": "ARM64 install guide",
+          "href": "/install/arm64"
+        },
+        {
+          "k": "text",
+          "text": " prints the exact Linux and macOS asset names projected from that release identity. A test compares those names with the vendored release record, so the page cannot quietly promise an archive the train did not publish."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is useful beyond installation. It separates three questions that are often mixed together:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Does a native binary exist for this CPU and operating system?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Was the downloaded archive checked before extraction?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Can this host enforce the authority declared by the workflow?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first two belong to the release. The third belongs to the runtime environment."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Make the Linux sandbox a deployment prerequisite",
+      "id": "make-the-linux-sandbox-a-deployment-prerequisite"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "On macOS, the operating system supplies the Seatbelt enforcement path. On Linux, a headless host needs bubblewrap available to Nika. Check it explicitly:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "command -v bwrap\nbwrap --version"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Install the "
+        },
+        {
+          "k": "code",
+          "text": "bubblewrap"
+        },
+        {
+          "k": "text",
+          "text": " package from the Linux distribution that owns the host, then keep this probe in the machine image or provisioning check. The point is not to make a package manager part of Nika. The point is to make the enforcement dependency visible before a scheduled run reaches a model, a shell command, or an MCP server."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "server and headless guide",
+          "href": "/install/servers"
+        },
+        {
+          "k": "text",
+          "text": " names the failure mode directly. Without "
+        },
+        {
+          "k": "code",
+          "text": "bwrap"
+        },
+        {
+          "k": "text",
+          "text": ", process children are unjailed. Nika does not silently turn a declared "
+        },
+        {
+          "k": "code",
+          "text": "permits:"
+        },
+        {
+          "k": "text",
+          "text": " block into documentation. A strict workflow refuses because the host cannot keep the boundary the file claims."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That refusal is more useful than a green task followed by a security footnote. It can fail a machine-image test, stop a deployment, and give the operator one concrete missing prerequisite."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Check the same file the scheduler will run",
+      "id": "check-the-same-file-the-scheduler-will-run"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The preflight command is not a dry marketing preview. It compiles the workflow into the plan, cost, secret-flow, type, tool, argument, schema, gate, write, execution, permit, trifecta and journey judgments the installed binary can make before execution."
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika check workflow.nika.yaml"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Run it from the same checkout and with the same generated workflow bytes that the server job will use. A check performed on one file followed by a run of a templated or rewritten copy proves the wrong input."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file should declare the authority it needs. A server job that writes one report should not inherit the entire repository. A model task that calls no tool should not receive an ambient tool universe. A cloud model should be visible as a provider destination. A local model should remain unpriced compute, not be described as zero-cost infrastructure."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "boundary page",
+          "href": "/how/boundary"
+        },
+        {
+          "k": "text",
+          "text": " explains how permits and secrets fit together. The "
+        },
+        {
+          "k": "link",
+          "text": "proof page",
+          "href": "/how/proof"
+        },
+        {
+          "k": "text",
+          "text": " explains what remains in the run record. They are separate pages because a declared boundary and a recorded outcome answer different questions."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep architecture and model choice independent",
+      "id": "keep-architecture-and-model-choice-independent"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "ARM64 selects the Nika executable. It does not select the model provider."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same workflow can use a local Ollama seat on an ARM development machine, a vLLM service on an internal GPU host, or a cloud provider on a CPU-only server. The "
+        },
+        {
+          "k": "code",
+          "text": "model:"
+        },
+        {
+          "k": "text",
+          "text": " string changes. The graph, token ceilings, tools, permits, outputs and trace discipline do not need a second format."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For a small local rehearsal:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "ollama pull llama3.2:3b\nnika try 01-hello --model ollama/llama3.2:3b"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current binary also carries the built-in local model command tree. Inspect the installed surface before choosing that lane:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika model --help"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The "
+        },
+        {
+          "k": "link",
+          "text": "local model guide",
+          "href": "/install/local-models"
+        },
+        {
+          "k": "text",
+          "text": " connects those options to the "
+        },
+        {
+          "k": "link",
+          "text": "provider register",
+          "href": "/catalog/providers"
+        },
+        {
+          "k": "text",
+          "text": ", the "
+        },
+        {
+          "k": "link",
+          "text": "model catalog",
+          "href": "/catalog/models"
+        },
+        {
+          "k": "text",
+          "text": ", and the "
+        },
+        {
+          "k": "link",
+          "text": "energy register",
+          "href": "/catalog/energy"
+        },
+        {
+          "k": "text",
+          "text": ". The catalog calls a local seat unpriced when no sourced price exists. It never turns a missing billing row into a claim that compute is free."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Design headless workflows to finish without a hidden person",
+      "id": "design-headless-workflows-to-finish-without-a-hidden-person"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A server job has no terminal operator unless the workflow explicitly creates a handoff."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That matters for approval prompts. A blocking "
+        },
+        {
+          "k": "code",
+          "text": "nika:prompt"
+        },
+        {
+          "k": "text",
+          "text": " with no default pauses in an interactive session and fails closed in an unattended one. This is correct for a release gate, but wrong for a nightly job that was expected to complete automatically."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Choose the behavior in the file:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "A fully automatic job should avoid a human prompt and keep every decision deterministic."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A review workflow may generate a candidate and stop before publication."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "An irreversible action should wait for an explicit approval tied to that recorded run."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A scheduler should own when a workflow starts. The workflow should own what happens after it starts."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The result is easier to operate because “waiting for a person” is a task state, not a process hanging for an unknown reason."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Return machine output and keep the trace",
+      "id": "return-machine-output-and-keep-the-trace"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "For a server caller, return the declared outputs as JSON:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika run workflow.nika.yaml --output json"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The JSON is the callable result. The local trace is the evidence record. They serve different consumers and neither should be scraped from the other."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "After a run that matters, verify its trace:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "bash",
+      "text": "nika trace verify .nika/traces/<run>.ndjson"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The journal is hash-chained, so a changed event breaks the chain after it. A sealed or anchored run can reach stronger proof levels, but the verifier reports the level actually attained. It does not promote a local chain to an attestation just because the workflow finished successfully."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The operating checklist",
+      "id": "the-operating-checklist"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The full server path fits in a short review:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Confirm the host reports ARM64 or x64 as expected."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Install the native release and verify "
+          },
+          {
+            "k": "code",
+            "text": "nika --version"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Ensure "
+          },
+          {
+            "k": "code",
+            "text": "bwrap"
+          },
+          {
+            "k": "text",
+            "text": " exists on Linux before enabling scheduled runs."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Run "
+          },
+          {
+            "k": "code",
+            "text": "nika check"
+          },
+          {
+            "k": "text",
+            "text": " against the exact workflow bytes that will execute."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Choose the model provider independently from the CPU architecture."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Make every human gate explicit and fail closed when unattended."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Use "
+          },
+          {
+            "k": "code",
+            "text": "--output json"
+          },
+          {
+            "k": "text",
+            "text": " for the caller and retain the trace for evidence."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "ARM64 support is the first line of that checklist, not the last. The useful deployment story is native bytes plus an enforceable boundary plus a verifiable run. Remove any one of the three and the server may still execute a workflow, but the operator can no longer prove the claim the file was meant to make."
+        }
+      ]
+    }
+  ],
   "the-registry-reproves-everything": [
     {
       "k": "p",

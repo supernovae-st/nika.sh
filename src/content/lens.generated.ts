@@ -2755,6 +2755,15 @@ export const LENS_NODES: LensNode[] = [
     "exists": true
   },
   {
+    "id": "post:arm64-ai-workflows-on-linux-servers",
+    "kind": "surface",
+    "title": "AI workflows on ARM64 Linux servers, without the missing safety step",
+    "url": "/blog/arm64-ai-workflows-on-linux-servers",
+    "status": "both",
+    "opener": null,
+    "exists": true
+  },
+  {
     "id": "post:blast-radius-in-the-file",
     "kind": "surface",
     "title": "The blast radius is part of the file",
@@ -10095,6 +10104,21 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "mentions"
   },
   {
+    "from": "post:arm64-ai-workflows-on-linux-servers",
+    "to": "tool:prompt",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:arm64-ai-workflows-on-linux-servers",
+    "to": "word:model",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:arm64-ai-workflows-on-linux-servers",
+    "to": "word:permits",
+    "kind": "mentions"
+  },
+  {
     "from": "post:blast-radius-in-the-file",
     "to": "code:NIKA-SEC-004",
     "kind": "mentions"
@@ -11748,7 +11772,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:model-bench",
     "to": "verb:infer",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:model-bench",
     "to": "verb:invoke",
@@ -11763,10 +11790,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:og-images",
     "to": "verb:invoke",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:pr-review-fanout",
     "to": "tool:grep",

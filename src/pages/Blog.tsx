@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -9,6 +9,8 @@ import '../sections/v4-home.css'
 import './page-chrome.css'
 import './blog-page.css'
 import { ldScript } from '../lib/ld'
+
+const EditorialQueue = lazy(() => import('../components/EditorialQueue'))
 
 /* ─── /blog · the journal (theme-dark · blueprint register) ──────────────────
    Long-form pedagogy on Intent as Code, brought up to the home + /spec register:
@@ -23,25 +25,6 @@ import { ldScript } from '../lib/ld'
    an instant paint); the reveal is one IntersectionObserver on mount, content
    fully visible by default (no-JS / reduced-motion). Per-route <head> via
    useHead → prerendered into dist/blog/index.html. */
-
-/* The next two field notes. The cadence is explicit; these are editorial
-   promises, not fake publication dates. */
-const SOON: { slug: string; tag: string; date: string; title: string; teaser: string }[] = [
-  {
-    slug: 'the-workflow-that-reads-itself',
-    tag: 'Engine',
-    date: 'soon',
-    title: 'The workflow that reads itself',
-    teaser: 'nika:inspect gives a running workflow a typed view of its own plan, permits, tasks and provenance. That changes what an agent can prove before it proposes a repair.',
-  },
-  {
-    slug: 'the-agent-that-checks-its-draft',
-    tag: 'Engine',
-    date: 'soon',
-    title: 'The agent that checks its draft',
-    teaser: 'nika:compose can propose a workflow and return the checker findings beside it. The useful loop is not generation alone. It is proposal, evidence, repair and an explicit decision.',
-  },
-]
 
 /* the tag registers · derived from the posts (a pipe-tagged post counts in
    each of its registers) — counts never hand-typed */
@@ -156,7 +139,7 @@ export function Component() {
             archive runs from the spec opening to today.
           </p>
           <p className="v4page-stamp" data-rise style={{ ['--rise-delay' as string]: '160ms' }}>
-            {BLOG_POSTS.length} live · {SOON.length} upcoming
+            {BLOG_POSTS.length} live · daily queue
           </p>
 
           <div className="blog-status" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
@@ -281,25 +264,9 @@ export function Component() {
           </p>
 
           {/* ══ the upcoming register ═══════════════════════════════════════ */}
-          <div className="blog-soon" data-rise>
-            <div className="blog-soon-head">
-              <span className="blog-soon-fig">03 · in the pipeline</span>
-              <span className="blog-soon-count">{SOON.length} upcoming</span>
-            </div>
-            <div className="blog-soon-grid">
-              {SOON.map((p) => (
-                <div key={p.slug} className="blog-soon-tile">
-                  <p className="blog-soon-meta">
-                    <span className="blog-soon-tag">{p.tag}</span>
-                    <span aria-hidden>·</span>
-                    <span>{p.date}</span>
-                  </p>
-                  <p className="blog-soon-title">{p.title}</p>
-                  <p className="blog-soon-teaser">{p.teaser}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Suspense fallback={null}>
+            <EditorialQueue />
+          </Suspense>
 
           {/* the close · the doc dimension line + the page footer */}
           <p className="v4docnote" data-rise>

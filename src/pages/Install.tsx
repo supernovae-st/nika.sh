@@ -1,3 +1,4 @@
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useHead } from '@unhead/react'
 import { Link, useLocation } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -25,7 +26,6 @@ import {
   FIRST_RUN_TRANSCRIPT,
   TROUBLE,
 } from '../content/install'
-import { useEffect, useState } from 'react'
 import { localeOf, hreflangLinks } from '../lib/i18n'
 import { LocaleRail } from '../components/LocaleRail'
 import type { InstallCopy } from '../content/i18n-pages.generated'
@@ -37,6 +37,8 @@ import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
 import './install-page.css'
+
+const InstallLanes = lazy(() => import('../components/InstallLanes'))
 
 /* ─── /install · the canonical deep-link install target ───────────────────────
    ONE stable URL for docs / README / social (the nav CTA used to anchor to
@@ -170,6 +172,10 @@ export function Component() {
           <div data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
             <LocaleRail pathname={pathname} />
           </div>
+
+          <Suspense fallback={null}>
+            <InstallLanes />
+          </Suspense>
 
           <ol className="ins-steps" data-rise style={{ ['--rise-delay' as string]: '200ms' }}>
             {/* 1 · Homebrew */}

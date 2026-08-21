@@ -59,6 +59,16 @@ export const BLOG_POSTS: BlogPost[] = [
     "readingMin": 6
   },
   {
+    "slug": "arm64-ai-workflows-on-linux-servers",
+    "file": "2026-08-21-arm64-ai-workflows-on-linux-servers.md",
+    "title": "AI workflows on ARM64 Linux servers, without the missing safety step",
+    "tag": "Engine|Sovereignty",
+    "date": "2026-08-21",
+    "description": "A practical path from a native ARM64 Nika binary to checked, sandboxed and traceable AI workflows on a headless Linux host.",
+    "author": "Thibaut Melen",
+    "readingMin": 6
+  },
+  {
     "slug": "the-registry-reproves-everything",
     "file": "2026-07-14-the-registry-reproves-everything.md",
     "title": "The registry re-proves everything",

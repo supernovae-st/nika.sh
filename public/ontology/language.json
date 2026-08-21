@@ -2704,6 +2704,15 @@
       "exists": true
     },
     {
+      "id": "post:arm64-ai-workflows-on-linux-servers",
+      "kind": "surface",
+      "title": "AI workflows on ARM64 Linux servers, without the missing safety step",
+      "url": "/blog/arm64-ai-workflows-on-linux-servers",
+      "status": "both",
+      "opener": null,
+      "exists": true
+    },
+    {
       "id": "post:blast-radius-in-the-file",
       "kind": "surface",
       "title": "The blast radius is part of the file",
@@ -10034,6 +10043,21 @@
     {
       "from": "post:anatomy-of-a-verb",
       "to": "word:tools",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:arm64-ai-workflows-on-linux-servers",
+      "to": "tool:prompt",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:arm64-ai-workflows-on-linux-servers",
+      "to": "word:model",
+      "kind": "mentions"
+    },
+    {
+      "from": "post:arm64-ai-workflows-on-linux-servers",
+      "to": "word:permits",
       "kind": "mentions"
     },
     {

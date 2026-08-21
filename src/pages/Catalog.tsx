@@ -4,6 +4,7 @@
    at the pin, never typed. The hub teaches the seam first (loi 3: the site
    explains how it works before listing members). Chrome-lean by law: the hub
    reads only the tiny counts module · the heavy cargo stays an async chunk. */
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router'
 import { StampStrip } from '../components/StampStrip'
 import { CATALOG_COUNTS, CATALOG_ENGINE } from '../content/catalog-paths.generated'
@@ -11,11 +12,15 @@ import { PROVIDERS } from '../content/providers.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
+import './catalog-hub.css'
+
+const CatalogResolution = lazy(() => import('../components/CatalogResolution'))
 
 const C = CATALOG_COUNTS
 const DESC = `What the released nika binary knows, page by page: ${C.models} models, ${C.pricing_rules} pricing rules, ${C.energy_rows} measured energy rows, ${C.mcp_servers} MCP servers, ${C.embeddings} embedding models · vendored from ${CATALOG_ENGINE.release_tag}, digest-verified.`
 
 const DOORS: { to: string; title: string; count: number; unit: string; gloss: string }[] = [
+  { to: '/catalog/providers', title: 'Providers', count: C.market_providers, unit: 'market seats', gloss: 'Cloud and local provider doors, joined to the canonical provider register without pretending the two clocks are one.' },
   { to: '/catalog/models', title: 'Models', count: C.models, unit: 'models', gloss: 'Every model the wire catalog names · who serves it, what it costs, what it burns.' },
   { to: '/catalog/pricing', title: 'Pricing', count: C.pricing_rules, unit: 'rules', gloss: 'The USD-per-million table the audit reads. A local model is unpriced, never free.' },
   { to: '/catalog/energy', title: 'Energy', count: C.energy_rows, unit: 'rows', gloss: 'Measured watt-hours per million output tokens · provenance printed verbatim.' },
@@ -50,6 +55,17 @@ export function Component() {
           { n: C.clients, label: 'client doors', sub: 'wire yours' },
         ]}
       />
+      <Suspense fallback={null}>
+        <CatalogResolution
+          release={CATALOG_ENGINE.release_tag}
+          canonicalProviders={PROVIDERS.length}
+          marketProviders={C.market_providers}
+          models={C.models}
+          pricingRules={C.pricing_rules}
+          energyRows={C.energy_rows}
+          mcpServers={C.mcp_servers}
+        />
+      </Suspense>
       <CatalogSection id="doors" title="The registers">
         <ol className="tp-list">
           {DOORS.map((d) => (

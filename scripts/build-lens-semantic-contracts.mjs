@@ -211,6 +211,7 @@ const COMPONENT_FEATURE = {
   TemplatePage: 'registry.templates',
   UseCasesPage: 'product.use_cases',
   Install: 'product.install',
+  PlatformGuide: 'product.install',
   Convert: 'product.convert',
   Brand: 'site.brand',
   NotFound: 'site.not_found',

@@ -32,6 +32,7 @@ export const ORIGIN = 'https://nika.sh'
    import-free); the vitest drift gate (blog.test.ts) fails when a post and
    this list disagree. */
 export const BLOG_PATHS = [
+  '/blog/arm64-ai-workflows-on-linux-servers',
   '/blog/clean-is-not-ready-to-spend',
   '/blog/the-registry-reproves-everything',
   '/blog/the-generative-workflow',
@@ -183,6 +184,10 @@ export const MANIFESTO_PATHS = ['/fr/manifesto', '/es/manifesto', '/de/manifesto
 /* the install cluster (WO-10 wiring · mirrors LOCALIZED['/install'] — the
    i18n gate judges the two equal both ways) */
 export const INSTALL_PATHS = ['/fr/install', '/es/install', '/de/install', '/pt-br/install', '/ja/install', '/ko/install', '/zh-hans/install']
+/* the operational install lanes · authored pages, one route each. The
+   platform-guides gate pins this list against the page registry and proves
+   the ARM64 asset names against the current release record. */
+export const INSTALL_GUIDE_PATHS = ['/install/arm64', '/install/servers', '/install/local-models']
 /* the error register's deep pages — one static landing per registered code
    (the engine stamps docs_url: https://nika.sh/language/errors/<CODE> on every check
    finding, and DO's error_document wins over catchall_document in practice:
@@ -383,4 +388,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/language/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/releases', ...RELEASE_PATHS, '/install', ...INSTALL_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/language/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/releases', ...RELEASE_PATHS, '/install', ...INSTALL_PATHS, ...INSTALL_GUIDE_PATHS, '/convert', '/brand']

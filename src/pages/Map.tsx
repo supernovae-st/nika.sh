@@ -27,6 +27,7 @@ const groupId = (kick: string) => `g-${kick.toLowerCase().replace(/[^a-z0-9]+/g,
    opts everyone out (the gate mounts NOTHING — the chunk never even loads).
    Decorative twin of the svg figure. */
 const Map3dScene = lazy(() => import('./Map3dScene'))
+const MapRouteSearch = lazy(() => import('../components/MapRouteSearch'))
 
 /* server + first client render agree on "off" (hydration byte-true, the
    LocaleSuggest recipe); the live value arrives on the next render — and
@@ -124,7 +125,6 @@ export function Component() {
   const flag3d = useMap3dFlag()
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.04, rootMargin: '0px 0px -6% 0px' })
   const constellation = useConstellation()
-
 
   const title = 'The map · every page, one graph · Nika'
   const description =
@@ -352,6 +352,9 @@ export function Component() {
                 {SITE_MAP.length} groups · {MAP_DOORS_COUNT} doors · nothing served is missing
               </span>
             </div>
+            <Suspense fallback={null}>
+              <MapRouteSearch doors={MAP_DOORS_COUNT} groups={SITE_MAP.length} />
+            </Suspense>
             <div className="mp-groups">
               {SITE_MAP.map((g) => (
                 <section key={g.kick} className="mp-group" aria-label={g.kick} id={groupId(g.kick)}>

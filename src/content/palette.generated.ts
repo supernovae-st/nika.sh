@@ -269,6 +269,12 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
+    "label": "AI workflows on ARM64 Linux servers, without the missing safety step",
+    "href": "/blog/arm64-ai-workflows-on-linux-servers",
+    "hint": "Engine|Sovereignty · 2026-08-21"
+  },
+  {
+    "kind": "post",
     "label": "The registry re-proves everything",
     "href": "/blog/the-registry-reproves-everything",
     "hint": "Engine · 2026-07-14"

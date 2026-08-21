@@ -6,7 +6,11 @@
    (the drawing carries the color story; the list stays ink). */
 
 .mp-page {
-  background: var(--v4-bg);
+  background:
+    radial-gradient(circle at 76% 7%, rgb(74 126 255 / 0.07), transparent 24%),
+    linear-gradient(rgb(255 255 255 / 0.018) 1px, transparent 1px) 0 0 / 100% 78px,
+    linear-gradient(90deg, rgb(255 255 255 / 0.014) 1px, transparent 1px) 0 0 / 78px 100%,
+    var(--v4-bg-deep);
 }
 
 .mp-wrap {
@@ -30,13 +34,9 @@
 .mp-spectrum {
   background: linear-gradient(
     100deg,
-    var(--layer-shape),
-    var(--layer-flow),
-    var(--layer-acts),
-    var(--layer-reach),
-    var(--layer-boundary),
-    var(--layer-refusals),
-    var(--layer-proof)
+    var(--v4-text) 12%,
+    color-mix(in srgb, var(--v4-text) 72%, var(--v4-accent)) 62%,
+    var(--v4-accent-bright)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -168,7 +168,7 @@
   border: 1px solid var(--seam-hairline, var(--v4-line));
   border-left: 2px solid var(--mp-hue, rgb(140 170 255 / 0.4));
   border-radius: var(--v4-radius);
-  background: rgb(10 13 18 / 0.55);
+  background: rgb(255 255 255 / 0.012);
   padding: 20px 22px 18px;
   transition:
     border-color var(--dur-ui) var(--ease-ui),
@@ -177,7 +177,7 @@
 .mp-layer:hover {
   border-color: color-mix(in srgb, var(--mp-hue, #89a) 34%, var(--v4-line));
   border-left-color: var(--mp-hue);
-  background: rgb(12 16 23 / 0.72);
+  background: rgb(255 255 255 / 0.025);
 }
 
 /* the layer index — the anatomy reads as the ordered walk it is */
@@ -314,22 +314,142 @@ a.mp-set-chip:focus-visible {
   padding-top: 40px;
 }
 
+/* the human sitemap is useful only if a reader can interrogate it. This is
+   the one sanctioned glass instrument on the page: copy left, command-like
+   search right, with the exhaustive HTML register staying underneath. */
+.mp-directory {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.9fr) minmax(320px, 1.1fr) auto;
+  gap: 22px;
+  align-items: center;
+  margin: 18px 0 26px;
+  padding: 18px;
+  border: 1px solid var(--seam-hairline);
+  background: linear-gradient(138deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.012) 70%);
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.07), 0 22px 70px -58px rgb(79 134 255 / 0.7);
+  overflow: hidden;
+}
+.mp-directory::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: 5%;
+  width: 230px;
+  height: 230px;
+  border: 1px solid rgb(108 148 255 / 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 38px rgb(108 148 255 / 0.025), 0 0 0 76px rgb(108 148 255 / 0.016);
+  pointer-events: none;
+}
+.mp-directory-copy {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+}
+.mp-directory-k {
+  color: var(--v4-text-faint);
+  font-size: var(--type-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mp-directory-copy strong {
+  color: var(--v4-text);
+  font-size: var(--type-body-sm);
+  font-weight: var(--fw-medium);
+}
+.mp-directory-copy > span:last-child {
+  color: var(--v4-text-faint);
+  font-size: var(--type-mini);
+  line-height: 1.5;
+}
+.mp-search {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--v4-line-strong);
+  background: rgb(0 0 0 / 0.36);
+  box-shadow: inset 0 1px rgb(255 255 255 / 0.035);
+}
+.mp-search:focus-within {
+  border-color: color-mix(in srgb, var(--v4-accent) 55%, var(--v4-line));
+  box-shadow: 0 0 0 2px rgb(79 134 255 / 0.12), inset 0 1px rgb(255 255 255 / 0.04);
+}
+.mp-search-mark {
+  color: var(--v4-text-faint);
+  font-size: var(--type-body);
+}
+.mp-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--v4-text);
+  font-family: var(--mono);
+  font-size: var(--type-mini);
+}
+.mp-search input::placeholder {
+  color: var(--v4-text-faint);
+}
+.mp-search button {
+  color: var(--v4-text-faint);
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mp-search button:hover,
+.mp-search button:focus-visible {
+  color: var(--v4-text);
+}
+.mp-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.mp-search-status {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--v4-text-faint);
+  font-size: var(--type-micro);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
 /* the every-page bento: each group is a CARD, not a floating list — the
    Linear-grid read: one system, hairline shells, calm hover */
 .mp-groups {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--seam-hairline, var(--v4-line));
+  border-left: 1px solid var(--seam-hairline, var(--v4-line));
 }
 .mp-group {
-  border: 1px solid var(--seam-hairline, var(--v4-line));
-  border-radius: var(--v4-radius);
-  background: rgb(10 13 18 / 0.55);
-  padding: 18px 20px 16px;
-  transition: border-color var(--dur-ui) var(--ease-ui);
+  border: 0;
+  border-right: 1px solid var(--seam-hairline, var(--v4-line));
+  border-bottom: 1px solid var(--seam-hairline, var(--v4-line));
+  border-radius: 0;
+  background: rgb(255 255 255 / 0.008);
+  padding: 22px 24px 20px;
+  transition: background-color var(--dur-ui) var(--ease-ui);
 }
 .mp-group:hover {
-  border-color: var(--v4-line-strong, rgb(255 255 255 / 0.13));
+  background: rgb(255 255 255 / 0.022);
 }
 /* the heavy groups earn a wider cell — the bento breathes unevenly on
    purpose (start and reference carry the most doors) */
@@ -337,7 +457,27 @@ a.mp-set-chip:focus-visible {
   .mp-group[id='g-start'],
   .mp-group[id='g-reference'],
   .mp-group[id='g-product'] {
-    grid-column: span 2;
+    grid-column: auto;
+  }
+}
+
+.mp-empty {
+  margin: 0;
+  padding: 48px 20px;
+  border: 1px solid var(--v4-line);
+  color: var(--v4-text-dim);
+  text-align: center;
+}
+
+@media (max-width: 820px) {
+  .mp-directory {
+    grid-template-columns: 1fr;
+  }
+  .mp-search-status {
+    white-space: normal;
+  }
+  .mp-groups {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -431,6 +571,18 @@ a.mp-set-chip:focus-visible {
 @media (max-width: 560px) {
   .mp-opener {
     font-size: 15.5px;
+  }
+
+  .mp-everypage > .cl-year-head {
+    display: grid;
+    grid-template-columns: auto minmax(24px, 1fr);
+    row-gap: 10px;
+  }
+
+  .mp-everypage > .cl-year-head .cl-year-count {
+    grid-column: 1 / -1;
+    white-space: normal;
+    line-height: 1.55;
   }
 
   .mp-groups {

@@ -46,6 +46,13 @@ export interface ChangelogEntry {
    their own history — twice caught, now law). */
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    date: '2026-08-21',
+    tag: 'site',
+    title: 'nika.sh v4.19 · the operational map',
+    body: 'Searchable map, catalog clocks, install guides and a gated publishing loop.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.19.0',
+  },
+  {
     date: '2026-08-19',
     tag: 'release',
     title: 'v0.111.0 · the authoring loop closes',

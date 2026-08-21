@@ -20,6 +20,7 @@ import { DOCS, REPO, SPEC } from '../content'
 import { localizedPaths } from '../lib/i18n'
 import { PENDING_ERROR_CODES } from '../../pending-error-codes'
 import { wordRoom } from '../lib/rooms'
+import { PLATFORM_GUIDE_NAV } from './platform-guides-nav'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
    /map's « every page » section renders THIS structure (the human sitemap
@@ -75,6 +76,7 @@ export const SITE_MAP: MapGroup[] = [
     ],
     dense: [
       ...UC_TABS.flatMap((t) => t.cases.map((uc) => ({ label: uc.title, href: `/workflows/jobs/${uc.slug}` }))),
+      ...PLATFORM_GUIDE_NAV.map(([id, label]) => ({ label: `install · ${label}`, href: `/install/${id}` })),
       /* the install locale cluster (WO-10 wiring) — derived from the registry */
       ...localizedPaths('/install').map((p) => ({ label: `install · ${p.split('/')[1]}`, href: p })),
     ],

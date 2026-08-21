@@ -33,6 +33,10 @@ inputs:
     type: bool
     default: false
     description: "Ask for approval and write into content/blog when true"
+  audience:
+    type: string
+    default: "technical operators evaluating auditable AI workflows"
+    description: "The primary reader whose concrete question the article must answer"
 
 const:
   candidate_path: "out/editorial/daily-blog.md"
@@ -63,13 +67,33 @@ permits:
     - "nika:assert"
     - "nika:jq"
     - "nika:prompt"
+    - "nika:read"
     - "nika:write"
   fs:
+    read:
+      - "./public/llms.txt"
+      - "./src/content/changelog.ts"
+      - "./src/content/platform-guides.ts"
     write:
       - "out/editorial/daily-blog.md"
       - "content/blog/*.md"
 
 tasks:
+  product_summary:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./public/llms.txt" }
+
+  release_truth:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./src/content/changelog.ts" }
+
+  deployment_truth:
+    invoke:
+      tool: "nika:read"
+      args: { path: "./src/content/platform-guides.ts" }
+
   search_demand:
     invoke:
       tool: "mcp:ahrefs/keywords-explorer-matching-terms"
@@ -111,11 +135,17 @@ tasks:
       demand: ${{ tasks.search_demand.output }}
       serp: ${{ tasks.live_serp.output }}
       research: ${{ tasks.cited_research.output }}
+      product: ${{ tasks.product_summary.output }}
+      releases: ${{ tasks.release_truth.output }}
+      deployment: ${{ tasks.deployment_truth.output }}
     infer:
       max_tokens: 1800
       prompt: |
         Build an evidence-backed editorial brief for this topic:
         ${{ inputs.topic }}
+
+        Primary reader:
+        ${{ inputs.audience }}
 
         Ahrefs demand data:
         ${{ with.demand }}
@@ -126,8 +156,18 @@ tasks:
         Cited research:
         ${{ with.research }}
 
+        Nika product summary:
+        ${{ with.product }}
+
+        Shipped release record:
+        ${{ with.releases }}
+
+        Deployment pages:
+        ${{ with.deployment }}
+
         Select one primary keyword because it matches product truth and reader
-        intent, not because it has the largest number. Separate facts from
+        intent, not because it has the largest number. Product claims must be
+        supported by one of the three local records above. Separate facts from
         hypotheses. Keep every source URL that the writer should verify.
       schema:
         type: object
@@ -183,6 +223,9 @@ tasks:
       draft: ${{ tasks.draft.output }}
       brief: ${{ tasks.brief.output }}
       research: ${{ tasks.cited_research.output }}
+      product: ${{ tasks.product_summary.output }}
+      releases: ${{ tasks.release_truth.output }}
+      deployment: ${{ tasks.deployment_truth.output }}
     infer:
       max_tokens: 1400
       prompt: |
@@ -197,6 +240,15 @@ tasks:
 
         Research:
         ${{ with.research }}
+
+        Product truth:
+        ${{ with.product }}
+
+        Release truth:
+        ${{ with.releases }}
+
+        Deployment truth:
+        ${{ with.deployment }}
 
         Draft:
         ${{ with.draft }}

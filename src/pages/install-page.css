@@ -8,6 +8,83 @@
   font-size: var(--type-display);
 }
 
+/* the three operational lanes · a Prime-style ruled register, not another
+   stack of marketing cards. The install page now answers ARM/server/local
+   discovery before the long method walk begins. */
+.ins-lanes {
+  margin-top: 28px;
+  border-top: 1px solid var(--v4-line);
+  border-bottom: 1px solid var(--v4-line);
+}
+.ins-lanes-k {
+  margin: 0;
+  padding: 11px 0;
+  color: var(--v4-text-faint);
+  font-size: var(--type-micro);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.ins-lanes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--v4-line);
+}
+.ins-lane {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 78px;
+  padding: 14px 16px;
+  border-right: 1px solid var(--v4-line);
+  color: var(--v4-text-dim);
+  transition: color var(--dur-ui) var(--ease-ui), background-color var(--dur-ui) var(--ease-ui);
+}
+.ins-lane:last-child {
+  border-right: 0;
+}
+.ins-lane:hover,
+.ins-lane:focus-visible {
+  color: var(--v4-text);
+  background: rgb(255 255 255 / 0.025);
+}
+.ins-lane-n {
+  color: var(--v4-text-faint);
+  font-size: var(--type-micro);
+}
+.ins-lane strong,
+.ins-lane small {
+  display: block;
+}
+.ins-lane strong {
+  color: inherit;
+  font-size: var(--type-ui);
+  font-weight: var(--fw-medium);
+}
+.ins-lane small {
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--v4-text-faint);
+  font-family: var(--mono);
+  font-size: var(--type-micro);
+  letter-spacing: 0.05em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .ins-lanes-grid {
+    grid-template-columns: 1fr;
+  }
+  .ins-lane,
+  .ins-lane:last-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--v4-line);
+  }
+  .ins-lane:last-child {
+    border-bottom: 0;
+  }
+}
+
 /* ── the step register ── */
 .ins-steps {
   margin: clamp(28px, 4vh, 48px) 0 0;

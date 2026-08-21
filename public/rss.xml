@@ -15,6 +15,14 @@
       <description>A valid AI workflow can still waste money. Nika now separates legal files from workflows that are ready for a paid run.</description>
     </item>
     <item>
+      <title>AI workflows on ARM64 Linux servers, without the missing safety step</title>
+      <link>https://nika.sh/blog/arm64-ai-workflows-on-linux-servers</link>
+      <guid isPermaLink="true">https://nika.sh/blog/arm64-ai-workflows-on-linux-servers</guid>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+      <category>Engine|Sovereignty</category>
+      <description>A practical path from a native ARM64 Nika binary to checked, sandboxed and traceable AI workflows on a headless Linux host.</description>
+    </item>
+    <item>
       <title>The registry re-proves everything</title>
       <link>https://nika.sh/blog/the-registry-reproves-everything</link>
       <guid isPermaLink="true">https://nika.sh/blog/the-registry-reproves-everything</guid>
