@@ -18,7 +18,13 @@ describe.each(FLAGSHIP_ENTRIES.map((f) => [f.filename, f] as const))(
     it('is a completed real run (exit 0)', () => {
       expect(trace.exit).toBe(0)
       expect(trace.steps[0].kind).toBe('workflow_started')
-      expect(trace.steps[trace.steps.length - 1].kind).toBe('workflow_completed')
+      const lifecycle = trace.steps.filter((step) => step.kind.startsWith('workflow_'))
+      expect(lifecycle[lifecycle.length - 1]?.kind).toBe('workflow_completed')
+      /* 0.111 appends the signed teardown after the lifecycle verdict. Older
+         recordings end at workflow_completed; both are valid trace-format 2
+         streams, and the additive-kind law requires this reader to admit the
+         seal without pretending it replaced the run verdict. */
+      expect(['workflow_completed', 'run_sealed']).toContain(trace.steps[trace.steps.length - 1].kind)
       expect(trace.totalMs).toBeGreaterThan(0)
     })
 

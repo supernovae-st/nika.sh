@@ -46,7 +46,7 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
       const yaml = readFileSync(join(ROOT, 'public/library', name), 'utf8')
       /* the nine-key mark IS the id (0.109 · `nika: <name>` · never `v1`) */
       const id = /^nika:\s*([a-z][a-z0-9-]*)\s*(?:#.*)?$/m.exec(yaml)?.[1]
-      expect(id, `${name} has no nika: name (the seven flagships re-run on the released 0.109 binary as one block: yaml · traces · served copy · this receipt)`).toBeTruthy()
+      expect(id, `${name} has no nika: name (the seven flagships re-run on the released 0.111 binary as one block: yaml · traces · served copy · this receipt)`).toBeTruthy()
       expect(id, `${name} still carries the dead v1 marker`).not.toBe('v1')
       ids.push(id!)
     }
@@ -64,13 +64,12 @@ describe('check verdicts · the receipt cannot drift from the binary', () => {
     expect(VERDICT_ENGINE).toMatch(/^\d+\.\d+\.\d+$/)
   })
 
-  /* THE HONESTY GATE. `daily-brief` emits three [inputs] hints that say a path
-     "does not exist HERE" — true of the machine check ran on, false of the
-     file, and meaningless to a reader on the website. If those were ever
-     captured, the site would show a receipt for a claim about somebody else's
-     filesystem. daily-brief must therefore read ZERO hints. */
-  it('environmental hints never reach the page', () => {
-    expect(CHECK_VERDICTS['daily-brief']?.hints).toBe(0)
+  /* THE HONESTY GATE. `daily-brief` emits three environmental [inputs] hints
+     that say a path "does not exist HERE". They never reach the page. Its one
+     remaining hint is intrinsic: the explicit nika:assert guard shares a DAG
+     with a write. That is a fact about the file and belongs in the receipt. */
+  it('drops environmental hints and keeps the intrinsic non-empty guard hint', () => {
+    expect(CHECK_VERDICTS['daily-brief']?.hints).toBe(1)
   })
 
   it.skipIf(!hasPinnedNika)('the capture is exactly what the binary emits today', () => {

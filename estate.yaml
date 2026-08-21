@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 7e0296ebeea6f6788743924734cd3881df8f2267dcf159f0bbbf56319e4fa7ab
+  sha256: 23498a85bc39e74c4a36a9932fbace19f3c626ea3ee493c756291ff5e10f47c3
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 8d1330ea3c5129cabcde56a91bca904cb30f10be990f7fc0cb1123a3009a24a6
+  sha256: 360698acde7475ff3ecbbc36bcc854672c53a06d40ab1815c6a11cc19a6a3b3c
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -810,7 +810,7 @@ patterns:
 - glob: "public/library/*.nika.yaml"
   class: authored
   match_count: 7
-  aggregate_sha256: 1026397f5479424438087373646d88e1475c87d56a7117c261e0569357f90516
+  aggregate_sha256: 1dd7134214d2622870d579186e15f492563079749bde07b93355a2b008bcbfad
   evidence: "hand-crafted example workflows (SPDX headers · © SuperNovae Studio); src/test/onpage-yaml.test.ts validates them against the SHIPPED schema (engine 0.111.0)"
 - glob: "public/hero/*.nika.yaml"
   class: authored
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: dcac1ac1a575f76e6dc4dff3bff4ea96fba6c9c3a116dd149645d5076185da02
+  aggregate_sha256: 32904538051c240a830c9ebcc5d40cf9eefd9076414c54943b13fcb60c72c969
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -931,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 67d2eeda7f865b32da47b9312507a5d498062e192c12ff9c525b450f6133bde8
+  aggregate_sha256: d6af14083daf322119a3e658f2657299994bc224eadcb5a33c0dc476021a444e
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,7 +941,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 476
-  aggregate_sha256: dceb6ba2ca4383aab3ed93e46d17c24d5936f6fba0c49ec3ba62dc9da3ed097a
+  aggregate_sha256: 30bc11526eb1f801cd4053fe87f0a6499bb13f85e7ea49a878febe5dc7177a46
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
