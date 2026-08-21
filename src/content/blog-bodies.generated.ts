@@ -15776,15 +15776,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "By the time the first "
-        },
-        {
-          "k": "code",
-          "text": "nika.sh"
-        },
-        {
-          "k": "text",
-          "text": " page went live in December 2025, the project had a name. What it did not yet have was a meaning precise enough to keep. The early page used Nika like a product label. By March, that was no longer enough, because naming a thing is deciding what it is for."
+          "text": "By March, the project had an idea, a file and a public page. It still needed a name that could survive the product around it."
         }
       ]
     },
@@ -15793,15 +15785,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The technical description was easy: a workflow language, four verbs, files you own. But the description missed the "
-        },
-        {
-          "k": "em",
-          "text": "reason"
-        },
-        {
-          "k": "text",
-          "text": ". We were not building a scheduler. We were building a way out of a trap: the trap where your best work, your context, your habits of thought all live behind someone else's login, priced monthly, revocable by letter."
+          "text": "The technical description was easy: a workflow language, a local engine, files you own. It explained what Nika did. It did not explain what all those choices were for."
         }
       ]
     },
@@ -15810,23 +15794,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "There is an old story about that trap. "
-        },
-        {
-          "k": "strong",
-          "text": "Nika is named for the sun god of liberation: the drum that turns fear into laughter and frees the ones who were locked out."
-        },
-        {
-          "k": "text",
-          "text": " A warrior of liberation whose weapon is not a sword but a "
-        },
-        {
-          "k": "em",
-          "text": "rhythm"
-        },
-        {
-          "k": "text",
-          "text": ": joy, repetition, the beat that makes the cage ridiculous. That is exactly the energy a workflow engine should have. Not conquest: release. Not a louder lock-in with better branding: the drum that plays until the door opens."
+          "text": "The answer was release."
         }
       ]
     },
@@ -15835,7 +15803,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "So the name is a promise with lore attached:"
+          "text": "Release from work trapped behind one login. Release from methods that vanish with a chat. Release from the idea that using a powerful model requires surrendering the plan, the inputs and the evidence of what happened."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why Nika",
+      "id": "why-nika"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika takes its name from a modern liberation myth: a sun god announced by drums and laughter, turning fear into movement. The figure does not win by building a better cage. The cage becomes absurd, then breaks."
         }
       ]
     },
@@ -15843,12 +15826,8 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "p",
       "inline": [
         {
-          "k": "strong",
-          "text": "Every workflow run is a beat of that drum."
-        },
-        {
           "k": "text",
-          "text": " Each time a file runs on your machine, with your model, under your permits, the argument for owned intelligence gets one beat louder. Small, repeated, unstoppable: that is how rhythms win."
+          "text": "That rhythm fits a workflow engine unusually well."
         }
       ]
     },
@@ -15856,12 +15835,17 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "p",
       "inline": [
         {
-          "k": "strong",
-          "text": "The butterfly signs the work."
-        },
+          "k": "text",
+          "text": "A workflow is not one grand declaration of independence. It is a small repeatable act. The file stays yours. The engine runs where you choose. The model can change without taking the plan with it. The trace records what actually happened."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
         {
           "k": "text",
-          "text": " Every commit in the project carries a small butterfly. It is the signature of the craft: light, alive, impossible to cage. If you have scrolled to the bottom of this site, you have met it in particles."
+          "text": "Run after run, the promise becomes mechanical."
         }
       ]
     },
@@ -15870,11 +15854,26 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "strong",
-          "text": "The liberation is structural, not rhetorical."
+          "text": "Every execution is one beat of the drum."
         },
         {
           "k": "text",
-          "text": " A god of freedom would be a terrible mascot for a proprietary tool. The name only works because the license (AGPL, forever), the local-first engine, and the plain-text files make the freedom mechanical. Delete our company tomorrow and the drum keeps beating on your machine."
+          "text": " Not because running software is mythology, but because durable freedom is built through repetition. A principle that only appears in a manifesto is branding. A principle that survives each execution is architecture."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why the butterfly",
+      "id": "why-the-butterfly"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Project commits carry a small butterfly in the Nika co-author signature."
         }
       ]
     },
@@ -15883,7 +15882,58 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The full argument, what happened the day intelligence got a kill switch, what we promise, why sovereignty is for everyone or for no one, lives in "
+          "text": "The mark is deliberately lighter than the machinery. A workflow engine deals in parsers, permits, graphs and traces. The butterfly remembers why: software should increase a person's room to move."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It also refuses the usual visual language of infrastructure. Nika does not need a fortress for a symbol. Its boundaries can be strict without making ownership feel grim."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The name has to earn itself",
+      "id": "the-name-has-to-earn-itself"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A liberation name on a closed service would be decoration. Here it creates a test."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Can you keep the workflow as plain text? Can you run it through a local engine? Can you inspect the boundaries before execution and the trace after it? Can another implementation read the public specification? Can the system keep working without making a hosted account the source of truth?"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The closer the answer gets to yes, the more the name means."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The wider argument lives in "
         },
         {
           "k": "link",
@@ -15892,7 +15942,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". It now speaks several languages, because liberation that only speaks English is not liberation."
+          "text": ". This ledger keeps the smaller, earlier arc: an objection became a file; the file met public reality; the excess was stripped away; the missing evidence stayed missing; the remaining purpose found its name."
         }
       ]
     },
@@ -15901,7 +15951,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The note asked for a file. The name asked for a fight worth having. The rest is shipping."
+          "text": "The note asked for work that could survive. The name supplied the rhythm. Everything after this is the proof."
         }
       ]
     }
@@ -15912,7 +15962,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The public history of Nika has a gap."
+          "text": "From December 30 to April 13, the public trail contains no engine commit."
         }
       ]
     },
@@ -15929,7 +15979,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " commit is dated December 30, 2025. The current engine repository begins on April 13, 2026. The current specification repository begins on May 22. Those are repository facts. They do not prove that nobody thought, wrote prototypes or made decisions in between. They also do not prove the opposite."
+          "text": " commit is dated December 30, 2025. The current engine repository begins on April 13, 2026. The specification repository begins on May 22."
         }
       ]
     },
@@ -15938,7 +15988,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "February is where a polished origin story would normally add a montage."
+          "text": "Those dates prove that specific bytes entered public repositories. They do not prove that nobody thought, prototyped or made decisions between them. They do not prove the opposite either."
         }
       ]
     },
@@ -15947,22 +15997,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "We will not."
-        }
-      ]
-    },
-    {
-      "k": "h",
-      "depth": 2,
-      "text": "A commit proves less than memory and more than a story",
-      "id": "a-commit-proves-less-than-memory-and-more-than-a-story"
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "A Git commit can show that specific bytes existed in a repository at a recorded point in its history. It does not show every conversation that led there. It does not prove that the code was deployed, used correctly or safe. But it is still a stronger receipt than a confident recollection written months later."
+          "text": "February is where a polished origin story would insert a montage."
         }
       ]
     },
@@ -15971,40 +16006,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Memory can explain motive. The repository can establish sequence. Tests can establish behavior. A release artifact can establish what users could actually install. Each source answers a different question."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Trouble starts when one is used to impersonate another."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "That is why these origin articles carry two dates. The story date places the subject in the product chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective. A reader can enjoy the narrative without being told it was published in a month when no blog existed."
+          "text": "We will leave the space empty."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "The gap contains hypotheses, not releases",
-      "id": "the-gap-contains-hypotheses-not-releases"
+      "text": "Different evidence answers different questions",
+      "id": "different-evidence-answers-different-questions"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "Looking backward, we can see concerns that later became durable architecture: a plain-text workflow, a visible graph, provider choice and a local runner. We can see them on the December page and in the current product."
+          "text": "A commit proves less than memory and more than a story. It can show that bytes existed in a repository at a recorded point. It cannot show every conversation that led there. It cannot prove the code was deployed, used correctly or safe."
         }
       ]
     },
@@ -16013,7 +16030,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "What we cannot do is assign every mature idea to a convenient day inside the quiet period. The current permits model, four-verb language, conformance suite and crate architecture have later receipts. Saying they were already complete in February would make the later design work disappear."
+          "text": "Memory can explain motive. A repository can establish sequence. Tests can establish behavior. A release artifact can establish what a user could install. Each source answers a different question."
         }
       ]
     },
@@ -16022,7 +16039,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The honest sentence is smaller: the problem was stable before the solution was."
+          "text": "Trouble begins when one source impersonates another."
         }
       ]
     },
@@ -16031,22 +16048,31 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The project knew that useful AI work should outlive a chat session. It had not yet earned every mechanism needed to keep that promise."
+          "text": "That is why these origin articles carry two dates. The story date places the subject in the chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The story can flow without pretending the blog existed before it did."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "Why publish an article about missing evidence?",
-      "id": "why-publish-an-article-about-missing-evidence"
+      "text": "The gap contains hypotheses",
+      "id": "the-gap-contains-hypotheses"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "Because Nika asks users to care about provenance."
+          "text": "Looking backward, we can trace concerns that later became durable architecture: the plain-text workflow, the visible graph, model choice and the local runner. They appear on the December page and in the current product."
         }
       ]
     },
@@ -16055,7 +16081,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "A trace should not claim an attestation it did not receive. A check should not call an unjudged constraint safe. A local model without a price row should be called unpriced, not free. The same standard belongs in the project history."
+          "text": "What we cannot do is assign every mature mechanism to a convenient day inside the quiet period. The current permits model, four-verb language, conformance suite and crate architecture have later receipts. Claiming they were complete in February would erase the work that made them real."
         }
       ]
     },
@@ -16064,7 +16090,11 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "An empty section in the record is not a branding failure. It is information. It tells future maintainers where they should rely on source and where they are reading recollection. It prevents a later article from becoming the accidental authority for an event it merely described."
+          "text": "The honest sentence is smaller: "
+        },
+        {
+          "k": "strong",
+          "text": "the problem was stable before the solution was."
         }
       ]
     },
@@ -16073,7 +16103,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. Those chapters have commits, tests and releases behind them. February has a quieter receipt: we checked what the repositories could prove, found the boundary and kept it."
+          "text": "Nika knew useful AI work should outlive a chat session. It had not yet earned every mechanism needed to keep that promise."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Missing evidence is still information",
+      "id": "missing-evidence-is-still-information"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika asks users to care about provenance. A trace should not claim an attestation it never received. A checker should not call an unjudged constraint safe. A local model without a known price should be called unpriced, not free."
         }
       ]
     },
@@ -16082,7 +16127,34 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Unknown remains unknown. That is not the absence of a story. It is the beginning of an honest one."
+          "text": "The same standard belongs in the project history."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An empty section in the record tells future maintainers where they can rely on source and where they are reading recollection. It stops a later article from becoming accidental authority for an event it merely describes."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. February keeps the boundary visible."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Unknown remains unknown. The last chapter can now name what the project was reaching for without pretending the name proves the machinery."
         }
       ]
     }
@@ -16093,7 +16165,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "There is no single January commit that declares the kernel of Nika. This is a retrospective comparison between the first public page and the system that exists now. The interesting parts are the ones that survived several opportunities to be removed."
+          "text": "Early products collect ideas. Real products survive subtraction."
         }
       ]
     },
@@ -16102,22 +16174,31 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Four bets made it through."
+          "text": "Remove the first page's speed claim. Remove the production badge, the extra verb and the original license story. Compare what remains with the engine that later replaced it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Four bets survive."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "1. The workflow is a plain-text artifact",
-      "id": "1-the-workflow-is-a-plain-text-artifact"
+      "text": "1. The workflow is an artifact",
+      "id": "1-the-workflow-is-an-artifact"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "The first version already put the job in YAML. The current language is much stricter, but the ownership model is unchanged: the workflow belongs in the project, not in a remote editor or a conversation account."
+          "text": "The first version already put the job in YAML. The current language is far stricter, but the ownership model is unchanged: the workflow belongs in the project, not in a remote editor or a conversation account."
         }
       ]
     },
@@ -16126,7 +16207,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "This choice keeps paying rent. A plain-text plan can be reviewed before execution. It can travel through Git. An agent can author it and a human can inspect the exact artifact. A future runtime can read it without asking the original service for permission."
+          "text": "That plain-text artifact can be reviewed before execution. It can travel through Git. An agent can author it and a human can inspect the exact bytes. Another runtime can read it without asking the original service for permission."
         }
       ]
     },
@@ -16142,15 +16223,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
     {
       "k": "h",
       "depth": 2,
-      "text": "2. Dependencies should be visible as a graph",
-      "id": "2-dependencies-should-be-visible-as-a-graph"
+      "text": "2. The dependencies form a graph",
+      "id": "2-the-dependencies-form-a-graph"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "The early page promised DAG execution because useful workflows already contain ordering. Some tasks need the output of another. Others can run together. Hiding those relationships in a prompt does not remove the graph. It only makes the scheduler guess."
+          "text": "Useful workflows already contain ordering. Some tasks need another task's output. Others can run together. Hiding those relationships in a prompt does not remove the graph. It only makes the machine infer one in the dark."
         }
       ]
     },
@@ -16168,22 +16249,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "This is one of the quiet advantages of Intent as Code. The plan is not a screenshot generated after the run. It is present before anything acts."
+          "text": "That is one quiet advantage of Intent as Code: the plan exists before anything acts. It is not a diagram reconstructed after the run."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "3. Model choice is a parameter, not the architecture",
-      "id": "3-model-choice-is-a-parameter-not-the-architecture"
+      "text": "3. The model is a selection",
+      "id": "3-the-model-is-a-selection"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "The first version named several cloud and local model families. Some of those model names aged almost immediately. The separation did not."
+          "text": "The first page named several cloud and local model families. The names aged quickly. The separation did not."
         }
       ]
     },
@@ -16200,7 +16281,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " selection says where that work is sent. The runtime owns provider-specific mechanics."
+          "text": " field says where that work is sent. The runtime owns the provider-specific mechanics."
         }
       ]
     },
@@ -16209,55 +16290,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That boundary is what lets one file move between a local rehearsal and a cloud model without becoming two products. It also makes the destination reviewable. Provider independence is not a promise that all models behave identically. It is a promise that the rest of the workflow does not have to become provider glue."
-        }
-      ]
-    },
-    {
-      "k": "h",
-      "depth": 2,
-      "text": "4. The runner should be a local executable",
-      "id": "4-the-runner-should-be-a-local-executable"
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Rust was present in the first public story and stayed through the rebuild. The important part is not a language benchmark. It is distribution and custody."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "A single local binary can parse, check and run a workflow without making a hosted control plane the owner of the file. It can expose the same engine to a terminal, a scheduler or a server adapter. It can fail on the machine where the boundary must be enforced."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "That choice became more important as Nika grew. A remote API may be useful, but it should project the runtime rather than replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. Local is the foundation that keeps those doors honest."
+          "text": "This does not pretend all models behave alike. It keeps provider glue from swallowing the workflow."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "Survival is a better origin story than certainty",
-      "id": "survival-is-a-better-origin-story-than-certainty"
+      "text": "4. The engine is something you can hold",
+      "id": "4-the-engine-is-something-you-can-hold"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "The first version also contained ideas that did not survive. Some were redundant language. Some were controls without enough enforcement beneath them. Some were marketing claims without a measurement."
+          "text": "Rust appeared in the first public story and remained through the rebuild. The important point is not a language benchmark. It is custody."
         }
       ]
     },
@@ -16266,7 +16314,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Removing them was not loss of vision. It was how the vision became testable."
+          "text": "A local binary can parse, check and run a workflow without making a hosted control plane the owner of the file. It can expose the same engine to a terminal, a scheduler or a server adapter. It can enforce the boundary on the machine where the effects occur."
         }
       ]
     },
@@ -16275,7 +16323,44 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The durable kernel can be stated without a feature count: write the work in a file, make its dependencies visible, choose the model without rewriting the plan, and run it through an engine you can hold. Everything else has to justify itself against that center."
+          "text": "This bet became more valuable as Nika grew. A remote API may project the runtime, but it should not replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. The local executable keeps those doors honest."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The kernel",
+      "id": "the-kernel"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There is no single January commit that declares these four laws. This chapter is a retrospective comparison between the first public page and the engine repository that begins in April. The survival test is the evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The kernel fits in one sentence: "
+        },
+        {
+          "k": "strong",
+          "text": "write the work in a file, make its dependencies visible, choose the model without rewriting the plan, and run it through an engine you can hold."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Then the public record goes quiet. The next chapter keeps that silence instead of filling it with invented progress."
         }
       ]
     }
@@ -16286,7 +16371,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The first public "
+          "text": "The receipt is a public commit dated December 30, 2025. It introduced the first "
         },
         {
           "k": "code",
@@ -16294,7 +16379,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " landing page landed on December 30, 2025. The commit still exists. So does the page it replaced."
+          "text": " landing page."
         }
       ]
     },
@@ -16303,7 +16388,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "It already contained the durable center of Nika: workflows in YAML, a Rust command-line tool, a task graph and a choice of model providers. It also called the product production-ready, promised a ten-times speedup, treated "
+          "text": "That page already carried the durable center of the project: workflows in YAML, a Rust command-line tool, a task graph and a choice of model providers."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It also called the product production-ready, promised a ten-times speedup, treated "
         },
         {
           "k": "code",
@@ -16311,7 +16405,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " as a semantic verb and displayed a permissive license that the current engine no longer uses."
+          "text": " as a semantic verb and displayed a permissive license the current engine no longer uses."
         }
       ]
     },
@@ -16325,26 +16419,50 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "h",
+      "depth": 2,
+      "text": "A number needs a receipt",
+      "id": "a-number-needs-a-receipt"
+    },
+    {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "That is not an unusual first website. A young product page tries to compress possibility into certainty. The mistake is leaving the certainty unexamined once the product becomes something people may trust with credentials, files and money."
+          "text": "“10x faster” looked precise. The page named no baseline, workload, machine or benchmark report. Without those, the number was decoration wearing a lab coat."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current site treats numbers differently. Language counts are generated from the canonical specification. Release pages list actual assets and digests. A performance claim needs a workload someone else can run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That standard matters because Nika asks people to write claims that machines will act on. The website cannot demand precision from workflow authors while granting itself an exemption."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "A number without a measurement is decoration",
-      "id": "a-number-without-a-measurement-is-decoration"
+      "text": "Ready for which production?",
+      "id": "ready-for-which-production"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "“10x faster” looked precise. It had no named baseline, workload, machine or benchmark report on the page. Without those, the number did not tell a reader anything they could reproduce."
+          "text": "A local summarization task and an unattended server do not carry the same risk. A model-only task and a shell command do not need the same authority. A successful demo proves none of crash recovery, secret confinement or replay safety."
         }
       ]
     },
@@ -16353,49 +16471,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The current site treats numbers differently. Language counts are generated from the canonical specification instead of being typed into marketing copy. Release pages list actual assets and digests. Performance claims need a workload and a receipt. If the measurement changes, the projection changes with it."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "This is a stricter standard because Nika is a tool for writing claims that machines will act on. The website cannot ask workflow authors to be precise while granting itself an exemption."
-        }
-      ]
-    },
-    {
-      "k": "h",
-      "depth": 2,
-      "text": "“Production-ready” hid several questions",
-      "id": "production-ready-hid-several-questions"
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Ready for which production?"
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "A local summarization job and an unattended server process do not carry the same risk. A model-only task and a shell command do not need the same authority. A successful demo does not prove crash recovery, secret confinement or replay semantics."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "The early page collapsed those questions into one badge. The project later learned to separate them:"
+          "text": "The early page collapsed those questions into one badge. The project later learned to give each claim an owner:"
         }
       ]
     },
@@ -16406,7 +16482,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         [
           {
             "k": "text",
-            "text": "the language says whether a file is valid;"
+            "text": "the language defines whether a file is valid;"
           }
         ],
         [
@@ -16446,15 +16522,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "None of those facts becomes true because a page says “production-ready.” Each needs its own mechanism and test."
+          "text": "“Production-ready” cannot make those facts true. Mechanisms and tests can."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "The vocabulary had not earned its shape either",
-      "id": "the-vocabulary-had-not-earned-its-shape-either"
+      "text": "The vocabulary needed subtraction",
+      "id": "the-vocabulary-needed-subtraction"
     },
     {
       "k": "p",
@@ -16501,7 +16577,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". Fetching became a standard-library operation rather than a second way to express tool use."
+          "text": ". Fetching moved into the standard library, where it no longer competes with tool invocation as a second expression of the same effect."
         }
       ]
     },
@@ -16510,7 +16586,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That subtraction matters. A language is easier to teach when each concept has one obvious home. It is easier to implement when two paths do not compete for the same effect. The first page captured an exploration. The later specification had to capture a law."
+          "text": "That subtraction made the language easier to teach and harder to misread. The first page captured an exploration. The later specification had to capture a law."
         }
       ]
     },
@@ -16519,22 +16595,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The license changed for the same reason. “Open source” was not specific enough for the promise Nika wanted to make. The specification became permissive so anyone can implement the language. The engine became copyleft so improvements to a networked fork remain available. The current split is an architectural decision, not a badge."
+          "text": "The license split became more precise too. The specification is permissive so other people can implement the language. The engine is copyleft so a networked fork cannot quietly turn shared infrastructure into a private dead end. That is architecture, not a badge."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "Keep the first page",
-      "id": "keep-the-first-page"
+      "text": "Keep the page",
+      "id": "keep-the-page"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "We could treat the old landing page as an embarrassment and bury it. It is more useful as a baseline."
+          "text": "The old landing page is not an embarrassment to hide. It is a baseline."
         }
       ]
     },
@@ -16543,7 +16619,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "It shows which ideas survived before the current engine existed. It also shows why public copy needs the same discipline as public code. Claims drift. Counts drift. Product vocabulary tightens. A page without a source of truth quietly becomes a second product."
+          "text": "It shows which ideas survived before the current engine existed. It also shows why public copy needs the same discipline as public code. Claims drift. Counts drift. Vocabulary tightens. A page without a source of truth becomes a second product."
         }
       ]
     },
@@ -16552,7 +16628,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The first page was too sure. The correction was not to become timid. It was to make confidence follow evidence."
+          "text": "The correction was not to become timid. It was to make confidence follow evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "January posed the harder question: after removing the claims, the extra verb and the early certainty, what was still worth building?"
         }
       ]
     }
@@ -16563,32 +16648,11 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "This is a retrospective, not a recovered November changelog. The public repository has no November commit we can point to. What survives is the October note on one side and the first "
-        },
-        {
-          "k": "code",
-          "text": "nika.sh"
-        },
-        {
-          "k": "text",
-          "text": " page on the other. The useful story is the design choice between them, not a cleaner timeline than the evidence allows."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "The first choice was not YAML. It was "
+          "text": "Before anyone argued over syntax, one boundary had already been drawn: "
         },
         {
           "k": "strong",
-          "text": "a file"
-        },
-        {
-          "k": "text",
-          "text": "."
+          "text": "the useful part must become a file."
         }
       ]
     },
@@ -16597,7 +16661,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That sounds small now because every Nika workflow is a file. At the time, it separated three things that chat products kept mixing together:"
+          "text": "Not YAML. Not Rust. Not even a workflow language yet. First, AI work had to leave the chat and become an object a person could keep."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That object separated three things chat products kept mixing together:"
         }
       ]
     },
@@ -16630,7 +16703,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "A transcript can contain all three, but it does not distinguish them. It keeps the false starts, the corrections and the final instruction in one scroll. Copying the last prompt into a prompt library helps, but it still leaves the rest of the job implicit. Which material should be read? Which steps can run together? Which model is allowed to see which input? Where does the result go? What happens when a step fails?"
+          "text": "A transcript can contain all three, but it cannot reliably tell them apart. It keeps the correction beside the instruction, the result beside the request, and the final method beside the dead ends that produced it."
         }
       ]
     },
@@ -16639,22 +16712,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The file was the answer because a file already participates in software practice. It can be named, diffed, reviewed, copied, signed and deleted. It can live beside the work it affects. It does not need the product that created it to remain readable."
+          "text": "A file creates a boundary. It says: this is the part meant to survive."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "The object had to describe work, not conversation",
-      "id": "the-object-had-to-describe-work-not-conversation"
+      "text": "The object had to describe work",
+      "id": "the-object-had-to-describe-work"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "The earliest mental model was a short declaration:"
+          "text": "The early mental model was short enough to write without syntax:"
         }
       ]
     },
@@ -16677,7 +16750,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "This is why the language later became task-shaped. A task has an identity and an effect. Dependencies form a graph because work already has dependencies, whether the author draws them or leaves them buried in prose. Outputs are named because the next task needs an object, not a memory of what the model said three messages ago."
+          "text": "This is why the language later became task-shaped. A task has an identity and an effect. Dependencies form a graph because real work already has dependencies, whether the author names them or leaves the runtime to guess. Outputs are named because the next task needs an object, not a memory of what appeared three messages ago."
         }
       ]
     },
@@ -16686,7 +16759,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "YAML came after that. It was a practical container for a document people could read without a compiler course. The important decision was not indentation. It was that the document would describe the intent of the work while the runtime remained responsible for execution."
+          "text": "YAML came after that. It was a practical container for a document people could read without first learning a compiler. The deeper choice was that the document would describe intent while the runtime remained responsible for execution."
         }
       ]
     },
@@ -16701,7 +16774,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Provider independence is often described as an adapter feature. It started earlier, as a rule for the file."
+          "text": "Provider independence is often described as an adapter feature. Here it started earlier, as a test for the file."
         }
       ]
     },
@@ -16710,7 +16783,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "If the method only makes sense inside one chat product, it is not yet the method. The durable parts are the inputs, the graph, the boundaries and the expected output. A model name is one selection inside that description. It may change because a better model appears, a local model becomes sufficient or a provider disappears. The work should remain recognizable."
+          "text": "If a method only makes sense inside one chat product, it is not yet portable. The durable parts are the inputs, the graph, the boundaries and the expected output. A model is one selection inside that description. It may change because a better model appears, a local model becomes sufficient or a provider disappears."
         }
       ]
     },
@@ -16719,7 +16792,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That rule is still visible in a current Nika workflow. Changing "
+          "text": "The work should still be recognizable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That rule remains visible in a Nika workflow. Changing "
         },
         {
           "k": "code",
@@ -16727,22 +16809,30 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may differ, but the plan remains the plan."
+          "text": " does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may change where the work happens without changing what the work is."
         }
       ]
     },
     {
       "k": "h",
       "depth": 2,
-      "text": "What November does not prove",
-      "id": "what-november-does-not-prove"
+      "text": "The evidence boundary",
+      "id": "the-evidence-boundary"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "It would be easy to turn this month into a list of invented milestones: first parser, first run, first perfect syntax. We do not have public receipts for those claims, so this article does not make them."
+          "text": "This is a retrospective, not a recovered November changelog. There is no public November commit to cite. The evidence is the October note on one side and the first "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " page on the other."
         }
       ]
     },
@@ -16751,7 +16841,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "What we can say is narrower. The October objection had become a design constraint by the time the first public page appeared in December. AI work worth repeating should become a durable object. That object should describe the work rather than preserve the conversation. It should be readable without the service that executes it."
+          "text": "So November does not receive an invented parser, a perfect first syntax or a tidy sequence of milestones. It receives the narrower decision the surviving record supports: AI work worth repeating should become a durable object, readable without the service that executes it."
         }
       ]
     },
@@ -16760,7 +16850,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The language would change repeatedly after that. The file did not."
+          "text": "The syntax would change. The file would not."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Once the work had an object, it needed a public face. The first one arrived in December, carrying a real idea and more confidence than the code had earned."
         }
       ]
     }
@@ -16771,7 +16870,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab."
+          "text": "The first durable Nika artifact was not code. It was a note dated October 17, 2025."
         }
       ]
     },
@@ -16780,7 +16879,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The work was good. A careful chain of prompts that turned a messy pile of notes into a clean weekly brief: gather, think, write, save. It had taken a week of small refinements to get right. And it lived nowhere. It was a scroll position in a chat window, on someone else's server, in a format no tool could read back."
+          "text": "It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts and follow-up messages."
         }
       ]
     },
@@ -16789,21 +16888,21 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The note said, roughly:"
+          "text": "The dated note survives, but the public repository does not begin until December. What follows is a compressed reconstruction of its argument, not a public quote from a commit:"
         }
       ]
     },
     {
       "k": "code",
       "lang": "text",
-      "text": "the work is real. the container is fake.\nif it's worth doing twice, it's worth writing down.\nnot a transcript. the INTENT.\nwhat to fetch, what to think about, what to run, where it lands.\na file. plain text. mine."
+      "text": "the work is real. the container is temporary.\nif it is worth doing twice, write it down.\nnot the transcript. the intent.\nwhat to read, what to run, where the result goes.\na plain-text file. mine."
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "That was the whole idea. Not a product, not an architecture: an objection. Software had spent fifty years learning to keep work: source control, reviews, diffs, the entire craft of making thought durable. And the newest, most powerful way of working had quietly dropped all of it. The more useful the AI work, the more disposable its container. Nobody had decided this. It was just the default."
+          "text": "That was the whole beginning. No product name. No language design. No architecture diagram. Just a refusal."
         }
       ]
     },
@@ -16812,7 +16911,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Defaults can be refused."
+          "text": "Software had spent decades learning how to keep work. Source files could be diffed. Changes could be reviewed. Decisions could leave receipts. Then AI made a powerful new kind of work possible and put most of it back inside disposable conversations."
         }
       ]
     },
@@ -16821,31 +16920,89 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Everything that came later unpacks that note. Write the intent down, and the work survives the session: that became "
+          "text": "The better the session, the stranger the loss."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Keep the method, not the conversation",
+      "id": "keep-the-method-not-the-conversation"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A conversation is useful while a method is still being discovered. It is a poor final container for the method itself."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The transcript remembers too much of the wrong thing: every hesitation, correction and detour. It remembers too little of what another machine needs: the inputs, the order, the boundaries and the destination of the result."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The note separated those two objects for the first time:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "a conversation can help discover the work;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "a file should describe the work worth repeating."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That distinction became the root of everything else."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Write down the inputs and the work can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "None of those mechanisms had names in October. The note only supplied the test they would all have to pass: "
         },
         {
           "k": "strong",
-          "text": "the file"
-        },
-        {
-          "k": "text",
-          "text": ". Say what it may touch, and you can let it act: that became "
-        },
-        {
-          "k": "strong",
-          "text": "permits"
-        },
-        {
-          "k": "text",
-          "text": ". Name the four ways a machine can act, and the whole thing stays readable: that became "
-        },
-        {
-          "k": "strong",
-          "text": "the verbs"
-        },
-        {
-          "k": "text",
-          "text": ". Keep it on your machine, under a license nobody can revoke: that became the local-first engine and the AGPL."
+          "text": "does the useful part survive the session?"
         }
       ]
     },
@@ -16854,24 +17011,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "None of those words existed yet in October. There was only the feeling every builder knows: the tools were getting smarter and the work was getting "
-        },
-        {
-          "k": "em",
-          "text": "less"
-        },
-        {
-          "k": "text",
-          "text": " durable, and those two lines should never cross."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "If you have felt that too, the good session that evaporated, the prompt you rebuilt from memory for the third time: the rest of this site is for you. It starts where the note ended: write it down, and own it forever."
+          "text": "The next decision made that test concrete. Before Nika needed a language, it needed an object you could keep."
         }
       ]
     }
@@ -17106,32 +17246,32 @@ export const BLOG_POST_COPY: Record<string, BlogPostCopy> = {
     "author": "Thibaut Melen"
   },
   "naming-the-drum": {
-    "description": "Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.",
+    "description": "Why a local workflow engine carries the name of a liberation figure, and why a butterfly signs the work.",
     "file": "2026-03-21-naming-the-drum.md",
     "author": "Thibaut Melen"
   },
   "the-part-git-cannot-prove": {
-    "description": "The public record goes quiet between the first site and the engine rebuild. An honest history keeps that gap visible.",
+    "description": "Then the public record goes quiet. An honest origin story keeps the missing months visible instead of inventing a montage.",
     "file": "2026-02-the-part-git-cannot-prove.md",
     "author": "Thibaut Melen"
   },
   "what-survived-the-first-version": {
-    "description": "The early product carried too many promises. Four technical bets survived every rewrite because they kept answering the same user problem.",
+    "description": "Strip away the early claims and four technical bets remain: file, graph, model choice and a local engine.",
     "file": "2026-01-what-survived-the-first-version.md",
     "author": "Thibaut Melen"
   },
   "the-first-page-was-too-sure": {
-    "description": "The first nika.sh landing page went live with a real idea and claims the code had not earned. Keeping both facts is part of the history.",
+    "description": "On December 30, Nika became public and immediately overclaimed. The first page preserves both the idea and the correction.",
     "file": "2025-12-30-the-first-page-was-too-sure.md",
     "author": "Thibaut Melen"
   },
   "the-file-came-before-the-language": {
-    "description": "Before Nika had syntax, it had one constraint: useful AI work had to leave the chat and become an object you could keep.",
+    "description": "The first durable Nika decision fit in two words: a file. Syntax, graphs and providers came later.",
     "file": "2025-11-the-file-came-before-the-language.md",
     "author": "Thibaut Melen"
   },
   "the-note-that-started-it": {
-    "description": "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.",
+    "description": "Nika did not begin with a parser. It began with an objection: useful AI work should not disappear when a chat closes.",
     "file": "2025-10-17-the-note-that-started-it.md",
     "author": "Thibaut Melen"
   }

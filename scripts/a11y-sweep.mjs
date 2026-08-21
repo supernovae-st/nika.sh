@@ -119,11 +119,23 @@ const audit = async (route, settleMs) => {
   }
   await evaluate(`document.fonts ? document.fonts.ready.then(() => true) : true`).catch(() => {})
   await sleep(settleMs)
-  /* Audit the SETTLED register, not a translucent entrance frame. The hero's
-     editor reveal ends at 880ms (180ms delay + 700ms rise), so the old 800ms
-     sleep raced axe into a false color-contrast failure on slower commits.
-     Wait only animations owned by data-rise, and cap the wait so a future
-     looping flourish can never stall the belt. */
+  /* Audit the SETTLED register, not a translucent entrance frame. A section
+     mounted late by a lazy boundary can still be waiting for useRevealOnce's
+     1600ms fallback even when no animation has started yet. Waiting only the
+     current animations therefore audited opacity:0 copy on slower Linux runs
+     (the Toolbelt family labels surfaced as 26 false contrast failures).
+     First let every revealable v4 section acquire v4-in through the product's
+     own observer/fallback, then await its finite entrance animations. */
+  for (let i = 0; i < 16; i++) {
+    const armed = await evaluate(`
+      [...document.querySelectorAll('.v4sec')].every(section =>
+        section.classList.contains('v4-in') || !section.querySelector('[data-rise]')
+      )
+    `).catch(() => false)
+    if (armed) break
+    await sleep(250)
+  }
+  /* Cap the animation wait so a future looping flourish cannot stall the belt. */
   await evaluate(`Promise.race([
     Promise.all([...document.querySelectorAll('[data-rise]')]
       .flatMap(el => el.getAnimations())

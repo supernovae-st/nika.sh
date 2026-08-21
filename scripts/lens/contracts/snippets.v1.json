@@ -19,20 +19,20 @@
   "carriers": [
     {
       "path": "content/blog/2025-10-17-the-note-that-started-it.md",
-      "source_blob": "8ce999cd5ecc981561d7ea1124d85757b1986164",
+      "source_blob": "cb512ebf10f164179ddcd0f1536b64c10eb79f12",
       "blocks": [
         {
           "selector": "content/blog/2025-10-17-the-note-that-started-it.md#fence:1",
           "kind": "markdown-fence",
           "line": 18,
           "language": "text",
-          "sha256": "47ea53c59f5131cda96bfa4b006ffb43e326c2e17d082286b7774881a78fae85"
+          "sha256": "9674f3a303f8e75c773b21ef2fa0957d5ebd37b59ede339fc732a1e97e230819"
         }
       ]
     },
     {
       "path": "content/blog/2025-11-the-file-came-before-the-language.md",
-      "source_blob": "49e16cd919783eb3531b4b6e19363cfbc66250c3",
+      "source_blob": "5bf4954aaec9bfedf61765585a8472179442dbc6",
       "blocks": [
         {
           "selector": "content/blog/2025-11-the-file-came-before-the-language.md#fence:1",

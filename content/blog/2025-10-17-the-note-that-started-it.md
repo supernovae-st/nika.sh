@@ -4,31 +4,46 @@ title: "The note that started it"
 tag: Origins
 date: 2025-10-17
 published: 2026-07-05
-description: "Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared."
+description: "Nika did not begin with a parser. It began with an objection: useful AI work should not disappear when a chat closes."
 series: origin-ledger
 series_stop: note
 ---
 
-Before the spec, before the engine, before the name, there was a note. October 2025, one evening, after losing an afternoon's work to a closed tab.
+The first durable Nika artifact was not code. It was a note dated October 17, 2025.
 
-The work was good. A careful chain of prompts that turned a messy pile of notes into a clean weekly brief: gather, think, write, save. It had taken a week of small refinements to get right. And it lived nowhere. It was a scroll position in a chat window, on someone else's server, in a format no tool could read back.
+It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts and follow-up messages.
 
-The note said, roughly:
+The dated note survives, but the public repository does not begin until December. What follows is a compressed reconstruction of its argument, not a public quote from a commit:
 
 ```text
-the work is real. the container is fake.
-if it's worth doing twice, it's worth writing down.
-not a transcript. the INTENT.
-what to fetch, what to think about, what to run, where it lands.
-a file. plain text. mine.
+the work is real. the container is temporary.
+if it is worth doing twice, write it down.
+not the transcript. the intent.
+what to read, what to run, where the result goes.
+a plain-text file. mine.
 ```
 
-That was the whole idea. Not a product, not an architecture: an objection. Software had spent fifty years learning to keep work: source control, reviews, diffs, the entire craft of making thought durable. And the newest, most powerful way of working had quietly dropped all of it. The more useful the AI work, the more disposable its container. Nobody had decided this. It was just the default.
+That was the whole beginning. No product name. No language design. No architecture diagram. Just a refusal.
 
-Defaults can be refused.
+Software had spent decades learning how to keep work. Source files could be diffed. Changes could be reviewed. Decisions could leave receipts. Then AI made a powerful new kind of work possible and put most of it back inside disposable conversations.
 
-Everything that came later unpacks that note. Write the intent down, and the work survives the session: that became **the file**. Say what it may touch, and you can let it act: that became **permits**. Name the four ways a machine can act, and the whole thing stays readable: that became **the verbs**. Keep it on your machine, under a license nobody can revoke: that became the local-first engine and the AGPL.
+The better the session, the stranger the loss.
 
-None of those words existed yet in October. There was only the feeling every builder knows: the tools were getting smarter and the work was getting *less* durable, and those two lines should never cross.
+## Keep the method, not the conversation
 
-If you have felt that too, the good session that evaporated, the prompt you rebuilt from memory for the third time: the rest of this site is for you. It starts where the note ended: write it down, and own it forever.
+A conversation is useful while a method is still being discovered. It is a poor final container for the method itself.
+
+The transcript remembers too much of the wrong thing: every hesitation, correction and detour. It remembers too little of what another machine needs: the inputs, the order, the boundaries and the destination of the result.
+
+The note separated those two objects for the first time:
+
+1. a conversation can help discover the work;
+2. a file should describe the work worth repeating.
+
+That distinction became the root of everything else.
+
+Write down the inputs and the work can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it.
+
+None of those mechanisms had names in October. The note only supplied the test they would all have to pass: **does the useful part survive the session?**
+
+The next decision made that test concrete. Before Nika needed a language, it needed an object you could keep.

@@ -43,6 +43,15 @@ export function Component() {
       .filter((l): l is { stop: string; post: RichPost } => Boolean(l.post))
   }, [copy, hit, members])
 
+  const totalMinutes = legs.reduce((total, leg) => total + leg.post.readingMin, 0)
+  const receiptCount = new Set(legs.flatMap((leg) => leg.post.receipts ?? [])).size
+  const firstStop = legs[0]?.stop ?? 'start'
+  const lastStop = legs[legs.length - 1]?.stop ?? 'finish'
+  const seriesLede =
+    id === 'origin-ledger'
+      ? 'Start with the objection. End with the name. Each record changes what the next one can honestly claim.'
+      : 'Follow the records in order. Each one stands alone; together they complete the argument.'
+
   const title = hit ? `${hit.title} · a reading path · Nika` : 'Not a reading path · Nika'
   const description = hit
     ? `${hit.claim}. ${legs.length} ${legs.length === 1 ? 'stop' : 'stops'}, in reading order: a path through the journal.`
@@ -133,36 +142,57 @@ export function Component() {
           {hit && (
             <>
               <p className="v4sec-lede" data-rise style={{ ['--rise-delay' as string]: '120ms' }}>
-                <b>{hit.claim}.</b> Read the stops in order. Each one stands alone, together they
-                make the argument. The posts carry the same rail on their own pages.
+                <b>{hit.claim}.</b> {seriesLede}
               </p>
 
               <StampStrip
                 items={[
                   { n: legs.length, label: legs.length === 1 ? 'stop' : 'stops', sub: 'in reading order' },
-                  { n: legs.reduce((n, l) => n + l.post.readingMin, 0), label: 'minutes end to end', sub: 'the whole path' },
-                  { n: Object.keys(BLOG_SERIES).length, label: Object.keys(BLOG_SERIES).length === 1 ? 'path' : 'paths', sub: 'the journal keeps' },
-                  { n: BLOG_POSTS.length, label: 'posts in the journal', sub: 'the wider shelf' },
+                  { n: totalMinutes, label: 'minutes end to end', sub: 'the complete path' },
+                  receiptCount > 0
+                    ? { n: receiptCount, label: receiptCount === 1 ? 'source commit' : 'source commits', sub: 'cited across the path' }
+                    : { n: BLOG_POSTS.length, label: 'posts in the journal', sub: 'the wider record' },
+                  { n: `${firstStop} → ${lastStop}`, label: 'the arc', sub: 'from first record to last' },
                 ]}
               />
 
-              <div className="blog-shelf" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
-                {legs.map((l, i) => (
-                  <Link key={l.post.slug} to={`/blog/${l.post.slug}`} viewTransition className="blog-card">
-                    <span className="blog-card-fig mono">
-                      {String(i + 1).padStart(2, '0')} · {l.stop}
-                    </span>
-                    <span className="blog-card-title">{l.post.title}</span>
-                    <span className="blog-card-teaser">{l.post.description}</span>
-                    <span className="blog-card-foot mono">
-                      {isRetrospective(l.post) && 'retrospective · '}{storyDateLabel(l.post)} · {l.post.readingMin} min
-                      <span className="blog-card-arrow acue acue--r" aria-hidden>
-                        →
-                      </span>
-                    </span>
-                  </Link>
-                ))}
+              <div className="bs-register-head mono" aria-hidden data-rise>
+                <span>sequence</span>
+                <span>the record</span>
+                <span>evidence</span>
               </div>
+              <ol className="bs-ledger" data-rise style={{ ['--rise-delay' as string]: '180ms' }}>
+                {legs.map((l, i) => (
+                  <li key={l.post.slug} className="bs-ledger-row">
+                    <Link to={`/blog/${l.post.slug}`} viewTransition className="bs-ledger-link">
+                      <span className="bs-ledger-sequence mono" aria-hidden>
+                        <span className="bs-ledger-node" />
+                        <span className="bs-ledger-number">{String(i + 1).padStart(2, '0')}</span>
+                        <span className="bs-ledger-stop">{l.stop}</span>
+                      </span>
+                      <span className="bs-ledger-record">
+                        <span className="bs-ledger-meta mono">
+                          <time dateTime={l.post.date}>{storyDateLabel(l.post)}</time>
+                          {isRetrospective(l.post) && <span>retrospective</span>}
+                        </span>
+                        <span className="bs-ledger-title">{l.post.title}</span>
+                        <span className="bs-ledger-teaser">{l.post.description}</span>
+                      </span>
+                      <span className="bs-ledger-evidence mono">
+                        <span>
+                          {l.post.receipts?.length
+                            ? `${l.post.receipts.length} ${l.post.receipts.length === 1 ? 'receipt' : 'receipts'}`
+                            : 'recollection'}
+                        </span>
+                        <span>{l.post.readingMin} min</span>
+                        <span className="bs-ledger-open" aria-hidden>
+                          read →
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
 
               <p className="tp-foot" data-rise>
                 <Link to="/blog">The whole journal →</Link>

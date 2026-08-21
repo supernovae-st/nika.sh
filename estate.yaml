@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 10f54a96a868e27e0348ddc7f5c2c27e2434b5be44d5499895c86ead15e96129
+  sha256: 9f68981a8190b3851f99367c14307b5a389d5008388f4d57da8f9135f859c287
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -268,7 +268,7 @@ files:
     - "the gated site sources sets.yaml declares (site facts + the spec spine)"
 - path: "public/llms-full.txt"
   class: generated
-  sha256: 693f986a53b3a4968b4eb5bd758a343a07b6f03f495d2630f9417a4c5a77b689
+  sha256: d19bab1373fc16168d81b8402a37454b00d715b0d8541e5e206008ee29989736
   evidence: "row of BLOG_GENERATED_MIRRORS in scripts/build-blog.mjs; its own header: 'The complete blog, newest first, as raw markdown (source: content/blog in the site repo)'"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -366,7 +366,7 @@ files:
   evidence: "hand-kept crawler policy"
 - path: "public/rss.xml"
   class: generated
-  sha256: b0b5f772781f01aa9160dd9221c1cf4fd9f31af7dbce7218ddad6482ecce4ec5
+  sha256: e352c7bbbcfdf57029baf02613d9e7042329e167c07d67fc81aeea0b05b1159b
   evidence: "row of BLOG_GENERATED_MIRRORS in scripts/build-blog.mjs (OUT_RSS · build-blog.mjs:28)"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: e03a0517cefb649cd209c1e67cfe85d0da7ba0ed669f72cf8ded6102061082d5
+  sha256: 599ed38fd60f810f2bccbeb4f62a28756bcd44d15ba8ea6ee89fa70ff81c00f6
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -781,7 +781,7 @@ patterns:
 - glob: "public/blog/**"
   class: generated
   match_count: 51
-  aggregate_sha256: 1f4035860563204464803343e5444f67e03b487bf81a5178ac3a59ddbe2184c1
+  aggregate_sha256: fd82ed8a29c97f9fee944443d60761c86cfdd18117b828dbc91bc4360f83af8c
   evidence: "the markdown twins scripts/build-blog.mjs projects from content/blog/*.md (build-blog.mjs:316 — 'public/blog/<slug>.md' with canon markers applied)"
   derivation:
     tool: "node scripts/build-blog.mjs"
@@ -843,7 +843,7 @@ patterns:
 - glob: "tests/visual/golden/**"
   class: testimonial
   match_count: 28
-  aggregate_sha256: 7d87f414db945402608f65e6930d27a52a48fb9ee3f722f38c3afc5f87714907
+  aggregate_sha256: fc5274b9e70901f1b2eab60849ca14e4b8912e9190660aa9a8eac581d98ffe1d
   evidence: "visual-regression goldens — captured from the built site by scripts/visual-regress.mjs --update (pnpm visual:update), re-baked deliberately per platform (darwin/linux); .github/workflows/visual.yml pixel-compares against them — captured evidence of how the site RENDERED, not regenerable deterministically"
 - glob: "scripts/media/raw/**"
   class: testimonial
@@ -870,12 +870,12 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: c6e58cae5aa3a4f28c35a7ba860e8cb3ef77b45d4e2655bc33dd0c2188e5df6b
+  aggregate_sha256: c927157d4af71660c7e9b65e0db8be4ac648993a944d7096f47332f8624ed812
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
   match_count: 50
-  aggregate_sha256: a424877eab8121fdc5d204d6dcfdf9bd793e4b25b638d0455b7a46be169d0caf
+  aggregate_sha256: ec4a3878f77379dd8e625f04427ca2dc77987b9ba53c08ac4378764ef9339b82
   evidence: "the authored blog sources — the markdown here is the SSOT the public/blog twins and generated modules mirror (+ the lane README)"
 - glob: "content/i18n/**"
   class: authored
@@ -931,7 +931,7 @@ patterns:
 - glob: "src/**.generated.*"
   class: generated
   match_count: 45
-  aggregate_sha256: 40ec084aa2a32779946991f495f6f65e869618b33f278d8942962c23549ac6ba
+  aggregate_sha256: bfd3750498c17ce5d3cc61e8b7f74cc1676ef57080843b70dc9669f52ee96851
   evidence: "every member carries its own AUTO-GENERATED marker naming its tool (scripts/lens/graph/build-lens.mjs · scripts/build-*.mjs · design/build.mjs · the nika-spec projectors); the exact-path contract outputs are excepted in files: with their precise derivations"
   derivation:
     tool: "the tool each member's own header names (build-lens.mjs · build-*.mjs · design/build.mjs · canon/design/showcase projectors)"
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 477
-  aggregate_sha256: 4bc0b7d823bd877dfdfafbdcfcae725370675de41c37997dd4b3fdfa636a016e
+  aggregate_sha256: b49b0b0bb19ef0839530bca4f869f6c41151acce8ec1184d0061cf994c71b988
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 98
-  aggregate_sha256: 892a8917cbada0c21b8691b91e0261eec9b580b650eab201424f5d243eddceff
+  aggregate_sha256: 9baeecf54be3e22ffaba0592224f2144e554faba3b6249f5692cb42b0cb4407d
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored

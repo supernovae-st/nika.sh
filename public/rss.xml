@@ -356,7 +356,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/naming-the-drum</guid>
       <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
-      <description>Why a workflow engine carries the name of a liberation god, and a butterfly on every commit.</description>
+      <description>Why a local workflow engine carries the name of a liberation figure, and why a butterfly signs the work.</description>
     </item>
     <item>
       <title>The part Git cannot prove</title>
@@ -364,7 +364,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-part-git-cannot-prove</guid>
       <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
-      <description>The public record goes quiet between the first site and the engine rebuild. An honest history keeps that gap visible.</description>
+      <description>Then the public record goes quiet. An honest origin story keeps the missing months visible instead of inventing a montage.</description>
     </item>
     <item>
       <title>What survived the first version</title>
@@ -372,7 +372,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/what-survived-the-first-version</guid>
       <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Origins|Engine</category>
-      <description>The early product carried too many promises. Four technical bets survived every rewrite because they kept answering the same user problem.</description>
+      <description>Strip away the early claims and four technical bets remain: file, graph, model choice and a local engine.</description>
     </item>
     <item>
       <title>The first page was too sure</title>
@@ -380,7 +380,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-first-page-was-too-sure</guid>
       <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
-      <description>The first nika.sh landing page went live with a real idea and claims the code had not earned. Keeping both facts is part of the history.</description>
+      <description>On December 30, Nika became public and immediately overclaimed. The first page preserves both the idea and the correction.</description>
     </item>
     <item>
       <title>The file came before the language</title>
@@ -388,7 +388,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-file-came-before-the-language</guid>
       <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
       <category>Origins|Language</category>
-      <description>Before Nika had syntax, it had one constraint: useful AI work had to leave the chat and become an object you could keep.</description>
+      <description>The first durable Nika decision fit in two words: a file. Syntax, graphs and providers came later.</description>
     </item>
     <item>
       <title>The note that started it</title>
@@ -396,7 +396,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/the-note-that-started-it</guid>
       <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Origins</category>
-      <description>Before the spec, before the name, there was one evening note: the best AI work of the month had just disappeared.</description>
+      <description>Nika did not begin with a parser. It began with an objection: useful AI work should not disappear when a chat closes.</description>
     </item>
   </channel>
 </rss>
