@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: ce2eaeb7c8c48135578a805a42ddca75ddd0601810cf2ce85211809a28493998
+  sha256: 36f164cee46beeb8cd1d7c3d9ff0b2847b14f067cee4c7fa3caff28e2d13cc68
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 7f1197720606e2cdbcbd2ba8e29986a08ab058b334cf91b94ace3ff33338750c
+  sha256: 03406fac1201fd706e775da4d8b711e2b89e90d04b80f3a2fdced769f0a351f3
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -870,7 +870,7 @@ patterns:
 - glob: "scripts/lens/contracts/*.v1.json"
   class: authored
   match_count: 6
-  aggregate_sha256: a1d2af76654bc686728e1db652b4a34f2354761114f67ca1c333a3c121a100c0
+  aggregate_sha256: a9a69abeb2749d3b859af682865f5d75bc1603c085ae5a0d63ef4b38b094baf5
   evidence: "hand-written LENS policy contracts (declarative gate configuration — channels · gates · counts · features · presentation · snippets); the repinned digest baselines are listed individually in files:"
 - glob: "content/blog/**"
   class: authored
@@ -941,7 +941,7 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 445
-  aggregate_sha256: cfc88cd6c6fe317c20c809c659ac3495175dba10d402869987888a71ae80b4cb
+  aggregate_sha256: a0c7a0dccd5d2dafe5ff990e60b85df38959f18b18b23a10487504279295a6f2
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored

@@ -139,12 +139,12 @@ body {
   font-weight: var(--fw-medium);
 }
 
-/* ── thin site bar, aligned to the references' full-width top rule ───────── */
+/* ── Raycast register · one floating command capsule ────────────────────── */
 .v4nav {
-  inset: 0 0 auto;
+  inset: 12px 16px auto;
   padding: 0;
-  --nav-tint-hairline: var(--v4-line);
-  --nav-tint-catch: none;
+  --nav-tint-hairline: rgb(255 255 255 / 0.11);
+  --nav-tint-catch: inset 0 1px 0 rgb(255 255 255 / 0.055);
 }
 
 .v4nav::before {
@@ -154,12 +154,16 @@ body {
 .v4nav-capsule,
 .v4nav[data-solid='true'] .v4nav-capsule,
 .v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
-  max-width: none;
-  border: 0;
-  border-bottom: 1px solid var(--v4-line);
-  border-radius: 0;
-  background: rgb(8 8 8 / 0.92);
-  box-shadow: none;
+  max-width: 76rem;
+  border: 1px solid rgb(255 255 255 / 0.105);
+  border-radius: 14px;
+  background: linear-gradient(137deg, rgb(18 18 20 / 0.88), rgb(9 9 10 / 0.95));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.055),
+    0 1px 2px rgb(0 0 0 / 0.55),
+    0 18px 48px -28px rgb(0 0 0 / 0.95);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  backdrop-filter: blur(18px) saturate(1.1);
 }
 
 .v4nav-capsule::after {
@@ -169,19 +173,19 @@ body {
 }
 
 .v4nav-row {
-  max-width: 90rem;
-  height: 64px;
+  max-width: none;
+  height: 58px;
   margin: 0 auto;
-  padding-inline: clamp(20px, 4vw, 56px);
+  padding-inline: 14px;
 }
 
 .v4nav[data-scrolled='true'] .v4nav-row {
-  height: 58px;
+  height: 54px;
 }
 
 .v4nav-vpill {
-  border: 0;
-  background: transparent;
+  border-color: rgb(255 255 255 / 0.08);
+  background: rgb(255 255 255 / 0.025);
 }
 
 .v4nav-link,
@@ -192,16 +196,16 @@ body {
 }
 
 .v4nav-link[aria-current='page'] {
-  background: transparent;
+  background: rgb(255 255 255 / 0.065);
 }
 
 .v4nav-cta {
   min-height: 34px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
   background: #f4f4f1;
   color: #090909;
-  box-shadow: none;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.28);
 }
 
 /* The menu is navigation, not a scene. Keeping it geometrically settled also
@@ -216,7 +220,7 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(70% 44% at 74% 12%, rgb(79 124 255 / 0.1), transparent 66%),
+    radial-gradient(60% 38% at 70% 12%, rgb(79 124 255 / 0.055), transparent 68%),
     linear-gradient(180deg, var(--v4-bg) 0%, var(--v4-bg) 76%, var(--v4-bg-deep) 100%);
 }
 
@@ -238,13 +242,14 @@ body {
 }
 
 .depth-fixed canvas {
-  opacity: 0.2;
-  filter: saturate(0.42) brightness(0.58);
+  opacity: 0.12;
+  filter: saturate(0.28) brightness(0.5);
 }
 
 #hero {
-  min-height: auto;
-  padding-top: 64px;
+  min-height: max(900px, 100svh);
+  padding-top: 0;
+  justify-content: flex-start;
   background: transparent;
 }
 
@@ -260,20 +265,20 @@ body {
 
 .v4hero-grid {
   display: grid;
-  gap: clamp(52px, 8vh, 84px);
-  max-width: 90rem;
-  padding: clamp(92px, 13vh, 136px) clamp(20px, 4vw, 56px) 72px;
+  gap: clamp(38px, 5vh, 52px);
+  max-width: 80rem;
+  padding: clamp(118px, 13vh, 142px) clamp(20px, 4vw, 48px) clamp(60px, 8vh, 84px);
 }
 
 .v4hero-copy {
   align-items: center;
-  max-width: 58rem;
+  max-width: 50rem;
   margin-inline: auto;
   text-align: center;
 }
 
 #hero .v4beyebrow {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   color: #8a8a8a;
   letter-spacing: 0.14em;
 }
@@ -282,7 +287,7 @@ body {
   max-width: 12ch;
   background: none;
   color: var(--v4-text);
-  font-size: var(--type-display);
+  font-size: clamp(4.2rem, 6.3vw, 6.5rem);
   font-weight: var(--fw-medium);
   letter-spacing: -0.045em;
   line-height: 0.98;
@@ -290,8 +295,8 @@ body {
 
 .v4hero-sub,
 #hero .v4hero-sub {
-  max-width: 44rem;
-  margin-top: 24px;
+  max-width: 41rem;
+  margin-top: 20px;
   color: #9b9b9b;
   font-size: var(--type-body);
   line-height: 1.6;
@@ -304,7 +309,7 @@ body {
 
 .v4hero-ctas {
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 26px;
 }
 
 .v4cta {
@@ -361,14 +366,14 @@ body {
 }
 
 .v4vplate {
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: var(--type-micro);
   color: #626262;
 }
 
 @media (min-width: 1024px) {
   .v4hero-editor {
-    max-width: 76rem;
+    max-width: 72rem;
     margin-inline: auto;
   }
 }
@@ -380,12 +385,14 @@ body {
 
 .v4hero-well {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   overflow: hidden;
   border: 1px solid var(--v4-line);
-  border-radius: 12px;
+  border-radius: 14px;
   background: #0b0b0b;
-  box-shadow: 0 32px 100px -64px rgb(79 124 255 / 0.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.025),
+    0 36px 90px -58px rgb(0 0 0 / 0.95);
 }
 
 .v4hero-code {
@@ -401,21 +408,19 @@ body {
 }
 
 .v4hero-code .cf-body {
-  min-height: 390px;
+  min-height: 332px;
 }
 
 .v4hero-code .cf-pre {
-  max-height: 390px;
+  max-height: 332px;
 }
 
 .v6hero-plan {
   grid-column: 2;
   grid-row: 1;
   min-width: 0;
-  padding: 20px;
-  background:
-    radial-gradient(circle at 75% 22%, rgb(79 124 255 / 0.08), transparent 42%),
-    #0d0d0d;
+  padding: 18px;
+  background: #0d0d0d;
 }
 
 .v6hero-plan-kick {
@@ -442,7 +447,7 @@ body {
 }
 
 .v6hero-plan .v4hero-dag .mdag-row {
-  min-height: 196px;
+  min-height: 158px;
   justify-content: center;
 }
 
@@ -450,7 +455,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .v6hero-facts div {
@@ -526,6 +531,103 @@ body {
 
 .pm-arrow {
   color: rgb(255 255 255 / 0.38);
+}
+
+/* ── run film · the plan is a diagram, not a blue glass dashboard ───────── */
+.morphsec {
+  --morph-grid-ink: rgb(255 255 255 / 0.032);
+  --morph-grid-ink-far: rgb(255 255 255 / 0.016);
+}
+
+.morphsec[data-armed] .morph-stage::before {
+  background-image:
+    radial-gradient(78% 58% at 50% 52%, rgb(79 124 255 / 0.028), transparent 72%),
+    linear-gradient(90deg, var(--morph-grid-ink) 1px, transparent 1px),
+    linear-gradient(180deg, var(--morph-grid-ink) 1px, transparent 1px);
+  background-size: 100% 100%, 80px 80px, 80px 80px;
+  background-position: 0 0;
+  -webkit-mask-image: radial-gradient(115% 92% at 50% 54%, #000 0%, #000 48%, transparent 88%);
+  mask-image: radial-gradient(115% 92% at 50% 54%, #000 0%, #000 48%, transparent 88%);
+}
+
+.morph-wrap {
+  max-width: 78rem;
+}
+
+.morph-wires path {
+  stroke: rgb(255 255 255 / 0.2);
+  stroke-width: 1;
+}
+
+.morph-arrow-head {
+  stroke: rgb(255 255 255 / 0.52);
+  stroke-width: 1;
+}
+
+.morph-wire-flow {
+  stroke: rgb(111 151 255 / 0.58);
+  stroke-width: 1;
+  stroke-dasharray: 2 18;
+}
+
+.morph-wires circle {
+  fill: rgb(255 255 255 / 0.28);
+}
+
+.morph-node {
+  border-color: rgb(255 255 255 / 0.13);
+  border-radius: 7px;
+  background-color: rgb(16 16 16);
+  background-image: none;
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    inset 0 1px 0 rgb(255 255 255 / 0.035),
+    0 10px 28px -22px rgb(0 0 0 / 0.95);
+}
+
+.morph-node::after {
+  display: none;
+}
+
+.morph-node::before {
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 62%, white 4%);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 10%, transparent);
+}
+
+.morph-node[data-run='running'] {
+  animation: none;
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 52%, var(--v4-line));
+}
+
+.morph-stage[data-phase='flat'] .morph-node:hover,
+.morph-stage[data-phase='flat'] .morph-node[data-hi],
+.morph-stage[data-phase='done'] .morph-node:hover,
+.morph-stage[data-phase='done'] .morph-node[data-hi] {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 54%, var(--v4-line));
+  background-color: rgb(20 20 20);
+  box-shadow:
+    inset 2px 0 0 var(--node-vhue, var(--v4-accent)),
+    inset 0 1px 0 rgb(255 255 255 / 0.045),
+    0 12px 30px -22px color-mix(in srgb, var(--node-vhue, var(--v4-accent)) 28%, transparent);
+}
+
+.morph-node-chip {
+  border: 1px solid rgb(255 255 255 / 0.055);
+  background: rgb(9 9 9);
+  box-shadow: none;
+}
+
+.morph-seed {
+  border-color: rgb(255 255 255 / 0.14);
+  background: rgb(16 16 16);
+  box-shadow: inset 2px 0 0 var(--node-vhue, var(--v4-accent));
+}
+
+.morph-term {
+  border-color: rgb(255 255 255 / 0.11);
+  background: rgb(9 9 9);
+  box-shadow: 0 -20px 48px -38px rgb(0 0 0 / 0.95);
 }
 
 /* ── journal · editorial grid, no blueprint watermark ───────────────────── */
@@ -698,7 +800,7 @@ body {
   .v4hero-grid {
     display: flex;
     gap: 40px;
-    padding-block: 76px 56px;
+    padding-block: 94px 56px;
   }
 
   .v4hero-copy {
@@ -756,5 +858,28 @@ body {
     padding-left: 0;
     border-top: 1px solid var(--v4-line);
     border-left: 0;
+  }
+}
+
+@media (max-width: 719.98px) {
+  .v4nav {
+    inset: 8px 8px auto;
+  }
+
+  .v4nav-capsule,
+  .v4nav[data-solid='true'] .v4nav-capsule,
+  .v4nav[data-scrolled='true'][data-solid='true'] .v4nav-capsule {
+    border: 1px solid rgb(255 255 255 / 0.105);
+    border-radius: 12px;
+    background: rgb(10 10 11 / 0.94);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.045),
+      0 14px 34px -24px rgb(0 0 0 / 0.95);
+  }
+
+  .v4nav-row,
+  .v4nav[data-scrolled='true'] .v4nav-row {
+    height: 56px;
+    padding-inline: 10px;
   }
 }

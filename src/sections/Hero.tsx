@@ -2,11 +2,9 @@ import { Link } from 'react-router'
 import { useEffect, useRef, useState } from 'react'
 import { CodeFile } from '../components/CodeFile'
 import { MiniDag } from '../components/MiniDag'
-import { InstallCommand } from '../components/InstallCommand'
 import { useMagnetic } from '../fx/use-magnetic'
 import { ENGINE_VERSION } from '../content'
 import { CANON } from '../canon.generated'
-import { CHECK_VERDICTS, VERDICT_ENGINE } from '../content/check-verdicts.generated'
 import { type FlagshipEntry } from '../flagships'
 import { LIBRARY_TABS, type LibraryItem } from '../flagships/library'
 import '../shell/shell.css'
@@ -321,7 +319,6 @@ export default function Hero({
             <Link to="/language/spec" className="v6hero-secondary">
               Read the spec
             </Link>
-            <InstallCommand />
             <span className="v4hero-hatches">
               <Link to="/play" className="v4hero-play">
                 Open the playground
@@ -413,29 +410,6 @@ export default function Hero({
                 </div>
               </dl>
             </aside>
-            {(() => {
-              const v =
-                item.flagship &&
-                CHECK_VERDICTS[item.flagship.filename.replace('.nika.yaml', '')]
-              if (!v) return null
-              return (
-                <p className="v4verdict">
-                  {/* the attribution reads aloud but never draws: an aria-label
-                      on a <p> MASKS its visible text on some screen readers,
-                      so the context rides a sr-only lead instead */}
-                  <span className="sr-only">nika check: </span>
-                  <span className="v4verdict-tick" aria-hidden>
-                    ✔
-                  </span>
-                  audited · {v.tasks} tasks · {v.waves} waves ·{' '}
-                  {v.permitsDeclared ? 'permits declared' : 'permits none'}
-                  {/* the checker keeps thinking on a green file — hints are
-                      captured advisory counts, shown only when they exist */}
-                  {v.hints > 0 && <> · {v.hints} {v.hints === 1 ? 'hint' : 'hints'}</>}
-                  <span className="v4verdict-engine">nika {VERDICT_ENGINE}</span>
-                </p>
-              )
-            })()}
           </div>
         </div>
       </div>
