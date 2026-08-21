@@ -55,7 +55,7 @@ const WORLD_ICONS: NikaIconId[] = [
   'ui/book', // the language · the spec
   'ui/tiles', // workflows · the corpus
   'builtin/inspect', // what it knows · the catalog lens
-  'ui/terminal', // get it running
+  'ui/terminal', // build with Nika · SDK + install
   'ui/butterfly', // the project · the mark itself
 ]
 

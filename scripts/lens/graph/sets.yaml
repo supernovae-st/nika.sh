@@ -855,7 +855,7 @@ nav:
   #    model, not questions a visitor asks — and hid eleven doors behind two
   #    mega-panels with a constellation drawing at the top of one of them.
   #
-  #    The eight worlds ARE the navigation now. Six flat links, no dropdown,
+  #    The public worlds ARE the navigation now. Six flat links, no dropdown,
   #    no panel: each one is a WORLD with its own hub, and the hub is where a
   #    reader browses. A dropdown that lists what a page already lists is a
   #    second copy of that page in the chrome.
@@ -864,8 +864,8 @@ nav:
       - { label: How it works, to: /how }
       - { label: The language, to: /language }
       - { label: Workflows, to: /workflows }
+      - { label: SDK, to: /sdk }
       - { label: Catalog, to: /catalog }
-      - { label: Docs, external: true }   # href = DOCS const (content.ts)
       - { label: Blog, to: /blog }
     version_pill: { to: /changelog, title: "shipping in the open · the ship log" }
   # ── THE FOOTER · the complete card, one column per WORLD (the panels died,
@@ -914,14 +914,18 @@ nav:
           - { label: MCP servers, to: /catalog/mcp }
           - { label: Embeddings, to: /catalog/embeddings }
           - { label: Capability rules, to: /catalog/capabilities }
-      - col: Get it running
+      - col: Build with Nika
         items:
+          - { label: TypeScript SDK, to: /sdk }
+          - { label: Start with the SDK, to: /sdk/start }
+          - { label: Local API, to: /sdk/local }
+          - { label: Runtime and events, to: /sdk/runtime }
+          - { label: Remote API preview, to: /sdk/remote }
+          - { label: SDK operations, to: /sdk/operations }
+          - { label: SDK reference, to: /sdk/reference }
           - { label: Install, to: /install }
+          - { label: Convert to Nika, to: /convert }
           - { label: Wire your client, to: /integrations }
-          - { label: Registry, to: /integrations/registry }
-          - { label: VS Code extension, to: /integrations/vscode }
-          - { label: Homebrew tap, to: /integrations/homebrew }
-          - { label: Send a workflow, to: /convert }
       - col: The project
         items:
           - { label: The map, to: /map }
@@ -977,6 +981,7 @@ snippet_registry:
   - { file: src/content/changelog.ts, kind: crafted-room, gate: "onpage-yaml AJV (full-file law)" }
   - { file: src/content/install.ts, kind: engine-capture, gate: "version.test.ts pins the transcript to ENGINE_VERSION" }
   - { file: src/content/learn.ts, kind: learn-fragment, gate: "learn-fragments.test.ts (FULL_FILE AJV)" }
+  - { file: src/content/sdk.ts, kind: crafted-room, gate: "sdk-pages.test.ts parses every nika.yaml sample against the released closed project and arm keysets" }
   - { file: src/content/sitemap.ts, kind: crafted-room, gate: "onpage-yaml AJV", dies: wo-3 }
   - { file: src/flagships/flagship-data.ts, kind: library-hero, gate: "served byte-pin + recorded traces (see library_heroes_gates)" }
   - { file: src/pages/mcp-try-block.ts, kind: crafted-room, gate: "mcp-try-block.test.ts (the ONE builder AJV-judged against the pinned schema with a real ref · slash law · permits.tools law)" }

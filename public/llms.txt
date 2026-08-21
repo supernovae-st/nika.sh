@@ -72,6 +72,67 @@ Every served library file (e.g. https://nika.sh/library/daily-brief.nika.yaml) c
 - Interactive explorer: https://nika.sh/#use-cases
 - Blog (markdown source: content/blog in the site repo): https://nika.sh/blog · feed https://nika.sh/rss.xml · full text https://nika.sh/llms-full.txt · every post serves its markdown twin beside the page (append .md, e.g. https://nika.sh/blog/intent-as-code.md) · one citable register per tag (e.g. https://nika.sh/blog/tags/engine)
 
+## TypeScript SDK
+
+The public `@supernovae-st/nika-client` package has two clearly separated
+surfaces. `@supernovae-st/nika-client/local` works today against the released
+binary: typed `check --json`, the dry-run plan object, the `run --json` NDJSON
+event stream, offline test and trace verification. It spawns with an argv array
+and no shell. The root module types a future workflow HTTP + SSE service; that
+compatible server surface is not shipped today and every site page marks it
+preview.
+
+The released engine carries `nika.yaml` as the project control plane and
+`nika serve` as the stable resident firer for armed local workflows. It is not
+the SDK HTTP endpoint. `nika model serve` is the foreground local-model
+endpoint. Application code that starts runs today should use `LocalNika`.
+
+Released-reader limit: direct workflow runs accept the `traces` and `registry`
+project-policy rungs, while `nika arm` and `nika serve` currently accept the
+arm-ready `nika` + `ceiling` + `arm` profile. Do not combine `traces` or
+`registry` with an armed project until the two engine readers converge.
+
+- SDK graph: https://nika.sh/sdk
+- Start: https://nika.sh/sdk/start
+  - TypeScript quickstart: https://nika.sh/sdk/start/quickstart
+  - Project setup: https://nika.sh/sdk/start/project-setup
+- Project control, live: https://nika.sh/sdk/project
+  - nika.yaml: https://nika.sh/sdk/project/nika-yaml
+  - CWD and monorepos: https://nika.sh/sdk/project/cwd-and-monorepos
+  - Arm registry: https://nika.sh/sdk/project/arm-registry
+  - Policy ladders: https://nika.sh/sdk/project/policy-ladders
+  - Runtime state: https://nika.sh/sdk/project/runtime-state
+- Local API, live: https://nika.sh/sdk/local
+  - LocalNika client: https://nika.sh/sdk/local/client
+  - Check and plan: https://nika.sh/sdk/local/check-and-plan
+  - Run and cancel: https://nika.sh/sdk/local/run-and-cancel
+  - Test and trace: https://nika.sh/sdk/local/test-and-trace
+- Runtime, live: https://nika.sh/sdk/runtime
+  - Run events: https://nika.sh/sdk/runtime/events
+  - Errors and exits: https://nika.sh/sdk/runtime/errors
+  - Receipts and replay: https://nika.sh/sdk/runtime/receipts
+- Remote API, preview: https://nika.sh/sdk/remote
+  - Client: https://nika.sh/sdk/remote/client
+  - Jobs: https://nika.sh/sdk/remote/jobs
+  - SSE streaming: https://nika.sh/sdk/remote/streaming
+  - Artifacts: https://nika.sh/sdk/remote/artifacts
+  - Workflow registry: https://nika.sh/sdk/remote/workflows
+  - Webhooks: https://nika.sh/sdk/remote/webhooks
+- Operations: https://nika.sh/sdk/operations
+  - CI gate: https://nika.sh/sdk/operations/ci
+  - Server surface truth table: https://nika.sh/sdk/operations/server-surfaces
+  - Resident server: https://nika.sh/sdk/operations/resident-server
+  - Server runbook: https://nika.sh/sdk/operations/server-runbook
+  - OS scheduler bridge: https://nika.sh/sdk/operations/os-schedulers
+  - Deployment topologies: https://nika.sh/sdk/operations/deployment-topologies
+  - Security boundary: https://nika.sh/sdk/operations/security
+- Reference: https://nika.sh/sdk/reference
+  - Configuration: https://nika.sh/sdk/reference/configuration
+  - Method index: https://nika.sh/sdk/reference/methods
+  - Type index: https://nika.sh/sdk/reference/types
+- Full SDK manual: https://docs.nika.sh/sdk/overview
+- Client source: https://github.com/supernovae-st/nika-client
+
 ## Design system (machine-readable)
 
 Every Nika verb, builtin, feature and run-state has a canonical icon,
@@ -110,7 +171,7 @@ data language (jq) · workflows are callable · mock-first.
 - Where every piece lives (which repo ships what, and at which pin this site read it): https://nika.sh/city · two clocks govern the ecosystem, the spec pin for the language and the engine pin for what the released binary knows
 - Agent lane (the MCP oracle · 9 read-only tools: nika_check · nika_explain · nika_schema · nika_examples · nika_template · nika_canon · nika_catalog · nika_tools · nika_inspect): https://github.com/supernovae-st/nika-plugins
 - Editor lane (VS Code · Cursor · Windsurf: syntax, diagnostics, DAG view; files validate against https://nika.sh/spec/v1/workflow.schema.json via the yaml-language-server line): https://github.com/supernovae-st/nika-vscode
-- Install: https://nika.sh/#install (or `brew install supernovae-st/tap/nika`)
+- Install: https://nika.sh/install (or `brew install supernovae-st/tap/nika`)
 - Docs: https://docs.nika.sh
 - Registry (share workflows · every entry machine-re-proven: pinned sha256 + conformance oracle + engine cert before run): https://github.com/supernovae-st/nika-registry · machine index: https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json · never install an LLM-suggested name without resolving it there first
 - Releases (every published version: its assets and the sha256 digests recorded at upload · one room per version): https://nika.sh/releases · machine record: https://nika.sh/releases/catalog.json · the notes live at GitHub, one voice: https://github.com/supernovae-st/nika/releases

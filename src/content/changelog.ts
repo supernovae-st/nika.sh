@@ -48,6 +48,13 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     date: '2026-08-21',
     tag: 'site',
+    title: 'nika.sh v4.21 · the SDK control room',
+    body: 'The SDK now connects nika.yaml project setup, local runs, runtime proof and the resident firer, separate from the future HTTP service.',
+    gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.21.0',
+  },
+  {
+    date: '2026-08-21',
+    tag: 'site',
     title: 'nika.sh v4.20 · ten field notes, one calmer instrument',
     body: 'Ten long-form field notes close the July and August gap across access, local models, MCP, receipts, CI, coding agents and the workflow ecosystem. The catalog gains a compact two-clock resolver with one-shot motion and a settled reduced-motion state. Blog cards now derive from post frontmatter, the public queue advances, the missing arming release rejoins the changelog, and every lazy enhancement waits until hydration so the static page and the live page agree.',
     gh: 'https://github.com/supernovae-st/nika.sh/releases/tag/v4.20.0',

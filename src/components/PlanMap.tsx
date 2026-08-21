@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useId, useRef } from 'react'
 import { useScrollWellTab } from '../lib/use-scroll-well'
 import { verbGlyph, type NikaVerb } from './codefile-highlight'
 import './plan-map.css'
@@ -54,6 +54,7 @@ export function PlanMap({
   well?: string
 }) {
   const flowRef = useRef<HTMLDivElement>(null)
+  const markerBase = useId().replace(/:/g, '')
   useScrollWellTab(flowRef, well ?? 'plan-map')
   if (tasks.length === 0) return null
 
@@ -100,9 +101,26 @@ export function PlanMap({
             })}
           </div>
           {w < columns.length - 1 ? (
-            <span className="pm-arrow" aria-hidden>
-              ›
-            </span>
+            <svg className="pm-wire" viewBox="0 0 18 12" aria-hidden>
+              <defs>
+                <marker
+                  id={`${markerBase}-head-${w}`}
+                  viewBox="0 0 8 8"
+                  refX="6.8"
+                  refY="4"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto"
+                >
+                  <path className="pm-wire-head" d="M0.8 0.8 L6.8 4 L0.8 7.2" />
+                </marker>
+              </defs>
+              <path
+                className="pm-wire-line"
+                d="M1 6 H15"
+                markerEnd={`url(#${markerBase}-head-${w})`}
+              />
+            </svg>
           ) : null}
         </div>
       ))}

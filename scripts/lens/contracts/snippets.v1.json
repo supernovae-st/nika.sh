@@ -13,8 +13,8 @@
       "*.test.*",
       "*.generated.*"
     ],
-    "carrier_count": 73,
-    "block_count": 172
+    "carrier_count": 79,
+    "block_count": 183
   },
   "carriers": [
     {
@@ -1173,6 +1173,108 @@
       ]
     },
     {
+      "path": "src/components/SdkCode.tsx",
+      "source_blob": "f018f83d903be6d0811f6a03440486023b506281",
+      "blocks": [
+        {
+          "selector": "src/components/SdkCode.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 47,
+          "sha256": "8b9a999eb6a66d7682b7fc019d1c37096eb3e259b309ca7d84b1fbc7c5ee0e0e"
+        }
+      ]
+    },
+    {
+      "path": "src/components/SdkGuideBody.tsx",
+      "source_blob": "d6ca7c81f04344562650acfabd6a1d4f5ebe464a",
+      "blocks": [
+        {
+          "selector": "src/components/SdkGuideBody.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 42,
+          "sha256": "812d9944239be655d909f3d544585ec6b49f0330c32919bb5ecc528a30a738db"
+        },
+        {
+          "selector": "src/components/SdkGuideBody.tsx#codefile:1",
+          "kind": "jsx-codefile",
+          "line": 45,
+          "sha256": "059bf5272e1d464795a3c327871d79c19ae0d34d60f913457cffcf4a5afb5ec4"
+        }
+      ]
+    },
+    {
+      "path": "src/components/SdkGuidePageBody.tsx",
+      "source_blob": "fab1e0e0c333391984b22c579ec9531e0ad9fd0e",
+      "blocks": [
+        {
+          "selector": "src/components/SdkGuidePageBody.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 25,
+          "sha256": "00db6256dab5b0052013e1a3df2b3d59c7862c3dfb8b3196910db90ad6498efd"
+        },
+        {
+          "selector": "src/components/SdkGuidePageBody.tsx#pre:2",
+          "kind": "jsx-pre",
+          "line": 26,
+          "sha256": "0c5e6f774a2bc38696878af45d02d507b5c48fd59d13d030e4459d9020d10baf"
+        }
+      ]
+    },
+    {
+      "path": "src/components/SdkHubBody.tsx",
+      "source_blob": "96e2a76449531bacff4a276ec283eb079f909e68",
+      "blocks": [
+        {
+          "selector": "src/components/SdkHubBody.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 100,
+          "sha256": "375cdcb6826a0f42431a803520fe71063bfe438431228c818acd57d22f1ba3e4"
+        },
+        {
+          "selector": "src/components/SdkHubBody.tsx#pre:2",
+          "kind": "jsx-pre",
+          "line": 122,
+          "sha256": "2a51a5205c1266b27be5411b15fc4a3814c67417167ad2c81a58c85584060833"
+        },
+        {
+          "selector": "src/components/SdkHubBody.tsx#pre:3",
+          "kind": "jsx-pre",
+          "line": 166,
+          "sha256": "1b5ab6be26cc2681198c65b71986bf596868d882a96094ed765c2f17d1810462"
+        }
+      ]
+    },
+    {
+      "path": "src/components/SdkProtocolLab.tsx",
+      "source_blob": "4deba8516e151e2d92bdd85e5d82f4d77ea95f11",
+      "blocks": [
+        {
+          "selector": "src/components/SdkProtocolLab.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 140,
+          "sha256": "06963dc241586e5a1030cf91ee64a1c303db0982da173a8ea95d0fed4de2cc1d"
+        },
+        {
+          "selector": "src/components/SdkProtocolLab.tsx#pre:2",
+          "kind": "jsx-pre",
+          "line": 157,
+          "sha256": "50fe37f21af6c91dbe918b5f74eb43b33eb89de9dd856ccdd717449a253c03e4"
+        }
+      ]
+    },
+    {
+      "path": "src/components/SdkSectionBody.tsx",
+      "source_blob": "941c9b147fa0e7cde6993b1468ca0188f51e12f2",
+      "blocks": [
+        {
+          "selector": "src/components/SdkSectionBody.tsx#pre:1",
+          "kind": "jsx-pre",
+          "line": 93,
+          "sha256": "812d9944239be655d909f3d544585ec6b49f0330c32919bb5ecc528a30a738db"
+        }
+      ]
+    },
+    {
       "path": "src/components/TermFrame.tsx",
       "source_blob": "0ae31a26a48142c5704f58799db98a082c810ce9",
       "blocks": [
@@ -1300,18 +1402,18 @@
     },
     {
       "path": "src/pages/Learn.tsx",
-      "source_blob": "76c6b0182729097ad8332bc917c68765ba2978e2",
+      "source_blob": "78c0cd537899dc238155d623198c92b02ed6678c",
       "blocks": [
         {
           "selector": "src/pages/Learn.tsx#codefile:1",
           "kind": "jsx-codefile",
-          "line": 114,
+          "line": 115,
           "sha256": "f1f50c698c3a343727676684756f81d85b309d2ed18ab8dac2761bb1ffa305d0"
         },
         {
           "selector": "src/pages/Learn.tsx#codefile:2",
           "kind": "jsx-codefile",
-          "line": 414,
+          "line": 332,
           "sha256": "2cf60368f39c72c789aea7ffc72d75b9b978a9bbd4afd45f0ff8a75c2c1ad045"
         }
       ]

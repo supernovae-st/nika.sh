@@ -98,17 +98,26 @@
   text-overflow: ellipsis;
   max-width: 17ch;
 }
-/* the direction · one chevron in the wire register (the flat map's ink),
-   seated on the first row of cards */
-.pm-arrow {
+/* the direction · a hairline wire ending in its own chevron marker. The head
+   has its own class because blanket svg path rules must never fill defs. */
+.pm-wire {
   position: absolute;
-  right: -13px;
-  top: 44px;
-  font-size: 15px;
-  font-weight: var(--fw-bold);
-  line-height: 1;
-  color: rgb(141 180 255 / 0.72);
+  right: -16px;
+  top: 43px;
+  width: 18px;
+  height: 12px;
+  overflow: visible;
   pointer-events: none;
+}
+.pm-wire-line,
+.pm-wire-head {
+  fill: none;
+  stroke: rgb(141 180 255 / 0.72);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.pm-wire-head {
+  stroke: rgb(168 197 255 / 0.86);
 }
 .pm-gate-note {
   margin: 6px 0 0 2px;

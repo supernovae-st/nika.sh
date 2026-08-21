@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -12,12 +12,13 @@ import { Island } from '../lib/ssg-island'
 import { useIslandPayload } from '../lib/use-island-payload'
 import { crumbLd, ldScript } from '../lib/ld'
 import { cadence, kindChips, fmtWeight } from './releases-lib'
-import { TickAxis } from '../components/TickAxis'
 import '../sections/v4-home.css'
 import './releases-page.css'
 import './page-chrome.css'
 import './how-page.css'
 import './tool-detail.css'
+
+const TickAxis = lazy(() => import('../components/TickAxis').then((m) => ({ default: m.TickAxis })))
 
 /* ─── /releases · every version, its assets, its digests ─────────────────────
    World ⑦ of the eight-worlds target, the last unbuilt register: /changelog
@@ -156,7 +157,8 @@ export function Component() {
               asset count and the lone accent marks the release this site serves. Same-day trains
               keep both ticks: the record never hides a hotfix.
             </p>
-            <TickAxis
+            <Suspense fallback={<p className="ax-foot">Loading the release axis…</p>}>
+              <TickAxis
               ticks={strip.ticks.map((k) => ({
                 key: k.tag,
                 left: k.left,
@@ -169,7 +171,8 @@ export function Component() {
               lo={strip.ticks[0]?.tag ?? ''}
               hi={strip.ticks[strip.ticks.length - 1]?.tag ?? ''}
               foot={`${RELEASES.length} releases · ${strip.spanDays} days · median gap ${strip.medianGapDays} ${strip.medianGapDays === 1 ? 'day' : 'days'} · ${fmtWeight(weight)} shipped`}
-            />
+              />
+            </Suspense>
           </div>
 
           <div className="how-subs" data-rise>

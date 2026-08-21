@@ -522,15 +522,23 @@ body {
 
 .dv .nc,
 .pm-node {
-  border-color: rgb(255 255 255 / 0.12);
-  border-radius: 6px;
-  background-color: #111;
+  border-color: rgb(255 255 255 / 0.13);
+  border-radius: 7px;
+  background-color: rgb(16 16 16);
   background-image: none;
-  box-shadow: inset 2px 0 0 var(--dv-vhue, var(--node-vhue, var(--v4-accent)));
+  box-shadow:
+    inset 2px 0 0 var(--dv-vhue, var(--node-vhue, var(--v4-accent))),
+    inset 0 1px 0 rgb(255 255 255 / 0.035),
+    0 10px 28px -22px rgb(0 0 0 / 0.95);
 }
 
-.pm-arrow {
-  color: rgb(255 255 255 / 0.38);
+.pm-wire-line,
+.pm-wire-head {
+  stroke: rgb(255 255 255 / 0.38);
+}
+
+.pm-wire-head {
+  stroke: rgb(255 255 255 / 0.56);
 }
 
 /* ── run film · the plan is a diagram, not a blue glass dashboard ───────── */
@@ -700,11 +708,12 @@ body {
   background: #070707;
 }
 
-/* Site chrome must be settled when it enters the viewport. A parent opacity
-   reveal made otherwise AA footer ink pass through non-AA intermediate frames
-   and turned accessibility results into a timing race on short routes. */
+/* The close must be settled when it enters the viewport. A parent opacity
+   reveal made otherwise AA footer and final-CTA ink pass through non-AA
+   intermediate frames and turned accessibility results into a timing race. */
 @media (prefers-reduced-motion: no-preference) {
-  .sitefoot [data-rise] {
+  .sitefoot [data-rise],
+  .v4cta-wrap > [data-rise] {
     opacity: 1;
     transform: none;
     transition: none;

@@ -2,16 +2,18 @@
    Every model the wire catalog names, one room each. The context axis rides
    here (ModelAxis · the visual finally routed, D6): the axis is the fact the
    data actually holds. Register-diet: the rows ride the byte island, lean. */
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { BENCH_WITNESSES } from '../content/bench.generated'
-import { ModelAxis } from './ModelAxis'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
-import { TickAxis } from '../components/TickAxis'
 import './catalog-models.css'
+
+const TickAxis = lazy(() => import('../components/TickAxis').then((m) => ({ default: m.TickAxis })))
+const ModelAxis = lazy(() => import('./ModelAxis').then((m) => ({ default: m.ModelAxis })))
 
 const DESC = `The ${CATALOG_COUNTS.models} models the released binary's wire catalog names · who serves each one, its context window, its exact-match price and its measured energy where the catalog carries them.`
 
@@ -84,7 +86,9 @@ export function Component() {
           The axis draws the canonical catalog · the spec-named seats whose models declare a
           window. The register below is the wider wire union; each count names its facet.
         </p>
-        <ModelAxis />
+        <Suspense fallback={<p className="ax-foot">Loading the context axis…</p>}>
+          <ModelAxis />
+        </Suspense>
       </CatalogSection>
       <CatalogSection id="price-axis" title="The price axis">
         {/* the context axis's twin, cut from the /releases cadence cloth: every
@@ -105,7 +109,8 @@ export function Component() {
           const nudge = new Map<number, number>()
           const openCount = priced.filter((m) => m.open).length
           return (
-            <TickAxis
+            <Suspense fallback={<p className="ax-foot">Loading the price axis…</p>}>
+              <TickAxis
               ticks={priced.map((m) => {
                 const base = ((Math.log10(m.out) - Math.log10(lo)) / span) * 100
                 const k = Math.round(base * 2)
@@ -124,7 +129,8 @@ export function Component() {
               lo={fmtUsd(lo)}
               hi={fmtUsd(hi)}
               foot={`${priced.length} priced · ${fmtUsd(lo)} → ${fmtUsd(hi)} out/Mtok · log scale · ${openCount} open weights`}
-            />
+              />
+            </Suspense>
           )
         })()}
       </CatalogSection>

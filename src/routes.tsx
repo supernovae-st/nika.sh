@@ -60,6 +60,9 @@ import { Component as CatalogMcpRoom } from './pages/CatalogMcpRoom'
 import { Component as CatalogEmbeddings } from './pages/CatalogEmbeddings'
 import { Component as CatalogCapabilities } from './pages/CatalogCapabilities'
 import { Component as IntegrationRoom } from './pages/IntegrationRoom'
+import { Component as Sdk } from './pages/Sdk'
+import { Component as SdkSection } from './pages/SdkSection'
+import { Component as SdkGuide } from './pages/SdkGuide'
 
 /* ─── central route table · React Router v7 data router ──────────────────────
    Replaces the old hand-rolled hash navigation (#/blog, #/manifesto …) with
@@ -230,6 +233,12 @@ export const routes: RouteObject[] = [
          per public repo — install rituals verbatim from the READMEs */
       { path: 'integrations', Component: Integrations },
       { path: 'integrations/:id', Component: IntegrationRoom },
+      /* the application surface · one honest hub plus guide rooms. The local
+         driver is live against the released binary; HTTP stays visibly
+         preview until a compatible workflow service ships. */
+      { path: 'sdk', Component: Sdk },
+      { path: 'sdk/:section', Component: SdkSection },
+      { path: 'sdk/:section/:guide', Component: SdkGuide },
       /* the catalog world (D1 · engine-release clock) — what the released
          binary KNOWS: models, pricing, energy, MCP servers, embeddings,
          capability rules. Every page derives from the vendored engine

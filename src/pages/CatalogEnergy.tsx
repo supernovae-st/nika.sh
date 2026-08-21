@@ -3,14 +3,16 @@
    the seats research has weighed. The provenance line ships EXACTLY as the
    TOML carries it (ml.energy · arXiv · measured_at) · the site prints the
    receipt, it never rounds a claim. */
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
-import { TickAxis } from '../components/TickAxis'
 import './catalog-models.css'
+
+const TickAxis = lazy(() => import('../components/TickAxis').then((m) => ({ default: m.TickAxis })))
 
 type Row = import('../content/catalog.generated').EnergyRow
 type Cargo = { rows: Row[]; rooms: Record<string, string> }
@@ -61,7 +63,8 @@ export function Component() {
           const span = Math.log10(hi) - Math.log10(lo) || 1
           const nudge = new Map<number, number>()
           return (
-            <TickAxis
+            <Suspense fallback={<p className="ax-foot">Loading the energy axis…</p>}>
+              <TickAxis
               ticks={rows.map((e) => {
                 const base = ((Math.log10(e.wh_per_mtok_out) - Math.log10(lo)) / span) * 100
                 const k = Math.round(base * 2)
@@ -79,7 +82,8 @@ export function Component() {
               lo={`${lo} Wh`}
               hi={`${hi} Wh`}
               foot={`${rows.length} measured · ${lo} → ${hi} Wh/Mtok · log scale · provenance printed per row`}
-            />
+              />
+            </Suspense>
           )
         })()}
       </CatalogSection>

@@ -1,12 +1,14 @@
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router'
 import { useRevealOnce } from '../sections/use-reveal-once'
-import { LivingTerminal } from '../components/LivingTerminal'
 import { StampStrip } from '../components/StampStrip'
 import { HubFoot } from './hub-shared'
 import { useHubHead, chapterHref } from './hub-lib'
 import { HUBS, GATE_GRID } from './hub-data.generated'
 import '../sections/v4-home.css'
 import './proof-page.css'
+
+const LivingTerminal = lazy(() => import('../components/LivingTerminal').then((m) => ({ default: m.LivingTerminal })))
 
 /* ─── /proof · the proof register (§4.9 · how Nika shows its work) ────────────
    The hub grammar retired for the register grammar (the /providers ·
@@ -91,7 +93,9 @@ export function Component() {
             {/* the slot's own prophecy, filled: the first W2+ train shipped
                 (0.104) — the living terminal replays the REAL captures,
                 including `nika inspect` with its human|json dual */}
-            <LivingTerminal />
+            <Suspense fallback={<p className="pf-slot">Loading the recorded-run player…</p>}>
+              <LivingTerminal />
+            </Suspense>
             <p className="pf-refs">
               <a className="pf-ref" href="/how/flow#edges">
                 <span className="pf-ref-k">kinds</span>the six edge kinds · /flow#edges

@@ -21,6 +21,7 @@ import { localizedPaths } from '../lib/i18n'
 import { PENDING_ERROR_CODES } from '../../pending-error-codes'
 import { wordRoom } from '../lib/rooms'
 import { PLATFORM_GUIDE_NAV } from './platform-guides-nav'
+import { SDK_GUIDE_NAV, SDK_SECTIONS } from './sdk-nav'
 
 /* ─── the site map registry · one labeled source, two consumers ───────────────
    /map's « every page » section renders THIS structure (the human sitemap
@@ -110,6 +111,27 @@ export const SITE_MAP: MapGroup[] = [
       { label: 'Manifesto', href: '/manifesto', hint: 'the drum of liberation · 8 languages' },
     ],
     dense: MANIFESTO_LOCALES,
+  },
+  {
+    kick: 'build with Nika',
+    gloss: 'the TypeScript surface: local driver live, remote client preview',
+    links: [
+      {
+        label: 'TypeScript SDK',
+        href: '/sdk',
+        hint: 'one typed client · every status explicit',
+      },
+      ...SDK_SECTIONS.map((section) => ({
+        label: section.label,
+        href: `/sdk/${section.id}`,
+        hint: `${section.status} · ${section.guides.length} connected guides`,
+      })),
+    ],
+    dense: SDK_GUIDE_NAV.map((guide) => ({
+      label: `${guide.section}: ${guide.label}`,
+      href: `/sdk/${guide.id}`,
+      hint: `${guide.status} · TypeScript SDK guide`,
+    })),
   },
   {
     kick: 'reference',

@@ -780,6 +780,11 @@ export const SNIPPET_REGISTRY: { file: string; kind: string; gate: string; dies?
     "gate": "learn-fragments.test.ts (FULL_FILE AJV)"
   },
   {
+    "file": "src/content/sdk.ts",
+    "kind": "crafted-room",
+    "gate": "sdk-pages.test.ts parses every nika.yaml sample against the released closed project and arm keysets"
+  },
+  {
     "file": "src/content/sitemap.ts",
     "kind": "crafted-room",
     "gate": "onpage-yaml AJV",

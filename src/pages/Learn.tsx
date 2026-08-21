@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useRevealOnce } from '../sections/use-reveal-once'
@@ -7,14 +7,16 @@ import { CodeFile } from '../components/CodeFile'
 import { DecodeText } from '../fx/DecodeText'
 import { tokenize } from '../components/codefile-highlight'
 import { STEPS, ERROR_JSON, DICT, FULL_FILE, FULL_FILE_TRANSCRIPT } from '../content/learn'
-import { LearnCheck } from '../components/LearnCheck'
 import { InstallCommand } from '../components/InstallCommand'
 import { TermCapture } from '../components/TermCapture'
+import { PlanMap, type PlanMapTask } from '../components/PlanMap'
 import { track } from '../lib/track'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
 import './page-chrome.css'
 import './learn-page.css'
+
+const LearnCheck = lazy(() => import('../components/LearnCheck').then((m) => ({ default: m.LearnCheck })))
 
 /* ─── /learn · one file, line by line (theme-dark · blueprint register) ───────
    The five-minute annotated walkthrough in the consumer register: it starts
@@ -23,10 +25,9 @@ import './learn-page.css'
    always glossed · the DAG is « the plan »), and each step carries a
    museum-plate number (`01 · the file`, `05 · the plan` …).
 
-   Step 06 (« the waves ») is the 2D-DAG comprehension anchor: a hand-authored
-   static SVG of the weekly-radar plan, node-for-node the YAML beside it
-   (5 tasks · verb-hued dots · wave bracket · thin blue dependency arrows),
-   aria-described for readers who never see the drawing.
+   Step 06 (« the waves ») is the 2D plan comprehension anchor. It renders the
+   shared PlanMap grammar, node-for-node the registered weekly-radar file, so
+   the teaching page, workflow rooms and home film speak the same shapes.
 
    Every YAML/JSON fragment is spec-correct (nika-spec 01-envelope · 03-dag ·
    05-errors) AND parses as standalone YAML/JSON (validated in
@@ -147,117 +148,25 @@ function LearnFile({
   )
 }
 
-/* ── the weekly-radar mini-DAG · the 2D comprehension anchor (step 06) ────────
-   HONEST: node-for-node the YAML fragment beside it · six tasks: one human
-   gate opens the run, the three sources bind its answer (and run only on
-   yes) sharing one wave, digest joins them, save closes.
-   Hand-authored static SVG (no runtime), verb-hued node dots, thin accent
-   dependency arrows, a wave bracket reading « run together ×3 ». Text is real
-   SVG text (crisp at every DPR); on narrow screens the plate scrolls inside
-   its well exactly like a code panel. */
-const DAG_NODES: { id: string; verb: string; x: number; y: number; w: number }[] = [
-  { id: 'approve', verb: 'invoke', x: 12, y: 98, w: 158 },
-  { id: 'fetch_news', verb: 'invoke', x: 230, y: 34, w: 172 },
-  { id: 'repo_log', verb: 'exec', x: 230, y: 98, w: 172 },
-  { id: 'read_notes', verb: 'invoke', x: 230, y: 162, w: 172 },
-  { id: 'digest', verb: 'infer', x: 512, y: 98, w: 146 },
-  { id: 'save', verb: 'invoke', x: 736, y: 98, w: 118 },
-]
-
-/* one dependency arrow per wire in the fragment · nothing more · the three
-   approve fans are the `with: go` bindings (the gate that gates), the rest
-   are the data wires into digest and save */
-const DAG_ARROWS = [
-  'M170 108 C 196 108, 200 56, 224 54', //  approve    → fetch_news
-  'M170 118 H 224', //                      approve    → repo_log
-  'M170 128 C 196 128, 200 180, 224 182', // approve   → read_notes
-  'M404 54 C 448 54, 464 106, 506 108', //  fetch_news → digest
-  'M404 118 H 506', //                      repo_log   → digest
-  'M404 182 C 448 182, 464 130, 506 128', // read_notes → digest
-  'M658 118 H 730', //                      digest     → save
+/* Node-for-node the registered FULL_FILE below. This projection carries only
+   display facts; the file remains the source and the existing learn-fragment
+   gate proves its YAML. PlanMap owns every visual value. */
+const WEEKLY_PLAN: PlanMapTask[] = [
+  { id: 'approve', verb: 'invoke', gloss: 'call `nika:prompt`', wave: 0 },
+  { id: 'fetch_news', verb: 'invoke', gloss: 'call `nika:fetch`', wave: 1, gate: 'when' },
+  { id: 'repo_log', verb: 'exec', gloss: 'run `git`', wave: 1, gate: 'when' },
+  { id: 'read_notes', verb: 'invoke', gloss: 'call `nika:read`', wave: 1, gate: 'when' },
+  { id: 'digest', verb: 'infer', gloss: 'ask `ollama/llama3.2:3b`', wave: 2 },
+  { id: 'save', verb: 'invoke', gloss: 'call `nika:write`', wave: 3 },
 ]
 
 function WeeklyRadarDag() {
   return (
     <figure className="lrn-dag">
-      <div className="lrn-dag-scroll" tabIndex={0} role="group" aria-label="the drawn plan (scrolls sideways on small screens)">
-        <svg
-          className="lrn-dag-svg"
-          viewBox="0 0 872 248"
-          role="img"
-          aria-labelledby="lrn-dag-t lrn-dag-d"
-        >
-          <title id="lrn-dag-t">The weekly-radar plan, drawn as a graph</title>
-          <desc id="lrn-dag-d">
-            approve asks one human question. fetch_news, repo_log and read_notes each bind its
-            answer, so all three start together once it is yes. digest waits for all three.
-            save waits for digest. Time flows left to right.
-          </desc>
-          <defs>
-            <marker
-              id="lrn-dag-head"
-              viewBox="0 0 8 8"
-              refX="6.6"
-              refY="4"
-              markerWidth="7"
-              markerHeight="7"
-              orient="auto-start-reverse"
-            >
-              <path className="lrn-dag-headink" d="M0.8 0.8 L6.8 4 L0.8 7.2" />
-            </marker>
-          </defs>
-
-          {/* the column captions · what each wave means, in anyone-words */}
-          <text className="lrn-dag-cap" x="91" y="18" textAnchor="middle">
-            one human question
-          </text>
-          <text className="lrn-dag-cap" x="316" y="18" textAnchor="middle">
-            on yes · run together ×3
-          </text>
-          <text className="lrn-dag-cap" x="585" y="18" textAnchor="middle">
-            waits for all three
-          </text>
-          <text className="lrn-dag-cap" x="795" y="18" textAnchor="middle">
-            then
-          </text>
-
-          {/* the wave bracket · the three steps that share a start line */}
-          <path className="lrn-dag-bracket" d="M221 36 H216 V200 H221" />
-
-          {/* the dependency arrows · one per with: wire */}
-          {DAG_ARROWS.map((d) => (
-            <path key={d} className="lrn-dag-arrow" d={d} markerEnd="url(#lrn-dag-head)" />
-          ))}
-
-          {/* the five task nodes · verb-hued dot + mono id + the verb name */}
-          {DAG_NODES.map((n) => (
-            <g key={n.id}>
-              <rect className="lrn-dag-node" x={n.x} y={n.y} width={n.w} height={40} rx={4} />
-              <circle
-                className="lrn-dag-dot"
-                cx={n.x + 16}
-                cy={n.y + 20}
-                r={3.4}
-                style={{ fill: `var(--verb-${n.verb})` }}
-              />
-              <text className="lrn-dag-id" x={n.x + 27} y={n.y + 24.5}>
-                {n.id}
-              </text>
-              <text className="lrn-dag-verb" x={n.x + n.w - 10} y={n.y + 24} textAnchor="end">
-                {n.verb}
-              </text>
-            </g>
-          ))}
-
-          {/* the time axis whisper · left to right is the only direction */}
-          <text className="lrn-dag-cap" x="850" y="242" textAnchor="end">
-            time →
-          </text>
-        </svg>
-      </div>
+      <PlanMap tasks={WEEKLY_PLAN} waves={4} well="weekly-radar" />
       <figcaption className="lrn-dag-capline">
-        the plan the runtime draws from this exact file · every arrow points from a step to the
-        step that waits for it
+        the plan the runtime draws from this exact file · dashed cards run only when their
+        gate says yes
       </figcaption>
     </figure>
   )
@@ -390,7 +299,16 @@ export function Component() {
                 {s.dag && <WeeklyRadarDag />}
                 {/* I7 · the inline check — one per step MAX, only where a
                     misread is likely (the data decides; zero here is fine) */}
-                {s.check && <LearnCheck check={s.check} />}
+                {s.check && (
+                  <Suspense fallback={(
+                    <div className="lck">
+                      <p className="lck-q">{s.check.q}</p>
+                      <p>{s.check.options.join(' · ')}</p>
+                    </div>
+                  )}>
+                    <LearnCheck check={s.check} />
+                  </Suspense>
+                )}
               </li>
             ))}
           </ol>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useHead } from '@unhead/react'
 import { useAnchorScroll } from '../lib/use-anchor-scroll'
@@ -17,7 +17,8 @@ import { MARKET_VOCAB } from '../content/market-vocab.generated'
 import { routeHead } from '../content'
 import '../sections/v4-home.css'
 import './providers-page.css'
-import { ModelAxis } from './ModelAxis'
+
+const ModelAxis = lazy(() => import('./ModelAxis').then((m) => ({ default: m.ModelAxis })))
 
 /* ─── /providers · the provider register (theme-dark) ─────────────────────────
    Every spec-named provider as an anchored row — the prefix an author
@@ -220,7 +221,9 @@ export function Component() {
             ]}
           />
 
-          <ModelAxis />
+          <Suspense fallback={<p className="pv-desc">Loading the model context axis…</p>}>
+            <ModelAxis />
+          </Suspense>
 
           {groups.map((group, gi) => (
             <div className="pv-family" key={group.kind} data-rise style={{ ['--rise-delay' as string]: `${180 + gi * 30}ms` }}>

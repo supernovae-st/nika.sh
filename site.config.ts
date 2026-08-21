@@ -198,6 +198,51 @@ export const INSTALL_PATHS = ['/fr/install', '/es/install', '/de/install', '/pt-
    platform-guides gate pins this list against the page registry and proves
    the ARM64 asset names against the current release record. */
 export const INSTALL_GUIDE_PATHS = ['/install/arm64', '/install/servers', '/install/local-models']
+/* the TypeScript SDK docs · one data-driven room per guide. Kept literal for
+   the graph compiler's import-free route census; sdk-pages.test.ts pins it
+   both ways against the authored hub registry. */
+export const SDK_SECTION_PATHS = [
+  '/sdk/start',
+  '/sdk/project',
+  '/sdk/local',
+  '/sdk/runtime',
+  '/sdk/remote',
+  '/sdk/operations',
+  '/sdk/reference',
+]
+
+export const SDK_GUIDE_PATHS = [
+  '/sdk/start/quickstart',
+  '/sdk/start/project-setup',
+  '/sdk/project/nika-yaml',
+  '/sdk/project/cwd-and-monorepos',
+  '/sdk/project/arm-registry',
+  '/sdk/project/policy-ladders',
+  '/sdk/project/runtime-state',
+  '/sdk/local/client',
+  '/sdk/local/check-and-plan',
+  '/sdk/local/run-and-cancel',
+  '/sdk/local/test-and-trace',
+  '/sdk/runtime/events',
+  '/sdk/runtime/errors',
+  '/sdk/runtime/receipts',
+  '/sdk/remote/client',
+  '/sdk/remote/jobs',
+  '/sdk/remote/streaming',
+  '/sdk/remote/artifacts',
+  '/sdk/remote/workflows',
+  '/sdk/remote/webhooks',
+  '/sdk/operations/ci',
+  '/sdk/operations/server-surfaces',
+  '/sdk/operations/resident-server',
+  '/sdk/operations/server-runbook',
+  '/sdk/operations/os-schedulers',
+  '/sdk/operations/deployment-topologies',
+  '/sdk/operations/security',
+  '/sdk/reference/configuration',
+  '/sdk/reference/methods',
+  '/sdk/reference/types',
+]
 /* the error register's deep pages — one static landing per registered code
    (the engine stamps docs_url: https://nika.sh/language/errors/<CODE> on every check
    finding, and DO's error_document wins over catchall_document in practice:
@@ -398,4 +443,4 @@ export const CHAPTER_PATHS = ['/language/spec/overview', '/language/spec/envelop
    here because they are authored pages, not lens surfaces. */
 export const HOW_PATHS = ['/how', '/how/router']
 
-export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/language/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/releases', ...RELEASE_PATHS, '/install', ...INSTALL_PATHS, ...INSTALL_GUIDE_PATHS, '/convert', '/brand']
+export const PATHS = ['/', '/blog', ...BLOG_PATHS, ...BLOG_TAG_PATHS, ...BLOG_SERIES_PATHS, '/learn', '/play', '/manifesto', ...MANIFESTO_PATHS, '/changelog', '/language/errors', ...ERROR_PATHS, '/language/stdlib', ...TOOL_PATHS, '/language/verbs', ...VERB_PATHS, '/language', ...LANGUAGE_PATHS, '/catalog/providers', ...TEMPLATE_PATHS, ...INTEGRATION_PATHS, ...CLIENT_DOOR_PATHS, '/sdk', ...SDK_SECTION_PATHS, ...SDK_GUIDE_PATHS, ...CATALOG_PATHS, ...FAMILY_ROOT_PATHS, ...HOW_PATHS, '/workflows', '/workflows/jobs', '/workflows/skeletons', ...LESSON_PATHS, '/language/spec', ...CHAPTER_PATHS, ...NEP_PATHS, ...LENS_PATHS, '/timeline', '/city', '/city/decisions', ...ADR_PATHS, '/releases', ...RELEASE_PATHS, '/install', ...INSTALL_PATHS, ...INSTALL_GUIDE_PATHS, '/convert', '/brand']

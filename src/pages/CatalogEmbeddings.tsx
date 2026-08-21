@@ -1,14 +1,16 @@
 /* ─── /catalog/embeddings · vector compatibility as compile-time fact ────────
    The embedding models the released binary names: dimensions, windows,
    similarity metric, price · the whole table on one honest page. */
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router'
 import { Island } from '../lib/ssg-island'
 import { CATALOG_COUNTS, MARKET_PROVIDER_IDS } from '../content/catalog-paths.generated'
 import { CatalogSection, CatalogShell } from './catalog-shared'
 import { fmtTokens, fmtUsd, useCatalogCargo, useCatalogHead } from './catalog-lib'
 import { collectionLd } from '../lib/ld'
-import { TickAxis } from '../components/TickAxis'
 import './catalog-models.css'
+
+const TickAxis = lazy(() => import('../components/TickAxis').then((m) => ({ default: m.TickAxis })))
 
 type Row = {
   id: string
@@ -67,7 +69,8 @@ export function Component() {
           const span = hi - lo || 1
           const nudge = new Map<number, number>()
           return (
-            <TickAxis
+            <Suspense fallback={<p className="ax-foot">Loading the dimension axis…</p>}>
+              <TickAxis
               ticks={rows.map((e) => {
                 const base = ((e.dimensions - lo) / span) * 100
                 const nth = nudge.get(e.dimensions) ?? 0
@@ -83,7 +86,8 @@ export function Component() {
               lo={`${lo}d`}
               hi={`${hi}d`}
               foot={`${rows.length} models · ${lo}d → ${hi}d · a shared column is a shared store shape`}
-            />
+              />
+            </Suspense>
           )
         })()}
       </CatalogSection>

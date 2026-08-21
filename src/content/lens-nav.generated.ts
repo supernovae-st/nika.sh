@@ -47,12 +47,12 @@ export const NAV_BAR_LINKS: NavItem[] = [
     "to": "/workflows"
   },
   {
-    "label": "Catalog",
-    "to": "/catalog"
+    "label": "SDK",
+    "to": "/sdk"
   },
   {
-    "label": "Docs",
-    "external": true
+    "label": "Catalog",
+    "to": "/catalog"
   },
   {
     "label": "Blog",
@@ -203,31 +203,47 @@ export const FOOTER_COLS: { kick: string; items: NavItem[] }[] = [
     ]
   },
   {
-    "kick": "Get it running",
+    "kick": "Build with Nika",
     "items": [
+      {
+        "label": "TypeScript SDK",
+        "to": "/sdk"
+      },
+      {
+        "label": "Start with the SDK",
+        "to": "/sdk/start"
+      },
+      {
+        "label": "Local API",
+        "to": "/sdk/local"
+      },
+      {
+        "label": "Runtime and events",
+        "to": "/sdk/runtime"
+      },
+      {
+        "label": "Remote API preview",
+        "to": "/sdk/remote"
+      },
+      {
+        "label": "SDK operations",
+        "to": "/sdk/operations"
+      },
+      {
+        "label": "SDK reference",
+        "to": "/sdk/reference"
+      },
       {
         "label": "Install",
         "to": "/install"
       },
       {
+        "label": "Convert to Nika",
+        "to": "/convert"
+      },
+      {
         "label": "Wire your client",
         "to": "/integrations"
-      },
-      {
-        "label": "Registry",
-        "to": "/integrations/registry"
-      },
-      {
-        "label": "VS Code extension",
-        "to": "/integrations/vscode"
-      },
-      {
-        "label": "Homebrew tap",
-        "to": "/integrations/homebrew"
-      },
-      {
-        "label": "Send a workflow",
-        "to": "/convert"
       }
     ]
   },
