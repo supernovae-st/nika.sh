@@ -598,6 +598,17 @@ body {
   background: #070707;
 }
 
+/* Site chrome must be settled when it enters the viewport. A parent opacity
+   reveal made otherwise AA footer ink pass through non-AA intermediate frames
+   and turned accessibility results into a timing race on short routes. */
+@media (prefers-reduced-motion: no-preference) {
+  .sitefoot [data-rise] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .sitefoot-grove {
   display: flex;
   height: auto;
