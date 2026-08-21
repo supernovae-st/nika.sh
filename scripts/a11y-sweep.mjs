@@ -119,6 +119,18 @@ const audit = async (route, settleMs) => {
   }
   await evaluate(`document.fonts ? document.fonts.ready.then(() => true) : true`).catch(() => {})
   await sleep(settleMs)
+  /* Audit the SETTLED register, not a translucent entrance frame. The hero's
+     editor reveal ends at 880ms (180ms delay + 700ms rise), so the old 800ms
+     sleep raced axe into a false color-contrast failure on slower commits.
+     Wait only animations owned by data-rise, and cap the wait so a future
+     looping flourish can never stall the belt. */
+  await evaluate(`Promise.race([
+    Promise.all([...document.querySelectorAll('[data-rise]')]
+      .flatMap(el => el.getAnimations())
+      .filter(a => a.playState === 'running')
+      .map(a => a.finished.catch(() => null))),
+    new Promise(resolve => setTimeout(resolve, 2000))
+  ]).then(() => true)`).catch(() => {})
   await evaluate(AXE_SRC + '; true')
   return evaluate(`axe.run(document, { resultTypes: ['violations'] }).then(r => r.violations.map(v => ({ id: v.id, impact: v.impact, count: v.nodes.length, sample: v.nodes[0]?.target?.[0] ?? '' })))`)
 }
