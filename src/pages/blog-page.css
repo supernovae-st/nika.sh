@@ -345,6 +345,37 @@
    The sequence column is the spine. Dates and receipts sit where a paper
    register would keep them, while the title remains the dominant reading
    target. The whole row is one link and one hit area. */
+.bs-crumb-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bs-crumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.bs-crumb-item:first-child {
+  flex: 0 0 auto;
+}
+.bs-crumb-item:last-child {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.bs-crumb-separator {
+  color: var(--v4-text-faint);
+}
+.bs-crumb-current {
+  overflow: hidden;
+  color: var(--v4-text-faint);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .bs-register-head {
   display: grid;
   grid-template-columns: 9rem minmax(0, 1fr) 8rem;
@@ -483,6 +514,10 @@
   color: var(--v4-text);
 }
 @media (max-width: 720px) {
+  .bs-crumb {
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .bs-register-head {
     display: none;
   }

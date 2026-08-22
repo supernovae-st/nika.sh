@@ -6,6 +6,7 @@ import { StampStrip } from '../components/StampStrip'
 import { BLOG_POSTS, BLOG_SERIES } from '../content/blog.generated'
 import type { BlogPostCopy } from '../content/blog-bodies.generated'
 import { SITE, routeHead } from '../content'
+import { crumbLd } from '../lib/ld'
 import { Island } from '../lib/ssg-island'
 import { useBlogCopy } from '../lib/use-blog-copy'
 import { isRetrospective, storyDateLabel } from '../lib/blog-dates'
@@ -56,6 +57,14 @@ export function Component() {
   const description = hit
     ? `${hit.claim}. ${legs.length} ${legs.length === 1 ? 'stop' : 'stops'}, in reading order: a path through the journal.`
     : `${id} is not a reading path the journal keeps.`
+  const seriesUrl = `${SITE}/blog/series/${id}`
+  const itemListId = `${seriesUrl}#items`
+  const crumbTrail = hit
+    ? [
+        { name: 'Blog', path: '/blog' },
+        { name: hit.title },
+      ]
+    : []
 
   useHead({
     title,
@@ -76,18 +85,30 @@ export function Component() {
             type: 'application/ld+json',
             innerHTML: JSON.stringify({
               '@context': 'https://schema.org',
-              '@type': 'ItemList',
-              '@id': `${SITE}/blog/series/${id}`,
-              name: hit.title,
-              description: hit.claim,
-              itemListOrder: 'https://schema.org/ItemListOrderAscending',
-              numberOfItems: legs.length,
-              itemListElement: legs.map((l, i) => ({
-                '@type': 'ListItem',
-                position: i + 1,
-                name: l.post.title,
-                url: `${SITE}/blog/${l.post.slug}`,
-              })),
+              '@graph': [
+                {
+                  '@type': 'CollectionPage',
+                  '@id': seriesUrl,
+                  name: hit.title,
+                  description: hit.claim,
+                  url: seriesUrl,
+                  mainEntity: { '@id': itemListId },
+                },
+                {
+                  '@type': 'ItemList',
+                  '@id': itemListId,
+                  name: hit.title,
+                  itemListOrder: 'https://schema.org/ItemListOrderAscending',
+                  numberOfItems: legs.length,
+                  itemListElement: legs.map((l, i) => ({
+                    '@type': 'ListItem',
+                    position: i + 1,
+                    name: l.post.title,
+                    url: `${SITE}/blog/${l.post.slug}`,
+                  })),
+                },
+                crumbLd(crumbTrail),
+              ],
             }),
             processTemplateParams: false,
           },
@@ -101,10 +122,22 @@ export function Component() {
       <section ref={ref} aria-labelledby="bs-title" className="v4sec v4-in" data-series={hit ? id : undefined}>
         <div className="v4sec-wrap">
           <Island id={`blog-series-copy-${id}`} payload={copyPayload} />
-          <nav className="td-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/blog" className="td-crumb-link">
-              ← the journal
-            </Link>
+          <nav className="td-crumb bs-crumb" aria-label="Breadcrumb" data-rise>
+            <ol className="bs-crumb-list">
+              <li className="bs-crumb-item">
+                <Link to="/blog" className="td-crumb-link">
+                  Blog
+                </Link>
+              </li>
+              {hit && (
+                <li className="bs-crumb-item">
+                  <span className="bs-crumb-separator" aria-hidden="true">/</span>
+                  <span className="bs-crumb-current" aria-current="page">
+                    {hit.title}
+                  </span>
+                </li>
+              )}
+            </ol>
             {hit && (
               <span className="tp-cat">
                 {legs.length} {legs.length === 1 ? 'stop' : 'stops'} · in reading order
