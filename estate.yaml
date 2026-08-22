@@ -106,7 +106,7 @@ files:
   evidence: "hand-written Vite entry shell"
 - path: "package.json"
   class: authored
-  sha256: 9f68981a8190b3851f99367c14307b5a389d5008388f4d57da8f9135f859c287
+  sha256: cc4b6aac50f6c9aab4eb6ebf95cf7d0e6f17b9787bdfaf2713f751e9961e581a
   evidence: "hand-kept manifest (scripts + pinned deps + packageManager)"
 - path: "pending-error-codes.ts"
   class: authored
@@ -479,7 +479,7 @@ files:
     - "the census roots the contract declares (src/** · content/blog · public/** · scripts/build-*)"
 - path: "scripts/lens/contracts/integrity.v1.json"
   class: generated
-  sha256: 599ed38fd60f810f2bccbeb4f62a28756bcd44d15ba8ea6ee89fa70ff81c00f6
+  sha256: 453e644af42102132f5f26d228bc0641371036d36acf19ea81d1a5db9c16da57
   evidence: "digest baseline of the publish-input artifacts (path + sha256 census)"
   derivation:
     tool: "node scripts/lens/repin-integrity.mjs (deliberate repin)"
@@ -941,12 +941,12 @@ patterns:
 - glob: "src/**"
   class: authored
   match_count: 477
-  aggregate_sha256: b49b0b0bb19ef0839530bca4f869f6c41151acce8ec1184d0061cf994c71b988
+  aggregate_sha256: 0323e6253310ffd0dcde53c51f6296d98de638cf84cc9c7c0fb7e9cfb87a5593
   evidence: "hand-written site source (components · pages · sections · styles · lib · tests) — no generation marker"
 - glob: "scripts/**"
   class: authored
   match_count: 98
-  aggregate_sha256: 9baeecf54be3e22ffaba0592224f2144e554faba3b6249f5692cb42b0cb4407d
+  aggregate_sha256: 4b14867445813029474abdf0f313b97d9f39e7867d66f8bd4b767a7e9a8b1a34
   evidence: "hand-written build/gate/verify tooling — these ARE the generators and judges (SPDX/design prose headers · no generation marker); estate.py excepted in files: (the mirror row)"
 - glob: "*"
   class: authored
