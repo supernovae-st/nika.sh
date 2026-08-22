@@ -19,12 +19,12 @@
   "carriers": [
     {
       "path": "content/blog/2025-10-17-the-note-that-started-it.md",
-      "source_blob": "cb512ebf10f164179ddcd0f1536b64c10eb79f12",
+      "source_blob": "912522e7b615e2cfdbc220b1099d9d9a1ec22ef3",
       "blocks": [
         {
           "selector": "content/blog/2025-10-17-the-note-that-started-it.md#fence:1",
           "kind": "markdown-fence",
-          "line": 18,
+          "line": 20,
           "language": "text",
           "sha256": "9674f3a303f8e75c773b21ef2fa0957d5ebd37b59ede339fc732a1e97e230819"
         }
@@ -32,7 +32,7 @@
     },
     {
       "path": "content/blog/2025-11-the-file-came-before-the-language.md",
-      "source_blob": "5bf4954aaec9bfedf61765585a8472179442dbc6",
+      "source_blob": "e326f87265860f82f98150abe4bcb2f528656708",
       "blocks": [
         {
           "selector": "content/blog/2025-11-the-file-came-before-the-language.md#fence:1",
@@ -44,59 +44,59 @@
       ]
     },
     {
-      "path": "content/blog/2026-05-14-standard-library-not-plugin-store.md",
-      "source_blob": "3574621dc17e87a6c0b4c236ae1c3285952bdcb1",
+      "path": "content/blog/2026-05-22-four-verbs.md",
+      "source_blob": "bb0e2d6045c31f7959c4c7c4d3308066832f8c0b",
       "blocks": [
         {
-          "selector": "content/blog/2026-05-14-standard-library-not-plugin-store.md#fence:1",
+          "selector": "content/blog/2026-05-22-four-verbs.md#fence:1",
           "kind": "markdown-fence",
-          "line": 16,
-          "language": "yaml",
-          "sha256": "2f0bf1de16ccbd4f7d36700159149899aaa7871a8e714a8c3c24fa88bad91689"
-        }
-      ]
-    },
-    {
-      "path": "content/blog/2026-06-04-blast-radius-in-the-file.md",
-      "source_blob": "4ed13aefa9e88cd8dabbb1c0ea1b3309a01334b4",
-      "blocks": [
-        {
-          "selector": "content/blog/2026-06-04-blast-radius-in-the-file.md#fence:1",
-          "kind": "markdown-fence",
-          "line": 14,
-          "language": "yaml",
-          "sha256": "5cbb0047188841e7c443c66753c182bdd9d171e2449eb2886932af8fdc6e80a6"
-        }
-      ]
-    },
-    {
-      "path": "content/blog/2026-06-22-four-verbs.md",
-      "source_blob": "230c40ba59823b77244136dbe2926ea499f18897",
-      "blocks": [
-        {
-          "selector": "content/blog/2026-06-22-four-verbs.md#fence:1",
-          "kind": "markdown-fence",
-          "line": 14,
+          "line": 18,
           "language": "yaml",
           "sha256": "d4e591ae8f25932bb0a6a9776c954c5ca0c9c4f4f07a70d1de08857df16a8327"
         }
       ]
     },
     {
-      "path": "content/blog/2026-06-29-dag-for-free.md",
-      "source_blob": "b90dee3fc4eb5dd0c1cb3a238607b73c672fc930",
+      "path": "content/blog/2026-05-27-standard-library-not-plugin-store.md",
+      "source_blob": "3fd302ee281b209f6a2e48858095400ef683bf30",
       "blocks": [
         {
-          "selector": "content/blog/2026-06-29-dag-for-free.md#fence:1",
+          "selector": "content/blog/2026-05-27-standard-library-not-plugin-store.md#fence:1",
           "kind": "markdown-fence",
-          "line": 14,
+          "line": 24,
           "language": "yaml",
-          "sha256": "8de23702de282f388e1a0bac0f6eedbeffafc93dc6a608e9592aa9694c013668"
+          "sha256": "2f0bf1de16ccbd4f7d36700159149899aaa7871a8e714a8c3c24fa88bad91689"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-06-12-blast-radius-in-the-file.md",
+      "source_blob": "7d1662ea4f823aa4b889415e0e5a258a55c8dcf5",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-06-12-blast-radius-in-the-file.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 19,
+          "language": "yaml",
+          "sha256": "5cbb0047188841e7c443c66753c182bdd9d171e2449eb2886932af8fdc6e80a6"
+        }
+      ]
+    },
+    {
+      "path": "content/blog/2026-06-12-dag-for-free.md",
+      "source_blob": "8978141fdced3d17b4e8b87aa7af0f2342c9e133",
+      "blocks": [
+        {
+          "selector": "content/blog/2026-06-12-dag-for-free.md#fence:1",
+          "kind": "markdown-fence",
+          "line": 18,
+          "language": "yaml",
+          "sha256": "5e6be99529d3d0a5b07254f81865da80d4b730f7171d11ded0288b5a17580187"
         },
         {
-          "selector": "content/blog/2026-06-29-dag-for-free.md#fence:2",
+          "selector": "content/blog/2026-06-12-dag-for-free.md#fence:2",
           "kind": "markdown-fence",
-          "line": 40,
+          "line": 54,
           "language": "text",
           "sha256": "11b97ee12b3aceee659be0e61f203e7ca7ea3feecb5b565fb7d159b790386fd2"
         }
@@ -104,7 +104,7 @@
     },
     {
       "path": "content/blog/2026-07-02-own-your-stack.md",
-      "source_blob": "fd2800fd271970c12299484b8f7ee81eea79ff01",
+      "source_blob": "bb52801dc984c6817ba0ebbbc074f810db3b3787",
       "blocks": [
         {
           "selector": "content/blog/2026-07-02-own-your-stack.md#fence:1",

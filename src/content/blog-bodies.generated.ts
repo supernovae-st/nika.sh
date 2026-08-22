@@ -14942,7 +14942,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " No daemon, no account, no telemetry phoning home. Brew or curl, and the whole runtime is on your disk. Air-gapped is a supported install path, not an afterthought."
+          "text": " A local run does not require an account or a resident daemon. Brew or curl puts the runtime on your disk. "
+        },
+        {
+          "k": "code",
+          "text": "nika serve"
+        },
+        {
+          "k": "text",
+          "text": " may stay resident when scheduling or a local service needs it, but that mode projects the same binary rather than becoming a mandatory hosted control plane."
         }
       ]
     },
@@ -14967,35 +14975,17 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "play": "HYSw1ghgXABAFgUwDZIPYFoIgFAFtUAmysqKEuEA9GRQMwB0ATFLQEbbYAuEAzmD1GwwYAcwBOCBJ0HDhIYADMEYmbOEAHMalzrpMAEQBlCAE94yNDHkxUwBDB4JgnJwGME9fUA"
     },
     {
+      "k": "h",
+      "depth": 2,
+      "text": "What local changes",
+      "id": "what-local-changes"
+    },
+    {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "What that buys, concretely. "
-        },
-        {
-          "k": "strong",
-          "text": "Privacy that is structural, not contractual"
-        },
-        {
-          "k": "text",
-          "text": ": with a local model the data path never leaves the machine, so there is nothing to trust and nothing to audit. "
-        },
-        {
-          "k": "strong",
-          "text": "A free drafting loop"
-        },
-        {
-          "k": "text",
-          "text": ": iterate on prompts and plans at zero marginal cost, then point the same file at a bigger model only when the task earns it. "
-        },
-        {
-          "k": "strong",
-          "text": "Custody"
-        },
-        {
-          "k": "text",
-          "text": ": a provider deprecating a model is a one-line edit to your file, not a rewrite of your workflow."
+          "text": "With a local model, prompts and outputs do not need to cross a cloud-provider boundary. That removes one egress path. It does not remove trust from the machine: the local model server, model artifact, operating system and any tools the workflow invokes remain part of the boundary."
         }
       ]
     },
@@ -15004,7 +14994,94 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Cloud stays a real choice: 11 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is "
+          "text": "Local also changes the cost evidence. There may be no vendor invoice, but the run still consumes hardware time, memory and energy. Nika calls a model unpriced when the catalog has no price row. It does not turn missing billing data into “free.”"
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Custody is the third change. A provider deprecating a model can become a model-selection edit instead of a workflow rewrite. The replacement may behave differently, so the next run needs new evidence. Portability preserves the plan, not identical generations."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What local does not change",
+      "id": "what-local-does-not-change"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The workflow still needs boundaries. A local model can call a dangerous tool as easily as a remote model if the runtime grants it. A local process can still read the wrong file. A model artifact can still be mislabeled."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Keep the same questions:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Which exact workflow bytes ran?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which local server and model seat answered?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which files, tools and processes were admitted?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "What did the trace observe?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which model provenance facts remain below the server wire?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Local-first is an ownership choice, not a waiver for evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Cloud stays a real choice: 11 cloud providers, with credentials supplied through the runtime's secret boundary rather than written into the workflow. The point was never no-cloud. The point is that cloud is "
         },
         {
           "k": "strong",
@@ -15012,7 +15089,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ": per file, per task, visible in the diff."
+          "text": ": per workflow or task, visible in the requested model seat."
         }
       ]
     },
@@ -15021,7 +15098,324 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Your first run needs no key at all. That is not a trial mode. That is the architecture."
+          "text": "A first run can need no provider key when a supported local model server and model are already available. That is not a trial mode. It is one execution lane beside the cloud lanes."
+        }
+      ]
+    }
+  ],
+  "intent-as-code": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. "
+        },
+        {
+          "k": "strong",
+          "text": "Where is it now?"
+        },
+        {
+          "k": "text",
+          "text": " For many people the honest answer is: buried in a chat history they will not scroll back through, on a service that owns the surrounding interface."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "We've accepted a strange deal: the more useful the work, the more disposable the container. Nobody would write software in a text box that forgets everything. Yet that's exactly how most AI work happens today."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Nika's bet is simple: useful AI work is worth writing down."
+        },
+        {
+          "k": "text",
+          "text": " Not as a transcript, as "
+        },
+        {
+          "k": "em",
+          "text": "source"
+        },
+        {
+          "k": "text",
+          "text": ". A small YAML file says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it follows the same declared plan. A model may return different words; the diff still shows what you asked the system to change."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Source is not a promise of determinism",
+      "id": "source-is-not-a-promise-of-determinism"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Calling a workflow source code does not make a model deterministic. It makes the parts under the author's control reviewable."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file can pin the requested model seat, input values, task graph, output limits and effect boundary. A trace can record the route and result the runtime observed. Neither can prove facts a provider does not expose, such as an unannounced change to weights behind an API name."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That boundary is useful. Reproducibility stops being one vague badge and becomes a set of answerable questions:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Were the same workflow bytes admitted?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Were the same declared inputs resolved?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which model and access path were requested?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which events and outputs were recorded?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which facts remain outside the runtime's evidence?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Intent as Code does not erase uncertainty. It gives uncertainty an address."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Four verbs cover the execution models: "
+        },
+        {
+          "k": "strong",
+          "text": "infer"
+        },
+        {
+          "k": "text",
+          "text": " calls a model, "
+        },
+        {
+          "k": "strong",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": " runs a process, "
+        },
+        {
+          "k": "strong",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": " uses a tool, "
+        },
+        {
+          "k": "strong",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": " runs a bounded tool loop. Everything else is data and control flowing between tasks. The order falls out of the wiring: "
+        },
+        {
+          "k": "code",
+          "text": "with:"
+        },
+        {
+          "k": "text",
+          "text": " names what a step consumes, the binding is the edge, and independent branches become eligible together."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The file gives each concern one home",
+      "id": "the-file-gives-each-concern-one-home"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A useful workflow carries more than a prompt:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "Requested work lives in the task body."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A data dependency lives in "
+          },
+          {
+            "k": "code",
+            "text": "with:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "A control dependency lives in "
+          },
+          {
+            "k": "code",
+            "text": "after:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The external effect ceiling lives in "
+          },
+          {
+            "k": "code",
+            "text": "permits:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Model choice lives in "
+          },
+          {
+            "k": "code",
+            "text": "model:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "The public result lives in "
+          },
+          {
+            "k": "code",
+            "text": "outputs:"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The separation is not ceremony. It prevents a prompt from becoming a second scheduler, a second permission policy and a second output schema at once."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "And the reference engine can run on "
+        },
+        {
+          "k": "strong",
+          "text": "your machine"
+        },
+        {
+          "k": "text",
+          "text": " as one Rust binary. Your workflow and Git history remain local artifacts. You may choose a local model or call a cloud provider with your own credentials. The file keeps that choice visible; it does not pretend every provider route is local."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The license split protects a different boundary. The language contract is Apache-2.0. The reference engine is AGPL-3.0-or-later. Those licenses keep the contract implementable and the covered engine source available under their terms. They do not replace operational control over keys, hosts and backups."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Chat is a good place to figure out what you want. It is a poor place to keep the final method. Explore in chat. Then write the intent down, review the file and keep the evidence from each run beside it."
         }
       ]
     }
@@ -15040,12 +15434,21 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "p",
       "inline": [
         {
+          "k": "text",
+          "text": "On June 12, the checker learned to compute exact parallel width and the points where a graph narrows. The useful part was not a new scheduler setting. It was a measurement derived from the workflow's existing edges."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
           "k": "strong",
-          "text": "Nika has two doors: with: and after:."
+          "text": "Nika has two edge doors: with: and after:."
         },
         {
           "k": "text",
-          "text": " A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune."
+          "text": " A task names the data it consumes, or the state it waits on, and each declaration is an edge. Tasks whose edges are satisfied become eligible together. Waves, maximum width and pinch points are derived facts, not a second plan the author has to maintain."
         }
       ]
     },
@@ -15053,8 +15456,8 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "k": "code",
       "lang": "yaml",
       "filename": "release-radar.nika.yaml",
-      "text": "nika: release-radar\n\ntasks:\n  changelog:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  repo_log:\n    exec:\n      command: [\"git\", \"log\", \"--since='1\", \"week'\"]\n\n  digest:\n    with:\n      changelog: ${{ tasks.changelog.output }}\n      repo_log: ${{ tasks.repo_log.output }}\n    infer:\n      prompt: \"What changed this week: ${{ with.changelog }} ${{ with.repo_log }}\"",
-      "play": "HYSw1ghgXABATgUwDYIgZwQWjhAJhOAKEIBd0w0pCYYBjACwmAHNkB7ZqmmkYANzZgEXbjRJs2SWACJQkKADMEJBtOqiYBZpXUaYAVzhSY0+iRIAHSgHprciADo09awyaskHNesQW2AfU9OXRgEAA8EWhFRWjYAWzimXFgAbWlmEBJpABoTIJyTTEw0XloEAF4AcgBGAukAdwQEMErpAF1iGlwQVjQSaJh6zPoBmjcWdk4YABIAb1mYMjQKB3GPDgc2fUttmABfPZCaXwCg2DmFpZWTwI2tnZJ9w9FeJThRmAs4eIt+kwB1RiPNYIXCLeggNCDJpgc7zQbDVaMCZBJ4zeFDEj0Bw3VEHaRAA"
+      "text": "nika: release-radar\n\ntasks:\n  changelog:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh/changelog\"\n\n  repo_log:\n    exec:\n      command: [\"git\", \"log\", \"--since=1 week\"]\n\n  digest:\n    with:\n      changelog: ${{ tasks.changelog.output }}\n      repo_log: ${{ tasks.repo_log.output }}\n    infer:\n      prompt: \"What changed this week: ${{ with.changelog }} ${{ with.repo_log }}\"",
+      "play": "HYSw1ghgXABATgUwDYIgZwQWjhAJhOAKEIBd0w0pCYYBjACwmAHNkB7ZqmmkYANzZgEXbjRJs2SWACJQkKADMEJBtOqiYBZpXUaYAVzhSY0+iRIAHSgHprciADo09awyaskHNesQW2AfU9OXRgEAA8EWhFRWjYAWzimXFgAbWlmEBJpABoTIJyTTEw0XloEAF4ARhgAdwQEMGkAXWIaXBBWNBJo2sz6Hpo3FnZOGAASAG8JmDI0Cgchjw4HNn1LNZgAX02Qml8AoNhJ6dn5-cDl1fWSLZ3RXiU4AZgLOHiLbpMAdUYbxYRcDN6CA0LV6mAjlNeiR6AtGMMgrdxlCan0HOdEdtpEA"
     },
     {
       "k": "p",
@@ -15077,7 +15480,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " start together because nothing orders them; "
+          "text": " become eligible together because nothing orders them; "
         },
         {
           "k": "code",
@@ -15085,7 +15488,34 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move."
+          "text": " waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself. There is no stage to renumber or barrier to move."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Data and control are not interchangeable",
+      "id": "data-and-control-are-not-interchangeable"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "with:"
+        },
+        {
+          "k": "text",
+          "text": " means the downstream task receives a value from another task. "
+        },
+        {
+          "k": "code",
+          "text": "after:"
+        },
+        {
+          "k": "text",
+          "text": " means it waits for a named terminal condition without importing that task's output."
         }
       ]
     },
@@ -15094,7 +15524,31 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The plan is also drawn "
+          "text": "The distinction matters during review. If a task only needs to run after cleanup, a data binding would invent a dependency on bytes it does not use. If a task consumes a result, a control edge alone would hide the value flow. Keeping both relations explicit lets the checker explain why an edge exists."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It also keeps failure semantics visible. A control edge can name the status it accepts. A data edge cannot pretend that a failed producer returned a valid value."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The plan is a preflight result",
+      "id": "the-plan-is-a-preflight-result"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The plan is drawn "
         },
         {
           "k": "strong",
@@ -15102,7 +15556,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": ". It is the first verdict "
+          "text": ". It is a verdict "
         },
         {
           "k": "code",
@@ -15110,7 +15564,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " prints for that exact file:"
+          "text": " can print for that exact file:"
         }
       ]
     },
@@ -15124,7 +15578,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "A cycle is not a hang, it is a typed error naming its members. A ghost name in a "
+          "text": "A cycle is not a hang. It is a typed error naming its members. A ghost name in a "
         },
         {
           "k": "code",
@@ -15132,7 +15586,40 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from four verbs and their wiring."
+          "text": " binding is caught in the same pass. Width is bounded before dispatch rather than guessed from the number of tasks."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The runtime still owns concurrency limits and resource availability. Two tasks may be graph-eligible together without receiving CPU or provider capacity at the same instant. The derived plan describes dependency truth, not a timing guarantee."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "One source, several projections",
+      "id": "one-source-several-projections"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The same graph can feed a terminal plan, a static diagram, cost analysis and runtime dispatch. Those are projections of one typed structure. If a UI rebuilt the graph from human log lines, it would create a second scheduler story and drift as soon as the renderer changed."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is what “for free” means here. The plan is not free to execute, and concurrency is not unlimited. The author gets a reviewable plan without maintaining separate scheduling markup."
         }
       ]
     },
@@ -15142,6 +15629,619 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "You never scheduled anything. The plan was in the file all along."
+        }
+      ]
+    }
+  ],
+  "blast-radius-in-the-file": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika's public permits contract landed on June 11. Runtime enforcement reached the process sink on June 12. The two commits matter together: a declaration without enforcement is documentation, and enforcement without a declaration is ambient policy a reviewer cannot see in the workflow."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "In Nika, the boundary is a block in the file you review:"
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "daily-brief.nika.yaml",
+      "text": "nika: daily-brief\n\npermits:\n  fs:\n    read: [ ./notes/* ]\n    write: [ ./brief.md ]\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  notes:\n    invoke:\n      tool: \"nika:read\"\n      args:\n        path: ./notes/today.md\n\n  save:\n    with:\n      notes: ${{ tasks.notes.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: ./brief.md\n        content: \"${{ with.notes }}\"",
+      "play": "HYSw1ghgXABAJhEAbAngWgEYCcQFMBmAUIQA65YC2IALgM5SEwz72NMxa4RywDaMAOgD0wAPbVctIQCoYAXTZMA7jgl9BQ7HnwCKceW2qjRSejH4AiUJCiduFgDQwr4aCpq4LBwtQi0wrExiEoHsIMAAbqJguAzs7EYmsC42dnAWiuwQWADmofFMJBDUABawwsGSQkYIKLpwxEy0EBGxmUo0ZZlB4pKwACQA3oMwvv60ApUTogCu1CRzMAC+S5nhUTFxBYlIydZuqp7dMNl5WwUwRaXlmjgE9cdMAMaiwBJvyUMjHaWTvbTLJYWIA"
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Declaration and enforcement are different jobs",
+      "id": "declaration-and-enforcement-are-different-jobs"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "permits: is the workflow's declared list."
+        },
+        {
+          "k": "text",
+          "text": " It is not a suggestion or a profile name. Once the block is present, unlisted capabilities are denied within the categories and host enforcement the current runtime supports: files, tools, programs and network destinations."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A reviewer reads that declared blast radius in the diff, next to the logic it serves. The checker compares statically visible effects with the declaration. Runtime sinks judge the effective operation again when the task reaches them. The operating system provides the outer process boundary where the platform adapter supports it."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those layers must not be collapsed into one claim. A path that fits a YAML pattern is not automatically a held file descriptor. A declared host is not proof that every child process has network confinement. A production guide must therefore name both the workflow boundary and the host prerequisite."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "Denied means before."
+        },
+        {
+          "k": "text",
+          "text": " A step that reaches outside the list fails with a typed error, "
+        },
+        {
+          "k": "code",
+          "text": "NIKA-SEC-004"
+        },
+        {
+          "k": "text",
+          "text": ", before the effect happens. Not logged after the fact, not flagged for Monday's incident review: the write to "
+        },
+        {
+          "k": "code",
+          "text": "~/.ssh/config"
+        },
+        {
+          "k": "text",
+          "text": " simply never runs."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The phrase “before the effect” is the important part. A green task followed by a warning would not be a permission system. The refusal has to occur at the sink that owns the operation, before the process spawn, file change or admitted network request."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Inference proposes, review decides",
+      "id": "inference-proposes-review-decides"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "code",
+          "text": "nika check --infer-permits"
+        },
+        {
+          "k": "text",
+          "text": " reads the statically visible plan and proposes a boundary. It also has to remain honest about dynamic paths, redirected requests and values that cannot be resolved before execution. The result is a starting point for review, not a proof that every future runtime value has been discovered."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That order is deliberate:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the workflow states its effects;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the checker derives what it can see;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "a person reviews any widening and any unknown;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "runtime enforcement judges the effective operation;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the trace records the verdict."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent may help draft the list. It does not get to turn an unknown target into permission by describing it confidently."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Capability declarations next to intent. It is one of the oldest ideas in security, applied to the newest way of doing work."
+        }
+      ]
+    }
+  ],
+  "standard-library-not-plugin-store": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. Nika gives common operations a smaller home: the standard library."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first machine-readable registry for that contract landed on May 27. It recorded the verbs and builtins separately, so adding a callable operation no longer implied adding a new way for the language to execute."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The binary carries the common floor",
+      "id": "the-binary-carries-the-common-floor"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "28 builtins are part of the current language contract"
+        },
+        {
+          "k": "text",
+          "text": ", across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings are reached the same way as everything else callable, with "
+        },
+        {
+          "k": "code",
+          "text": "invoke:"
+        },
+        {
+          "k": "text",
+          "text": ". The reference engine ships its builtin implementation with the binary, so those operations do not require a per-workflow package install."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That removes one supply-chain decision from the common path. It does not make every external tool built in. MCP servers, processes and provider services remain separate dependencies with their own installation, identity and authority boundaries."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "One builtin, 9 honest shapes."
+        },
+        {
+          "k": "text",
+          "text": " "
+        },
+        {
+          "k": "code",
+          "text": "nika:fetch"
+        },
+        {
+          "k": "text",
+          "text": " turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding."
+        }
+      ]
+    },
+    {
+      "k": "code",
+      "lang": "yaml",
+      "filename": "headlines.nika.yaml",
+      "text": "nika: headlines\n\ntasks:\n  page:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh\"\n\n  save:\n    with:\n      page: ${{ tasks.page.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./page.md\"\n        content: \"${{ with.page }}\"",
+      "play": "HYSw1ghgXABAFgUwgEwDYmAgzgKBwFwizCyhxhgAcIBzBMiijANwHsx7zGL9XXVYAIlCQoAMwT4AxnEFduEAE41S87jACuigTEFx8+SqQD0xkRAB0WWXgpYIzTtwDuIfHAbrqdWABIA3v4whMRYFt4IFqwahjEwAL7xaizsTuq8-ELmUM6Kbghy6jBKKp5F1O5CFsYRFgC2yIVFMFKswPgI7UIBQa7u4bQICfGCQA"
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Three extension lanes",
+      "id": "three-extension-lanes"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Keeping the grammar small requires more than a builtin list. It requires clear lanes for growth:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "strong",
+            "text": "Common operation with a stable Nika contract:"
+          },
+          {
+            "k": "text",
+            "text": " a builtin owned by the engine release."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Typed external tool:"
+          },
+          {
+            "k": "text",
+            "text": " MCP, owned by the operator who configures the server."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Ordinary executable:"
+          },
+          {
+            "k": "text",
+            "text": " "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": ", owned by the host and workflow boundary."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An MCP tool is not automatically trusted because it is discoverable. The server must be configured, its tool must fit the workflow's declared permits and the process still runs under the host boundary Nika can enforce. A command remains a process, even when it is convenient."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This separation keeps a new integration from becoming a new language keyword. It also keeps the builtin contract reviewable. A builtin can specify arguments, result shape and refusal behavior without importing an open-ended package manager into every run."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why fetch belongs here",
+      "id": "why-fetch-belongs-here"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first public page counted "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " as a verb. The spec corrected that on May 22: fetching does not create a distinct execution model. It is one callable operation under "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": ", with bounded modes and a typed result."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That subtraction is the design in miniature. The language names ways of acting. The library names things that can be called. The graph names order. Once those roles are separate, each can grow without impersonating the others."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The library grows. The language holds still. That trade is the design."
+        }
+      ]
+    }
+  ],
+  "open-spec-copyleft-engine": [
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "On May 22, the Nika language contract entered its own public repository under Apache-2.0. The reference engine was already rebuilding under AGPL-3.0-or-later."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Two licenses for one project is a choice you should be able to interrogate, so here is the argument and its limit."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Two artifacts, two jobs",
+      "id": "two-artifacts-two-jobs"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "The spec is the part you adopt."
+        },
+        {
+          "k": "text",
+          "text": " The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Published copies remain available under those terms, and any team can build a competing runtime from them. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "strong",
+          "text": "The engine is the reference implementation."
+        },
+        {
+          "k": "text",
+          "text": " AGPL-3.0-or-later allows use, modification and commercial operation while requiring corresponding source to remain available in the situations covered by the license, including modified network use. It does not force every independent service around Nika to adopt the same license. It keeps modifications to the covered engine from becoming an invisible dependency for its users."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The split draws a useful line:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "strong",
+            "text": "Workflow language and conformance material, Apache-2.0."
+          },
+          {
+            "k": "text",
+            "text": " This protects implementation freedom and carries a patent grant."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Reference Rust engine, AGPL-3.0-or-later."
+          },
+          {
+            "k": "text",
+            "text": " This protects source access for users of modified covered software under the license terms."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That line is more precise than saying “Nika is open source” and leaving readers to discover later that different parts carry different obligations."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The first spec was not the final spec",
+      "id": "the-first-spec-was-not-the-final-spec"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The May 22 receipt is strong evidence for the license split and the existence of a standalone language contract. It is not evidence that every field in that first draft survived."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The initial draft still treated "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " as a peer of "
+        },
+        {
+          "k": "code",
+          "text": "infer"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": ", and used an older envelope. The same day, "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " moved from the verb set into the standard library. Later revisions tightened task shape, permits, identity and conformance. The current website projects language facts from the current spec instead of copying the first draft into permanent marketing prose."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That evolution is the point of separating contract from implementation. A language repository can show its amendments, fixtures and machine-readable schema. An engine repository can show which contract snapshot it implements. One does not have to pretend to be the other."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What the split does not promise",
+      "id": "what-the-split-does-not-promise"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Licensing does not guarantee that every future implementation will behave identically. Conformance evidence does that work. Plain text does not make migration free if a workflow depends on a particular builtin, provider or host policy. A copyleft engine does not remove the need to back up your own files and artifacts."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "It does improve the exit boundary. The workflow lives in the project. The language contract can be implemented without asking the reference-engine author for permission. The covered engine source cannot quietly disappear behind a modified network service where the license requires an offer of source."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Licenses are boring until the Friday they are not. The split cannot promise that one binary runs forever. It can keep the file, the contract and the reference implementation available for the people who have to make the next binary."
         }
       ]
     }
@@ -15161,7 +16261,40 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Nika locks the count at four, forever. The rule that makes this possible is strict: "
+          "text": "The first public spec draft still had five. Later on May 22, one commit completed the correction across the specification: "
+        },
+        {
+          "k": "code",
+          "text": "fetch"
+        },
+        {
+          "k": "text",
+          "text": " became "
+        },
+        {
+          "k": "code",
+          "text": "nika:fetch"
+        },
+        {
+          "k": "text",
+          "text": ", a tool under "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nika locks the count at four. The rule that makes this possible is strict: "
         },
         {
           "k": "strong",
@@ -15201,7 +16334,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " loops with tools until the job is done. Four genuinely different ways for a machine to act. There is no fifth."
+          "text": " runs a bounded loop with tools. Four genuinely different ways for a machine to act."
         }
       ]
     },
@@ -15211,6 +16344,12 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "filename": "morning-brief.nika.yaml",
       "text": "nika: morning-brief\n\ntasks:\n  fetch_news:\n    invoke:\n      tool: \"nika:fetch\"          # a tool, not a verb\n      args:\n        url: \"https://hnrss.org/frontpage\"\n\n  build:\n    exec:\n      command: [\"cargo\", \"build\", \"--release\"]\n\n  digest:\n    after:\n      fetch_news: success\n      build: success\n    infer:\n      prompt: \"Summarize what changed\"\n\noutputs:\n  brief: ${{ tasks.digest.output }}",
       "play": "HYSw1ghgXABAtgewE6mAcwLQCMkgKYBmAUEQC4QDOYFURMMBepAxgBYD6weA7jXfTBDAAbgjB5aAgaQQIANrABEoSFEYtWiqdpgBiGBBgz5AGhjAEpAzGF4kWflIhI0fHfQCuSBTEWtSpAAONAD0IazASBQUAHTIaCEESAjAQRBoeIok9FgeIHIAJpICeAAeeMzFUswIcHAQwEUwANqKzM5oCIpmirn5Bd2+GBhIeHJ4lJkAutkwBSAZFKRVBgSkdiv06mycPDQwFB7MzHjRjgJ9hbCHx6cU50KMSJswgclwgcu+AMoedc4gABeeBg3FYECsbAaGQGJAQHiCCLcMBw+AIsAAJABvLFGSjUGLzRakOIIwIImAAX0pQA"
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The subtraction test",
+      "id": "the-subtraction-test"
     },
     {
       "k": "p",
@@ -15233,7 +16372,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins. Everything callable is a tool. Everything about ordering is the graph."
+          "text": " lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins."
         }
       ]
     },
@@ -15242,8 +16381,70 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands."
+          "text": "The same test handles future pressure:"
         }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "If it calls a bounded tool and returns, it belongs under "
+          },
+          {
+            "k": "code",
+            "text": "invoke"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "If it starts an operating-system process, it belongs under "
+          },
+          {
+            "k": "code",
+            "text": "exec"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "If it asks one model generation for a result, it belongs under "
+          },
+          {
+            "k": "code",
+            "text": "infer"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "If the model chooses a bounded sequence of tools, it belongs under "
+          },
+          {
+            "k": "code",
+            "text": "agent"
+          },
+          {
+            "k": "text",
+            "text": "."
+          }
+        ]
       ]
     },
     {
@@ -15251,105 +16452,22 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "That stillness is the promise. The file you write today is the file you run in ten years. Languages that stop moving are the ones you can build on."
+          "text": "HTTP, SQL, email, browser control and a future database connector do not become verbs merely because they are useful. They are callable capabilities with contracts."
         }
       ]
-    }
-  ],
-  "intent-as-code": [
+    },
     {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. "
-        },
-        {
-          "k": "strong",
-          "text": "Where is it now?"
-        },
-        {
-          "k": "text",
-          "text": " For most people the honest answer is: gone. Buried in a chat history you will never scroll back through, on a server you don't control."
-        }
-      ]
+      "k": "h",
+      "depth": 2,
+      "text": "Ordering is not a verb either",
+      "id": "ordering-is-not-a-verb-either"
     },
     {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "We've accepted a strange deal: the more useful the work, the more disposable the container. Nobody would write software in a text box that forgets everything. Yet that's exactly how most AI work happens today."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "Nika's bet is simple: useful AI work is worth writing down."
-        },
-        {
-          "k": "text",
-          "text": " Not as a transcript, as "
-        },
-        {
-          "k": "em",
-          "text": "source"
-        },
-        {
-          "k": "text",
-          "text": ". A small YAML file that says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it does the same thing. Change a line and "
-        },
-        {
-          "k": "code",
-          "text": "git diff"
-        },
-        {
-          "k": "text",
-          "text": " shows exactly what changed."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Four verbs cover the whole space: "
-        },
-        {
-          "k": "strong",
-          "text": "infer"
-        },
-        {
-          "k": "text",
-          "text": " (call a model), "
-        },
-        {
-          "k": "strong",
-          "text": "exec"
-        },
-        {
-          "k": "text",
-          "text": " (run a process), "
-        },
-        {
-          "k": "strong",
-          "text": "invoke"
-        },
-        {
-          "k": "text",
-          "text": " (use a tool), "
-        },
-        {
-          "k": "strong",
-          "text": "agent"
-        },
-        {
-          "k": "text",
-          "text": " (let it work a loop). Everything else is data flowing between tasks. The order falls out of the wiring: "
+          "text": "Parallelism, retries and waiting can look like actions in a visual builder. In Nika they are graph or policy facts around an action. "
         },
         {
           "k": "code",
@@ -15357,135 +16475,55 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " names what a step consumes, the binding is the edge, and independent branches run in parallel, for free."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "And it runs on "
-        },
-        {
-          "k": "strong",
-          "text": "your machine"
-        },
-        {
-          "k": "text",
-          "text": ". One Rust binary. Your model keys, your files, your git history. No cloud between you and your own work, and a license (AGPL) that guarantees it stays that way."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Chat is a great place to "
-        },
-        {
-          "k": "em",
-          "text": "figure out"
-        },
-        {
-          "k": "text",
-          "text": " what you want. It is a terrible place to "
-        },
-        {
-          "k": "em",
-          "text": "keep"
-        },
-        {
-          "k": "text",
-          "text": " it. Explore in chat. Then write the intent down, and own it forever."
-        }
-      ]
-    }
-  ],
-  "blast-radius-in-the-file": [
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "In Nika, the boundary is a block in the file you review:"
-        }
-      ]
-    },
-    {
-      "k": "code",
-      "lang": "yaml",
-      "filename": "daily-brief.nika.yaml",
-      "text": "nika: daily-brief\n\npermits:\n  fs:\n    read: [ ./notes/* ]\n    write: [ ./brief.md ]\n  tools: [ \"nika:read\", \"nika:write\" ]\n\ntasks:\n  notes:\n    invoke:\n      tool: \"nika:read\"\n      args:\n        path: ./notes/today.md\n\n  save:\n    with:\n      notes: ${{ tasks.notes.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: ./brief.md\n        content: \"${{ with.notes }}\"",
-      "play": "HYSw1ghgXABAJhEAbAngWgEYCcQFMBmAUIQA65YC2IALgM5SEwz72NMxa4RywDaMAOgD0wAPbVctIQCoYAXTZMA7jgl9BQ7HnwCKceW2qjRSejH4AiUJCiduFgDQwr4aCpq4LBwtQi0wrExiEoHsIMAAbqJguAzs7EYmsC42dnAWiuwQWADmofFMJBDUABawwsGSQkYIKLpwxEy0EBGxmUo0ZZlB4pKwACQA3oMwvv60ApUTogCu1CRzMAC+S5nhUTFxBYlIydZuqp7dMNl5WwUwRaXlmjgE9cdMAMaiwBJvyUMjHaWTvbTLJYWIA"
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "permits: is the whole list."
-        },
-        {
-          "k": "text",
-          "text": " Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "Denied means before."
-        },
-        {
-          "k": "text",
-          "text": " A step that reaches outside the list fails with a typed error, "
+          "text": " carries data edges. "
         },
         {
           "k": "code",
-          "text": "NIKA-SEC-004"
+          "text": "after:"
         },
         {
           "k": "text",
-          "text": ", before the effect happens. Not logged after the fact, not flagged for Monday's incident review: the write to "
+          "text": " carries control edges. Retry changes how an admitted task is attempted; it does not create a fifth execution model."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This separation keeps the checker legible. It can ask one question about how a task acts, another about when it becomes eligible and another about what authority the effect requires. A single keyword does not have to answer all three."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "Why agent remains distinct",
+      "id": "why-agent-remains-distinct"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "An agent is not merely a long "
         },
         {
           "k": "code",
-          "text": "~/.ssh/config"
+          "text": "infer"
         },
         {
           "k": "text",
-          "text": " simply never runs."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "And you do not hand-write the list. "
+          "text": ". One model response is requested up front under "
         },
         {
           "k": "code",
-          "text": "nika check --infer-permits"
+          "text": "infer"
         },
         {
           "k": "text",
-          "text": " reads the plan and prints the tightest boundary it needs. You loosen it deliberately, line by line, in review, which is where loosening belongs."
+          "text": ". An agent loop chooses tools and continues across turns until a bounded stop condition. That difference changes cost, authority, cancellation and trace shape. It earns a separate verb because the runtime physics are different."
         }
       ]
     },
@@ -15494,84 +16532,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Capability declarations next to intent. It is one of the oldest ideas in security, applied to the newest way of doing work."
-        }
-      ]
-    }
-  ],
-  "standard-library-not-plugin-store": [
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "28 builtins ride the binary"
-        },
-        {
-          "k": "text",
-          "text": ", across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with "
-        },
-        {
-          "k": "code",
-          "text": "invoke:"
-        },
-        {
-          "k": "text",
-          "text": ", they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "One builtin, 9 honest shapes."
-        },
-        {
-          "k": "text",
-          "text": " "
-        },
-        {
-          "k": "code",
-          "text": "nika:fetch"
-        },
-        {
-          "k": "text",
-          "text": " turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding."
-        }
-      ]
-    },
-    {
-      "k": "code",
-      "lang": "yaml",
-      "filename": "headlines.nika.yaml",
-      "text": "nika: headlines\n\ntasks:\n  page:\n    invoke:\n      tool: \"nika:fetch\"\n      args:\n        url: \"https://nika.sh\"\n\n  save:\n    with:\n      page: ${{ tasks.page.output }}\n    invoke:\n      tool: \"nika:write\"\n      args:\n        path: \"./page.md\"\n        content: \"${{ with.page }}\"",
-      "play": "HYSw1ghgXABAFgUwgEwDYmAgzgKBwFwizCyhxhgAcIBzBMiijANwHsx7zGL9XXVYAIlCQoAMwT4AxnEFduEAE41S87jACuigTEFx8+SqQD0xkRAB0WWXgpYIzTtwDuIfHAbrqdWABIA3v4whMRYFt4IFqwahjEwAL7xaizsTuq8-ELmUM6Kbghy6jBKKp5F1O5CFsYRFgC2yIVFMFKswPgI7UIBQa7u4bQICfGCQA"
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Everything beyond the library arrives through MCP: name a "
-        },
-        {
-          "k": "code",
-          "text": "mcp:"
-        },
-        {
-          "k": "text",
-          "text": " tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar."
+          "text": "A closed verb set is a feature you can feel. You can learn the four execution models, then treat new integrations as tools rather than dialect changes. Tools can grow in the standard library, through MCP or behind ordinary processes while the execution grammar keeps one shape."
         }
       ]
     },
@@ -15580,66 +16541,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The library grows. The language holds still. That trade is the design."
-        }
-      ]
-    }
-  ],
-  "open-spec-copyleft-engine": [
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "The nika-spec repository went public this week, under Apache-2.0. The engine that runs it is AGPL-3.0-or-later. Two licenses for one project is a choice you should be able to interrogate, so here is the whole argument."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "The spec is the part you adopt."
-        },
-        {
-          "k": "text",
-          "text": " The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Any team can build a competing runtime on it, and nothing we do later can revoke that. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "The engine is the part someone would take."
-        },
-        {
-          "k": "text",
-          "text": " The recent history of open agent tooling is a history of extraction: a permissively-licensed runtime gets wrapped, hosted, improved in private, and the improvements never come home. AGPL closes that door. Run our engine as a service, fork it, build a business next to it: all fine. But the changes ship back. The protection this buys is not ours, it is yours: no fork of the engine can quietly become a closed thing your files depend on."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "strong",
-          "text": "Your exit is cp -r."
-        },
-        {
-          "k": "text",
-          "text": " The workflows are plain text in your repo. The spec is Apache. The engine is copyleft. Take the three together and the cost of leaving Nika is copying a folder. Compare that with the cost of leaving wherever your prompts live today."
-        }
-      ]
-    },
-    {
-      "k": "p",
-      "inline": [
-        {
-          "k": "text",
-          "text": "Licenses are boring until the Friday they are not. We picked ours so the file you write today still runs the day the company that made the runner is gone. That includes us."
+          "text": "That stillness is the promise. It does not mean every field around the verbs is frozen or that no migration will ever happen. It means new product features do not get to rename the basic ways a task can act."
         }
       ]
     }
@@ -15650,7 +16552,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "By spring 2026 there was a working prototype. The note from October had become a real engine: files ran, models answered, tools fired. The fastest path from there was obvious: refactor what worked, extract the good parts, ship."
+          "text": "By spring 2026 there was a working prototype in the private project chronology. Files ran, models answered and tools fired. The public receipt for that prototype has not survived in the current engine repository, so this chapter treats its behavior as recollection rather than release evidence. The fastest path from there looked obvious: refactor what worked, move the good parts and keep shipping."
         }
       ]
     },
@@ -15659,7 +16561,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "We did the opposite. The first architecture decision record of the current engine says it plainly: "
+          "text": "The current engine took a harder boundary. Its first public commit on April 13 created an orphan branch with an empty Cargo workspace. The architecture decision published the next day made the rule explicit: "
         },
         {
           "k": "strong",
@@ -15689,15 +16591,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " The prototype existed to learn whether the idea held: can intent live in a file, can a plan be drawn before it runs, can permissions be enforced rather than logged. It answered yes. But code written to "
-        },
-        {
-          "k": "em",
-          "text": "find out"
-        },
-        {
-          "k": "text",
-          "text": " is shaped by the finding-out: shortcuts where the idea was still fuzzy, generosity where discipline was needed later. Extracting it would have meant carrying every one of those youthful decisions into the thing people would trust with their machines."
+          "text": " The prototype existed to learn whether the idea held: can intent live in a file, can a plan be drawn before it runs, and where would effect boundaries have to live? It answered enough of those questions to justify another pass. The public permits contract and its runtime enforcement came later, in June. Code written to find out is shaped by the finding-out: shortcuts where the idea was still fuzzy, generosity where discipline was needed later. Copying it into the new workspace would have admitted those decisions before they were reviewed as architecture."
         }
       ]
     },
@@ -15710,36 +16604,62 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         },
         {
           "k": "text",
-          "text": " An engine that enforces a permission boundary cannot itself be casual about correctness. So the rebuild came with rules the prototype never had: every crate passes a fixed set of admission gates before it enters the workspace; hard caps on file and function size; no unchecked failure paths in source. The gates are boring on purpose. Boring is what you want from the layer that decides whether a write to your disk is allowed to happen."
+          "text": " An engine that enforces a permission boundary cannot itself be casual about correctness. So the rebuild started with rules the prototype never had: tracked-source size caps, checks for unchecked failure paths, workspace-wide lint policy, dependency review and library tests. The first commit contained nine blocking ratchets and zero admitted crates. The conditions arrived before the code they would judge."
         }
       ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The chronology is less tidy than the slogan",
+      "id": "the-chronology-is-less-tidy-than-the-slogan"
     },
     {
       "k": "p",
       "inline": [
         {
-          "k": "strong",
-          "text": "The language was frozen before the engine was grown."
-        },
-        {
           "k": "text",
-          "text": " Rebuilding gave us the order most projects never get: spec first, engine second. The envelope ("
+          "text": "The rebuild began before the dedicated specification repository. The current engine starts on April 13. The first full public spec draft lands on May 22. That draft still treated "
         },
         {
           "k": "code",
-          "text": "nika: v1"
+          "text": "fetch"
         },
         {
           "k": "text",
-          "text": "), the four verbs, the permits model were locked as a contract, and then the engine was built "
+          "text": " as a peer of "
         },
         {
-          "k": "em",
-          "text": "to"
+          "k": "code",
+          "text": "infer"
         },
         {
           "k": "text",
-          "text": " the contract, gate by gate. It is why the spec could open under Apache while the engine carries the AGPL: they were separate artifacts from the first day of the rebuild."
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "exec"
+        },
+        {
+          "k": "text",
+          "text": ", "
+        },
+        {
+          "k": "code",
+          "text": "invoke"
+        },
+        {
+          "k": "text",
+          "text": " and "
+        },
+        {
+          "k": "code",
+          "text": "agent"
+        },
+        {
+          "k": "text",
+          "text": ", and used an envelope the current parser later retired."
         }
       ]
     },
@@ -15748,7 +16668,46 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The prototype is not disowned; it was the necessary first draft, and drafts are how honest writing works. But you do not ship the draft. You keep what it taught you and write the real sentence."
+          "text": "So the honest sequence is not “final spec first, engine second.” It is:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "create a clean execution workspace with admission rules;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "separate the language into its own public contract;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "let specification, conformance and engine correct one another;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "remove old grammar instead of keeping compatibility layers that would create two languages."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The four-verb model emerged during that work. The permits contract arrived in June. The current compact envelope arrived later still. Each has its own receipt. None should be projected backward into the empty April workspace."
         }
       ]
     },
@@ -15757,15 +16716,49 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "Starting over cost months. It bought a foundation that will not need to apologize later. In a tool whose whole promise is "
-        },
-        {
-          "k": "em",
-          "text": "the file you write today still runs in ten years"
-        },
+          "text": "That messier chronology is a better engineering story. The architecture did not begin omniscient. It created a process that could discover a wrong choice and remove it cleanly."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What “from scratch” did and did not mean",
+      "id": "what-from-scratch-did-and-did-not-mean"
+    },
+    {
+      "k": "p",
+      "inline": [
         {
           "k": "text",
-          "text": ", that trade is not a luxury. It is the product."
+          "text": "Starting from an orphan branch did not erase what the prototype had taught. Legacy behavior remained available as a reference. What crossed the boundary were tests to re-earn, failure cases to understand and product laws to state again. Source lines did not receive automatic authority merely because they had once worked."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The distinction matters today because “extraction” can also describe a healthy refactor inside the current engine. Moving an already-proven responsibility into a lower crate with preserved history is not the same act as importing prototype code into the rewrite. The April rule concerns the boundary between those two generations."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The prototype is not disowned. It was the necessary first draft, and drafts are how honest writing works. The rebuild kept what it taught and required every new component to show its work again."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Starting over cost months. It also made correction part of the architecture. For a tool that wants today's workflow to remain understandable years from now, that trade is part of the product."
         }
       ]
     }
@@ -15776,7 +16769,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "By March, the project had an idea, a file and a public page. It still needed a name that could survive the product around it."
+          "text": "By March, the project had an idea, a file and a public page. The page already said Nika. What still needed a name was the promise inside that name."
         }
       ]
     },
@@ -15804,6 +16797,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "Release from work trapped behind one login. Release from methods that vanish with a chat. Release from the idea that using a powerful model requires surrendering the plan, the inputs and the evidence of what happened."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The March date belongs to the working chronology of that interpretation. It is not the first public use of the product name. The December landing-page receipt proves Nika was already public. This chapter records when the drum became the project's explanation for why ownership mattered."
         }
       ]
     },
@@ -15863,6 +16865,24 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The metaphor creates a practical test. A beat must be repeatable. It must have a beginning, an outcome and a record. If the workflow disappears with a chat, the rhythm breaks. If a hosted account owns the only copy, the rhythm belongs to the host. If a run cannot say what it touched, the sound is louder than the evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The mythology is downstream of the mechanics. The file, engine and trace do not become trustworthy because of the name. The name becomes meaningful when those parts keep the promise."
+        }
+      ]
+    },
+    {
       "k": "h",
       "depth": 2,
       "text": "Why the butterfly",
@@ -15892,6 +16912,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "It also refuses the usual visual language of infrastructure. Nika does not need a fortress for a symbol. Its boundaries can be strict without making ownership feel grim."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The signature is not an authorship authority and the butterfly is not a hidden operator. It is a studio mark attached to the craft. Git still records the human author and committer. The symbol adds continuity without rewriting who made the decision."
         }
       ]
     },
@@ -15933,6 +16962,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
+          "text": "There is one more test: can the project correct itself in public? A liberation story that cannot admit an unsupported claim becomes another cage. That is why this ledger keeps the first page's bad benchmark, the quiet months and the difference between a story date and a publication date."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
           "text": "The wider argument lives in "
         },
         {
@@ -15951,7 +16989,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The note asked for work that could survive. The name supplied the rhythm. Everything after this is the proof."
+          "text": "The note asked for work that could survive. The name supplied the rhythm. Everything after this has to earn the proof."
         }
       ]
     }
@@ -16013,6 +17051,66 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
     {
       "k": "h",
       "depth": 2,
+      "text": "The public evidence ledger",
+      "id": "the-public-evidence-ledger"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The gap is easier to see when each receipt is given only the claim it can carry:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "strong",
+            "text": "2025-12-30, first nika.sh commit."
+          },
+          {
+            "k": "text",
+            "text": " It proves the public page and its exact claims existed. It does not prove the engine behind every claim was complete."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "2026-04-13, first current-engine commit."
+          },
+          {
+            "k": "text",
+            "text": " It proves the orphan rebuild and its empty workspace existed. It does not prove the later runtime was already runnable."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "2026-05-22, first spec commits."
+          },
+          {
+            "k": "text",
+            "text": " They prove the language contract entered its own public repository. They do not prove the final grammar had already stopped changing."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The rows are intentionally asymmetric. A commit is strong evidence for bytes and weak evidence for motive, deployment and maturity."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
       "text": "Different evidence answers different questions",
       "id": "different-evidence-answers-different-questions"
     },
@@ -16048,6 +17146,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
+          "text": "A commit timestamp is not a product release. A passing test is not proof that a binary reached users. A trace is not proof of facts below a provider boundary. A recollection can explain why a decision mattered, but it cannot manufacture a repository event."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
           "text": "That is why these origin articles carry two dates. The story date places the subject in the chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective."
         }
       ]
@@ -16058,6 +17165,60 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "The story can flow without pretending the blog existed before it did."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "How to write across a gap",
+      "id": "how-to-write-across-a-gap"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The rule for this ledger is small enough to reuse elsewhere:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": true,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "name the oldest surviving source;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "state exactly what that source can prove;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "mark recollection as recollection;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "leave unsupported intervals empty."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This does not make the history complete. It makes later correction cheap. If an older public receipt appears, it can be added without rewriting a myth that claimed certainty."
         }
       ]
     },
@@ -16145,6 +17306,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
+          "text": "The same discipline appears in runtime states. If a process dies after sending an external request but before recording the response, the honest result may be ambiguous. Calling it success or retrying it blindly would replace missing evidence with a convenient story. Historical gaps are gentler, but the law is the same: unknown remains unknown."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
           "text": "The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. February keeps the boundary visible."
         }
       ]
@@ -16188,6 +17358,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "They did not survive unchanged. Survival here means that the later system still needs the same responsibility, even after the first implementation and its vocabulary are gone."
+        }
+      ]
+    },
+    {
       "k": "h",
       "depth": 2,
       "text": "1. The workflow is an artifact",
@@ -16221,6 +17400,23 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current envelope is evidence of that distinction. It no longer uses the first page's shape. Identity now sits directly on "
+        },
+        {
+          "k": "code",
+          "text": "nika:"
+        },
+        {
+          "k": "text",
+          "text": ", and retired wrapper keys refuse at parse time. A stricter grammar did not weaken the file bet. It removed ways for the same idea to be written twice."
+        }
+      ]
+    },
+    {
       "k": "h",
       "depth": 2,
       "text": "2. The dependencies form a graph",
@@ -16250,6 +17446,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "That is one quiet advantage of Intent as Code: the plan exists before anything acts. It is not a diagram reconstructed after the run."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The graph also became a judging surface. A missing dependency, a cycle or a reference to a task that does not exist can fail before dispatch. The visual plan and the runtime no longer need separate hand-maintained descriptions of order."
         }
       ]
     },
@@ -16290,7 +17495,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "This does not pretend all models behave alike. It keeps provider glue from swallowing the workflow."
+          "text": "This does not pretend all models behave alike. It keeps provider glue from swallowing the workflow. A different seat may change latency, cost and output. The plan still exposes which seat was requested."
         }
       ]
     },
@@ -16324,6 +17529,87 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "This bet became more valuable as Nika grew. A remote API may project the runtime, but it should not replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. The local executable keeps those doors honest."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The reset began with an empty workspace",
+      "id": "the-reset-began-with-an-empty-workspace"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The current engine's first public commit arrived on April 13. Its Cargo workspace deliberately had no members."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That detail is a better receipt than a finished architecture diagram. The commit added the workspace policy, toolchain pin, dependency policy and nine CI ratchets before it admitted a crate. The first current-engine artifact was a set of conditions for future code, not a pile of code asking to be trusted."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The empty workspace also separates continuity from reuse. The December page proves the four bets above were already public. The April commit proves the current engine chose to re-earn them under a new architecture rather than treat the prototype as inherited proof."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "What crossed that boundary was not source code. It was a set of obligations:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "the workflow remains an owned artifact;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "the graph remains explicit;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "model choice stays outside task semantics;"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "execution remains available through a local binary."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Everything else had to justify its place again."
         }
       ]
     },
@@ -16421,6 +17707,85 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
     {
       "k": "h",
       "depth": 2,
+      "text": "Read the commit, not the memory",
+      "id": "read-the-commit-not-the-memory"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The initial commit is unusually useful because it preserves more than a slogan. It contains the whole first public argument: a landing page, a terminal simulation, a comparison table, a waitlist and a set of concept pages."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Four claims show exactly where the story outran the product:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "strong",
+            "text": "10x faster"
+          },
+          {
+            "k": "text",
+            "text": " had no workload, baseline, machine or benchmark."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Production-ready from day one"
+          },
+          {
+            "k": "text",
+            "text": " arrived in a landing-page commit with simulated terminal output."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "A verb list containing infer, exec, fetch, invoke and agent"
+          },
+          {
+            "k": "text",
+            "text": " described an early vocabulary, before the four-verb contract."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "MIT licensed"
+          },
+          {
+            "k": "text",
+            "text": " was a claim that did not match the later spec and engine split."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This is not a retrospective accusation. It is a measured before picture. The commit makes the correction possible because the original wording did not vanish when the site changed."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
       "text": "A number needs a receipt",
       "id": "a-number-needs-a-receipt"
     },
@@ -16448,6 +17813,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": "That standard matters because Nika asks people to write claims that machines will act on. The website cannot demand precision from workflow authors while granting itself an exemption."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first page taught a second lesson: a number is not made honest by being specific. Precision without a measurement protocol only makes unsupported copy easier to repeat."
         }
       ]
     },
@@ -16527,6 +17901,15 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The word also hides a scope question. Ready to parse a file is not ready to run an unattended server. Ready for one local model call is not ready for arbitrary process execution. A useful status names the surface and the proof behind it."
+        }
+      ]
+    },
+    {
       "k": "h",
       "depth": 2,
       "text": "The vocabulary needed subtraction",
@@ -16595,7 +17978,40 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The license split became more precise too. The specification is permissive so other people can implement the language. The engine is copyleft so a networked fork cannot quietly turn shared infrastructure into a private dead end. That is architecture, not a badge."
+          "text": "The license split became more precise too. The specification is Apache-2.0 so other people can implement the language under a permissive contract with a patent grant. The reference engine is AGPL-3.0-or-later, so users of a modified network service can obtain the corresponding source under the license terms. That is architecture, not a badge."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What the page got right",
+      "id": "what-the-page-got-right"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Removing the overclaims does not empty the commit."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The page put the workflow in a file. It showed a command-line runner. It treated tasks as a graph and model choice as configuration rather than a new programming model. It placed local execution beside cloud providers instead of treating local models as a later escape hatch."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Those ideas survived because they describe ownership, not a feature list. The exact provider names changed. The syntax changed. The evidence standard changed most of all. The workflow remained an artifact a person could keep."
         }
       ]
     },
@@ -16766,6 +18182,56 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
     {
       "k": "h",
       "depth": 2,
+      "text": "A file changes when review can happen",
+      "id": "a-file-changes-when-review-can-happen"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Putting the method in a file does more than preserve it. It moves review ahead of execution."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "A teammate can inspect the inputs before a model sees them. A diff can show that one host or output path changed. A checker can reject a broken reference without paying for a model call. The run can retain the identity of the bytes it received instead of pointing vaguely at a mutable chat thread."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "This was the first version of a rule Nika would keep sharpening: "
+        },
+        {
+          "k": "strong",
+          "text": "authority should be visible before the effect it authorizes."
+        },
+        {
+          "k": "text",
+          "text": " The November idea did not yet contain a permits grammar or a static checker. It created the place where those mechanisms could later live."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The file also makes refusal ordinary. A chat product tends to reward forward motion. A source file can fail a review, sit unchanged for a week and return with the exact same bytes. That pause is a feature when the file may spend money, run a process or write to disk."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
       "text": "Portability started as a writing rule",
       "id": "portability-started-as-a-writing-rule"
     },
@@ -16810,6 +18276,64 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "text",
           "text": " does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may change where the work happens without changing what the work is."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Portability does not mean identical outputs from every model. It means the declared plan remains legible when the execution seat changes. The provider may answer differently. The workflow still says what was asked, what fed it and what may happen next."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The first public echo",
+      "id": "the-first-public-echo"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The first public "
+        },
+        {
+          "k": "code",
+          "text": "nika.sh"
+        },
+        {
+          "k": "text",
+          "text": " commit arrived on December 30. Its landing page already showed a file named "
+        },
+        {
+          "k": "code",
+          "text": "workflow.nika.yaml"
+        },
+        {
+          "k": "text",
+          "text": ", a Rust command-line runner, task ordering and more than one model provider."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That commit does not prove a complete language existed in November. It proves the file decision had survived long enough to become the public center of the product a month later."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The page also carried syntax and claims that would be removed. This is exactly why the file must be more durable than any one representation of it. A container can survive while its grammar gets stricter and its promises learn restraint."
         }
       ]
     },
@@ -16879,7 +18403,16 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts and follow-up messages."
+          "text": "It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts, corrections and follow-up messages."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Nothing had crashed. That was the problem. The session had worked well enough to expose how weak its container was. A result could be copied out, but the route to that result could not be reviewed cleanly, run again or handed to another machine without retelling the whole conversation."
         }
       ]
     },
@@ -16920,7 +18453,7 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       "inline": [
         {
           "k": "text",
-          "text": "The better the session, the stranger the loss."
+          "text": "The better the session, the stranger the loss. A disposable answer is tolerable. A disposable method is not."
         }
       ]
     },
@@ -16985,11 +18518,140 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
       ]
     },
     {
+      "k": "h",
+      "depth": 2,
+      "text": "Three objects, not one scroll",
+      "id": "three-objects-not-one-scroll"
+    },
+    {
       "k": "p",
       "inline": [
         {
           "k": "text",
-          "text": "Write down the inputs and the work can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it."
+          "text": "The later architecture gave precise names to a distinction that the note could only sketch:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "strong",
+            "text": "Discovery"
+          },
+          {
+            "k": "text",
+            "text": " finds the method. Only the useful decisions need to survive."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Workflow"
+          },
+          {
+            "k": "text",
+            "text": " describes repeatable intent. Inputs, ordering, boundaries and outputs need to survive."
+          }
+        ],
+        [
+          {
+            "k": "strong",
+            "text": "Run"
+          },
+          {
+            "k": "text",
+            "text": " records one execution. Events, result and evidence need to survive."
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "These were not October product terms. They are the vocabulary that grew around the original fracture. The distinction matters because each object has a different owner. A conversation may help discover a workflow, but it should not become the workflow. A workflow may start a run, but it should not be rewritten to impersonate the run's evidence."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Once those roles are separate, several design decisions stop looking arbitrary. The file belongs in the project because it is source. The graph exists before execution because ordering is part of the plan. The trace is written after admission because it records what happened, not what the author hoped would happen."
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "The first review happened before syntax",
+      "id": "the-first-review-happened-before-syntax"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The note also changed the order of review. Inside a chat, judgment arrives after the model has already seen the prompt and often after a tool has acted. A durable description creates an earlier moment:"
+        }
+      ]
+    },
+    {
+      "k": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "k": "text",
+            "text": "What inputs may this work read?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which effects may it perform?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Which steps depend on which results?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "Where does the final output go?"
+          }
+        ],
+        [
+          {
+            "k": "text",
+            "text": "What evidence should remain when the run ends?"
+          }
+        ]
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "October supplied none of the mechanisms that answer those questions today. It supplied the demand that they become answerable before the useful method disappeared again."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "Write down the inputs and the plan can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it."
         }
       ]
     },
@@ -17003,6 +18665,39 @@ export const BLOG_BODIES: Record<string, BlogToken[]> = {
         {
           "k": "strong",
           "text": "does the useful part survive the session?"
+        }
+      ]
+    },
+    {
+      "k": "h",
+      "depth": 2,
+      "text": "What this receipt does not prove",
+      "id": "what-this-receipt-does-not-prove"
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "There is no public October commit behind this chapter. That absence is part of the record."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "The note establishes the date in the private working chronology. The public text above is a later paraphrase. It does not prove that the current syntax, four verbs, permits model or trace system existed then. They did not arrive as one finished design hidden inside a notebook. They were later answers to the same objection."
+        }
+      ]
+    },
+    {
+      "k": "p",
+      "inline": [
+        {
+          "k": "text",
+          "text": "That boundary prevents a familiar origin-story trick: making the first thought sound like a miniature copy of the mature product. The first thought was smaller and more useful than that. It named the loss."
         }
       ]
     },
@@ -17210,34 +18905,34 @@ export const BLOG_POST_COPY: Record<string, BlogPostCopy> = {
     "file": "2026-07-02-own-your-stack.md",
     "author": "Thibaut Melen"
   },
-  "dag-for-free": {
-    "description": "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.",
-    "file": "2026-06-29-dag-for-free.md",
-    "author": "Thibaut Melen"
-  },
-  "four-verbs": {
-    "description": "A verb is a distinct execution model, not a feature. Why the language locks at four, forever.",
-    "file": "2026-06-22-four-verbs.md",
-    "author": "Thibaut Melen"
-  },
   "intent-as-code": {
     "description": "Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.",
     "file": "2026-06-15-intent-as-code.md",
     "author": "Thibaut Melen"
   },
+  "dag-for-free": {
+    "description": "The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.",
+    "file": "2026-06-12-dag-for-free.md",
+    "author": "Thibaut Melen"
+  },
   "blast-radius-in-the-file": {
-    "description": "permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.",
-    "file": "2026-06-04-blast-radius-in-the-file.md",
+    "description": "The workflow declares its effect boundary before execution. Static checks explain the fit; runtime sinks enforce what the host can prove.",
+    "file": "2026-06-12-blast-radius-in-the-file.md",
     "author": "Thibaut Melen"
   },
   "standard-library-not-plugin-store": {
-    "description": "28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.",
-    "file": "2026-05-14-standard-library-not-plugin-store.md",
+    "description": "Builtins ship with the engine and stay separate from the four verbs. External tools remain explicit dependencies, not new grammar.",
+    "file": "2026-05-27-standard-library-not-plugin-store.md",
     "author": "Thibaut Melen"
   },
   "open-spec-copyleft-engine": {
-    "description": "Two licenses, one argument: the file must outlive every vendor, including us.",
-    "file": "2026-05-01-open-spec-copyleft-engine.md",
+    "description": "The language contract is Apache-2.0. The reference engine is AGPL-3.0-or-later. The split keeps adoption and implementation custody separate.",
+    "file": "2026-05-22-open-spec-copyleft-engine.md",
+    "author": "Thibaut Melen"
+  },
+  "four-verbs": {
+    "description": "A verb is a distinct execution model, not a feature. Why the language locks at four, forever.",
+    "file": "2026-05-22-four-verbs.md",
     "author": "Thibaut Melen"
   },
   "starting-over-on-purpose": {

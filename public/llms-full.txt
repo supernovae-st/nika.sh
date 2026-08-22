@@ -3488,7 +3488,7 @@ story-date: 2026-07-02 · published: 2026-07-05 · tag: Sovereignty
 
 Local-first gets said a lot, and it means anything from "we cache" to "we sync, eventually". Here is what it means in Nika, concretely.
 
-**The engine is one Rust binary.** No daemon, no account, no telemetry phoning home. Brew or curl, and the whole runtime is on your disk. Air-gapped is a supported install path, not an afterthought.
+**The engine is one Rust binary.** A local run does not require an account or a resident daemon. Brew or curl puts the runtime on your disk. `nika serve` may stay resident when scheduling or a local service needs it, but that mode projects the same binary rather than becoming a mandatory hosted control plane.
 
 **5 of the 17 model providers are local runtimes**: Ollama, LM Studio, llama.cpp, LocalAI, vLLM. The model is one line of the file; swap it and nothing else changes.
 
@@ -3502,21 +3502,93 @@ tasks:
       prompt: "Say hello in one sentence."
 ```
 
-What that buys, concretely. **Privacy that is structural, not contractual**: with a local model the data path never leaves the machine, so there is nothing to trust and nothing to audit. **A free drafting loop**: iterate on prompts and plans at zero marginal cost, then point the same file at a bigger model only when the task earns it. **Custody**: a provider deprecating a model is a one-line edit to your file, not a rewrite of your workflow.
+## What local changes
 
-Cloud stays a real choice: 11 cloud providers, bring your own keys, and every key stays yours. The point was never no-cloud. The point is that cloud is **optional**: per file, per task, visible in the diff.
+With a local model, prompts and outputs do not need to cross a cloud-provider boundary. That removes one egress path. It does not remove trust from the machine: the local model server, model artifact, operating system and any tools the workflow invokes remain part of the boundary.
 
-Your first run needs no key at all. That is not a trial mode. That is the architecture.
+Local also changes the cost evidence. There may be no vendor invoice, but the run still consumes hardware time, memory and energy. Nika calls a model unpriced when the catalog has no price row. It does not turn missing billing data into “free.”
+
+Custody is the third change. A provider deprecating a model can become a model-selection edit instead of a workflow rewrite. The replacement may behave differently, so the next run needs new evidence. Portability preserves the plan, not identical generations.
+
+## What local does not change
+
+The workflow still needs boundaries. A local model can call a dangerous tool as easily as a remote model if the runtime grants it. A local process can still read the wrong file. A model artifact can still be mislabeled.
+
+Keep the same questions:
+
+- Which exact workflow bytes ran?
+- Which local server and model seat answered?
+- Which files, tools and processes were admitted?
+- What did the trace observe?
+- Which model provenance facts remain below the server wire?
+
+Local-first is an ownership choice, not a waiver for evidence.
+
+Cloud stays a real choice: 11 cloud providers, with credentials supplied through the runtime's secret boundary rather than written into the workflow. The point was never no-cloud. The point is that cloud is **optional**: per workflow or task, visible in the requested model seat.
+
+A first run can need no provider key when a supported local model server and model are already available. That is not a trial mode. It is one execution lane beside the cloud lanes.
+
+---
+
+## Intent as Code: why your AI work should be a file
+url: https://nika.sh/blog/intent-as-code
+story-date: 2026-06-15 · published: 2026-07-05 · tag: Manifesto
+
+Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. **Where is it now?** For many people the honest answer is: buried in a chat history they will not scroll back through, on a service that owns the surrounding interface.
+
+We've accepted a strange deal: the more useful the work, the more disposable the container. Nobody would write software in a text box that forgets everything. Yet that's exactly how most AI work happens today.
+
+**Nika's bet is simple: useful AI work is worth writing down.** Not as a transcript, as *source*. A small YAML file says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it follows the same declared plan. A model may return different words; the diff still shows what you asked the system to change.
+
+## Source is not a promise of determinism
+
+Calling a workflow source code does not make a model deterministic. It makes the parts under the author's control reviewable.
+
+The file can pin the requested model seat, input values, task graph, output limits and effect boundary. A trace can record the route and result the runtime observed. Neither can prove facts a provider does not expose, such as an unannounced change to weights behind an API name.
+
+That boundary is useful. Reproducibility stops being one vague badge and becomes a set of answerable questions:
+
+- Were the same workflow bytes admitted?
+- Were the same declared inputs resolved?
+- Which model and access path were requested?
+- Which events and outputs were recorded?
+- Which facts remain outside the runtime's evidence?
+
+Intent as Code does not erase uncertainty. It gives uncertainty an address.
+
+Four verbs cover the execution models: **infer** calls a model, **exec** runs a process, **invoke** uses a tool, **agent** runs a bounded tool loop. Everything else is data and control flowing between tasks. The order falls out of the wiring: `with:` names what a step consumes, the binding is the edge, and independent branches become eligible together.
+
+## The file gives each concern one home
+
+A useful workflow carries more than a prompt:
+
+- Requested work lives in the task body.
+- A data dependency lives in `with:`.
+- A control dependency lives in `after:`.
+- The external effect ceiling lives in `permits:`.
+- Model choice lives in `model:`.
+- The public result lives in `outputs:`.
+
+The separation is not ceremony. It prevents a prompt from becoming a second scheduler, a second permission policy and a second output schema at once.
+
+And the reference engine can run on **your machine** as one Rust binary. Your workflow and Git history remain local artifacts. You may choose a local model or call a cloud provider with your own credentials. The file keeps that choice visible; it does not pretend every provider route is local.
+
+The license split protects a different boundary. The language contract is Apache-2.0. The reference engine is AGPL-3.0-or-later. Those licenses keep the contract implementable and the covered engine source available under their terms. They do not replace operational control over keys, hosts and backups.
+
+Chat is a good place to figure out what you want. It is a poor place to keep the final method. Explore in chat. Then write the intent down, review the file and keep the evidence from each run beside it.
 
 ---
 
 ## The plan you get for free
 url: https://nika.sh/blog/dag-for-free
-story-date: 2026-06-29 · published: 2026-07-05 · tag: Engine
+story-date: 2026-06-12 · published: 2026-07-05 · tag: Engine
+commit-receipts: https://github.com/supernovae-st/nika/commit/c929ee0dd9cd9c63ea1f207fb6148c009e6e441f
 
 Every orchestration tool eventually grows a scheduler dialect: stages, barriers, fan-in nodes, retry graphs. You learn its vocabulary, you maintain its diagrams, and one day the diagram and the code disagree.
 
-**Nika has two doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. That is the entire scheduling surface. Everything else is derived: tasks whose edges are satisfied run together, waves form on their own, and your file's maximum parallelism is a fact the engine computes, not a number you tune.
+On June 12, the checker learned to compute exact parallel width and the points where a graph narrows. The useful part was not a new scheduler setting. It was a measurement derived from the workflow's existing edges.
+
+**Nika has two edge doors: `with:` and `after:`.** A task names the data it consumes, or the state it waits on, and each declaration is an edge. Tasks whose edges are satisfied become eligible together. Waves, maximum width and pinch points are derived facts, not a second plan the author has to maintain.
 
 ```yaml release-radar.nika.yaml
 nika: release-radar
@@ -3530,7 +3602,7 @@ tasks:
 
   repo_log:
     exec:
-      command: ["git", "log", "--since='1", "week'"]
+      command: ["git", "log", "--since=1 week"]
 
   digest:
     with:
@@ -3540,84 +3612,46 @@ tasks:
       prompt: "What changed this week: ${{ with.changelog }} ${{ with.repo_log }}"
 ```
 
-Nothing in that file says parallel. `changelog` and `repo_log` start together because nothing orders them; `digest` waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself: no stage to renumber, no barrier to move.
+Nothing in that file says parallel. `changelog` and `repo_log` become eligible together because nothing orders them; `digest` waits because its bindings say so. The data and the edge are one declaration: naming what you consume is what draws the graph. Add a third source tomorrow and the plan redraws itself. There is no stage to renumber or barrier to move.
 
-The plan is also drawn **before anything runs**. It is the first verdict `nika check` prints for that exact file:
+## Data and control are not interchangeable
+
+`with:` means the downstream task receives a value from another task. `after:` means it waits for a named terminal condition without importing that task's output.
+
+The distinction matters during review. If a task only needs to run after cleanup, a data binding would invent a dependency on bytes it does not use. If a task consumes a result, a control edge alone would hide the value flow. Keeping both relations explicit lets the checker explain why an edge exists.
+
+It also keeps failure semantics visible. A control edge can name the status it accepts. A data edge cannot pretend that a failed producer returned a valid value.
+
+## The plan is a preflight result
+
+The plan is drawn **before anything runs**. It is a verdict `nika check` can print for that exact file:
 
 ```text
  ✔ PLAN     2 wave(s) · 3 task(s) · max parallelism 2
 ```
 
-A cycle is not a hang, it is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. The graph the engine runs is the graph you read, and both come from four verbs and their wiring.
+A cycle is not a hang. It is a typed error naming its members. A ghost name in a `with:` binding is caught in the same pass. Width is bounded before dispatch rather than guessed from the number of tasks.
+
+The runtime still owns concurrency limits and resource availability. Two tasks may be graph-eligible together without receiving CPU or provider capacity at the same instant. The derived plan describes dependency truth, not a timing guarantee.
+
+## One source, several projections
+
+The same graph can feed a terminal plan, a static diagram, cost analysis and runtime dispatch. Those are projections of one typed structure. If a UI rebuilt the graph from human log lines, it would create a second scheduler story and drift as soon as the renderer changed.
+
+This is what “for free” means here. The plan is not free to execute, and concurrency is not unlimited. The author gets a reviewable plan without maintaining separate scheduling markup.
 
 You never scheduled anything. The plan was in the file all along.
 
 ---
 
-## Four verbs are enough
-url: https://nika.sh/blog/four-verbs
-story-date: 2026-06-22 · published: 2026-07-05 · tag: Language
-
-Every workflow language faces the same temptation: keep adding verbs. A verb for HTTP. A verb for files. A verb for email, for SQL, for whatever last week's integration needed. Ten years later the language is a catalog nobody can hold in their head, and every file is written in a different dialect of it.
-
-Nika locks the count at four, forever. The rule that makes this possible is strict: **a verb is a distinct execution model**, not a feature. **infer** generates with a model. **exec** runs a process. **invoke** calls a tool and returns. **agent** loops with tools until the job is done. Four genuinely different ways for a machine to act. There is no fifth.
-
-```yaml morning-brief.nika.yaml
-nika: morning-brief
-
-tasks:
-  fetch_news:
-    invoke:
-      tool: "nika:fetch"          # a tool, not a verb
-      args:
-        url: "https://hnrss.org/frontpage"
-
-  build:
-    exec:
-      command: ["cargo", "build", "--release"]
-
-  digest:
-    after:
-      fetch_news: success
-      build: success
-    infer:
-      prompt: "Summarize what changed"
-
-outputs:
-  brief: ${{ tasks.digest.output }}
-```
-
-The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins. Everything callable is a tool. Everything about ordering is the graph.
-
-A closed language is a feature you can feel. You can finish learning it: four words and the file reads like prose. Your files never rot into an old dialect, because there is no new dialect coming. And tools keep growing where growth belongs, in the library: a new builtin, a new tool server (MCP), a new provider. The language holds still while the toolbelt expands.
-
-That stillness is the promise. The file you write today is the file you run in ten years. Languages that stop moving are the ones you can build on.
-
----
-
-## Intent as Code: why your AI work should be a file
-url: https://nika.sh/blog/intent-as-code
-story-date: 2026-06-15 · published: 2026-07-05 · tag: Manifesto
-
-Think about the best thing you did with an AI last month. The careful prompt, the back-and-forth, the result that finally clicked. **Where is it now?** For most people the honest answer is: gone. Buried in a chat history you will never scroll back through, on a server you don't control.
-
-We've accepted a strange deal: the more useful the work, the more disposable the container. Nobody would write software in a text box that forgets everything. Yet that's exactly how most AI work happens today.
-
-**Nika's bet is simple: useful AI work is worth writing down.** Not as a transcript, as *source*. A small YAML file that says what you want: fetch this, think about that, run this command, save the result. The file is the workflow. Run it again tomorrow and it does the same thing. Change a line and `git diff` shows exactly what changed.
-
-Four verbs cover the whole space: **infer** (call a model), **exec** (run a process), **invoke** (use a tool), **agent** (let it work a loop). Everything else is data flowing between tasks. The order falls out of the wiring: `with:` names what a step consumes, the binding is the edge, and independent branches run in parallel, for free.
-
-And it runs on **your machine**. One Rust binary. Your model keys, your files, your git history. No cloud between you and your own work, and a license (AGPL) that guarantees it stays that way.
-
-Chat is a great place to *figure out* what you want. It is a terrible place to *keep* it. Explore in chat. Then write the intent down, and own it forever.
-
----
-
 ## The blast radius is part of the file
 url: https://nika.sh/blog/blast-radius-in-the-file
-story-date: 2026-06-04 · published: 2026-07-05 · tag: Security
+story-date: 2026-06-12 · published: 2026-07-05 · tag: Security
+commit-receipts: https://github.com/supernovae-st/nika-spec/commit/11c58d9692621de99c5cfb2ed1a5f8581182489d · https://github.com/supernovae-st/nika/commit/7c6cd9ceb9350355e899bc454b08ec34c0319290
 
 Ask an agent framework what its agent may touch, and the honest answer is usually: whatever the process may touch. The permission model is the operating system's, the audit is a log file, and the log is written after the damage.
+
+Nika's public permits contract landed on June 11. Runtime enforcement reached the process sink on June 12. The two commits matter together: a declaration without enforcement is documentation, and enforcement without a declaration is ambient policy a reviewer cannot see in the workflow.
 
 In Nika, the boundary is a block in the file you review:
 
@@ -3647,11 +3681,31 @@ tasks:
         content: "${{ with.notes }}"
 ```
 
-**`permits:` is the whole list.** Not a suggestion, not a default profile. Once the block is present, every category is default-deny: which files it may read and write, which tools it may call, which programs, which hosts. A reviewer reads the blast radius in the diff, right next to the logic it serves.
+## Declaration and enforcement are different jobs
+
+**`permits:` is the workflow's declared list.** It is not a suggestion or a profile name. Once the block is present, unlisted capabilities are denied within the categories and host enforcement the current runtime supports: files, tools, programs and network destinations.
+
+A reviewer reads that declared blast radius in the diff, next to the logic it serves. The checker compares statically visible effects with the declaration. Runtime sinks judge the effective operation again when the task reaches them. The operating system provides the outer process boundary where the platform adapter supports it.
+
+Those layers must not be collapsed into one claim. A path that fits a YAML pattern is not automatically a held file descriptor. A declared host is not proof that every child process has network confinement. A production guide must therefore name both the workflow boundary and the host prerequisite.
 
 **Denied means before.** A step that reaches outside the list fails with a typed error, `NIKA-SEC-004`, before the effect happens. Not logged after the fact, not flagged for Monday's incident review: the write to `~/.ssh/config` simply never runs.
 
-And you do not hand-write the list. `nika check --infer-permits` reads the plan and prints the tightest boundary it needs. You loosen it deliberately, line by line, in review, which is where loosening belongs.
+The phrase “before the effect” is the important part. A green task followed by a warning would not be a permission system. The refusal has to occur at the sink that owns the operation, before the process spawn, file change or admitted network request.
+
+## Inference proposes, review decides
+
+`nika check --infer-permits` reads the statically visible plan and proposes a boundary. It also has to remain honest about dynamic paths, redirected requests and values that cannot be resolved before execution. The result is a starting point for review, not a proof that every future runtime value has been discovered.
+
+That order is deliberate:
+
+1. the workflow states its effects;
+2. the checker derives what it can see;
+3. a person reviews any widening and any unknown;
+4. runtime enforcement judges the effective operation;
+5. the trace records the verdict.
+
+An agent may help draft the list. It does not get to turn an unknown target into permission by describing it confidently.
 
 Capability declarations next to intent. It is one of the oldest ideas in security, applied to the newest way of doing work.
 
@@ -3659,11 +3713,18 @@ Capability declarations next to intent. It is one of the oldest ideas in securit
 
 ## A standard library, not a plugin store
 url: https://nika.sh/blog/standard-library-not-plugin-store
-story-date: 2026-05-14 · published: 2026-07-05 · tag: Language
+story-date: 2026-05-27 · published: 2026-07-05 · tag: Language
+commit-receipts: https://github.com/supernovae-st/nika-spec/commit/7ce582d2302a392f621dffcad835ca2375cc6511
 
-A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. We shipped a standard library instead.
+A workflow language lives or dies on its tools, and the industry default is a marketplace: search, install, and trust someone's package with your filesystem. Nika gives common operations a smaller home: the standard library.
 
-**28 builtins ride the binary**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings. They are reached the same way as everything else callable, with `invoke:`, they are versioned with the engine, and there is nothing to install. Nothing to install also means nothing to typosquat, no postinstall script, no supply chain roulette on a Tuesday.
+The first machine-readable registry for that contract landed on May 27. It recorded the verbs and builtins separately, so adding a callable operation no longer implied adding a new way for the language to execute.
+
+## The binary carries the common floor
+
+**28 builtins are part of the current language contract**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings are reached the same way as everything else callable, with `invoke:`. The reference engine ships its builtin implementation with the binary, so those operations do not require a per-workflow package install.
+
+That removes one supply-chain decision from the common path. It does not make every external tool built in. MCP servers, processes and provider services remain separate dependencies with their own installation, identity and authority boundaries.
 
 **One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 
@@ -3687,7 +3748,23 @@ tasks:
         content: "${{ with.page }}"
 ```
 
-Everything beyond the library arrives through MCP: name a `mcp:` tool id and any server you already run is reachable, but only if the file allow-lists it. Growth belongs in the toolbelt, not in the grammar.
+## Three extension lanes
+
+Keeping the grammar small requires more than a builtin list. It requires clear lanes for growth:
+
+- **Common operation with a stable Nika contract:** a builtin owned by the engine release.
+- **Typed external tool:** MCP, owned by the operator who configures the server.
+- **Ordinary executable:** `exec`, owned by the host and workflow boundary.
+
+An MCP tool is not automatically trusted because it is discoverable. The server must be configured, its tool must fit the workflow's declared permits and the process still runs under the host boundary Nika can enforce. A command remains a process, even when it is convenient.
+
+This separation keeps a new integration from becoming a new language keyword. It also keeps the builtin contract reviewable. A builtin can specify arguments, result shape and refusal behavior without importing an open-ended package manager into every run.
+
+## Why `fetch` belongs here
+
+The first public page counted `fetch` as a verb. The spec corrected that on May 22: fetching does not create a distinct execution model. It is one callable operation under `invoke`, with bounded modes and a typed result.
+
+That subtraction is the design in miniature. The language names ways of acting. The library names things that can be called. The graph names order. Once those roles are separate, each can grow without impersonating the others.
 
 The library grows. The language holds still. That trade is the design.
 
@@ -3695,39 +3772,148 @@ The library grows. The language holds still. That trade is the design.
 
 ## An open spec, a copyleft engine
 url: https://nika.sh/blog/open-spec-copyleft-engine
-story-date: 2026-05-01 · published: 2026-07-05 · tag: Sovereignty
+story-date: 2026-05-22 · published: 2026-07-05 · tag: Sovereignty
+commit-receipts: https://github.com/supernovae-st/nika-spec/commit/7d471abfd1930bef255fe7b3ee050317fc1b3718 · https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43
 
-The nika-spec repository went public this week, under Apache-2.0. The engine that runs it is AGPL-3.0-or-later. Two licenses for one project is a choice you should be able to interrogate, so here is the whole argument.
+On May 22, the Nika language contract entered its own public repository under Apache-2.0. The reference engine was already rebuilding under AGPL-3.0-or-later.
 
-**The spec is the part you adopt.** The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Any team can build a competing runtime on it, and nothing we do later can revoke that. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines.
+Two licenses for one project is a choice you should be able to interrogate, so here is the argument and its limit.
 
-**The engine is the part someone would take.** The recent history of open agent tooling is a history of extraction: a permissively-licensed runtime gets wrapped, hosted, improved in private, and the improvements never come home. AGPL closes that door. Run our engine as a service, fork it, build a business next to it: all fine. But the changes ship back. The protection this buys is not ours, it is yours: no fork of the engine can quietly become a closed thing your files depend on.
+## Two artifacts, two jobs
 
-**Your exit is `cp -r`.** The workflows are plain text in your repo. The spec is Apache. The engine is copyleft. Take the three together and the cost of leaving Nika is copying a folder. Compare that with the cost of leaving wherever your prompts live today.
+**The spec is the part you adopt.** The envelope, the four verbs, the task shape, the JSON schema, the conformance suite: all Apache-2.0, with a patent grant. Published copies remain available under those terms, and any team can build a competing runtime from them. A language you might write hundreds of files in should not have a single implementation as its ceiling. This is the GraphQL shape: an open contract, many possible engines.
 
-Licenses are boring until the Friday they are not. We picked ours so the file you write today still runs the day the company that made the runner is gone. That includes us.
+**The engine is the reference implementation.** AGPL-3.0-or-later allows use, modification and commercial operation while requiring corresponding source to remain available in the situations covered by the license, including modified network use. It does not force every independent service around Nika to adopt the same license. It keeps modifications to the covered engine from becoming an invisible dependency for its users.
+
+The split draws a useful line:
+
+- **Workflow language and conformance material, Apache-2.0.** This protects implementation freedom and carries a patent grant.
+- **Reference Rust engine, AGPL-3.0-or-later.** This protects source access for users of modified covered software under the license terms.
+
+That line is more precise than saying “Nika is open source” and leaving readers to discover later that different parts carry different obligations.
+
+## The first spec was not the final spec
+
+The May 22 receipt is strong evidence for the license split and the existence of a standalone language contract. It is not evidence that every field in that first draft survived.
+
+The initial draft still treated `fetch` as a peer of `infer`, `exec`, `invoke` and `agent`, and used an older envelope. The same day, `fetch` moved from the verb set into the standard library. Later revisions tightened task shape, permits, identity and conformance. The current website projects language facts from the current spec instead of copying the first draft into permanent marketing prose.
+
+That evolution is the point of separating contract from implementation. A language repository can show its amendments, fixtures and machine-readable schema. An engine repository can show which contract snapshot it implements. One does not have to pretend to be the other.
+
+## What the split does not promise
+
+Licensing does not guarantee that every future implementation will behave identically. Conformance evidence does that work. Plain text does not make migration free if a workflow depends on a particular builtin, provider or host policy. A copyleft engine does not remove the need to back up your own files and artifacts.
+
+It does improve the exit boundary. The workflow lives in the project. The language contract can be implemented without asking the reference-engine author for permission. The covered engine source cannot quietly disappear behind a modified network service where the license requires an offer of source.
+
+Licenses are boring until the Friday they are not. The split cannot promise that one binary runs forever. It can keep the file, the contract and the reference implementation available for the people who have to make the next binary.
+
+---
+
+## Four verbs are enough
+url: https://nika.sh/blog/four-verbs
+story-date: 2026-05-22 · published: 2026-07-05 · tag: Language
+commit-receipts: https://github.com/supernovae-st/nika-spec/commit/34987bf7a9ff6eb9ca3e3bd2bc67a1223f6e3bbd
+
+Every workflow language faces the same temptation: keep adding verbs. A verb for HTTP. A verb for files. A verb for email, for SQL, for whatever last week's integration needed. Ten years later the language is a catalog nobody can hold in their head, and every file is written in a different dialect of it.
+
+The first public spec draft still had five. Later on May 22, one commit completed the correction across the specification: `fetch` became `nika:fetch`, a tool under `invoke`.
+
+Nika locks the count at four. The rule that makes this possible is strict: **a verb is a distinct execution model**, not a feature. **infer** generates with a model. **exec** runs a process. **invoke** calls a tool and returns. **agent** runs a bounded loop with tools. Four genuinely different ways for a machine to act.
+
+```yaml morning-brief.nika.yaml
+nika: morning-brief
+
+tasks:
+  fetch_news:
+    invoke:
+      tool: "nika:fetch"          # a tool, not a verb
+      args:
+        url: "https://hnrss.org/frontpage"
+
+  build:
+    exec:
+      command: ["cargo", "build", "--release"]
+
+  digest:
+    after:
+      fetch_news: success
+      build: success
+    infer:
+      prompt: "Summarize what changed"
+
+outputs:
+  brief: ${{ tasks.digest.output }}
+```
+
+## The subtraction test
+
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins.
+
+The same test handles future pressure:
+
+- If it calls a bounded tool and returns, it belongs under `invoke`.
+- If it starts an operating-system process, it belongs under `exec`.
+- If it asks one model generation for a result, it belongs under `infer`.
+- If the model chooses a bounded sequence of tools, it belongs under `agent`.
+
+HTTP, SQL, email, browser control and a future database connector do not become verbs merely because they are useful. They are callable capabilities with contracts.
+
+## Ordering is not a verb either
+
+Parallelism, retries and waiting can look like actions in a visual builder. In Nika they are graph or policy facts around an action. `with:` carries data edges. `after:` carries control edges. Retry changes how an admitted task is attempted; it does not create a fifth execution model.
+
+This separation keeps the checker legible. It can ask one question about how a task acts, another about when it becomes eligible and another about what authority the effect requires. A single keyword does not have to answer all three.
+
+## Why `agent` remains distinct
+
+An agent is not merely a long `infer`. One model response is requested up front under `infer`. An agent loop chooses tools and continues across turns until a bounded stop condition. That difference changes cost, authority, cancellation and trace shape. It earns a separate verb because the runtime physics are different.
+
+A closed verb set is a feature you can feel. You can learn the four execution models, then treat new integrations as tools rather than dialect changes. Tools can grow in the standard library, through MCP or behind ordinary processes while the execution grammar keeps one shape.
+
+That stillness is the promise. It does not mean every field around the verbs is frozen or that no migration will ever happen. It means new product features do not get to rename the basic ways a task can act.
 
 ---
 
 ## Starting over, on purpose
 url: https://nika.sh/blog/starting-over-on-purpose
 story-date: 2026-04-14 · published: 2026-07-05 · tag: Origins
+commit-receipts: https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43 · https://github.com/supernovae-st/nika/commit/4cac646e9d99e287654e029831370812280b7754
 
-By spring 2026 there was a working prototype. The note from October had become a real engine: files ran, models answered, tools fired. The fastest path from there was obvious: refactor what worked, extract the good parts, ship.
+By spring 2026 there was a working prototype in the private project chronology. Files ran, models answered and tools fired. The public receipt for that prototype has not survived in the current engine repository, so this chapter treats its behavior as recollection rather than release evidence. The fastest path from there looked obvious: refactor what worked, move the good parts and keep shipping.
 
-We did the opposite. The first architecture decision record of the current engine says it plainly: **rebuild from scratch, never copy-paste the prototype.** Craft, not extraction.
+The current engine took a harder boundary. Its first public commit on April 13 created an orphan branch with an empty Cargo workspace. The architecture decision published the next day made the rule explicit: **rebuild from scratch, never copy-paste the prototype.** Craft, not extraction.
 
 That sounds romantic. It was actually the cold option.
 
-**A prototype answers a different question.** The prototype existed to learn whether the idea held: can intent live in a file, can a plan be drawn before it runs, can permissions be enforced rather than logged. It answered yes. But code written to *find out* is shaped by the finding-out: shortcuts where the idea was still fuzzy, generosity where discipline was needed later. Extracting it would have meant carrying every one of those youthful decisions into the thing people would trust with their machines.
+**A prototype answers a different question.** The prototype existed to learn whether the idea held: can intent live in a file, can a plan be drawn before it runs, and where would effect boundaries have to live? It answered enough of those questions to justify another pass. The public permits contract and its runtime enforcement came later, in June. Code written to find out is shaped by the finding-out: shortcuts where the idea was still fuzzy, generosity where discipline was needed later. Copying it into the new workspace would have admitted those decisions before they were reviewed as architecture.
 
-**Trust infrastructure has a different bar.** An engine that enforces a permission boundary cannot itself be casual about correctness. So the rebuild came with rules the prototype never had: every crate passes a fixed set of admission gates before it enters the workspace; hard caps on file and function size; no unchecked failure paths in source. The gates are boring on purpose. Boring is what you want from the layer that decides whether a write to your disk is allowed to happen.
+**Trust infrastructure has a different bar.** An engine that enforces a permission boundary cannot itself be casual about correctness. So the rebuild started with rules the prototype never had: tracked-source size caps, checks for unchecked failure paths, workspace-wide lint policy, dependency review and library tests. The first commit contained nine blocking ratchets and zero admitted crates. The conditions arrived before the code they would judge.
 
-**The language was frozen before the engine was grown.** Rebuilding gave us the order most projects never get: spec first, engine second. The envelope (`nika: v1`), the four verbs, the permits model were locked as a contract, and then the engine was built *to* the contract, gate by gate. It is why the spec could open under Apache while the engine carries the AGPL: they were separate artifacts from the first day of the rebuild.
+## The chronology is less tidy than the slogan
 
-The prototype is not disowned; it was the necessary first draft, and drafts are how honest writing works. But you do not ship the draft. You keep what it taught you and write the real sentence.
+The rebuild began before the dedicated specification repository. The current engine starts on April 13. The first full public spec draft lands on May 22. That draft still treated `fetch` as a peer of `infer`, `exec`, `invoke` and `agent`, and used an envelope the current parser later retired.
 
-Starting over cost months. It bought a foundation that will not need to apologize later. In a tool whose whole promise is *the file you write today still runs in ten years*, that trade is not a luxury. It is the product.
+So the honest sequence is not “final spec first, engine second.” It is:
+
+1. create a clean execution workspace with admission rules;
+2. separate the language into its own public contract;
+3. let specification, conformance and engine correct one another;
+4. remove old grammar instead of keeping compatibility layers that would create two languages.
+
+The four-verb model emerged during that work. The permits contract arrived in June. The current compact envelope arrived later still. Each has its own receipt. None should be projected backward into the empty April workspace.
+
+That messier chronology is a better engineering story. The architecture did not begin omniscient. It created a process that could discover a wrong choice and remove it cleanly.
+
+## What “from scratch” did and did not mean
+
+Starting from an orphan branch did not erase what the prototype had taught. Legacy behavior remained available as a reference. What crossed the boundary were tests to re-earn, failure cases to understand and product laws to state again. Source lines did not receive automatic authority merely because they had once worked.
+
+The distinction matters today because “extraction” can also describe a healthy refactor inside the current engine. Moving an already-proven responsibility into a lower crate with preserved history is not the same act as importing prototype code into the rewrite. The April rule concerns the boundary between those two generations.
+
+The prototype is not disowned. It was the necessary first draft, and drafts are how honest writing works. The rebuild kept what it taught and required every new component to show its work again.
+
+Starting over cost months. It also made correction part of the architecture. For a tool that wants today's workflow to remain understandable years from now, that trade is part of the product.
 
 ---
 
@@ -3736,13 +3922,15 @@ url: https://nika.sh/blog/naming-the-drum
 story-date: 2026-03-21 · published: 2026-07-05 · tag: Origins
 commit-receipts: https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5
 
-By March, the project had an idea, a file and a public page. It still needed a name that could survive the product around it.
+By March, the project had an idea, a file and a public page. The page already said Nika. What still needed a name was the promise inside that name.
 
 The technical description was easy: a workflow language, a local engine, files you own. It explained what Nika did. It did not explain what all those choices were for.
 
 The answer was release.
 
 Release from work trapped behind one login. Release from methods that vanish with a chat. Release from the idea that using a powerful model requires surrendering the plan, the inputs and the evidence of what happened.
+
+The March date belongs to the working chronology of that interpretation. It is not the first public use of the product name. The December landing-page receipt proves Nika was already public. This chapter records when the drum became the project's explanation for why ownership mattered.
 
 ## Why Nika
 
@@ -3756,6 +3944,10 @@ Run after run, the promise becomes mechanical.
 
 **Every execution is one beat of the drum.** Not because running software is mythology, but because durable freedom is built through repetition. A principle that only appears in a manifesto is branding. A principle that survives each execution is architecture.
 
+The metaphor creates a practical test. A beat must be repeatable. It must have a beginning, an outcome and a record. If the workflow disappears with a chat, the rhythm breaks. If a hosted account owns the only copy, the rhythm belongs to the host. If a run cannot say what it touched, the sound is louder than the evidence.
+
+The mythology is downstream of the mechanics. The file, engine and trace do not become trustworthy because of the name. The name becomes meaningful when those parts keep the promise.
+
 ## Why the butterfly
 
 Project commits carry a small butterfly in the Nika co-author signature.
@@ -3763,6 +3955,8 @@ Project commits carry a small butterfly in the Nika co-author signature.
 The mark is deliberately lighter than the machinery. A workflow engine deals in parsers, permits, graphs and traces. The butterfly remembers why: software should increase a person's room to move.
 
 It also refuses the usual visual language of infrastructure. Nika does not need a fortress for a symbol. Its boundaries can be strict without making ownership feel grim.
+
+The signature is not an authorship authority and the butterfly is not a hidden operator. It is a studio mark attached to the craft. Git still records the human author and committer. The symbol adds continuity without rewriting who made the decision.
 
 ## The name has to earn itself
 
@@ -3772,9 +3966,11 @@ Can you keep the workflow as plain text? Can you run it through a local engine? 
 
 The closer the answer gets to yes, the more the name means.
 
+There is one more test: can the project correct itself in public? A liberation story that cannot admit an unsupported claim becomes another cage. That is why this ledger keeps the first page's bad benchmark, the quiet months and the difference between a story date and a publication date.
+
 The wider argument lives in [the manifesto](/manifesto). This ledger keeps the smaller, earlier arc: an objection became a file; the file met public reality; the excess was stripped away; the missing evidence stayed missing; the remaining purpose found its name.
 
-The note asked for work that could survive. The name supplied the rhythm. Everything after this is the proof.
+The note asked for work that could survive. The name supplied the rhythm. Everything after this has to earn the proof.
 
 ---
 
@@ -3793,6 +3989,16 @@ February is where a polished origin story would insert a montage.
 
 We will leave the space empty.
 
+## The public evidence ledger
+
+The gap is easier to see when each receipt is given only the claim it can carry:
+
+- **2025-12-30, first `nika.sh` commit.** It proves the public page and its exact claims existed. It does not prove the engine behind every claim was complete.
+- **2026-04-13, first current-engine commit.** It proves the orphan rebuild and its empty workspace existed. It does not prove the later runtime was already runnable.
+- **2026-05-22, first spec commits.** They prove the language contract entered its own public repository. They do not prove the final grammar had already stopped changing.
+
+The rows are intentionally asymmetric. A commit is strong evidence for bytes and weak evidence for motive, deployment and maturity.
+
 ## Different evidence answers different questions
 
 A commit proves less than memory and more than a story. It can show that bytes existed in a repository at a recorded point. It cannot show every conversation that led there. It cannot prove the code was deployed, used correctly or safe.
@@ -3801,9 +4007,22 @@ Memory can explain motive. A repository can establish sequence. Tests can establ
 
 Trouble begins when one source impersonates another.
 
+A commit timestamp is not a product release. A passing test is not proof that a binary reached users. A trace is not proof of facts below a provider boundary. A recollection can explain why a decision mattered, but it cannot manufacture a repository event.
+
 That is why these origin articles carry two dates. The story date places the subject in the chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective.
 
 The story can flow without pretending the blog existed before it did.
+
+## How to write across a gap
+
+The rule for this ledger is small enough to reuse elsewhere:
+
+1. name the oldest surviving source;
+2. state exactly what that source can prove;
+3. mark recollection as recollection;
+4. leave unsupported intervals empty.
+
+This does not make the history complete. It makes later correction cheap. If an older public receipt appears, it can be added without rewriting a myth that claimed certainty.
 
 ## The gap contains hypotheses
 
@@ -3823,6 +4042,8 @@ The same standard belongs in the project history.
 
 An empty section in the record tells future maintainers where they can rely on source and where they are reading recollection. It stops a later article from becoming accidental authority for an event it merely describes.
 
+The same discipline appears in runtime states. If a process dies after sending an external request but before recording the response, the honest result may be ambiguous. Calling it success or retrying it blindly would replace missing evidence with a convenient story. Historical gaps are gentler, but the law is the same: unknown remains unknown.
+
 The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. February keeps the boundary visible.
 
 Unknown remains unknown. The last chapter can now name what the project was reaching for without pretending the name proves the machinery.
@@ -3840,6 +4061,8 @@ Remove the first page's speed claim. Remove the production badge, the extra verb
 
 Four bets survive.
 
+They did not survive unchanged. Survival here means that the later system still needs the same responsibility, even after the first implementation and its vocabulary are gone.
+
 ## 1. The workflow is an artifact
 
 The first version already put the job in YAML. The current language is far stricter, but the ownership model is unchanged: the workflow belongs in the project, not in a remote editor or a conversation account.
@@ -3847,6 +4070,8 @@ The first version already put the job in YAML. The current language is far stric
 That plain-text artifact can be reviewed before execution. It can travel through Git. An agent can author it and a human can inspect the exact bytes. Another runtime can read it without asking the original service for permission.
 
 The syntax was replaceable. The artifact was not.
+
+The current envelope is evidence of that distinction. It no longer uses the first page's shape. Identity now sits directly on `nika:`, and retired wrapper keys refuse at parse time. A stricter grammar did not weaken the file bet. It removed ways for the same idea to be written twice.
 
 ## 2. The dependencies form a graph
 
@@ -3856,13 +4081,15 @@ Nika kept the graph and removed the spectacle around it. A task declares what it
 
 That is one quiet advantage of Intent as Code: the plan exists before anything acts. It is not a diagram reconstructed after the run.
 
+The graph also became a judging surface. A missing dependency, a cycle or a reference to a task that does not exist can fail before dispatch. The visual plan and the runtime no longer need separate hand-maintained descriptions of order.
+
 ## 3. The model is a selection
 
 The first page named several cloud and local model families. The names aged quickly. The separation did not.
 
 A workflow should not need a new shape when the model changes. The task says what kind of work it needs. The `model:` field says where that work is sent. The runtime owns the provider-specific mechanics.
 
-This does not pretend all models behave alike. It keeps provider glue from swallowing the workflow.
+This does not pretend all models behave alike. It keeps provider glue from swallowing the workflow. A different seat may change latency, cost and output. The plan still exposes which seat was requested.
 
 ## 4. The engine is something you can hold
 
@@ -3871,6 +4098,23 @@ Rust appeared in the first public story and remained through the rebuild. The im
 A local binary can parse, check and run a workflow without making a hosted control plane the owner of the file. It can expose the same engine to a terminal, a scheduler or a server adapter. It can enforce the boundary on the machine where the effects occur.
 
 This bet became more valuable as Nika grew. A remote API may project the runtime, but it should not replace it. A scheduler may decide when work begins, but it should not invent a second execution engine. The local executable keeps those doors honest.
+
+## The reset began with an empty workspace
+
+The current engine's first public commit arrived on April 13. Its Cargo workspace deliberately had no members.
+
+That detail is a better receipt than a finished architecture diagram. The commit added the workspace policy, toolchain pin, dependency policy and nine CI ratchets before it admitted a crate. The first current-engine artifact was a set of conditions for future code, not a pile of code asking to be trusted.
+
+The empty workspace also separates continuity from reuse. The December page proves the four bets above were already public. The April commit proves the current engine chose to re-earn them under a new architecture rather than treat the prototype as inherited proof.
+
+What crossed that boundary was not source code. It was a set of obligations:
+
+- the workflow remains an owned artifact;
+- the graph remains explicit;
+- model choice stays outside task semantics;
+- execution remains available through a local binary.
+
+Everything else had to justify its place again.
 
 ## The kernel
 
@@ -3895,6 +4139,19 @@ It also called the product production-ready, promised a ten-times speedup, treat
 
 The idea was real. The confidence was ahead of the evidence.
 
+## Read the commit, not the memory
+
+The initial commit is unusually useful because it preserves more than a slogan. It contains the whole first public argument: a landing page, a terminal simulation, a comparison table, a waitlist and a set of concept pages.
+
+Four claims show exactly where the story outran the product:
+
+- **`10x faster`** had no workload, baseline, machine or benchmark.
+- **`Production-ready from day one`** arrived in a landing-page commit with simulated terminal output.
+- **A verb list containing `infer`, `exec`, `fetch`, `invoke` and `agent`** described an early vocabulary, before the four-verb contract.
+- **MIT licensed** was a claim that did not match the later spec and engine split.
+
+This is not a retrospective accusation. It is a measured before picture. The commit makes the correction possible because the original wording did not vanish when the site changed.
+
 ## A number needs a receipt
 
 “10x faster” looked precise. The page named no baseline, workload, machine or benchmark report. Without those, the number was decoration wearing a lab coat.
@@ -3902,6 +4159,8 @@ The idea was real. The confidence was ahead of the evidence.
 The current site treats numbers differently. Language counts are generated from the canonical specification. Release pages list actual assets and digests. A performance claim needs a workload someone else can run.
 
 That standard matters because Nika asks people to write claims that machines will act on. The website cannot demand precision from workflow authors while granting itself an exemption.
+
+The first page taught a second lesson: a number is not made honest by being specific. Precision without a measurement protocol only makes unsupported copy easier to repeat.
 
 ## Ready for which production?
 
@@ -3918,13 +4177,23 @@ The early page collapsed those questions into one badge. The project later learn
 
 “Production-ready” cannot make those facts true. Mechanisms and tests can.
 
+The word also hides a scope question. Ready to parse a file is not ready to run an unattended server. Ready for one local model call is not ready for arbitrary process execution. A useful status names the surface and the proof behind it.
+
 ## The vocabulary needed subtraction
 
 The first page advertised `fetch` as a verb. The current language keeps `infer`, `exec`, `invoke` and `agent`. Fetching moved into the standard library, where it no longer competes with tool invocation as a second expression of the same effect.
 
 That subtraction made the language easier to teach and harder to misread. The first page captured an exploration. The later specification had to capture a law.
 
-The license split became more precise too. The specification is permissive so other people can implement the language. The engine is copyleft so a networked fork cannot quietly turn shared infrastructure into a private dead end. That is architecture, not a badge.
+The license split became more precise too. The specification is Apache-2.0 so other people can implement the language under a permissive contract with a patent grant. The reference engine is AGPL-3.0-or-later, so users of a modified network service can obtain the corresponding source under the license terms. That is architecture, not a badge.
+
+## What the page got right
+
+Removing the overclaims does not empty the commit.
+
+The page put the workflow in a file. It showed a command-line runner. It treated tasks as a graph and model choice as configuration rather than a new programming model. It placed local execution beside cloud providers instead of treating local models as a later escape hatch.
+
+Those ideas survived because they describe ownership, not a feature list. The exact provider names changed. The syntax changed. The evidence standard changed most of all. The workflow remained an artifact a person could keep.
 
 ## Keep the page
 
@@ -3975,6 +4244,16 @@ This is why the language later became task-shaped. A task has an identity and an
 
 YAML came after that. It was a practical container for a document people could read without first learning a compiler. The deeper choice was that the document would describe intent while the runtime remained responsible for execution.
 
+## A file changes when review can happen
+
+Putting the method in a file does more than preserve it. It moves review ahead of execution.
+
+A teammate can inspect the inputs before a model sees them. A diff can show that one host or output path changed. A checker can reject a broken reference without paying for a model call. The run can retain the identity of the bytes it received instead of pointing vaguely at a mutable chat thread.
+
+This was the first version of a rule Nika would keep sharpening: **authority should be visible before the effect it authorizes.** The November idea did not yet contain a permits grammar or a static checker. It created the place where those mechanisms could later live.
+
+The file also makes refusal ordinary. A chat product tends to reward forward motion. A source file can fail a review, sit unchanged for a week and return with the exact same bytes. That pause is a feature when the file may spend money, run a process or write to disk.
+
 ## Portability started as a writing rule
 
 Provider independence is often described as an adapter feature. Here it started earlier, as a test for the file.
@@ -3984,6 +4263,16 @@ If a method only makes sense inside one chat product, it is not yet portable. Th
 The work should still be recognizable.
 
 That rule remains visible in a Nika workflow. Changing `model:` does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may change where the work happens without changing what the work is.
+
+Portability does not mean identical outputs from every model. It means the declared plan remains legible when the execution seat changes. The provider may answer differently. The workflow still says what was asked, what fed it and what may happen next.
+
+## The first public echo
+
+The first public `nika.sh` commit arrived on December 30. Its landing page already showed a file named `workflow.nika.yaml`, a Rust command-line runner, task ordering and more than one model provider.
+
+That commit does not prove a complete language existed in November. It proves the file decision had survived long enough to become the public center of the product a month later.
+
+The page also carried syntax and claims that would be removed. This is exactly why the file must be more durable than any one representation of it. A container can survive while its grammar gets stricter and its promises learn restraint.
 
 ## The evidence boundary
 
@@ -4003,7 +4292,9 @@ story-date: 2025-10-17 · published: 2026-07-05 · tag: Origins
 
 The first durable Nika artifact was not code. It was a note dated October 17, 2025.
 
-It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts and follow-up messages.
+It followed a good chain of AI work that had become impossible to reuse. The result existed. The method did not. It lived as a scroll position inside a product account, mixed with false starts, corrections and follow-up messages.
+
+Nothing had crashed. That was the problem. The session had worked well enough to expose how weak its container was. A result could be copied out, but the route to that result could not be reviewed cleanly, run again or handed to another machine without retelling the whole conversation.
 
 The dated note survives, but the public repository does not begin until December. What follows is a compressed reconstruction of its argument, not a public quote from a commit:
 
@@ -4019,7 +4310,7 @@ That was the whole beginning. No product name. No language design. No architectu
 
 Software had spent decades learning how to keep work. Source files could be diffed. Changes could be reviewed. Decisions could leave receipts. Then AI made a powerful new kind of work possible and put most of it back inside disposable conversations.
 
-The better the session, the stranger the loss.
+The better the session, the stranger the loss. A disposable answer is tolerable. A disposable method is not.
 
 ## Keep the method, not the conversation
 
@@ -4034,8 +4325,40 @@ The note separated those two objects for the first time:
 
 That distinction became the root of everything else.
 
-Write down the inputs and the work can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it.
+## Three objects, not one scroll
+
+The later architecture gave precise names to a distinction that the note could only sketch:
+
+- **Discovery** finds the method. Only the useful decisions need to survive.
+- **Workflow** describes repeatable intent. Inputs, ordering, boundaries and outputs need to survive.
+- **Run** records one execution. Events, result and evidence need to survive.
+
+These were not October product terms. They are the vocabulary that grew around the original fracture. The distinction matters because each object has a different owner. A conversation may help discover a workflow, but it should not become the workflow. A workflow may start a run, but it should not be rewritten to impersonate the run's evidence.
+
+Once those roles are separate, several design decisions stop looking arbitrary. The file belongs in the project because it is source. The graph exists before execution because ordering is part of the plan. The trace is written after admission because it records what happened, not what the author hoped would happen.
+
+## The first review happened before syntax
+
+The note also changed the order of review. Inside a chat, judgment arrives after the model has already seen the prompt and often after a tool has acted. A durable description creates an earlier moment:
+
+- What inputs may this work read?
+- Which effects may it perform?
+- Which steps depend on which results?
+- Where does the final output go?
+- What evidence should remain when the run ends?
+
+October supplied none of the mechanisms that answer those questions today. It supplied the demand that they become answerable before the useful method disappeared again.
+
+Write down the inputs and the plan can be replayed. Name what it may touch and the work can be bounded. Make dependencies explicit and the work becomes a graph. Keep the file on your machine and the method no longer depends on the product that helped discover it.
 
 None of those mechanisms had names in October. The note only supplied the test they would all have to pass: **does the useful part survive the session?**
+
+## What this receipt does not prove
+
+There is no public October commit behind this chapter. That absence is part of the record.
+
+The note establishes the date in the private working chronology. The public text above is a later paraphrase. It does not prove that the current syntax, four verbs, permits model or trace system existed then. They did not arrive as one finished design hidden inside a notebook. They were later answers to the same objection.
+
+That boundary prevents a familiar origin-story trick: making the first thought sound like a miniature copy of the mature product. The first thought was smaller and more useful than that. It named the loss.
 
 The next decision made that test concrete. Before Nika needed a language, it needed an object you could keep.

@@ -295,22 +295,6 @@
       <description>One Rust binary, your models, your files. Run LLMs locally and see what local-first actually buys you.</description>
     </item>
     <item>
-      <title>The plan you get for free</title>
-      <link>https://nika.sh/blog/dag-for-free</link>
-      <guid isPermaLink="true">https://nika.sh/blog/dag-for-free</guid>
-      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
-      <category>Engine</category>
-      <description>The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.</description>
-    </item>
-    <item>
-      <title>Four verbs are enough</title>
-      <link>https://nika.sh/blog/four-verbs</link>
-      <guid isPermaLink="true">https://nika.sh/blog/four-verbs</guid>
-      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
-      <category>Language</category>
-      <description>A verb is a distinct execution model, not a feature. Why the language locks at four, forever.</description>
-    </item>
-    <item>
       <title>Intent as Code: why your AI work should be a file</title>
       <link>https://nika.sh/blog/intent-as-code</link>
       <guid isPermaLink="true">https://nika.sh/blog/intent-as-code</guid>
@@ -319,12 +303,20 @@
       <description>Chats evaporate, files compound. The case for writing AI work down as source you own: your best prompts, versioned like code.</description>
     </item>
     <item>
+      <title>The plan you get for free</title>
+      <link>https://nika.sh/blog/dag-for-free</link>
+      <guid isPermaLink="true">https://nika.sh/blog/dag-for-free</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Engine</category>
+      <description>The wiring is all you write: with: for data, after: for order. The plan falls out of the file: parallel waves, drawn before anything runs.</description>
+    </item>
+    <item>
       <title>The blast radius is part of the file</title>
       <link>https://nika.sh/blog/blast-radius-in-the-file</link>
       <guid isPermaLink="true">https://nika.sh/blog/blast-radius-in-the-file</guid>
       <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Security</category>
-      <description>permits: is the whole list, guardrails an agent can't talk past. Everything not on it is denied before it runs, with a named error.</description>
+      <description>The workflow declares its effect boundary before execution. Static checks explain the fit; runtime sinks enforce what the host can prove.</description>
     </item>
     <item>
       <title>A standard library, not a plugin store</title>
@@ -332,7 +324,7 @@
       <guid isPermaLink="true">https://nika.sh/blog/standard-library-not-plugin-store</guid>
       <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Language</category>
-      <description>28 builtins in the binary, allow-listed, nothing to install. The library grows, the language holds still.</description>
+      <description>Builtins ship with the engine and stay separate from the four verbs. External tools remain explicit dependencies, not new grammar.</description>
     </item>
     <item>
       <title>An open spec, a copyleft engine</title>
@@ -340,7 +332,15 @@
       <guid isPermaLink="true">https://nika.sh/blog/open-spec-copyleft-engine</guid>
       <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
       <category>Sovereignty</category>
-      <description>Two licenses, one argument: the file must outlive every vendor, including us.</description>
+      <description>The language contract is Apache-2.0. The reference engine is AGPL-3.0-or-later. The split keeps adoption and implementation custody separate.</description>
+    </item>
+    <item>
+      <title>Four verbs are enough</title>
+      <link>https://nika.sh/blog/four-verbs</link>
+      <guid isPermaLink="true">https://nika.sh/blog/four-verbs</guid>
+      <pubDate>Sun, 05 Jul 2026 09:00:00 GMT</pubDate>
+      <category>Language</category>
+      <description>A verb is a distinct execution model, not a feature. Why the language locks at four, forever.</description>
     </item>
     <item>
       <title>Starting over, on purpose</title>

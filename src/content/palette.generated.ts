@@ -479,39 +479,39 @@ export const PALETTE: PaletteEntry[] = [
   },
   {
     "kind": "post",
-    "label": "The plan you get for free",
-    "href": "/blog/dag-for-free",
-    "hint": "Engine · 2026-06-29"
-  },
-  {
-    "kind": "post",
-    "label": "Four verbs are enough",
-    "href": "/blog/four-verbs",
-    "hint": "Language · 2026-06-22"
-  },
-  {
-    "kind": "post",
     "label": "Intent as Code: why your AI work should be a file",
     "href": "/blog/intent-as-code",
     "hint": "Manifesto · 2026-06-15"
   },
   {
     "kind": "post",
+    "label": "The plan you get for free",
+    "href": "/blog/dag-for-free",
+    "hint": "Engine · 2026-06-12"
+  },
+  {
+    "kind": "post",
     "label": "The blast radius is part of the file",
     "href": "/blog/blast-radius-in-the-file",
-    "hint": "Security · 2026-06-04"
+    "hint": "Security · 2026-06-12"
   },
   {
     "kind": "post",
     "label": "A standard library, not a plugin store",
     "href": "/blog/standard-library-not-plugin-store",
-    "hint": "Language · 2026-05-14"
+    "hint": "Language · 2026-05-27"
   },
   {
     "kind": "post",
     "label": "An open spec, a copyleft engine",
     "href": "/blog/open-spec-copyleft-engine",
-    "hint": "Sovereignty · 2026-05-01"
+    "hint": "Sovereignty · 2026-05-22"
+  },
+  {
+    "kind": "post",
+    "label": "Four verbs are enough",
+    "href": "/blog/four-verbs",
+    "hint": "Language · 2026-05-22"
   },
   {
     "kind": "post",

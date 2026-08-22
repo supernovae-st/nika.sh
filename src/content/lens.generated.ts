@@ -10289,8 +10289,38 @@ const LENS_EDGES_2: LensEdge[] = [
     "kind": "mentions"
   },
   {
+    "from": "post:four-verbs",
+    "to": "word:after",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:four-verbs",
+    "to": "word:with",
+    "kind": "mentions"
+  },
+  {
     "from": "post:injection-goes-nowhere",
     "to": "tool:write",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:intent-as-code",
+    "to": "word:after",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:intent-as-code",
+    "to": "word:model",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:intent-as-code",
+    "to": "word:outputs",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:intent-as-code",
+    "to": "word:permits",
     "kind": "mentions"
   },
   {
@@ -10596,6 +10626,11 @@ const LENS_EDGES_2: LensEdge[] = [
   {
     "from": "post:what-survived-the-first-version",
     "to": "word:model",
+    "kind": "mentions"
+  },
+  {
+    "from": "post:what-survived-the-first-version",
+    "to": "word:nika",
     "kind": "mentions"
   },
   {
@@ -11827,7 +11862,10 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:corpus-digest",
     "to": "verb:infer",
     "kind": "witnesses"
-  },
+  }
+]
+
+const LENS_EDGES_3: LensEdge[] = [
   {
     "from": "showcase:corpus-digest",
     "to": "verb:invoke",
@@ -11862,10 +11900,7 @@ const LENS_EDGES_2: LensEdge[] = [
     "from": "showcase:csv-chart-report",
     "to": "verb:invoke",
     "kind": "witnesses"
-  }
-]
-
-const LENS_EDGES_3: LensEdge[] = [
+  },
   {
     "from": "showcase:deep-research-brief",
     "to": "tool:jq",

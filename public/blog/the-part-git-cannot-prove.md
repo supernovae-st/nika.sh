@@ -23,6 +23,16 @@ February is where a polished origin story would insert a montage.
 
 We will leave the space empty.
 
+## The public evidence ledger
+
+The gap is easier to see when each receipt is given only the claim it can carry:
+
+- **2025-12-30, first `nika.sh` commit.** It proves the public page and its exact claims existed. It does not prove the engine behind every claim was complete.
+- **2026-04-13, first current-engine commit.** It proves the orphan rebuild and its empty workspace existed. It does not prove the later runtime was already runnable.
+- **2026-05-22, first spec commits.** They prove the language contract entered its own public repository. They do not prove the final grammar had already stopped changing.
+
+The rows are intentionally asymmetric. A commit is strong evidence for bytes and weak evidence for motive, deployment and maturity.
+
 ## Different evidence answers different questions
 
 A commit proves less than memory and more than a story. It can show that bytes existed in a repository at a recorded point. It cannot show every conversation that led there. It cannot prove the code was deployed, used correctly or safe.
@@ -31,9 +41,22 @@ Memory can explain motive. A repository can establish sequence. Tests can establ
 
 Trouble begins when one source impersonates another.
 
+A commit timestamp is not a product release. A passing test is not proof that a binary reached users. A trace is not proof of facts below a provider boundary. A recollection can explain why a decision mattered, but it cannot manufacture a repository event.
+
 That is why these origin articles carry two dates. The story date places the subject in the chronology. The publication date says when the article actually appeared. RSS and structured metadata use the publication date. The page labels the article as a retrospective.
 
 The story can flow without pretending the blog existed before it did.
+
+## How to write across a gap
+
+The rule for this ledger is small enough to reuse elsewhere:
+
+1. name the oldest surviving source;
+2. state exactly what that source can prove;
+3. mark recollection as recollection;
+4. leave unsupported intervals empty.
+
+This does not make the history complete. It makes later correction cheap. If an older public receipt appears, it can be added without rewriting a myth that claimed certainty.
 
 ## The gap contains hypotheses
 
@@ -52,6 +75,8 @@ Nika asks users to care about provenance. A trace should not claim an attestatio
 The same standard belongs in the project history.
 
 An empty section in the record tells future maintainers where they can rely on source and where they are reading recollection. It stops a later article from becoming accidental authority for an event it merely describes.
+
+The same discipline appears in runtime states. If a process dies after sending an external request but before recording the response, the honest result may be ambiguous. Calling it success or retrying it blindly would replace missing evidence with a convenient story. Historical gaps are gentler, but the law is the same: unknown remains unknown.
 
 The public record resumes with a hard reset of the engine in April and a dedicated language repository in May. February keeps the boundary visible.
 

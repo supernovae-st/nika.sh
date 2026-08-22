@@ -15,11 +15,11 @@ The first machine-readable registry for that contract landed on May 27. It recor
 
 ## The binary carries the common floor
 
-**28 builtins are part of the current language contract**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings are reached the same way as everything else callable, with `invoke:`. The reference engine ships its builtin implementation with the binary, so those operations do not require a per-workflow package install.
+**<!-- canon:builtins -->28<!-- /canon --> builtins are part of the current language contract**, across five families: files, data, web, media, flow. Read, write, fetch, jq and their siblings are reached the same way as everything else callable, with `invoke:`. The reference engine ships its builtin implementation with the binary, so those operations do not require a per-workflow package install.
 
 That removes one supply-chain decision from the common path. It does not make every external tool built in. MCP servers, processes and provider services remain separate dependencies with their own installation, identity and authority boundaries.
 
-**One builtin, 9 honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
+**One builtin, <!-- canon:extractModes -->9<!-- /canon --> honest shapes.** `nika:fetch` turns a page into typed output nine ways: article, markdown, text, links, metadata, selector, sitemap, feed, jq. Read-only by design. The point is not the feature count. The point is that a fetch inside a reviewed file has a declared, typed result, so the step after it knows exactly what it is holding.
 
 ```yaml headlines.nika.yaml
 nika: headlines

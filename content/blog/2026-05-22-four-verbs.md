@@ -42,7 +42,7 @@ outputs:
 
 ## The subtraction test
 
-The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other 24 builtins.
+The test case was fetch. Surely getting a web page deserves its own verb? It does not, and the reason is the whole design: **fetching is not a distinct execution model.** It is a tool call. So `nika:fetch` lives in the standard library, reached through invoke, next to read, write, jq and the other <!-- canon:builtins-4 -->24<!-- /canon --> builtins.
 
 The same test handles future pressure:
 
