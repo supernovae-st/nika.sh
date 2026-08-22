@@ -11,13 +11,15 @@ series: origin-ledger
 series_stop: name
 ---
 
-By March, the project had an idea, a file and a public page. It still needed a name that could survive the product around it.
+By March, the project had an idea, a file and a public page. The page already said Nika. What still needed a name was the promise inside that name.
 
 The technical description was easy: a workflow language, a local engine, files you own. It explained what Nika did. It did not explain what all those choices were for.
 
 The answer was release.
 
 Release from work trapped behind one login. Release from methods that vanish with a chat. Release from the idea that using a powerful model requires surrendering the plan, the inputs and the evidence of what happened.
+
+The March date belongs to the working chronology of that interpretation. It is not the first public use of the product name. The December landing-page receipt proves Nika was already public. This chapter records when the drum became the project's explanation for why ownership mattered.
 
 ## Why Nika
 
@@ -31,6 +33,10 @@ Run after run, the promise becomes mechanical.
 
 **Every execution is one beat of the drum.** Not because running software is mythology, but because durable freedom is built through repetition. A principle that only appears in a manifesto is branding. A principle that survives each execution is architecture.
 
+The metaphor creates a practical test. A beat must be repeatable. It must have a beginning, an outcome and a record. If the workflow disappears with a chat, the rhythm breaks. If a hosted account owns the only copy, the rhythm belongs to the host. If a run cannot say what it touched, the sound is louder than the evidence.
+
+The mythology is downstream of the mechanics. The file, engine and trace do not become trustworthy because of the name. The name becomes meaningful when those parts keep the promise.
+
 ## Why the butterfly
 
 Project commits carry a small butterfly in the Nika co-author signature.
@@ -38,6 +44,8 @@ Project commits carry a small butterfly in the Nika co-author signature.
 The mark is deliberately lighter than the machinery. A workflow engine deals in parsers, permits, graphs and traces. The butterfly remembers why: software should increase a person's room to move.
 
 It also refuses the usual visual language of infrastructure. Nika does not need a fortress for a symbol. Its boundaries can be strict without making ownership feel grim.
+
+The signature is not an authorship authority and the butterfly is not a hidden operator. It is a studio mark attached to the craft. Git still records the human author and committer. The symbol adds continuity without rewriting who made the decision.
 
 ## The name has to earn itself
 
@@ -47,6 +55,8 @@ Can you keep the workflow as plain text? Can you run it through a local engine? 
 
 The closer the answer gets to yes, the more the name means.
 
+There is one more test: can the project correct itself in public? A liberation story that cannot admit an unsupported claim becomes another cage. That is why this ledger keeps the first page's bad benchmark, the quiet months and the difference between a story date and a publication date.
+
 The wider argument lives in [the manifesto](/manifesto). This ledger keeps the smaller, earlier arc: an objection became a file; the file met public reality; the excess was stripped away; the missing evidence stayed missing; the remaining purpose found its name.
 
-The note asked for work that could survive. The name supplied the rhythm. Everything after this is the proof.
+The note asked for work that could survive. The name supplied the rhythm. Everything after this has to earn the proof.

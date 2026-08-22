@@ -330,22 +330,6 @@ export const BLOG_POSTS: BlogPost[] = [
     "tag": "Sovereignty",
     "date": "2026-07-02",
     "published": "2026-07-05",
-    "readingMin": 1
-  },
-  {
-    "slug": "dag-for-free",
-    "title": "The plan you get for free",
-    "tag": "Engine",
-    "date": "2026-06-29",
-    "published": "2026-07-05",
-    "readingMin": 2
-  },
-  {
-    "slug": "four-verbs",
-    "title": "Four verbs are enough",
-    "tag": "Language",
-    "date": "2026-06-22",
-    "published": "2026-07-05",
     "readingMin": 2
   },
   {
@@ -354,31 +338,64 @@ export const BLOG_POSTS: BlogPost[] = [
     "tag": "Manifesto",
     "date": "2026-06-15",
     "published": "2026-07-05",
-    "readingMin": 2
+    "readingMin": 3
+  },
+  {
+    "slug": "dag-for-free",
+    "title": "The plan you get for free",
+    "tag": "Engine",
+    "date": "2026-06-12",
+    "published": "2026-07-05",
+    "receipts": [
+      "https://github.com/supernovae-st/nika/commit/c929ee0dd9cd9c63ea1f207fb6148c009e6e441f"
+    ],
+    "readingMin": 3
   },
   {
     "slug": "blast-radius-in-the-file",
     "title": "The blast radius is part of the file",
     "tag": "Security",
-    "date": "2026-06-04",
+    "date": "2026-06-12",
     "published": "2026-07-05",
-    "readingMin": 1
+    "receipts": [
+      "https://github.com/supernovae-st/nika-spec/commit/11c58d9692621de99c5cfb2ed1a5f8581182489d",
+      "https://github.com/supernovae-st/nika/commit/7c6cd9ceb9350355e899bc454b08ec34c0319290"
+    ],
+    "readingMin": 3
   },
   {
     "slug": "standard-library-not-plugin-store",
     "title": "A standard library, not a plugin store",
     "tag": "Language",
-    "date": "2026-05-14",
+    "date": "2026-05-27",
     "published": "2026-07-05",
-    "readingMin": 1
+    "receipts": [
+      "https://github.com/supernovae-st/nika-spec/commit/7ce582d2302a392f621dffcad835ca2375cc6511"
+    ],
+    "readingMin": 3
   },
   {
     "slug": "open-spec-copyleft-engine",
     "title": "An open spec, a copyleft engine",
     "tag": "Sovereignty",
-    "date": "2026-05-01",
+    "date": "2026-05-22",
     "published": "2026-07-05",
-    "readingMin": 2
+    "receipts": [
+      "https://github.com/supernovae-st/nika-spec/commit/7d471abfd1930bef255fe7b3ee050317fc1b3718",
+      "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43"
+    ],
+    "readingMin": 3
+  },
+  {
+    "slug": "four-verbs",
+    "title": "Four verbs are enough",
+    "tag": "Language",
+    "date": "2026-05-22",
+    "published": "2026-07-05",
+    "receipts": [
+      "https://github.com/supernovae-st/nika-spec/commit/34987bf7a9ff6eb9ca3e3bd2bc67a1223f6e3bbd"
+    ],
+    "readingMin": 3
   },
   {
     "slug": "starting-over-on-purpose",
@@ -386,7 +403,11 @@ export const BLOG_POSTS: BlogPost[] = [
     "tag": "Origins",
     "date": "2026-04-14",
     "published": "2026-07-05",
-    "readingMin": 2
+    "receipts": [
+      "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43",
+      "https://github.com/supernovae-st/nika/commit/4cac646e9d99e287654e029831370812280b7754"
+    ],
+    "readingMin": 3
   },
   {
     "slug": "naming-the-drum",
@@ -397,7 +418,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "receipts": [
       "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
     ],
-    "readingMin": 3,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "name"
   },
@@ -412,7 +433,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43",
       "https://github.com/supernovae-st/nika-spec/commit/7dd38aca0fe7e3ddc8f47f1a1b7e33133fbf09b8"
     ],
-    "readingMin": 3,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "silence"
   },
@@ -426,7 +447,7 @@ export const BLOG_POSTS: BlogPost[] = [
       "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5",
       "https://github.com/supernovae-st/nika/commit/0cc7b74235c896f16d326795786a7f7b40241c43"
     ],
-    "readingMin": 3,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "kernel"
   },
@@ -439,7 +460,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "receipts": [
       "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
     ],
-    "readingMin": 3,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "first-page"
   },
@@ -452,7 +473,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "receipts": [
       "https://github.com/supernovae-st/nika.sh/commit/3ab8bdd4e10e7c285120cef8363333b1292836c5"
     ],
-    "readingMin": 3,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "file"
   },
@@ -462,7 +483,7 @@ export const BLOG_POSTS: BlogPost[] = [
     "tag": "Origins",
     "date": "2025-10-17",
     "published": "2026-07-05",
-    "readingMin": 2,
+    "readingMin": 4,
     "series": "origin-ledger",
     "seriesStop": "note"
   }

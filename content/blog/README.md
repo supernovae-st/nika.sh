@@ -42,12 +42,12 @@ This directory **is** the blog at [nika.sh/blog](https://nika.sh/blog). Each pos
 | 2026-07-05 | Anatomy of a verb | [`2026-07-05-anatomy-of-a-verb.md`](./2026-07-05-anatomy-of-a-verb.md) |
 | 2026-07-05 | The trace you can replay | [`2026-07-05-the-trace-you-can-replay.md`](./2026-07-05-the-trace-you-can-replay.md) |
 | 2026-07-02 | No cloud needed | [`2026-07-02-own-your-stack.md`](./2026-07-02-own-your-stack.md) |
-| 2026-06-29 | The plan you get for free | [`2026-06-29-dag-for-free.md`](./2026-06-29-dag-for-free.md) |
-| 2026-06-22 | Four verbs are enough | [`2026-06-22-four-verbs.md`](./2026-06-22-four-verbs.md) |
 | 2026-06-15 | Intent as Code: why your AI work should be a file | [`2026-06-15-intent-as-code.md`](./2026-06-15-intent-as-code.md) |
-| 2026-06-04 | The blast radius is part of the file | [`2026-06-04-blast-radius-in-the-file.md`](./2026-06-04-blast-radius-in-the-file.md) |
-| 2026-05-14 | A standard library, not a plugin store | [`2026-05-14-standard-library-not-plugin-store.md`](./2026-05-14-standard-library-not-plugin-store.md) |
-| 2026-05-01 | An open spec, a copyleft engine | [`2026-05-01-open-spec-copyleft-engine.md`](./2026-05-01-open-spec-copyleft-engine.md) |
+| 2026-06-12 | The plan you get for free | [`2026-06-12-dag-for-free.md`](./2026-06-12-dag-for-free.md) |
+| 2026-06-12 | The blast radius is part of the file | [`2026-06-12-blast-radius-in-the-file.md`](./2026-06-12-blast-radius-in-the-file.md) |
+| 2026-05-27 | A standard library, not a plugin store | [`2026-05-27-standard-library-not-plugin-store.md`](./2026-05-27-standard-library-not-plugin-store.md) |
+| 2026-05-22 | Four verbs are enough | [`2026-05-22-four-verbs.md`](./2026-05-22-four-verbs.md) |
+| 2026-05-22 | An open spec, a copyleft engine | [`2026-05-22-open-spec-copyleft-engine.md`](./2026-05-22-open-spec-copyleft-engine.md) |
 | 2026-04-14 | Starting over, on purpose | [`2026-04-14-starting-over-on-purpose.md`](./2026-04-14-starting-over-on-purpose.md) |
 | 2026-03-21 | Naming the drum | [`2026-03-21-naming-the-drum.md`](./2026-03-21-naming-the-drum.md) |
 | 2026-02 | The part Git cannot prove | [`2026-02-the-part-git-cannot-prove.md`](./2026-02-the-part-git-cannot-prove.md) |

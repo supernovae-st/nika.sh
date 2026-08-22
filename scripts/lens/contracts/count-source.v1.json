@@ -27,16 +27,16 @@
       "binary public assets"
     ],
     "count": 346,
-    "set_sha256": "acbdef26ffecb24dd5fcefc6bb0dfc12db64e52e934e68480f327b4a6b0b717f",
+    "set_sha256": "e6b1bdb368c71162c0aea7621b0bc41967ca03c4b1559a547cbd274163dfe278",
     "rendered_count": 1144,
-    "rendered_set_sha256": "7e45932236df1847f77b550461517bd0946066c0a2d7c7885708dd6eb35f6ac7"
+    "rendered_set_sha256": "75cc7158d1223b3fc918dc0b7bc9c7aaa21e0c6ffb1a9a10f2d09e97c4933aea"
   },
-  "claim_count": 136,
+  "claim_count": 135,
   "bindings": [
     {
-      "selector": "content/blog/2026-04-14-starting-over-on-purpose.md#count:1",
-      "path": "content/blog/2026-04-14-starting-over-on-purpose.md",
-      "line": 20,
+      "selector": "content/blog/2025-10-17-the-note-that-started-it.md#count:1",
+      "path": "content/blog/2025-10-17-the-note-that-started-it.md",
+      "line": 79,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -46,9 +46,21 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "content/blog/2026-05-01-open-spec-copyleft-engine.md#count:1",
-      "path": "content/blog/2026-05-01-open-spec-copyleft-engine.md",
-      "line": 12,
+      "selector": "content/blog/2026-05-22-four-verbs.md#count:1",
+      "path": "content/blog/2026-05-22-four-verbs.md",
+      "line": 3,
+      "text": "Four verbs",
+      "source": "Four",
+      "field": "verbs",
+      "value": 4,
+      "ordinal": false,
+      "relation": "canon-count",
+      "reason": "literal is gated against CANON.verbs"
+    },
+    {
+      "selector": "content/blog/2026-05-22-open-spec-copyleft-engine.md#count:1",
+      "path": "content/blog/2026-05-22-open-spec-copyleft-engine.md",
+      "line": 19,
       "text": "four verbs",
       "source": "four",
       "field": "verbs",
@@ -58,21 +70,21 @@
       "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "content/blog/2026-05-14-standard-library-not-plugin-store.md#count:1",
-      "path": "content/blog/2026-05-14-standard-library-not-plugin-store.md",
-      "line": 7,
-      "text": "28 builtins",
-      "source": "28",
-      "field": "builtins",
-      "value": 28,
+      "selector": "content/blog/2026-05-27-standard-library-not-plugin-store.md#count:1",
+      "path": "content/blog/2026-05-27-standard-library-not-plugin-store.md",
+      "line": 9,
+      "text": "four verbs",
+      "source": "four",
+      "field": "verbs",
+      "value": 4,
       "ordinal": false,
       "relation": "canon-count",
-      "reason": "literal is gated against CANON.builtins"
+      "reason": "literal is gated against CANON.verbs"
     },
     {
-      "selector": "content/blog/2026-05-14-standard-library-not-plugin-store.md#count:2",
-      "path": "content/blog/2026-05-14-standard-library-not-plugin-store.md",
-      "line": 14,
+      "selector": "content/blog/2026-05-27-standard-library-not-plugin-store.md#count:2",
+      "path": "content/blog/2026-05-27-standard-library-not-plugin-store.md",
+      "line": 22,
       "text": "One builtin",
       "source": "One",
       "field": "builtins",
@@ -84,33 +96,9 @@
     {
       "selector": "content/blog/2026-06-15-intent-as-code.md#count:1",
       "path": "content/blog/2026-06-15-intent-as-code.md",
-      "line": 16,
+      "line": 32,
       "text": "Four verbs",
       "source": "Four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "content/blog/2026-06-22-four-verbs.md#count:1",
-      "path": "content/blog/2026-06-22-four-verbs.md",
-      "line": 3,
-      "text": "Four verbs",
-      "source": "Four",
-      "field": "verbs",
-      "value": 4,
-      "ordinal": false,
-      "relation": "canon-count",
-      "reason": "literal is gated against CANON.verbs"
-    },
-    {
-      "selector": "content/blog/2026-06-29-dag-for-free.md#count:1",
-      "path": "content/blog/2026-06-29-dag-for-free.md",
-      "line": 44,
-      "text": "four verbs",
-      "source": "four",
       "field": "verbs",
       "value": 4,
       "ordinal": false,

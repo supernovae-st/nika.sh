@@ -43,6 +43,16 @@ This is why the language later became task-shaped. A task has an identity and an
 
 YAML came after that. It was a practical container for a document people could read without first learning a compiler. The deeper choice was that the document would describe intent while the runtime remained responsible for execution.
 
+## A file changes when review can happen
+
+Putting the method in a file does more than preserve it. It moves review ahead of execution.
+
+A teammate can inspect the inputs before a model sees them. A diff can show that one host or output path changed. A checker can reject a broken reference without paying for a model call. The run can retain the identity of the bytes it received instead of pointing vaguely at a mutable chat thread.
+
+This was the first version of a rule Nika would keep sharpening: **authority should be visible before the effect it authorizes.** The November idea did not yet contain a permits grammar or a static checker. It created the place where those mechanisms could later live.
+
+The file also makes refusal ordinary. A chat product tends to reward forward motion. A source file can fail a review, sit unchanged for a week and return with the exact same bytes. That pause is a feature when the file may spend money, run a process or write to disk.
+
 ## Portability started as a writing rule
 
 Provider independence is often described as an adapter feature. Here it started earlier, as a test for the file.
@@ -52,6 +62,16 @@ If a method only makes sense inside one chat product, it is not yet portable. Th
 The work should still be recognizable.
 
 That rule remains visible in a Nika workflow. Changing `model:` does not require a second language. Moving from a laptop to a server does not require a second graph. The runtime may change where the work happens without changing what the work is.
+
+Portability does not mean identical outputs from every model. It means the declared plan remains legible when the execution seat changes. The provider may answer differently. The workflow still says what was asked, what fed it and what may happen next.
+
+## The first public echo
+
+The first public `nika.sh` commit arrived on December 30. Its landing page already showed a file named `workflow.nika.yaml`, a Rust command-line runner, task ordering and more than one model provider.
+
+That commit does not prove a complete language existed in November. It proves the file decision had survived long enough to become the public center of the product a month later.
+
+The page also carried syntax and claims that would be removed. This is exactly why the file must be more durable than any one representation of it. A container can survive while its grammar gets stricter and its promises learn restraint.
 
 ## The evidence boundary
 
