@@ -244,10 +244,51 @@ const fail = (route, kind, detail) => {
       seriesMembers++
     }
   }
+  /* article crumbs — one trail feeds the reader and the machine. A series
+     chapter must name its collection between Blog and the article; the last
+     JSON-LD item is the current page, so it must not link back to itself. */
+  let articleCrumbs = 0
+  for (const route of posts) {
+    const failuresBefore = failures.length
+    const html = routeHtml(route)
+    const nodes = jsonLdNodes(html)
+    const posting = nodes.find((node) => node['@type'] === 'BlogPosting')
+    const crumb = nodes.find((node) => node['@type'] === 'BreadcrumbList')
+    if (!posting || !crumb) {
+      fail(route, 'article-crumb', 'missing BlogPosting or BreadcrumbList structured data')
+      continue
+    }
+    const items = Array.isArray(crumb.itemListElement) ? crumb.itemListElement : []
+    const expectedNames = [
+      'Blog',
+      ...(posting.isPartOf?.name ? [posting.isPartOf.name] : []),
+      posting.headline,
+    ]
+    const positions = items.map((item) => item.position)
+    if (JSON.stringify(items.map((item) => item.name)) !== JSON.stringify(expectedNames)) {
+      fail(route, 'article-crumb', `names ${JSON.stringify(items.map((item) => item.name))} do not match ${JSON.stringify(expectedNames)}`)
+    }
+    if (JSON.stringify(positions) !== JSON.stringify(items.map((_, i) => i + 1))) {
+      fail(route, 'article-crumb', `positions are not monotonic: ${JSON.stringify(positions)}`)
+    }
+    if (items.at(-1)?.item !== undefined) {
+      fail(route, 'article-crumb', 'the current article links to itself in BreadcrumbList')
+    }
+    if (posting.isPartOf?.['@id'] && items.at(-2)?.item !== posting.isPartOf['@id']) {
+      fail(route, 'article-crumb', `series parent does not point to ${posting.isPartOf['@id']}`)
+    }
+    const visible = html.match(/<nav class="bp-crumb"[\s\S]*?<\/nav>/)?.[0] ?? ''
+    const visibleItems = [...visible.matchAll(/class="bp-crumb-item"/g)].length
+    if (visibleItems !== expectedNames.length || !visible.includes('aria-current="page"')) {
+      fail(route, 'article-crumb', `${visibleItems} visible items for ${expectedNames.length} machine items, current=${visible.includes('aria-current="page"')}`)
+    }
+    if (failures.length === failuresBefore) articleCrumbs++
+  }
   console.log(`static integrity · og:image ${seen.size - ogMissing}/${seen.size} · rss ${posts.length - rssMiss}/${posts.length} posts · llms-full ${posts.length - llmsMiss}/${posts.length}\n`)
   if (seriesRoutes.length > 0) {
     console.log(`reading paths · ${seriesRoutes.length} series · ${seriesMembers} linked chapters\n`)
   }
+  console.log(`article crumbs · ${articleCrumbs}/${posts.length} reader + machine trails\n`)
 }
 
 /* deterministic settle — NEVER a fixed sleep before interacting: scrollTo

@@ -9,16 +9,52 @@
 .bp-crumb {
   margin-bottom: clamp(18px, 3vh, 30px);
 }
-.bp-crumb-link {
+.bp-crumb-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.06em;
+}
+.bp-crumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.bp-crumb-item:first-child {
+  flex: 0 0 auto;
+}
+.bp-crumb-item:last-child {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.bp-crumb-separator {
+  color: var(--v4-text-faint);
+}
+.bp-crumb-link {
+  display: block;
+  overflow: hidden;
   color: var(--v4-text-dim);
+  text-overflow: ellipsis;
   transition: color var(--dur-ui) var(--ease-ui);
+  white-space: nowrap;
 }
 .bp-crumb-link:hover,
 .bp-crumb-link:focus-visible {
   color: var(--v4-text);
+}
+.bp-crumb-current {
+  display: block;
+  overflow: hidden;
+  color: var(--v4-text-faint);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bp-fig {

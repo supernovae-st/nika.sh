@@ -10,6 +10,7 @@ import { useIslandPayload } from '../lib/use-island-payload'
 import { ssrBlogRails, loadBlogRails } from '../lib/blog-rails-access'
 import { useBlogCopy } from '../lib/use-blog-copy'
 import { isRetrospective, publicationDate, storyDateLabel } from '../lib/blog-dates'
+import { crumbLd } from '../lib/ld'
 import { Component as NotFound } from './NotFound'
 import '../sections/v4-home.css'
 import '../shell/shell.css'
@@ -119,6 +120,15 @@ export function Component() {
       }))
     : []
   const seriesAt = post ? stations.findIndex((station) => station.post.slug === post.slug) : -1
+  const crumbTrail = post
+    ? [
+        { name: 'Blog', path: '/blog' },
+        ...(series && post.series
+          ? [{ name: series.title, path: `/blog/series/${post.series}` }]
+          : []),
+        { name: post.title },
+      ]
+    : []
 
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
@@ -164,13 +174,7 @@ export function Component() {
               logo: { '@type': 'ImageObject', url: 'https://nika.sh/icon-512.png' },
             },
           },
-          {
-            '@type': 'BreadcrumbList',
-            itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://nika.sh/blog' },
-              { '@type': 'ListItem', position: 2, name: post.title, item: `https://nika.sh/blog/${post.slug}` },
-            ],
-          },
+          crumbLd(crumbTrail),
         ],
       }
     : null
@@ -241,12 +245,33 @@ export function Component() {
         <div className="v4sec-wrap bp-wrap">
           {/* the way back + the register row */}
           <nav className="bp-crumb" aria-label="Breadcrumb" data-rise>
-            <Link to="/blog" viewTransition className="bp-crumb-link">
-              <span className="acue acue--l" aria-hidden>
-                ←
-              </span>{' '}
-              blog
-            </Link>
+            <ol className="bp-crumb-list">
+              {crumbTrail.map((crumb, crumbIndex) => (
+                <li className="bp-crumb-item" key={crumb.path ?? post.slug}>
+                  {crumbIndex > 0 && (
+                    <span className="bp-crumb-separator" aria-hidden>
+                      /
+                    </span>
+                  )}
+                  {crumb.path ? (
+                    <Link to={crumb.path} viewTransition className="bp-crumb-link">
+                      {crumbIndex === 0 && (
+                        <>
+                          <span className="acue acue--l" aria-hidden>
+                            ←
+                          </span>{' '}
+                        </>
+                      )}
+                      {crumb.name}
+                    </Link>
+                  ) : (
+                    <span className="bp-crumb-current" aria-current="page">
+                      {crumb.name}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
           </nav>
           <p className="bp-fig mono" data-rise style={{ ['--rise-delay' as string]: '40ms' }}>
             <Link to="/manifesto" viewTransition className="bp-author">
