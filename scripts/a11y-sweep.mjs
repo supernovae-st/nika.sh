@@ -151,20 +151,19 @@ const classify = (result) => ({
   soft: result.filter((v) => v.impact !== 'critical' && v.impact !== 'serious'),
 })
 
-/* the ONE known hydration race, ratcheted into structure: scroll wells earn
-   tabindex from a client-side measurement (use-scroll-well), and axe can
-   audit the instant before it lands — the recurring ×37 on /use-cases that
-   was green on every manual rerun. When a route's gating set is EXACTLY
-   that rule, re-audit once with a longer settle and let the second verdict
-   stand (a REAL regression still fails — twice). Any other rule, or that
-   rule mixed with others, never retries. */
-const RACE_RULE = 'scrollable-region-focusable'
+/* the two observed render races, ratcheted into structure:
+   - scroll wells earn tabindex from a client-side measurement;
+   - cross-document/reveal opacity can make axe sample a translucent frame
+     and report every otherwise-valid text node as low contrast.
+   Re-audit once only when the whole gating set belongs to this closed set.
+   A real regression remains red on the settled second verdict. */
+const TRANSIENT_RULES = new Set(['scrollable-region-focusable', 'color-contrast'])
 
 let gate = 0
 for (const route of ROUTES) {
   let { bad, soft } = classify(await audit(route, 800))
-  if (bad.length && bad.every((v) => v.id === RACE_RULE)) {
-    console.log(`  ↻ ${route} · ${RACE_RULE} only — the tabindex race, re-auditing once`)
+  if (bad.length && bad.every((v) => TRANSIENT_RULES.has(v.id))) {
+    console.log(`  ↻ ${route} · transient render rule(s) only — re-auditing the settled frame once`)
     ;({ bad, soft } = classify(await audit(route, 2400)))
   }
   gate += bad.length

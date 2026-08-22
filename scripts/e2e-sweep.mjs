@@ -30,6 +30,7 @@ import { execFile } from 'node:child_process'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
+const SITE = 'https://nika.sh'
 const argv = (name, fallback) => {
   const i = process.argv.indexOf(`--${name}`)
   return i >= 0 ? process.argv[i + 1] : fallback
@@ -197,10 +198,11 @@ const fail = (route, kind, detail) => {
     if (!rss.includes(`<link>https://nika.sh${r}</link>`)) { rssMiss++; fail(r, 'rss', `${r} missing from rss.xml`) }
     if (!llms.includes(r)) { llmsMiss++; fail(r, 'llms-full', `${r} missing from llms-full.txt`) }
   }
-  /* reading paths — the series page is the ordered authority. Its built
-     ItemList count, its screen-reader ledger, every member's BlogPosting
-     backlink, and the chapter-navigation label must agree. This catches a
-     broken editorial thread without coupling the belt to source internals. */
+  /* reading paths — the CollectionPage is the series authority; its distinct
+     ItemList, reader + machine breadcrumb, screen-reader ledger, every
+     member's BlogPosting backlink, and chapter-navigation label must agree.
+     This catches a broken editorial thread without coupling the belt to
+     source internals. */
   const routeHtml = (route) => readFileSync(
     join(DIST, route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`),
     'utf8',
@@ -216,12 +218,38 @@ const fail = (route, kind, detail) => {
     })
   const seriesRoutes = ROUTES.filter((route) => /^\/blog\/series\/.+/.test(route))
   let seriesMembers = 0
+  let seriesCrumbs = 0
   for (const route of seriesRoutes) {
+    const failuresBefore = failures.length
     const html = routeHtml(route)
-    const list = jsonLdNodes(html).find((node) => node['@type'] === 'ItemList')
-    if (!list) {
-      fail(route, 'reading-path', 'missing ItemList structured data')
+    const nodes = jsonLdNodes(html)
+    const collection = nodes.find((node) => node['@type'] === 'CollectionPage')
+    const list = nodes.find((node) => node['@type'] === 'ItemList')
+    const crumb = nodes.find((node) => node['@type'] === 'BreadcrumbList')
+    if (!collection || !list || !crumb) {
+      fail(route, 'reading-path', 'missing CollectionPage, ItemList, or BreadcrumbList structured data')
       continue
+    }
+    if (collection['@id'] !== `${SITE}${route}` || collection.mainEntity?.['@id'] !== list['@id']) {
+      fail(route, 'reading-path', 'CollectionPage identity does not own the ItemList')
+    }
+    if (list['@id'] !== `${SITE}${route}#items`) {
+      fail(route, 'reading-path', `ItemList id ${list['@id']} does not use the #items identity`)
+    }
+    const crumbItems = Array.isArray(crumb.itemListElement) ? crumb.itemListElement : []
+    if (JSON.stringify(crumbItems.map((item) => item.name)) !== JSON.stringify(['Blog', collection.name])) {
+      fail(route, 'reading-path', `breadcrumb names do not end at ${collection.name}`)
+    }
+    if (crumbItems.at(-1)?.item !== undefined || crumbItems[0]?.item !== `${SITE}/blog`) {
+      fail(route, 'reading-path', 'breadcrumb links do not stop at the current series page')
+    }
+    if (JSON.stringify(crumbItems.map((item) => item.position)) !== '[1,2]') {
+      fail(route, 'reading-path', 'breadcrumb positions are not the ordered pair [1,2]')
+    }
+    const visibleCrumb = html.match(/<nav class="td-crumb[^"]*"[\s\S]*?<\/nav>/)?.[0] ?? ''
+    const visibleItems = [...visibleCrumb.matchAll(/class="bs-crumb-item"/g)].length
+    if (visibleItems !== crumbItems.length || !visibleCrumb.includes('aria-current="page"')) {
+      fail(route, 'reading-path', `${visibleItems} visible crumbs for ${crumbItems.length} machine items`)
     }
     const items = Array.isArray(list.itemListElement) ? list.itemListElement : []
     if (list.numberOfItems !== items.length) {
@@ -235,14 +263,15 @@ const fail = (route, kind, detail) => {
       const memberRoute = new URL(item.url).pathname
       const memberHtml = routeHtml(memberRoute)
       const posting = jsonLdNodes(memberHtml).find((node) => node['@type'] === 'BlogPosting')
-      if (posting?.isPartOf?.['@id'] !== list['@id']) {
-        fail(memberRoute, 'reading-path', `BlogPosting does not point back to ${list['@id']}`)
+      if (posting?.isPartOf?.['@id'] !== collection['@id']) {
+        fail(memberRoute, 'reading-path', `BlogPosting does not point back to ${collection['@id']}`)
       }
       if (!memberHtml.includes(`aria-label="${list.name} chapter navigation"`)) {
         fail(memberRoute, 'reading-path', `missing ${list.name} chapter navigation`)
       }
       seriesMembers++
     }
+    if (failures.length === failuresBefore) seriesCrumbs++
   }
   /* article crumbs — one trail feeds the reader and the machine. A series
      chapter must name its collection between Blog and the article; the last
@@ -287,6 +316,7 @@ const fail = (route, kind, detail) => {
   console.log(`static integrity · og:image ${seen.size - ogMissing}/${seen.size} · rss ${posts.length - rssMiss}/${posts.length} posts · llms-full ${posts.length - llmsMiss}/${posts.length}\n`)
   if (seriesRoutes.length > 0) {
     console.log(`reading paths · ${seriesRoutes.length} series · ${seriesMembers} linked chapters\n`)
+    console.log(`series crumbs · ${seriesCrumbs}/${seriesRoutes.length} reader + machine trails\n`)
   }
   console.log(`article crumbs · ${articleCrumbs}/${posts.length} reader + machine trails\n`)
 }
