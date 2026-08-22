@@ -81,6 +81,7 @@ export function Component() {
               name: hit.title,
               description: hit.claim,
               itemListOrder: 'https://schema.org/ItemListOrderAscending',
+              numberOfItems: legs.length,
               itemListElement: legs.map((l, i) => ({
                 '@type': 'ListItem',
                 position: i + 1,
@@ -165,6 +166,9 @@ export function Component() {
                 {legs.map((l, i) => (
                   <li key={l.post.slug} className="bs-ledger-row">
                     <Link to={`/blog/${l.post.slug}`} viewTransition className="bs-ledger-link">
+                      <span className="bs-ledger-a11y">
+                        Step {i + 1} of {legs.length}: {l.stop}.{' '}
+                      </span>
                       <span className="bs-ledger-sequence mono" aria-hidden>
                         <span className="bs-ledger-node" />
                         <span className="bs-ledger-number">{String(i + 1).padStart(2, '0')}</span>

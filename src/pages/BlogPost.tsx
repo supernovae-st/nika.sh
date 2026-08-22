@@ -111,6 +111,14 @@ export function Component() {
   const post = postMeta && copy[postMeta.slug] ? { ...postMeta, ...copy[postMeta.slug] } : null
   const bodyJson = useBodyJson(slug ?? '')
   const rails = usePostRails(slug ?? '')
+  const series = post?.series ? BLOG_SERIES[post.series] : undefined
+  const stations = post && series
+    ? series.stops.map((stop) => ({
+        stop,
+        post: BLOG_POSTS.find((candidate) => candidate.series === post.series && candidate.seriesStop === stop)!,
+      }))
+    : []
+  const seriesAt = post ? stations.findIndex((station) => station.post.slug === post.slug) : -1
 
   const ref = useRevealOnce<HTMLElement>({ threshold: 0.02, rootMargin: '0px 0px -4% 0px' })
 
@@ -134,6 +142,15 @@ export function Component() {
             image: `https://nika.sh/og-blog-${post.slug}.png`,
             url: `https://nika.sh/blog/${post.slug}`,
             mainEntityOfPage: `https://nika.sh/blog/${post.slug}`,
+            ...(series && post.series
+              ? {
+                  isPartOf: {
+                    '@type': 'CollectionPage',
+                    '@id': `https://nika.sh/blog/series/${post.series}`,
+                    name: series.title,
+                  },
+                }
+              : {}),
             author: {
               '@type': 'Person',
               name: post.author,
@@ -211,20 +228,8 @@ export function Component() {
   }, [slug])
 
   if (!post) return <NotFound />
-  const prev = BLOG_POSTS[idx + 1]
-  const next = BLOG_POSTS[idx - 1]
-
-  /* the reading path · when the post belongs to a series, the rail names the
-     whole line in its EDITORIAL order (the registry's stops — a curriculum,
-     not a changelog) with this station lit. Compiler gates guarantee the
-     path is complete, so the lookups below cannot come up short. */
-  const series = post.series ? BLOG_SERIES[post.series] : undefined
-  const stations = series
-    ? series.stops.map((stop) => ({
-        stop,
-        post: BLOG_POSTS.find((q) => q.series === post.series && q.seriesStop === stop)!,
-      }))
-    : []
+  const previousPost = series ? stations[seriesAt - 1]?.post : BLOG_POSTS[idx + 1]
+  const nextPost = series ? stations[seriesAt + 1]?.post : BLOG_POSTS[idx - 1]
 
   return (
     <main className="theme-dark v4page">
@@ -396,17 +401,43 @@ export function Component() {
                 discuss ↗
               </a>
             </p>
-            <nav className="bp-walk" aria-label="More posts">
-              {prev ? (
-                <Link to={`/blog/${prev.slug}`} viewTransition className="bp-walk-link">
-                  ← {prev.title}
+            <nav
+              className="bp-walk"
+              aria-label={series ? `${series.title} chapter navigation` : 'More posts'}
+            >
+              {previousPost ? (
+                <Link to={`/blog/${previousPost.slug}`} viewTransition className="bp-walk-link">
+                  {series ? (
+                    <>
+                      <span className="bp-walk-k mono">step {seriesAt} of {stations.length} · previous</span>
+                      <span>← {previousPost.title}</span>
+                    </>
+                  ) : (
+                    <>← {previousPost.title}</>
+                  )}
                 </Link>
               ) : (
                 <span />
               )}
-              {next ? (
-                <Link to={`/blog/${next.slug}`} viewTransition className="bp-walk-link bp-walk-link--next">
-                  {next.title} →
+              {nextPost ? (
+                <Link to={`/blog/${nextPost.slug}`} viewTransition className="bp-walk-link bp-walk-link--next">
+                  {series ? (
+                    <>
+                      <span className="bp-walk-k mono">step {seriesAt + 2} of {stations.length} · next</span>
+                      <span>{nextPost.title} →</span>
+                    </>
+                  ) : (
+                    <>{nextPost.title} →</>
+                  )}
+                </Link>
+              ) : series && post.series ? (
+                <Link
+                  to={`/blog/series/${post.series}`}
+                  viewTransition
+                  className="bp-walk-link bp-walk-link--next"
+                >
+                  <span className="bp-walk-k mono">complete path</span>
+                  <span>{series.title} →</span>
                 </Link>
               ) : (
                 <span />

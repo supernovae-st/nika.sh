@@ -197,7 +197,57 @@ const fail = (route, kind, detail) => {
     if (!rss.includes(`<link>https://nika.sh${r}</link>`)) { rssMiss++; fail(r, 'rss', `${r} missing from rss.xml`) }
     if (!llms.includes(r)) { llmsMiss++; fail(r, 'llms-full', `${r} missing from llms-full.txt`) }
   }
+  /* reading paths — the series page is the ordered authority. Its built
+     ItemList count, its screen-reader ledger, every member's BlogPosting
+     backlink, and the chapter-navigation label must agree. This catches a
+     broken editorial thread without coupling the belt to source internals. */
+  const routeHtml = (route) => readFileSync(
+    join(DIST, route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`),
+    'utf8',
+  )
+  const jsonLdNodes = (html) => [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .flatMap((match) => {
+      try {
+        const document = JSON.parse(match[1])
+        return Array.isArray(document['@graph']) ? document['@graph'] : [document]
+      } catch {
+        return []
+      }
+    })
+  const seriesRoutes = ROUTES.filter((route) => /^\/blog\/series\/.+/.test(route))
+  let seriesMembers = 0
+  for (const route of seriesRoutes) {
+    const html = routeHtml(route)
+    const list = jsonLdNodes(html).find((node) => node['@type'] === 'ItemList')
+    if (!list) {
+      fail(route, 'reading-path', 'missing ItemList structured data')
+      continue
+    }
+    const items = Array.isArray(list.itemListElement) ? list.itemListElement : []
+    if (list.numberOfItems !== items.length) {
+      fail(route, 'reading-path', `numberOfItems ${list.numberOfItems} does not match ${items.length} entries`)
+    }
+    const a11ySteps = [...html.matchAll(/class="bs-ledger-a11y"/g)].length
+    if (a11ySteps !== items.length) {
+      fail(route, 'reading-path', `${a11ySteps} accessible steps for ${items.length} entries`)
+    }
+    for (const item of items) {
+      const memberRoute = new URL(item.url).pathname
+      const memberHtml = routeHtml(memberRoute)
+      const posting = jsonLdNodes(memberHtml).find((node) => node['@type'] === 'BlogPosting')
+      if (posting?.isPartOf?.['@id'] !== list['@id']) {
+        fail(memberRoute, 'reading-path', `BlogPosting does not point back to ${list['@id']}`)
+      }
+      if (!memberHtml.includes(`aria-label="${list.name} chapter navigation"`)) {
+        fail(memberRoute, 'reading-path', `missing ${list.name} chapter navigation`)
+      }
+      seriesMembers++
+    }
+  }
   console.log(`static integrity · og:image ${seen.size - ogMissing}/${seen.size} · rss ${posts.length - rssMiss}/${posts.length} posts · llms-full ${posts.length - llmsMiss}/${posts.length}\n`)
+  if (seriesRoutes.length > 0) {
+    console.log(`reading paths · ${seriesRoutes.length} series · ${seriesMembers} linked chapters\n`)
+  }
 }
 
 /* deterministic settle — NEVER a fixed sleep before interacting: scrollTo
